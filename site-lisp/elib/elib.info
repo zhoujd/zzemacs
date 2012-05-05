@@ -1,0 +1,48 @@
+This is elib.info, produced by makeinfo version 4.0 from elib.texi.
+
+   Copyright (C) 1991, 1992 Free Software Foundation
+
+
+Indirect:
+elib.info-1: 123
+elib.info-2: 48706
+
+Tag Table:
+(Indirect)
+Node: Top123
+Node: License information1076
+Node: What is Elib?20244
+Node: Contributors21220
+Node: Archives21790
+Node: Container data types22084
+Node: Stack23057
+Node: Queue25182
+Node: Doubly Linked List27671
+Node: Creating a dll29089
+Node: Entering elements29790
+Node: Accessing elements30381
+Node: Removing nodes31597
+Node: Predicates32247
+Node: Maps and Filters32589
+Node: Misc dll operations33206
+Node: Debugging dll applications33785
+Node: Binary tree35759
+Node: AVL tree38494
+Node: Cookie package41916
+Node: Cookie terminology43209
+Node: Cookie conventions45112
+Node: Collection45780
+Node: Inserting cookies47391
+Node: Tins and cookies48376
+Node: Deleting cookies48706
+Node: Collection as a DLL50278
+Node: Scanning the list51827
+Node: In the buffer53568
+Node: Debugging cookie applications55440
+Node: String functions55999
+Node: Read functions57976
+Node: Future enhancements59851
+Node: Reporting bugs60909
+Node: Node index61328
+
+End Tag Table

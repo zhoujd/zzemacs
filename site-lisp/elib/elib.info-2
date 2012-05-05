@@ -1,0 +1,529 @@
+This is elib.info, produced by makeinfo version 4.0 from elib.texi.
+
+   Copyright (C) 1991, 1992 Free Software Foundation
+
+
+File: elib.info,  Node: Deleting cookies,  Next: Collection as a DLL,  Prev: Tins and cookies,  Up: Cookie package
+
+Deleting cookies
+================
+
+   There are a couple of different ways to delete cookies from the
+collection.
+
+`(tin-delete collection tin)'
+     Delete TIN from COLLECTION. The cookie that is stored in TIN is
+     returned.
+
+`(cookie-delete-first collection)'
+     Delete first cookie in COLLECTION and return it.  Returns `nil' if
+     there are no cookies left in COLLECTION.
+
+`(cookie-delete-last collection)'
+     Delete last cookie in COLLECTION and return it.  Returns `nil' if
+     there are no cookies left in COLLECTION.
+
+   The following two functions can be used to delete several cookies
+that fulfills certain criteria.
+
+`(collection-filter-cookies collection predicate &rest extra-args)'
+     Remove all cookies in COLLECTION for which PREDICATE returns nil.
+     Note that the buffer for COLLECTION will be current-buffer when
+     PREDICATE is called. PREDICATE must restore the current buffer
+     before it returns if it changes it.
+
+     The PREDICATE is called with COOKIE as its first argument. If any
+     EXTRA-ARGS are given to `collection-filter-cookies' they will be
+     passed unmodified to PREDICATE.
+
+`(collection-filter-tins collection predicate &rest extra-args)'
+     This is like `collection-filter-cookies', but PREDICATE is called
+     with a tin instead of a cookie.
+
+   And finally, a way to delete all cookies in one swift function call:
+
+`(collection-clear collection)'
+     Remove all cookies in COLLECTION.
+
+
+File: elib.info,  Node: Collection as a DLL,  Next: Scanning the list,  Prev: Deleting cookies,  Up: Cookie package
+
+Collection as a Doubly linked list
+==================================
+
+   The functions in this section treat the collection as a doubly
+linked list.
+
+`(tin-nth collection n)'
+     Return the Nth tin.  N counts from zero.  `nil' is returned if
+     there is less than N cookies.  If N is negative, return the
+     -(N+1)th last element.  Thus, `(tin-nth dll 0)' returns the first
+     node, and `(tin-nth dll -1)' returns the last node.
+
+     Use `tin-cookie' to extract the cookie from the tin (or use
+     `cookie-nth' instead).
+
+`(cookie-nth collection n)'
+     Like `tin-nth', but the cookie is returned instead of the tin.
+
+`(tin-next collection tin)'
+     Get the next tin.  Returns nil if TIN is `nil' or refers to the
+     last cookie in COLLECTION.
+
+`(tin-previous collection tin)'
+     Get the previous tin.  Returns nil if TIN is `nil' or refers to
+     the first cookie in COLLECTION.
+
+`(cookie-sort collection predicate)'
+     Sort the cookies in COLLECTION, stably, comparing elements using
+     PREDICATE.  PREDICATE is called with two cookies, and should
+     return `t' if the first cookie is "less" than the second.
+
+     The screen representaion of the collection will refreshed after
+     the sort is complete.
+
+`(cookie-first collection)'
+     Return the first cookie in COLLECTION. The cookie is not removed.
+
+`(cookie-last collection)'
+     Return the last cookie in COLLECTION. The cookie is not removed.
+
+
+File: elib.info,  Node: Scanning the list,  Next: In the buffer,  Prev: Collection as a DLL,  Up: Cookie package
+
+Scanning the list
+=================
+
+`(cookie-map map-function collection &rest map-args)'
+     Apply MAP-FUNCTION to all cookies in COLLECTION.  MAP-FUNCTION is
+     applied to the first element first.  If MAP-FUNCTION returns
+     non-`nil' the cookie will be refreshed (its pretty-printer will be
+     called once again).
+
+     Note that the buffer for COLLECTION will be current buffer when
+     MAP-FUNCTION is called.  MAP-FUNCTION must restore the current
+     buffer to BUFFER before it returns, if it changes it.
+
+     If more than two arguments are given to `cookie-map', remaining
+     arguments will be passed to MAP-FUNCTION.
+
+`(cookie-map-reverse map-function collection &rest map-args)'
+     Like `cookie-map', but MAP-FUNCTION will be applied to the last
+     cookie first.
+
+`(collection-collect-tin collection predicate &rest predicate-args)'
+     Select cookies from COLLECTION using PREDICATE.  Return a list of
+     all selected tins.
+
+     PREDICATE is a function that takes a cookie as its first argument.
+
+     The tins on the returned list will appear in the same order as in
+     the buffer.  You should not rely on in which order PREDICATE is
+     called.
+
+     Note that the buffer the COLLECTION is displayed in is
+     current-buffer when PREDICATE is called.  PREDICATE must restore
+     current-buffer if it changes it.
+
+     If more than two arguments are given to `collection-collect-tin'
+     the remaining arguments will be passed to PREDICATE.
+
+`(collection-collect-cookie collection predicate &rest predicate-args)'
+     Like `collection-collect-tin', but a list of cookies is returned.
+
+
+File: elib.info,  Node: In the buffer,  Next: Debugging cookie applications,  Prev: Scanning the list,  Up: Cookie package
+
+Operations that affect the buffer
+=================================
+
+`(collection-buffer collection)'
+     Return the buffer that COLLECTION is displayed in.
+
+`(collection-refresh collection)'
+     Refresh all cookies in COLLECTION.
+
+     The pretty-printer that was specified when the COLLECTION was
+     created will be called for all cookies in COLLECTION.
+
+     Note that `tin-invalidate' is more efficient if only a small
+     number of cookies needs to be refreshed.
+
+`(tin-invalidate collection &rest tins)'
+     Refresh some cookies.  The pretty-printer for COLLECTION will be
+     called for all TINS.
+
+`(collection-set-goal-column collection goal)'
+     Set goal-column for COLLECTION.  goal-column is made buffer-local.
+     This function will be obsoleted in the next release of Elib.
+     Instead, there is going to be a function that given a cookie will
+     return a position where the cursor should be stored.  The details
+     are not yet decided.
+
+`(tin-goto-previous collection pos arg)'
+     Move point to the ARGth previous cookie.  Don't move if we are at
+     the first cookie, or if COLLECTION is empty.  Returns the tin we
+     move to.
+
+`(tin-goto-next collection pos arg)'
+     Like `tin-goto-previous', but move towards the end of the buffer
+     instead.
+
+`(tin-goto collection tin)'
+     Move point to TIN.
+
+`(tin-locate collection pos &optional guess)'
+     Return the tin that POS (a buffer position) is within.
+
+     POS may be a marker or an integer.  GUESS should be a tin that it
+     is likely that POS is near.
+
+     If POS points before the first cookie, the first cookie is
+     returned.  If POS points after the last cookie, the last cookie is
+     returned.  If COLLECTION is empty, `nil' is returned.
+
+
+File: elib.info,  Node: Debugging cookie applications,  Prev: In the buffer,  Up: Cookie package
+
+Debugging cookie applications
+=============================
+
+   Since the cookie package uses dll, cookie applications can be hard to
+debug.  Fortunately, the same technique can be used here--just load
+dll-debug prior to loading cookie. *Note Debugging dll applications::.
+
+   _Warning!_  Don't load a byte-compiled `cookie.elc' that was
+compiled using dll (as opposed to dll-debug) when you have dll-debug in
+memory.  Your Emacs will be seriously confused.
+
+
+File: elib.info,  Node: String functions,  Next: Read functions,  Prev: Cookie package,  Up: Top
+
+String functions
+****************
+
+   To use the string functions in Elib you have to put the following
+line into your elisp source file:
+
+     (require 'string)
+
+   The following string functions are provided with Elib.
+
+`(string-replace-match regexp string newtext &optional literal global)'
+     This function tries to be a string near-equivalent to the elisp
+     function `replace-match'.  It returns a string with the first text
+     matched by REGEXP in STRING replaced by NEWTEXT.  If no match is
+     found, `nil' is returned.  If optional argument GLOBAL is
+     non-`nil', all occurances matching REGEXP are replaced instead of
+     only the first one.
+
+     If optional argument LITERAL is non-`nil', then NEWTEXT is
+     inserted exactly as it is.  If it is `nil' (which is the default),
+     then the character `\' is treated specially.  If a `\' appears in
+     NEWTEXT, it can start any one of the following sequences:
+
+    `\&'
+          `\&' stands for the entire text being replaced.
+
+    `\N'
+          `\N' stands for the Nth subexpression in the original regexp.
+          Subexpressions are those expressions grouped inside of
+          `\(...\)'.  N is a digit.
+
+    `\\'
+          `\\' stands for a single `\' in NEWTEXT.
+
+     Any other character after the <\> will just be copied into the
+     string.
+
+`(string-split pattern string &optional limit)'
+     Split the string STRING on the regexp PATTERN and return a list of
+     the strings between the matches.  If the optional numerical
+     argument LIMIT is >= 1, only the first LIMIT elements of the list
+     are returned.
+
+     For example, the call
+
+          (string-split "[ \t]+" "Elisp programming is fun.")
+
+     will return `("Elisp" "programming" "is" "fun.")', but the call
+
+          (string-split " " "Elisp programming is fun." 3)
+
+     will return `("Elisp" "programming" "is")'.
+
+
+File: elib.info,  Node: Read functions,  Next: Future enhancements,  Prev: String functions,  Up: Top
+
+Read functions
+**************
+
+   Elib provides a number of functions for reading data from the
+minibuffer.  To use them in your own elisp programs, put the following
+line into you source file:
+
+     (require 'read)
+
+   The following functions are provided by `read'.
+
+`(read-number &optional prompt default)'
+     Read a number from the minibuffer. If optional argument PROMPT is
+     non-`nil', the user is prompted using PROMPT, otherwise the prompt
+     string `Enter a number:' is used.  If optional argument DEFAULT is
+     non-`nil', it is written within parenthesis after the prompt
+     string.  DEFAULT can be either a number or of the type which
+     `(interactive "P")' generates.
+
+`(read-num-range low high &optional prompt show-range)'
+     Read a number from the minibuffer.  The number returned will be
+     forced to lie between LOW and HIGH.  If PROMPT is non-`nil', the
+     user is prompted using PROMPT, otherwise the prompt string `Enter
+     a number:' is used.  If SHOW-RANGE is non-`nil', the prompt will
+     show the range within parenthesis to the user.
+
+`(read-silent prompt &optional showchar)'
+     Read a string in the minibuffer without echoing.  The following
+     characters are special when entering the string:
+
+    `DEL'
+          Delete the last character in the input buffer.
+
+    `C-u'
+          Clear the input buffer.
+
+    `RET'
+          End the reading of the string.
+
+    `Newline'
+          Same as `RET'.
+
+     If optional argument SHOWCHAR is non-`nil', one of these characters
+     will be displayed for each character input by the user.
+
+     This function is well suited to read a password from the user, but
+     beware of the function `(view-lossage)' which displays the last 100
+     keystrokes, even hidden ones.
+
+
+File: elib.info,  Node: Future enhancements,  Next: Reporting bugs,  Prev: Read functions,  Up: Top
+
+Future enhancements
+*******************
+
+   Elib needs a number of enhancements to be called complete.  Here is
+a list of wishes of functions and data types which we would like to
+enter into Elib in future releases:
+
+   * More container data types such as Priority queues, 2-3-trees, Hash
+     tables, Sets, etc.  Much inspiration can be gotten from libg++ and
+     the standard C++ library, STL.
+
+   * Other implementations of old container data types.  For instance,
+     are vector implementations of stacks and queues faster than the
+     current ones using cons cells?
+
+   * Miscellaneous other small functions.
+
+   * More tests for all code in the library, especially the untested
+     container data types.  See the TODO file.
+
+Contributions
+=============
+
+   We are grateful for all donations of code that we can receive.
+However, your code will be still more useful if you also provide
+documentation and code to test your new library functions.
+
+
+File: elib.info,  Node: Reporting bugs,  Next: Node index,  Prev: Future enhancements,  Up: Top
+
+Reporting bugs
+**************
+
+   Undoubtedly there are numerous bugs remaining, both in the elisp
+source code and in the documentation.  If you find a bug in either,
+please send a bug report to `elib-maintainers@lysator.liu.se'.  We will
+try to be as quick as possible in fixing the bugs and redistributing
+the fixes.
+
+
+File: elib.info,  Node: Node index,  Prev: Reporting bugs,  Up: Top
+
+Node index
+**********
+
+* Menu:
+
+* Archives:                              Archives.
+* AVL tree:                              AVL tree.
+* avltree:                               AVL tree.
+* avltree-clear:                         AVL tree.
+* avltree-compare-function:              AVL tree.
+* avltree-copy:                          AVL tree.
+* avltree-create:                        AVL tree.
+* avltree-delete:                        AVL tree.
+* avltree-empty:                         AVL tree.
+* avltree-enter:                         AVL tree.
+* avltree-first:                         AVL tree.
+* avltree-flatten:                       AVL tree.
+* avltree-last:                          AVL tree.
+* avltree-map:                           AVL tree.
+* avltree-member:                        AVL tree.
+* avltree-p:                             AVL tree.
+* avltree-size:                          AVL tree.
+* Balanced binary tree:                  AVL tree.
+* Bellman, Thomas:                       Contributors.
+* Binary tree:                           Binary tree.
+* Binary tree, balanced:                 AVL tree.
+* bintree:                               Binary tree.
+* bintree-clear:                         Binary tree.
+* bintree-compare-function:              Binary tree.
+* bintree-copy:                          Binary tree.
+* bintree-create:                        Binary tree.
+* bintree-delete:                        Binary tree.
+* bintree-empty:                         Binary tree.
+* bintree-enter:                         Binary tree.
+* bintree-first:                         Binary tree.
+* bintree-flatten:                       Binary tree.
+* bintree-last:                          Binary tree.
+* bintree-map:                           Binary tree.
+* bintree-member:                        Binary tree.
+* bintree-p:                             Binary tree.
+* bintree-size:                          Binary tree.
+* Cederqvist, Per:                       Contributors.
+* Circular lists:                        Debugging dll applications.
+* Collection:                            Cookie terminology.
+* collection-append-cookies:             Inserting cookies.
+* collection-buffer:                     In the buffer.
+* collection-clear:                      Deleting cookies.
+* collection-collect-cookie:             Scanning the list.
+* collection-collect-tin:                Scanning the list.
+* collection-create:                     Collection.
+* collection-empty:                      Collection.
+* collection-filter-cookies:             Deleting cookies.
+* collection-filter-tins:                Deleting cookies.
+* collection-length:                     Collection.
+* collection-list-cookies:               Collection.
+* collection-refresh:                    In the buffer.
+* collection-set-goal-column:            In the buffer.
+* Container Data Types:                  Container data types.
+* Contributors:                          Contributors.
+* Conventions:                           Container data types.
+* Cookie:                                Cookie package.
+* Cookie conventions:                    Cookie conventions.
+* Cookie definitions:                    Cookie terminology.
+* cookie-delete-first:                   Deleting cookies.
+* cookie-delete-last:                    Deleting cookies.
+* cookie-enter-after-tin:                Inserting cookies.
+* cookie-enter-before-tin:               Inserting cookies.
+* cookie-enter-first:                    Inserting cookies.
+* cookie-enter-last:                     Inserting cookies.
+* cookie-first:                          Collection as a DLL.
+* cookie-last:                           Collection as a DLL.
+* cookie-map:                            Scanning the list.
+* cookie-map-reverse:                    Scanning the list.
+* cookie-nth:                            Collection as a DLL.
+* cookie-sort:                           Collection as a DLL.
+* Debugging dll:                         Debugging dll applications.
+* dll:                                   Doubly Linked List.
+* dll-all:                               Accessing elements.
+* dll-clear:                             Removing nodes.
+* dll-copy:                              Creating a dll.
+* dll-create:                            Creating a dll.
+* dll-create-from-list:                  Creating a dll.
+* dll-debug:                             Debugging dll applications.
+* dll-delete:                            Removing nodes.
+* dll-delete-first:                      Removing nodes.
+* dll-delete-last:                       Removing nodes.
+* dll-element:                           Accessing elements.
+* dll-empty:                             Predicates.
+* dll-enter-after:                       Entering elements.
+* dll-enter-before:                      Entering elements.
+* dll-enter-first:                       Entering elements.
+* dll-enter-last:                        Entering elements.
+* dll-filter:                            Maps and Filters.
+* dll-first:                             Accessing elements.
+* dll-last:                              Accessing elements.
+* dll-length:                            Misc dll operations.
+* dll-map:                               Maps and Filters.
+* dll-map-reverse:                       Maps and Filters.
+* dll-next:                              Accessing elements.
+* dll-nth:                               Accessing elements.
+* dll-p:                                 Predicates.
+* dll-previous:                          Accessing elements.
+* dll-sort:                              Misc dll operations.
+* Doubly linked list:                    Doubly Linked List.
+* Doubly linked lists, debugging:        Debugging dll applications.
+* Elib, introduction:                    What is Elib?.
+* Enhancements:                          Future enhancements.
+* Error: circular lists:                 Debugging dll applications.
+* FIFO Queue:                            Queue.
+* Ftp:                                   Archives.
+* ftp.lysator.liu.se:                    Archives.
+* Inge Wallin:                           Contributors.
+* Introduction:                          Top.
+* Introduction to Elib:                  What is Elib?.
+* Kremer, Sebastian:                     Contributors.
+* LIFO Stack:                            Stack.
+* List, doubly linked:                   Doubly Linked List.
+* Lysator:                               Archives.
+* Nodal data:                            Cookie package.
+* Per Cederqvist:                        Contributors.
+* Prefixes:                              Cookie conventions.
+* Queue:                                 Queue.
+* queue-all:                             Queue.
+* queue-clear:                           Queue.
+* queue-copy:                            Queue.
+* queue-create:                          Queue.
+* queue-dequeue:                         Queue.
+* queue-empty:                           Queue.
+* queue-enqueue:                         Queue.
+* queue-f:                               Queue.
+* queue-first:                           Queue.
+* queue-last:                            Queue.
+* queue-length:                          Queue.
+* queue-m:                               Queue.
+* queue-nth:                             Queue.
+* queue-p:                               Queue.
+* read:                                  Read functions.
+* Read functions:                        Read functions.
+* read-num-range:                        Read functions.
+* read-number:                           Read functions.
+* read-silent:                           Read functions.
+* Reporting bugs:                        Reporting bugs.
+* Require:                               What is Elib?.
+* Sebastian Kremer:                      Contributors.
+* sites:                                 Archives.
+* Stack:                                 Stack.
+* stack-all:                             Stack.
+* stack-clear:                           Stack.
+* stack-copy:                            Stack.
+* stack-create:                          Stack.
+* stack-empty:                           Stack.
+* stack-f:                               Stack.
+* stack-length:                          Stack.
+* stack-m:                               Stack.
+* stack-nth:                             Stack.
+* stack-p:                               Stack.
+* stack-pop:                             Stack.
+* stack-push:                            Stack.
+* stack-top:                             Stack.
+* string:                                String functions.
+* String functions:                      String functions.
+* string-replace-match:                  String functions.
+* Thomas Bellman:                        Contributors.
+* Tin:                                   Cookie terminology.
+* tin-cookie:                            Tins and cookies.
+* tin-delete:                            Deleting cookies.
+* tin-goto:                              In the buffer.
+* tin-goto-next:                         In the buffer.
+* tin-goto-previous:                     In the buffer.
+* tin-invalidate:                        In the buffer.
+* tin-locate:                            In the buffer.
+* tin-next:                              Collection as a DLL.
+* tin-nth:                               Collection as a DLL.
+* tin-previous:                          Collection as a DLL.
+* Wallin, Inge:                          Contributors.
+* What is Elib?:                         What is Elib?.
+
+

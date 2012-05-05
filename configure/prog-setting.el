@@ -183,8 +183,8 @@ the mru bookmark stack."
 
 
 ;; SET TAGS PATH
-(setq tags-table-list '("~/work/putsurface-split/libva_ivb/TAGS"
-                        ;;"~/work/ics_ivb_media/hardware/intel/TAGS"
+(setq tags-table-list '("~/work/TAGS"
+                        ;;"~/TAGS"
                         ))
 
 (setq auto-mode-alist

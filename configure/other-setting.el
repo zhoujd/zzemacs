@@ -305,26 +305,23 @@ Emacs buffer are those starting with “*”."
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun edit-with-sakura()
-  "Edit current buffer file with sakura"
+(defun edit-with-gvim()
+  "Edit current buffer file with gvim"
   (interactive)
-  (start-process  "sakura"
-                  "*sakura*"
-                  "sakura"
+  (start-process  "gvim"
+                  nil
+                  "gvim"
                   (display-buffer-name)))
 
-(defun delete-sakura ()
-  "delete sakura editor"
+;;popup term
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+    (setq popup-terminal-command '("cmd" "/c" "start"))
+    (setq popup-terminal-command '("gnome-terminal")))
+(defun popup-term ()
   (interactive)
-  (delete-process "*sakura*")
-  (kill-buffer "*sakura*"))
-
-;;make ctags
-(defun goto-gnome-terminal ()
-  "goto-gnome-terminal."
-  (interactive)
-  (shell-command
-   (format "gnome-terminal &")))
+  (apply 'start-process "terminal" nil popup-terminal-command)
+  )
 
 ;;go to last buffer
 (defun my-last-buffer-go ()

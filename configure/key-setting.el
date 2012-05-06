@@ -61,8 +61,8 @@
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
  (progn ;; For Windows
-   (global-set-key [f6] 'edit-with-sakura)
-   (global-set-key [C-f6] 'delete-sakura))
+   (global-set-key [f6] 'edit-with-gvim)
+   )
  (progn ;; For Linux
    (global-set-key [f6] 'get-term)
    (global-set-key [S-f6] 'multi-term-dedicated-toggle)
@@ -84,6 +84,8 @@
 (global-set-key [f9] 'shell)
 (global-set-key [C-f9] 'to-scratch)
 (global-set-key [M-f9] 'eshell)
+(global-set-key [S-f9] 'popup-term)
+
 
 (global-set-key [C-f10] 'tool-bar-mode)
 (global-set-key [M-f10] 'menu-bar-mode)

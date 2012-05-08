@@ -147,7 +147,7 @@ Emacs buffer are those starting with “*”."
 
 (if window-system
  (set-face-attribute 'tabbar-default nil
-                    :family "Vera Sans YuanTi Mono"
+                    :family my-font-name
                     :background "gray80"
                     :foreground "gray30"
                     :height 0.8

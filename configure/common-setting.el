@@ -49,6 +49,7 @@
 ;;font setting
 (defvar my-font-name "DejaVu Sans Mono")
 (defvar my-font-name "Monaco")
+(defvar my-font-name "Consolas")
 
 (defvar my-font-size 10)
 (setq my-font-string

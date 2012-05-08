@@ -47,11 +47,16 @@
 (my-set-language-utf-8)
 
 ;;font setting
-(setq my-font-name "DejaVu Sans Mono")
-(setq my-font-size 10)
+(defvar my-font-name "DejaVu Sans Mono")
+(defvar my-font-name "Monaco")
+
+(defvar my-font-size 10)
 (setq my-font-string
       (concat my-font-name " "
               (number-to-string my-font-size)))
+
+(defvar my-font-cn-name "Microsoft Yahei")
+(defvar my-font-cn-size 14)
 
 (defun my-frame-font ()
   "my frame font setting"
@@ -62,8 +67,8 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family my-font-name
-                                 :size my-font-size))))
+                      (font-spec :family my-font-cn-name
+                                 :size   my-font-cn-size))))
 
 (defun my-console-font ()
   "my console font setting"

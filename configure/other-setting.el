@@ -145,9 +145,10 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
+(defvar my-font-name "DejaVu Sans Mono")
 (if window-system
  (set-face-attribute 'tabbar-default nil
-                    :family my-font-name
+                    :family     my-font-name
                     :background "gray80"
                     :foreground "gray30"
                     :height 0.8

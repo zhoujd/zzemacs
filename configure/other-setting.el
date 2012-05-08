@@ -201,18 +201,24 @@ Emacs buffer are those starting with “*”."
 ;(setq jaspace-highlight-tabs t) ; highlight tabs ; ...
 
 (require 'blank-mode)
+;(defvar blank-bg-color "#0C1021")
+;(defvar blank-fg-color "gray30")
+
+(defvar blank-bg-color (background-color-at-point))
+(defvar blank-fg-color "gray20")
+
 (set-face-attribute 'blank-space nil
-                    :background "#0C1021"
-                    :foreground "gray30"
+                    :background blank-bg-color
+                    :foreground blank-fg-color
                     )
 
 (set-face-attribute 'blank-tab nil
-                    :background "#0C1021"
-                    :foreground "gray30"
+                    :background blank-bg-color
+                    :foreground blank-fg-color
                     )
 (set-face-attribute 'blank-newline nil
-                    :background "#0C1021"
-                    :foreground "gray30"
+                    :background blank-bg-color
+                    :foreground blank-fg-color
                     )
 
 (require 'what-char)

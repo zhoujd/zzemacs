@@ -47,17 +47,17 @@
 (my-set-language-utf-8)
 
 ;;font setting
-(defvar my-font-name "DejaVu Sans Mono")
-(defvar my-font-name "Monaco")
+;(defvar my-font-name "DejaVu Sans Mono")
+;(defvar my-font-name "Monaco")
 (defvar my-font-name "Consolas")
 
-(defvar my-font-size 10)
+(defvar my-font-size 11)
 (setq my-font-string
       (concat my-font-name " "
               (number-to-string my-font-size)))
 
 (defvar my-font-cn-name "Microsoft Yahei")
-(defvar my-font-cn-size 14)
+(defvar my-font-cn-size 13)
 
 (defun my-frame-font ()
   "my frame font setting"

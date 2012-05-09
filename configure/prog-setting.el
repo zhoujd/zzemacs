@@ -158,7 +158,7 @@ the mru bookmark stack."
 
 ;;make ctags
 (defun gen-ctags-cmd (dir-name)
-  (format "find %s -f %s/TAGS -e -R %s" "ctags"
+  (format "ctags %s -f %s/TAGS -e -R %s"
           dir-name (directory-file-name dir-name)))
 
 (defun create-ctags (dir-name)
@@ -177,12 +177,11 @@ the mru bookmark stack."
 
 ;;make cscope
 ; #!/bin/bash  
-; find -type f | grep -E "\.(c|cc|cp|cpp|cxx|c\+\+|h|h\+\+|hh|hp|hpp|hxx)$" >cscope.files  
+; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files  
 ; cscope -bq -i ./csope.files  
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files"
-           dir-name dir-name) ";"
+   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files;" dir-name dir-name)
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))
 

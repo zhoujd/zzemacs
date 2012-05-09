@@ -57,7 +57,7 @@
               (number-to-string my-font-size)))
 
 (defvar my-font-cn-name "Microsoft Yahei")
-(defvar my-font-cn-size 13)
+(defvar my-font-cn-size 14)
 
 (defun my-frame-font ()
   "my frame font setting"

@@ -95,13 +95,6 @@
            (message "end line with CR")))
     (setq my-os-flag (+ my-os-flag 1)))
 
-;;SVN Support
-;(require 'psvn)
-;(require 'vc-svn)
-
-;;Git Support
-(zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs)
 
 ;;; ASCII table
 (autoload 'ascii-table "ascii-table" "ASCII TABLE" t)

@@ -154,33 +154,36 @@ the mru bookmark stack."
 
 (global-set-key "\M-." 'etags-select-find-tag)
 
+
 ;;make ctags
+(defun gen-ctags-cmd (dir-name)
+  (format "%s -f %s/TAGS -e -R %s" "ctags" dir-name (directory-file-name dir-name)))
+
 (defun create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (shell-command
-  (format "%s -f %s/TAGS -e -R %s" "ctags2"
-          dir-name (directory-file-name dir-name))))
+   (apply 'start-process "terminal" nil (gen-ctags-cmd dir-name)))
 
 ;;make etags
+(defun gen-etags-cmd (dir-name)
+  (format "find %s -type f -name \"*.[ch]*\" | etags -o %s/TAGS -" dir-name dir-name))
+
 (defun create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (shell-command
-   (format "find %s -type f -name \"*.[ch]*\" | etags -o %s/eTAGS -"
-           dir-name dir-name))
-  (message "create etags file ok"))
+  (apply 'start-process "terminal" nil (gen-etags-cmd dir-name)))
 
 ;;make cscope
+(defun gen-cscope-cmd (dir-name)
+  (concat
+   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files" dir-name dir-name) ";"
+   (format "cscope -bkq -i  %s/cscope.files" dir-name)
+   ))
+
 (defun create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (shell-command
-   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files" dir-name dir-name))
-  (shell-command
-   (format "cscope -bkq -i  %s/cscope.files" dir-name))
-  (message "create cscope ok"))
-
+  (apply 'start-process "terminal" nil (gen-cscope-cmd dir-name)))
 
 ;; SET TAGS PATH
 (setq tags-table-list '("~/work/TAGS"
@@ -240,5 +243,13 @@ the mru bookmark stack."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))
   (kill-process (get-buffer-process gud-comint-buffer)))
+
+;;SVN Support
+;(require 'psvn)
+;(require 'vc-svn)
+
+;;Git Support
+(zz-load-path "site-lisp/git-emacs")
+(require 'git-emacs)
 
 ;;; c-setting.el ends here

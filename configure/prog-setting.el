@@ -118,7 +118,8 @@ the mru bookmark stack."
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (concat zzemacs-path "site-lisp/auto-complete/dict"))
+(add-to-list 'ac-dictionary-directories
+             (concat zzemacs-path "site-lisp/auto-complete/dict"))
 (ac-config-default)
 
 ;;YASNIPPET
@@ -157,7 +158,8 @@ the mru bookmark stack."
 
 ;;make ctags
 (defun gen-ctags-cmd (dir-name)
-  (format "%s -f %s/TAGS -e -R %s" "ctags" dir-name (directory-file-name dir-name)))
+  (format "%s -f %s/TAGS -e -R %s" "ctags"
+          dir-name (directory-file-name dir-name)))
 
 (defun create-ctags (dir-name)
   "Create tags file."
@@ -166,7 +168,8 @@ the mru bookmark stack."
 
 ;;make etags
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f -name \"*.[ch]*\" | etags -o %s/TAGS -" dir-name dir-name))
+  (format "find %s -type f -name \"*.[ch]*\" | etags -o %s/TAGS -"
+          dir-name dir-name))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -174,9 +177,13 @@ the mru bookmark stack."
   (apply 'start-process "terminal" nil (gen-etags-cmd dir-name)))
 
 ;;make cscope
+; #!/bin/bash  
+; find -type f | grep -E "\.(c|cc|cp|cpp|cxx|c\+\+|h|h\+\+|hh|hp|hpp|hxx)$" >cscope.files  
+; cscope -bq -i ./csope.files  
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files" dir-name dir-name) ";"
+   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files"
+           dir-name dir-name) ";"
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))
 

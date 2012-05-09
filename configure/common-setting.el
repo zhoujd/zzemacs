@@ -329,6 +329,8 @@
  '(comint-completion-addsuffix t)       ; insert space/slash after file completion
  )
 
+(setq comint-prompt-read-only t)
+
 ; interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)
 

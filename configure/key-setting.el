@@ -83,7 +83,7 @@
 ;;eshell,shell,terminal-emulator
 (global-set-key [f9] 'shell)
 (global-set-key [C-f9] 'to-scratch)
-(global-set-key [M-f9] 'eshell)
+(global-set-key [M-f9] 'multi-shell-current-directory)
 (global-set-key [S-f9] 'popup-term)
 
 

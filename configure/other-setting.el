@@ -358,6 +358,9 @@ Emacs buffer are those starting with “*”."
  '(uniquify-buffer-name-style 'reverse)
  '(uniquify-after-kill-buffer-p t))
 
+;;http://www.emacswiki.org/emacs/multi-shell.el
+(require 'multi-shell)
+
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
 (require 'multi-term)

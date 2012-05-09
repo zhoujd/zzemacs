@@ -158,23 +158,22 @@ the mru bookmark stack."
 
 ;;make ctags
 (defun gen-ctags-cmd (dir-name)
-  (format "%s -f %s/TAGS -e -R %s" "ctags"
+  (format "find %s -f %s/TAGS -e -R %s" "ctags"
           dir-name (directory-file-name dir-name)))
 
 (defun create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-   (apply 'start-process "terminal" nil (gen-ctags-cmd dir-name)))
+  (shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f -name \"*.[ch]*\" | etags -o %s/TAGS -"
-          dir-name dir-name))
+  (format "find %s -type f -name \"*.[ch]*\" | etags -" dir-name))
 
 (defun create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (apply 'start-process "terminal" nil (gen-etags-cmd dir-name)))
+  (shell-command (gen-etags-cmd dir-name)))
 
 ;;make cscope
 ; #!/bin/bash  
@@ -190,7 +189,7 @@ the mru bookmark stack."
 (defun create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (apply 'start-process "terminal" nil (gen-cscope-cmd dir-name)))
+  (shell-command (gen-cscope-cmd dir-name)))
 
 ;; SET TAGS PATH
 (setq tags-table-list '("~/work/TAGS"

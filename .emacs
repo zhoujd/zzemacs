@@ -31,7 +31,7 @@
 (mapcar 'zz-load-configure zz-setting-list)
 
 ;;develop setting for tags path etc.
-(defvar zz-dev-set-file "develop-setting.el")
+(defvar zz-dev-set-file "temp-setting.el")
 (when (file-exists-p (concat zzemacs-path "configure/" zz-dev-set-file))
   (zz-load-configure zz-dev-set-file))
 

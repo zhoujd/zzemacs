@@ -410,11 +410,11 @@ Emacs buffer are those starting with “*”."
 
 
 ;;https://github.com/nonsequitur/smex/
-(require 'smex)  
-(smex-initialize)  
-
-(global-set-key (kbd "M-x") 'smex)  
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
+;(require 'smex)  
+;(smex-initialize)  
+;(global-set-key (kbd "M-x") 'smex)  
+;(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
+;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")

@@ -308,9 +308,10 @@
 (setq save-abbrevs nil)
 
 ;;ido mode
+(require 'ido)
 ;(setq ido-enable-flex-matching t)
 ;(setq ido-everywhere t)
-;(ido-mode 1)
+(ido-mode t)
 
 (custom-set-faces
  '(ido-subdir ((t (:foreground "#66ff00"))))      ;; Face used by ido for highlighting subdirs in the alternatives.
@@ -329,7 +330,8 @@
  '(comint-completion-addsuffix t)       ; insert space/slash after file completion
  )
 
-(setq comint-prompt-read-only t)
+;;commamd prompt read only
+(setq comint-prompt-read-only nil)
 
 ; interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)

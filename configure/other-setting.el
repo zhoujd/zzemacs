@@ -121,20 +121,13 @@ Those Dired, those user buffer, and those emacs buffer.
 Emacs buffer are those starting with “*”."
   (list
    (cond
-     ((member (buffer-name)
-              '("*scratch*" "*Messages*" "*Help*" "*Completions*" "*Ido Completions*"))
-      "Common"
-      )
     ((string-equal "*" (substring (buffer-name) 0 1))
      "Emacs Buffer"
-     )
-    ((eq major-mode 'dired-mode)
-     "Dired"
      )
     (t
      "User Buffer"
      )
-    ))) 
+    )))
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
@@ -332,14 +325,6 @@ Emacs buffer are those starting with “*”."
     (interactive)
     (recenter 0))
 
-; if another frame is visible, raise some buffers in that frame, *not* the
-; current one!
-(defvar non-special-display-buffer-regexps
-  '("\\*Completions\\*" "\\*TAGS: ")
-  "Buffers that should *not* be handled by `prefer-other-visible-frame'.
-   (I'd rather just exclude them in `special-display-regexps', but elisp regex
-   doesn't support negative lookahead, ie (?!...), so i can't.)")
-
 ;; used in my ion C-F2 key binding. run before shutting down X!
 (defun delete-all-x-frames ()
   (mapcar (lambda (frame) (if (eq 'x (frame-live-p frame))
@@ -359,8 +344,7 @@ Emacs buffer are those starting with “*”."
  '(uniquify-after-kill-buffer-p t))
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
-(require 'multi-shell)
-
+;(require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
 (require 'multi-term)
@@ -401,7 +385,6 @@ Emacs buffer are those starting with “*”."
         (multi-term-dedicated-toggle))
       )
   )
-
 
 (defun kill-buffer-when-exit ()
   "Close assotiated buffer when a process exited"

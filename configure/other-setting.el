@@ -408,13 +408,15 @@ Emacs buffer are those starting with “*”."
  ((eq system-type 'gnu/linux)
   (setq tramp-default-method "ssh")))
 
-
 ;;https://github.com/nonsequitur/smex/
 ;(require 'smex)  
 ;(smex-initialize)  
 ;(global-set-key (kbd "M-x") 'smex)  
 ;(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
 ;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;;mulit-occur
+(require 'moccur-edit)
 
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")

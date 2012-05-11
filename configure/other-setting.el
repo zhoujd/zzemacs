@@ -62,9 +62,9 @@
 (require 'redo+)
 
 ;;tabbar mode
-(require 'tabbar)
-;(if window-system
-;    (require 'tabbar-ruler))
+(if window-system
+    (require 'tabbar-ruler)
+    (require 'tabbar))
 ; turn on the tabbar
 (tabbar-mode t)
 ; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”,
@@ -372,7 +372,7 @@ Emacs buffer are those starting with “*”."
 ;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;mulit-occur
-(require 'color-moccur)
+;(require 'color-moccur)
 (require 'moccur-edit)
 
 ;;http://emacswiki.org/emacs/Evil

@@ -8,50 +8,6 @@
 (require 'unicad)
 ;(unicad-disable)
 
-;;my f2 mark setting
-(setq my-f2-idx     ?0
-      my-f2-jmp-idx ?0
-      my-f2-max     ?0)
-
-(defun my-f2-setup ()
-  (interactive)
-  (when (= 0 (length (buffer-file-name (current-buffer))))
-    (message "this buffer is not a file buffer"))
-  (unless (= 0 (length (buffer-file-name (current-buffer))))
-    (if (> my-f2-idx ?9)
-        (progn
-          (setq my-f2-idx ?0)
-          (set-register my-f2-idx
-           (list 'file-query (buffer-file-name (current-buffer)) (point))))
-        (progn
-          (set-register my-f2-idx
-           (list 'file-query (buffer-file-name (current-buffer)) (point)))))
-    (message "my-f2-setup %s" (string  my-f2-idx))
-    (if (< my-f2-max my-f2-idx) (setq my-f2-max my-f2-idx))
-    (setq my-f2-idx (+ 1 my-f2-idx))))
-
-(defun my-f2-jmp-down ()
-  (interactive)
-  (when (> my-f2-jmp-idx my-f2-max)
-        (setq my-f2-jmp-idx ?0))
-  (jump-to-register my-f2-jmp-idx)
-  (message "my-f2-jmp-down %s" (string my-f2-jmp-idx))
-  (setq my-f2-jmp-idx (+ 1 my-f2-jmp-idx)))
-
-(defun my-f2-jmp-up ()
-  (interactive)
-  (when (< my-f2-jmp-idx ?0)
-        (setq my-f2-jmp-idx my-f2-max))
-  (jump-to-register my-f2-jmp-idx)
-  (message "my-f2-jmp-up %s" (string my-f2-jmp-idx))
-  (setq my-f2-jmp-idx (- my-f2-jmp-idx 1)))
-
-(defun clear-f2 ()
-  (interactive)
-  (setq my-f2-idx     ?0
-        my-f2-jmp-idx ?0
-        my-f2-max     ?0)
-  (setq register-alist nil))
 
 ;;my unicad enable/disable switch
 (defun my-unicad-switch ()
@@ -416,10 +372,14 @@ Emacs buffer are those starting with “*”."
 ;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;mulit-occur
+(require 'color-moccur)
 (require 'moccur-edit)
 
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")
 (require 'evil)
+
+;;bookmark
+(require 'breadcrumb)
 
 ;;; other-setting.el ends here

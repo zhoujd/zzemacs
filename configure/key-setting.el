@@ -42,10 +42,10 @@
 ;;for info
 (global-set-key [f1] 'info)
 
-(global-set-key [C-f2] 'my-f2-setup)
-(global-set-key [f2] 'my-f2-jmp-down)
-(global-set-key [S-f2] 'my-f2-jmp-up)
-(global-set-key [M-f2] 'clear-f2)
+(global-set-key [(control f2)]  'bc-set)
+(global-set-key [(f2)]          'bc-previous)
+(global-set-key [(shift f2)]    'bc-next)
+(global-set-key [(meta f2)]     'bc-list)
 
 (global-set-key [f3] 'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
@@ -88,7 +88,7 @@
 
 
 (global-set-key [C-f10] 'tool-bar-mode)
-(global-set-key [M-f10] 'menu-bar-mode)
+(global-set-key [M-f10] 'my-toggle-fullscreen)
 
 (global-set-key [f11] 'linum-mode)
 (global-set-key [C-f11] 'hl-line-mode)

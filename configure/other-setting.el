@@ -298,6 +298,13 @@ Emacs buffer are those starting with “*”."
  '(uniquify-buffer-name-style 'reverse)
  '(uniquify-after-kill-buffer-p t))
 
+
+;; create shell 
+(defun shell-create-by-name (shell-name)
+ (interactive)
+ (shell shell-name)
+ (delete-other-windows))
+
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 ;(require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm
@@ -389,6 +396,7 @@ Emacs buffer are those starting with “*”."
  (w32-browser
  (dired-replace-in-string
  "/" "\\"
- (dired-get-filename)))))) 
+ (dired-get-filename))))))
+
 
 ;;; other-setting.el ends here

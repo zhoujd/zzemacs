@@ -83,6 +83,8 @@ the mru bookmark stack."
 ;; Speed Bar Setting
 (setq speedbar-update-speed 3)
 (setq speedbar-use-images nil)  ;; clean face, :)
+;;show unknows files
+(setq speedbar-show-unknown-files t)
 
 ;;sr-speedbar
 (require 'sr-speedbar)

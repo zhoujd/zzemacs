@@ -24,11 +24,11 @@
 
 ;;switch to shells
 (define-key f12-map [f9]
-  (lambda () (interactive) (shell "*shell-f9*") (delete-other-windows)))
+  (lambda () (interactive) (shell-create-by-name "*shell-f9*")))
 (define-key f12-map [f10]
-  (lambda () (interactive) (shell "*shell-f10*") (delete-other-windows)))
+  (lambda () (interactive) (shell-create-by-name "*shell-f10*")))
 (define-key f12-map [f11]
-  (lambda () (interactive) (shell "*shell-f11*") (delete-other-windows)))
+  (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
 
 ;;evil mode
 (global-set-key (kbd "<f12> <f12>") 'evil-mode)

@@ -191,9 +191,9 @@ the mru bookmark stack."
   (shell-command (gen-cscope-cmd dir-name)))
 
 ;; SET TAGS PATH
-(setq tags-table-list '("~/work/TAGS"
-                        ;;"~/TAGS"
-                        ))
+;(setq tags-table-list '("~/work/TAGS"
+;                        ;;"~/TAGS"
+;                        ))
 
 (setq auto-mode-alist
    (append

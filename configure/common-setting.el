@@ -100,6 +100,7 @@
     ;;(color-theme-arjen)
     (color-theme-gnome2)
     ;;(color-theme-blackboard)
+    ;;(color-theme-dark-laptop)
     )
 
 ;; set default-frame-alist

@@ -174,4 +174,7 @@
   (global-set-key [C-mouse-4] 'text-scale-increase)
   (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
+;;shift+space for mark
+(global-set-key (kbd "S-<SPC>") 'set-mark-command)
+
 ;;; key-setting.el ends here

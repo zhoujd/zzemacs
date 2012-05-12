@@ -82,6 +82,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
+;;emacsclientw.exe --server-file ~d\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
 (server-mode t)
 (add-hook 'kill-emacs-hook

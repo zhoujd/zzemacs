@@ -87,10 +87,10 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
-(defvar my-font-name "DejaVu Sans Mono")
+(defvar my-font-en-name "DejaVu Sans Mono")
 (if window-system
  (set-face-attribute 'tabbar-default nil
-                    :family     my-font-name
+                    :family     my-font-en-name
                     :background "gray80"
                     :foreground "gray30"
                     :height 0.8
@@ -164,8 +164,6 @@ Emacs buffer are those starting with “*”."
 
 (require 'what-char)
 (require 'xray)
-
-;;(require 'vimpulse)
 
 ;; Support for marking a rectangle of text with highlighting.
 (require 'rect-mark)
@@ -397,6 +395,5 @@ Emacs buffer are those starting with “*”."
  (dired-replace-in-string
  "/" "\\"
  (dired-get-filename))))))
-
 
 ;;; other-setting.el ends here

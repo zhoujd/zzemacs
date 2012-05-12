@@ -85,8 +85,8 @@
 (server-mode t)
 (add-hook 'kill-emacs-hook
  (lambda()
- (if (file-exists-p "~/.emacs.d/server/server")
- (delete-file "~/.emacs.d/server/server"))))
+   (if (file-exists-p "~/.emacs.d/server/server")
+       (delete-file "~/.emacs.d/server/server"))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

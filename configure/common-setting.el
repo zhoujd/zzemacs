@@ -75,7 +75,9 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                         zh-font))))
 
 (my-set-font
- '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New") "11"
+ '(
+   ;"Consolas"
+   "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New") "12"
  '("Microsoft Yahei") 14)
 
 ;;server-mode
@@ -196,12 +198,12 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
 
-;;Thursday, January 22, 2004: Chinese New Year (ź×-Éę)
+;;chinese-calendar
 (setq chinese-calendar-celestial-stem
-      ["ź×" "ŇŇ" "ąű" "śĄ" "Îě" "źş" "¸ý" "ĐÁ" "ČÉ" "šď"])
+       ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
 (setq chinese-calendar-terrestrial-branch
-      ["×Ó" "łó" "Ňú" "ĂŽ" "ł˝" "ËČ" "Îě" "Î´" "Éę" "ÓĎ" "Đç" "şĽ"])
-
+       ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
+ 
 ;;work direction
 ;;(setq default-directory "~/work")
 

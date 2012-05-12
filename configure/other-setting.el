@@ -8,7 +8,6 @@
 (require 'unicad)
 ;(unicad-disable)
 
-
 ;;my unicad enable/disable switch
 (defun my-unicad-switch ()
   "unicad enable/disable switch"
@@ -65,6 +64,7 @@
 (if window-system
     (require 'tabbar-ruler)
     (require 'tabbar))
+
 ; turn on the tabbar
 (tabbar-mode t)
 ; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”,
@@ -94,6 +94,7 @@ Emacs buffer are those starting with “*”."
                     :background "gray80"
                     :foreground "gray30"
                     :height 0.8
+                    :box nil
                     ))
 (set-face-attribute 'tabbar-button nil
                     :inherit 'tabbar-default
@@ -104,8 +105,6 @@ Emacs buffer are those starting with “*”."
                     :foreground "DarkGreen"
                     :background "LightGoldenrod"
                     :box '(:line-width 1 :color "DarkGoldenrod")
-                    ;; :overline "black"
-                    ;; :underline "black"
                     :weight 'bold
                     )
 (set-face-attribute 'tabbar-unselected nil

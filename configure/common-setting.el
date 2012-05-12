@@ -39,64 +39,52 @@
   (message "This is for utf-8"))
 
 ;; -*- Language switch -*-
-;(cond
-;  ((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
-;  ((string-match "(zh.*)|(CHS)" (getenv "LANG")) (my-set-language-chinese))
-;  (t (my-set-language-utf-8)))
-
-(my-set-language-utf-8)
+(cond
+  ((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
+  ;((string-match "zh_CN" (getenv "LANG")) (my-set-language-chinese))
+  (t (my-set-language-utf-8)))
 
 ;;font setting
-;(defvar my-font-name "DejaVu Sans Mono")
-;(defvar my-font-name "Monaco")
-(defvar my-font-name "Consolas")
+(defun my-font-existsp (font)
+  (if (null (x-list-fonts font)) nil t))
 
-(defvar my-font-size 11)
-(setq my-font-string
-      (concat my-font-name " "
-              (number-to-string my-font-size)))
+(defun my-make-font-string (font-name font-size)
+  (if (and (stringp font-size)
+           (equal ":" (string (elt font-size 0))))
+     (format "%s%s" font-name font-size)     
+     (format "%s %s" font-name font-size)))
 
-(defvar my-font-cn-name "Microsoft Yahei")
-(defvar my-font-cn-size 14)
+(defun my-set-font (english-fonts english-font-size
+                    chinese-fonts &optional chinese-font-size)
+  "english-font-size could be set to \":pixelsize=18\" or a integer.
+If set/leave chinese-font-size to nil, it will follow english-font-size"
+  ;; The following 2 method cannot make the font settig work in new frames.
+  ;;(set-default-font "Consolas:pixelsize=18")
+  ;;(add-to-list 'default-frame-alist '(font . "Consolas:pixelsize=18"))
+  ;; We have to use set-face-attribute
+  (require 'cl)   ; for find if
+  (let ((en-font (my-make-font-string
+                  (find-if #'my-font-existsp english-fonts)
+                  english-font-size))
+        (zh-font (font-spec :family (find-if #'my-font-existsp chinese-fonts)
+                            :size chinese-font-size))) 
+    (set-face-attribute 'default nil :font en-font)
+    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font)
+                        charset
+                        zh-font))))
 
-(defun my-frame-font ()
-  "my frame font setting"
-  ;; Setting English Font
-  (set-face-attribute
-   'default nil :font my-font-string)
-  ;; Chinese Font
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec :family my-font-cn-name
-                                 :size   my-font-cn-size))))
+(my-set-font
+ '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New") "11"
+ '("Microsoft Yahei") 14)
 
-(defun my-console-font ()
-  "my console font setting"
-  (progn
-    (add-to-list 'default-frame-alist
-                 '(font . my-font-string))))
-
-(if window-system
-    (my-frame-font)
-    (my-console-font))
-
-;; start gnuserv on Windows
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (progn
-      (require 'gnuserv)
-      (setq server-done-function
-            'bury-buffer gnuserv-frame (car (frame-list)))
-      (gnuserv-start)
-      ;; open buffer in existing frame instead of creating new one...
-      (setq gnuserv-frame (selected-frame))
-      (message "gnuserv started."))
-    (progn
-      ;;emacs server
-      (server-force-delete)
-      (server-mode t)
-      (message "server-mode started.")))
+;;server-mode
+;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
+(server-mode t)
+(add-hook 'kill-emacs-hook
+ (lambda()
+ (if (file-exists-p "~/.emacs.d/server/server")
+ (delete-file "~/.emacs.d/server/server"))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")
@@ -207,11 +195,11 @@
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
 
-;;Thursday, January 22, 2004: Chinese New Year (甲-申)
+;;Thursday, January 22, 2004: Chinese New Year (ź×-Éę)
 (setq chinese-calendar-celestial-stem
-      ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
+      ["ź×" "ŇŇ" "ąű" "śĄ" "Îě" "źş" "¸ý" "ĐÁ" "ČÉ" "šď"])
 (setq chinese-calendar-terrestrial-branch
-      ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
+      ["×Ó" "łó" "Ňú" "ĂŽ" "ł˝" "ËČ" "Îě" "Î´" "Éę" "ÓĎ" "Đç" "şĽ"])
 
 ;;work direction
 ;;(setq default-directory "~/work")

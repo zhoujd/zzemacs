@@ -74,11 +74,11 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                         charset
                         zh-font))))
 
-(my-set-font
- '(
-   ;"Consolas"
-   "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New") "12"
- '("Microsoft Yahei") 14)
+(defvar en-font-list '("Consolas"  "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
+(defvar cn-font-list '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")) 
+
+(my-set-font en-font-list "11"
+             cn-font-list  12)
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file

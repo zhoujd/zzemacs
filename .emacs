@@ -4,7 +4,8 @@
   "zzemacs`s path")
 
 (defvar zz-setting-list
-  '("common-setting.el"
+  '(
+	"common-setting.el"
     "other-setting.el"
     "media-setting.el"
     "prog-setting.el"
@@ -14,7 +15,8 @@
     "python-setting.el"
     "java-setting.el"
     "csharp-setting.el"
-    "key-setting.el"))
+    "key-setting.el"
+	))
 
 (defun zz-load-path (path)
   "my add to list"

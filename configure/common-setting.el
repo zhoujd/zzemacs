@@ -245,12 +245,12 @@
 
 (winner-mode t)
 
-;;(add-to-list 'load-path "~/tmp")
+;;session + desktop
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 (setq session-save-file-coding-system 'utf-8)
 
-;;(load "desktop")
+(load "desktop")
 (desktop-load-default)
 (desktop-read)
 

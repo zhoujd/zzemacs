@@ -89,13 +89,13 @@ Emacs buffer are those starting with “*”."
 
 (defvar my-font-en-name "DejaVu Sans Mono")
 (if window-system
- (set-face-attribute 'tabbar-default nil
-                    :family     my-font-en-name
-                    :background "gray80"
-                    :foreground "gray30"
-                    :height 0.8
-                    :box nil
-                    ))
+    (set-face-attribute 'tabbar-default nil
+                        :family     my-font-en-name
+                        :background "gray80"
+                        :foreground "gray30"
+                        :height 0.8
+                        :box nil
+                        ))
 (set-face-attribute 'tabbar-button nil
                     :inherit 'tabbar-default
                     :box '(:line-width 1 :color "gray65")

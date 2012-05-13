@@ -82,11 +82,17 @@
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
 ;;emacsclientw.exe --server-file ~d\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
-(server-mode t)
+(require 'server)
+(when (and (= emacs-major-version 23)
+	   (equal window-system 'w32))
+  (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
+					                             ; ~/.emacs.d/server is unsafe"
+					                             ; on windows.
+(server-force-delete)
 (add-hook 'kill-emacs-hook
- (lambda()
-   (if (file-exists-p "~/.emacs.d/server/server")
-       (delete-file "~/.emacs.d/server/server"))))
+	  (lambda()
+	    (if (file-exists-p "~/.emacs.d/server/server")
+		(delete-file "~/.emacs.d/server/server"))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

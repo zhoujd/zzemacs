@@ -40,8 +40,10 @@
 
 ;; -*- Language switch -*-
 (cond
-  ((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
-  ((string-match "zh_CN" (getenv "LANG")) (my-set-language-chinese))
+  ((string-match "j[ap].*" (getenv "LANG"))
+   (my-set-language-japanese))
+  ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
+   (my-set-language-chinese))
   (t (my-set-language-utf-8)))
 
 ;;font setting

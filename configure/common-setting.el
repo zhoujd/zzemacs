@@ -88,7 +88,9 @@
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
 					                             ; ~/.emacs.d/server is unsafe"
 					                             ; on windows.
-(server-force-delete)
+(when (server-running-p)
+  (server-force-delete))
+(server-start)
 (add-hook 'kill-emacs-hook
 	  (lambda()
 	    (if (file-exists-p "~/.emacs.d/server/server")

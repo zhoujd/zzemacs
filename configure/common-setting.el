@@ -156,7 +156,6 @@
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
-;;(global-set-key (kbd "<f7>") 'insert-time-stamp)
 
 ;;ftp client
 (setq ange-ftp-ftp-program-name "angeftp")

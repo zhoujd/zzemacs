@@ -31,10 +31,10 @@
   (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
 
 ;;evil mode
-(global-set-key (kbd "C-x <f12>") 'evil-mode)
+(global-set-key (kbd "<f12> <f12>") 'evil-mode)
 
 ;;quick move other windows
-(windmove-default-keybindings 'super)
+;(windmove-default-keybindings 'super)
 (global-set-key (kbd "<f12> <left>")  'windmove-left)
 (global-set-key (kbd "<f12> <right>") 'windmove-right)
 (global-set-key (kbd "<f12> <up>")    'windmove-up)

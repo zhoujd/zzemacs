@@ -254,7 +254,6 @@
 (desktop-read)
 
 ;;buffer name in title
-;(setq frame-title-format "%b@zhoujd-LiveInEmacs")
 (setq frame-title-format
       (list "zhoujd@"
            (replace-regexp-in-string "\\..*$" ""system-name)

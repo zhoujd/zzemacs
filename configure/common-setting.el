@@ -154,7 +154,6 @@
 
 (setq font-lock-maximum-decoration t)
 (setq font-lock-global-modes '(not shell-mode text-mode))
-(setq font-lock-global-modes '(not text-mode))
 (setq font-lock-verbose t)
 (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 
@@ -309,9 +308,6 @@
 (setq save-abbrevs nil)
 
 ;;ido mode
-(require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
 (setq ido-save-directory-list-file nil)
 (ido-mode t)
 

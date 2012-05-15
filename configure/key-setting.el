@@ -31,21 +31,23 @@
   (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
 
 ;;evil mode
-(global-set-key (kbd "<f12> <f12>") 'evil-mode)
+(global-set-key (kbd "C-x <f12>") 'evil-mode)
 
 ;;quick move other windows
-(global-set-key (kbd "<f12> <left>") 'windmove-left)
+(windmove-default-keybindings 'super)
+(global-set-key (kbd "<f12> <left>")  'windmove-left)
 (global-set-key (kbd "<f12> <right>") 'windmove-right)
-(global-set-key (kbd "<f12> <up>") 'windmove-up)
-(global-set-key (kbd "<f12> <down>") 'windmove-down)
+(global-set-key (kbd "<f12> <up>")    'windmove-up)
+(global-set-key (kbd "<f12> <down>")  'windmove-down)
 
 ;;for info
 (global-set-key [f1] 'info)
 
-(global-set-key [(control f2)]  'bc-set)
-(global-set-key [(f2)]          'bc-previous)
-(global-set-key [(shift f2)]    'bc-next)
-(global-set-key [(meta f2)]     'bc-list)
+(global-set-key [(control f2)]   'bc-set)
+(global-set-key [(f2)]           'bc-previous)
+(global-set-key [(shift f2)]     'bc-next)
+(global-set-key [(meta f2)]      'bc-list)
+(global-set-key (kbd "C-x <f2>") 'bc-list)
 
 (global-set-key [f3] 'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)

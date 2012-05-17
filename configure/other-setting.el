@@ -389,11 +389,11 @@ Emacs buffer are those starting with “*”."
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (require 'w32-browser)
 (eval-after-load "dired"
- '(define-key dired-mode-map [C-f4] (lambda ()
- (interactive)
- (w32-browser
- (dired-replace-in-string
- "/" "\\"
- (dired-get-filename))))))
+  '(define-key dired-mode-map [C-f4] (lambda ()
+                                       (interactive)
+                                       (w32-browser
+                                        (dired-replace-in-string
+                                         "/" "\\"
+                                         (dired-get-filename))))))
 
 ;;; other-setting.el ends here

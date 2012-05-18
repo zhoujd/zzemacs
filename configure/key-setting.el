@@ -103,9 +103,10 @@
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "C-1") 'delete-window)
 
-(global-set-key (kbd "M-2") 'my-toggle-fullscreen)
+(global-set-key (kbd "M-2") 'delete-other-frames)
+(global-set-key (kbd "C-2") 'delete-frames)
 
-(global-set-key (kbd "M-3") 'display-buffer-name)
+(global-set-key (kbd "M-3") 'tabbar-forward)
 (global-set-key (kbd "C-3") 'etags-stack-show)
 
 (global-set-key (kbd "M-4") 'kill-this-buffer)
@@ -126,8 +127,8 @@
 (global-set-key (kbd "M-9") 'gud-print)
 (global-set-key (kbd "C-9") 'gud-watch)
 
-(global-set-key (kbd "M-0") 'other-frame)
-(global-set-key (kbd "C-0") 'other-window)
+(global-set-key (kbd "M-0") 'other-window)
+(global-set-key (kbd "C-0") 'other-frame)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
@@ -153,14 +154,8 @@
 (global-unset-key [delete] )
 (global-set-key [delete] 'delete-char)
 
-(global-set-key [(control tab)] 'tabbar-forward)
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (global-set-key [(control shift tab)] 'tabbar-backward)
-    (global-set-key [C-S-iso-lefttab] 'tabbar-backward))
-
-(global-set-key (kbd "M-]") 'tabbar-forward-group)
-(global-set-key (kbd "M-[") 'tabbar-backward-group)
+(global-set-key (kbd "M-]") 'tabbar-forward)
+(global-set-key (kbd "M-[") 'tabbar-backward)
 
 ; C-- is undo (removes the shift), C-= is redo
 (global-set-key [(control -)] 'undo)

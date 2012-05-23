@@ -35,8 +35,8 @@
 (global-set-key [M-f1] 'info)
 
 (global-set-key [(control f2)]   'bc-set)
-(global-set-key [(f2)]           'bc-previous)
-(global-set-key [(shift f2)]     'bc-next)
+(global-set-key [(f2)]           'bc-next)
+(global-set-key [(shift f2)]     'bc-previous)
 (global-set-key [(meta f2)]      'bc-list)
 (global-set-key (kbd "C-x <f2>") 'bc-list)
 

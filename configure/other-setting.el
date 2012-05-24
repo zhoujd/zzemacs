@@ -403,7 +403,4 @@ Emacs buffer are those starting with “*”."
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
     (rgrep term "*.[ch]" dir))) 
 
-
-
-
 ;;; other-setting.el ends here

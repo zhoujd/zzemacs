@@ -3,7 +3,8 @@
 ;;;VM is not part of the standard GNU Emacs lisp packages so it may be necessary for you to install VM on your own. 
 ;;;Check your Linux distribution's available packages to see if it can be installed via rpm, apt-get, or whatever tool is appropriate.
 ;;;sudo apt-get install vm
-(zz-load-path "site-lisp/vm")
+
+(add-to-list 'load-path "/usr/share/emacs23/site-lisp/vm")
 
 (autoload 'vm "vm" "Start VM on your primary inbox." t)
 (autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)

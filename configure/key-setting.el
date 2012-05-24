@@ -39,11 +39,12 @@
 (global-set-key [(shift f2)]     'bc-previous)
 (global-set-key [(meta f2)]      'bc-list)
 (global-set-key (kbd "C-x <f2>") 'bc-list)
+(global-set-key (kbd "C-c <f2>") 'bc-clear)
 
 (global-set-key [f3]   'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
-(global-set-key [M-f3] 'line-to-top-of-window)
-(global-set-key [S-f3] 'sourcepair-jump-to-headerfile)
+(global-set-key [M-f3] 'vm)
+(global-set-key [S-f3] 'line-to-top-of-window)
 
 (global-set-key [f4] 'kill-this-buffer)
 
@@ -68,7 +69,7 @@
 (global-set-key [C-f7] 'next-error)
 (global-set-key [M-f7] 'previous-error)
 
-(global-set-key [f8]   'gdb-or-gud-go)
+(global-set-key [f8]   'gdb)
 (global-set-key [M-f8] 'gud-kill)
 (global-set-key [S-f8] 'gdb-many-windows)
 (global-set-key [C-f8] 'gdb-restore-windows)
@@ -76,10 +77,11 @@
 ;;eshell,shell,terminal-emulator
 (global-set-key [f9]   'shell)
 (global-set-key [C-f9] 'to-scratch)
-(global-set-key [M-f9] 'multi-shell-current-directory)
+(global-set-key [M-f9] 'popup-term)
 (global-set-key [S-f9] 'popup-term)
 
 (global-set-key [C-f10] 'tool-bar-mode)
+(global-set-key [S-f10] 'menu-bar-mode)
 (global-set-key [M-f10] 'my-toggle-fullscreen)
 
 (global-set-key [f11]   'linum-mode)
@@ -87,8 +89,11 @@
 (global-set-key [M-f11] 'blank-mode)
 (global-set-key [S-f11] 'fci-mode)
 
-(global-set-key [C-f12] 'my-unicad-switch)
-(global-set-key [M-f12] 'my-os-file-switch)
+(global-set-key [C-f12] 'find-grep-dired)
+(global-set-key [M-f12] 'find-name-dired)
+(global-set-key [S-f12] 'find-dired)
+(global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
+(global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "C-1") 'delete-window)

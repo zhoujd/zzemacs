@@ -379,6 +379,8 @@ Emacs buffer are those starting with “*”."
 ;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;mulit-occur
+;; isearch 时按 M-o，列出当前 buffer 的匹配结果;  
+;; M-O(大写o) 列出所有 buffer 里的匹配结果 
 ;(require 'color-moccur)
 (require 'moccur-edit)
 

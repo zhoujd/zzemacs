@@ -16,6 +16,12 @@
 ;        ("/home/zhoujd/nginx-0.8.54/"   (t ("-q" "-d")) t)
 ;        ))
 
+;;gtags global
+;;$sudo apt-get install global
+;;$gtags -v
+;;start Emacs and execute gtags-mode function. 
+;(autoload 'gtags-mode "gtags" "" t)
+
 ;;holding #if
 (load-library "hideif")
 
@@ -83,6 +89,7 @@
   (setq c-macro-cppflags " ")
   (setq c-macro-prompt-flag t)
   ;;(imenu-add-to-menubar "Tags")
+  ;;(gtags-mode t)
   (abbrev-mode t)
   (hide-ifdef-mode t))
 
@@ -96,5 +103,6 @@
 ;; c++-mode
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 (add-hook 'c-mode-hook   'my-c++-mode-hook)
+
 
 ;;; c-setting.el ends here

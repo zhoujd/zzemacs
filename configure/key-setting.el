@@ -37,9 +37,8 @@
 (global-set-key [(control f2)]   'bc-set)
 (global-set-key [(f2)]           'bc-next)
 (global-set-key [(shift f2)]     'bc-previous)
+(global-set-key [C-S-f2]         'bc-list)
 (global-set-key [(meta f2)]      'bc-list)
-(global-set-key (kbd "C-x <f2>") 'bc-list)
-(global-set-key (kbd "C-c <f2>") 'bc-clear)
 
 (global-set-key [f3]   'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
@@ -64,10 +63,11 @@
    (global-set-key [M-f6] 'multi-term-next))
  )
 
-(global-set-key [f7]   'compile)
-(global-set-key [S-f7] 'to-compilation)
-(global-set-key [C-f7] 'next-error)
-(global-set-key [M-f7] 'previous-error)
+(global-set-key [f7]     'compile)
+(global-set-key [S-f7]   'to-compilation)
+(global-set-key [C-f7]   'next-error)
+(global-set-key [M-f7]   'previous-error)
+(global-set-key [C-S-f7] 'previous-error)
 
 (global-set-key [f8]   'gdb)
 (global-set-key [M-f8] 'gud-kill)

@@ -65,6 +65,9 @@
     (require 'tabbar-ruler)
     (require 'tabbar))
 
+;;Excluded buffers in tabbar
+(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*" "*Ibuffer*"))
+
 ; turn on the tabbar
 (tabbar-mode t)
 ; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”,
@@ -401,6 +404,14 @@ Emacs buffer are those starting with “*”."
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term "*.[ch]" dir))) 
+    (rgrep term "*.[ch]" dir)))
+
+;; Switching to ibuffer puts the cursor on the most recent buffer
+(defadvice ibuffer (around ibuffer-point-to-most-recent) ()
+           "Open ibuffer with cursor pointed to most recent buffer name"
+           (let ((recent-buffer-name (buffer-name)))
+             ad-do-it
+             (ibuffer-jump-to-buffer recent-buffer-name)))
+(ad-activate 'ibuffer)
 
 ;;; other-setting.el ends here

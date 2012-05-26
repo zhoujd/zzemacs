@@ -126,7 +126,7 @@
 (global-set-key (kbd "C-0") 'other-frame)
 
 (global-unset-key (kbd "C-x C-b"))
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c w") 'compare-windows)
 (global-set-key (kbd "M-#") 'query-replace-regexp)
 

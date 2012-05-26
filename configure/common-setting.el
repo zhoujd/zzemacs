@@ -105,22 +105,24 @@
 (zz-load-file "site-lisp/color-theme-blackboard.el")
 
 (if window-system
-    ;;(color-theme-deep-blue)
-    ;;(color-theme-midnight)
-    ;;(color-theme-arjen)
     (color-theme-gnome2)
-    ;;(color-theme-blackboard)
-    ;;(color-theme-dark-laptop)
+    ;(color-theme-blackboard)
+    ;(color-theme-deep-blue)
+    ;(color-theme-midnight)
+    ;(color-theme-arjen)
+    ;(color-theme-dark-laptop)
     )
 
 ;; set default-frame-alist
 (if window-system
-    (progn
-      (add-to-list 'default-frame-alist '(scroll-bar-width . 16))
-      (add-to-list 'default-frame-alist '(menu-bar-lines . 20))
-      (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-      (add-to-list 'default-frame-alist '(width . 140))
-      (add-to-list 'default-frame-alist '(height . 40))))
+    (setq default-frame-alist
+          (append
+           '((scroll-bar-width . 16)
+             (menu-bar-lines . 20)
+             (tool-bar-lines . 0)
+             (width . 140)
+             (height . 40))
+           default-frame-alist)))
 
 ;; scroll bar right
 (set-scroll-bar-mode `right)

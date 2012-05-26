@@ -10,6 +10,12 @@
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 
+;(setq cscope-database-regexps
+;      '(
+;        ("/home/zhoujd/freebsd8/"       (t ("-q" "-d")) t)
+;        ("/home/zhoujd/nginx-0.8.54/"   (t ("-q" "-d")) t)
+;        ))
+
 ;;holding #if
 (load-library "hideif")
 

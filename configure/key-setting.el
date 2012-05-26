@@ -89,8 +89,8 @@
 (global-set-key [M-f11] 'blank-mode)
 (global-set-key [S-f11] 'fci-mode)
 
-(global-set-key [C-f12] 'find-grep-dired)
-(global-set-key [M-f12] 'find-name-dired)
+(global-set-key [C-f12] 'find-name-dired)
+(global-set-key [M-f12] 'c/c++-rgrep)
 (global-set-key [S-f12] 'find-dired)
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)

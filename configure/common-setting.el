@@ -160,14 +160,17 @@
 ;; let F7, as in vim do, to insert the current
 ;; time-stamp, whose form is the same as vim do, into
 ;; current cursor point.
-(defun insert-time-stamp()
+(defun insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
 ;;ftp client
-(setq ange-ftp-ftp-program-name "angeftp")
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+    (setq ange-ftp-ftp-program-name "ftp.exe"))
+
 ;;mouset avoidance
 (mouse-avoidance-mode 'animate)
 

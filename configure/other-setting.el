@@ -397,9 +397,9 @@ Emacs buffer are those starting with “*”."
                                          (dired-get-filename))))))
 
 
-(defun xi-rgrep (term &optional dir) 
+(defun c/c++-rgrep (term &optional dir)
+  (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
-  (interactive "sSearch Term: ")
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
     (rgrep term "*.[ch]" dir))) 
 

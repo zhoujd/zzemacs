@@ -259,4 +259,6 @@ the mru bookmark stack."
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs)
 
+(provide 'prog-setting)
+
 ;;; c-setting.el ends here

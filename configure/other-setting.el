@@ -416,4 +416,6 @@ Emacs buffer are those starting with “*”."
              (ibuffer-jump-to-buffer recent-buffer-name)))
 (ad-activate 'ibuffer)
 
+(provide 'other-setting)
+
 ;;; other-setting.el ends here

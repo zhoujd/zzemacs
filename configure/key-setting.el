@@ -109,7 +109,7 @@
 (global-set-key (kbd "C-4") 'delete-frame)
 
 (global-set-key (kbd "M-5") 'gud-cont)
-(global-set-key (kbd "C-5") 'gdb-tip\)
+(global-set-key (kbd "C-5") 'gud-until)
 
 (global-set-key (kbd "M-6") 'gud-break-remove)
 (global-set-key (kbd "C-6") 'gud-tooltip-mode)
@@ -179,5 +179,6 @@
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
 
+(provide 'key-setting)
 
 ;;; key-setting.el ends here

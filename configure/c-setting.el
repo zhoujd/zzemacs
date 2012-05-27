@@ -104,5 +104,6 @@
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 (add-hook 'c-mode-hook   'my-c++-mode-hook)
 
+(provide 'c-setting)
 
 ;;; c-setting.el ends here

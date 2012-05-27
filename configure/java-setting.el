@@ -12,3 +12,6 @@
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 (add-hook 'find-file-hook 'ajc-4-jsp-find-file-hook)
 
+(provide 'java-setting)
+
+;;; java-setting.el end here

@@ -416,4 +416,6 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (message "common-setting is end")
 
+(provide 'common-setting)
+
 ;;; common-setting.el ends here

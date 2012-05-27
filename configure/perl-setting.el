@@ -8,3 +8,6 @@
 	  (lambda ()
 	    (local-set-key (kbd "C-h f") 'cperl-perldoc)))
 
+(provide 'perl-setting)
+
+;; perl-setting.el end here

@@ -20,4 +20,6 @@
 	  (if (string< "" title) title
 	    filename)))
 
+(provide 'media-setting)
+
 ;;; media-setting.el ends here

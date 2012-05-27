@@ -31,3 +31,7 @@
           (lambda ()
              (setq dired-bind-vm t)))
 
+
+(provide 'vm-setting)
+
+;;; vm-setting.el end here

@@ -298,8 +298,11 @@
 
 ;; embrace light show
 (show-paren-mode t)
-;;(menu-bar-mode t)
-(tool-bar-mode nil)
+
+;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode)   (tool-bar-mode -1))
+;(if (fboundp 'menu-bar-mode)   (menu-bar-mode -1))
+
 ;;Minibuffer complete help
 (icomplete-mode  t)
 

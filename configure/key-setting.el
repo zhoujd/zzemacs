@@ -167,5 +167,8 @@
 
 ;;shift+space for mark
 (global-set-key (kbd "S-<SPC>") 'set-mark-command)
+;;Control tab quotes a tab.
+(global-set-key [C-tab] "\C-q\t")
+
 
 ;;; key-setting.el ends here

@@ -28,11 +28,11 @@
 ;;for info
 (global-set-key [M-f1] 'info)
 
-(global-set-key [(control f2)]   'bc-set)
-(global-set-key [(f2)]           'bc-next)
-(global-set-key [(shift f2)]     'bc-previous)
-(global-set-key [C-S-f2]         'bc-list)
-(global-set-key [(meta f2)]      'bc-list)
+(global-set-key [(control f2)] 'bc-set)
+(global-set-key [(f2)]         'bc-next)
+(global-set-key [(shift f2)]   'bc-previous)
+(global-set-key [C-S-f2]       'bc-list)
+(global-set-key [(meta f2)]    'bc-list)
 
 (global-set-key [f3]   'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
@@ -139,10 +139,10 @@
 (global-set-key [M-right] 'windmove-right)
 (global-set-key [M-left]  'windmove-left)
 ;;window size change
-(global-set-key [C-M-up]    'enlarge-window)
-(global-set-key [C-M-down]  'shrink-window)
-(global-set-key [C-M-right] 'enlarge-window-horizontally)
-(global-set-key [C-M-left]  'shrink-window-horizontally)
+(global-set-key [M-S-up]    'enlarge-window)
+(global-set-key [M-S-down]  'shrink-window)
+(global-set-key [M-S-right] 'enlarge-window-horizontally)
+(global-set-key [M-S-left]  'shrink-window-horizontally)
 
 ;;winner restore
 (global-set-key [(control ,)] 'winner-undo)

@@ -69,10 +69,11 @@
 (global-set-key [M-f7]   'previous-error)
 (global-set-key [C-S-f7] 'previous-error)
 
-(global-set-key [f8]   'gdb)
-(global-set-key [M-f8] 'gud-kill)
-(global-set-key [S-f8] 'gdb-many-windows)
-(global-set-key [C-f8] 'gdb-restore-windows)
+(global-set-key [f8]     'gdb)
+(global-set-key [M-f8]   'gud-tooltip-mode)
+(global-set-key [C-S-f8] 'gud-tooltip-mode)
+(global-set-key [S-f8]   'gdb-many-windows)
+(global-set-key [C-f8]   'gdb-restore-windows)
 
 ;;eshell,shell,terminal-emulator
 (global-set-key [f9]   'shell)
@@ -111,7 +112,7 @@
 (global-set-key (kbd "C-5") 'gud-until)
 
 (global-set-key (kbd "M-6") 'gud-break-remove)
-(global-set-key (kbd "C-6") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "C-6") 'gud-run)
 
 (global-set-key (kbd "M-7") 'gud-next)
 (global-set-key (kbd "C-7") 'gud-finish)
@@ -125,10 +126,18 @@
 (global-set-key (kbd "M-0") 'other-window)
 (global-set-key (kbd "C-0") 'other-frame)
 
+(global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
+(global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
+(global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
+(global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
+(global-set-key (kbd "<f1> -") 'gud-down)
+(global-set-key (kbd "<f1> =") 'gud-up)
+
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-c w") 'compare-windows)
-(global-set-key (kbd "M-#") 'query-replace-regexp)
+(global-set-key (kbd "C-c w")   'compare-windows)
+(global-set-key (kbd "M-#")     'query-replace-regexp)
 
 (global-set-key [M-left]  'winner-undo)
 (global-set-key [M-right] 'winner-redo)

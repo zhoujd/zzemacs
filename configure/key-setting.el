@@ -134,10 +134,10 @@
 (global-set-key (kbd "M-#")     'query-replace-regexp)
 
 ;;quick move other windows
-(global-set-key [M-up]    'windmove-up-cycle)
-(global-set-key [M-down]  'windmove-down-cycle)
-(global-set-key [M-right] 'windmove-right-cycle)
-(global-set-key [M-left]  'windmove-left-cycle)
+(global-set-key [M-up]    'windmove-up)
+(global-set-key [M-down]  'windmove-down)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-left]  'windmove-left)
 ;;window size change
 (global-set-key [C-M-up]    'enlarge-window)
 (global-set-key [C-M-down]  'shrink-window)

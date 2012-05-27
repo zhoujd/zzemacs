@@ -70,8 +70,8 @@
 (global-set-key [C-S-f7] 'previous-error)
 
 (global-set-key [f8]     'gdb)
-(global-set-key [M-f8]   'gud-tooltip-mode)
-(global-set-key [C-S-f8] 'gud-tooltip-mode)
+(global-set-key [M-f8]   'gud-run)
+(global-set-key [C-S-f8] 'gud-run)
 (global-set-key [S-f8]   'gdb-many-windows)
 (global-set-key [C-f8]   'gdb-restore-windows)
 
@@ -109,10 +109,10 @@
 (global-set-key (kbd "C-4") 'delete-frame)
 
 (global-set-key (kbd "M-5") 'gud-cont)
-(global-set-key (kbd "C-5") 'gud-until)
+(global-set-key (kbd "C-5") 'gdb-tip\)
 
 (global-set-key (kbd "M-6") 'gud-break-remove)
-(global-set-key (kbd "C-6") 'gud-run)
+(global-set-key (kbd "C-6") 'gud-tooltip-mode)
 
 (global-set-key (kbd "M-7") 'gud-next)
 (global-set-key (kbd "C-7") 'gud-finish)
@@ -131,8 +131,8 @@
 (global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
 (global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
 (global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
-(global-set-key (kbd "<f1> -") 'gud-down)
-(global-set-key (kbd "<f1> =") 'gud-up)
+(global-set-key (kbd "<f1> -") 'gud-up)
+(global-set-key (kbd "<f1> =") 'gud-down)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)

@@ -25,12 +25,6 @@
 ;;evil mode
 (global-set-key (kbd "<f12> <f12>") 'evil-mode)
 
-;;quick move other windows
-(global-set-key (kbd "<f1> <left>")  'windmove-left)
-(global-set-key (kbd "<f1> <right>") 'windmove-right)
-(global-set-key (kbd "<f1> <up>")    'windmove-up)
-(global-set-key (kbd "<f1> <down>")  'windmove-down)
-
 ;;for info
 (global-set-key [M-f1] 'info)
 
@@ -139,16 +133,20 @@
 (global-set-key (kbd "C-c w")   'compare-windows)
 (global-set-key (kbd "M-#")     'query-replace-regexp)
 
-(global-set-key [M-left]  'winner-undo)
-(global-set-key [M-right] 'winner-redo)
+;;quick move other windows
+(global-set-key [M-up]    'windmove-up-cycle)
+(global-set-key [M-down]  'windmove-down-cycle)
+(global-set-key [M-right] 'windmove-right-cycle)
+(global-set-key [M-left]  'windmove-left-cycle)
+;;window size change
+(global-set-key [C-M-up]    'enlarge-window)
+(global-set-key [C-M-down]  'shrink-window)
+(global-set-key [C-M-right] 'enlarge-window-horizontally)
+(global-set-key [C-M-left]  'shrink-window-horizontally)
 
-(global-set-key [M-up]   'enlarge-window)
-(global-set-key [M-down] 'enlarge-window-horizontally)
-
-;(global-set-key [C-left] 'swbuff-switch-to-previous-buffer)
-;(global-set-key [C-right] 'swbuff-switch-to-next-buffer)
-;(global-set-key [(control ,)]  'mswbuff-switch-to-previous-buffer)
-;(global-set-key [(control .)]  'mswbuff-switch-to-next-buffer)
+;;winner restore
+(global-set-key [(control ,)] 'winner-undo)
+(global-set-key [(control .)] 'winner-redo)
 
 (global-set-key "%" 'match-paren)
 

@@ -2,7 +2,7 @@
 ;;
 
 ; tell me if there's something wrong
-;; (setq debug-on-error t)
+;(setq debug-on-error t)
 
 (zz-load-path "site-lisp")
 
@@ -140,11 +140,12 @@
 ;; keep slience
 (setq visible-bell t);
 ;; don`t flash the screen on console mode
+;(setq ring-bell-function 'ignore)
 (setq ring-bell-function (lambda ()  t))
 ;; use clipboard
 (setq x-select-enable-clipboard t)
-;;
-(setq mouse-drag-copy-region nil)  ;;
+;;mouse select
+(setq mouse-drag-copy-region nil)
 ;; stops killing/yanking interacting with primary X11 selection
 (setq x-select-enable-primary nil) 
 ;; active region sets primary X11 selection
@@ -206,10 +207,14 @@
         (holiday-float 6  0  3  "Father's Day")))
 
 (setq mark-diary-entries-in-calendar nil)
-(setq appt-issue-message nil)
-
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
+
+;; settings for appt
+(require 'appt)
+(setq appt-issue-message nil)
+(setq appt-message-warning-time 3)
+(setq appt-display-format 'window)
 
 ;;chinese-calendar
 (setq chinese-calendar-celestial-stem
@@ -299,12 +304,12 @@
 ;; embrace light show
 (show-paren-mode t)
 
-;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode)   (tool-bar-mode -1))
 ;(if (fboundp 'menu-bar-mode)   (menu-bar-mode -1))
+;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;;Minibuffer complete help
-(icomplete-mode  t)
+(icomplete-mode t)
 
 ;;mouse wheel support
 (setq mouse-wheel-mode t)

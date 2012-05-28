@@ -124,6 +124,9 @@
              (height . 40))
            default-frame-alist)))
 
+;; quick display key help
+(setq echo-keystrokes 0.1)
+
 ;; scroll bar right
 (set-scroll-bar-mode `right)
 

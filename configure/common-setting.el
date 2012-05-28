@@ -105,21 +105,24 @@
 (zz-load-file "site-lisp/color-theme-blackboard.el")
 
 (if window-system
-    (color-theme-gnome2)
-    ;(color-theme-blackboard)
-    ;(color-theme-deep-blue)
-    ;(color-theme-midnight)
-    ;(color-theme-arjen)
-    ;(color-theme-dark-laptop)
+    (progn
+      (color-theme-gnome2)
+      ;;(color-theme-blackboard)
+      ;;(color-theme-deep-blue)
+      ;;(color-theme-midnight)
+      ;;(color-theme-arjen)
+      ;;(color-theme-dark-laptop)
     )
+    (progn
+      (set-face-background 'default "black")
+      (set-face-foreground 'default "gray")
+    ))
 
 ;; set default-frame-alist
 (if window-system
     (setq default-frame-alist
           (append
            '((scroll-bar-width . 16)
-             (menu-bar-lines . 20)
-             (tool-bar-lines . 0)
              (width . 140)
              (height . 40))
            default-frame-alist)))

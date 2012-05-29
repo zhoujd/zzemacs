@@ -157,7 +157,6 @@ the mru bookmark stack."
 
 (global-set-key "\M-." 'etags-select-find-tag)
 
-
 ;;make ctags
 (defun gen-ctags-cmd (dir-name)
   (format "ctags %s -f %s/TAGS -e -R %s"
@@ -242,6 +241,7 @@ the mru bookmark stack."
            (with-current-buffer gud-comint-buffer (eq gud-minor-mode 'gdba)))
       (gud-call (if gdb-active-process "continue" "run") "")
     (gdb (gud-query-cmdline 'gdb))))
+
 (defun gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
@@ -249,6 +249,7 @@ the mru bookmark stack."
     (if (eq (car (fringe-bitmaps-at-pos (point))) 'breakpoint)
         (gud-remove nil)
       (gud-break nil))))
+
 (defun gud-kill ()
   "Kill gdb process."
   (interactive)

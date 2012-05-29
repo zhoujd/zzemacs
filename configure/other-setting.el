@@ -402,12 +402,12 @@ Emacs buffer are those starting with “*”."
                                          (dired-get-filename))))))
 
 ;;rgrep for c/c++
-(setq my-c/c++-file-regex "*.[hc]")
-(defun c/c++-rgrep (term &optional dir)
+(setq my-c-file-regex "*.[hc]")
+(defun c-rgrep (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term my-c/c++-file-regex dir)))
+    (rgrep term my-c-file-regex dir)))
 
 ;; Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

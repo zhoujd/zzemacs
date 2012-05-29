@@ -40,3 +40,7 @@
    ;; insert entries for other modes here if needed.
    (cons "\\.rkt$" 'scheme-mode))
   auto-mode-alist))
+
+(provide 'lisp-setting)
+
+;; lisp-setting.el end here

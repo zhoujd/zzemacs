@@ -13,3 +13,7 @@
 (autoload 'geben "geben" "PHP Debugger on Emacs" t)
 
 (speedbar-add-supported-extension "\\.php$")
+
+(provide 'php-setting)
+
+;;; php-setting.el end here

@@ -25,32 +25,24 @@
 ;;evil mode
 (global-set-key (kbd "<f12> <f12>") 'evil-mode)
 
-;;quick move other windows
-(global-set-key (kbd "<f1> <left>")  'windmove-left)
-(global-set-key (kbd "<f1> <right>") 'windmove-right)
-(global-set-key (kbd "<f1> <up>")    'windmove-up)
-(global-set-key (kbd "<f1> <down>")  'windmove-down)
-
 ;;for info
 (global-set-key [M-f1] 'info)
 
-(global-set-key [(control f2)]   'bc-set)
-(global-set-key [(f2)]           'bc-next)
-(global-set-key [(shift f2)]     'bc-previous)
-(global-set-key [(meta f2)]      'bc-list)
-(global-set-key (kbd "C-x <f2>") 'bc-list)
-(global-set-key (kbd "C-c <f2>") 'bc-clear)
+(global-set-key [(control f2)] 'bc-set)
+(global-set-key [(f2)]         'bc-next)
+(global-set-key [(shift f2)]   'bc-previous)
+(global-set-key [C-S-f2]       'bc-list)
+(global-set-key [(meta f2)]    'bc-list)
 
 (global-set-key [f3]   'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
-(global-set-key [M-f3] 'vm)
-(global-set-key [S-f3] 'line-to-top-of-window)
 
-(global-set-key [f4] 'kill-this-buffer)
+(global-set-key [f4]   'kill-this-buffer)
+(global-set-key [C-f4] 'vm)
 
 (global-set-key [f5]   'speedbar-get-focus)
-(global-set-key [C-f5] 'his-speedbar-no-separate-frame)
 (global-set-key [S-f5] 'sr-speedbar-toggle)
+(global-set-key [C-f5] 'line-to-top-of-window)
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
@@ -64,15 +56,17 @@
    (global-set-key [M-f6] 'multi-term-next))
  )
 
-(global-set-key [f7]   'compile)
-(global-set-key [S-f7] 'to-compilation)
-(global-set-key [C-f7] 'next-error)
-(global-set-key [M-f7] 'previous-error)
+(global-set-key [f7]     'compile)
+(global-set-key [S-f7]   'to-compilation)
+(global-set-key [C-f7]   'next-error)
+(global-set-key [M-f7]   'previous-error)
+(global-set-key [C-S-f7] 'previous-error)
 
-(global-set-key [f8]   'gdb)
-(global-set-key [M-f8] 'gud-kill)
-(global-set-key [S-f8] 'gdb-many-windows)
-(global-set-key [C-f8] 'gdb-restore-windows)
+(global-set-key [f8]     'gdb)
+(global-set-key [M-f8]   'gud-run)
+(global-set-key [C-S-f8] 'gud-run)
+(global-set-key [S-f8]   'gdb-many-windows)
+(global-set-key [C-f8]   'gdb-restore-windows)
 
 ;;eshell,shell,terminal-emulator
 (global-set-key [f9]   'shell)
@@ -89,9 +83,9 @@
 (global-set-key [M-f11] 'blank-mode)
 (global-set-key [S-f11] 'fci-mode)
 
-(global-set-key [C-f12] 'xi-rgrep)
-(global-set-key [M-f12] 'find-name-dired)
-(global-set-key [S-f12] 'find-grep-dired)
+(global-set-key [C-f12] 'find-name-dired)
+(global-set-key [M-f12] 'c/c++-rgrep)
+(global-set-key [S-f12] 'find-dired)
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
@@ -111,7 +105,7 @@
 (global-set-key (kbd "C-5") 'gud-until)
 
 (global-set-key (kbd "M-6") 'gud-break-remove)
-(global-set-key (kbd "C-6") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "C-6") 'gud-tooltip-mode)
 
 (global-set-key (kbd "M-7") 'gud-next)
 (global-set-key (kbd "C-7") 'gud-finish)
@@ -125,21 +119,33 @@
 (global-set-key (kbd "M-0") 'other-window)
 (global-set-key (kbd "C-0") 'other-frame)
 
+(global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "<f1> 6") 'gdyb-frame-breakpoints-buffer)
+(global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
+(global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
+(global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
+(global-set-key (kbd "<f1> -") 'gud-up)
+(global-set-key (kbd "<f1> =") 'gud-down)
+
 (global-unset-key (kbd "C-x C-b"))
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
-(global-set-key (kbd "C-c w") 'compare-windows)
-(global-set-key (kbd "M-#") 'query-replace-regexp)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c w")   'compare-windows)
+(global-set-key (kbd "M-#")     'query-replace-regexp)
 
-(global-set-key [M-left]  'winner-undo)
-(global-set-key [M-right] 'winner-redo)
+;;quick move other windows
+(global-set-key [M-up]    'windmove-up)
+(global-set-key [M-down]  'windmove-down)
+(global-set-key [M-right] 'windmove-right)
+(global-set-key [M-left]  'windmove-left)
+;;window size change
+(global-set-key [C-S-up]    'enlarge-window)
+(global-set-key [C-S-down]  'shrink-window)
+(global-set-key [C-S-right] 'enlarge-window-horizontally)
+(global-set-key [C-S-left]  'shrink-window-horizontally)
 
-(global-set-key [M-up]   'enlarge-window)
-(global-set-key [M-down] 'enlarge-window-horizontally)
-
-;(global-set-key [C-left] 'swbuff-switch-to-previous-buffer)
-;(global-set-key [C-right] 'swbuff-switch-to-next-buffer)
-;(global-set-key [(control ,)]  'mswbuff-switch-to-previous-buffer)
-;(global-set-key [(control .)]  'mswbuff-switch-to-next-buffer)
+;;winner restore
+(global-set-key [(control ,)] 'winner-undo)
+(global-set-key [(control .)] 'winner-redo)
 
 (global-set-key "%" 'match-paren)
 
@@ -167,5 +173,9 @@
 
 ;;shift+space for mark
 (global-set-key (kbd "S-<SPC>") 'set-mark-command)
+;;Control tab quotes a tab.
+(global-set-key [C-tab] "\C-q\t")
+
+(provide 'key-setting)
 
 ;;; key-setting.el ends here

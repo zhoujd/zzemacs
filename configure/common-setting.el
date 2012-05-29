@@ -2,7 +2,7 @@
 ;;
 
 ; tell me if there's something wrong
-;; (setq debug-on-error t)
+;(setq debug-on-error t)
 
 (zz-load-path "site-lisp")
 
@@ -105,22 +105,24 @@
 (zz-load-file "site-lisp/color-theme-blackboard.el")
 
 (if window-system
-    ;;(color-theme-deep-blue)
-    ;;(color-theme-midnight)
-    ;;(color-theme-arjen)
     (color-theme-gnome2)
-    ;;(color-theme-blackboard)
-    ;;(color-theme-dark-laptop)
+    ;(color-theme-blackboard)
+    ;(color-theme-deep-blue)
+    ;(color-theme-midnight)
+    ;(color-theme-arjen)
+    ;(color-theme-dark-laptop)
     )
 
 ;; set default-frame-alist
 (if window-system
-    (progn
-      (add-to-list 'default-frame-alist '(scroll-bar-width . 16))
-      (add-to-list 'default-frame-alist '(menu-bar-lines . 20))
-      (add-to-list 'default-frame-alist '(tool-bar-lines . 0))
-      (add-to-list 'default-frame-alist '(width . 140))
-      (add-to-list 'default-frame-alist '(height . 40))))
+    (setq default-frame-alist
+          (append
+           '((scroll-bar-width . 16)
+             (menu-bar-lines . 20)
+             (tool-bar-lines . 0)
+             (width . 140)
+             (height . 40))
+           default-frame-alist)))
 
 ;; scroll bar right
 (set-scroll-bar-mode `right)
@@ -138,11 +140,12 @@
 ;; keep slience
 (setq visible-bell t);
 ;; don`t flash the screen on console mode
+;(setq ring-bell-function 'ignore)
 (setq ring-bell-function (lambda ()  t))
 ;; use clipboard
 (setq x-select-enable-clipboard t)
-;;
-(setq mouse-drag-copy-region nil)  ;;
+;;mouse select
+(setq mouse-drag-copy-region nil)
 ;; stops killing/yanking interacting with primary X11 selection
 (setq x-select-enable-primary nil) 
 ;; active region sets primary X11 selection
@@ -160,14 +163,17 @@
 ;; let F7, as in vim do, to insert the current
 ;; time-stamp, whose form is the same as vim do, into
 ;; current cursor point.
-(defun insert-time-stamp()
+(defun insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
 ;;ftp client
-(setq ange-ftp-ftp-program-name "angeftp")
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+    (setq ange-ftp-ftp-program-name "ftp.exe"))
+
 ;;mouset avoidance
 (mouse-avoidance-mode 'animate)
 
@@ -201,10 +207,14 @@
         (holiday-float 6  0  3  "Father's Day")))
 
 (setq mark-diary-entries-in-calendar nil)
-(setq appt-issue-message nil)
-
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
+
+;; settings for appt
+(require 'appt)
+(setq appt-issue-message nil)
+(setq appt-message-warning-time 3)
+(setq appt-display-format 'window)
 
 ;;chinese-calendar
 (setq chinese-calendar-celestial-stem
@@ -293,10 +303,13 @@
 
 ;; embrace light show
 (show-paren-mode t)
-;;(menu-bar-mode t)
-(tool-bar-mode nil)
+
+(if (fboundp 'tool-bar-mode)   (tool-bar-mode -1))
+;(if (fboundp 'menu-bar-mode)   (menu-bar-mode -1))
+;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
 ;;Minibuffer complete help
-(icomplete-mode  t)
+(icomplete-mode t)
 
 ;;mouse wheel support
 (setq mouse-wheel-mode t)
@@ -407,5 +420,7 @@ Dmitriy Igrishin's patched version of comint.el."
           (setq w32-quote-process-args ?\"))))
 
 (message "common-setting is end")
+
+(provide 'common-setting)
 
 ;;; common-setting.el ends here

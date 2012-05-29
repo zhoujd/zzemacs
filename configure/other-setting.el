@@ -66,7 +66,7 @@
     (require 'tabbar))
 
 ;;Excluded buffers in tabbar
-(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*" "*Ibuffer*"))
+;(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*"))
 
 ; turn on the tabbar
 (tabbar-mode t)

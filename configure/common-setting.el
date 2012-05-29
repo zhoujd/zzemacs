@@ -413,6 +413,13 @@ Dmitriy Igrishin's patched version of comint.el."
 (setq split-height-threshold 0)
 (setq split-width-threshold nil)
 
+;;hide buffer *Async Shell Command*
+(defadvice display-buffer (around async-shell-command activate)
+   "If BUFFER is named *Async Shell Command*, don't display it."
+   (or (and (bufferp (ad-get-arg 0))
+	   (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
+       ad-do-it))
+
 ;;windows shell setting
 (if (or (eq window-system 'w32) (eq window-system 'win32))
     (progn 

@@ -120,7 +120,7 @@
 (global-set-key (kbd "C-0") 'other-frame)
 
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
-(global-set-key (kbd "<f1> 6") 'gdyb-frame-breakpoints-buffer)
+(global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
 (global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
 (global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
 (global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)

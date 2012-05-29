@@ -417,6 +417,12 @@ Emacs buffer are those starting with “*”."
              (ibuffer-jump-to-buffer recent-buffer-name)))
 (ad-activate 'ibuffer)
 
+;;win32 find grep set
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+    (setq find-program "\"find2.exe\"")
+    (setq grep-program "\"grep.exe\""))
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

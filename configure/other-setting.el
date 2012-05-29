@@ -403,7 +403,7 @@ Emacs buffer are those starting with “*”."
 
 ;;rgrep for c/c++
 (setq my-c-file-regex "*.[hc]")
-(defun c-rgrep (term &optional dir)
+(defun my-c-rgrep (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))

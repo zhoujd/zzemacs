@@ -166,31 +166,35 @@ the mru bookmark stack."
 (defun create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (shell-command (gen-ctags-cmd dir-name)))
+  (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
+(setq my-etags-file-regex "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$")
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f -name \"*.[ch]*\" | etags -" dir-name))
+  (format "find %s -type f | grep -E \"%s\" | etags -"
+          dir-name my-etags-file-regex))
 
 (defun create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (shell-command (gen-etags-cmd dir-name)))
+  (async-shell-command (gen-etags-cmd dir-name)))
 
 ;;make cscope
 ; #!/bin/bash  
 ; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files  
-; cscope -bq -i ./csope.files  
+; cscope -bq -i ./csope.files
+(setq my-cscope-file-regex "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$")
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f -name \"*.[ch]*\" > %s/cscope.files;" dir-name dir-name)
+   (format "find %s -type f | grep -E \"%s\" > %s/cscope.files;"
+           dir-name  my-cscope-file-regex  dir-name)
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))
 
 (defun create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (shell-command (gen-cscope-cmd dir-name)))
+  (async-shell-command (gen-cscope-cmd dir-name)))
 
 ;; SET TAGS PATH
 ;(setq tags-table-list '("~/work/TAGS"

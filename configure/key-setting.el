@@ -23,7 +23,7 @@
   (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
 
 ;;evil mode
-(global-set-key (kbd "<f12> <f12>") 'evil-mode)
+;(global-set-key (kbd "<f12> <f12>") 'evil-mode)
 
 ;;for info
 (global-set-key [M-f1] 'info)

@@ -168,8 +168,8 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq my-etags-file-regex
-      (concat "-name \"*.[hc]\"   -print -or "
+(setq  my-c/c++-file-regex
+      (concat "-name \"*.[hcHC]\" -print -or "
               "-name \"*.[hc]pp\" -print -or "
               "-name \"*.[hc]++\" -print -or "
               "-name \"*.[hc]xx\" -print "
@@ -177,7 +177,7 @@ the mru bookmark stack."
 
 (defun gen-etags-cmd (dir-name)
   (format "find %s -type f %s | etags -"
-          dir-name my-etags-file-regex))
+          dir-name  my-c/c++-file-regex))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -188,17 +188,10 @@ the mru bookmark stack."
 ; #!/bin/bash  
 ; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files
 ; cscope -bq -i ./csope.files
-(setq my-cscope-file-regex
-      (concat "-name \"*.[hc]\"   -print -or "
-              "-name \"*.[hc]pp\" -print -or "
-              "-name \"*.[hc]++\" -print -or "
-              "-name \"*.[hc]xx\" -print "
-              ))
-
 (defun gen-cscope-cmd (dir-name)
   (concat
    (format "find %s -type f %s > %s/cscope.files;"
-           dir-name  my-cscope-file-regex  dir-name)
+           dir-name  my-c/c++-file-regex  dir-name)
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))
 
@@ -275,6 +268,14 @@ the mru bookmark stack."
 ;;Git Support
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs)
+
+;;rgrep for c/c++
+(setq my-c-file-regex "*.[hc]")
+(defun my-c-rgrep (term &optional dir)
+  (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
+  (grep-compute-defaults) 
+  (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
+    (rgrep term my-c-file-regex dir)))
 
 (provide 'prog-setting)
 

@@ -392,22 +392,17 @@ Emacs buffer are those starting with “*”."
 (require 'breadcrumb)
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
-(require 'w32-browser)
-(eval-after-load "dired"
-  '(define-key dired-mode-map [C-f4] (lambda ()
-                                       (interactive)
-                                       (w32-browser
-                                        (dired-replace-in-string
-                                         "/" "\\"
-                                         (dired-get-filename))))))
-
-;;rgrep for c/c++
-(setq my-c-file-regex "*.[hc]")
-(defun my-c-rgrep (term &optional dir)
-  (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
-  (grep-compute-defaults) 
-  (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term my-c-file-regex dir)))
+(when (or (eq window-system 'w32)
+          (eq window-system 'win32))
+  (require 'w32-browser)
+  (eval-after-load "dired"
+    '(define-key dired-mode-map [C-f4] (lambda ()
+                                         (interactive)
+                                         (w32-browser
+                                          (dired-replace-in-string
+                                           "/" "\\"
+                                           (dired-get-filename))))))
+  )
 
 ;; Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

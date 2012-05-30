@@ -278,6 +278,7 @@ the mru bookmark stack."
     (rgrep term my-c-file-regex dir)))
 
 ;;self set for rgrep
+(require 'grep)
 (add-to-list 'grep-files-aliases
              '("hhcc" .  "*.cc *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++")
              )

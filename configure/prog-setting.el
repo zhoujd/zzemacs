@@ -168,6 +168,14 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
+(setq my-find-regex "*.cc *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++")
+
+(defun gen-find-parts (my-file-name)
+  (setq my-find-parts "")
+  (dolist (cell (split-string my-file-name))
+    (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -print -or ")))
+  (setq my-find-parts (substring my-find-parts 0 -4)))
+
 (setq  my-c/c++-file-regex
       (concat "-name \"*.[hcHC]\" -print -or "
               "-name \"*.[hc]pp\" -print -or "

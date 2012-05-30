@@ -176,16 +176,16 @@ the mru bookmark stack."
     (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -print -or ")))
   (setq my-find-parts (substring my-find-parts 0 -4)))
 
-(setq  my-c/c++-file-regex
-      (concat "-name \"*.[hcHC]\" -print -or "
-              "-name \"*.[hc]pp\" -print -or "
-              "-name \"*.[hc]++\" -print -or "
-              "-name \"*.[hc]xx\" -print "
-              ))
+;(setq  my-c/c++-file-regex
+;      (concat "-name \"*.[hcHC]\" -print -or "
+;              "-name \"*.[hc]pp\" -print -or "
+;              "-name \"*.[hc]++\" -print -or "
+;              "-name \"*.[hc]xx\" -print "
+;              ))
 
 (defun gen-etags-cmd (dir-name)
   (format "find %s -type f %s | etags -"
-          dir-name  my-c/c++-file-regex))
+          dir-name (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -199,7 +199,7 @@ the mru bookmark stack."
 (defun gen-cscope-cmd (dir-name)
   (concat
    (format "find %s -type f %s > %s/cscope.files;"
-           dir-name  my-c/c++-file-regex  dir-name)
+           dir-name (gen-find-parts my-find-regex)  dir-name)
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))
 

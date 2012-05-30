@@ -168,9 +168,15 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq my-etags-file-regex "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$")
+(setq my-etags-file-regex
+      (concat "-name \"*.[hc]\"   -print -or "
+              "-name \"*.[hc]pp\" -print -or "
+              "-name \"*.[hc]++\" -print -or "
+              "-name \"*.[hc]xx\" -print "
+              ))
+
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f | grep -E \"%s\" | etags -"
+  (format "find %s -type f %s | etags -"
           dir-name my-etags-file-regex))
 
 (defun create-etags (dir-name)
@@ -180,12 +186,18 @@ the mru bookmark stack."
 
 ;;make cscope
 ; #!/bin/bash  
-; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files  
+; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files
 ; cscope -bq -i ./csope.files
-(setq my-cscope-file-regex "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$")
+(setq my-cscope-file-regex
+      (concat "-name \"*.[hc]\"   -print -or "
+              "-name \"*.[hc]pp\" -print -or "
+              "-name \"*.[hc]++\" -print -or "
+              "-name \"*.[hc]xx\" -print "
+              ))
+
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f | grep -E \"%s\" > %s/cscope.files;"
+   (format "find %s -type f %s > %s/cscope.files;"
            dir-name  my-cscope-file-regex  dir-name)
    (format "cscope -bkq -i  %s/cscope.files" dir-name)
    ))

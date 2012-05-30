@@ -277,6 +277,11 @@ the mru bookmark stack."
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
     (rgrep term my-c-file-regex dir)))
 
+;;self set for rgrep
+(add-to-list 'grep-files-aliases
+             '("hhcc" .  "*.cc *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++")
+             )
+
 (provide 'prog-setting)
 
 ;;; c-setting.el ends here

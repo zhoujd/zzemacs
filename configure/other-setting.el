@@ -364,12 +364,11 @@ Emacs buffer are those starting with “*”."
 
 ;;tramp setting
 (require 'tramp)
-(cond
- ((eq system-type 'windows-nt)
-  (setq tramp-default-method "plink"
-        tramp-password-end-of-line "\r\n"))
- ((eq system-type 'gnu/linux)
-  (setq tramp-default-method "ssh")))
+(cond ((or (eq window-system 'w32)
+           (eq window-system 'win32))
+       (setq tramp-default-method "scpx"))
+      (t
+       (setq tramp-default-method "sshx")))
 
 ;;https://github.com/nonsequitur/smex/
 ;(require 'smex)  

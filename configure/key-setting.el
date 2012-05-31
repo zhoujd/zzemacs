@@ -40,6 +40,9 @@
 (global-set-key [f4]   'kill-this-buffer)
 (global-set-key [C-f4] 'vm)
 
+(global-set-key [S-f3] 'cscope-prev-symbol)
+(global-set-key [S-f4] 'cscope-next-symbol)
+
 (global-set-key [f5]   'speedbar-get-focus)
 (global-set-key [S-f5] 'sr-speedbar-toggle)
 (global-set-key [C-f5] 'line-to-top-of-window)

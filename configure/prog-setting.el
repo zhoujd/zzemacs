@@ -200,7 +200,7 @@ the mru bookmark stack."
   (concat
    (format "find %s -type f %s > %s/cscope.files;"
            dir-name (gen-find-parts my-find-regex)  dir-name)
-   (format "cscope -bkq -i  %s/cscope.files" dir-name)
+   (format "cscope -b -R  -q -i  %s/cscope.files" dir-name)
    ))
 
 (defun create-cscope (dir-name)

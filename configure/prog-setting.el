@@ -194,7 +194,7 @@ the mru bookmark stack."
 
 ;;make cscope
 ; #!/bin/bash  
-; find -type f | grep -E "\.(c|cc|cpp|cxx|c\+\+|h|h\+\+|hh|hpp|hxx)$" >cscope.files
+; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
 (defun gen-cscope-cmd (dir-name)
   (concat

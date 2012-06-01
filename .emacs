@@ -1,11 +1,7 @@
 ;;;; .emacs --- emacs config file
 ;;;
+
 (defvar zzemacs-path "~/zzemacs/" "zzemacs`s path")
-(setq zz-bin-path (concat zzemacs-path "bin"))
-
-(setenv "PATH" (concat zz-bin-path path-separator (getenv "PATH")))
-(setq exec-path (cons zz-bin-path exec-path))
-
 (defvar zz-setting-list '(
                           "common-setting.el"
                           "other-setting.el"
@@ -20,6 +16,11 @@
                           "key-setting.el"
                           ))
 
+(defun zz-add-os-path (path)
+  (interactive "DDirectory: ")
+  (setenv "PATH" (concat path path-separator (getenv "PATH")))
+  (setq exec-path (cons path exec-path)))
+
 (defun zz-load-path (path)
   "my add to list"
   (add-to-list 'load-path (concat zzemacs-path path)))
@@ -32,6 +33,7 @@
   "my load configure file"
   (load-file (concat zzemacs-path "configure/" file)))
 
+(zz-add-os-path (concat zzemacs-path "bin"))
 (mapcar 'zz-load-configure zz-setting-list)
 
 ;;develop setting for tags path etc.

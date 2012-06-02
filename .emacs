@@ -1,6 +1,10 @@
 ;;;; .emacs --- emacs config file
 ;;;
 (defvar zzemacs-path "~/zzemacs/" "zzemacs`s path")
+(setq zz-bin-path (concat zzemacs-path "bin"))
+
+(setenv "PATH" (concat zz-bin-path path-separator (getenv "PATH")))
+(setq exec-path (cons zz-bin-path exec-path))
 
 (defvar zz-setting-list '(
                           "common-setting.el"

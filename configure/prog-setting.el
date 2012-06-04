@@ -168,7 +168,7 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq my-find-regex "*.cc *.[ch]xx *.[ch]pp *.[CH] *.CC *.HH *.[ch]++")
+(setq my-find-regex "*.[ch] *.cc *.[ch]xx *.[ch]pp *.[CH] *.CC *.HH *.[ch]++")
 
 (defun gen-find-parts (my-file-name)
   (setq my-find-parts "")

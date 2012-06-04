@@ -1,4 +1,4 @@
-﻿;;;; other-setting.el --- other setting file
+;;;; other-setting.el --- other setting file
 ;;;
 
 (zz-load-path "site-lisp")
@@ -40,13 +40,13 @@
     (if (> my-os-flag 2)
       (setq my-os-flag 0))
     (cond ((eq my-os-flag 0)
-           (set-buffer-file-coding-system 'unix)
+           (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
           ((eq my-os-flag 1)
-           (set-buffer-file-coding-system 'dos)
+           (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
           ((eq my-os-flag 2)
-           (set-buffer-file-coding-system 'mac)
+           (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
     (setq my-os-flag (+ my-os-flag 1)))
 
@@ -420,13 +420,13 @@ Emacs buffer are those starting with “*”."
       ))
 
 ;;file transform
-(defun dos-unix () (interactive)
-  (goto-char (point-min))
-  (while (search-forward "\r" nil t) (replace-match "")))
-
-(defun unix-dos () (interactive)
-  (goto-char (point-min))
-  (while (search-forward "\n" nil t) (replace-match "\r\n")))
+(defun dos2unix (buffer)
+  "Automate M-% C-q C-m RET C-q C-j RET" 
+  (interactive "*b") 
+  (save-excursion 
+    (goto-char (point-min))
+    (while (search-forward (string ?\C-m) nil t)
+      (replace-match (string ?\C-j) nil t))))
 
 (provide 'other-setting)
 

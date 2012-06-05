@@ -54,7 +54,7 @@
 (defvar my-font-en-size 11)
 
 (defvar my-font-cn-name (nth 0 cn-font-list))
-(defvar my-font-cn-size 12)
+(defvar my-font-cn-size 13)
 
 (setq my-font-string
       (concat my-font-en-name " "
@@ -90,9 +90,9 @@
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
 					                             ; ~/.emacs.d/server is unsafe"
 					                             ; on windows.
-(when (server-running-p)
-  (server-force-delete))
-(server-start)
+(unless (server-running-p)
+  (server-start))
+
 (add-hook 'kill-emacs-hook
 	  (lambda()
 	    (if (file-exists-p "~/.emacs.d/server/server")

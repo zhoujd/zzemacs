@@ -5,14 +5,14 @@
 (defvar esc-f2-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key esc-map [f2] esc-f2-map)
 
-(define-key esc-f2-map "1"  'my-utf-8)
+(define-key esc-f2-map (kbd "1")  'my-utf-8)
 
 ;;f12 key map 
 (defvar f12-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key global-map [f12] f12-map)
 
-(define-key f12-map "1" 'my-utf-8)
-(define-key f12-map "h" 'sourcepair-jump-to-headerfile)
+(define-key f12-map (kbd "1") 'my-utf-8)
+(define-key f12-map (kbd "h") 'sourcepair-jump-to-headerfile)
 
 ;;switch to shells
 (define-key f12-map [f9]
@@ -151,7 +151,7 @@
 (global-set-key [(control ,)] 'winner-undo)
 (global-set-key [(control .)] 'winner-redo)
 
-(global-set-key "%" 'match-paren)
+(global-set-key (kbd "%") 'match-paren)
 
 (global-unset-key [backspace])
 (global-set-key   [backspace] 'delete-backward-char)

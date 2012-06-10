@@ -448,6 +448,10 @@ Emacs buffer are those starting with “*”."
       (occur (thing-at-point 'word))
       (call-interactively 'occur)))
 
+(require 'fm)
+(add-hook 'occur-mode-hook 'fm-start)
+(add-hook 'compilation-mode-hook 'fm-start)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

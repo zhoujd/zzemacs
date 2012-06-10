@@ -381,7 +381,7 @@ Emacs buffer are those starting with “*”."
 ;; isearch 时按 M-o，列出当前 buffer 的匹配结果;  
 ;; M-O(大写o) 列出所有 buffer 里的匹配结果 
 ;(require 'color-moccur)
-(require 'moccur-edit)
+;(require 'moccur-edit)
 
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")
@@ -427,6 +427,26 @@ Emacs buffer are those starting with “*”."
     (goto-char (point-min))
     (while (search-forward (string ?\C-m) nil t)
       (replace-match (string ?\C-j) nil t))))
+
+;;occur setting
+(defun my-occur (&optional arg)
+  "Switch to *Occur* buffer, or run `occur'.
+   Without a prefix argument, switch to the buffer.
+   With a universal prefix argument, run occur again.
+   With a numeric prefix argument, run occur with NLINES
+   set to that number."
+  (interactive "P")
+  (if (and (not arg) (get-buffer "*Occur*"))
+      (switch-to-buffer "*Occur*")
+      (occur (read-from-minibuffer "Regexp: ")
+             (if (listp arg) 0 arg))))
+
+(defun occur-at-point()
+  "point at word"
+  (interactive)
+  (if (thing-at-point 'word)
+      (occur (thing-at-point 'word))
+      (call-interactively 'occur)))
 
 (provide 'other-setting)
 

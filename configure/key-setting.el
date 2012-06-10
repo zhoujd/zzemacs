@@ -27,6 +27,7 @@
 
 ;;for info
 (global-set-key [M-f1] 'info)
+(global-set-key [C-f1] 'vm)
 
 (global-set-key [(control f2)] 'bc-set)
 (global-set-key [(f2)]         'bc-next)
@@ -36,9 +37,10 @@
 
 (global-set-key [f3]   'my-last-buffer-go)
 (global-set-key [C-f3] 'list-bookmarks)
+(global-set-key [M-f3] 'my-occur)
 
 (global-set-key [f4]   'kill-this-buffer)
-(global-set-key [C-f4] 'vm)
+(global-set-key [C-f4] 'etags-stack-show)
 
 (global-set-key [S-f3] 'cscope-prev-symbol)
 (global-set-key [S-f4] 'cscope-next-symbol)
@@ -71,7 +73,6 @@
 (global-set-key [S-f8]   'gdb-many-windows)
 (global-set-key [C-f8]   'gdb-restore-windows)
 
-;;eshell,shell,terminal-emulator
 (global-set-key [f9]   'shell)
 (global-set-key [C-f9] 'to-scratch)
 (global-set-key [M-f9] 'popup-term)
@@ -87,7 +88,7 @@
 (global-set-key [S-f11] 'fci-mode)
 
 (global-set-key [C-f12] 'find-name-dired)
-(global-set-key [M-f12] 'rgrep)
+(global-set-key [M-f12] 'my-c-rgrep)
 (global-set-key [S-f12] 'find-dired)
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
@@ -104,6 +105,7 @@
 (global-set-key (kbd "M-4") 'kill-this-buffer)
 (global-set-key (kbd "C-4") 'delete-frame)
 
+;;gud control setting
 (global-set-key (kbd "M-5") 'gud-go)
 (global-set-key (kbd "C-5") 'gud-until)
 
@@ -122,6 +124,7 @@
 (global-set-key (kbd "M-0") 'other-window)
 (global-set-key (kbd "C-0") 'other-frame)
 
+;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
 (global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
 (global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
@@ -148,8 +151,8 @@
 (global-set-key [C-S-left]  'shrink-window-horizontally)
 
 ;;winner restore
-(global-set-key [(control ,)] 'winner-undo)
-(global-set-key [(control .)] 'winner-redo)
+(global-set-key (kbd "C-,") 'winner-undo)
+(global-set-key (kbd "C-.") 'winner-redo)
 
 (global-set-key (kbd "%") 'match-paren)
 

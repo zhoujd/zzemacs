@@ -578,8 +578,8 @@ can be a method item ,or a field item"
     (if (file-exists-p  ajc-tag-file)
         (with-current-buffer (find-file-noselect ajc-tag-file )
           ;; a buffer name starts with empth string,means hidden this buffer
-          (rename-buffer " *java-base.tag*")
-          (setq ajc-tag-buffer " *java-base.tag*")
+          (rename-buffer "*java-base.tag*")
+          (setq ajc-tag-buffer "*java-base.tag*")
           (buffer-disable-undo)
           (setq buffer-read-only t)
           (fundamental-mode)

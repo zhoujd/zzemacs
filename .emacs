@@ -12,7 +12,8 @@
                           "perl-setting.el"
                           "python-setting.el"
                           "java-setting.el"
-                          "csharp-setting.el"
+                          ;"csharp-setting.el"
+                          ;"php-setting"
                           "key-setting.el"
                           ))
 

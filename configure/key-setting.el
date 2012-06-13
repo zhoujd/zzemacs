@@ -23,11 +23,13 @@
   (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
 
 ;;evil mode
-;(global-set-key (kbd "<f12> <f12>") 'evil-mode)
+(when (fboundp 'evil-mode)
+  (global-set-key (kbd "<f12> <f1>") 'evil-mode))
 
 ;;for info
 (global-set-key [M-f1] 'info)
-(global-set-key [C-f1] 'vm)
+(when (fboundp 'vm)
+  (global-set-key [C-f1] 'vm))
 
 (global-set-key [(control f2)] 'bc-set)
 (global-set-key [(f2)]         'bc-next)

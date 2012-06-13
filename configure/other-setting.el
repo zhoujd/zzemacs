@@ -420,14 +420,23 @@ Emacs buffer are those starting with “*”."
       ))
 
 ;;file transform
-(defun dos2unix (buffer)
-  "Automate M-% C-q C-m RET C-q C-j RET" 
+(defun my-dos2unix (buffer)
+  "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
     (goto-char (point-min))
     (while (search-forward (string ?\C-m) nil t)
-      ;(replace-match (string ?\C-j) nil t)
       (replace-match "" nil t))))
+
+(defun dos2unix ()
+  "Automate M-% C-q C-m RET RET !"
+  (interactive)
+  (set-buffer-file-coding-system 'unix))
+
+(defun unix2dos ()
+  "Automate M-% C-q C-j RET C-q C-m C-q C-j RET !"
+  (interactive)
+  (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
 (defun my-occur (&optional arg)

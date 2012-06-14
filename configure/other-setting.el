@@ -6,7 +6,6 @@
 ;;Filecode Autoprocess
 ;;distct with mpg123
 (require 'unicad)
-;(unicad-disable)
 
 ;;my unicad enable/disable switch
 (defun my-unicad-switch ()
@@ -384,8 +383,8 @@ Emacs buffer are those starting with “*”."
 ;(require 'moccur-edit)
 
 ;;http://emacswiki.org/emacs/Evil
-(zz-load-path "site-lisp/evil")
-(require 'evil)
+;(zz-load-path "site-lisp/evil")
+;(require 'evil)
 
 ;;bookmark
 (require 'breadcrumb)
@@ -457,10 +456,6 @@ Emacs buffer are those starting with “*”."
   (if (thing-at-point 'word)
       (occur (thing-at-point 'word))
       (call-interactively 'occur)))
-
-(require 'fm)
-(add-hook 'occur-mode-hook 'fm-start)
-(add-hook 'compilation-mode-hook 'fm-start)
 
 (provide 'other-setting)
 

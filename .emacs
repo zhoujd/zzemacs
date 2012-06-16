@@ -2,20 +2,6 @@
 ;;;
 
 (defvar zzemacs-path "~/zzemacs/" "zzemacs`s path")
-(defvar zz-setting-list '(
-                          "common-setting.el"
-                          "other-setting.el"
-                          "media-setting.el"
-                          "prog-setting.el"
-                          "c-setting.el"
-                          "lisp-setting.el"
-                          "perl-setting.el"
-                          "python-setting.el"
-                          "java-setting.el"
-                          ;"csharp-setting.el"
-                          ;"php-setting"
-                          "key-setting.el"
-                          ))
 
 (defun zz-add-os-path (path)
   (interactive "DDirectory: ")
@@ -35,7 +21,22 @@
   (load-file (concat zzemacs-path "configure/" file)))
 
 (zz-add-os-path (concat zzemacs-path "bin"))
-(mapcar 'zz-load-configure zz-setting-list)
+(zz-load-path "configure")
+(mapcar 'require
+        '(
+          common-setting
+          other-setting
+          media-setting
+          prog-setting
+          c-setting
+          lisp-setting
+          perl-setting
+          python-setting
+          java-setting
+          csharp-setting
+          php-setting
+          key-setting
+          ))
 
 ;;develop setting for tags path etc.
 (defvar zz-dev-set-file "temp-setting.el")

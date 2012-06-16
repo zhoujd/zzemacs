@@ -334,11 +334,11 @@
 (ido-mode t)
 
 (custom-set-faces
- '(ido-subdir            ((t (:foreground "#66ff00"))))  ;; Face used by ido for highlighting subdirs in the alternatives.
- '(ido-first-match       ((t (:foreground "#ccff66"))))  ;; Face used by ido for highlighting first match.
- '(ido-only-match        ((t (:foreground "#ffcc33"))))  ;; Face used by ido for highlighting only match.
- '(ido-indicator         ((t (:foreground "#ffffff"))))  ;; Face used by ido for highlighting its indicators (don't actually use this)
- '(ido-incomplete-regexp ((t (:foreground "#ffffff"))))) ;; Ido face for indicating incomplete regexps. (don't use this either)
+ '(ido-subdir            ((t (:foreground "#66ff00"))))
+ '(ido-first-match       ((t (:foreground "#ccff66"))))
+ '(ido-only-match        ((t (:foreground "#ffcc33"))))
+ '(ido-indicator         ((t (:foreground "#ffffff"))))
+ '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
 
 ;;shell settting
 (custom-set-variables
@@ -427,7 +427,8 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;recentf/undo-kill-buffer
 (setq recentf-menu-open-all-flag t
       recentf-max-saved-items 100
-      recentf-max-menu-items 30)
+      recentf-max-menu-items  30
+      recentf-exclude '("/tmp/" "/ssh:"))
 
 (recentf-mode t)
 (defadvice recentf-track-closed-file (after push-beginning activate)

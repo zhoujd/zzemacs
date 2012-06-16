@@ -375,7 +375,7 @@ Emacs buffer are those starting with “*”."
 
 ;;https://github.com/nonsequitur/smex/
 ;(require 'smex)  
-;(smex-initialize)  
+;(smex-initialize)
 ;(global-set-key (kbd "M-x") 'smex)  
 ;(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
 ;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)

@@ -26,9 +26,10 @@
 ;(global-set-key (kbd "<f12> <f1>") 'evil-mode))
 
 ;;for info
-(global-set-key [M-f1] 'info)
-(when (fboundp 'vm)
-  (global-set-key [C-f1] 'vm))
+(global-set-key [M-f1]   'info)
+(global-set-key [C-f1]   'vm)
+(global-set-key [S-f1]   'recentf-open-files)
+(global-set-key [C-S-f1] 'recentf-open-files-compl)
 
 (global-set-key [(control f2)] 'bc-set)
 (global-set-key [(f2)]         'bc-next)

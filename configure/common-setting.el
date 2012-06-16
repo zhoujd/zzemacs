@@ -101,8 +101,8 @@
 ;;color theme
 (zz-load-path "site-lisp/color-theme")
 (require 'color-theme)
+(require 'color-theme-blackboard)
 (color-theme-initialize)
-(zz-load-file "site-lisp/color-theme-blackboard.el")
 
 (setq color-theme-choices '(color-theme-gnome2
                             color-theme-blackboard

@@ -467,15 +467,16 @@ Emacs buffer are those starting with “*”."
 (fset 'mkdir 'make-directory)
 (fset 'rmdir 'delete-directory)
 
+;;Disabled commands
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)
+
 (defun named-shell (name directory)
   (interactive "MShell name: \nDIn directory: ")
   (switch-to-buffer (concat "*" name "*"))
   (cd directory)
   (shell (current-buffer)))
-
-(defun named-term (cmd name)
-  (interactive "fProgram: \nMTerminal name: ")
-  (ansi-term cmd name))
 
 (provide 'other-setting)
 

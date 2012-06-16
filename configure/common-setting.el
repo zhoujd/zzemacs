@@ -104,19 +104,23 @@
 (color-theme-initialize)
 (zz-load-file "site-lisp/color-theme-blackboard.el")
 
+(setq color-theme-choices '(color-theme-gnome2
+                            color-theme-blackboard
+                            color-theme-blackboard2
+                            color-theme-dark-laptop
+                            color-theme-midnight
+                            color-theme-deep-blue
+                            color-theme-arjen
+                            color-theme-standard))
+
 (if window-system
     (progn
-      (color-theme-gnome2)
-      ;;(color-theme-blackboard)
-      ;;(color-theme-deep-blue)
-      ;;(color-theme-midnight)
-      ;;(color-theme-arjen)
-      ;;(color-theme-dark-laptop)
-    )
+      (funcall (nth 0 color-theme-choices))
+      ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
+      )
     (progn
       (set-face-background 'default "black")
-      (set-face-foreground 'default "gray")
-    ))
+      (set-face-foreground 'default "gray")))
 
 ;; set default-frame-alist
 (if window-system

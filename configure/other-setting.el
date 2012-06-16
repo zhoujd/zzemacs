@@ -301,19 +301,24 @@ Emacs buffer are those starting with “*”."
 
 ;; create shell 
 (defun shell-create-by-name (shell-name)
- (interactive)
- (shell shell-name)
- (delete-other-windows))
+  (interactive)
+  (shell shell-name)
+  (delete-other-windows))
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
-;(require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
-(require 'multi-term)
-(setq multi-term-switch-after-close nil)
-(setq multi-term-dedicated-select-after-open-p t)
-(setq multi-term-program "/bin/bash")
-(add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape))
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+  (progn
+    (require 'multi-shell))
+  (progn
+    (require 'multi-term)
+    (setq multi-term-switch-after-close nil)
+    (setq multi-term-dedicated-select-after-open-p t)
+    (setq multi-term-program "/bin/bash")
+    (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
+  )
 
 (defun term-send-esc ()
   "Send ESC in term mode."
@@ -323,16 +328,16 @@ Emacs buffer are those starting with “*”."
 (defun last-term-buffer (l)
   "Return most recently used term buffer."
   (when l
-	(if (eq 'term-mode (with-current-buffer (car l) major-mode))
-	    (car l) (last-term-buffer (cdr l)))))
+    (if (eq 'term-mode (with-current-buffer (car l) major-mode))
+        (car l) (last-term-buffer (cdr l)))))
 
 (defun get-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
   (let ((b (last-term-buffer (buffer-list))))
-	(if (or (not b) (eq 'term-mode major-mode))
-	    (multi-term)
+    (if (or (not b) (eq 'term-mode major-mode))
+        (multi-term)
         (switch-to-buffer b))))
 
 (defun it-multi-term-dedicated-toggle ()
@@ -344,9 +349,8 @@ Emacs buffer are those starting with “*”."
         (switch-to-buffer-other-window old-buf))
       (progn
         (setq old-buf (current-buffer))
-        (multi-term-dedicated-toggle))
-      )
-  )
+        (multi-term-dedicated-toggle))))
+
 
 (defun kill-buffer-when-exit ()
   "Close assotiated buffer when a process exited"

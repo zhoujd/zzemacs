@@ -55,8 +55,10 @@
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
  (progn ;; For Windows
-   (global-set-key [f6] 'edit-with-gvim)
-   )
+   (global-set-key [f6]   'multi-shell-new)
+   (global-set-key [S-f6] 'multi-shell-current-directory)
+   (global-set-key [C-f6] 'multi-shell-prev)
+   (global-set-key [M-f6] 'multi-shell-next))   
  (progn ;; For Linux
    (global-set-key [f6]   'get-term)
    (global-set-key [S-f6] 'multi-term-dedicated-toggle)

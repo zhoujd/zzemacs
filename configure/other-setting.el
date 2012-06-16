@@ -461,6 +461,22 @@ Emacs buffer are those starting with “*”."
       (occur (thing-at-point 'word))
       (call-interactively 'occur)))
 
+(fset 'rm 'delete-file)
+(fset 'mv 'rename-file)
+(fset 'cp 'copy-file)
+(fset 'mkdir 'make-directory)
+(fset 'rmdir 'delete-directory)
+
+(defun named-shell (name directory)
+  (interactive "MShell name: \nDIn directory: ")
+  (switch-to-buffer (concat "*" name "*"))
+  (cd directory)
+  (shell (current-buffer)))
+
+(defun named-term (cmd name)
+  (interactive "fProgram: \nMTerminal name: ")
+  (ansi-term cmd name))
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

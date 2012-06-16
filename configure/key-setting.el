@@ -151,7 +151,7 @@
 (global-set-key (kbd "C-,") 'winner-undo)
 (global-set-key (kbd "C-.") 'winner-redo)
 
-(global-set-key (kbd "%") 'goto-match-paren)
+(global-set-key (kbd "%") 'match-paren)
 
 (global-unset-key [backspace])
 (global-set-key   [backspace] 'delete-backward-char)

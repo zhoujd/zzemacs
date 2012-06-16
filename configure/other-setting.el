@@ -241,13 +241,13 @@ Emacs buffer are those starting with “*”."
   (save-buffer)
   (message "this file to utf-8 ok!"))
 
-(defun to-scratch ()
+(defun switch-to-scratch ()
   "switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun to-compilation ()
+(defun switch-to-compilation ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")

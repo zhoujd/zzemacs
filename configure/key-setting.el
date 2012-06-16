@@ -64,7 +64,7 @@
  )
 
 (global-set-key [f7]     'compile)
-(global-set-key [S-f7]   'to-compilation)
+(global-set-key [S-f7]   'switch-to-compilation)
 (global-set-key [C-f7]   'next-error)
 (global-set-key [M-f7]   'previous-error)
 (global-set-key [C-S-f7] 'previous-error)
@@ -76,7 +76,7 @@
 (global-set-key [C-f8]   'gdb-restore-windows)
 
 (global-set-key [f9]   'shell)
-(global-set-key [C-f9] 'to-scratch)
+(global-set-key [C-f9] 'switch-to-scratch)
 (global-set-key [M-f9] 'popup-term)
 (global-set-key [S-f9] 'popup-term)
 

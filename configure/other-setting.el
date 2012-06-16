@@ -477,16 +477,15 @@ Emacs buffer are those starting with “*”."
   "switch to named shell buffer it not exist creat it by name"
   (interactive(list (ido-completing-read "Shell name: " ())))
   (let ((buf-name  (concat "*" name "*")))
-    (if (get-buffer name)
+    (if (get-buffer buf-name)
         (progn 
-          (switch-to-buffer name)
-          (message "switch to %s" buf-name))
+          (switch-to-buffer buf-name))
         (progn
           (let ((dir (read-directory-name "Shell directory: " nil default-directory t)))
             (cd dir)
             (shell buf-name)
-            (push buf-name my-shell-list))
-          (message "switch to %s" buf-name)))
+            (push buf-name my-shell-list))))
+    (message "switch to %s" buf-name)    
     (delete-other-windows)))
 
 (provide 'other-setting)

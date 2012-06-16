@@ -471,9 +471,11 @@ Emacs buffer are those starting with “*”."
   (cd directory)
   (shell (current-buffer)))
 
-(setq my-shell-list ())
+;(setq my-shell-list ())
+;(interactive(list (ido-completing-read "Shell name: " my-shell-list)))
 (defun switch-to-shell (name &optional dir)
-  (interactive (list (ido-completing-read "Shell name: " my-shell-list)))
+  "switch to named shell buffer it not exist creat it by name"
+  (interactive (list (completing-read "Shell name: " nil nil nil nil)))
   (let ((buf-name  (concat "*" name "*")))
     (if (get-buffer name)
         (progn 

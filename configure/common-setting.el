@@ -472,8 +472,6 @@ Dmitriy Igrishin's patched version of comint.el."
       (if (boundp 'w32-quote-process-args)
           (setq w32-quote-process-args ?\"))))
 
-(message "common-setting is end")
-
 (provide 'common-setting)
 
 ;;; common-setting.el ends here

@@ -245,16 +245,6 @@ the mru bookmark stack."
 
 ;;gud setting
 (require 'gdb-ui)
-(defun gdb-or-gud-go ()
-  "If gdb isn't running; run gdb, else call gud-go."
-  (interactive)
-  (if (and gud-comint-buffer
-           (buffer-name gud-comint-buffer)
-           (get-buffer-process gud-comint-buffer)
-           (with-current-buffer gud-comint-buffer (eq gud-minor-mode 'gdba)))
-      (gud-call (if gdb-active-process "continue" "run") "")
-    (gdb (gud-query-cmdline 'gdb))))
-
 (defun gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
@@ -267,7 +257,14 @@ the mru bookmark stack."
   "Kill gdb process."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))
-  (kill-process (get-buffer-process gud-comint-buffer)))
+  (dolist (buffer '(gdba gdb-stack-buffer gdb-breakpoints-buffer
+                         gdb-threads-buffer gdb-inferior-io
+                         gdb-registers-buffer gdb-memory-buffer
+                         gdb-locals-buffer gdb-assembler-buffer))
+    (when (gdb-get-buffer buffer)
+      (let ((proc (get-buffer-process (gdb-get-buffer buffer))))
+        (when proc (set-process-query-on-exit-flag proc nil)))
+      (kill-buffer (gdb-get-buffer buffer)))))
 
 ;;SVN Support
 ;(require 'psvn)

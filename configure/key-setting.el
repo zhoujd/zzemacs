@@ -36,12 +36,13 @@
 (global-set-key [C-S-f2]       'bc-list)
 (global-set-key [(meta f2)]    'bc-list)
 
-(global-set-key [f3]   'my-last-buffer-go)
-(global-set-key [C-f3] 'list-bookmarks)
-(global-set-key [M-f3] 'my-occur)
+(global-set-key [f3]     'my-last-buffer-go)
+(global-set-key [C-f3]   'list-bookmarks)
+(global-set-key [C-S-f3] 'etags-stack-show)
+(global-set-key [M-f3]   'my-occur)
 
 (global-set-key [f4]   'kill-this-buffer)
-(global-set-key [C-f4] 'etags-stack-show)
+(global-set-key [C-f4] 'undo-kill-buffer)
 
 (global-set-key [S-f3] 'cscope-prev-symbol)
 (global-set-key [S-f4] 'cscope-next-symbol)
@@ -70,7 +71,7 @@
 
 (global-set-key [f8]     'gdb)
 (global-set-key [M-f8]   'gud-tooltip-mode)
-(global-set-key [C-S-f8] 'gud-tooltip-mode)
+(global-set-key [C-S-f8] 'gud-kill)
 (global-set-key [S-f8]   'gdb-many-windows)
 (global-set-key [C-f8]   'gdb-restore-windows)
 
@@ -109,22 +110,14 @@
 ;;gud control setting
 (global-set-key (kbd "M-5") 'gud-go)
 (global-set-key (kbd "C-5") 'gud-until)
-
 (global-set-key (kbd "M-6") 'gud-break-remove)
 (global-set-key (kbd "C-6") 'gud-watch)
-
 (global-set-key (kbd "M-7") 'gud-next)
 (global-set-key (kbd "C-7") 'gud-finish)
-
 (global-set-key (kbd "M-8") 'gud-step)
 (global-set-key (kbd "C-8") 'gud-jump)
-
 (global-set-key (kbd "M-9") 'gud-print)
 (global-set-key (kbd "C-9") 'gud-pstar)
-
-(global-set-key (kbd "M-0") 'other-window)
-(global-set-key (kbd "C-0") 'other-frame)
-
 ;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
 (global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
@@ -134,6 +127,9 @@
 (global-set-key (kbd "<f1> 0") 'gdb-use-separate-io-buffer)
 (global-set-key (kbd "<f1> -") 'gud-up)
 (global-set-key (kbd "<f1> =") 'gud-down)
+
+(global-set-key (kbd "M-0") 'other-window)
+(global-set-key (kbd "C-0") 'other-frame)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -155,7 +151,7 @@
 (global-set-key (kbd "C-,") 'winner-undo)
 (global-set-key (kbd "C-.") 'winner-redo)
 
-(global-set-key (kbd "%") 'match-paren)
+(global-set-key (kbd "%") 'goto-match-paren)
 
 (global-unset-key [backspace])
 (global-set-key   [backspace] 'delete-backward-char)

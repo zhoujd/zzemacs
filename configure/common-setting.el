@@ -420,6 +420,32 @@ Dmitriy Igrishin's patched version of comint.el."
 	   (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
        ad-do-it))
 
+;;recentf/undo-kill-buffer
+(setq recentf-menu-open-all-flag t
+      recentf-max-saved-items 100
+      recentf-max-menu-items 30)
+
+(recentf-mode t)
+(defadvice recentf-track-closed-file (after push-beginning activate)
+  "Move current buffer to the beginning of the recent list after killed."
+  (recentf-track-opened-file))
+
+(defun undo-kill-buffer (arg)
+  "Re-open the last buffer killed. With ARG, re-open the nth buffer."
+  (interactive "p")
+  (let ((recently-killed-list (copy-sequence recentf-list))
+        (buffer-files-list
+         (delq nil (mapcar (lambda (buf)
+                             (when (buffer-file-name buf)
+                               (expand-file-name (buffer-file-name buf))))
+                           (buffer-list)))))
+    (mapc
+     (lambda (buf-file)
+       (setq recently-killed-list
+             (delete buf-file recently-killed-list)))
+     buffer-files-list)
+    (find-file (nth (- arg 1) recently-killed-list))))
+
 ;;windows shell setting
 (if (or (eq window-system 'w32) (eq window-system 'win32))
     (progn 

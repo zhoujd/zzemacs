@@ -16,11 +16,11 @@
 
 ;;switch to shells
 (define-key f12-map [f9]
-  (lambda () (interactive) (shell-create-by-name "*shell-f9*")))
+  (lambda () (interactive) (switch-to-shell "shell-f9")))
 (define-key f12-map [f10]
-  (lambda () (interactive) (shell-create-by-name "*shell-f10*")))
+  (lambda () (interactive) (switch-to-shell "shell-f10")))
 (define-key f12-map [f11]
-  (lambda () (interactive) (shell-create-by-name "*shell-f11*")))
+  (lambda () (interactive) (switch-to-shell "shell-f11")))
 
 ;;evil mode
 ;(global-set-key (kbd "<f12> <f1>") 'evil-mode))

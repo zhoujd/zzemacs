@@ -298,13 +298,6 @@ Emacs buffer are those starting with “*”."
  '(uniquify-buffer-name-style 'reverse)
  '(uniquify-after-kill-buffer-p t))
 
-
-;; create shell 
-(defun shell-create-by-name (shell-name)
-  (interactive)
-  (shell shell-name)
-  (delete-other-windows))
-
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
@@ -477,6 +470,19 @@ Emacs buffer are those starting with “*”."
   (switch-to-buffer (concat "*" name "*"))
   (cd directory)
   (shell (current-buffer)))
+
+(defun switch-to-shell (name &optional dir)
+  (interactive (list (completing-read "Shell name: " nil nil nil (thing-at-point 'word)))) 
+  (let ((buf-name  (concat "*" name "*")))
+    (if (get-buffer buf-name)
+        (progn 
+          (switch-to-buffer buf-name))
+        (progn
+          (let ((dir (read-directory-name "Shell directory: " nil default-directory t)))
+            (cd dir)
+            (shell buf-name))))
+    (delete-other-windows)
+    (message "switch to %s" buf-name)))
 
 (provide 'other-setting)
 

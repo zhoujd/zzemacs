@@ -479,9 +479,9 @@ Emacs buffer are those starting with “*”."
          (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
          (buffer-name b))
       (progn
-        (print (buffer-name b))
         (setq my-shells (cons  (buffer-name b) my-shells)))))
- ;(return my-shells)
+  (catch 'return
+    (throw 'return my-shells))
   )
 
 (print (my-shell-list))
@@ -489,7 +489,7 @@ Emacs buffer are those starting with “*”."
 
 (defun switch-to-shell (name &optional dir)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (my-shell-list)  (ido-completing-read "Shell name: " my-shells)))
+  (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
   (let ((buf-name  (concat "*" name "*")))
     (if (get-buffer buf-name)
         (progn 

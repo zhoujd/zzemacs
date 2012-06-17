@@ -81,7 +81,7 @@
 (global-set-key [f9]   'shell)
 (global-set-key [C-f9] 'switch-to-scratch)
 (global-set-key [M-f9] 'popup-term)
-(global-set-key [S-f9] 'popup-term)
+(global-set-key [S-f9] 'switch-to-shell)
 
 (global-set-key [C-f10] 'tool-bar-mode)
 (global-set-key [S-f10] 'menu-bar-mode)

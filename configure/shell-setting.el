@@ -1,0 +1,160 @@
+;;;; shell-setting.el --- sample config file
+;;;
+
+;;shell settting
+(custom-set-variables
+ '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
+ '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
+ '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
+ '(comint-completion-autolist t)        ; show completion list when ambiguous
+ '(comint-input-ignoredups t)           ; no duplicates in command history
+ '(comint-completion-addsuffix t)       ; insert space/slash after file completion
+ )
+
+;;commamd prompt read only
+(setq comint-prompt-read-only nil)
+
+; interpret and use ansi color codes in shell output windows
+(ansi-color-for-comint-mode-on)
+
+;; automatically_close_completions_in_emacs_shell_comint_mode.txt
+(defun comint-close-completions ()
+  "Close the comint completions buffer.
+Used in advice to various comint functions to automatically close
+the completions buffer as soon as I'm done with it. Based on
+Dmitriy Igrishin's patched version of comint.el."
+  (if comint-dynamic-list-completions-config
+      (progn
+        (set-window-configuration comint-dynamic-list-completions-config)
+        (setq comint-dynamic-list-completions-config nil))))
+
+(defadvice comint-send-input (after close-completions activate)
+  (comint-close-completions))
+
+(defadvice comint-dynamic-complete-as-filename (after close-completions activate)
+  (if ad-return-value (comint-close-completions)))
+
+(defadvice comint-dynamic-simple-complete (after close-completions activate)
+  (if (member ad-return-value '('sole 'shortest 'partial))
+      (comint-close-completions)))
+
+(defadvice comint-dynamic-list-completions (after close-completions activate)
+    (comint-close-completions)
+    (if (not unread-command-events)
+        ;; comint's "Type space to flush" swallows space. put it back in.
+        (setq unread-command-events (listify-key-sequence " "))))
+
+(defun kill-shell-buffer(process event)
+  "The one actually kill shell buffer when exit. "
+  (kill-buffer (process-buffer process))
+  )
+(defun kill-shell-buffer-after-exit()
+  "kill shell buffer when exit."
+  (set-process-sentinel (get-buffer-process (current-buffer))
+                        #'kill-shell-buffer)
+  )
+(add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
+
+;;windows shell setting
+(if (or (eq window-system 'w32) (eq window-system 'win32))
+    (progn 
+      ;;set current shell
+      (setq shell-file-name "bash")
+      (setq shell-command-switch "-c")
+      (setq explicit-shell-file-name shell-file-name)
+      (setenv "SHELL" shell-file-name)
+      (setq explicit-sh-args '("--login" "-i"))
+      (if (boundp 'w32-quote-process-args)
+          (setq w32-quote-process-args ?\"))))
+
+;;popup term
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+    (setq popup-terminal-command '("cmd" "/c" "start"))
+    (setq popup-terminal-command '("gnome-terminal")))
+(defun popup-term ()
+  (interactive)
+  (apply 'start-process "terminal" nil popup-terminal-command)
+  )
+
+;;http://www.emacswiki.org/emacs/multi-shell.el
+;;http://www.emacswiki.org/emacs/MultiTerm
+;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
+(if (or (eq window-system 'w32)
+        (eq window-system 'win32))
+  (progn
+    (require 'multi-shell))
+  (progn
+    (require 'multi-term)
+    (setq multi-term-switch-after-close nil)
+    (setq multi-term-dedicated-select-after-open-p t)
+    (setq multi-term-program "/bin/bash")
+    (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
+  )
+
+(defun term-send-esc ()
+  "Send ESC in term mode."
+  (interactive)
+  (term-send-raw-string "\e"))
+
+(defun last-term-buffer (l)
+  "Return most recently used term buffer."
+  (when l
+    (if (eq 'term-mode (with-current-buffer (car l) major-mode))
+        (car l) (last-term-buffer (cdr l)))))
+
+(defun get-term ()
+  "Switch to the term buffer last used, or create a new one if
+    none exists, or if the current buffer is already a term."
+  (interactive)
+  (let ((b (last-term-buffer (buffer-list))))
+    (if (or (not b) (eq 'term-mode major-mode))
+        (multi-term)
+        (switch-to-buffer b))))
+
+(defun it-multi-term-dedicated-toggle ()
+  "jump back to previous location after toggling ded term off"
+  (interactive)
+  (if (multi-term-dedicated-exist-p)
+      (progn
+        (multi-term-dedicated-toggle)
+        (switch-to-buffer-other-window old-buf))
+      (progn
+        (setq old-buf (current-buffer))
+        (multi-term-dedicated-toggle))))
+
+(defun named-shell (name directory)
+  (interactive "MShell name: \nDIn directory: ")
+  (switch-to-buffer (concat "*" name "*"))
+  (cd directory)
+  (shell (current-buffer)))
+
+;; switch to named shell
+(defun my-shell-list ()
+  (setq my-shells ())
+  (dolist (b (buffer-list))
+    (if (string-match
+         (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
+         (buffer-name b))
+      (progn
+        (setq my-shells (cons  (buffer-name b) my-shells)))))
+  (catch 'return
+    (throw 'return my-shells)))
+
+(defun switch-to-shell (buf-name &optional dir)
+  "switch to named shell buffer it not exist creat it by name"
+  (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
+  (if (get-buffer buf-name)
+      (progn 
+        (switch-to-buffer buf-name))
+      (progn
+        (let ((dir (read-directory-name "Shell directory: " nil default-directory t)))
+          (cd dir)
+          (shell buf-name))))
+  (message "switch to %s" buf-name)    
+  (delete-other-windows))
+
+
+(provide 'shell-setting)
+
+;;; shell-setting.el ends here

@@ -264,15 +264,6 @@
 
 (winner-mode t)
 
-;;session + desktop
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
-(setq session-save-file-coding-system 'utf-8)
-
-(load "desktop")
-(desktop-load-default)
-(desktop-read)
-
 ;;buffer name in title
 (setq frame-title-format
       (list "zhoujd@"
@@ -340,60 +331,6 @@
  '(ido-indicator         ((t (:foreground "#ffffff"))))
  '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
 
-;;shell settting
-(custom-set-variables
- '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
- '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
- '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
- '(comint-completion-autolist t)        ; show completion list when ambiguous
- '(comint-input-ignoredups t)           ; no duplicates in command history
- '(comint-completion-addsuffix t)       ; insert space/slash after file completion
- )
-
-;;commamd prompt read only
-(setq comint-prompt-read-only nil)
-
-; interpret and use ansi color codes in shell output windows
-(ansi-color-for-comint-mode-on)
-
-;; automatically_close_completions_in_emacs_shell_comint_mode.txt
-(defun comint-close-completions ()
-  "Close the comint completions buffer.
-Used in advice to various comint functions to automatically close
-the completions buffer as soon as I'm done with it. Based on
-Dmitriy Igrishin's patched version of comint.el."
-  (if comint-dynamic-list-completions-config
-      (progn
-        (set-window-configuration comint-dynamic-list-completions-config)
-        (setq comint-dynamic-list-completions-config nil))))
-
-(defadvice comint-send-input (after close-completions activate)
-  (comint-close-completions))
-
-(defadvice comint-dynamic-complete-as-filename (after close-completions activate)
-  (if ad-return-value (comint-close-completions)))
-
-(defadvice comint-dynamic-simple-complete (after close-completions activate)
-  (if (member ad-return-value '('sole 'shortest 'partial))
-      (comint-close-completions)))
-
-(defadvice comint-dynamic-list-completions (after close-completions activate)
-    (comint-close-completions)
-    (if (not unread-command-events)
-        ;; comint's "Type space to flush" swallows space. put it back in.
-        (setq unread-command-events (listify-key-sequence " "))))
-
-(defun kill-shell-buffer(process event)
-  "The one actually kill shell buffer when exit. "
-  (kill-buffer (process-buffer process))
-  )
-(defun kill-shell-buffer-after-exit()
-  "kill shell buffer when exit."
-  (set-process-sentinel (get-buffer-process (current-buffer))
-                        #'kill-shell-buffer)
-  )
-(add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
-
 ;;dired setting
 (setq dired-recursive-deletes t)
 (setq dired-recursive-copies t)
@@ -459,18 +396,6 @@ Dmitriy Igrishin's patched version of comint.el."
            (prompt (append '("File name: ") tocpl))
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
-
-;;windows shell setting
-(if (or (eq window-system 'w32) (eq window-system 'win32))
-    (progn 
-      ;;set current shell
-      (setq shell-file-name "bash")
-      (setq shell-command-switch "-c")
-      (setq explicit-shell-file-name shell-file-name)
-      (setenv "SHELL" shell-file-name)
-      (setq explicit-sh-args '("--login" "-i"))
-      (if (boundp 'w32-quote-process-args)
-          (setq w32-quote-process-args ?\"))))
 
 (provide 'common-setting)
 

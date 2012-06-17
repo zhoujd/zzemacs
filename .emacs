@@ -26,6 +26,8 @@
         '(
           common-setting
           other-setting
+          shell-setting
+          sample-setting
           media-setting
           prog-setting
           c-setting

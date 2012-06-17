@@ -472,10 +472,17 @@ Emacs buffer are those starting with “*”."
   (shell (current-buffer)))
 
 ;; switch to named shell
-(setq my-shell-list ())
+(defun my-shell-list ()
+  (remove-if-not (lambda (b)
+                    (setq case-fold-search t)
+                    (string-match
+                     (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
+                     (buffer-name b)))
+                  (buffer-list)))
+
 (defun switch-to-shell (name &optional dir)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive(list (ido-completing-read "Shell name: " ())))
+  (interactive (list (ido-completing-read "Shell name: " ())))
   (let ((buf-name  (concat "*" name "*")))
     (if (get-buffer buf-name)
         (progn 
@@ -483,8 +490,7 @@ Emacs buffer are those starting with “*”."
         (progn
           (let ((dir (read-directory-name "Shell directory: " nil default-directory t)))
             (cd dir)
-            (shell buf-name)
-            (push buf-name my-shell-list))))
+            (shell buf-name))))
     (message "switch to %s" buf-name)    
     (delete-other-windows)))
 

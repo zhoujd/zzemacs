@@ -130,12 +130,16 @@ Dmitriy Igrishin's patched version of comint.el."
   (shell (current-buffer)))
 
 ;; switch to named shell
+(setq multi-shell-buffer-name "shell")
 (defun my-shell-list ()
   (setq my-shells ())
   (dolist (b (buffer-list))
-    (if (string-match
-         (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
-         (buffer-name b))
+    (if (or (string-match
+             (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-shell-buffer-name)
+             (buffer-name b))
+            (string-match
+             (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
+             (buffer-name b)))
       (progn
         (setq my-shells (cons  (buffer-name b) my-shells)))))
   (catch 'return

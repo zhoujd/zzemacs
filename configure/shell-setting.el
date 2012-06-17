@@ -46,13 +46,13 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun kill-shell-buffer(process event)
   "The one actually kill shell buffer when exit. "
-  (kill-buffer (process-buffer process))
-  )
+  (kill-buffer (process-buffer process)))
+
 (defun kill-shell-buffer-after-exit()
   "kill shell buffer when exit."
   (set-process-sentinel (get-buffer-process (current-buffer))
-                        #'kill-shell-buffer)
-  )
+                        #'kill-shell-buffer))
+
 (add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
 
 ;;windows shell setting
@@ -72,10 +72,10 @@ Dmitriy Igrishin's patched version of comint.el."
         (eq window-system 'win32))
     (setq popup-terminal-command '("cmd" "/c" "start"))
     (setq popup-terminal-command '("gnome-terminal")))
+
 (defun popup-term ()
   (interactive)
-  (apply 'start-process "terminal" nil popup-terminal-command)
-  )
+  (apply 'start-process "terminal" nil popup-terminal-command))
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 ;;http://www.emacswiki.org/emacs/MultiTerm
@@ -158,6 +158,30 @@ Dmitriy Igrishin's patched version of comint.el."
   (message "switch to %s" buf-name)    
   (delete-other-windows))
 
+;; switch to named term
+(setq multi-term-buffer-name "term")
+(defun my-term-list ()
+  (setq my-terms ())
+  (dolist (b (buffer-list))
+    (if (or (string-match
+             (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-term-buffer-name)
+             (buffer-name b))
+            (string-match
+             (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
+             (buffer-name b)))
+      (progn
+        (setq my-terms (cons  (buffer-name b) my-terms)))))
+  (catch 'return
+    (throw 'return my-terms)))
+
+(defun switch-to-term (buf-name &optional dir)
+  "switch to named shell buffer it not exist creat it by name"
+  (interactive (list (ido-completing-read "Term name: " (my-term-list))))
+  (if (get-buffer buf-name)
+      (progn 
+        (switch-to-buffer buf-name)
+        (message "switch to %s" buf-name)    
+        (delete-other-windows))))
 
 (provide 'shell-setting)
 

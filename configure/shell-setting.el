@@ -163,12 +163,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun my-term-list ()
   (setq my-terms ())
   (dolist (b (buffer-list))
-    (if (or (string-match
-             (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-term-buffer-name)
-             (buffer-name b))
-            (string-match
-             (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
-             (buffer-name b)))
+    (if (string-match
+         (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
+         (buffer-name b))
       (progn
         (setq my-terms (cons  (buffer-name b) my-terms)))))
   (catch 'return

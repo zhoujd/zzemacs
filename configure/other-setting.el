@@ -473,16 +473,23 @@ Emacs buffer are those starting with “*”."
 
 ;; switch to named shell
 (defun my-shell-list ()
-  (remove-if-not (lambda (b)
-                    (setq case-fold-search t)
-                    (string-match
-                     (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
-                     (buffer-name b)))
-                  (buffer-list)))
+  (setq my-shells ())
+  (dolist (b (buffer-list))
+    (if (string-match
+         (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" "shell")
+         (buffer-name b))
+      (progn
+        (print (buffer-name b))
+        (setq my-shells (cons  (buffer-name b) my-shells)))))
+ ;(return my-shells)
+  )
+
+(print (my-shell-list))
+(print my-shells)
 
 (defun switch-to-shell (name &optional dir)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Shell name: " ())))
+  (interactive (list (my-shell-list)  (ido-completing-read "Shell name: " my-shells)))
   (let ((buf-name  (concat "*" name "*")))
     (if (get-buffer buf-name)
         (progn 

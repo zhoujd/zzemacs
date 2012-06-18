@@ -51,3 +51,5 @@
 (global-set-key [S-f2] 'my-f2-jmp-up)
 (global-set-key [M-f2] 'clear-f2)
 
+(provide 'my-f2-bm)
+

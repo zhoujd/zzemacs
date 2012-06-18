@@ -14,10 +14,10 @@
 ;;commamd prompt read only
 (setq comint-prompt-read-only nil)
 
-; interpret and use ansi color codes in shell output windows
+;;interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)
 
-;; automatically_close_completions_in_emacs_shell_comint_mode.txt
+;;automatically_close_completions_in_emacs_shell_comint_mode.txt
 (defun comint-close-completions ()
   "Close the comint completions buffer.
 Used in advice to various comint functions to automatically close

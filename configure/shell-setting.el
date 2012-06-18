@@ -9,10 +9,8 @@
  '(comint-completion-autolist t)        ; show completion list when ambiguous
  '(comint-input-ignoredups t)           ; no duplicates in command history
  '(comint-completion-addsuffix t)       ; insert space/slash after file completion
+ '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command
  )
-
-;;commamd prompt read only
-(setq comint-prompt-read-only nil)
 
 ;;interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)

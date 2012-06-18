@@ -33,10 +33,9 @@
 ;;Excluded buffers in tabbar
 ;(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*"))
 
-; turn on the tabbar
+;;turn on the tabbar
 (tabbar-mode t)
-; define all tabs to be one of 3 possible groups: “Emacs Buffer”, “Dired”,
-;“User Buffer”.
+;;define all tabs to be one of 2 possible groups: “Emacs Buffer”, “User Buffer”.
 (defun tabbar-buffer-groups ()
   "Return the list of group names the current buffer belongs to.
 This function is a custom function for tabbar-mode's tabbar-buffer-groups.
@@ -144,7 +143,6 @@ Emacs buffer are those starting with “*”."
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (custom-set-variables
@@ -202,8 +200,7 @@ Emacs buffer are those starting with “*”."
                                          (w32-browser
                                           (dired-replace-in-string
                                            "/" "\\"
-                                           (dired-get-filename))))))
-  )
+                                           (dired-get-filename)))))))
 
 ;;Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()
@@ -218,8 +215,7 @@ Emacs buffer are those starting with “*”."
         (eq window-system 'win32))
     (progn
       (setq find-program "\"find2.exe\"")
-      (setq grep-program "\"grep.exe\"")
-      ))
+      (setq grep-program "\"grep.exe\"")))
 
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)

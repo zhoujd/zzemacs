@@ -78,19 +78,16 @@ Dmitriy Igrishin's patched version of comint.el."
   (apply 'start-process "terminal" nil popup-terminal-command))
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
+(require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-  (progn
-    (require 'multi-shell))
-  (progn
-    (require 'multi-term)
-    (setq multi-term-switch-after-close nil)
-    (setq multi-term-dedicated-select-after-open-p t)
-    (setq multi-term-program "/bin/bash")
-    (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
-  )
+(unless (or (eq window-system 'w32)
+            (eq window-system 'win32)) 
+  (require 'multi-term)
+  (setq multi-term-switch-after-close nil)
+  (setq multi-term-dedicated-select-after-open-p t)
+  (setq multi-term-program "/bin/bash")
+  (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
 
 (defun term-send-esc ()
   "Send ESC in term mode."

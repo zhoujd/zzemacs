@@ -55,10 +55,11 @@
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
  (progn ;; For Windows
-   (global-set-key [f6]   'multi-shell-new)
-   (global-set-key [S-f6] 'multi-shell-current-directory)
-   (global-set-key [C-f6] 'multi-shell-prev)
-   (global-set-key [M-f6] 'multi-shell-next))   
+   (global-set-key [f6]     'multi-shell-new)
+   (global-set-key [S-f6]   'multi-shell-current-directory)
+   (global-set-key [C-S-f6] 'switch-to-shell)
+   (global-set-key [C-f6]   'multi-shell-prev)
+   (global-set-key [M-f6]   'multi-shell-next))   
  (progn ;; For Linux
    (global-set-key [f6]     'get-term)
    (global-set-key [S-f6]   'multi-term-dedicated-toggle)
@@ -78,10 +79,11 @@
 (global-set-key [S-f8]   'gdb-many-windows)
 (global-set-key [C-f8]   'gdb-restore-windows)
 
-(global-set-key [f9]   'shell)
-(global-set-key [C-f9] 'switch-to-scratch)
-(global-set-key [M-f9] 'popup-term)
-(global-set-key [S-f9] 'switch-to-shell)
+(global-set-key [f9]     'shell)
+(global-set-key [S-f9]   'multi-shell-new)
+(global-set-key [C-f9]   'switch-to-scratch)
+(global-set-key [M-f9]   'popup-term)
+(global-set-key [C-S-f9] 'switch-to-shell)
 
 (global-set-key [C-f10] 'tool-bar-mode)
 (global-set-key [S-f10] 'menu-bar-mode)

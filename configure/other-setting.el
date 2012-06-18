@@ -45,7 +45,8 @@ Those Dired, those user buffer, and those emacs buffer.
 Emacs buffer are those starting with “*”."
   (list
    (cond
-    ((string-equal "*" (substring (buffer-name) 0 1))
+    ((or (string-match "\\*.*\\*"  (buffer-name))
+         (string-match "^ "  (buffer-name)))
      "Emacs Buffer"
      )
     (t

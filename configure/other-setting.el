@@ -87,32 +87,12 @@ Emacs buffer are those starting with “*”."
                     :foreground "grey50"
                     :height 0.8)
 
-;; switch buffer exclude temp buffer
-;; swbuff Ctrl+(left/right)
-(require 'swbuff)
-(setq swbuff-exclude-buffer-regexps  '("^ " "\\*.*\\*"))
-(setq swbuff-status-window-layout 'scroll)
-(setq swbuff-clear-delay 2)
-(setq swbuff-separator "|")
-(setq swbuff-window-min-text-height 1)
-
-;; mswbuff  Ctrl+(,/.)
-(require 'mswbuff)
-(setq mswbuff-exclude-buffer-regexps  '("^[^\*]"))
-(setq mswbuff-status-window-layout 'scroll)
-(setq mswbuff-clear-delay 2)
-(setq mswbuff-separator "|")
-(setq mswbuff-window-min-text-height 1)
-
 ;; space tab show
 ;(require 'jaspace)
 ;(setq jaspace-alternate-eol-string "\xab\n")
 ;(setq jaspace-highlight-tabs t) ; highlight tabs ; ...
 
 (require 'blank-mode)
-;(defvar blank-bg-color "#0C1021")
-;(defvar blank-fg-color "gray30")
-
 (defvar blank-bg-color (background-color-at-point))
 (defvar blank-fg-color "gray20")
 
@@ -164,7 +144,7 @@ Emacs buffer are those starting with “*”."
         (t (self-insert-command (or arg 1)))))
 
 
-; on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
+;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (custom-set-variables
  '(uniquify-buffer-name-style 'reverse)
@@ -224,7 +204,7 @@ Emacs buffer are those starting with “*”."
                                            (dired-get-filename))))))
   )
 
-;; Switching to ibuffer puts the cursor on the most recent buffer
+;;Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()
            "Open ibuffer with cursor pointed to most recent buffer name"
            (let ((recent-buffer-name (buffer-name)))

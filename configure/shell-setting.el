@@ -118,12 +118,6 @@ Dmitriy Igrishin's patched version of comint.el."
         (setq old-buf (current-buffer))
         (multi-term-dedicated-toggle))))
 
-(defun named-shell (name directory)
-  (interactive "MShell name: \nDIn directory: ")
-  (switch-to-buffer (concat "*" name "*"))
-  (cd directory)
-  (shell (current-buffer)))
-
 ;; switch to named shell
 (setq multi-shell-buffer-name "shell")
 (defun my-shell-list ()
@@ -140,16 +134,14 @@ Dmitriy Igrishin's patched version of comint.el."
   (catch 'return
     (throw 'return my-shells)))
 
-(defun switch-to-shell (buf-name &optional dir)
+(defun switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
   (if (get-buffer buf-name)
       (progn 
         (switch-to-buffer buf-name))
       (progn
-        (let ((dir (read-directory-name "Shell directory: " nil default-directory t)))
-          (cd dir)
-          (shell buf-name))))
+        (shell buf-name)))
   (message "switch to %s" buf-name)    
   (delete-other-windows))
 
@@ -166,7 +158,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (catch 'return
     (throw 'return my-terms)))
 
-(defun switch-to-term (buf-name &optional dir)
+(defun switch-to-term (buf-name)
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Term name: " (my-term-list))))
   (if (get-buffer buf-name)

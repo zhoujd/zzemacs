@@ -305,10 +305,14 @@
 ;; embrace light show
 (show-paren-mode t)
 
+;(if (fboundp 'menu-bar-mode)    (menu-bar-mode -1))
 (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
 (if (fboundp 'tool-bar-mode)     (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode)   (scroll-bar-mode -1))
-;(if (fboundp 'menu-bar-mode)     (menu-bar-mode -1))
+(if (fboundp 'tooltip-mode)      (tooltip-mode -1))
+
+;; If tooltips turned on, make tips appear promptly
+(setq tooltip-delay 0.1) ; default is one second
 
 ;;Minibuffer complete help
 (icomplete-mode t)

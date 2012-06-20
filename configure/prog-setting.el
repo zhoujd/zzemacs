@@ -173,18 +173,18 @@ the mru bookmark stack."
 (defun gen-find-parts (my-file-name)
   (setq my-find-parts "")
   (dolist (cell (split-string my-file-name))
-    (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -print -or ")))
-  (setq my-find-parts (substring my-find-parts 0 -4)))
+    (setq my-find-parts (concat my-find-parts "-type f -name \"" cell "\" -print -o ")))
+  (setq my-find-parts (substring my-find-parts 0 -3)))
 
 ;(setq  my-c/c++-file-regex
-;      (concat "-name \"*.[hcHC]\" -print -or "
-;              "-name \"*.[hc]pp\" -print -or "
-;              "-name \"*.[hc]++\" -print -or "
-;              "-name \"*.[hc]xx\" -print "
+;      (concat "-type f -name \"*.[hcHC]\" -print -or "
+;              "-type f -name \"*.[hc]pp\" -print -or "
+;              "-type f -name \"*.[hc]++\" -print -or "
+;              "-type f -name \"*.[hc]xx\" -print "
 ;              ))
 
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f %s | etags -"
+  (format "find %s %s | etags -"
           dir-name (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
@@ -198,7 +198,7 @@ the mru bookmark stack."
 ; cscope -bq -i ./csope.files
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f %s > %s/cscope.files;"
+   (format "find %s %s > %s/cscope.files;"
            dir-name (gen-find-parts my-find-regex)  dir-name)
    (format "cscope -b -R -q -i %s/cscope.files" dir-name)
    ))

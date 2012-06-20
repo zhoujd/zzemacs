@@ -124,6 +124,9 @@ Dmitriy Igrishin's patched version of comint.el."
   (setq my-shells ())
   (dolist (b (buffer-list))
     (if (or (string-match
+             (format "^\\\*%s\\\*$" "shell")
+             (buffer-name b))
+            (string-match
              (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-shell-buffer-name)
              (buffer-name b))
             (string-match

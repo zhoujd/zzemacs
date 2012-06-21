@@ -248,7 +248,7 @@
 (global-auto-revert-mode t)
 
 ;; //auto load: transient-mark-mode,delete-selection-mode
-(pc-selection-mode t)
+;(pc-selection-mode t)
 
 (setq pc-select-selection-keys-only t)
 (setq require-final-newline t)

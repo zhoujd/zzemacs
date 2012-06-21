@@ -244,7 +244,7 @@ the mru bookmark stack."
 (add-hook 'sql-mode-hook 'font-lock-mode)
 
 ;;gud setting
-(require 'gdb-ui)
+;(require 'gdb-ui)
 (defun gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)

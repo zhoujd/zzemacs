@@ -4,12 +4,12 @@
 (zz-load-path "site-lisp")
 
 ;;session + desktop
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
-(setq session-save-file-coding-system 'utf-8)
-(desktop-load-default)
-(desktop-read)
-(add-hook 'kill-emacs-hook '(lambda () (desktop-save "~/"))) 
+;(require 'session)
+;(add-hook 'after-init-hook 'session-initialize)
+;(setq session-save-file-coding-system 'utf-8)
+;(desktop-load-default)
+;(desktop-read)
+;(add-hook 'kill-emacs-hook '(lambda () (desktop-save "~/"))) 
 
 ;;Filecode Autoprocess
 ;;distct with mpg123

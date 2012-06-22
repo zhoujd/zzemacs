@@ -7,10 +7,9 @@
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 (setq session-save-file-coding-system 'utf-8)
-
-(load "desktop")
 (desktop-load-default)
 (desktop-read)
+(add-hook 'kill-emacs-hook '(lambda () (desktop-save "~/"))) 
 
 ;;Filecode Autoprocess
 ;;distct with mpg123
@@ -21,8 +20,8 @@
 
 ;;display of line numbers with M-x linum-mode.
 (require 'linum)
-;(global-linum-mode t)
 
+;;redo
 (require 'redo+)
 
 ;;tabbar mode

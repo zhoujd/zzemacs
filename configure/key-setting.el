@@ -59,14 +59,14 @@
    (global-set-key [f6]     'multi-shell-new)
    (global-set-key [S-f6]   'multi-shell-current-directory)
    (global-set-key [C-f6]   'multi-shell-next)
-   (global-set-key [C-S-f6] 'multi-shell-prev)
-   (global-set-key [M-f6]   'switch-to-shell)) 
+   (global-set-key [M-f6]   'multi-shell-prev)
+   (global-set-key [C-S-f6] 'switch-to-shell)) 
  (progn ;; For Linux
    (global-set-key [f6]     'get-term)
    (global-set-key [S-f6]   'multi-term-dedicated-toggle)
    (global-set-key [C-f6]   'multi-term-next)
-   (global-set-key [C-S-f6] 'multi-term-prev)
-   (global-set-key [M-f6]   'switch-to-term)))
+   (global-set-key [M-f6]   'multi-term-prev)
+   (global-set-key [C-S-f6] 'switch-to-term)))
 
 (global-set-key [f7]     'compile)
 (global-set-key [S-f7]   'switch-to-compilation)

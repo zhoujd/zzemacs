@@ -26,9 +26,9 @@
 ;(global-set-key (kbd "<f12> <f1>") 'evil-mode))
 
 ;;for info
-(global-set-key [M-f1]   'session-save)
+(global-set-key [S-f1]   'session-save)
 (global-set-key [C-f1]   'session-restore)
-(global-set-key [S-f1]   'recentf-open-files)
+(global-set-key [M-S-f1] 'recentf-open-files)
 (global-set-key [C-S-f1] 'recentf-open-files-compl)
 
 (global-set-key [C-f2]   'bc-set)

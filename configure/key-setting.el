@@ -39,7 +39,6 @@
 
 (global-set-key [f3]     'my-last-buffer-go)
 (global-set-key [C-f3]   'list-bookmarks)
-(global-set-key [C-S-f3] 'etags-stack-show)
 (global-set-key [M-f3]   'my-occur)
 
 (global-set-key [f4]   'kill-this-buffer)
@@ -48,9 +47,10 @@
 (global-set-key [S-f3] 'bc-local-previous)
 (global-set-key [S-f4] 'bc-local-next)
 
-(global-set-key [f5]   'speedbar-get-focus)
-(global-set-key [S-f5] 'sr-speedbar-toggle)
-(global-set-key [C-f5] 'line-to-top-of-window)
+(global-set-key [f5]     'speedbar-get-focus)
+(global-set-key [S-f5]   'sr-speedbar-toggle)
+(global-set-key [C-S-f5] 'line-to-top-of-window)
+(global-set-key [C-f5]   'etags-stack-show)
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))

@@ -270,6 +270,9 @@ Emacs buffer are those starting with “*”."
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 
+;;outline key setting
+(setq outline-minor-mode-prefix [f12])
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

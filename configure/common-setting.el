@@ -108,15 +108,13 @@
 (setq color-theme-choices '(color-theme-gnome2
                             color-theme-blackboard
                             color-theme-blackboard2
-                            color-theme-dark-laptop
-                            color-theme-midnight
                             color-theme-deep-blue
                             color-theme-arjen
-                            color-theme-standard))
+                            ))
 
 (if window-system
     (progn
-      (funcall (nth 0 color-theme-choices))
+      (funcall (nth 2 color-theme-choices))
       ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
       )
     (progn

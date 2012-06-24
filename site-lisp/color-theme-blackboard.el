@@ -22,14 +22,12 @@
    '(color-theme-blackboard
      (
       (background-color . "#0C1021")
-      ;;(background-color . "black")
       (background-mode . dark)
       (border-color . "black")
       (cursor-color . "#A7A7A7")
       (foreground-color . "#F8F8F8")
       (mouse-color . "sienna1"))
      (default ((t (:background "#0C1021" :foreground "#F8F8F8"))))
-     ;;(default ((t (:background "black" :foreground "#F8F8F8"))))
      (blue ((t (:foreground "blue"))))
      (bold ((t (:bold t))))
      (bold-italic ((t (:bold t))))
@@ -54,7 +52,12 @@
      (font-lock-warning-face ((t (:bold t :foreground "Pink"))))
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#253B76"))))
-     (mode-line ((t (:background "grey75" :foreground "black"))))
+     
+     (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+     (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     
      (highlight ((t (:background "#222222"))))
      ;;(highlight ((t (:background "#001"))))
      (highline-face ((t (:background "SeaGreen"))))
@@ -73,14 +76,12 @@
   (color-theme-install
    '(color-theme-blackboard
      (
-      ;;(background-color . "#0C1021")
       (background-color . "black")
       (background-mode . dark)
       (border-color . "black")
       (cursor-color . "#A7A7A7")
       (foreground-color . "#F8F8F8")
       (mouse-color . "sienna1"))
-     ;;(default ((t (:background "#0C1021" :foreground "#F8F8F8"))))
      (default ((t (:background "black" :foreground "#F8F8F8"))))
      (blue ((t (:foreground "blue"))))
      (bold ((t (:bold t))))
@@ -95,10 +96,10 @@
      (font-lock-keyword-face ((t (:foreground "#FBDE2D"))))
      (font-lock-preprocessor-face ((t (:foreground "Aquamarine"))))
      (font-lock-reference-face ((t (:foreground "SlateBlue"))))
-          
+     
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
-          
+     
      (font-lock-string-face ((t (:foreground "#61CE3C"))))
      (font-lock-type-face ((t (:foreground "#8DA6CE"))))
      ;;(font-lock-variable-name-face ((t (:foreground "#FF6400"))))
@@ -106,7 +107,12 @@
      (font-lock-warning-face ((t (:bold t :foreground "Pink"))))
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#253B76"))))
-     (mode-line ((t (:background "grey75" :foreground "black"))))
+     
+     (modeline ((t (:background "DarkRed" :foreground "white" :box (:line-width 1 :style released-button)))))
+     (modeline-buffer-id ((t (:background "DarkRed" :foreground "white"))))
+     (modeline-mousable ((t (:background "DarkRed" :foreground "white"))))
+     (modeline-mousable-minor-mode ((t (:background "DarkRed" :foreground "white"))))
+     
      (highlight ((t (:background "#222222"))))
      ;;(highlight ((t (:background "#001"))))
      (highline-face ((t (:background "SeaGreen"))))

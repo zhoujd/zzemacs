@@ -7,8 +7,8 @@
 
 (setq slime-lisp-implementations
 	'(
-      (sbcl ("sbcl.exe" "--noinform") :coding-system utf-8-unix)
-      (clisp ("e:/cygwin/bin/clisp.exe"))
+      (sbcl ("sbcl" "--noinform") :coding-system utf-8-unix)
+      (clisp ("clisp"))
        ))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system

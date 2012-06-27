@@ -8,6 +8,8 @@
 (defun pde-perl-mode-hook ()
   (abbrev-mode t)
   (hs-minor-mode t)
+  (setq cperl-lazy-help-time 2)
+  (cperl-lazy-install)
   (add-to-list 'cperl-style-alist
                '("PDE"
                  (cperl-auto-newline                         . nil)

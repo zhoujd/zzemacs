@@ -108,15 +108,15 @@
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#253B76"))))
      
-     ;(modeline ((t (:background "DarkRed" :foreground "white" :box (:line-width 1 :style released-button)))))
-     ;(modeline-buffer-id ((t (:background "DarkRed" :foreground "white"))))
-     ;(modeline-mousable ((t (:background "DarkRed" :foreground "white"))))
-     ;(modeline-mousable-minor-mode ((t (:background "DarkRed" :foreground "white"))))
+     (modeline ((t (:background "DarkRed" :foreground "white" :box (:line-width 1 :style released-button)))))
+     (modeline-buffer-id ((t (:background "DarkRed" :foreground "white"))))
+     (modeline-mousable ((t (:background "DarkRed" :foreground "white"))))
+     (modeline-mousable-minor-mode ((t (:background "DarkRed" :foreground "white"))))
 
-     (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
-     (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     ;(modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+     ;(modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     ;(modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     ;(modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
      
      (highlight ((t (:background "#222222"))))
      ;;(highlight ((t (:background "#001"))))

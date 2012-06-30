@@ -115,8 +115,15 @@
      (border ((t (:background "#888a85"))))
      ;;(fringe ((t (:background "#111111"))))
      (highlight ((t (:background "#444444"))))
-     (mode-line ((t (:foreground "#eeeeec" :background "#2e3436"))))
-     (mode-line-inactive ((t (:foreground "#cccddd" :background "#111111"))))
+
+     ;(mode-line ((t (:foreground "#eeeeec" :background "#2e3436"))))
+     ;(mode-line-inactive ((t (:foreground "#cccddd" :background "#111111"))))
+
+	 (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+     (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+
      (region ((t (:background "#555753"))))
 
      (flyspell-duplicate ((t (:foreground "#fcaf3e"))))

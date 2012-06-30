@@ -256,9 +256,10 @@
 (setq pc-select-selection-keys-only t)
 
 ;;scroll properity
-;(setq scroll-step 1)
-;(setq scroll-margin 3)
-(setq scroll-conservatively 10000)
+(setq-default scroll-step              1
+              scroll-conservatively    most-positive-fixnum
+              scroll-up-aggressively   0.0
+              scroll-down-aggressively 0.0)
 
 (setq kill-ring-max 200)
 

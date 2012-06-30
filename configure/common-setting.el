@@ -49,7 +49,7 @@
 
 ;;font setting
 (defvar en-font-list '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
-(defvar cn-font-list '("Microsoft Yahei" "æ–‡æ³‰é©¿ç­‰å®½å¾®ç±³é»‘" "é»‘ä½“" "æ–°å®‹ä½“" "å®‹ä½“")) 
+(defvar cn-font-list '("Microsoft Yahei" "ÎÄÈªæäµÈ¿íÎ¢Ã×ºÚ" "ºÚÌå" "ĞÂËÎÌå" "ËÎÌå")) 
 
 (defvar my-font-en-name (nth 0 en-font-list))
 (defvar my-font-en-size 11)
@@ -84,7 +84,7 @@
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
-;;~/.emacs.d/serverçš„å±ä¸»ç”±Administratorsç»„æ”¹ä¸ºå½“å‰ç”¨æˆ·ï¼ˆå³é”®å±æ€§--å®‰å…¨--é«˜çº§--æ‰€æœ‰è€…ï¼‰
+;;~/.emacs.d/serverµÄÊôÖ÷ÓÉAdministrators×é¸ÄÎªµ±Ç°ÓÃ»§£¨ÓÒ¼üÊôĞÔ--°²È«--¸ß¼¶--ËùÓĞÕß£©
 (require 'server)
 (when (and (= emacs-major-version 23)
            (or (eq window-system 'w32) (eq window-system 'win32)))
@@ -114,7 +114,7 @@
 
 (if window-system
     (progn
-      (funcall (nth 2 color-theme-choices))
+      (funcall (nth 1 color-theme-choices))
       ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
       )
     (progn
@@ -142,8 +142,6 @@
 
 ;; auto add newline in file
 (setq require-final-newline t)
-;;Non-nil if Transient-Mark mode is enabled.
-(setq-default transient-mark-mode t)
 ;; keep cursor on tail of line
 ;(setq track-eol t)
 ;; keep slience
@@ -160,9 +158,12 @@
 ;; active region sets primary X11 selection
 (setq select-active-regions t)
 
-;; font lock settings
-;;(setq lazy-lock-defer-on-scrolling t)
-;;(setq font-lock-support-mode 'lazy-lock-mode)
+(global-auto-revert-mode t)
+(global-font-lock-mode t)
+;;for large file show quickly
+;(require 'lazy-lock)
+;(setq lazy-lock-defer-on-scrolling t)
+;(setq font-lock-support-mode 'lazy-lock-mode)
 
 (setq font-lock-maximum-decoration t)
 (setq font-lock-global-modes '(not shell-mode text-mode))
@@ -227,9 +228,9 @@
 
 ;;chinese-calendar
 (setq chinese-calendar-celestial-stem
-       ["ç”²" "ä¹™" "ä¸™" "ä¸" "æˆŠ" "å·±" "åºš" "è¾›" "å£¬" "ç™¸"])
+       ["¼×" "ÒÒ" "±û" "¶¡" "Îì" "¼º" "¸ı" "ĞÁ" "ÈÉ" "¹ï"])
 (setq chinese-calendar-terrestrial-branch
-       ["å­" "ä¸‘" "å¯…" "å¯" "è¾°" "å·³" "æˆŠ" "æœª" "ç”³" "é…‰" "æˆŒ" "äº¥"])
+       ["×Ó" "³ó" "Òú" "Ã®" "³½" "ËÈ" "Îì" "Î´" "Éê" "ÓÏ" "Ğç" "º¥"])
  
 ;;work direction
 ;;(setq default-directory "~/work")
@@ -243,13 +244,17 @@
 (setq x-stretch-cursor nil)
 
 (setq-default kill-whole-line t)
-(global-auto-revert-mode t)
 
 ;; //auto load: transient-mark-mode,delete-selection-mode
-;(pc-selection-mode t)
+(if (fboundp 'pc-selection-mode)                                              
+    (pc-selection-mode)                                                   
+    (require 'pc-select))
+(custom-set-variables '(pc-selection-mode t nil (pc-select)))
 
+;;Non-nil if Transient-Mark mode is enabled.
+(setq-default transient-mark-mode t)
+(setq-default delete-selection-mode t)
 (setq pc-select-selection-keys-only t)
-(setq require-final-newline t)
 
 ;;scroll properity
 ;(setq scroll-step 1)
@@ -290,8 +295,6 @@
               tab-stop-list)))
 
 (setq mouse-yank-at-point t)
-
-(global-font-lock-mode t)
 (auto-compression-mode t)
 (column-number-mode t)
 
@@ -361,7 +364,7 @@
 (defadvice display-buffer (around async-shell-command activate)
    "If BUFFER is named *Async Shell Command*, don't display it."
    (or (and (bufferp (ad-get-arg 0))
-	   (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
+            (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
        ad-do-it))
 
 ;;recentf/undo-kill-buffer

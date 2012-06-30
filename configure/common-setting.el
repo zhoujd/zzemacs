@@ -108,13 +108,12 @@
 
 (setq color-theme-choices '(color-theme-gnome2
                             color-theme-blackboard
-                            color-theme-tango-light
                             color-theme-tango-dark
                             ))
 
 (if window-system
     (progn
-      (funcall (nth 3 color-theme-choices))
+      (funcall (nth 2 color-theme-choices))
       ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
       )
     (progn

@@ -12,6 +12,10 @@
  '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command
  )
 
+(set-face-foreground 'minibuffer-prompt "green")
+(set-face-foreground 'comint-highlight-prompt "#8ae234")
+(setq shell-font-lock-keywords (list (cons shell-prompt-pattern 'font-lock-keyword-face)))
+
 ;;interpret and use ansi color codes in shell output windows
 (ansi-color-for-comint-mode-on)
 

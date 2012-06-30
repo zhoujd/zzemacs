@@ -103,18 +103,18 @@
 (zz-load-path "site-lisp/color-theme")
 (require 'color-theme)
 (require 'color-theme-blackboard)
+(require 'color-theme-tango)
 (color-theme-initialize)
 
 (setq color-theme-choices '(color-theme-gnome2
                             color-theme-blackboard
-                            color-theme-blackboard2
-                            color-theme-deep-blue
-                            color-theme-arjen
+                            color-theme-tango-light
+                            color-theme-tango-dark
                             ))
 
 (if window-system
     (progn
-      (funcall (nth 1 color-theme-choices))
+      (funcall (nth 3 color-theme-choices))
       ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
       )
     (progn
@@ -166,7 +166,7 @@
 ;(setq font-lock-support-mode 'lazy-lock-mode)
 
 (setq font-lock-maximum-decoration t)
-(setq font-lock-global-modes '(not shell-mode text-mode))
+(setq font-lock-global-modes '(not text-mode))
 (setq font-lock-verbose t)
 (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 

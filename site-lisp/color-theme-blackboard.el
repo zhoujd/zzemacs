@@ -74,7 +74,7 @@
   "Color theme by JD Huntington, based off the TextMate Blackboard theme, created 2008-11-27"
   (interactive)
   (color-theme-install
-   '(color-theme-blackboard
+   '(color-theme-blackboard2
      (
       (background-color . "black")
       (background-mode . dark)

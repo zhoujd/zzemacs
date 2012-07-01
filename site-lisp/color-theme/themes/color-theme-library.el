@@ -375,12 +375,12 @@ emacs*Foreground:		Wheat"
        ;;(modeline-mousable ((t (:background "dark olive green" :foreground "yellow green"))))
        ;;(modeline-mousable-minor-mode ((t (:background "dark olive green" :foreground "wheat"))))
 
-	   ;; Add by zhoujd 20070913 begin
-	   (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+       ;; Add by zhoujd 20070913 begin
+       (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
        (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
        (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
        (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-	   ;; Add by zhoujd 20070913 end
+       ;; Add by zhoujd 20070913 end
 
        (region ((t (:background "dark cyan" :foreground "cyan"))))
        (secondary-selection ((t (:background "Aquamarine" :foreground "SlateBlue"))))
@@ -3671,12 +3671,12 @@ fonts."
      (region ((t (:background "grey15"))))
      (highlight ((t (:background "blue"))))
 
-	 ;; Add by zhoujd 20070913 begin
-	 (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+     ;; Add by zhoujd 20070913 begin
+     (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
      (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
      (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
      (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-	 ;; Add by zhoujd 20070913 end
+     ;; Add by zhoujd 20070913 end
 
      (secondary-selection ((t (:background "navy"))))
      (widget-field-face ((t (:background "navy"))))
@@ -7757,8 +7757,8 @@ This builds on `color-theme-jsc-light'."
       (italic ((t (:italic t :slant italic))))
       (menu ((t (:background "gray" :foreground "black" :family "helvetica"))))
       
-	  ;; Modified by zhoujd 20070914 begin
-	  (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
+      ;; Modified by zhoujd 20070914 begin
+      (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
       (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
       (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
       (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
@@ -7771,9 +7771,9 @@ This builds on `color-theme-jsc-light'."
       (show-paren-match-face ((t (:bold t :foreground "yellow" :weight bold))))
       (show-paren-mismatch-face ((t (:bold t :foreground "red" :weight bold))))
 
-	  ;; Marked by zhoujd begin
+      ;; Marked by zhoujd begin
       ;;(tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
-	  ;; Marked by zhoujd end
+      ;; Marked by zhoujd end
 
       (tooltip ((t (:background "lightyellow" :foreground "black"))))
       (trailing-whitespace ((t (:background "#102e4e"))))

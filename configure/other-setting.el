@@ -103,19 +103,19 @@ Emacs buffer are those starting with “*”."
                         :family     my-font-en-name
                         :background "gray80"
                         :foreground "gray20"
-                        :height 0.8
+                        :height      0.8
                         :box nil
                         ))
 (set-face-attribute 'tabbar-selected nil
-                    :inherit 'tabbar-default
+                    :inherit    'tabbar-default
                     :foreground "OrangeRed4"
                     :background "LightGoldenrod"
                     :box '(:line-width 1 :color "DarkGoldenrod")
                     :weight 'bold
                     )
 (set-face-attribute 'tabbar-unselected nil
-                    :inherit 'tabbar-default
-                    :background "gray75"
+                    :inherit    'tabbar-default
+                    :background "gray80"
                     :box '(:line-width 1 :color "gray50")
                     )
 (set-face-attribute 'tabbar-button nil

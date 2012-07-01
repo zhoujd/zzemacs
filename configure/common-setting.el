@@ -108,6 +108,7 @@
 
 (setq color-theme-choices '(color-theme-gnome2
                             color-theme-blackboard
+                            color-theme-blackboard2
                             color-theme-tango-dark
                             ))
 

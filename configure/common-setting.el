@@ -49,7 +49,7 @@
 
 ;;font setting
 (defvar en-font-list '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
-(defvar cn-font-list '("Microsoft Yahei" "ÎÄÈªæäµÈ¿íÎ¢Ã×ºÚ" "ºÚÌå" "ĞÂËÎÌå" "ËÎÌå")) 
+(defvar cn-font-list '("Microsoft Yahei" "æ–‡æ³‰é©¿ç­‰å®½å¾®ç±³é»‘" "é»‘ä½“" "æ–°å®‹ä½“" "å®‹ä½“")) 
 
 (defvar my-font-en-name (nth 0 en-font-list))
 (defvar my-font-en-size 11)
@@ -84,7 +84,7 @@
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
-;;~/.emacs.d/serverµÄÊôÖ÷ÓÉAdministrators×é¸ÄÎªµ±Ç°ÓÃ»§£¨ÓÒ¼üÊôĞÔ--°²È«--¸ß¼¶--ËùÓĞÕß£©
+;;~/.emacs.d/serverçš„å±ä¸»ç”±Administratorsç»„æ”¹ä¸ºå½“å‰ç”¨æˆ·ï¼ˆå³é”®å±æ€§--å®‰å…¨--é«˜çº§--æ‰€æœ‰è€…ï¼‰
 (require 'server)
 (when (and (= emacs-major-version 23)
            (or (eq window-system 'w32) (eq window-system 'win32)))
@@ -228,9 +228,9 @@
 
 ;;chinese-calendar
 (setq chinese-calendar-celestial-stem
-       ["¼×" "ÒÒ" "±û" "¶¡" "Îì" "¼º" "¸ı" "ĞÁ" "ÈÉ" "¹ï"])
+       ["ç”²" "ä¹™" "ä¸™" "ä¸" "æˆŠ" "å·±" "åºš" "è¾›" "å£¬" "ç™¸"])
 (setq chinese-calendar-terrestrial-branch
-       ["×Ó" "³ó" "Òú" "Ã®" "³½" "ËÈ" "Îì" "Î´" "Éê" "ÓÏ" "Ğç" "º¥"])
+       ["å­" "ä¸‘" "å¯…" "å¯" "è¾°" "å·³" "æˆŠ" "æœª" "ç”³" "é…‰" "æˆŒ" "äº¥"])
  
 ;;work direction
 ;;(setq default-directory "~/work")

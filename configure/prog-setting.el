@@ -1,7 +1,7 @@
 ;;;; prog-setting.el --- program common file
 ;;
 ;; holding
-(load-library "hideshow")
+(require 'hideshow)
 (add-hook 'java-mode-hook 'hs-minor-mode)
 (add-hook 'c++-mode-hook 'hs-minor-mode)
 (add-hook 'python-mode-hook 'hs-minor-mode)

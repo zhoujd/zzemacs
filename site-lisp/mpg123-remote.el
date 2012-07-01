@@ -136,4 +136,5 @@ whether mpg123 functions can be called."
         (set-buffer mpg123*buffer)
         (mpg123:get-music-info mpg123*cur-music-number 'filename))))
 
+(provide 'mpg123-remote)
 

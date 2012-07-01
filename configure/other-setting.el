@@ -108,7 +108,7 @@ Emacs buffer are those starting with “*”."
                         ))
 (set-face-attribute 'tabbar-selected nil
                     :inherit    'tabbar-default
-                    :foreground "OrangeRed4"
+                    :foreground "DarkGreen"
                     :background "LightGoldenrod"
                     :box '(:line-width 1 :color "DarkGoldenrod")
                     :weight 'bold
@@ -122,7 +122,8 @@ Emacs buffer are those starting with “*”."
                     :inherit 'tabbar-default
                     :box nil)
 (set-face-attribute 'tabbar-separator nil
-                    :background "gray50")
+                    :background "gray50"
+                    )
 
 ;; space tab show
 ;(require 'jaspace)

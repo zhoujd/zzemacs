@@ -20,12 +20,13 @@ git config --global user.email "zjd-405@163.com"
 git config --global merge.tool "meld" 
 git config --global color.ui   true
 
+# setup diff setting
+chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh 
+git config --global diff.external $GIT_SETUP_HOME/git-diff-wrapper.sh
+
 echo ===========git config start ===============
 git config --list
 echo ===========git config end =================
 
-# setup diff setting
-chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh 
-git config --global diff.external $GIT_SETUP_HOME/git-diff-wrapper.sh
 
 echo git diff setup end ...

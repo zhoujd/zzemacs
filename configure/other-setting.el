@@ -266,6 +266,10 @@ Emacs buffer are those starting with “*”."
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 
+;;eproject manage
+(zz-load-path "site-lisp/eproject")
+(require 'eproject)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

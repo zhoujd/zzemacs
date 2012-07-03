@@ -270,6 +270,9 @@ Emacs buffer are those starting with “*”."
 (zz-load-path "site-lisp/eproject")
 (require 'eproject)
 
+;;http://nschum.de/src/emacs/highlight-symbol/
+(require 'highlight-symbol)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

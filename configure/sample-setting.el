@@ -156,16 +156,8 @@
   (interactive "P")
   (if (and (not arg) (get-buffer "*Occur*"))
       (switch-to-buffer "*Occur*")
-      (occur (read-from-minibuffer "Regexp: ")
+      (occur (completing-read "Search Term: " nil nil nil (thing-at-point 'word))
              (if (listp arg) 0 arg))))
-
-(defun occur-at-point()
-  "point at word"
-  (interactive)
-  (if (thing-at-point 'word)
-      (occur (thing-at-point 'word))
-      (call-interactively 'occur)))
-
 
 (provide 'sample-setting)
 

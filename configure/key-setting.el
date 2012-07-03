@@ -47,11 +47,14 @@
 
 (global-set-key [S-f3]   'bc-local-previous)
 (global-set-key [S-f4]   'bc-local-next)
+(global-set-key [C-S-f3] 'highlight-symbol-next)
+(global-set-key [C-S-f4] 'highlight-symbol-prev)
 
 (global-set-key [f5]     'speedbar-get-focus)
 (global-set-key [S-f5]   'sr-speedbar-toggle)
-(global-set-key [C-S-f5] 'line-to-top-of-window)
+(global-set-key [M-S-f5] 'line-to-top-of-window)
 (global-set-key [C-f5]   'etags-stack-show)
+(global-set-key [C-S-f5] 'highlight-symbol-at-point)
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))

@@ -139,6 +139,8 @@
 ;; no need temp file
 (setq make-backup-files nil)
 (setq-default make-backup-files nil)
+;; no file #filename#
+(setq auto-save-default nil) 
 
 ;; auto add newline in file
 (setq require-final-newline t)
@@ -282,7 +284,7 @@
 (setq gnus-inhibit-startup-message t)
 
 (setq default-major-mode 'text-mode)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+;(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (setq truncate-partial-width-windows nil)
 

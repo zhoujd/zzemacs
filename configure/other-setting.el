@@ -68,9 +68,7 @@
 (require 'redo+)
 
 ;;tabbar mode
-(if window-system
-    (require 'tabbar-ruler)
-    (require 'tabbar))
+(if window-system (require 'tabbar-ruler) (require 'tabbar))
 
 ;;Excluded buffers in tabbar
 ;(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*"))
@@ -122,7 +120,7 @@ Emacs buffer are those starting with “*”."
                     :inherit 'tabbar-default
                     :box nil)
 (set-face-attribute 'tabbar-separator nil
-                    :background "gray50"
+                    :background "gray80"
                     )
 
 ;; space tab show

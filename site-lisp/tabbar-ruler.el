@@ -528,7 +528,9 @@ Call `tabbar-tab-label-function' to obtain a label for TAB."
   "Face for unselected, highlighted tabs."
   :group 'tabbar)
 
-(setq tabbar-separator '(0.25))
+;;marked by zhoujd begin
+;(setq tabbar-separator '(0.25))
+;;marked by zhoujd end
 
 (defface tabbar-selected-modified
   '((t

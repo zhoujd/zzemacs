@@ -22,9 +22,6 @@
 (define-key f12-map [f11]
   (lambda () (interactive) (switch-to-shell "*shell-f11*")))
 
-;;evil mode
-;(global-set-key (kbd "<f12> <f1>") 'evil-mode))
-
 ;;for info
 (global-set-key [S-f1]   'session-save)
 (global-set-key [C-f1]   'session-restore)
@@ -47,14 +44,11 @@
 
 (global-set-key [S-f3]   'bc-local-previous)
 (global-set-key [S-f4]   'bc-local-next)
-(global-set-key [C-S-f3] 'highlight-symbol-next)
-(global-set-key [C-S-f4] 'highlight-symbol-prev)
 
 (global-set-key [f5]     'speedbar-get-focus)
 (global-set-key [S-f5]   'sr-speedbar-toggle)
-(global-set-key [M-S-f5] 'line-to-top-of-window)
+(global-set-key [C-S-f5] 'line-to-top-of-window)
 (global-set-key [C-f5]   'etags-stack-show)
-(global-set-key [C-S-f5] 'highlight-symbol-at-point)
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
@@ -117,6 +111,12 @@
 
 (global-set-key (kbd "M-4") 'kill-this-buffer)
 (global-set-key (kbd "C-4") 'delete-frame)
+
+;;f1 1,2,3,4 for highlight-symbol
+(global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
+(global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
+(global-set-key (kbd "<f1> 3") 'highlight-symbol-next)
+(global-set-key (kbd "<f1> 4") 'highlight-symbol-prev)
 
 ;;gud control setting
 (global-set-key (kbd "M-5") 'gud-go)

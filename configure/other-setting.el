@@ -68,7 +68,8 @@
 (require 'redo+)
 
 ;;tabbar mode
-(if window-system (require 'tabbar-ruler) (require 'tabbar))
+;(if window-system (require 'tabbar-ruler) (require 'tabbar))
+(require 'tabbar)
 
 ;;Excluded buffers in tabbar
 ;(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*"))

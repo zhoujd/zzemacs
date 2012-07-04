@@ -144,6 +144,7 @@
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "C-c w")   'compare-windows)
 (global-set-key (kbd "M-#")     'query-replace-regexp)
 

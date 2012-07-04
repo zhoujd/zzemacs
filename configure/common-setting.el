@@ -51,7 +51,7 @@
 (defvar en-font-list '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
 (defvar cn-font-list '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")) 
 
-(defvar my-font-en-name (nth 0 en-font-list))
+(defvar my-font-en-name (nth 1 en-font-list))
 (defvar my-font-en-size 11)
 
 (defvar my-font-cn-name (nth 0 cn-font-list))

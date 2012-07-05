@@ -116,13 +116,13 @@
      ;;(fringe ((t (:background "#111111"))))
      (highlight ((t (:background "#444444"))))
 
-     ;(mode-line ((t (:foreground "#eeeeec" :background "#2e3436"))))
+     ;(mode-line ((t (:foreground "#eeeeec" :background "#2e3436" :box (:line-width 1 :style released-button)))))
      ;(mode-line-inactive ((t (:foreground "#cccddd" :background "#111111"))))
 
      (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
-     (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-buffer-id ((t (:background "gray" :foreground "black"))))
+     (modeline-mousable ((t (:background "gray" :foreground "black"))))
+     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black"))))
 
      (region ((t (:background "#555753"))))
 

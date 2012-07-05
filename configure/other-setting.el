@@ -96,33 +96,38 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
-(defvar my-font-en-name "DejaVu Sans Mono")
-(if window-system
-    (set-face-attribute 'tabbar-default nil
-                        :family     my-font-en-name
-                        :background "gray80"
-                        :foreground "gray20"
-                        :height      0.8
-                        :box nil
-                        ))
+(setq tabbar-font-name "Consolas")
+(when window-system
+  (set-face-attribute 'tabbar-default nil
+                      :inherit    nil
+                      :weight    'normal
+                      :width     'normal
+                      :slant     'normal
+                      :underline  nil
+                      :strike-through nil
+                      :stipple    nil
+                      :background "#AAAAAA"
+                      :foreground "black"
+                      :box    nil
+                      :family tabbar-font-name
+                      ))
 (set-face-attribute 'tabbar-selected nil
-                    :inherit    'tabbar-default
-                    :foreground "DarkGreen"
                     :background "LightGoldenrod"
-                    :box '(:line-width 1 :color "DarkGoldenrod")
-                    :weight 'bold
-                    )
+                    :foreground "DarkGreen"
+                    :inherit    'tabbar-default 
+                    :box '(:line-width 2 :color "LightGoldenrod" :style nil)
+                    :weight 'bold)
 (set-face-attribute 'tabbar-unselected nil
                     :inherit    'tabbar-default
-                    :background "gray80"
-                    :box '(:line-width 1 :color "gray50")
-                    )
+                    :background "#AAAAAA"
+                    :box '(:line-width 2 :color "#AAAAAA" :style nil))
 (set-face-attribute 'tabbar-button nil
                     :inherit 'tabbar-default
                     :box nil)
 (set-face-attribute 'tabbar-separator nil
-                    :background "gray80"
-                    )
+                    :background "grey50"
+                    :foreground "grey50"
+                    :height 1)
 
 ;; space tab show
 ;(require 'jaspace)

@@ -25,6 +25,13 @@
   (tabify (point-min) (point-max))
   (save-buffer))
 
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (indent-buffer)
+  (untabify-buffer)
+  (delete-trailing-whitespace))
+
 ;;File coding for Unix Dos Mac switcher
 (defvar my-os-flag 0)
 (defun my-os-file-switch ()

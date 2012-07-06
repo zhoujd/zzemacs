@@ -377,9 +377,9 @@ emacs*Foreground:		Wheat"
 
        ;; Add by zhoujd 20070913 begin
        (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
-       (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-       (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-       (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+       (modeline-buffer-id ((t (:background "gray" :foreground "black"))))
+       (modeline-mousable ((t (:background "gray" :foreground "black"))))
+       (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black"))))
        ;; Add by zhoujd 20070913 end
 
        (region ((t (:background "dark cyan" :foreground "cyan"))))
@@ -3673,9 +3673,9 @@ fonts."
 
      ;; Add by zhoujd 20070913 begin
      (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
-     (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+     (modeline-buffer-id ((t (:background "gray" :foreground "black"))))
+     (modeline-mousable ((t (:background "gray" :foreground "black"))))
+     (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black"))))
      ;; Add by zhoujd 20070913 end
 
      (secondary-selection ((t (:background "navy"))))
@@ -7759,9 +7759,9 @@ This builds on `color-theme-jsc-light'."
       
       ;; Modified by zhoujd 20070914 begin
       (modeline ((t (:background "gray" :foreground "black" :box (:line-width 1 :style released-button)))))
-      (modeline-buffer-id ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-      (modeline-mousable ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
-      (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black" :box (:line-width 2 :style released-button)))))
+      (modeline-buffer-id ((t (:background "gray" :foreground "black"))))
+      (modeline-mousable ((t (:background "gray" :foreground "black"))))
+      (modeline-mousable-minor-mode ((t (:background "gray" :foreground "black"))))
       ;; Modified by zhoujd 20070914 end
       
       (mouse ((t (:background "white"))))

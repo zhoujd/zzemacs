@@ -1,3 +1,6 @@
+;;; tabbar-rose.el
+;;; merge tabbar.el and tabbar-ruler
+
 (require 'tabbar)
 
 ;; Hooks based on yswzing's hooks, but modified for this function state.
@@ -385,4 +388,4 @@ Call `tabbar-tab-label-function' to obtain a label for TAB."
   "Face for unselected, highlighted tabs."
   :group 'tabbar)
 
-(provide 'tabbar++)
+(provide 'tabbar-rose)

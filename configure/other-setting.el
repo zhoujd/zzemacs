@@ -69,7 +69,7 @@
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))
-;(require 'tabbar++)
+;(require 'tabbar-rose)
 (require 'tabbar)
 
 ;;Excluded buffers in tabbar

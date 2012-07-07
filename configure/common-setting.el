@@ -48,7 +48,7 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(defvar en-font-list '("Consolas" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
+(defvar en-font-list '("Consolas" "Inconsolata" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
 (defvar cn-font-list '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")) 
 
 (defvar my-font-en-name (nth 0 en-font-list))

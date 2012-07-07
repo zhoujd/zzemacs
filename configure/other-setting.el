@@ -97,6 +97,7 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
+;(setq tabbar-font-name my-font-en-name)
 (setq tabbar-font-name "Consolas")
 (when window-system
   (set-face-attribute 'tabbar-default nil

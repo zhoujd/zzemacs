@@ -176,7 +176,6 @@
 ; C-- is undo (removes the shift), C-= is redo
 (global-set-key [(control -)] 'undo)
 (global-set-key [(control =)] 'redo)
-(global-set-key [(meta =)]    'redo)
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))

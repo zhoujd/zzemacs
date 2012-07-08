@@ -56,7 +56,7 @@
 
 (defun my-cn-font-name ()
   (setq my-cn-name "")
-  (dolist (cell  (butlast (split-string my-font-cn-name " " nil)))
+  (dolist (cell (butlast (split-string my-font-cn-name " " nil)))
      (setq my-cn-name (concat my-cn-name  cell " ")))
   (setq my-cn-name (substring my-cn-name 0 -1)))
 

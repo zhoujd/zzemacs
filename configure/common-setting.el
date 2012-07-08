@@ -341,6 +341,11 @@
  '(ido-indicator         ((t (:foreground "#ffffff"))))
  '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
 
+(add-hook 'ido-minibuffer-setup-hook
+          (lambda ()
+            (define-key ido-completion-map (kbd "M-n") 'ido-next-match)
+            (define-key ido-completion-map (kbd "M-p") 'ido-prev-match)))
+
 ;;dired setting
 (setq dired-recursive-deletes t)
 (setq dired-recursive-copies t)
@@ -359,6 +364,11 @@
   (let ((orig (current-buffer)))
     ad-do-it
     (kill-buffer orig)))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map "U" 'dired-up-directory)
+            (define-key dired-mode-map "/" 'dired-isearch-filenames)))
 
 ;;only auto spit windows
 (setq split-height-threshold 0)
@@ -406,6 +416,13 @@
            (prompt (append '("File name: ") tocpl))
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
+
+;;; esc quits
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 (provide 'common-setting)
 

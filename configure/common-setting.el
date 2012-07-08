@@ -1,21 +1,21 @@
 ;;;; common-setting.el --- common config file
 ;;
 
-; tell me if there's something wrong
+;;tell me if there's something wrong
 ;(setq debug-on-error t)
 
 (zz-load-path "site-lisp")
 
-;;; disable loading of "default.el" at startup
+;;disable loading of "default.el" at startup
 ;(setq inhibit-default-init t)
 ;(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
 ;(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
 
-;;; the current frame to make it transparent
+;;the current frame to make it transparent
 ;(set-frame-parameter (selected-frame) 'alpha '(95 70))
 ;(add-to-list 'default-frame-alist '(alpha 95 70))
 
-; -*- Chinese -*-
+;; -*- Chinese -*-
 (defun my-set-language-chinese ()
   "This This is for chinese setting"
   (interactive)
@@ -23,7 +23,7 @@
   (set-buffer-file-coding-system 'chinese-gb18030)
   (message "This is for chinese"))
 
-; -*- Japanese -*-
+;; -*- Japanese -*-
 (defun my-set-language-japanese ()
   "This This is for japanese setting"
   (interactive)
@@ -31,7 +31,7 @@
   (set-buffer-file-coding-system 'japanese-shift-jis)
   (message "This is for japanese"))
 
-; -*- utf-8 -*-
+;; -*- utf-8 -*-
 (defun my-set-language-utf-8 ()
   "This This is for utf-8 setting"
   (interactive)
@@ -122,7 +122,7 @@
       (set-face-background 'default "black")
       (set-face-foreground 'default "gray")))
 
-;; set default-frame-alist
+;;set default-frame-alist
 (if window-system
     (setq default-frame-alist
           (append
@@ -131,34 +131,34 @@
              (height . 40))
            default-frame-alist)))
 
-;; quick display key help
+;;quick display key help
 (setq echo-keystrokes 0.1)
 
-;; scroll bar right
+;;scroll bar right
 (set-scroll-bar-mode `right)
 
-;; no need temp file
+;;no need temp file
 (setq make-backup-files nil)
 (setq-default make-backup-files nil)
-;; no file #filename#
+;;no file #filename#
 (setq auto-save-default nil) 
 
-;; auto add newline in file
+;;auto add newline in file
 (setq require-final-newline t)
-;; keep cursor on tail of line
+;;keep cursor on tail of line
 ;(setq track-eol t)
-;; keep slience
+;;keep slience
 (setq visible-bell t);
-;; don`t flash the screen on console mode
+;;don`t flash the screen on console mode
 ;(setq ring-bell-function 'ignore)
 (setq ring-bell-function (lambda ()  t))
-;; use clipboard
+;;use clipboard
 (setq x-select-enable-clipboard t)
 ;;mouse select
 (setq mouse-drag-copy-region nil)
-;; stops killing/yanking interacting with primary X11 selection
+;;stops killing/yanking interacting with primary X11 selection
 (setq x-select-enable-primary nil) 
-;; active region sets primary X11 selection
+;;active region sets primary X11 selection
 (setq select-active-regions t)
 
 (global-auto-revert-mode t)
@@ -173,9 +173,9 @@
 (setq font-lock-verbose t)
 (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 
-;; let F7, as in vim do, to insert the current
-;; time-stamp, whose form is the same as vim do, into
-;; current cursor point.
+;;let F7, as in vim do, to insert the current
+;;time-stamp, whose form is the same as vim do, into
+;;current cursor point.
 (defun insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
@@ -223,7 +223,7 @@
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
 
-;; settings for appt
+;;settings for appt
 (require 'appt)
 (setq appt-issue-message nil)
 (setq appt-message-warning-time 3)
@@ -236,7 +236,7 @@
        ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
  
 ;;work direction
-;;(setq default-directory "~/work")
+;(setq default-directory "~/work")
 
 (setq column-number-mode t)
 (setq default-fill-column 80)
@@ -248,7 +248,7 @@
 
 (setq-default kill-whole-line t)
 
-;; //auto load: transient-mark-mode,delete-selection-mode
+;;//auto load: transient-mark-mode,delete-selection-mode
 (if (fboundp 'pc-selection-mode)                                              
     (pc-selection-mode)                                                   
     (require 'pc-select))
@@ -267,7 +267,7 @@
 
 (setq kill-ring-max 200)
 
-;; disable auto wrap
+;;disable auto wrap
 (setq truncate-partial-width-windows nil)
 
 (winner-mode t)
@@ -289,7 +289,7 @@
 
 (setq truncate-partial-width-windows nil)
 
-;; indent setting
+;;indent setting
 (setq-default indent-tabs-mode nil)
 (setq default-tab-width 4)
 (setq tab-stop-list ())
@@ -302,12 +302,12 @@
 (auto-compression-mode t)
 (column-number-mode t)
 
-;; display local-mode calendar
+;;display local-mode calendar
 (setq display-time-string-forms
       '("["24-hours":"minutes","dayname","monthname" "day","year"]"))
 (display-time)
 
-;; embrace light show
+;;embrace light show
 (show-paren-mode t)
 
 ;(if (fboundp 'menu-bar-mode)    (menu-bar-mode -1))
@@ -316,7 +316,7 @@
 (if (fboundp 'scroll-bar-mode)   (scroll-bar-mode -1))
 (if (fboundp 'tooltip-mode)      (tooltip-mode -1))
 
-;; If tooltips turned on, make tips appear promptly
+;;If tooltips turned on, make tips appear promptly
 (setq tooltip-delay 0.1) ; default is one second
 
 ;;Minibuffer complete help
@@ -325,9 +325,9 @@
 ;;mouse wheel support
 (setq mouse-wheel-mode t)
 
-;; ensure abbrev mode is always on
+;;ensure abbrev mode is always on
 (setq-default abbrev-mode t)
-;; do not bug me about saving my abbreviations
+;;do not bug me about saving my abbreviations
 (setq save-abbrevs nil)
 
 ;;ido mode
@@ -417,12 +417,12 @@
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
-;;; esc quits
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+;;esc quits
+(define-key minibuffer-local-map    [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 (provide 'common-setting)
 

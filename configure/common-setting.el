@@ -73,11 +73,12 @@
                       (font-spec :family my-font-cn-name
                                  :size   my-font-cn-size))))
 
+(setq my-font-console-name "Microsoft YaHei Mono 11")
 (defun my-console-font ()
   "my console font setting"
   (progn
     (add-to-list 'default-frame-alist
-                 '(font . my-font-string))))
+                 '(font . my-font-console-name))))
 
 (if window-system (my-frame-font) (my-console-font))
 

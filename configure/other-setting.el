@@ -97,22 +97,23 @@ Emacs buffer are those starting with “*”."
 
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
-;(setq tabbar-font-name my-font-en-name)
-(setq tabbar-font-name "Consolas")
-(when window-system
-  (set-face-attribute 'tabbar-default nil
-                      :inherit    nil
-                      :weight    'normal
-                      :width     'normal
-                      :slant     'normal
-                      :underline  nil
-                      :strike-through nil
-                      :stipple    nil
-                      :background "#AAAAAA"
-                      :foreground "black"
-                      :box    nil
-                      :family tabbar-font-name
-                      ))
+;;tabbar font name setting
+(if (boundp 'my-font-en-name)
+    (setq tabbar-font-name my-font-en-name)
+    (setq tabbar-font-name "Consolas"))
+
+(set-face-attribute 'tabbar-default nil
+                    :inherit    nil
+                    :weight    'normal
+                    :width     'normal
+                    :slant     'normal
+                    :underline  nil
+                    :strike-through nil
+                    :stipple    nil
+                    :background "#AAAAAA"
+                    :foreground "black"
+                    :box    nil
+                    :family tabbar-font-name)
 (set-face-attribute 'tabbar-selected nil
                     :background "LightGoldenrod"
                     :foreground "DarkGreen"

@@ -48,12 +48,20 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(defvar en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
-(defvar cn-font-list '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")) 
+(setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
+(setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(defvar my-font-en-name (nth 0 en-font-list))
-(defvar my-font-cn-name (nth 0 cn-font-list))
-(defvar my-font-cn-size 14)
+(setq my-font-en-name (nth 0 en-font-list))
+(setq my-font-cn-name (nth 1 cn-font-list))
+
+(defun my-cn-font-name ()
+  (setq my-cn-name "")
+  (dolist (cell  (butlast (split-string my-font-cn-name)))
+     (setq my-cn-name (concat my-cn-name  cell " ")))
+  (setq my-cn-name (substring my-cn-name 0 -1)))
+
+(defun my-cn-font-size ()
+  (string-to-number (car (last (split-string my-font-cn-name)))))
 
 (defun my-frame-font ()
   "my frame font setting"
@@ -64,10 +72,10 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family my-font-cn-name
-                                 :size   my-font-cn-size))))
+                      (font-spec :family (my-cn-font-name)
+                                 :size   (my-cn-font-size)))))
 
-(setq my-font-console-name "Microsoft YaHei Mono 11")
+(setq my-font-console-name (nth 1 cn-font-list))
 (defun my-console-font ()
   "my console font setting"
   (progn

@@ -48,24 +48,18 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(defvar en-font-list '("Consolas" "Inconsolata" "Monaco" "DejaVu Sans Mono" "Monospace" "Courier New"))
+(defvar en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (defvar cn-font-list '("Microsoft Yahei" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体")) 
 
 (defvar my-font-en-name (nth 0 en-font-list))
-(defvar my-font-en-size 11)
-
 (defvar my-font-cn-name (nth 0 cn-font-list))
-(defvar my-font-cn-size 13)
-
-(setq my-font-string
-      (concat my-font-en-name " "
-              (number-to-string my-font-en-size)))
+(defvar my-font-cn-size 14)
 
 (defun my-frame-font ()
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute
-   'default nil :font my-font-string)
+   'default nil :font my-font-en-name)
   ;; Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)

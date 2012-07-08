@@ -87,7 +87,7 @@
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
 (require 'server)
-(when (and (= emacs-major-version 23)
+(when (and (>= emacs-major-version 23)
            (or (eq window-system 'w32) (eq window-system 'win32)))
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
 					                             ; ~/.emacs.d/server is unsafe"

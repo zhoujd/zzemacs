@@ -99,7 +99,7 @@ Emacs buffer are those starting with “*”."
 
 ;;tabbar font name setting
 (if (boundp 'my-font-en-name)
-    (setq tabbar-font-name my-font-en-name)
+    (setq tabbar-font-name (car (split-string my-font-en-name)))
     (setq tabbar-font-name "Consolas"))
 
 (set-face-attribute 'tabbar-default nil

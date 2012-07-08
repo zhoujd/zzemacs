@@ -228,10 +228,6 @@ Emacs buffer are those starting with “*”."
 ;(require 'color-moccur)
 ;(require 'moccur-edit)
 
-;;http://emacswiki.org/emacs/Evil
-;(zz-load-path "site-lisp/evil")
-;(require 'evil)
-
 ;;bookmark
 (require 'breadcrumb)
 

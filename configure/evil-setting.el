@@ -4,7 +4,9 @@
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")
 (require 'evil)
+(evil-mode t)
 
+;;key setting
 (define-key evil-normal-state-map "  " 'ace-jump-mode)
 (define-key evil-normal-state-map " k" 'ace-jump-char-mode)
 (define-key evil-normal-state-map " l" 'ace-jump-line-mode)
@@ -19,8 +21,6 @@
 (define-key evil-normal-state-map "Y" 'copy-to-end-of-line)
 (define-key evil-normal-state-map "L" 'evil-last-non-blank)
 (define-key evil-normal-state-map (kbd "<tab>") 'indent-for-tab-command)
-(define-key evil-normal-state-map (kbd "<right>") 'next-error)
-(define-key evil-normal-state-map (kbd "<left>") 'previous-error)
 (define-key evil-normal-state-map (kbd "<C-return>") 'new-line-in-normal-mode)
 (define-key evil-normal-state-map (kbd "M-t") 'textmate-goto-file)
 (define-key evil-normal-state-map (kbd "M-f") 'dired)
@@ -81,12 +81,11 @@
 (evil-ex-define-cmd "[fs]find-schema" 'railgun-find-schema)
 (evil-ex-define-cmd "[19]onenineify" 'ruby-onenine-ify-region-hashes)
 
-
+;;esc quit
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
 
-;;; org
-
+;;org
 (evil-define-key 'normal org-mode-map
   (kbd "<tab>") 'org-cycle
   (kbd "M-L") 'org-metaright
@@ -110,3 +109,5 @@
 
 
 (provide 'evil-setting)
+
+;;; evil-setting.el ends here

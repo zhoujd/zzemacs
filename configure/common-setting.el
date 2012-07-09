@@ -55,10 +55,8 @@
 (setq my-font-cn-name (nth 1 cn-font-list))
 
 (defun my-cn-font-name ()
-  (setq my-cn-name "")
-  (dolist (cell (butlast (split-string my-font-cn-name " " nil)))
-     (setq my-cn-name (concat my-cn-name  cell " ")))
-  (setq my-cn-name (substring my-cn-name 0 -1)))
+  (string-match ".*[ ]" my-font-cn-name)  
+  (setq my-cn-name (substring (match-string 0 my-font-cn-name) 0 -1)))
 
 (defun my-cn-font-size ()
   (string-to-number (car (last (split-string my-font-cn-name)))))

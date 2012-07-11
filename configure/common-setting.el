@@ -17,7 +17,7 @@
 
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()
-  "This This is for chinese setting"
+  "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
   (set-buffer-file-coding-system 'chinese-gb18030)
@@ -25,7 +25,7 @@
 
 ;; -*- Japanese -*-
 (defun my-set-language-japanese ()
-  "This This is for japanese setting"
+  "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
   (set-buffer-file-coding-system 'japanese-shift-jis)
@@ -33,7 +33,7 @@
 
 ;; -*- utf-8 -*-
 (defun my-set-language-utf-8 ()
-  "This This is for utf-8 setting"
+  "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
   (set-buffer-file-coding-system 'utf-8)

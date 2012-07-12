@@ -32,8 +32,8 @@
 (global-set-key [f2]     'bm-next)
 (global-set-key [S-f2]   'bm-previous)
 (global-set-key [C-S-f2] 'bm-remove-all-current-buffer)
-(global-set-key [M-f2]   'bm-show-all)
-(global-set-key [M-S-f2] 'bm-show-all)
+(global-set-key [M-f2]   'bm-menu-show)
+(global-set-key [M-S-f2] 'bm-menu-show)
 
 (global-set-key [f3]     'my-last-buffer-go)
 (global-set-key [C-f3]   'list-bookmarks)

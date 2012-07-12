@@ -229,7 +229,9 @@ Emacs buffer are those starting with “*”."
 ;(require 'moccur-edit)
 
 ;;bookmark
-(require 'breadcrumb)
+(require 'bm)
+(setq bm-marker 'bm-marker-left)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (when (or (eq window-system 'w32)

@@ -28,12 +28,12 @@
 (global-set-key [M-S-f1] 'recentf-open-files)
 (global-set-key [C-S-f1] 'recentf-open-files-compl)
 
-(global-set-key [C-f2]   'bc-set)
-(global-set-key [f2]     'bc-next)
-(global-set-key [S-f2]   'bc-previous)
-(global-set-key [C-S-f2] 'bc-clear)
-(global-set-key [M-f2]   'bc-list)
-(global-set-key [M-S-f2] 'bc-list)
+(global-set-key [C-f2]   'bm-toggle)
+(global-set-key [f2]     'bm-next)
+(global-set-key [S-f2]   'bm-previous)
+(global-set-key [C-S-f2] 'bm-remove-all-current-buffer)
+(global-set-key [M-f2]   'bm-show-all)
+(global-set-key [M-S-f2] 'bm-show-all)
 
 (global-set-key [f3]     'my-last-buffer-go)
 (global-set-key [C-f3]   'list-bookmarks)
@@ -42,8 +42,8 @@
 (global-set-key [f4]     'kill-this-buffer)
 (global-set-key [C-f4]   'undo-kill-buffer)
 
-(global-set-key [S-f3]   'bc-local-previous)
-(global-set-key [S-f4]   'bc-local-next)
+(global-set-key [S-f3]   'highlight-symbol-next)
+(global-set-key [S-f4]   'highlight-symbol-prev)
 
 (global-set-key [f5]     'speedbar-get-focus)
 (global-set-key [S-f5]   'sr-speedbar-toggle)
@@ -190,6 +190,8 @@
 (global-set-key (kbd "S-<SPC>") 'set-mark-command)
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
+
+(global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
 (provide 'key-setting)
 

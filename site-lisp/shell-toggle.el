@@ -1,8 +1,8 @@
 ;;; shell-toggle.el --- Toggle to and from the *shell* buffer
 ;;; Version 1.2 - 98-11-19
-;;; Copyright (C) 1997, 1998 Mikael Sjödin (mic@docs.uu.se)
+;;; Copyright (C) 1997, 1998 Mikael SjÃ¶din (mic@docs.uu.se)
 ;;;
-;;; Author: Mikael Sjödin  --  mic@docs.uu.se
+;;; Author: Mikael SjÃ¶din  --  mic@docs.uu.se
 ;;;
 ;;; This file is NOT part of GNU Emacs.
 ;;; You may however redistribute it and/or modify it under the terms of the GNU

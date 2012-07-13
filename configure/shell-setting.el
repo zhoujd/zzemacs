@@ -49,7 +49,8 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun kill-shell-buffer(process event)
   "The one actually kill shell buffer when exit. "
-  (kill-buffer (process-buffer process)))
+  (kill-buffer (process-buffer process))
+  (delete-window))
 
 (defun kill-shell-buffer-after-exit()
   "kill shell buffer when exit."
@@ -175,7 +176,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (message "switch to %s" buf-name)    
         (delete-other-windows))))
 
-;;switch shell to cd
+;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)
 
 (provide 'shell-setting)

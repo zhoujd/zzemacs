@@ -187,8 +187,7 @@ Emacs buffer are those starting with “*”."
 
 (defun kill-buffer-when-exit ()
   "Close assotiated buffer when a process exited"
-  (let ((current-process (ignore-errors (get-buffer-process
-                                         (current-buffer)))))
+  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
     (when current-process
       (set-process-sentinel current-process
                             (lambda (watch-process change-state)

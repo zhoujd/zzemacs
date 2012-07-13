@@ -145,7 +145,8 @@ When `exit' from shell buffer."
     (set-process-sentinel (get-buffer-process (current-buffer))
                           (lambda (proc change)
                             (when (string-match "\\(finished\\|exited\\)" change)
-                              (kill-buffer (process-buffer proc)))))))
+                              (kill-buffer (process-buffer proc))
+                              (delete-window))))))
 
 (defun multi-shell-handle-kill-buffer ()
   "Function that hook `kill-buffer-hook'."

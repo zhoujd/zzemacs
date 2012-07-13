@@ -50,7 +50,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun kill-shell-buffer(process event)
   "The one actually kill shell buffer when exit. "
   (kill-buffer (process-buffer process))
-  (delete-window))
+  (unless (one-window-p) (delete-window)))
 
 (defun kill-shell-buffer-after-exit()
   "kill shell buffer when exit."

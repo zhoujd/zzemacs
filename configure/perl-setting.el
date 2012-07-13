@@ -5,12 +5,13 @@
 
 (defalias 'perl-mode 'cperl-mode)
 
-;; Use cperl-mode instead of the default perl-mode
+;;;Use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 
+;;;perl code style
 (defun pde-perl-mode-hook ()
   (abbrev-mode t)
   (hs-minor-mode t)
@@ -33,6 +34,24 @@
   (cperl-set-style "PDE"))
 
 (add-hook 'cperl-mode-hook 'pde-perl-mode-hook)
+
+;;;perl completing
+(add-hook  'cperl-mode-hook
+           (lambda ()
+             (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
+	       	   (require 'perl-completion nil t)
+               (auto-complete-mode )
+               (perl-completion-mode )
+               (hs-minor-mode )
+               (make-variable-buffer-local 'ac-sources)
+               (setq ac-sources
+                     '(ac-source-perl-completion
+                       ac-source-yasnippet
+                       ac-source-abbrev
+                       ac-source-words-in-buffer
+                       ac-source-files-in-current-dir
+                       ac-source-filename
+                       )))))
 
 (provide 'perl-setting)
 

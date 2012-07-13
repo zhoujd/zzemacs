@@ -175,6 +175,9 @@ Dmitriy Igrishin's patched version of comint.el."
         (message "switch to %s" buf-name)    
         (delete-other-windows))))
 
+;;switch shell to cd
+(require 'shell-toggle)
+
 (provide 'shell-setting)
 
 ;;; shell-setting.el ends here

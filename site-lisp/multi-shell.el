@@ -154,7 +154,8 @@ When `exit' from shell buffer."
   ;; when have alive process with current shell buffer
   (when (and (eq major-mode 'shell-mode)
              (comint-check-proc (current-buffer)))
-    (comint-interrupt-subjob)))
+    (comint-interrupt-subjob)
+	(delete-window)))
 
 (defun multi-shell-list ()
   "The shell buffers presently active."

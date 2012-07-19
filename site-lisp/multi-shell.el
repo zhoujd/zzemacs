@@ -146,7 +146,8 @@ When `exit' from shell buffer."
                           (lambda (proc change)
                             (when (string-match "\\(finished\\|exited\\)" change)
                               (kill-buffer (process-buffer proc))
-                              (unless (one-window-p) (delete-window)))))))
+                              ;;(unless (one-window-p) (delete-window))
+                              )))))
 
 (defun multi-shell-handle-kill-buffer ()
   "Function that hook `kill-buffer-hook'."
@@ -155,7 +156,8 @@ When `exit' from shell buffer."
   (when (and (eq major-mode 'shell-mode)
              (comint-check-proc (current-buffer)))
     (comint-interrupt-subjob)
-    (unless (one-window-p) (delete-window))))
+    ;;(unless (one-window-p) (delete-window))
+    ))
 
 (defun multi-shell-list ()
   "The shell buffers presently active."

@@ -191,7 +191,6 @@
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
 
-(global-set-key (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse)
 
 (provide 'key-setting)
 

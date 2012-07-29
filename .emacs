@@ -26,6 +26,7 @@
         '(
           common-setting
           other-setting
+		  dired-setting
           shell-setting
           sample-setting
           media-setting

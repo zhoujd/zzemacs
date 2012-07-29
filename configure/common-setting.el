@@ -188,7 +188,9 @@
     (setq ange-ftp-ftp-program-name "ftp.exe"))
 
 ;;mouset avoidance
-(mouse-avoidance-mode 'animate)
+;(mouse-avoidance-mode 'animate)
+(mouse-avoidance-mode 'exile)
+(setq mouse-avoidance-threshold 10)
 
 (show-paren-mode t)
 (setq show-paren-style 'parentheses)
@@ -274,8 +276,9 @@
 
 ;;buffer name in title
 (setq frame-title-format
-      (list "zhoujd@"
-           (replace-regexp-in-string "\\..*$" ""system-name)
+      (list (user-login-name)
+            "@"
+            (replace-regexp-in-string "\\..*$" ""system-name)
             ":"
             '(buffer-file-name "%f"
                                (dired-directory dired-directory "%b"))))

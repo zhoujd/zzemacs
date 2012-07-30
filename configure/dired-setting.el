@@ -25,9 +25,7 @@
             (define-key dired-mode-map "U" 'dired-up-directory)
             (define-key dired-mode-map "/" 'dired-isearch-filenames)))
 
-
-(autoload 'rename-file-specify-extension "rename-specify-extension" "" t)
-
+;;sort setting
 (add-hook 'dired-mode-hook (lambda ()
   (interactive)
   (make-local-variable  'dired-sort-map)
@@ -45,11 +43,9 @@
   (define-key dired-sort-map "n"                ;; s n 按照文件名称的字母顺序排序。
               '(lambda () "sort by Name"
                  (interactive) (dired-sort-other (concat dired-listing-switches ""))))
-  (local-set-key "b" 'rename-file-specify-extension)
 ))
 
-
-;;    目录在前面
+;;dir first
 (defun sof/dired-sort ()
   "Dired sort hook to list directories first."
   (save-excursion

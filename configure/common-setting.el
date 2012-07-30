@@ -349,30 +349,6 @@
             (define-key ido-completion-map (kbd "M-n") 'ido-next-match)
             (define-key ido-completion-map (kbd "M-p") 'ido-prev-match)))
 
-;;dired setting
-(setq dired-recursive-deletes t)
-(setq dired-recursive-copies t)
-(defadvice dired-find-file (around dired-find-file-single-buffer activate)
-  "Replace current buffer if file is a directory."
-  (interactive)
-  (let ((orig (current-buffer))
-        (filename (dired-get-file-for-visit)))
-    ad-do-it
-    (when (and (file-directory-p filename)
-               (not (eq (current-buffer) orig)))
-      (kill-buffer orig))))
-(defadvice dired-up-directory (around dired-up-directory-single-buffer activate)
-  "Replace current buffer if file is a directory."
-  (interactive)
-  (let ((orig (current-buffer)))
-    ad-do-it
-    (kill-buffer orig)))
-
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (define-key dired-mode-map "U" 'dired-up-directory)
-            (define-key dired-mode-map "/" 'dired-isearch-filenames)))
-
 ;;only auto spit windows
 (setq split-height-threshold 0)
 (setq split-width-threshold nil)

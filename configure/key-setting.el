@@ -85,9 +85,9 @@
 
 (global-set-key [C-f10]   'tool-bar-mode)
 (global-set-key [S-f10]   'menu-bar-mode)
-(global-set-key [M-f10]   'my-toggle-fullscreen)
+(global-set-key [M-f10]   'my-toggle-maxframe)
 (global-set-key [C-S-f10] 'scroll-bar-mode)
-(global-set-key [M-S-f10] 'tabbar-mode)
+(global-set-key [M-S-f10] 'my-toggle-fullscreen)
 
 (global-set-key [f11]     'linum-mode)
 (global-set-key [C-f11]   'hl-line-mode)

@@ -267,8 +267,8 @@ Emacs buffer are those starting with “*”."
 (put 'scroll-left 'disabled nil)
 
 ;;eproject manage
-(zz-load-path "site-lisp/eproject")
-(require 'eproject)
+;(zz-load-path "site-lisp/eproject")
+;(require 'eproject)
 
 ;;http://nschum.de/src/emacs/highlight-symbol/
 (require 'highlight-symbol)

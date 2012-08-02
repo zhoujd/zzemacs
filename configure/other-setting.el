@@ -273,6 +273,9 @@ Emacs buffer are those starting with “*”."
 ;;http://nschum.de/src/emacs/highlight-symbol/
 (require 'highlight-symbol)
 
+;;maxframe
+(require 'maxframe)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

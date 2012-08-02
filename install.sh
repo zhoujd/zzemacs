@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 echo install .emacs to HOME directory begin...
 ZZEMACS_ROOT=`pwd`

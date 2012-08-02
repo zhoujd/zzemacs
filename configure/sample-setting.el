@@ -80,6 +80,13 @@
 	  (my-non-fullscreen)
 	(my-fullscreen)))
 
+(defvar my-maxframe-p t "Check if maxframe is on or off")
+(defun my-toggle-maxframe ()
+  (interactive)
+  (setq my-maxframe-p (not my-maxframe-p))
+  (if my-maxframe-p
+	  (restore-frame)
+	(maximize-frame)))
 
 ;;display current buffer name
 (defun display-buffer-name ()

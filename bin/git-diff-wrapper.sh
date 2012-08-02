@@ -3,7 +3,8 @@
 if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="D:/develop/BCompare3/BCompare.exe"
 else
-    DIFF_TOOL="meld"
+    #DIFF_TOOL="meld"
+    DIFF_TOOL="bcompare"
 fi
 
 # diff is called by git with 7 parameters:

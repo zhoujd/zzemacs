@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo install linux-tools begin...
+sudo apt-get install cairo-dock cairo-dock-plug-ins
+
+echo install linux-tools end...

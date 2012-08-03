@@ -1,0 +1,130 @@
+;;;This is sawfish configure for zhoujd
+;;;Create by zhoujd on 20120803
+
+;;zzsawfish home
+(setq zzsawfish "~/zzemacs/sawfish/")
+
+;;add load-path
+(setq load-path (cons zzsawfish load-path))
+
+;;font set
+(setq default-font (get-font "-*-Microsoft YaHei Mono-medium-r-*-*-14-*-*-*-*-*-*-*"))
+
+;;set backgound
+(system (concat "xloadimage -onroot -fullscreen " zzsawfish "background.jpg &"))
+
+;;capture screen
+(defun capture-root-window ()  
+  "capture root window"  
+  (interactive)  
+  (system "import -window root shot.png; display shot.png&"))  
+
+(defun capture-this-window ()  
+  "capture active window"  
+  (interactive)  
+  (let ((w (current-event-window)))  
+    (when w  
+      (display-message (concat "import -window "  
+                        (prin1-to-string (window-id w)) " window.png"))  
+      (system (concat "import -window "  
+                      (prin1-to-string (window-id w)) " window.png"))  
+      (system "display window.png&"))))  
+
+(defun capture-region ()  
+  "capture region"  
+  (interactive)  
+  (let ((process (make-process standard-output)  
+    (start-process process "import" "capture.png")))))  
+
+;;set start program
+(define startup-programs  
+  '(("gnome-panel")  
+    ("xscreensaver" "-no-splash")
+    ("fcitx")))
+
+(add-hook 'before-exit-hook  
+          (lambda ()  
+            (mapc stop-process (active-processes))))
+
+(mapc (lambda (program)  
+        (apply start-process (make-process standard-output) program))  
+      startup-programs) 
+
+(add-hook 'before-exit-hook  
+          (lambda ()  
+            (mapc stop-process (active-processes))))
+
+;; this function is used a bit further in, in my local config. i use it to blur
+;; the line between what's running and what needs to be started, so i can hit a
+;; key to load something, or jump to it if it was already running. i love
+;; sawfish.
+(defun jump-or-exec (re prog #!optional onfocused)
+  "jump to a window matched by re, or start program otherwise."
+  (catch 'return
+    (let ((wind (get-window-by-name-re re)))
+      (if (functionp onfocused) ; check if already focused
+          (let ((curwin (input-focus)))
+            (if curwin
+                (if (string-match re (window-name curwin))
+                    (progn
+                      (funcall onfocused wind)
+                      (throw 'return))))))
+      (if (windowp wind)
+          (display-window wind)
+        (if (functionp prog)
+            (funcall prog)
+          (system (concat prog "&")))))))
+
+;; define functions
+(defun backgroundize (string)
+  "Append a character `&' to STRING if it is not end with a `&'."
+  (let ((len (length string)))
+    (if (string= "&" (substring string (- len 1)))
+        string
+        (concat string " &"))))
+
+(defun show-desktop-toggle ()
+  "Show or hide the desktop."
+  (if (showing-desktop-p)
+      (hide-desktop)
+      (show-desktop)))
+
+(setq apps-menu-autogen   nil)
+(setq decorate-transients t)
+(setq place-window-mode   'first-fit)
+
+(setq apps-menu  
+    '(("terminal"   (system "gnome-terminal &"))  
+      ("emacs"      (system "emacs &"))  
+      ("firefox"    (system "firefox &"))  
+      ("bcompare"   (system "bcompare &"))  
+      ("gcolor2"    (system "gcolor2 &"))  
+      ("gcalctool"  (system "gcalctool &"))  
+      ("run"        (system "gmrun &"))
+      ("lock"       (system "xscreensaver-command -lock &"))
+      ()
+      ("restart"    restart)  
+      ("quit"       quit)  
+      )) 
+
+(bind-keys root-window-keymap "button3-click1" '(popup-root-menu))
+(bind-keys window-keymap      "Meta-F10"       'maximize-window-fullscreen-toggle)
+
+;;window manage
+(bind-keys global-keymap "Super-F1"  '(popup-root-menu))  
+(bind-keys global-keymap "Super-F2"  '(system "gmrun &"))
+(bind-keys global-keymap "Super-F3"  '(show-desktop-toggle))
+(bind-keys global-keymap "Super-F4"  '(delete-window (current-event-window)))  
+
+(bind-keys global-keymap "Super-F10" '(maximize-window-toggle (current-event-window)))
+
+;;for run special program
+(bind-keys global-keymap "Super-t"  '(system "gnome-terminal &"))
+(bind-keys global-keymap "Super-e"  '(system "emacs &"))
+(bind-keys global-keymap "Super-l"  '(system "xscreensaver-command -lock &"))
+
+(bind-keys global-keymap "Super-f"  '(jump-or-exec "Firefox" "firefox"))
+(bind-keys global-keymap "Super-b"  '(jump-or-exec "Beyond Compare" "bcompare"))
+
+
+;;;~/.sawfishrc end here

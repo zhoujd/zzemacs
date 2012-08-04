@@ -40,7 +40,7 @@
 (define startup-programs  
   '(("gnome-panel")  
     ("xscreensaver" "-no-splash")
-    ("fcitx")))
+    ))
 
 (add-hook 'before-exit-hook  
           (lambda ()  

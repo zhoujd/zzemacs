@@ -10,6 +10,9 @@
 ;;font set
 (setq default-font (get-font "-*-Microsoft YaHei Mono-medium-r-*-*-14-*-*-*-*-*-*-*"))
 
+;;set frame default style
+(setq default-frame-style 'microGUI)
+
 ;;set backgound
 (system (concat "xloadimage -onroot -fullscreen " zzsawfish "background.jpg &"))
 

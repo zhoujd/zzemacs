@@ -2,16 +2,19 @@
 ;;;Create by zhoujd on 20120803
 
 ;;zzsawfish home
-(setq zzsawfish "~/zzemacs/sawfish/")
+(setq zzsawfish-path "~/zzemacs/sawfish/")
 
 ;;add load-path
-(setq load-path (cons zzsawfish load-path))
+(setq load-path (cons zzsawfish-path load-path))
 
 ;;font set
 (setq default-font (get-font "-*-Microsoft YaHei Mono-medium-r-*-*-14-*-*-*-*-*-*-*"))
 
+;;set frame default style
+(setq default-frame-style 'microGUI)
+
 ;;set backgound
-(system (concat "xloadimage -onroot -fullscreen " zzsawfish "background.jpg &"))
+(system (concat "xloadimage -onroot -fullscreen " zzsawfish-path "background.jpg &"))
 
 ;;capture screen
 (defun capture-root-window ()  
@@ -38,7 +41,8 @@
 
 ;;set start program
 (define startup-programs  
-  '(("gnome-panel")  
+  '(("gnome-panel")
+    ("nm-applet")
     ("xscreensaver" "-no-splash")
     ))
 
@@ -100,11 +104,9 @@
       ("bcompare"   (system "bcompare &"))  
       ("gcolor2"    (system "gcolor2 &"))  
       ("gcalctool"  (system "gcalctool &"))  
+      ()
       ("run"        (system "gmrun &"))
       ("lock"       (system "xscreensaver-command -lock &"))
-      ()
-      ("restart"    restart)  
-      ("quit"       quit)  
       )) 
 
 (bind-keys root-window-keymap "button3-click1" '(popup-root-menu))

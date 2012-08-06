@@ -227,6 +227,14 @@ the mru bookmark stack."
 (autoload 'bat-mode "bat-mode"
     "DOS and WIndows BAT files" t)
 
+;;sawfish
+(require 'sawfish)
+(setq auto-mode-alist
+   (append
+    (list (cons "\\.[jJ][lL]$"  'sawfish-mode))
+    (list (cons "\\.sawfishrc$" 'sawfish-mode))
+    auto-mode-alist))
+
 ;; for mysql
 ;; show output on windows in buffer
 (setq sql-mysql-options '("-C" "-t" "-f" "-n"))

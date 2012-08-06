@@ -38,7 +38,8 @@
 
 ;;set start program
 (define startup-programs  
-  '(("gnome-panel")  
+  '(("gnome-panel")
+    ("nm-applet")
     ("xscreensaver" "-no-splash")
     ))
 

@@ -219,14 +219,17 @@ Emacs buffer are those starting with “*”."
 ;(require 'moccur-edit)
 
 ;;bookmark
-(require 'bm)
-(setq bm-marker 'bm-marker-left)
-(setq bm-highlight-style 'bm-highlight-only-fringe)
+;(require 'bm)
+;(setq bm-marker 'bm-marker-left)
+;(setq bm-highlight-style 'bm-highlight-only-fringe)
+
 ;;show *bm-bookmarks* buffer
-(defun bm-menu-show ()
-  (interactive)
-  (bm-show-all)
-  (delete-other-windows))
+;(defun bm-menu-show ()
+;  (interactive)
+;  (bm-show-all)
+;  (delete-other-windows))
+
+(require 'breadcrumb)
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (when (or (eq window-system 'w32)

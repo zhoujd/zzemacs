@@ -77,6 +77,8 @@
 
 ;;turn on the tabbar
 (tabbar-mode t)
+(setq tabbar-mwheel-mode nil)
+
 ;;define all tabs to be one of 2 possible groups: “Emacs Buffer”, “User Buffer”.
 (defun tabbar-buffer-groups ()
   "Return the list of group names the current buffer belongs to.

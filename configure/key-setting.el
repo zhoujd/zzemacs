@@ -11,8 +11,11 @@
 (defvar f12-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key global-map [f12] f12-map)
 
-(define-key f12-map (kbd "1") 'my-utf-8)
-(define-key f12-map (kbd "h") 'sourcepair-jump-to-headerfile)
+(define-key f12-map (kbd "C-1") 'my-utf-8)
+(define-key f12-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
+(unless (or (eq window-system 'w32)
+            (eq window-system 'win32))
+  (define-key f12-map (kbd "C-d") 'open-with-nautilus))
 
 ;;switch to shells
 (define-key f12-map [f9]

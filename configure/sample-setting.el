@@ -120,6 +120,17 @@
                   "gvim"
                   (display-buffer-name)))
 
+
+(defun open-with-nautilus()
+  "Edit current buffer file with gvim"
+  (interactive)
+  (start-process  "nautilus"
+                  nil
+                  "nautilus"
+                  "--no-desktop"
+                  default-directory
+                  ))
+
 ;;go to last buffer
 (defun my-last-buffer-go ()
   (interactive)

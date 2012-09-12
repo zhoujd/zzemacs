@@ -78,8 +78,8 @@
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
   (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-  (local-set-key "." 'semantic-complete-self-insert)
-  (local-set-key ">" 'semantic-complete-self-insert)
+  ;(local-set-key "." 'semantic-complete-self-insert)
+  ;(local-set-key ">" 'semantic-complete-self-insert)
 
   (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
   (define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods)

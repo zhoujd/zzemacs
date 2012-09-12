@@ -276,12 +276,12 @@
 
 ;;buffer name in title
 (setq frame-title-format
-      (list (user-login-name)
-            "@"
-            (replace-regexp-in-string "\\..*$" ""system-name)
-            ":"
-            '(buffer-file-name "%f"
-                               (dired-directory dired-directory "%b"))))
+      (list
+       ;;(user-login-name)
+       "emacs@"
+       (replace-regexp-in-string "\\..*$" ""system-name)
+       ":"
+       '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)

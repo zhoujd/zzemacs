@@ -49,8 +49,8 @@
 (global-set-key [f4]     'kill-this-buffer)
 (global-set-key [C-f4]   'undo-kill-buffer)
 
-;(global-set-key [S-f3]   'highlight-symbol-next)
-;(global-set-key [S-f4]   'highlight-symbol-prev)
+(global-set-key [C-S-f3]   'highlight-symbol-next)
+(global-set-key [C-S-f4]   'highlight-symbol-prev)
 
 (global-set-key [S-f3]   'bc-local-previous)
 (global-set-key [S-f4]   'bc-local-next)

@@ -128,7 +128,7 @@
                   nil
                   "nautilus"
                   "--no-desktop"
-                  default-directory
+                  ""
                   ))
 
 ;;go to last buffer

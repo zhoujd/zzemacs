@@ -1,5 +1,33 @@
 ;;;; prog-setting.el --- program common file
+
+;;; project setting sample
+;;;=============================================================================
+;(setq proj-list '("~/zzsawfish/" "~/zzemacs/"))
+
+;(defun gen-proj-find-path (proj-list)
+;  (setq proj-path-parts "")
+;  (dolist (cell proj-list)
+;    (setq proj-path-parts (concat proj-path-parts cell " ")))
+;  (setq proj-path-parts (substring proj-path-parts 0 -1)))
+;
+;(defun create-proj-etags ()
+;  (interactive)
+;  (create-etags (gen-proj-find-path proj-list)))
 ;;
+;; tags project setting
+;(setq tags-table-list '("~/work/TAGS"))
+;
+;; cscope project setting 
+;(setq cscope-database-regexps '(("~/work/"  (t ("-q" "-d")) t)))
+;
+;; add to PATH
+;(setq add-path-list '("~/study/script"))
+;(mapcar 'zz-add-os-path add-path-list)
+;
+;(setenv "LD_LIBRARY_PATH" (concat "~/work/lib"
+;                                  path-separator (getenv "LD_LIBRARY_PATH")))
+;;;=============================================================================
+
 ;; holding
 (require 'hideshow)
 (add-hook 'java-mode-hook 'hs-minor-mode)
@@ -208,11 +236,7 @@ the mru bookmark stack."
   (interactive "DDirectory: ")
   (async-shell-command (gen-cscope-cmd dir-name)))
 
-;; SET TAGS PATH
-;(setq tags-table-list '("~/work/TAGS"
-;                        ;;"~/TAGS"
-;                        ))
-
+;;add bat mode support
 (setq auto-mode-alist
    (append
     (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
@@ -226,9 +250,6 @@ the mru bookmark stack."
 
 (autoload 'bat-mode "bat-mode"
     "DOS and WIndows BAT files" t)
-
-;;sawfish
-
 
 ;; sawfish mode settings
 ;; load the first sawfish.el or sawfish.elc file found in the load-path

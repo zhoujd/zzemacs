@@ -121,8 +121,17 @@
                   (display-buffer-name)))
 
 
+(defun open-with-terminal()
+  "Open terminal to current dired"
+  (interactive)
+  (start-process  "gnome-terminal"
+                  nil
+                  "gnome-terminal"
+                  ""
+                  ))
+
 (defun open-with-nautilus()
-  "Edit current buffer file with gvim"
+  "Open nautilus on current dired"
   (interactive)
   (start-process  "nautilus"
                   nil

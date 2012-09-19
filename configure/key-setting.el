@@ -15,7 +15,8 @@
 (define-key f12-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))
-  (define-key f12-map (kbd "C-d") 'open-with-nautilus))
+  (define-key f12-map (kbd "C-d") 'open-with-nautilus)
+  (define-key f12-map (kbd "C-t") 'open-with-terminal))
 
 ;;switch to shells
 (define-key f12-map [f9]

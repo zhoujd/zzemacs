@@ -180,6 +180,14 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)
 
+(defun clear-shell ()
+   (interactive)
+   (let ((old-max comint-buffer-maximum-size))
+     (setq comint-buffer-maximum-size 0)
+     (comint-truncate-buffer)
+     (setq comint-buffer-maximum-size old-max)))
+
+
 (provide 'shell-setting)
 
 ;;; shell-setting.el ends here

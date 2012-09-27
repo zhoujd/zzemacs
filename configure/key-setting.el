@@ -162,6 +162,9 @@
 (global-set-key (kbd "C-c w")   'compare-windows)
 (global-set-key (kbd "M-#")     'query-replace-regexp)
 
+(global-set-key (kbd "C-x M-s") 'sudo-unset-ro-or-save)
+(global-set-key (kbd "C-x M-f") 'sudo-find-file)
+
 ;;quick move other windows
 (global-set-key [M-up]    'windmove-up)
 (global-set-key [M-down]  'windmove-down)

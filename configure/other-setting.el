@@ -281,6 +281,9 @@ Emacs buffer are those starting with “*”."
 ;;maxframe
 (require 'maxframe)
 
+;;sudo
+(require 'sudo)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

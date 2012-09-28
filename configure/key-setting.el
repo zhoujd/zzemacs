@@ -15,7 +15,8 @@
 (define-key f12-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))
-  (define-key f12-map (kbd "C-d") 'open-with-nautilus))
+  (define-key f12-map (kbd "C-d") 'open-with-nautilus)
+  (define-key f12-map (kbd "C-t") 'open-with-terminal))
 
 ;;switch to shells
 (define-key f12-map [f9]
@@ -160,6 +161,9 @@
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "C-c w")   'compare-windows)
 (global-set-key (kbd "M-#")     'query-replace-regexp)
+
+(global-set-key (kbd "C-x M-s") 'sudo-unset-ro-or-save)
+(global-set-key (kbd "C-x M-f") 'sudo-find-file)
 
 ;;quick move other windows
 (global-set-key [M-up]    'windmove-up)

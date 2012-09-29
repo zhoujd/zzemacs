@@ -38,7 +38,7 @@
           java-setting
           csharp-setting
           php-setting
-          wiki-setting
+          muse-setting
           key-setting
           ))
 

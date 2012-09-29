@@ -20,11 +20,11 @@
 ;;html encoding
 (setq muse-html-encoding-default "utf8")
 
-;;add my wiki project
+;;muse projects
 (setq muse-project-alist
-      '(("MyWiki"
-         ("~/wiki" :default "index")
-         (:base "html" :path "~/wiki/publish"))))
+      '(("Website" ("~/Pages" :default "index")
+         (:base "html" :path "~/public_html")
+         (:base "pdf" :path "~/public_html/pdf"))))
 
 
 (provide 'muse-setting)

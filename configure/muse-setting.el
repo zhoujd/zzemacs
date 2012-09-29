@@ -27,6 +27,6 @@
          (:base "html" :path "~/wiki/publish"))))
 
 
-
+(provide 'muse-setting)
 
 ;;; muse-setting.el

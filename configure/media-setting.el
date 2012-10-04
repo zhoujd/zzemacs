@@ -3,6 +3,7 @@
 
 (zz-load-path "site-lisp")
 
+(defvar mpg123-startup-volume nil)
 (require 'mpg123)
 (setq mpg123-lang 0)
 (setq mpg123-default-dir "e:/emp3")

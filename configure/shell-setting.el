@@ -188,7 +188,7 @@ Dmitriy Igrishin's patched version of comint.el."
      (setq comint-buffer-maximum-size old-max)))
 
 (defun my-shell-hook ()
-  (local-set-key "\C-cl" 'clear-shell))
+  (define-key shell-mode-map (kbd "C-c M-o") 'clear-shell))
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
 

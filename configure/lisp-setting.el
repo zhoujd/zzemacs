@@ -15,7 +15,6 @@
 ;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system
 
 (require 'slime)
-;(slime-setup '(slime-repl))
 (slime-setup '(slime-fancy))
 
 ;;set slime coding

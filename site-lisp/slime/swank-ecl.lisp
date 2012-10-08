@@ -40,11 +40,12 @@
   (import-from :gray *gray-stream-symbols* :swank-backend)
 
   (import-swank-mop-symbols :clos
-    '(:eql-specializer
+    `(:eql-specializer
       :eql-specializer-object
       :generic-function-declarations
       :specializer-direct-methods
-      :compute-applicable-methods-using-classes)))
+      ,@(unless (fboundp 'clos:compute-applicable-methods-using-classes)
+         '(:compute-applicable-methods-using-classes)))))
 
 
 ;;;; TCP Server
@@ -62,13 +63,13 @@
   (car (sb-bsd-sockets:host-ent-addresses
         (sb-bsd-sockets:get-host-by-name name))))
 
-(defimplementation create-socket (host port)
+(defimplementation create-socket (host port &key backlog)
   (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
 			       :type :stream
 			       :protocol :tcp)))
     (setf (sb-bsd-sockets:sockopt-reuse-address socket) t)
     (sb-bsd-sockets:socket-bind socket (resolve-hostname host) port)
-    (sb-bsd-sockets:socket-listen socket 5)
+    (sb-bsd-sockets:socket-listen socket (or backlog 5))
     socket))
 
 (defimplementation local-port (socket)
@@ -84,7 +85,13 @@
   (sb-bsd-sockets:socket-make-stream (accept socket)
                                      :output t
                                      :input t
-                                     :buffering buffering
+                                     :buffering (ecase buffering
+                                                  ((t) :full)
+                                                  ((nil) :none)
+                                                  (:line line))
+                                     :element-type (if external-format
+                                                       'character 
+                                                       '(unsigned-byte 8))
                                      :external-format external-format))
 (defun accept (socket)
   "Like socket-accept, but retry on EAGAIN."
@@ -124,19 +131,33 @@
 
 ;;;; Unix Integration
 
-(defvar *original-sigint-handler* #'si:terminal-interrupt)
+;;; If ECL is built with thread support, it'll spawn a helper thread
+;;; executing the SIGINT handler. We do not want to BREAK into that
+;;; helper but into the main thread, though. This is coupled with the
+;;; current choice of NIL as communication-style in so far as ECL's
+;;; main-thread is also the Slime's REPL thread.
 
-(defimplementation install-sigint-handler (handler)
-  (declare (function handler))
-  (let ((old-handler (symbol-function 'si:terminal-interrupt)))
+(defimplementation call-with-user-break-handler (real-handler function)
+  (let ((old-handler #'si:terminal-interrupt))
     (setf (symbol-function 'si:terminal-interrupt)
-          (if (eq handler *original-sigint-handler*)
-              handler
-              (lambda (&rest args)
-                (declare (ignore args))
-                (funcall handler)
-                (continue))))
-    old-handler))
+          (make-interrupt-handler real-handler))
+    (unwind-protect (funcall function)
+      (setf (symbol-function 'si:terminal-interrupt) old-handler))))
+
+#+threads
+(defun make-interrupt-handler (real-handler)
+  (let ((main-thread (find 'si:top-level (mp:all-processes)
+                           :key #'mp:process-name)))
+    #'(lambda (&rest args)
+        (declare (ignore args))
+        (mp:interrupt-process main-thread real-handler))))
+
+#-threads
+(defun make-interrupt-handler (real-handler)
+  #'(lambda (&rest args)
+      (declare (ignore args))
+      (funcall real-handler)))
+
 
 (defimplementation getpid ()
   (si:getpid))
@@ -164,7 +185,7 @@
            (fd-stream-alist
             (loop for s in streams
                   for fd = (socket-fd s)
-                  collect (cons (socket-fd s) s)
+                  collect (cons fd s)
                   do (serve-event:add-fd-handler fd :input
                                                  #'(lambda (fd)
                                                      (push fd active-fds))))))
@@ -182,6 +203,17 @@
 
 ) ; #+serve-event (progn ...
 
+#-serve-event
+(defimplementation wait-for-input (streams &optional timeout)
+  (assert (member timeout '(nil t)))
+  (loop
+   (cond ((check-slime-interrupts) (return :interrupt))
+         (timeout (return (remove-if-not #'listen streams)))
+         (t
+          (let ((ready (remove-if-not #'listen streams)))
+            (if ready (return ready))
+            (sleep 0.1))))))
+
 
 ;;;; Compilation
 
@@ -189,8 +221,9 @@
 (defvar *buffer-start-position*)
 
 (defun signal-compiler-condition (&rest args)
-  (signal (apply #'make-condition 'compiler-condition args)))
+  (apply #'signal 'compiler-condition args))
 
+#-ecl-bytecmp
 (defun handle-compiler-message (condition)
   ;; ECL emits lots of noise in compiler-notes, like "Invoking
   ;; external command".
@@ -206,6 +239,7 @@
                  (warning                :warning))
      :location (condition-location condition))))
 
+#-ecl-bytecmp
 (defun condition-location (condition)
   (let ((file     (c:compiler-message-file condition))
         (position (c:compiler-message-file-position condition)))
@@ -218,6 +252,9 @@
         (make-error-location "No location found."))))
 
 (defimplementation call-with-compilation-hooks (function)
+  #-ecl-bytecmp
+  (funcall function)
+  #-ecl-bytecmp
   (handler-bind ((c:compiler-message #'handle-compiler-message))
     (funcall function)))
 
@@ -235,8 +272,8 @@
 (defun note-buffer-tmpfile (tmp-file buffer-name)
   ;; EXT:COMPILED-FUNCTION-FILE below will return a namestring.
   (let ((tmp-namestring (namestring (truename tmp-file))))
-    (setf (gethash tmp-namestring *tmpfile-map*) buffer-name))
-  tmp-file)
+    (setf (gethash tmp-namestring *tmpfile-map*) buffer-name)
+    tmp-namestring))
 
 (defun tmpfile-to-buffer (tmp-file)
   (gethash tmp-file *tmpfile-map*))
@@ -428,7 +465,7 @@
         (blocks '())
         (variables '()))
     (setf frame (si::decode-ihs-env (second frame)))
-    (dolist (record frame)
+    (dolist (record (remove-if-not #'consp frame))
       (let* ((record0 (car record))
 	     (record1 (cdr record)))
 	(cond ((or (symbolp record0) (stringp record0))
@@ -451,7 +488,8 @@
   (third (elt *backtrace* frame-number)))
 
 (defimplementation frame-locals (frame-number)
-  (loop for (name . value) in (nth-value 2 (frame-decode-env (elt *backtrace* frame-number)))
+  (loop for (name . value) in (nth-value 2 (frame-decode-env 
+                                            (elt *backtrace* frame-number)))
         with i = 0
         collect (list :name name :id (prog1 i (incf i)) :value value)))
 
@@ -467,6 +505,14 @@
   (let ((env (second (elt *backtrace* frame-number))))
     (si:eval-with-env form env)))
 
+(defimplementation gdb-initial-commands ()
+  ;; These signals are used by the GC.
+  #+linux '("handle SIGPWR  noprint nostop"
+            "handle SIGXCPU noprint nostop"))
+
+(defimplementation command-line-args ()
+  (loop for n from 0 below (si:argc) collect (si:argv n)))
+
 
 ;;;; Inspector
 
@@ -476,14 +522,15 @@
 
 ;;;; Definitions
 
-(defvar +TAGS+ (namestring (translate-logical-pathname #P"SYS:TAGS")))
+(defvar +TAGS+ (namestring
+                (merge-pathnames "TAGS" (translate-logical-pathname "SYS:"))))
 
 (defun make-file-location (file file-position)
   ;; File positions in CL start at 0, but Emacs' buffer positions
   ;; start at 1. We specify (:ALIGN T) because the positions comming
   ;; from ECL point at right after the toplevel form appearing before
   ;; the actual target toplevel form; (:ALIGN T) will DTRT in that case.
-  (make-location `(:file ,(namestring file))
+  (make-location `(:file ,(namestring (translate-logical-pathname file)))
                  `(:position ,(1+ file-position))
                  `(:align t)))
 
@@ -575,6 +622,9 @@
     (error "No TAGS file ~A found. It should have been installed with ECL."
            +TAGS+)))
 
+(defun package-names (package)
+  (cons (package-name package) (package-nicknames package)))
+
 (defun source-location (object)
   (converting-errors-to-error-location
    (typecase object
@@ -586,13 +636,15 @@
         (multiple-value-bind (flag c-name) (si:mangle-name lisp-name t)
           (assert flag)
           ;; In ECL's code base sometimes the mangled name is used
-          ;; directly, sometimes ECL's DPP magic of @LISP::SYMBOL is used.
-          ;; We cannot predict here, so we just provide two candidates.
-          (let  ((package (package-name (symbol-package lisp-name)))
-                 (symbol  (symbol-name lisp-name)))
-            (make-TAGS-location c-name
-                                (format nil "~A::~A" package symbol)
-                                (format nil "~(~A::~A~)" package symbol))))))
+          ;; directly, sometimes ECL's DPP magic of @SI::SYMBOL or
+          ;; @EXT::SYMBOL is used. We cannot predict here, so we just
+          ;; provide several candidates.
+          (apply #'make-TAGS-location
+                 c-name
+                 (loop with s = (symbol-name lisp-name)
+                       for p in (package-names (symbol-package lisp-name))
+                       collect (format nil "~A::~A" p s)
+                       collect (format nil "~(~A::~A~)" p s))))))
      (function
       (multiple-value-bind (file pos) (ext:compiled-function-file object)
         (cond ((not file)
@@ -602,7 +654,7 @@
               (t
                (assert (probe-file file))
                (assert (not (minusp pos)))
-               (make-file-location (translate-logical-pathname file) pos)))))
+               (make-file-location file pos)))))
      (method
       ;; FIXME: This will always return NIL at the moment; ECL does not
       ;; store debug information for methods yet.
@@ -696,7 +748,7 @@
         "STOPPED"))
 
   (defimplementation make-lock (&key name)
-    (mp:make-lock :name name))
+    (mp:make-lock :name name :recursive t))
 
   (defimplementation call-with-lock-held (lock function)
     (declare (type function function))

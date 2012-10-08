@@ -12,7 +12,7 @@
 @set EDITION 3.0-alpha
 @set SLIMEVER 3.0-alpha
 @c @set UPDATED @today{}
-@set UPDATED @code{$Date: 2010-03-03 19:51:33 $}
+@set UPDATED @code{$Date: 2011/08/30 15:34:10 $}
 @set TITLE SLIME User Manual
 @settitle @value{TITLE}, version @value{EDITION}
 
@@ -997,7 +997,7 @@ Describe the symbol at point.
 @kbditem{C-c C-d f, slime-describe-function}
 Describe the function at point.
 
-@kbditem{C-c C-d a, slime-apropos}
+@kbditem{C-c C-d A, slime-apropos}
 Perform an apropos search on Lisp symbol names for a regular expression
 match and display their documentation strings. By default the external
 symbols of all packages are searched. With a prefix argument you can choose a
@@ -1489,6 +1489,8 @@ Inspect the condition currently being debugged.
 
 @kbditem{:, slime-interactive-eval}
 Evaluate an expression entered in the minibuffer.
+@kbditem{A, sldb-break-with-system-debugger}
+Attach debugger (e.g. gdb) to the current lisp process.
 
 @end table
 
@@ -2212,6 +2214,11 @@ Select the output buffer, preferably in a different window.
 @kbditem{C-c C-y, slime-call-defun}
 Insert a call to the function defined around point into the REPL.
 
+@kbditem{C-c C-j, slime-eval-last-expression-in-repl}
+Inserts the last expression to the REPL and evaluates it there.
+Switches to the current packae of the source buffer for the duration.
+If used with a prefix argument, doesn't switch back afterwards.
+
 @end table
 
 @menu
@@ -2552,11 +2559,20 @@ Show the argument list of the function NAME.
 @cmditem{slime-autodoc-mode}
 Toggles autodoc-mode on or off according to the argument, and
 toggles the mode when invoked without argument.
+@kbditem{C-c C-d a, slime-autodoc-manually}
+Like slime-autodoc, but when called twice,
+or after slime-autodoc was already automatically called, 
+display multiline arglist.
 @end table
 
+@vindex slime-use-autodoc-mode
 If the variable @code{slime-use-autodoc-mode} is set (default), Emacs
 starts a timer, otherwise the information is only displayed after
 pressing SPC.
+
+@vindex slime-autodoc-use-multiline-p
+If @code{slime-autodoc-use-multiline-p} is set to non-nil,
+allow long autodoc messages to resize echo area display.
 
 @node ASDF
 @section ASDF
@@ -2947,7 +2963,7 @@ Start profiling.
 
 @cmditem{slime-sprof-stop}
 Stop profiling.
-@cmditem{slime-sprof-browser}
+@cmditem{slime-sprof-report}
 Report results of the profiling.
 @end table
 

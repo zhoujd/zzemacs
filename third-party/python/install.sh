@@ -19,6 +19,7 @@ cd ./ropemacs/
 sudo python setup.py install
 cd ..
 
-sudo cp ./pycomplete.py /usr/local/lib/python2.7/
+sudo cp ./pycomplete.py /usr/local/lib/python2.7/dist-packages/
+rm -f ../../site-lisp/pymacs.elc
 
 echo for python develop end   ...

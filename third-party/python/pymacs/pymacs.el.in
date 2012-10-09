@@ -5,7 +5,7 @@
 ;; Author: François Pinard <pinard@iro.umontreal.ca>
 ;; Maintainer: François Pinard <pinard@iro.umontreal.ca>
 ;; Created: 2001
-;; Version: 0.25
+;; Version: @VERSION@
 ;; Keywords: Python interface protocol
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -92,7 +92,7 @@
 
 ;;; Published variables and functions.
 
-(defvar pymacs-python-command "python"
+(defvar pymacs-python-command "@PYTHON@"
   "Shell command used to start Python interpreter.")
 
 (defvar pymacs-load-path nil
@@ -243,7 +243,7 @@ equivalents, other structures are converted into Lisp handles."
 ;; Python functions and modules should ideally look like Lisp
 ;; functions and modules.
 
-(when t
+(when @DEFADVICE_OK@
 
   (defadvice documentation (around pymacs-ad-documentation activate)
     ;; Integration of doc-strings.
@@ -633,9 +633,9 @@ The timer is used only if `post-gc-hook' is not available.")
           (if (and (pymacs-proper-list-p reply)
                    (= (length reply) 2)
                    (eq (car reply) 'version))
-              (unless (string-equal (cadr reply) "0.25")
+              (unless (string-equal (cadr reply) "@VERSION@")
                 (pymacs-report-error
-                 "Pymacs Lisp version is 0.25, Python is %s"
+                 "Pymacs Lisp version is @VERSION@, Python is %s"
                  (cadr reply)))
             (pymacs-report-error "Pymacs got an invalid initial reply")))))
     (if (not pymacs-use-hash-tables)

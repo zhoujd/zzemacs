@@ -180,7 +180,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)
 
-(defun clear-shell ()
+(defun clear-input ()
    (interactive)
    (let ((old-max comint-buffer-maximum-size))
      (setq comint-buffer-maximum-size 0)
@@ -188,7 +188,7 @@ Dmitriy Igrishin's patched version of comint.el."
      (setq comint-buffer-maximum-size old-max)))
 
 (defun my-shell-hook ()
-  (define-key shell-mode-map (kbd "C-c M-o") 'clear-shell))
+  (define-key shell-mode-map (kbd "C-c M-o") 'clear-input))
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
 

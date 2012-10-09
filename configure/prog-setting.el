@@ -322,6 +322,12 @@ the mru bookmark stack."
              '("hhcc" .  "*.cc *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++")
              )
 
+
+(add-hook 'gdb-mode-hook
+          '(lambda ()
+            (define-key gud-mode-map (kbd "C-c M-o") 'clear-input)))
+
+
 (provide 'prog-setting)
 
 ;;; c-setting.el ends here

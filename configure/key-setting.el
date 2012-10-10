@@ -99,17 +99,17 @@
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
-(global-set-key (kbd "M-1") 'delete-other-windows)
-(global-set-key (kbd "\e1") 'delete-window)
+(global-set-key (kbd "M-1")    'delete-other-windows)
+(global-set-key (kbd "<f2> 1") 'delete-window)
 
-(global-set-key (kbd "M-2") 'delete-other-frames)
-(global-set-key (kbd "\e2") 'delete-frames)
+(global-set-key (kbd "M-2")    'delete-other-frames)
+(global-set-key (kbd "<f2> 2") 'delete-frames)
 
-(global-set-key (kbd "M-3") 'tabbar-forward-group)
-(global-set-key (kbd "\e3") 'tabbar-backward-group)
+(global-set-key (kbd "M-3")    'tabbar-forward-group)
+(global-set-key (kbd "<f2> 3") 'tabbar-backward-group)
 
-(global-set-key (kbd "M-4") 'kill-this-buffer)
-(global-set-key (kbd "\e4") 'delete-frame)
+(global-set-key (kbd "M-4")    'kill-this-buffer)
+(global-set-key (kbd "<f2> 4") 'delete-frame)
 
 ;;f1 1,2,3,4 for highlight-symbol
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
@@ -118,16 +118,20 @@
 (global-set-key (kbd "<f1> 4") 'highlight-symbol-prev)
 
 ;;gud control setting
-(global-set-key (kbd "M-5") 'gud-go)
-(global-set-key (kbd "\e5") 'gud-until)
-(global-set-key (kbd "M-6") 'gud-break-remove)
-(global-set-key (kbd "\e6") 'gud-watch)
-(global-set-key (kbd "M-7") 'gud-next)
-(global-set-key (kbd "\e7") 'gud-finish)
-(global-set-key (kbd "M-8") 'gud-step)
-(global-set-key (kbd "\e8") 'gud-jump)
-(global-set-key (kbd "M-9") 'gud-print)
-(global-set-key (kbd "\e9") 'gud-pstar)
+(global-set-key (kbd "M-5")    'gud-go)
+(global-set-key (kbd "<f2> 5") 'gud-until)
+(global-set-key (kbd "M-6")    'gud-break-remove)
+(global-set-key (kbd "<f2> 6") 'gud-watch)
+(global-set-key (kbd "M-7")    'gud-next)
+(global-set-key (kbd "<f2> 7") 'gud-finish)
+(global-set-key (kbd "M-8")    'gud-step)
+(global-set-key (kbd "<f2> 8") 'gud-jump)
+(global-set-key (kbd "M-9")    'gud-print)
+(global-set-key (kbd "<f2> 9") 'gud-pstar)
+
+(global-set-key (kbd "M-0")    'other-window)
+(global-set-key (kbd "<f2> 0") 'other-frame)
+
 ;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
 (global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
@@ -137,9 +141,6 @@
 (global-set-key (kbd "<f1> 0") 'gdb-use-separate-io-buffer)
 (global-set-key (kbd "<f1> -") 'gud-up)
 (global-set-key (kbd "<f1> =") 'gud-down)
-
-(global-set-key (kbd "M-0") 'other-window)
-(global-set-key (kbd "\e0") 'other-frame)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)

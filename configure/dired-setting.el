@@ -66,6 +66,19 @@
 ;   |  (interactive)
 ;   |  (define-key dired-mode-map (kbd "/")  'dired-omit-expunge)))     
 
+(setq dired-guess-shell-alist-user
+      (list
+       (list "\\.chm$"  "xchm")
+       (list "\\.rm$"   "vlc")
+       (list "\\.rmvb$" "vlc")
+       (list "\\.avi$"  "vlc")
+       (list "\\.asf$"  "vlc")
+       (list "\\.wma$"  "vlc")
+       (list "\\.htm$"  "firefox")
+       (list "\\.html$" "firefox")
+       (list "\\.mp3$"  "vlc")
+       )
+      ) 
 
 (provide 'dired-setting)
 

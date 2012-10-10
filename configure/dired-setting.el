@@ -1,6 +1,8 @@
 ;;;; dired-setting.el --- dired config file
 ;;;
 
+(require 'dired-x)
+
 ;;dired setting
 (setq dired-recursive-deletes t)
 (setq dired-recursive-copies t)

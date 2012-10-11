@@ -73,14 +73,14 @@
 (global-set-key (kbd "<f4> <f7>")   'previous-error)
 
 (global-set-key (kbd "<f1> <f8>")   'gdb)
-(global-set-key (kbd "<f2> <f8>")   'gud-tooltip-mode)
+(global-set-key (kbd "<f2> <f8>")   'gdb-restore-windows)
 (global-set-key (kbd "<f3> <f8>")   'gdb-many-windows)
-(global-set-key (kbd "<f4> <f8>")   'gdb-restore-windows)
-(define-key esc-map [f8] 'gud-kill)
+(global-set-key (kbd "<f4> <f8>")   'gud-kill)
+(define-key esc-map [f8] 'gud-tooltip-mode)
 
 (global-set-key (kbd "<f1> <f9>")   'shell)
-(global-set-key (kbd "<f2> <f9>")   'multi-shell-new)
-(global-set-key (kbd "<f3> <f9>")   'switch-to-scratch)
+(global-set-key (kbd "<f2> <f9>")   'switch-to-scratch)
+(global-set-key (kbd "<f3> <f9>")   'multi-shell-new)
 (global-set-key (kbd "<f4> <f9>")   'popup-term)
 (define-key esc-map [f9]  'switch-to-shell)
 
@@ -94,10 +94,10 @@
 (global-set-key (kbd "<f3> <f11>")   'blank-mode)
 (global-set-key (kbd "<f4> <f11>")   'fci-mode)
 
-(global-set-key (kbd "<f1> <f12>") 'find-name-dired)
-(global-set-key (kbd "<f2> <f12>") 'my-c-rgrep)
-(global-set-key (kbd "<f3> <f12>") 'rgrep)
-(global-set-key (kbd "<f4> <f12>") 'find-grep)
+(global-set-key (kbd "<f1> <f12>") 'find-grep)
+(global-set-key (kbd "<f2> <f12>") 'find-name-dired)
+(global-set-key (kbd "<f3> <f12>") 'my-c-rgrep)
+(global-set-key (kbd "<f4> <f12>") 'rgrep)
 
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)

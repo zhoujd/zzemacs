@@ -1,28 +1,36 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;f2 key map 
-(defvar f2-map (make-sparse-keymap) "Keymap for self related commands.")
-(define-key global-map [f2] f2-map)
+;;  x11        console
+;;---------------------
+;;f1-f12   -- esc-f1/f12
+;;S-f1/f12 -- f1 -f1/f12
+;;C-f1/f12 -- f2 -f1/f12
+;;M-f1/f12 -- f3 -f1/f12
+;;f12      -- f4 
 
-;;f3 key map 
-(defvar f3-map (make-sparse-keymap) "Keymap for self related commands.")
-(define-key global-map [f3] f3-map)
+(when (not window-system)
+  ;;f2 key map
+  (defvar f2-map (make-sparse-keymap) "Keymap for self related commands.")
+  (define-key global-map [f2] f2-map)  
+  ;;f3 key map
+  (defvar f3-map (make-sparse-keymap) "Keymap for self related commands.")
+  (define-key global-map [f3] f3-map)
+)
 
 ;;f4 key map 
 (defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key global-map [f4] f4-map)
 
 ;;switch to shells
-(global-set-key (kbd "<f1> 6")  
-  (lambda () (interactive) (switch-to-shell "*shell-f6*")))
-(global-set-key (kbd "<f1> 7")    
-  (lambda () (interactive) (switch-to-shell "*shell-f7*")))
-(global-set-key (kbd "<f1> 8")  
-  (lambda () (interactive) (switch-to-shell "*shell-f8*")))
-(global-set-key (kbd "<f1> 9")  
+(global-set-key (kbd "<f4> <f9>")  
   (lambda () (interactive) (switch-to-shell "*shell-f9*")))
-
+(global-set-key (kbd "<f4> <f10>")    
+  (lambda () (interactive) (switch-to-shell "*shell-f10*")))
+(global-set-key (kbd "<f4> <f11>")  
+  (lambda () (interactive) (switch-to-shell "*shell-f11*")))
+(global-set-key (kbd "<f4> <f12>")  
+  (lambda () (interactive) (switch-to-shell "*shell-f12*")))
 
 ;;for info
 (global-set-key (kbd "<f1> <f1>")   'session-save)
@@ -136,14 +144,14 @@
 (global-set-key (kbd "<f2> 0") 'other-frame)
 
 ;;gdb frame show setting
-(global-set-key (kbd "<f3> 5") 'gdb-frame-stack-buffer)
-(global-set-key (kbd "<f3> 6") 'gdb-frame-breakpoints-buffer)
-(global-set-key (kbd "<f3> 7") 'gdb-frame-assembler-buffer)
-(global-set-key (kbd "<f3> 8") 'gdb-frame-memory-buffer)
-(global-set-key (kbd "<f3> 9") 'gdb-frame-locals-buffer)
-(global-set-key (kbd "<f3> 0") 'gdb-use-separate-io-buffer)
-(global-set-key (kbd "<f3> -") 'gud-up)
-(global-set-key (kbd "<f3> =") 'gud-down)
+(global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
+(global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
+(global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
+(global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
+(global-set-key (kbd "<f1> 0") 'gdb-use-separate-io-buffer)
+(global-set-key (kbd "<f1> -") 'gud-up)
+(global-set-key (kbd "<f1> =") 'gud-down)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -178,37 +186,66 @@
 (global-set-key [C-tab] "\C-q\t")
 
 ;;f2-map setting
-(define-key f2-map (kbd "C-1") 'my-utf-8)
-(define-key f2-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
+(define-key f4-map (kbd "C-1") 'my-utf-8)
+(define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))
-  (define-key f2-map (kbd "C-d") 'open-with-nautilus)
-  (define-key f2-map (kbd "C-t") 'open-with-terminal))
+  (define-key f4-map (kbd "C-d") 'open-with-nautilus)
+  (define-key f4-map (kbd "C-t") 'open-with-terminal))
 
 ;;undo/redo
-(define-key f2-map (kbd "-") 'undo)
-(define-key f2-map (kbd "=") 'redo)
+(if window-system
+    (progn
+      (define-key global-map (kbd "C--") 'undo)
+      (define-key global-map (kbd "C-=") 'redo))
+    (progn
+      (define-key f2-map (kbd "-") 'undo)
+      (define-key f2-map (kbd "=") 'redo))
+    )
 
 ;;winner restore
-(define-key f2-map (kbd ",") 'winner-undo)
-(define-key f2-map (kbd ".") 'winner-redo)
+(if window-system
+    (progn
+      (define-key global-map (kbd "C-,") 'winner-undo)
+      (define-key global-map (kbd "C-.") 'winner-redo))
+    (progn
+      (define-key f3-map (kbd ",") 'winner-undo)
+      (define-key f3-map (kbd ".") 'winner-redo))
+    )
 
 ;;quick move other windows
-(define-key f2-map (kbd "k")  'windmove-up)
-(define-key f2-map (kbd "j")  'windmove-down)
-(define-key f2-map (kbd "l")  'windmove-right)
-(define-key f2-map (kbd "h")  'windmove-left)
+(if window-system
+    (progn
+      (define-key global-map [M-up]    'windmove-up)
+      (define-key global-map [M-down]  'windmove-down)
+      (define-key global-map [M-right] 'windmove-right)
+      (define-key global-map [M-left]  'windmove-left))
+    (progn
+      (define-key f3-map [up]    'windmove-up)
+      (define-key f3-map [down]  'windmove-down)
+      (define-key f3-map [right] 'windmove-right)
+      (define-key f3-map [left]  'windmove-left))
+    )
 
 ;;for mark
-(define-key f2-map (kbd "<SPC>") 'set-mark-command)
+(when (not window-system)
+  (define-key f2-map (kbd "<SPC>") 'set-mark-command)
+  )
 
 ;;;f3-map setting
 ;;window size change
-(define-key f3-map (kbd "k")  'enlarge-window)
-(define-key f3-map (kbd "j")  'shrink-window)
-(define-key f3-map (kbd "l")  'enlarge-window-horizontally)
-(define-key f3-map (kbd "h")  'shrink-window-horizontally)
-
+(if window-system
+    (progn
+      (define-key global-map [S-up]    'enlarge-window)
+      (define-key global-map [S-down]  'shrink-window)
+      (define-key global-map [S-right] 'enlarge-window-horizontally)
+      (define-key global-map [S-left]  'shrink-window-horizontally))
+    (progn
+      (define-key f2-map [up]    'enlarge-window)
+      (define-key f2-map [down]  'shrink-window)
+      (define-key f2-map [right] 'enlarge-window-horizontally)
+      (define-key f2-map [left]  'shrink-window-horizontally))
+    )
 
 (provide 'key-setting)
 

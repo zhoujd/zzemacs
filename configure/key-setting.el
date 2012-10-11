@@ -14,12 +14,15 @@
 (define-key global-map [f4] f4-map)
 
 ;;switch to shells
-(define-key ctl-x-map [f9]
+(global-set-key (kbd "<f1> 6")  
+  (lambda () (interactive) (switch-to-shell "*shell-f6*")))
+(global-set-key (kbd "<f1> 7")    
+  (lambda () (interactive) (switch-to-shell "*shell-f7*")))
+(global-set-key (kbd "<f1> 8")  
+  (lambda () (interactive) (switch-to-shell "*shell-f8*")))
+(global-set-key (kbd "<f1> 9")  
   (lambda () (interactive) (switch-to-shell "*shell-f9*")))
-(define-key ctl-x-map [f10]
-  (lambda () (interactive) (switch-to-shell "*shell-f10*")))
-(define-key ctl-x-map [f11]
-  (lambda () (interactive) (switch-to-shell "*shell-f11*")))
+
 
 ;;for info
 (global-set-key (kbd "<f1> <f1>")   'session-save)
@@ -133,14 +136,14 @@
 (global-set-key (kbd "<f2> 0") 'other-frame)
 
 ;;gdb frame show setting
-(global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
-(global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)
-(global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
-(global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
-(global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
-(global-set-key (kbd "<f1> 0") 'gdb-use-separate-io-buffer)
-(global-set-key (kbd "<f1> -") 'gud-up)
-(global-set-key (kbd "<f1> =") 'gud-down)
+(global-set-key (kbd "<f3> 5") 'gdb-frame-stack-buffer)
+(global-set-key (kbd "<f3> 6") 'gdb-frame-breakpoints-buffer)
+(global-set-key (kbd "<f3> 7") 'gdb-frame-assembler-buffer)
+(global-set-key (kbd "<f3> 8") 'gdb-frame-memory-buffer)
+(global-set-key (kbd "<f3> 9") 'gdb-frame-locals-buffer)
+(global-set-key (kbd "<f3> 0") 'gdb-use-separate-io-buffer)
+(global-set-key (kbd "<f3> -") 'gud-up)
+(global-set-key (kbd "<f3> =") 'gud-down)
 
 (global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -191,20 +194,20 @@
 (define-key f2-map (kbd ".") 'winner-redo)
 
 ;;quick move other windows
-(define-key f2-map [up]    'windmove-up)
-(define-key f2-map [down]  'windmove-down)
-(define-key f2-map [right] 'windmove-right)
-(define-key f2-map [left]  'windmove-left)
+(define-key f2-map (kbd "k")  'windmove-up)
+(define-key f2-map (kbd "j")  'windmove-down)
+(define-key f2-map (kbd "l")  'windmove-right)
+(define-key f2-map (kbd "h")  'windmove-left)
 
 ;;for mark
 (define-key f2-map (kbd "<SPC>") 'set-mark-command)
 
 ;;;f3-map setting
 ;;window size change
-(define-key f3-map [up]    'enlarge-window)
-(define-key f3-map [down]  'shrink-window)
-(define-key f3-map [right] 'enlarge-window-horizontally)
-(define-key f3-map [left]  'shrink-window-horizontally)
+(define-key f3-map (kbd "k")  'enlarge-window)
+(define-key f3-map (kbd "j")  'shrink-window)
+(define-key f3-map (kbd "l")  'enlarge-window-horizontally)
+(define-key f3-map (kbd "h")  'shrink-window-horizontally)
 
 
 (provide 'key-setting)

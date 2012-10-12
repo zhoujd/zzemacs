@@ -22,6 +22,14 @@
 (defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key global-map [f4] f4-map)
 
+;;f4-esc key map 
+(defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+(define-key f4-map [escape] f4-esc-map)
+
+;;esc-f4 key map 
+(defvar esc-f4-map (make-sparse-keymap) "Keymap for self related commands.")
+(define-key esc-map [f4] esc-f4-map)
+
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  
   (lambda () (interactive) (switch-to-shell "*shell-f9*")))
@@ -45,7 +53,6 @@
     (global-set-key [C-f2]    'bc-set)
     (global-set-key [M-f2]    'bc-list)
     
-    
     (global-set-key   [f3]    'my-last-buffer-go)
     (global-set-key [C-f3]    'list-bookmarks)
     (global-set-key [M-f3]    'my-occur)
@@ -67,14 +74,14 @@
           (global-set-key [S-f6]   'multi-shell-current-directory)
           (global-set-key [C-f6]   'multi-shell-next)
           (global-set-key [M-f6]   'multi-shell-prev)
-          (global-set-key (kbd "C-x  <f6>") 'switch-to-shell)
+          (global-set-key (kbd "<escape> <f4> <f6>") 'switch-to-shell)
           )   
         (progn ;; For Linux
           (global-set-key   [f6]   'get-term)
           (global-set-key [S-f6]   'multi-term-dedicated-toggle)
           (global-set-key [C-f6]   'multi-term-next)
           (global-set-key [M-f6]   'multi-term-prev)
-          (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
+          (global-set-key (kbd "<escape> <f4> <f6>")  'switch-to-term)
           ))
     
     (global-set-key   [f7]    'compile)
@@ -91,7 +98,7 @@
     (global-set-key [S-f9]    'multi-shell-new)
     (global-set-key [C-f9]    'switch-to-scratch)
     (global-set-key [M-f9]    'popup-term)
-    (global-set-key (kbd "C-x  <f9>")  'switch-to-shell)
+    (global-set-key (kbd "<escape> <f4> <f9>")  'switch-to-shell)
     
     (global-set-key [S-f10]   'tool-bar-mode)
     (global-set-key [C-f10]   'my-toggle-maxframe)

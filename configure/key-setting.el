@@ -39,10 +39,10 @@
 ;;for info
 (when window-system
   (progn
-    (global-set-key [S-f1]    'session-save)
-    (global-set-key [C-f1]    'session-restore)
-    (global-set-key [M-f1]    'recentf-open-files)
-    (global-set-key [f4-f1]   'recentf-open-files-compl)
+    (global-set-key [C-f1]    'session-save)
+    (global-set-key [M-f1]    'session-restore)
+    (global-set-key (kbd "C-x <f1>") 'recentf-open-files)
+    (global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl)
     
     (global-set-key   [f2]    'bc-next)
     (global-set-key [S-f2]    'bc-previous)
@@ -56,7 +56,7 @@
     (global-set-key [S-f4]    'undo-kill-buffer)
     (global-set-key [C-f4]    'bc-local-next)
     (global-set-key [M-f4]    'bc-local-previous)
-    (global-set-key [f4-f4]   'kill-this-buffer)
+    (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
     
     (global-set-key   [f5]    'speedbar-get-focus)
     (global-set-key [S-f5]    'sr-speedbar-toggle)
@@ -113,10 +113,10 @@
 
 (unless window-system
   (progn
-    (global-set-key (kbd "<f1> <f1>")   'session-save)
-    (global-set-key (kbd "<f2> <f1>")   'session-restore)
-    (global-set-key (kbd "<f3> <f1>")   'recentf-open-files)
-    (global-set-key (kbd "<f4> <f1>")   'recentf-open-files-compl)
+    (global-set-key (kbd "<f2> <f1>")   'session-save)
+    (global-set-key (kbd "<f3> <f1>")   'session-restore)
+    (global-set-key (kbd "C-x  <f1>")   'recentf-open-files)
+    (global-set-key (kbd "C-c  <f1>")   'recentf-open-files-compl)
     
     (define-key esc-map   [f2]          'bc-next)
     (global-set-key (kbd "<f1> <f2>")   'bc-previous)

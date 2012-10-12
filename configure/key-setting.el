@@ -7,7 +7,6 @@
 ;;S-f1/f12 -- f1 -f1/f12
 ;;C-f1/f12 -- f2 -f1/f12
 ;;M-f1/f12 -- f3 -f1/f12
-;;f12      -- f4 
 
 (when (not window-system)
   ;;f2 key map
@@ -50,12 +49,13 @@
     (global-set-key [M-f2]    'bc-list)
     
     (global-set-key   [f3]    'my-last-buffer-go)
-    (global-set-key [C-f3]    'list-bookmarks)
-    (global-set-key [M-f3]    'my-occur)
+    (global-set-key [S-f3]    'list-bookmarks)
+    (global-set-key [C-f3]    'bc-local-next)
+    (global-set-key [M-f3]    'bc-local-previous)
+    (global-set-key (kbd "C-x <f3>") 'my-occur)
+    
     
     (global-set-key [S-f4]    'undo-kill-buffer)
-    (global-set-key [C-f4]    'bc-local-next)
-    (global-set-key [M-f4]    'bc-local-previous)
     (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
     
     (global-set-key   [f5]    'speedbar-get-focus)
@@ -123,14 +123,13 @@
     (global-set-key (kbd "<f2> <f2>")   'bc-set)
     (global-set-key (kbd "<f3> <f2>")   'bc-list)
     
-    
     (define-key esc-map   [f3]          'my-last-buffer-go)
-    (global-set-key (kbd "<f2> <f3>")   'list-bookmarks)
-    (global-set-key (kbd "<f3> <f3>")   'my-occur)
+    (global-set-key (kbd "<f1> <f3>")   'list-bookmarks)
+    (global-set-key (kbd "<f2> <f3>")   'bc-local-next)
+    (global-set-key (kbd "<f3> <f3>")   'bc-local-previous)
+    (global-set-key (kbd "C-x  <f3>")   'my-occur)
     
     (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
-    (global-set-key (kbd "<f2> <f4>")   'bc-local-next)
-    (global-set-key (kbd "<f3> <f4>")   'bc-local-previous)
     (global-set-key (kbd "<f4> <f4>")   'kill-this-buffer)
     
     (define-key esc-map   [f5]          'speedbar-get-focus)

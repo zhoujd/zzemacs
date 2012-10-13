@@ -8,14 +8,16 @@
 ;;C-f1/f12 -- f2 -f1/f12
 ;;M-f1/f12 -- f3 -f1/f12
 
-(when (not window-system)
+(defvar keymap-term-p t "use console keymap setting")
+
+(unless window-system
   ;;f2 key map
   (defvar f2-map (make-sparse-keymap) "Keymap for self related commands.")
   (define-key global-map [f2] f2-map)  
   ;;f3 key map
   (defvar f3-map (make-sparse-keymap) "Keymap for self related commands.")
   (define-key global-map [f3] f3-map)
-)
+  )
 
 ;;f4 key map 
 (defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
@@ -27,163 +29,171 @@
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  
-  (lambda () (interactive) (switch-to-shell "*shell-f9*")))
+                (lambda () (interactive) (switch-to-shell "*shell-f9*")))
 (global-set-key (kbd "<f4> <f10>")    
-  (lambda () (interactive) (switch-to-shell "*shell-f10*")))
+                (lambda () (interactive) (switch-to-shell "*shell-f10*")))
 (global-set-key (kbd "<f4> <f11>")  
-  (lambda () (interactive) (switch-to-shell "*shell-f11*")))
+                (lambda () (interactive) (switch-to-shell "*shell-f11*")))
 (global-set-key (kbd "<f4> <f12>")  
-  (lambda () (interactive) (switch-to-shell "*shell-f12*")))
+                (lambda () (interactive) (switch-to-shell "*shell-f12*")))
 
 ;;for info
-(when window-system
-  (progn
-    (global-set-key [C-f1]    'session-save)
-    (global-set-key [M-f1]    'session-restore)
-    (global-set-key (kbd "C-x <f1>") 'recentf-open-files)
-    (global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl)
-    
-    (global-set-key   [f2]    'bc-next)
-    (global-set-key [S-f2]    'bc-previous)
-    (global-set-key [C-f2]    'bc-set)
-    (global-set-key [M-f2]    'bc-list)
-    
-    (global-set-key   [f3]    'my-last-buffer-go)
-    (global-set-key [S-f3]    'list-bookmarks)
-    (global-set-key [C-f3]    'bc-local-next)
-    (global-set-key [M-f3]    'bc-local-previous)
-    (global-set-key (kbd "C-x <f3>") 'my-occur)
-    
-    
-    (global-set-key [S-f4]    'undo-kill-buffer)
-    (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
-    
-    (global-set-key   [f5]    'speedbar-get-focus)
-    (global-set-key [S-f5]    'sr-speedbar-toggle)
-    (global-set-key [C-f5]    'line-to-top-of-window)
-    (global-set-key [M-f5]    'etags-stack-show)
-    
-    (if (or (eq window-system 'w32)
-            (eq window-system 'win32))
-        (progn ;; For Windows
-          (global-set-key   [f6]   'multi-shell-new)
-          (global-set-key [S-f6]   'multi-shell-current-directory)
-          (global-set-key [C-f6]   'multi-shell-next)
-          (global-set-key [M-f6]   'multi-shell-prev)
-          (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
-          )   
-        (progn ;; For Linux
-          (global-set-key   [f6]   'get-term)
-          (global-set-key [S-f6]   'multi-term-dedicated-toggle)
-          (global-set-key [C-f6]   'multi-term-next)
-          (global-set-key [M-f6]   'multi-term-prev)
-          (global-set-key (kbd "C-x <f6>")  'switch-to-term)
-          ))
-    
-    (global-set-key   [f7]    'compile)
-    (global-set-key [S-f7]    'switch-to-compilation)
-    (global-set-key [C-f7]    'next-error)
-    (global-set-key [M-f7]    'previous-error)
-    
-    (global-set-key   [f8]    'gdb)
-    (global-set-key [S-f8]    'gud-kill)
-    (global-set-key [C-f8]    'gdb-restore-windows)
-    (global-set-key [M-f8]    'gdb-many-windows)
-    
-    (global-set-key   [f9]    'shell)
-    (global-set-key [S-f9]    'multi-shell-new)
-    (global-set-key [C-f9]    'switch-to-scratch)
-    (global-set-key [M-f9]    'popup-term)
-    (global-set-key (kbd "C-x <f9>")  'switch-to-shell)
-    
-    (global-set-key [S-f10]   'tool-bar-mode)
-    (global-set-key [C-f10]   'my-toggle-maxframe)
-    (global-set-key [M-f10]  'my-toggle-fullscreen)
-    
-    (global-set-key   [f11]   'linum-mode)
-    (global-set-key [S-f11]   'fci-mode)
-    (global-set-key [C-f11]   'hl-line-mode)
-    (global-set-key [M-f11]   'blank-mode)
+(if window-system
+    (progn
+      (global-set-key [C-f1]    'session-save)
+      (global-set-key [M-f1]    'session-restore)
+      (global-set-key (kbd "C-x <f1>") 'recentf-open-files)
+      (global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl))
+    (progn
+      (global-set-key (kbd "<f2> <f1>")   'session-save)
+      (global-set-key (kbd "<f3> <f1>")   'session-restore)
+      (global-set-key (kbd "C-x  <f1>")   'recentf-open-files)
+      (global-set-key (kbd "C-c  <f1>")   'recentf-open-files-compl)))
 
-    (global-set-key [f12]     'find-grep)
-    (global-set-key [S-f12]   'rgrep)
-    (global-set-key [C-f12]   'find-name-dired)
-    (global-set-key [M-f12]   'my-c-rgrep)
-    ))
+(if window-system
+    (progn
+      (global-set-key   [f2]    'bc-next)
+      (global-set-key [S-f2]    'bc-previous)
+      (global-set-key [C-f2]    'bc-set)
+      (global-set-key [M-f2]    'bc-list))
+    (progn
+      (define-key esc-map   [f2]          'bc-next)
+      (global-set-key (kbd "<f1> <f2>")   'bc-previous)
+      (global-set-key (kbd "<f2> <f2>")   'bc-set)
+      (global-set-key (kbd "<f3> <f2>")   'bc-list)))
 
-(unless window-system
-  (progn
-    (global-set-key (kbd "<f2> <f1>")   'session-save)
-    (global-set-key (kbd "<f3> <f1>")   'session-restore)
-    (global-set-key (kbd "C-x  <f1>")   'recentf-open-files)
-    (global-set-key (kbd "C-c  <f1>")   'recentf-open-files-compl)
-    
-    (define-key esc-map   [f2]          'bc-next)
-    (global-set-key (kbd "<f1> <f2>")   'bc-previous)
-    (global-set-key (kbd "<f2> <f2>")   'bc-set)
-    (global-set-key (kbd "<f3> <f2>")   'bc-list)
-    
-    (define-key esc-map   [f3]          'my-last-buffer-go)
-    (global-set-key (kbd "<f1> <f3>")   'list-bookmarks)
-    (global-set-key (kbd "<f2> <f3>")   'bc-local-next)
-    (global-set-key (kbd "<f3> <f3>")   'bc-local-previous)
-    (global-set-key (kbd "C-x  <f3>")   'my-occur)
-    
-    (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
-    (global-set-key (kbd "<f4> <f4>")   'kill-this-buffer)
-    
-    (define-key esc-map   [f5]          'speedbar-get-focus)
-    (global-set-key (kbd "<f1> <f5>")   'sr-speedbar-toggle)
-    (global-set-key (kbd "<f2> <f5>")   'line-to-top-of-window)
-    (global-set-key (kbd "<f3> <f5>")   'etags-stack-show)
-    
-    (if (or (eq window-system 'w32)
-            (eq window-system 'win32))
-        (progn ;; For Windows
-          (define-key esc-map   [f6]         'multi-shell-new)
-          (global-set-key (kbd "<f1> <f6>")  'multi-shell-current-directory)
-          (global-set-key (kbd "<f2> <f6>")  'multi-shell-next)
-          (global-set-key (kbd "<f3> <f6>")  'multi-shell-prev)
-          (global-set-key (kbd "C-x  <f6>")  'switch-to-shell)
-          )   
-        (progn ;; For Linux
-          (define-key esc-map   [f6]         'get-term)
-          (global-set-key (kbd "<f1> <f6>")  'multi-term-dedicated-toggle)
-          (global-set-key (kbd "<f2> <f6>")  'multi-term-next)
-          (global-set-key (kbd "<f3> <f6>")  'multi-term-prev)
-          (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
-          ))
-    
-    (define-key esc-map   [f7]          'compile)
-    (global-set-key (kbd "<f1> <f7>")   'switch-to-compilation)
-    (global-set-key (kbd "<f2> <f7>")   'next-error)
-    (global-set-key (kbd "<f3> <f7>")   'previous-error)
-    
-    (define-key esc-map   [f8]          'gdb)
-    (global-set-key (kbd "<f1> <f8>")   'gud-kill)
-    (global-set-key (kbd "<f2> <f8>")   'gdb-restore-windows)
-    (global-set-key (kbd "<f3> <f8>")   'gdb-many-windows)
-    
-    (define-key esc-map   [f9]          'shell)
-    (global-set-key (kbd "<f1> <f9>")   'multi-shell-new)
-    (global-set-key (kbd "<f2> <f9>")   'switch-to-scratch)
-    (global-set-key (kbd "<f3> <f9>")   'popup-term)
-    (global-set-key (kbd "C-x  <f9>")   'switch-to-shell)
-    
-    (global-set-key (kbd "<f1> <f10>")  'tool-bar-mode)
-    (global-set-key (kbd "<f2> <f10>")  'my-toggle-maxframe)
-    (global-set-key (kbd "<f3> <f10>")  'my-toggle-fullscreen)
-    
-    (define-key esc-map   [f11]          'linum-mode)
-    (global-set-key (kbd "<f1> <f11>")   'fci-mode)
-    (global-set-key (kbd "<f2> <f11>")   'hl-line-mode)
-    (global-set-key (kbd "<f3> <f11>")   'blank-mode)
+(if window-system
+    (progn
+      (global-set-key   [f3]    'my-last-buffer-go)
+      (global-set-key [S-f3]    'list-bookmarks)
+      (global-set-key [C-f3]    'bc-local-next)
+      (global-set-key [M-f3]    'bc-local-previous)
+      (global-set-key (kbd "C-x <f3>") 'my-occur))
+    (progn
+      (define-key esc-map   [f3]          'my-last-buffer-go)
+      (global-set-key (kbd "<f1> <f3>")   'list-bookmarks)
+      (global-set-key (kbd "<f2> <f3>")   'bc-local-next)
+      (global-set-key (kbd "<f3> <f3>")   'bc-local-previous)
+      (global-set-key (kbd "C-x  <f3>")   'my-occur)))
 
-    (define-key esc-map   [f12]        'find-grep)
-    (global-set-key (kbd "<f1> <f12>") 'rgrep)
-    (global-set-key (kbd "<f2> <f12>") 'find-name-dired)
-    (global-set-key (kbd "<f3> <f12>") 'my-c-rgrep)
-    ))
+(if window-system
+    (progn
+      (global-set-key [S-f4]    'undo-kill-buffer)
+      (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer))
+    (progn  
+      (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
+      (global-set-key (kbd "<f4> <f4>")   'kill-this-buffer)))
+
+(if window-system
+    (progn
+      (global-set-key   [f5]    'speedbar-get-focus)
+      (global-set-key [S-f5]    'sr-speedbar-toggle)
+      (global-set-key [C-f5]    'line-to-top-of-window)
+      (global-set-key [M-f5]    'etags-stack-show))
+    (progn
+      (define-key esc-map   [f5]          'speedbar-get-focus)
+      (global-set-key (kbd "<f1> <f5>")   'sr-speedbar-toggle)
+      (global-set-key (kbd "<f2> <f5>")   'line-to-top-of-window)
+      (global-set-key (kbd "<f3> <f5>")   'etags-stack-show)))
+
+(if window-system
+    (progn
+      (if (or (eq window-system 'w32)
+              (eq window-system 'win32))
+          (progn ;; For Windows
+            (global-set-key   [f6]   'multi-shell-new)
+            (global-set-key [S-f6]   'multi-shell-current-directory)
+            (global-set-key [C-f6]   'multi-shell-next)
+            (global-set-key [M-f6]   'multi-shell-prev)
+            (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
+            )   
+          (progn ;; For Linux
+            (global-set-key   [f6]   'get-term)
+            (global-set-key [S-f6]   'multi-term-dedicated-toggle)
+            (global-set-key [C-f6]   'multi-term-next)
+            (global-set-key [M-f6]   'multi-term-prev)
+            (global-set-key (kbd "C-x <f6>")  'switch-to-term)
+            )))
+    (progn   
+      (define-key esc-map   [f6]         'get-term)
+      (global-set-key (kbd "<f1> <f6>")  'multi-term-dedicated-toggle)
+      (global-set-key (kbd "<f2> <f6>")  'multi-term-next)
+      (global-set-key (kbd "<f3> <f6>")  'multi-term-prev)
+      (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
+      ))
+
+(if window-system
+    (progn
+      (global-set-key   [f7]    'compile)
+      (global-set-key [S-f7]    'switch-to-compilation)
+      (global-set-key [C-f7]    'next-error)
+      (global-set-key [M-f7]    'previous-error))
+    (progn   
+      (define-key esc-map   [f7]          'compile)
+      (global-set-key (kbd "<f1> <f7>")   'switch-to-compilation)
+      (global-set-key (kbd "<f2> <f7>")   'next-error)
+      (global-set-key (kbd "<f3> <f7>")   'previous-error)))
+
+(if window-system
+    (progn
+      (global-set-key   [f8]    'gdb)
+      (global-set-key [S-f8]    'gud-kill)
+      (global-set-key [C-f8]    'gdb-restore-windows)
+      (global-set-key [M-f8]    'gdb-many-windows))
+    (progn    
+      (define-key esc-map   [f8]          'gdb)
+      (global-set-key (kbd "<f1> <f8>")   'gud-kill)
+      (global-set-key (kbd "<f2> <f8>")   'gdb-restore-windows)
+      (global-set-key (kbd "<f3> <f8>")   'gdb-many-windows)))
+
+(if window-system
+    (progn
+      (global-set-key   [f9]    'shell)
+      (global-set-key [S-f9]    'multi-shell-new)
+      (global-set-key [C-f9]    'switch-to-scratch)
+      (global-set-key [M-f9]    'popup-term)
+      (global-set-key (kbd "C-x <f9>")  'switch-to-shell))
+    (progn   
+      (define-key esc-map   [f9]          'shell)
+      (global-set-key (kbd "<f1> <f9>")   'multi-shell-new)
+      (global-set-key (kbd "<f2> <f9>")   'switch-to-scratch)
+      (global-set-key (kbd "<f3> <f9>")   'popup-term)
+      (global-set-key (kbd "C-x  <f9>")   'switch-to-shell)))
+
+(if window-system
+    (progn
+      (global-set-key [S-f10]   'tool-bar-mode)
+      (global-set-key [C-f10]   'my-toggle-maxframe)
+      (global-set-key [M-f10]  'my-toggle-fullscreen))
+    (progn    
+      (global-set-key (kbd "<f1> <f10>")  'tool-bar-mode)
+      (global-set-key (kbd "<f2> <f10>")  'my-toggle-maxframe)
+      (global-set-key (kbd "<f3> <f10>")  'my-toggle-fullscreen)))
+
+(if window-system
+    (progn
+      (global-set-key   [f11]   'linum-mode)
+      (global-set-key [S-f11]   'fci-mode)
+      (global-set-key [C-f11]   'hl-line-mode)
+      (global-set-key [M-f11]   'blank-mode))
+    (progn  
+      (define-key esc-map   [f11]          'linum-mode)
+      (global-set-key (kbd "<f1> <f11>")   'fci-mode)
+      (global-set-key (kbd "<f2> <f11>")   'hl-line-mode)
+      (global-set-key (kbd "<f3> <f11>")   'blank-mode)))
+
+(if window-system
+    (progn
+      (global-set-key [f12]     'find-grep)
+      (global-set-key [S-f12]   'rgrep)
+      (global-set-key [C-f12]   'find-name-dired)
+      (global-set-key [M-f12]   'my-c-rgrep))
+    (progn
+      (define-key esc-map   [f12]        'find-grep)
+      (global-set-key (kbd "<f1> <f12>") 'rgrep)
+      (global-set-key (kbd "<f2> <f12>") 'find-name-dired)
+      (global-set-key (kbd "<f3> <f12>") 'my-c-rgrep)
+      ))
 
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
@@ -266,12 +276,12 @@
 
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
- (progn ;; For Windows
-  (global-set-key [C-wheel-up]   'text-scale-increase)
-  (global-set-key [C-wheel-down] 'text-scale-decrease))
- (progn ;; For Linux
-  (global-set-key [C-mouse-4] 'text-scale-increase)
-  (global-set-key [C-mouse-5] 'text-scale-decrease)))
+    (progn ;; For Windows
+      (global-set-key [C-wheel-up]   'text-scale-increase)
+      (global-set-key [C-wheel-down] 'text-scale-decrease))
+    (progn ;; For Linux
+      (global-set-key [C-mouse-4] 'text-scale-increase)
+      (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 
 ;;Control tab quotes a tab.
@@ -320,7 +330,7 @@
     )
 
 ;;for mark
-(when (not window-system)
+(unless window-system
   (define-key f2-map (kbd "<SPC>") 'set-mark-command)
   )
 

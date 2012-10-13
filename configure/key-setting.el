@@ -11,6 +11,21 @@
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")
 
+;;for keymap witch
+(defun switch-to-graph-keymap ()
+  (interactive)
+  (setq use-graph-keymap-p t)
+  (zz-load-configure "key-setting.el")
+  (message "switch to graph keymap")
+  )
+
+(defun switch-to-console-keymap ()
+  (interactive)
+  (setq use-graph-keymap-p nil)
+  (zz-load-configure "key-setting.el")
+  (message "switch to console keymap")
+  )
+
 ;;define new keymap for terminal
 (unless use-graph-keymap-p
   ;;f2 key map
@@ -28,6 +43,11 @@
 ;;f4-esc key map 
 (defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key f4-map [escape] f4-esc-map)
+
+;;for keymap switch
+(when window-system
+  (global-set-key (kbd "<f4> 1") 'switch-to-graph-keymap)
+  (global-set-key (kbd "<f4> 2") 'switch-to-console-keymap))
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  

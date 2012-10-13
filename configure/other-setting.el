@@ -104,6 +104,10 @@ Emacs buffer are those starting with “*”."
     (setq tabbar-font-name (car (split-string my-font-en-name)))
     (setq tabbar-font-name "Consolas"))
 
+(if window-system
+    (setq tabbar-bgcolor "#AAAAAA")
+    (setq tabbar-bgcolor "#C000C0"))
+
 (set-face-attribute 'tabbar-default nil
                     :inherit    nil
                     :weight    'normal
@@ -112,7 +116,7 @@ Emacs buffer are those starting with “*”."
                     :underline  nil
                     :strike-through nil
                     :stipple    nil
-                    :background "#AAAAAA"
+                    :background tabbar-bgcolor
                     :foreground "black"
                     :box    nil
                     :family tabbar-font-name)
@@ -120,12 +124,12 @@ Emacs buffer are those starting with “*”."
                     :background "LightGoldenrod"
                     :foreground "DarkGreen"
                     :inherit    'tabbar-default 
-                    :box '(:line-width 2 :color "LightGoldenrod" :style nil)
+                    :box (list :line-width 2 :color "LightGoldenrod" :style nil)
                     :weight 'bold)
 (set-face-attribute 'tabbar-unselected nil
                     :inherit    'tabbar-default
-                    :background "#AAAAAA"
-                    :box '(:line-width 2 :color "#AAAAAA" :style nil))
+                    :background tabbar-bgcolor
+                    :box (list :line-width 2 :color tabbar-bgcolor :style nil))
 (set-face-attribute 'tabbar-button nil
                     :inherit 'tabbar-default
                     :box nil)

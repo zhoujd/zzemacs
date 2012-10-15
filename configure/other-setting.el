@@ -106,7 +106,7 @@ Emacs buffer are those starting with “*”."
 
 (if window-system
     (setq tabbar-bgcolor "#AAAAAA")
-    (setq tabbar-bgcolor "#C000C0"))
+    (setq tabbar-bgcolor "#75507B"))
 
 (set-face-attribute 'tabbar-default nil
                     :inherit    nil

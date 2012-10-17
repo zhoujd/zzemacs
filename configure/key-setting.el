@@ -64,13 +64,14 @@
     (progn
       (global-set-key [C-f1]    'session-save)
       (global-set-key [M-f1]    'session-restore)
-      (global-set-key (kbd "C-x <f1>") 'recentf-open-files)
-      (global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl))
+      )
     (progn
       (global-set-key (kbd "<f2> <f1>")   'session-save)
       (global-set-key (kbd "<f3> <f1>")   'session-restore)
-      (global-set-key (kbd "C-x  <f1>")   'recentf-open-files)
-      (global-set-key (kbd "C-c  <f1>")   'recentf-open-files-compl)))
+      ))
+
+(global-set-key (kbd "C-x <f1>") 'recentf-open-files)
+(global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl)
 
 (if use-graph-keymap-p
     (progn
@@ -90,21 +91,25 @@
       (global-set-key [S-f3]    'list-bookmarks)
       (global-set-key [C-f3]    'bc-local-next)
       (global-set-key [M-f3]    'bc-local-previous)
-      (global-set-key (kbd "C-x <f3>") 'my-occur))
+      )
     (progn
       (define-key esc-map   [f3]          'my-last-buffer-go)
       (global-set-key (kbd "<f1> <f3>")   'list-bookmarks)
       (global-set-key (kbd "<f2> <f3>")   'bc-local-next)
       (global-set-key (kbd "<f3> <f3>")   'bc-local-previous)
-      (global-set-key (kbd "C-x  <f3>")   'my-occur)))
+      ))
+
+(global-set-key (kbd "C-x <f3>") 'my-occur)
 
 (if use-graph-keymap-p
     (progn
       (global-set-key [S-f4]    'undo-kill-buffer)
-      (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer))
+      )
     (progn  
       (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
-      (global-set-key (kbd "<f4> <f4>")   'kill-this-buffer)))
+      ))
+
+ (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
 
 (if use-graph-keymap-p
     (progn
@@ -176,13 +181,15 @@
       (global-set-key [S-f9]    'multi-shell-new)
       (global-set-key [C-f9]    'switch-to-scratch)
       (global-set-key [M-f9]    'popup-term)
-      (global-set-key (kbd "C-x <f9>")  'switch-to-shell))
+      )
     (progn   
       (define-key esc-map   [f9]          'shell)
       (global-set-key (kbd "<f1> <f9>")   'multi-shell-new)
       (global-set-key (kbd "<f2> <f9>")   'switch-to-scratch)
       (global-set-key (kbd "<f3> <f9>")   'popup-term)
-      (global-set-key (kbd "C-x  <f9>")   'switch-to-shell)))
+      ))
+
+(global-set-key (kbd "C-x <f9>")  'switch-to-shell)
 
 (if use-graph-keymap-p
     (progn

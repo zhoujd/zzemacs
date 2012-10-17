@@ -199,6 +199,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (add-hook 'shell-mode-hook 'my-shell-hook)
 
+(add-hook 'comint-output-filter-functions
+          'comint-strip-ctrl-m)
+
 
 (provide 'shell-setting)
 

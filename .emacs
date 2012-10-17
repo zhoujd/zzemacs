@@ -26,11 +26,11 @@
         '(
           common-setting
           other-setting
-		  dired-setting
+          dired-setting
+          prog-setting
           shell-setting
           sample-setting
           media-setting
-          prog-setting
           c-setting
           lisp-setting
           perl-setting

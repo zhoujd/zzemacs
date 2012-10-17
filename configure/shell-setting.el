@@ -202,6 +202,21 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'comint-output-filter-functions
           'comint-strip-ctrl-m)
 
+;;shell completion
+(require 'shell-completion)
+
+;;bash completion
+(require 'bash-completion)
+
+;;readline complete
+(setq explicit-shell-file-name "bash")
+(setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+(setq comint-process-echoes t)
+
+(require 'readline-complete)
+
+(add-to-list 'ac-modes 'shell-mode)
+(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
 
 (provide 'shell-setting)
 

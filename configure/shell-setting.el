@@ -125,6 +125,13 @@ Dmitriy Igrishin's patched version of comint.el."
         (setq old-buf (current-buffer))
         (multi-term-dedicated-toggle))))
 
+;;switch line/char mode
+(defun switch-term-mode ()
+  (interactive)
+  (if (term-in-char-mode)
+      (term-line-mode)
+      (term-char-mode)))
+  
 ;; switch to named shell
 (setq multi-shell-buffer-name "shell")
 (defun my-shell-list ()

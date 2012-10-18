@@ -210,7 +210,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;readline complete
 (setq explicit-shell-file-name "bash")
-(setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+(unless (or (eq window-system 'w32) (eq window-system 'win32))
+  (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash")))
+
 (setq comint-process-echoes t)
 
 (require 'readline-complete)

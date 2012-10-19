@@ -206,9 +206,6 @@ Dmitriy Igrishin's patched version of comint.el."
 (unless (or (eq window-system 'w32) (eq window-system 'win32))
   ;;shell completion
   (require 'shell-completion)
-  ;;bash completion
-  (require 'bash-completion)
-  (bash-completion-setup)
 
   (setq explicit-shell-file-name "bash")
   (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))

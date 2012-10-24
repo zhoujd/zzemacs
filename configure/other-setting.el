@@ -72,12 +72,29 @@
 ;(require 'tabbar-rose)
 (require 'tabbar)
 
-;;Excluded buffers in tabbar
-;(setq EmacsPortable-excluded-buffers '("*Messages*" "*Completions*" "*ESS*"))
-
 ;;turn on the tabbar
 (tabbar-mode t)
 (setq tabbar-mwheel-mode nil)
+
+;;Excluded buffers in tabbar
+(setq tabbar-excluded-buffers '("*Messages*" "*Completions*" "*ESS*" "*Pymacs*"))
+
+(defun tabbar-buffer-list ()
+  "Return the list of buffers to show in tabs.
+Exclude buffers whose name starts with a space or *, when they are not
+visiting a file.  The current buffer is always included."
+  (delq nil
+        (mapcar #'(lambda (b)
+                    (cond
+                      ;; Always include the current buffer.
+                      ((eq (current-buffer) b) b)
+                      ((buffer-file-name b) b)
+                      ((member (buffer-name b) tabbar-excluded-buffers) nil)
+                      ((char-equal ?\  (aref (buffer-name b) 0)) nil)
+                      ((buffer-live-p b) b)))
+                (buffer-list))))
+
+(setq tabbar-buffer-list-function 'tabbar-buffer-list)
 
 ;;define all tabs to be one of 2 possible groups: “Emacs Buffer”, “User Buffer”.
 (defun tabbar-buffer-groups ()

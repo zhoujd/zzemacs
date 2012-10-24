@@ -147,10 +147,23 @@ the mru bookmark stack."
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
+(require 'auto-complete)
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories
              (concat zzemacs-path "site-lisp/auto-complete/dict"))
 (ac-config-default)
+(setq ac-use-quick-help t)
+(setq ac-quick-help-delay 0.1)
+(setq ac-trigger-commands (cons 'backward-delete-char-untabify ac-trigger-commands))
+;; Show 0.1 second later
+(setq ac-auto-show-menu 0.1)
+
+(defun my-abort-complete ()
+  (interactive)
+  (ac-abort))
+
+(define-key ac-complete-mode-map "\e"       'my-abort-complete)
+(define-key ac-mode-map  [M-return] 'auto-complete) 
 
 ;;YASNIPPET
 (zz-load-path "site-lisp/yasnippet")
@@ -169,13 +182,6 @@ the mru bookmark stack."
               (yas/snippet-table-hash mode)))
             table)
         (all-completions ac-prefix candidates)))))
-
-
-(defun my-abort-complete ()
-  (interactive)
-  (ac-abort))
-
-(define-key ac-complete-mode-map "\e" 'my-abort-complete)
 
 ;load the etags-select.el source code
 (require 'etags-select)

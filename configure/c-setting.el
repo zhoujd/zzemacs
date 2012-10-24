@@ -34,12 +34,13 @@
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
 ;;sudo apt-get install clang
-(require 'auto-complete-clang)
-(setq ac-clang-flags  (list   
-                       "-I/usr/include"
-                       "-I/usr/local/include"
-                       "-I/usr/lib/drm"
-                       ))
+;(require 'auto-complete-clang)
+;(setq ac-clang-flags  (list   
+;                       "-I/usr/include"
+;                       "-I/usr/local/include"
+;                       ))
+;
+;(add-to-list 'ac-sources 'ac-source-clang)
 
 ;;;; Include settings
 (if (not (or (eq window-system 'w32)
@@ -75,7 +76,6 @@
 (defun my-c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   (add-to-list 'ac-sources 'ac-source-semantic)
-  (add-to-list 'ac-sources 'ac-source-clang)
   ;; Semantic functions.
   (semantic-default-c-setup)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
@@ -86,8 +86,8 @@
   (local-set-key "\C-cl" 'semantic-ia-show-doc)
   (local-set-key "\C-cr" 'semantic-symref-symbol)
   (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
-  (local-set-key (kbd "C-c .") 'ac-complete-semantic)
-  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
+  (local-set-key "\C-c." 'ac-complete-semantic)
+
   ;(local-set-key "." 'semantic-complete-self-insert)
   ;(local-set-key ">" 'semantic-complete-self-insert)
 

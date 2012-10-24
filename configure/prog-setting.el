@@ -159,7 +159,7 @@ the mru bookmark stack."
   (interactive)
   (ac-abort))
 
-(define-key ac-complete-mode-map "\e"       'my-abort-complete)
+(define-key ac-complete-mode-map [escape]   'my-abort-complete)
 (define-key ac-mode-map          [M-return] 'auto-complete) 
 
 ;;YASNIPPET

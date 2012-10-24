@@ -33,6 +33,12 @@
 (setq sourcepair-header-path    '( "." "include" "../include" "../*" "../../*"))
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
+;;sudo apt-get install clang
+(require 'auto-complete-clang)
+(setq ac-clang-flags  (list   
+                       "-I/usr/include"  
+                       ))
+
 ;;;; Include settings
 (if (not (or (eq window-system 'w32)
              (eq window-system 'win32)))
@@ -68,6 +74,7 @@
 (defun my-c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   (add-to-list 'ac-sources 'ac-source-semantic)
+  (add-to-list 'ac-sources 'ac-source-clang)
   ;; Semantic functions.
   (semantic-default-c-setup)
   (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)

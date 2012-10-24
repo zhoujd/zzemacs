@@ -36,7 +36,9 @@
 ;;sudo apt-get install clang
 (require 'auto-complete-clang)
 (setq ac-clang-flags  (list   
-                       "-I/usr/include"  
+                       "-I/usr/include"
+                       "-I/usr/local/include"
+                       "-I/usr/lib/drm"
                        ))
 
 ;;;; Include settings
@@ -58,7 +60,6 @@
                                     "/usr/include/gtk-2.0"
                                     "/usr/include/gtk-2.0/gdk-pixbuf"
                                     "/usr/include/gtk-2.0/gtk"
-                                    "/usr/local/include"
                                     "/usr/local/include"))
 
       (let ((include-dirs cedet-user-include-dirs))

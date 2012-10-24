@@ -170,6 +170,13 @@ the mru bookmark stack."
             table)
         (all-completions ac-prefix candidates)))))
 
+
+(defun my-abort-complete ()
+  (interactive)
+  (ac-abort))
+
+(define-key ac-complete-mode-map "\e" 'my-abort-complete)
+
 ;load the etags-select.el source code
 (require 'etags-select)
 (defun etags-select-get-tag-files ()

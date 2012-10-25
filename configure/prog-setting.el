@@ -151,16 +151,6 @@ the mru bookmark stack."
 (add-to-list 'ac-dictionary-directories
              (concat zzemacs-path "site-lisp/auto-complete/dict"))
 (ac-config-default)
-(setq ac-trigger-commands (cons 'backward-delete-char-untabify ac-trigger-commands))
-;; Show 0.1 second later
-(setq ac-auto-show-menu 0.1)
-
-(defun my-abort-complete ()
-  (interactive)
-  (ac-abort))
-
-(define-key ac-complete-mode-map [escape]   'my-abort-complete)
-(define-key ac-mode-map          [M-return] 'auto-complete) 
 
 ;;YASNIPPET
 (zz-load-path "site-lisp/yasnippet")

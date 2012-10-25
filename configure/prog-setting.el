@@ -152,6 +152,8 @@ the mru bookmark stack."
              (concat zzemacs-path "site-lisp/auto-complete/dict"))
 (ac-config-default)
 
+(global-auto-complete-mode t)
+
 ;;YASNIPPET
 (zz-load-path "site-lisp/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle

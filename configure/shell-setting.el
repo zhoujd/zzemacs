@@ -218,6 +218,12 @@ Dmitriy Igrishin's patched version of comint.el."
   (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
   )
 
+;;eshell setting
+(setq eshell-prompt-function
+      (lambda ()
+        (concat "" (user-login-name) "@" (system-name) " "
+                (eshell/pwd) "% ")))
+
 (provide 'shell-setting)
 
 ;;; shell-setting.el ends here

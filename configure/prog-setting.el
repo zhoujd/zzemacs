@@ -152,7 +152,27 @@ the mru bookmark stack."
              (concat zzemacs-path "site-lisp/auto-complete/dict"))
 (ac-config-default)
 
-(global-auto-complete-mode t)
+;; complete
+(when (require 'auto-complete nil t)
+  (global-auto-complete-mode t)
+  (defun ac-next-or-next-line (arg)
+    (interactive "p")
+    (if (/= (length ac-candidates) 1)
+        (ac-next)
+      (ac-abort)
+      (next-line arg)))
+  (defun ac-previous-or-previous-line (arg)
+    (interactive "p")
+    (if (/= (length ac-candidates) 1)
+        (ac-previous)
+      (ac-abort)
+      (previous-line arg)))
+  (define-key ac-complete-mode-map "\C-n" 'ac-next)
+  (define-key ac-complete-mode-map "\C-p" 'ac-previous)
+  ;(custom-set-faces
+  ; '(ac-candidate-face ((t (:background "dark orange" :foreground "white"))))
+  ; '(ac-selection-face ((t (:background "blue" :foreground "white")))))
+  )
 
 ;;YASNIPPET
 (zz-load-path "site-lisp/yasnippet")

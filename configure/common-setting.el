@@ -403,6 +403,13 @@
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
+
+;;manpath
+(unless (or (eq window-system 'w32)
+        (eq window-system 'win32))
+  (setq woman-manpath (quote ("/usr/share/man"))))
+
+
 (provide 'common-setting)
 
 ;;; common-setting.el ends here

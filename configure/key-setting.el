@@ -70,9 +70,6 @@
       (global-set-key (kbd "<f3> <f1>")   'session-restore)
       ))
 
-(global-set-key (kbd "C-x <f1>") 'recentf-open-files)
-(global-set-key (kbd "C-c <f1>") 'recentf-open-files-compl)
-
 (if use-graph-keymap-p
     (progn
       (global-set-key   [f2]    'bc-next)
@@ -100,6 +97,7 @@
       ))
 
 (global-set-key (kbd "C-x <f3>") 'my-occur)
+(global-set-key (kbd "C-c <f3>") 'my-woman-at-point)
 
 (if use-graph-keymap-p
     (progn
@@ -109,7 +107,9 @@
       (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
       ))
 
- (global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
+(global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
+(global-set-key (kbd "C-x <f4>")  'recentf-open-files)
+(global-set-key (kbd "C-c <f4>")  'recentf-open-files-compl)
 
 (if use-graph-keymap-p
     (progn
@@ -228,7 +228,6 @@
 
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
-
 
 ;;number 0-1/-/=
 (global-set-key (kbd "M-1")    'delete-other-windows)

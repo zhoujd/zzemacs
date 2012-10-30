@@ -397,16 +397,23 @@
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
 ;;esc quits
-(define-key minibuffer-local-map    [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-map            [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map         [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
-
 ;;manpath
+(defun my-woman-at-point ()
+  (interactive)
+  (let ((woman-topic-at-point t))
+    (woman)))
+
+;;do not open new frame
+(setq woman-use-own-frame nil)
+
 (unless (or (eq window-system 'w32)
-        (eq window-system 'win32))
+            (eq window-system 'win32))
   (setq woman-manpath (quote ("/usr/share/man"))))
 
 

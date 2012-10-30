@@ -265,6 +265,7 @@ the mru bookmark stack."
     (list (cons "\\.[cC][mM][dD]$" 'bat-mode))
     (list (cons "\\.[gG][dD][bB]$" 'gdb-script-mode))
     (list (cons "\\.gdbinit$"      'gdb-script-mode))
+    (list (cons "\\.[mM][aA][kK]$" 'makefile-mode))
     ;; For DOS init files
     ;(list (cons "CONFIG\\."   'bat-mode))
     ;(list (cons "AUTOEXEC\\." 'bat-mode))

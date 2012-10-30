@@ -190,6 +190,7 @@
       ))
 
 (global-set-key (kbd "C-x <f9>")  'switch-to-shell)
+(global-set-key (kbd "C-c <f9>")  'eshell)
 
 (if use-graph-keymap-p
     (progn

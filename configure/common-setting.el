@@ -55,7 +55,7 @@
 (setq my-font-cn-name (nth 1 cn-font-list))
 
 (defun my-cn-font-name ()
-  (string-match ".*[ ]" my-font-cn-name)  
+  (string-match ".*[ ]" my-font-cn-name)
   (setq my-cn-name (substring (match-string 0 my-font-cn-name) 0 -1)))
 
 (defun my-cn-font-size ()
@@ -364,7 +364,8 @@
 (setq recentf-menu-open-all-flag t
       recentf-max-saved-items 100
       recentf-max-menu-items  30
-      recentf-exclude '("/tmp/" "/ssh:"))
+      recentf-exclude '("/tmp/" "/ssh:")
+      )
 
 (recentf-mode t)
 (defadvice recentf-track-closed-file (after push-beginning activate)
@@ -415,6 +416,9 @@
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))
   (setq woman-manpath (quote ("/usr/share/man"))))
+
+(setq resize-mini-windows nil)
+(setq default-line-spacing 0)
 
 
 (provide 'common-setting)

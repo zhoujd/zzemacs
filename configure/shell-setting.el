@@ -18,7 +18,8 @@
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
 ;;interpret and use ansi color codes in shell output windows
-(ansi-color-for-comint-mode-on)
+(when (fboundp 'ansi-color-for-comint-mode-on)
+  (ansi-color-for-comint-mode-on))
 
 ;;automatically_close_completions_in_emacs_shell_comint_mode.txt
 (defun comint-close-completions ()

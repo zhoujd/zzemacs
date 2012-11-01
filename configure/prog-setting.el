@@ -168,8 +168,8 @@ the mru bookmark stack."
       (ac-abort)
       (previous-line arg)))
 
-  (define-key ac-complete-mode-map "\C-n"       'ac-next)
-  (define-key ac-complete-mode-map "\C-p"       'ac-previous)
+  (define-key ac-complete-mode-map (kbd "\C-n")       'ac-next)
+  (define-key ac-complete-mode-map (kbd "\C-p")       'ac-previous)
 
   (set-face-background 'ac-candidate-face "lightgray")
   (set-face-underline  'ac-candidate-face "darkgray")

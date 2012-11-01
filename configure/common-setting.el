@@ -417,8 +417,8 @@
             (eq window-system 'win32))
   (setq woman-manpath (quote ("/usr/share/man"))))
 
-(setq resize-mini-windows nil)
-(setq default-line-spacing 0)
+;(setq resize-mini-windows nil)
+;(setq default-line-spacing 0)
 
 
 (provide 'common-setting)

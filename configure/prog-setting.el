@@ -168,29 +168,12 @@ the mru bookmark stack."
       (ac-abort)
       (previous-line arg)))
 
-  (define-key ac-complete-mode-map "<return>"   'nil)
-  (define-key ac-complete-mode-map "RET"        'nil)
-  (define-key ac-complete-mode-map "M-j"        'ac-complete)
-  (define-key ac-complete-mode-map "<C-return>" 'ac-complete)
   (define-key ac-complete-mode-map "\C-n"       'ac-next)
   (define-key ac-complete-mode-map "\C-p"       'ac-previous)
 
   (set-face-background 'ac-candidate-face "lightgray")
   (set-face-underline  'ac-candidate-face "darkgray")
   (set-face-background 'ac-selection-face "steelblue")
-
-  (setq ac-dwim t)
-  (setq ac-candidate-max ac-candidate-menu-height)
-
-  (set-default 'ac-sources
-               '(ac-source-semantic
-                 ac-source-yasnippet
-                 ac-source-abbrev
-                 ac-source-words-in-buffer
-                 ac-source-words-in-all-buffer
-                 ac-source-imenu
-                 ac-source-files-in-current-dir
-                 ac-source-filename))
 
   (dolist (command `(backward-delete-char-untabify delete-backward-char))
     (add-to-list 'ac-trigger-commands command))

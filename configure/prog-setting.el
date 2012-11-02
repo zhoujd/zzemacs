@@ -2,17 +2,13 @@
 
 ;;; project setting sample
 ;;;=============================================================================
+;; set project direcitory list
 ;(setq proj-list '("~/zzsawfish/" "~/zzemacs/"))
-
-;(defun gen-proj-find-path (proj-list)
-;  (setq proj-path-parts "")
-;  (dolist (cell proj-list)
-;    (setq proj-path-parts (concat proj-path-parts cell " ")))
-;  (setq proj-path-parts (substring proj-path-parts 0 -1)))
 ;
-;(defun create-proj-etags ()
-;  (interactive)
-;  (create-etags (gen-proj-find-path proj-list)))
+;; call below function to create etags
+;(create-proj-etags)
+;; call below function to create cscope
+;(create-proj-cscope)
 ;;
 ;; tags project setting
 ;(setq tags-table-list '("~/work/TAGS"))
@@ -266,14 +262,30 @@ the mru bookmark stack."
 (defun gen-cscope-cmd (dir-name)
   (concat
    (format "find %s -type f \\( %s \\) -print > %s/cscope.files;"
-           dir-name (gen-find-parts my-find-regex)  dir-name)
-   (format "cscope -b -R -q -i %s/cscope.files" dir-name)
+           dir-name (gen-find-parts my-find-regex)  default-directory)
+   (format "cscope -b -R -q -i %s/cscope.files" default-directory)
    ))
 
 (defun create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
   (async-shell-command (gen-cscope-cmd dir-name)))
+
+;;creast etags/cscope for multi project
+(defvar proj-list (list zzemacs-path) "project directory list")
+(defun gen-proj-find-path (proj-list)
+  (setq proj-path-parts "")
+  (dolist (cell proj-list)
+    (setq proj-path-parts (concat proj-path-parts cell " ")))
+  (setq proj-path-parts (substring proj-path-parts 0 -1)))
+
+(defun create-proj-etags ()
+  (interactive)
+  (create-etags (gen-proj-find-path proj-list)))
+
+(defun create-proj-cscope ()
+  (interactive)
+  (create-cscope (gen-proj-find-path proj-list)))
 
 ;;add bat mode support
 (setq auto-mode-alist
@@ -297,7 +309,7 @@ the mru bookmark stack."
 ;; this tells emacs to automatically activate the sawfish-mode whenever open
 ;; file with "sawfishrc" or "jl" (John Lisp) suffix
 (add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
-(add-to-list 'auto-mode-alist '(".*\\.jl\\'" . sawfish-mode ))
+(add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
 ;; for mysql
 ;; show output on windows in buffer

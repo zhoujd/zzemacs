@@ -196,11 +196,14 @@
     (progn
       (global-set-key [S-f10]   'tool-bar-mode)
       (global-set-key [C-f10]   'my-toggle-maxframe)
-      (global-set-key [M-f10]  'my-toggle-fullscreen))
+      (global-set-key [M-f10]   'my-toggle-fullscreen))
     (progn    
       (global-set-key (kbd "<f1> <f10>")  'tool-bar-mode)
       (global-set-key (kbd "<f2> <f10>")  'my-toggle-maxframe)
       (global-set-key (kbd "<f3> <f10>")  'my-toggle-fullscreen)))
+
+(global-set-key (kbd "C-x <f10>")  'scroll-bar-mode)
+(global-set-key (kbd "C-c <f10>")  'tabbar-mode)
 
 (if use-graph-keymap-p
     (progn

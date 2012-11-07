@@ -163,10 +163,15 @@ the mru bookmark stack."
         (ac-previous)
       (ac-abort)
       (previous-line arg)))
+  
+  (setq ac-use-menu-map t)
+  ;; Default settings
+  (define-key ac-menu-map "\C-n" 'ac-next)
+  (define-key ac-menu-map "\C-p" 'ac-previous)
 
-  (define-key ac-complete-mode-map (kbd "\C-n")       'ac-next)
-  (define-key ac-complete-mode-map (kbd "\C-p")       'ac-previous)
-
+  (define-key ac-completing-map "\t" 'ac-complete)
+  (define-key ac-completing-map "\r" nil)
+  
   (set-face-background 'ac-candidate-face "lightgray")
   (set-face-underline  'ac-candidate-face "darkgray")
   (set-face-background 'ac-selection-face "steelblue")

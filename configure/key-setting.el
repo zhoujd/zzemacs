@@ -11,20 +11,16 @@
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")
 
-;;for keymap witch
-(defun switch-to-graph-keymap ()
-  (interactive)
-  (setq use-graph-keymap-p t)
-  (zz-load-configure "key-setting.el")
-  (message "switch to graph keymap")
-  )
+(defun show-keymap-select ()
+  (if use-graph-keymap-p
+      (message "switch to graph keymap")
+      (message "switch to console keymap")))
 
-(defun switch-to-console-keymap ()
+(defun switch-to-keymap ()
   (interactive)
-  (setq use-graph-keymap-p nil)
+  (setq use-graph-keymap-p (not use-graph-keymap-p))
   (zz-load-configure "key-setting.el")
-  (message "switch to console keymap")
-  )
+  (show-keymap-select))
 
 ;;define new keymap for terminal
 (unless use-graph-keymap-p
@@ -46,8 +42,7 @@
 
 ;;for keymap switch
 (when window-system
-  (global-set-key (kbd "<f4> 1") 'switch-to-graph-keymap)
-  (global-set-key (kbd "<f4> 2") 'switch-to-console-keymap))
+  (global-set-key (kbd "<f4> `") 'switch-to-keymap))
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  

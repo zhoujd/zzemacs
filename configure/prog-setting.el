@@ -329,7 +329,7 @@ the mru bookmark stack."
  (append
   (list
    ;; insert entries for other modes here if needed.
-   (cons "\\.sq$" 'sql-mode))
+   (cons "\\.sql$" 'sql-mode))
   auto-mode-alist))
 
 (add-hook 'sql-mode-hook 'font-lock-mode)

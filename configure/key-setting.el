@@ -170,6 +170,9 @@
       (global-set-key (kbd "<f2> <f8>")   'gdb-restore-windows)
       (global-set-key (kbd "<f3> <f8>")   'gdb-many-windows)))
 
+(global-set-key (kbd "C-x <f8>")  'gdb-use-separate-io)
+(global-set-key (kbd "C-c <f8>")  'gud-tooltip-mode)
+
 (if use-graph-keymap-p
     (progn
       (global-set-key   [f9]    'shell)
@@ -244,7 +247,7 @@
 (if use-graph-keymap-p
     (progn
       (global-set-key (kbd "C-1") 'delete-window)
-      (global-set-key (kbd "C-2") 'delete-frames)
+      (global-set-key (kbd "C-2") 'delete-frame)
       (global-set-key (kbd "C-3") 'tabbar-backward-group)
       (global-set-key (kbd "C-4") 'delete-frame)
       ;;gud control setting
@@ -280,7 +283,7 @@
 (global-set-key (kbd "<f1> 7") 'gdb-frame-assembler-buffer)
 (global-set-key (kbd "<f1> 8") 'gdb-frame-memory-buffer)
 (global-set-key (kbd "<f1> 9") 'gdb-frame-locals-buffer)
-(global-set-key (kbd "<f1> 0") 'gdb-use-separate-io-buffer)
+(global-set-key (kbd "<f1> 0") 'gdb-frame-gdb-buffer)
 (global-set-key (kbd "<f1> -") 'gud-up)
 (global-set-key (kbd "<f1> =") 'gud-down)
 

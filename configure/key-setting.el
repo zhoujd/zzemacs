@@ -259,7 +259,7 @@
       (global-set-key (kbd "C-0") 'other-frame))
     (progn
       (global-set-key (kbd "<f2> 1") 'delete-window)
-      (global-set-key (kbd "<f2> 2") 'delete-frames)
+      (global-set-key (kbd "<f2> 2") 'delete-frame)
       (global-set-key (kbd "<f2> 3") 'tabbar-backward-group)
       (global-set-key (kbd "<f2> 4") 'delete-frame)
       ;;gud control setting

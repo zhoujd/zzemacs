@@ -364,6 +364,7 @@ the mru bookmark stack."
 ;;Git Support
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs-autoloads)
+(require 'git-show)
 
 ;;rgrep for c/c++
 (setq my-c-file-regex "*.[hc]")

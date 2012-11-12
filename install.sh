@@ -4,10 +4,11 @@ echo install .emacs to HOME directory begin...
 ZZEMACS_ROOT=`pwd`
 
 ##setup .emacs
-rm -f ~/.emacs
-echo ";;;this is .emacs for zhoujd.">> ~/.emacs
-echo "(defvar zzemacs-path \"${ZZEMACS_ROOT}/\")" >> ~/.emacs
-echo "(load-file (concat zzemacs-path \".emacs\"))" >> ~/.emacs
+cat > ~/.emacs <<EOF
+;;;this is .emacs for zhoujd.
+(defvar zzemacs-path "${ZZEMACS_ROOT}/")
+(load-file (concat zzemacs-path ".emacs"))
+EOF
 
 ##install font
 FONT_HOME=/usr/share/fonts/truetype/

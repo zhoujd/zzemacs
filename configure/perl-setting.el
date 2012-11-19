@@ -23,7 +23,7 @@
                  (cperl-brace-offset                         . 0)
                  (cperl-close-paren-offset                   . -4)
                  (cperl-continued-brace-offset               . 0)
-                 (cperl-continued-statement-offset           . 4)
+                 (cperl-continued-statement-offset           . 0)
                  (cperl-extra-newline-before-brace           . nil)
                  (cperl-extra-newline-before-brace-multiline . nil)
                  (cperl-indent-level                         . 4)

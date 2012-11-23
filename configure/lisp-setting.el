@@ -32,7 +32,11 @@
  (eval-after-load 'scheme
   '(define-key scheme-mode-map "\e\t" 'scheme-smart-complete))
 
-(setq scheme-program-name "mzscheme")
+;;PLT scheme
+;(setq scheme-program-name "mzscheme")
+;;MIT scheme
+(setq scheme-program-name "mit-scheme")
+
 (setq auto-mode-alist
  (append
   (list

@@ -27,7 +27,7 @@
 (add-hook 'slime-mode-hook 'my-slime-mode-hook)
 
 
-;;;;scheme setting
+;;;;scheme setting here
 ;;PLT scheme
 ;(setq scheme-program-name "mzscheme")
 ;;MIT scheme

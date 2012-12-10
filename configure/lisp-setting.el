@@ -27,11 +27,7 @@
 (add-hook 'slime-mode-hook 'my-slime-mode-hook)
 
 
-;; scheme complete
-(autoload 'scheme-smart-complete "scheme-complete" nil t)
- (eval-after-load 'scheme
-  '(define-key scheme-mode-map "\e\t" 'scheme-smart-complete))
-
+;;;;scheme setting
 ;;PLT scheme
 ;(setq scheme-program-name "mzscheme")
 ;;MIT scheme
@@ -50,21 +46,27 @@
 (add-hook 'lisp-inteeraction-mode-hook 'turn-on-eldoc-mode)
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
-;; scheme-mode-hook
+
+;;auto-complete setting
 (defvar ac-source-scheme
   '((candidates
      . (lambda ()
          (require 'scheme-complete)
          (all-completions ac-target (car (scheme-current-env))))))
   "Source for scheme keywords.")
-;; Auto-complete-mode config
+
+;;Auto-complete-mode config
 (add-hook 'scheme-mode-hook
           '(lambda ()
              (make-local-variable 'ac-sources)
              (setq ac-sources (append ac-sources '(ac-source-scheme)))))
+
+;;scheme complete
 (autoload 'scheme-smart-complete "scheme-complete" nil t)
 (eval-after-load 'scheme
-  '(progn (define-key scheme-mode-map "\t" 'scheme-complete-or-indent)))
+  '(progn (define-key scheme-mode-map "\t"   'scheme-complete-or-indent)
+          (define-key scheme-mode-map "\e\t" 'scheme-smart-complete)))
+
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 (add-hook 'scheme-mode-hook
           (lambda ()

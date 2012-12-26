@@ -33,6 +33,7 @@
           media-setting
           c-setting
           lisp-setting
+          scheme-setting
           perl-setting
           python-setting
           java-setting

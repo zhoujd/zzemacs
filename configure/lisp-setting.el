@@ -29,9 +29,9 @@
 
 ;;;;scheme setting here
 ;;PLT scheme
-;(setq scheme-program-name "mzscheme")
+(setq scheme-program-name "mzscheme")
 ;;MIT scheme
-(setq scheme-program-name "mit-scheme")
+;(setq scheme-program-name "mit-scheme")
 
 (setq auto-mode-alist
  (append
@@ -74,6 +74,13 @@
             (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
             (eldoc-mode t)
             (setq lisp-indent-function 'scheme-smart-indent-function)))
+
+;;quack
+(require 'quack)
+
+;;geiser for scheme
+(zz-load-path "site-lisp/geiser/elisp")
+(require 'geiser)
 
 (provide 'lisp-setting)
 

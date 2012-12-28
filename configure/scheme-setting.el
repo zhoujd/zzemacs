@@ -48,7 +48,7 @@
             (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;quack
-;(require 'quack)
+(require 'quack)
 
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")

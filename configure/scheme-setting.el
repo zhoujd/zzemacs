@@ -48,11 +48,14 @@
             (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;quack
-(require 'quack)
+;(require 'quack)
 
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")
 (require 'geiser)
+(setq geiser-active-implementations '(racket))
+(unless (or (eq window-system 'w32) (eq window-system 'win32))
+  (zz-add-os-path "/usr/racket/bin"))
 
 (provide 'scheme-setting)
 

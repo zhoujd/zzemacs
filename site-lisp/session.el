@@ -1055,7 +1055,7 @@ a file in the menu."
     (session-menu-maybe-accelerator menu-items (nreverse menu))))
 
 (defun session-file-prune-name (elem max-string)
-  "Prune name 韋 menu entry ELEM to use a miximum string length MAX-STRING."
+  "Prune name  menu entry ELEM to use a miximum string length MAX-STRING."
   (when (> (length elem) max-string)
     (let* ((sep-string (char-to-string session-directory-sep-char))
 	   (components (split-string elem (regexp-quote sep-string))))
@@ -1691,9 +1691,10 @@ this function to `after-init-hook'."
 	(error nil)))
     (when (or (eq session-initialize t) (memq 'menus session-initialize))
       (unless (memq 'session-set-file-name-history find-file-hooks)
-	;; already initialized (probably not a good idea to redo for menus)
-	(add-hook 'find-file-hooks 'session-set-file-name-history)
-	(session-initialize-menus)))
+        ;; already initialized (probably not a good idea to redo for menus)
+        (add-hook 'find-file-hooks 'session-set-file-name-history)
+        ;;(session-initialize-menus)  ;;marked by zhoujd
+        ))
     (when (or (eq session-initialize t)
 	      (memq 'session session-initialize))
       (add-hook 'kill-emacs-hook 'session-save-session)

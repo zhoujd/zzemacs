@@ -63,11 +63,17 @@
 
 (unless use-cedet-inside-flag
   ;; Disable cedet inside emacs
-  (setq load-path (remove "/usr/share/emacs/cedet" load-path))
-  (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
-                                  emacs-major-version emacs-minor-version)
-                          load-path))
-
+  (if (or (eq window-system 'w32)
+          (eq window-system 'win32))
+      (progn
+        (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
+                                        emacs-major-version emacs-minor-version) load-path)))
+      (progn
+        (setq load-path (remove "/usr/share/emacs/cedet" load-path))
+        (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
+                                        emacs-major-version emacs-minor-version)
+                                load-path))))
+      
   (setq byte-compile-warnings nil)
   (zz-load-path "site-lisp/cedet/common")
   (zz-load-path "site-lisp/cedet/semantic")

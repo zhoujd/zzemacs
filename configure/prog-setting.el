@@ -57,7 +57,7 @@
   (add-hook hook (function newline-indents)))
 
 ;;;cedet version flag t for inside
-(setq use-cedet-inside-flag nil)
+(setq use-cedet-inside-flag t)
 
 (unless use-cedet-inside-flag
   ;; Disable cedet inside emacs

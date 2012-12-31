@@ -2,7 +2,7 @@
 ;;
 
 ;;tell me if there's something wrong
-;(setq debug-on-error t)
+(toggle-debug-on-error t) 
 
 (zz-load-path "site-lisp")
 

@@ -49,6 +49,16 @@
 (add-hook 'cperl-mode-hook            (function newline-indents))
 (add-hook 'php-mode-hook              (function newline-indents))
 
+;; Disable cedet inside emacs
+;(setq load-path (remove "/usr/share/emacs/cedet" load-path))
+;(setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
+;                                emacs-major-version emacs-minor-version)
+;                        load-path))
+
+;(zz-load-path "site-lisp/cedet/common")
+;(zz-load-path "site-lisp/cedet/semantic")
+;(zz-load-path "site-lisp/cedet/semantic/bovine")
+
 ;;auto complete
 (require 'cedet)
 ;; speed bar

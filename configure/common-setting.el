@@ -361,11 +361,13 @@
        ad-do-it))
 
 ;;recentf/undo-kill-buffer
-(setq recentf-menu-open-all-flag t
-      recentf-max-saved-items 100
-      recentf-max-menu-items  30
-      recentf-exclude '("/tmp/" "/ssh:")
+(setq recentf-menu-open-all-flag  t
+      recentf-max-saved-items     100
+      recentf-max-menu-items      30      
       )
+
+(unless (or (eq window-system 'w32) (eq window-system 'win32))
+  (setq recentf-exclude '("/tmp/" "/ssh:")))
 
 (recentf-mode t)
 (defadvice recentf-track-closed-file (after push-beginning activate)

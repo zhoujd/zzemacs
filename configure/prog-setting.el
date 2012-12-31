@@ -26,28 +26,35 @@
 
 ;; holding
 (require 'hideshow)
-(add-hook 'java-mode-hook 'hs-minor-mode)
-(add-hook 'c++-mode-hook 'hs-minor-mode)
-(add-hook 'python-mode-hook 'hs-minor-mode)
-(add-hook 'c-mode-hook 'hs-minor-mode)
-(add-hook 'perl-mode-hook 'hs-minor-mode)
-(add-hook 'php-mode-hook 'hs-minor-mode)
-(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(dolist (hook
+          (list
+           'java-mode-hook
+           'c++-mode-hook
+           'python-mode-hook
+           'c-mode-hook
+           'perl-mode-hook
+           'php-mode-hook
+           'emacs-lisp-mode-hook))
+  (add-hook hook 'hs-minor-mode))
+
 
 (defun newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent))
 
 ;; Tell Emacs to use the function above in certain editing modes.
-(add-hook 'lisp-mode-hook             (function newline-indents))
-(add-hook 'emacs-lisp-mode-hook       (function newline-indents))
-(add-hook 'lisp-interaction-mode-hook (function newline-indents))
-(add-hook 'scheme-mode-hook           (function newline-indents))
-(add-hook 'c-mode-hook                (function newline-indents))
-(add-hook 'c++-mode-hook              (function newline-indents))
-(add-hook 'java-mode-hook             (function newline-indents))
-(add-hook 'cperl-mode-hook            (function newline-indents))
-(add-hook 'php-mode-hook              (function newline-indents))
+(dolist (hook
+          (list
+           'lisp-mode-hook
+           'emacs-lisp-mode-hook
+           'lisp-interaction-mode-hook
+           'scheme-mode-hook
+           'c-mode-hook
+           'c++-mode-hook
+           'java-mode-hook
+           'cperl-mode-hook
+           'php-mode-hook))
+  (add-hook hook (function newline-indents)))
 
 ;; Disable cedet inside emacs
 ;(setq load-path (remove "/usr/share/emacs/cedet" load-path))

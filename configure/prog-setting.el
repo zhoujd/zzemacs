@@ -24,6 +24,8 @@
 ;                                  path-separator (getenv "LD_LIBRARY_PATH")))
 ;;;=============================================================================
 
+(zz-load-path "site-lisp")
+
 ;; holding
 (require 'hideshow)
 (dolist (hook
@@ -57,7 +59,7 @@
   (add-hook hook (function newline-indents)))
 
 ;;;cedet version flag t for inside
-(setq use-cedet-inside-flag t)
+(setq use-cedet-inside-flag nil)
 
 (unless use-cedet-inside-flag
   ;; Disable cedet inside emacs

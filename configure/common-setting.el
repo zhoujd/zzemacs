@@ -169,7 +169,7 @@
 ;(setq font-lock-support-mode 'lazy-lock-mode)
 
 (setq font-lock-maximum-decoration t)
-(setq font-lock-global-modes '(not text-mode))
+(setq font-lock-global-modes t)
 (setq font-lock-verbose t)
 (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 

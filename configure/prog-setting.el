@@ -430,6 +430,13 @@ the mru bookmark stack."
             (define-key gud-mode-map (kbd "C-c M-o") 'clear-input)))
 
 
+;;javascript mode
+(require 'js2-mode)
+
+;;xmsi-mode ¡²xmsi-math-symbols-input.el¡³ for inputting math (Unicode) symbols.
+(require 'xmsi-math-symbols-input)
+(xmsi-mode t)
+
 (provide 'prog-setting)
 
 ;;; c-setting.el ends here

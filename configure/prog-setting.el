@@ -431,7 +431,7 @@ the mru bookmark stack."
 ;;javascript mode
 (require 'js2-mode)
 
-;;xmsi-mode ¡²xmsi-math-symbols-input.el¡³ for inputting math (Unicode) symbols.
+;;xmsi-mode ã€”xmsi-math-symbols-input.elã€• for inputting math (Unicode) symbols.
 (require 'xmsi-math-symbols-input)
 (xmsi-mode t)
 

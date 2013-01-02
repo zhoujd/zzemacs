@@ -6410,9 +6410,9 @@ Optional arg ALIST is the alist of bookmarks.  It defaults to
 ;; `bookmark-map'
 
 ;;;###autoload
-(define-key ctl-x-map "p" bookmark-map)
+(define-key ctl-x-map "P" bookmark-map)
 ;;;###autoload
-(define-key ctl-x-map "pj" 'bookmark-jump-other-window)
+(define-key ctl-x-map "Pj" 'bookmark-jump-other-window)
 ;;;###autoload
 (define-key ctl-x-map "rK" 'bmkp-set-desktop-bookmark)
 ;;;###autoload

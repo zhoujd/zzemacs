@@ -60,67 +60,71 @@
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
+(if use-cedet-inside-flag
+    (progn
+      ;;auto complete
+      (require 'cedet)
+      ;; speed bar
+      (require 'semantic/sb)
 
-(unless use-cedet-inside-flag
-  ;; Disable cedet inside emacs
-  (setq load-path (remove "/usr/share/emacs/cedet" load-path))
-  (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
-                                  emacs-major-version emacs-minor-version)
-                          load-path))
+      ;; Helper tools.
+      (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+                                        global-semanticdb-minor-mode
+                                        global-semantic-idle-summary-mode
+                                        global-semantic-mru-bookmark-mode))
 
-  (setq byte-compile-warnings nil)
-  (zz-load-path "site-lisp/cedet/common")
-  (zz-load-path "site-lisp/cedet/semantic")
+      ;; smart complitions
+      (require 'semantic/ia)
+      (setq-mode-local c-mode semanticdb-find-default-throttle
+                       '(project unloaded system recursive))
+      (setq-mode-local c++-mode semanticdb-find-default-throttle
+                       '(project unloaded system recursive))
 
-  (require 'font-lock)
-  
-  ;; Load CEDET.
-  ;; See cedet/common/cedet.info for configuration details.
-  ;; IMPORTANT: For Emacs >= 23.2, you must place this *before* any
-  ;; CEDET component (including EIEIO) gets activated by another 
-  ;; package (Gnus, auth-source, ...).
-  (require 'cedet)
-  (global-ede-mode t)
-  (semantic-load-enable-minimum-features)
-  (semantic-load-enable-code-helpers)
-  )
 
-(when use-cedet-inside-flag
-  ;;auto complete
-  (require 'cedet)
-  ;; speed bar
-  (require 'semantic/sb)
+      (global-ede-mode t)
+      (semantic-mode t)
+      )
+    (progn
+      ;; Disable cedet inside emacs
+      (if (or (eq window-system 'w32)
+              (eq window-system 'win32))
+          (progn
+            (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
+                                            emacs-major-version emacs-minor-version) load-path)))
+          (progn
+            (setq load-path (remove "/usr/share/emacs/cedet" load-path))
+            (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
+                                            emacs-major-version emacs-minor-version)
+                                    load-path))))
+      
+      (setq byte-compile-warnings nil)
+      (zz-load-path "site-lisp/cedet/common")
+      
+      ;; Load CEDET.
+      ;; See cedet/common/cedet.info for configuration details.
+      ;; IMPORTANT: For Emacs >= 23.2, you must place this *before* any
+      ;; CEDET component (including EIEIO) gets activated by another 
+      ;; package (Gnus, auth-source, ...).
+      (require 'cedet)
+      (global-ede-mode t)
+      (semantic-load-enable-minimum-features)
+      (semantic-load-enable-code-helpers)
+      ))
 
-  ;; Helper tools.
-  (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-                                    global-semanticdb-minor-mode
-                                    global-semantic-idle-summary-mode
-                                    global-semantic-mru-bookmark-mode))
+;; Semantic DataBase
+(setq semanticdb-default-save-directory
+      (expand-file-name "~/.emacs.d/semanticdb"))
 
-  ;; smart complitions
-  (require 'semantic/ia)
-  (setq-mode-local c-mode semanticdb-find-default-throttle
-                   '(project unloaded system recursive))
-  (setq-mode-local c++-mode semanticdb-find-default-throttle
-                   '(project unloaded system recursive))
-
-  ;; Semantic DataBase
-  (setq semanticdb-default-save-directory
-        (expand-file-name "~/.emacs.d/semanticdb"))
-
-  (global-ede-mode t)
-  (semantic-mode t)
-
-  ;; semantic-ia-fast-jump fixed
-  (defadvice push-mark (around semantic-mru-bookmark activate)
-    "Push a mark at LOCATION with NOMSG and ACTIVATE passed to `push-mark'.
+;; semantic-ia-fast-jump fixed
+(defadvice push-mark (around semantic-mru-bookmark activate)
+  "Push a mark at LOCATION with NOMSG and ACTIVATE passed to `push-mark'.
 If `semantic-mru-bookmark-mode' is active, also push a tag onto
 the mru bookmark stack."
-    (semantic-mrub-push semantic-mru-bookmark-ring
-                        (point)
-                        'mark)
-    ad-do-it)
-  )
+  (semantic-mrub-push semantic-mru-bookmark-ring
+                      (point)
+                      'mark)
+  ad-do-it)
+
 
 ;; hippie-try-expand settings
 (setq hippie-expand-try-functions-list
@@ -423,6 +427,13 @@ the mru bookmark stack."
           '(lambda ()
             (define-key gud-mode-map (kbd "C-c M-o") 'clear-input)))
 
+
+;;javascript mode
+(require 'js2-mode)
+
+;;xmsi-mode 〔xmsi-math-symbols-input.el〕 for inputting math (Unicode) symbols.
+(require 'xmsi-math-symbols-input)
+(xmsi-mode t)
 
 (provide 'prog-setting)
 

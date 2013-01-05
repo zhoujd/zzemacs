@@ -305,6 +305,10 @@ Emacs buffer are those starting with “*”."
 ;;sudo
 (require 'sudo)
 
+;;bookmark+
+(zz-load-path "site-lisp/bookmarkplus")
+(require 'bookmark+)
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

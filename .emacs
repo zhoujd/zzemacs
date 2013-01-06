@@ -25,9 +25,9 @@
 (mapcar 'require
         '(
           common-setting
-          other-setting
           dired-setting
           prog-setting
+          other-setting
           shell-setting
           sample-setting
           media-setting

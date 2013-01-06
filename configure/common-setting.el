@@ -115,7 +115,7 @@
 
 (if window-system
     (progn
-      (funcall (nth 0 color-theme-choices))
+      (funcall (nth 3 color-theme-choices))
       ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
       )
     (progn

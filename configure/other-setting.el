@@ -302,12 +302,9 @@ Emacs buffer are those starting with “*”."
 ;;maxframe
 (require 'maxframe)
 
-;;sudo
-(require 'sudo)
-
 ;;bookmark+
-(zz-load-path "site-lisp/bookmarkplus")
-(require 'bookmark+)
+;(zz-load-path "site-lisp/bookmarkplus")
+;(require 'bookmark+)
 
 (provide 'other-setting)
 

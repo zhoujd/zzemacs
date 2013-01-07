@@ -303,8 +303,11 @@ Emacs buffer are those starting with “*”."
 (require 'maxframe)
 
 ;;bookmark+
-;(zz-load-path "site-lisp/bookmarkplus")
-;(require 'bookmark+)
+(zz-load-path "site-lisp/bookmarkplus")
+(require 'bookmark+)
+(custom-set-faces
+ '(bmkp-heading ((t (:foreground "White"))))
+ '(bmkp-local-file-without-region ((t nil))))
 
 (provide 'other-setting)
 

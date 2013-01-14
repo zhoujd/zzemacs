@@ -106,9 +106,12 @@
       ;; CEDET component (including EIEIO) gets activated by another 
       ;; package (Gnus, auth-source, ...).
       (require 'cedet)
-      (global-ede-mode t)
+      (global-ede-mode t)      
       (semantic-load-enable-minimum-features)
       (semantic-load-enable-code-helpers)
+
+      ;; Enable source code folding
+      (global-semantic-tag-folding-mode 1)
       ))
 
 ;; Semantic DataBase

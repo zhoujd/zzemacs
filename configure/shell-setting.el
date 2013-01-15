@@ -127,11 +127,21 @@ Dmitriy Igrishin's patched version of comint.el."
         (multi-term-dedicated-toggle))))
 
 ;;switch line/char mode
-(defun switch-term-mode ()
+(defun switch-term-and-text ()
+  "if current in `term-mode', switch to `text-mode', else switch to `term-mode'."
   (interactive)
-  (if (term-in-char-mode)
-      (term-line-mode)
-      (term-char-mode)))
+  (if (equal major-mode 'term-mode)
+      (text-mode)
+    (enter-term-mode)))
+(defun enter-term-mode ()
+  "Enter in `term-mode'."
+  (interactive)
+  (term-mode)
+  (term-char-mode))
+(defun enter-text-mode ()
+  "Enter in `text-mode'."
+  (interactive)
+  (text-mode))
   
 ;; switch to named shell
 (setq multi-shell-buffer-name "shell")

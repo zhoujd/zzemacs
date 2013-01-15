@@ -134,8 +134,8 @@
             (global-set-key [S-f6]   'multi-term-dedicated-toggle)
             (global-set-key [C-f6]   'multi-term-next)
             (global-set-key [M-f6]   'multi-term-prev)
-            (global-set-key (kbd "C-x <f6>")  'switch-to-term)
-            (global-set-key (kbd "C-c <f6>")  'switch-term-mode)
+            (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
+            (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
             )))
     (progn   
       (define-key esc-map   [f6]         'get-term)
@@ -143,7 +143,7 @@
       (global-set-key (kbd "<f2> <f6>")  'multi-term-next)
       (global-set-key (kbd "<f3> <f6>")  'multi-term-prev)
       (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
-      (global-set-key (kbd "C-c  <f6>")  'switch-term-mode)
+      (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
       ))
 
 (if use-graph-keymap-p

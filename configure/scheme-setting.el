@@ -1,10 +1,11 @@
 ;;scheme programme setting
 
 ;;PLT scheme
-(setq scheme-program-name "mzscheme")
+;(setq scheme-program-name "mzscheme")
 ;;MIT scheme
 ;(setq scheme-program-name "mit-scheme")
 
+;;Support racket file
 (setq auto-mode-alist
  (append
   (list
@@ -12,7 +13,7 @@
    (cons "\\.rkt$" 'scheme-mode))
   auto-mode-alist))
 
-;; eldoc
+;;eldoc
 (require 'eldoc-extension)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-inteeraction-mode-hook 'turn-on-eldoc-mode)
@@ -56,7 +57,17 @@
 (require 'geiser)
 (setq geiser-active-implementations '(racket))
 (unless (or (eq window-system 'w32) (eq window-system 'win32))
-  (zz-add-os-path "/usr/racket/bin"))
+  (zz-add-os-path "/usr/racket/bin")
+  (zz-add-os-path "/usr/local/Gambit-C/bin/"))
+
+;;Gambit-C
+(autoload 'gambit-inferior-mode "gambit" "Hook Gambit mode into cmuscheme.")
+(autoload 'gambit-mode "gambit" "Hook Gambit mode into scheme.")
+(add-hook 'inferior-scheme-mode-hook (function gambit-inferior-mode))
+(add-hook 'scheme-mode-hook (function gambit-mode))
+(setq scheme-program-name "gsi -:d-")
+(require 'gambit)
+
 
 (provide 'scheme-setting)
 

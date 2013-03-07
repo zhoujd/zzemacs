@@ -19,5 +19,9 @@ FONT_HOME=/usr/share/fonts/truetype/
 sudo cp ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
 sudo cp ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
 
+##install pymacs
+cd ${ZZEMACS_ROOT}/third-party/python
+./install.sh
+
 echo install .emacs to HOME directory end...
 

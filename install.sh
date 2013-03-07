@@ -4,6 +4,7 @@ echo install .emacs to HOME directory begin...
 ZZEMACS_ROOT=`pwd`
 
 ##setup .emacs
+rm ~/.emacs -f
 cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}/")
@@ -22,6 +23,15 @@ sudo cp ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
 ##install pymacs
 cd ${ZZEMACS_ROOT}/third-party/python
 ./install.sh
+cd ${ZZEMACS_ROOT}
+
+##install EPL
+cd ${ZZEMACS_ROOT}/third-party/perl/EPL
+perl Makefile.PL
+make
+sudo make install
+cd ${ZZEMACS_ROOT}
+
 
 echo install .emacs to HOME directory end...
 

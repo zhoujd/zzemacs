@@ -4,7 +4,7 @@ echo install .emacs to HOME directory begin...
 ZZEMACS_ROOT=`pwd`
 
 ##setup .emacs
-rm ~/.emacs -f
+rm -f ~/.emacs
 cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}/")
@@ -17,8 +17,8 @@ git config user.email "zjd-405@163.com"
 
 ##install font
 FONT_HOME=/usr/share/fonts/truetype/
-sudo cp ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
-sudo cp ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
+sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
+sudo cp -f ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
 
 ##install pymacs
 cd ${ZZEMACS_ROOT}/third-party/python
@@ -31,7 +31,6 @@ perl Makefile.PL
 make
 sudo make install
 cd ${ZZEMACS_ROOT}
-
 
 echo install .emacs to HOME directory end...
 

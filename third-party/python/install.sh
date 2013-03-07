@@ -21,7 +21,7 @@ cd $CURRENT_ROOT/ropemacs/
 sudo python setup.py install
 cd $CURRENT_ROOT
 
-sudo cp $CURRENT_ROOT/pycomplete.py /usr/local/lib/python2.7/dist-packages/
+sudo cp -f $CURRENT_ROOT/pycomplete.py /usr/local/lib/python2.7/dist-packages/
 rm -f $CURRENT_ROOT/../../site-lisp/pymacs.elc
 
 echo for python develop end   ...

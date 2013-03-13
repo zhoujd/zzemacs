@@ -596,11 +596,11 @@ enlarge the window if it is too small."
       (modify-syntax-entry ?| "\" 23" scheme-mode-syntax-table))))
 
 (defun gambit-extend-mode-map (map)
-  (define-key map [(f8)]  'gambit-continue)
-  (define-key map [(f9)]  'gambit-crawl-backtrace-newer)
-  (define-key map [(f10)] 'gambit-crawl-backtrace-older)
-  (define-key map [(f11)] 'gambit-step-continuation)
-  (define-key map [(f12)] 'gambit-leap-continuation)
+  ;;(define-key map [(f8)]  'gambit-continue)
+  ;;(define-key map [(f9)]  'gambit-crawl-backtrace-newer)
+  ;;(define-key map [(f10)] 'gambit-crawl-backtrace-older)
+  ;;(define-key map [(f11)] 'gambit-step-continuation)
+  ;;(define-key map [(f12)] 'gambit-leap-continuation)
 
   (define-key map "\C-c\C-l" 'gambit-load-file)
   (define-key map "\C-c\C-k" 'gambit-compile-file)

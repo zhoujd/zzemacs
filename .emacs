@@ -48,4 +48,8 @@
 (when (file-exists-p (concat zzemacs-path "configure/" zz-dev-set-file))
   (zz-load-configure zz-dev-set-file))
 
+;;configure saved from menu "Save Options"
+(setq custom-file (concat zzemacs-path "custom.el"))
+
+
 ;;;; .emacs end here

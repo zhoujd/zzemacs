@@ -7,10 +7,11 @@
 (setq lisp-indent-function 'common-lisp-indent-function)
 
 (setq slime-lisp-implementations
-	'(
-      (sbcl ("sbcl" "--noinform") :coding-system utf-8-unix)
-      (clisp ("clisp"))
-       ))
+      '(
+        (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
+        (clisp ("clisp"))
+        (ecl   ("ecl"))
+        ))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 ;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system

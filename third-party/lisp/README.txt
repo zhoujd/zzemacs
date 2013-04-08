@@ -1,6 +1,6 @@
 1. Quicklisp makes it easy to get started with a rich set of community-developed Common Lisp libraries. 
 $ curl -O http://beta.quicklisp.org/quicklisp.lisp
-$ README.txt --load quicklisp.lisp
+$ sbcl --load quicklisp.lisp
 This is SBCL 1.0.42.52, an implementation of ANSI Common Lisp.
 More information about SBCL is available at <http://www.sbcl.org/>.
 

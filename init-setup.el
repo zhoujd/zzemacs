@@ -7,31 +7,8 @@
 
 ;;check os type
 (if (eq system-type 'windows-nt)
-  (message "emacs run on windows")
-  (message "emacs run on un*x"))
-
-(if (eq system-type 'windows-nt)
-    (progn
-      (defvar zz-winnt-home-path "c:/develop/znix/home/zhoujd")
-      (defvar zz-home-path (getenv "APPDATA"))
-      (defvar zz-dotemacs-content (list
-                                   (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                                   (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
-                                   (format "(setq default-directory \"~\")")
-                                   (format "(load-file \"~/zzemacs/.emacs\")")
-                                   ))
-      )
-    (progn
-      (defvar zz-emacs-root  default-directory)
-      (defvar zz-home-path (getenv "HOME"))
-      (defvar zz-dotemacs-content (list
-                                   (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                                   (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
-                                   (format "%s" "(load-file (concat zzemacs-path \".emacs\"))")
-                                   ))
-      ))
-
-(defvar zz-dotemacs-path (concat zz-home-path "/.emacs"))
+    (message "emacs run on windows")
+    (message "emacs run on un*x"))
 
 (defun zz-create-file (fpath)
   "Process the file at path FPATH ..."
@@ -44,8 +21,34 @@
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
-(message "setup .emacs to %s" zz-home-path)
-(zz-create-file zz-dotemacs-path)
+(defun zz-setup-dotemacs ()
+  "set up dotemacs"
+  (if (eq system-type 'windows-nt)
+      (progn
+        (defvar zz-winnt-home-path "c:/develop/znix/home/zhoujd")
+        (defvar zz-home-path (getenv "APPDATA"))
+        (defvar zz-dotemacs-content (list
+                                     (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                                     (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
+                                     (format "(setq default-directory \"~\")")
+                                     (format "(load-file \"~/zzemacs/.emacs\")")
+                                     ))
+        )
+      (progn
+        (defvar zz-emacs-root  default-directory)
+        (defvar zz-home-path (getenv "HOME"))
+        (defvar zz-dotemacs-content (list
+                                     (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                                     (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
+                                     (format "%s" "(load-file (concat zzemacs-path \".emacs\"))")
+                                     ))
+        ))
+
+  (defvar zz-dotemacs-path (concat zz-home-path "/.emacs"))
+  (message "setup .emacs to %s" zz-home-path)
+  (zz-create-file zz-dotemacs-path))
+
+(zz-setup-dotemacs)
 
 (provide 'setup)
 ;;;;setup.el is end

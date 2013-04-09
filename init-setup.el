@@ -22,7 +22,7 @@
     (kill-buffer tmp-buf-name)))
 
 (defun zz-setup-dotemacs ()
-  "set up dotemacs"
+  "setup dotemacs"
   (if (eq system-type 'windows-nt)
       (progn
         (defvar zz-winnt-home-path "c:/develop/znix/home/zhoujd")
@@ -48,7 +48,20 @@
   (message "setup .emacs to %s" zz-home-path)
   (zz-create-file zz-dotemacs-path))
 
+(defun zz-setup-font ()
+  "setup font to system font path"
+  (if (eq system-type 'windows-nt)
+      '()
+      (progn
+        (let ((sys-font-path "/usr/share/fonts/truetype/"))
+          (message "setup font need run with sudo.")
+          (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
+          (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
+          (message "setup font to %s" sys-font-path)
+          ))))
+
 (zz-setup-dotemacs)
+(zz-setup-font)
 
 (provide 'setup)
 ;;;;setup.el is end

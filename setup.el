@@ -1,4 +1,5 @@
 #!/usr/bin/emacs --script
+;;;this script for init emacs configure
 (message "hello, zzemacs")
 
 ;;check os type
@@ -6,20 +7,28 @@
   (message "emacs run on windows")
   (message "emacs run on un*x"))
 
-(defvar zz-home-path (getenv "HOME"))
+(if (eq system-type 'windows-nt)
+    (progn
+      (defvar zz-winnt-home-path "c:/develop/znix/home/zhoujd")
+      (defvar zz-home-path (getenv "APPDATA"))
+      (defvar zz-dotemacs-content (list
+                                   (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                                   (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
+                                   (format "(setq default-directory \"~\")")
+                                   (format "(load-file \"~/zzemacs/.emacs\")")
+                                   ))
+      )
+    (progn
+      (defvar zz-emacs-root  default-directory)
+      (defvar zz-home-path (getenv "HOME"))
+      (defvar zz-dotemacs-content (list
+                                   (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                                   (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
+                                   (format "%s" "(load-file (concat zzemacs-path \".emacs\"))")
+                                   ))
+      ))
+
 (defvar zz-dotemacs-path (concat zz-home-path "/.emacs"))
-(defvar zz-emacs-root default-directory)
-
-(defvar zz-winnt-home-path "d:/develop/znix/home/zhoujd")
-
-(defvar zz-dotemacs-content (list
-                             (format "%s" ";;;this is .emacs for zhoujd, generate by install.el.")
-                             (if (eq system-type 'windows-nt)
-                                 (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
-                                 "")
-                             (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
-                             (format "%s" "(load-file (concat zzemacs-path \".emacs\"))")
-                             ))
 
 (defun zz-create-file (fpath)
   "Process the file at path FPATH ..."

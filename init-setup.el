@@ -1,5 +1,6 @@
 #!/usr/bin/emacs --script
 ;;;;this script for init emacs configure
+;;;;http://ergoemacs.org/emacs/emacs.html
 ;;$cd <setup.el>
 ;;$emacs --script setup.el
 

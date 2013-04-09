@@ -47,4 +47,5 @@
 (message "setup .emacs to %s" zz-home-path)
 (zz-create-file zz-dotemacs-path)
 
-
+(provide 'setup)
+;;;;setup.el is end

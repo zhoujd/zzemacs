@@ -1,8 +1,8 @@
 #!/usr/bin/emacs --script
 ;;;;this script for init emacs configure
 ;;;;http://ergoemacs.org/emacs/emacs.html
-;;$cd <setup.el>
-;;$emacs --script setup.el
+;;$cd <init-setup.el>
+;;$emacs --script init-setup.el
 
 (message "hello, zzemacs")
 
@@ -41,7 +41,7 @@
         (defvar zz-dotemacs-content (list
                                      (format ";;;this is .emacs for zhoujd, generate by install.el.")
                                      (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
-                                     (format "%s" "(load-file (concat zzemacs-path \".emacs\"))")
+                                     (format "(load-file (concat zzemacs-path \".emacs\"))")
                                      ))
         ))
 
@@ -55,14 +55,24 @@
       '()
       (progn
         (let ((sys-font-path "/usr/share/fonts/truetype/"))
-          (message "setup font need run with sudo.")
-          (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
-          (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
-          (message "setup font to %s" sys-font-path)
-          ))))
+          (if (yes-or-no-p "Are you script under sudo?")
+              (progn
+                (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
+                (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
+                (message "setup font to %s" sys-font-path))
+              (message "setup font need run with sudo.")
+              )))))
+
+(defun zz-setup-third-party ()
+  "setup third partys"
+  (let ((third-setup-name "setup.el"))
+  (if (file-exists-p third-setup-name)
+      (load third-setup-name)
+      (message "setup third party %s does not exist" third-setup-name))))
 
 (zz-setup-dotemacs)
 (zz-setup-font)
+(zz-setup-third-party)
 
-(provide 'setup)
-;;;;setup.el is end
+(provide 'init-setup)
+;;;;init-setup.el is end

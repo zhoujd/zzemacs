@@ -205,10 +205,10 @@ Dmitriy Igrishin's patched version of comint.el."
      (comint-truncate-buffer)
      (setq comint-buffer-maximum-size old-max)))
 
-(defun my-shell-hook ()
-  (define-key shell-mode-map (kbd "C-c M-o") 'clear-input))
+(defun my-comint-hook ()
+  (define-key comint-mode-map (kbd "C-c M-o") 'clear-input))
+(add-hook 'comint-mode-hook 'my-comint-hook)
 
-(add-hook 'shell-mode-hook 'my-shell-hook)
 
 (add-hook 'comint-output-filter-functions
           'comint-strip-ctrl-m)

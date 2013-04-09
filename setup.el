@@ -1,5 +1,8 @@
 #!/usr/bin/emacs --script
-;;;this script for init emacs configure
+;;;;this script for init emacs configure
+;;$cd <setup.el>
+;;$emacs --script setup.el
+
 (message "hello, zzemacs")
 
 ;;check os type

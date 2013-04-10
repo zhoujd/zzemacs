@@ -278,7 +278,7 @@ Emacs buffer are those starting with “*”."
 (if (or (eq window-system 'w32)
         (eq window-system 'win32))
     (progn
-      (setq find-program "\"find2.exe\"")
+      (setq find-program "\"find.exe\"")
       (setq grep-program "\"grep.exe\"")))
 
 (fset 'rm 'delete-file)

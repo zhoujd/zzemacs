@@ -86,6 +86,11 @@
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
+(defvar server-directory-name "~/.emacs.d/server")
+(if (eq system-type 'windows-nt)
+    (when (not (file-directory-p server-directory-name))
+      (make-directory server-directory-name)))
+
 (require 'server)
 (when (and (>= emacs-major-version 23)
            (or (eq window-system 'w32) (eq window-system 'win32)))
@@ -97,8 +102,8 @@
 
 (add-hook 'kill-emacs-hook
 	  (lambda()
-	    (if (file-exists-p "~/.emacs.d/server/server")
-		(delete-file "~/.emacs.d/server/server"))))
+	    (if (file-exists-p  (concat server-directory-name "/server"))
+		(delete-file (concat server-directory-name "/server")))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

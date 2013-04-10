@@ -34,6 +34,8 @@
       (desktop-read)
     (message "No desktop found.")))
 
+(message "2222")
+
 ;; use session-save to save the desktop manually
 (defun session-save ()
   "Save an emacs session."
@@ -63,9 +65,6 @@
 
 ;;display of line numbers with M-x linum-mode.
 (require 'linum)
-
-;;redo
-(require 'redo+)
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))
@@ -181,6 +180,8 @@ Emacs buffer are those starting with “*”."
 (require 'what-char)
 (require 'xray)
 
+(message "1111")
+
 ;; Support for marking a rectangle of text with highlighting.
 (require 'rect-mark)
 (define-key ctl-x-map "r\C-@" 'rm-set-mark)
@@ -280,6 +281,8 @@ Emacs buffer are those starting with “*”."
     (progn
       (setq find-program "\"find.exe\"")
       (setq grep-program "\"grep.exe\"")))
+
+(message "zz ---------")
 
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)

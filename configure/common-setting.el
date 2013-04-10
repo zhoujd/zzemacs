@@ -95,15 +95,15 @@
 (when (and (>= emacs-major-version 23)
            (or (eq window-system 'w32) (eq window-system 'win32)))
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
-					                             ; ~/.emacs.d/server is unsafe"
-					                             ; on windows.
+                                                 ; ~/.emacs.d/server is unsafe"
+                                                 ; on windows.
 (unless (server-running-p)
   (server-start))
 
 (add-hook 'kill-emacs-hook
-	  (lambda()
-	    (if (file-exists-p  (concat server-directory-name "/server"))
-		(delete-file (concat server-directory-name "/server")))))
+      (lambda()
+        (if (file-exists-p  (concat server-directory-name "/server"))
+        (delete-file (concat server-directory-name "/server")))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

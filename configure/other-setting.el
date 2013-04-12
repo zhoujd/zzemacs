@@ -64,8 +64,11 @@
 ;;display of line numbers with M-x linum-mode.
 (require 'linum)
 
-;;redo
-(require 'redo)
+;;redo+ failed at emacs 24.3
+(if (and (=  emacs-major-version 24)
+         (>= emacs-minor-version 3))
+    (require 'redo)
+    (require 'redo+))
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))

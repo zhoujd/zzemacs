@@ -111,7 +111,8 @@
       (semantic-load-enable-code-helpers)
 
       ;; Enable source code folding
-      (global-semantic-tag-folding-mode 1)
+      (when window-system
+          (global-semantic-tag-folding-mode 1))
       ))
 
 ;; Semantic DataBase

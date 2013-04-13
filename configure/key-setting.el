@@ -37,10 +37,6 @@
 (define-key global-map [f4] f4-map)
 (define-key esc-map    [f4] f4-map)
 
-;;f4 f4 key map 
-(defvar f4-f4-map (make-sparse-keymap) "Keymap for self related commands.")
-(define-key f4-map [f4] f4-f4-map)
-
 ;;f4-esc key map 
 (defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key f4-map [escape] f4-esc-map)
@@ -111,8 +107,9 @@
       (global-set-key (kbd "<f3> <f4>")   'highlight-symbol-prev)
       ))
 
-(global-set-key (kbd "C-x <f4>")  'recentf-open-files)
-(global-set-key (kbd "C-c <f4>")  'recentf-open-files-compl)
+(global-set-key (kbd "<f4> <f4>")  'kill-this-buffer)
+(global-set-key (kbd "C-x  <f4>")  'recentf-open-files)
+(global-set-key (kbd "C-c  <f4>")  'recentf-open-files-compl)
 
 (if use-graph-keymap-p
     (progn

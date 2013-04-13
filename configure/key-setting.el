@@ -41,6 +41,10 @@
 (defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key f4-map [escape] f4-esc-map)
 
+;;f1-esc key map 
+(defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+(define-key help-map [escape] f1-esc-map)
+
 ;;for keymap switch
 (when window-system
   (global-set-key (kbd "<f4> `") 'switch-to-keymap))
@@ -279,9 +283,10 @@
     )
 
 ;;f1 1,2,3,4 for highlight-symbol
-(global-set-key (kbd "<f1> `") 'imenu)
+(global-set-key (kbd "<f1> `") 'info)
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
+(global-set-key (kbd "<f1> 3") 'highlight-symbol-query-replace)
 
 ;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
@@ -307,7 +312,7 @@
 (global-unset-key [backspace])
 (global-set-key   [backspace] 'delete-backward-char)
 (global-unset-key [delete])
-(global-set-key   [delete] 'delete-char)
+(global-set-key   [delete]    'delete-char)
 
 (global-set-key (kbd "M-]") 'tabbar-forward)
 (global-set-key (kbd "M-[") 'tabbar-backward)
@@ -320,7 +325,6 @@
     (progn ;; For Linux
       (global-set-key [C-mouse-4] 'text-scale-increase)
       (global-set-key [C-mouse-5] 'text-scale-decrease)))
-
 
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")

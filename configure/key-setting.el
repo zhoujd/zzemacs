@@ -251,6 +251,7 @@
 
 (if use-graph-keymap-p
     (progn
+      (global-set-key (kbd "C-`") 'imenu)
       (global-set-key (kbd "C-1") 'delete-window)
       (global-set-key (kbd "C-2") 'delete-frame)
       (global-set-key (kbd "C-3") 'tabbar-backward-group)
@@ -263,6 +264,7 @@
       (global-set-key (kbd "C-9") 'gud-pstar)
       (global-set-key (kbd "C-0") 'other-frame))
     (progn
+      (global-set-key (kbd "<f2> `") 'imenu)
       (global-set-key (kbd "<f2> 1") 'delete-window)
       (global-set-key (kbd "<f2> 2") 'delete-frame)
       (global-set-key (kbd "<f2> 3") 'tabbar-backward-group)
@@ -277,6 +279,7 @@
     )
 
 ;;f1 1,2,3,4 for highlight-symbol
+(global-set-key (kbd "<f1> `") 'imenu)
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
 

@@ -32,9 +32,14 @@
   (define-key global-map [f3] f3-map)
   )
 
-;;f4 key map 
+;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key global-map [f4] f4-map)
+(define-key esc-map    [f4] f4-map)
+
+;;f4 f4 key map 
+(defvar f4-f4-map (make-sparse-keymap) "Keymap for self related commands.")
+(define-key f4-map [f4] f4-f4-map)
 
 ;;f4-esc key map 
 (defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
@@ -97,12 +102,15 @@
 (if use-graph-keymap-p
     (progn
       (global-set-key [S-f4]    'undo-kill-buffer)
+      (global-set-key [C-f4]    'highlight-symbol-next)
+      (global-set-key [M-f4]    'highlight-symbol-prev)
       )
-    (progn  
+    (progn
       (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
+      (global-set-key (kbd "<f2> <f4>")   'highlight-symbol-next)
+      (global-set-key (kbd "<f3> <f4>")   'highlight-symbol-prev)
       ))
 
-(global-set-key (kbd "<f4> <f4>") 'kill-this-buffer)
 (global-set-key (kbd "C-x <f4>")  'recentf-open-files)
 (global-set-key (kbd "C-c <f4>")  'recentf-open-files-compl)
 
@@ -274,8 +282,6 @@
 ;;f1 1,2,3,4 for highlight-symbol
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
-(global-set-key (kbd "<f1> 3") 'highlight-symbol-next)
-(global-set-key (kbd "<f1> 4") 'highlight-symbol-prev)
 
 ;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)

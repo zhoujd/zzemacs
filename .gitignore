@@ -1,3 +1,4 @@
 *.elc
 *.*~
 *.pyc
+configure/temp-setting.el

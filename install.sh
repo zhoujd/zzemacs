@@ -15,6 +15,8 @@ EOF
 git config user.name "zhoujd"
 git config user.email "zjd-405@163.com"
 
+sudo apt-get install -y cscope
+
 ##install font
 FONT_HOME=/usr/share/fonts/truetype/
 sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}

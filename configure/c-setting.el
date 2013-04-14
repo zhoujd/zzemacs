@@ -43,11 +43,18 @@
       (if use-cedet-inside-flag
           (progn
             (require 'semantic/bovine/gcc)
-            (require 'semantic/bovine/c))
+            (require 'semantic/bovine/c)          
+            )
           (progn
             (zz-load-path "site-lisp/cedet/semantic/bovine")
             (require 'semantic-gcc)
-            (require 'semantic-c)))
+            (eval-after-load "semantic-c"
+              '(dolist (d (list
+                           "/usr/include"
+                           "/usr/local/include"
+                           ))
+                (semantic-add-system-include d)))
+            ))
 
       (defconst cedet-user-include-dirs
         (list ".." "../include" "../inc" "../common" "../public" "."

@@ -22,7 +22,9 @@
 
 (zz-add-os-path (concat zzemacs-path "bin"))
 (zz-load-path "configure")
-(mapcar 'require
+(mapcar '(lambda (setting)
+          (require setting)
+          (message "zzemacs load %s end ..." (print setting)))
         '(
           common-setting
           dired-setting

@@ -51,6 +51,8 @@
 
 ;;quack
 (require 'quack)
+(setq quack-remap-find-file-bindings-p nil)
+
 
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")

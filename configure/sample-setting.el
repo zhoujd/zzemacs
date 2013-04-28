@@ -193,6 +193,9 @@
       (occur (completing-read "Search Term: " nil nil nil (thing-at-point 'word))
              (if (listp arg) 0 arg))))
 
+(defun zz-sudo-find-file (file dir)
+  (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
+
 (provide 'sample-setting)
 
 ;;; sample-setting.el ends here

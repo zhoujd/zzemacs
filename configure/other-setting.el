@@ -3,6 +3,12 @@
 
 (zz-load-path "site-lisp")
 
+;;helm - anything seting
+(zz-load-path "site-lisp/helm")
+(require 'helm-config)
+(setq helm-command-prefix-key "f4")
+
+
 ;;session + desktop
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+emacsclient -t -e "(zz-sudo-find-file \"$1\" \"$PWD\")"

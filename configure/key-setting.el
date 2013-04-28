@@ -328,6 +328,7 @@
 
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
+(global-set-key (kbd "C-c h") 'helm-mini)
 
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)

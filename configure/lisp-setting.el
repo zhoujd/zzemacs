@@ -18,6 +18,8 @@
 
 (require 'slime)
 (slime-setup '(slime-fancy))
+(slime-setup '(slime-repl))
+
 ;;set slime coding
 (setq slime-net-coding-system 'utf-8-unix)
 ;;my slime-mode setting

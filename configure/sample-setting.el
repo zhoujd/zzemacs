@@ -193,8 +193,16 @@
       (occur (completing-read "Search Term: " nil nil nil (thing-at-point 'word))
              (if (listp arg) 0 arg))))
 
+;;emacs with sudo
 (defun zz-sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
+
+;;open special info file
+(defun zz-info-open-file (dir-name)
+  "Create tags file."
+  (interactive "FInfo file: ")
+  (info dir-name))
+
 
 (provide 'sample-setting)
 

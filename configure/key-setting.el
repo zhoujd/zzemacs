@@ -332,6 +332,8 @@
 
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)
+(define-key f4-map (kbd "i") 'zz-info-open-file)
+
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))

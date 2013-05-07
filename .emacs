@@ -24,7 +24,7 @@
 (zz-load-path "configure")
 (mapcar '(lambda (setting)
           (require setting)
-          (message "load %s end ..." (print setting)))
+          (message "load %s end ..." setting))
         '(
           common-setting
           dired-setting

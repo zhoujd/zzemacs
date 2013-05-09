@@ -34,3 +34,6 @@ $ buildapp \
 $ ./hello-world
 Hello, world
 
+3. Getting started with ASDF
+http://common-lisp.net/~mmommer/asdf-howto.shtml
+

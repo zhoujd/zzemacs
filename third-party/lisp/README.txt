@@ -1,18 +1,8 @@
 1. Quicklisp makes it easy to get started with a rich set of community-developed Common Lisp libraries. 
 $ curl -O http://beta.quicklisp.org/quicklisp.lisp
-$ sbcl --load quicklisp.lisp
-This is SBCL 1.0.42.52, an implementation of ANSI Common Lisp.
-More information about SBCL is available at <http://www.sbcl.org/>.
 
-SBCL is free software, provided as is, with absolutely no warranty.
-It is mostly in the public domain; some portions are provided under
-BSD-style licenses.  See the CREDITS and COPYING files in the
-distribution for more information.
-
-  ==== quicklisp quickstart loaded ====
-
-    To continue, evaluate: (quicklisp-quickstart:install)
-
+* (load "quicklisp")
+* (setq quicklisp-quickstart:*proxy-url* "http://host:port")
 * (quicklisp-quickstart:install)
 * (ql:system-apropos "vecto")
 * (ql:quickload "vecto")

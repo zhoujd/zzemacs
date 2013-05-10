@@ -41,11 +41,12 @@
 (defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key f4-map [escape] f4-esc-map)
 
-;;f1-esc key map 
+;;f1-esc key map for help using
 (defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key help-map [escape] f1-esc-map)
 
 (define-key f1-esc-map (kbd "h") 'common-lisp-hyperspec)
+(define-key f1-esc-map (kbd "`") 'zz-info-open-file)
 
 ;;for keymap switch
 (when window-system
@@ -334,7 +335,7 @@
 
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)
-(define-key f4-map (kbd "i") 'zz-info-open-file)
+
 
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)

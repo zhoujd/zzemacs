@@ -29,6 +29,9 @@
     (define-key slime-mode-map [(tab)] 'slime-indent-and-complete-symbol))
 (add-hook 'slime-mode-hook 'my-slime-mode-hook)
 
+;;hpperspec.el
+(require 'hyperspec)
+
 (provide 'lisp-setting)
 
 ;; lisp-setting.el end here

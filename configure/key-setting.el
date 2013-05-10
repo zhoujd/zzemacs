@@ -45,6 +45,8 @@
 (defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key help-map [escape] f1-esc-map)
 
+(define-key f1-esc-map (kbd "h") 'common-lisp-hyperspec)
+
 ;;for keymap switch
 (when window-system
   (global-set-key (kbd "<f4> `") 'switch-to-keymap))

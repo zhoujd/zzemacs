@@ -45,8 +45,13 @@
 (defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
 (define-key help-map [escape] f1-esc-map)
 
-(define-key f1-esc-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-esc-map (kbd "`") 'zz-info-open-file)
+;;f1-esc key map for help using
+(defvar f1-backquote-map (make-sparse-keymap) "Keymap for self related commands.")
+(define-key help-map (kbd "`") f1-backquote-map)
+
+(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
+(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
+(define-key f1-backquote-map (kbd "i") 'info)
 
 ;;for keymap switch
 (when window-system
@@ -286,7 +291,6 @@
     )
 
 ;;f1 1,2,3,4 for highlight-symbol
-(global-set-key (kbd "<f1> `") 'info)
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
 (global-set-key (kbd "<f1> 3") 'highlight-symbol-query-replace)

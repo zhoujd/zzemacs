@@ -25,33 +25,33 @@
 ;;define new keymap for terminal
 (unless use-graph-keymap-p
   ;;f2 key map
-  (defvar f2-map (make-sparse-keymap) "Keymap for self related commands.")
+  (defvar f2-map (make-sparse-keymap) "f2 <=> control.")
   (define-key global-map [f2] f2-map)  
   ;;f3 key map
-  (defvar f3-map (make-sparse-keymap) "Keymap for self related commands.")
+  (defvar f3-map (make-sparse-keymap) "f3 <=> alt.")
   (define-key global-map [f3] f3-map)
   )
 
 ;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4] f4-map)
 (define-key esc-map    [f4] f4-map)
 
 ;;f4-esc key map 
-(defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
 ;;f1-esc key map for help using
-(defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f1-esc-map (make-sparse-keymap) "f1-escape for extend functions.")
 (define-key help-map [escape] f1-esc-map)
 
 ;;f1-esc key map for help using
-(defvar f1-backquote-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
 (define-key f1-backquote-map (kbd "i") 'info)
+(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
 
 ;;for keymap switch
 (when window-system

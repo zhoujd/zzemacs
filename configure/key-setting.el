@@ -42,16 +42,12 @@
 (define-key f4-map [escape] f4-esc-map)
 
 ;;f1-esc key map for help using
-(defvar f1-esc-map (make-sparse-keymap) "f1-escape for extend functions.")
+(defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
 (define-key help-map [escape] f1-esc-map)
 
-;;f1-esc key map for help using
-(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
-(define-key help-map (kbd "`") f1-backquote-map)
-
-(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-backquote-map (kbd "i") 'info)
-(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
+(define-key f1-esc-map (kbd "h") 'common-lisp-hyperspec)
+(define-key f1-esc-map (kbd "i") 'info)
+(define-key f1-esc-map (kbd "I") 'zz-info-open-file)
 
 ;;for keymap switch
 (when window-system
@@ -245,6 +241,7 @@
       (global-set-key (kbd "<f3> <f12>") 'my-c-rgrep)
       ))
 
+
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
@@ -291,10 +288,11 @@
     )
 
 ;;f1 1,2,3,4 for highlight-symbol
-(global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
+(global-set-key (kbd "<f1> `") 'highlight-symbol-at-point)
+(global-set-key (kbd "<f1> 1") 'highlight-symbol-query-replace)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
-(global-set-key (kbd "<f1> 3") 'highlight-symbol-query-replace)
-
+(global-set-key (kbd "<f1> 3") 'highlight-symbol-next-in-defun)
+(global-set-key (kbd "<f1> 4") 'highlight-symbol-prev-in-defun)
 ;;gdb frame show setting
 (global-set-key (kbd "<f1> 5") 'gdb-frame-stack-buffer)
 (global-set-key (kbd "<f1> 6") 'gdb-frame-breakpoints-buffer)

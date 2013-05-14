@@ -27,3 +27,8 @@ Hello, world
 3. Getting started with ASDF
 http://common-lisp.net/~mmommer/asdf-howto.shtml
 
+4. Some lisp git repo
+git clone https://github.com/feeley/gambit.git 
+git clone http://git.code.sf.net/p/ecls/ecl ecls-ecl
+git clone http://git.code.sf.net/p/ecls/ecl-doc ecls-ecl-doc
+

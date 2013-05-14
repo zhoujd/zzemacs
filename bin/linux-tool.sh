@@ -11,4 +11,6 @@ sudo apt-get install -y libx11-dev
 sudo apt-get install -y xorg-dev
 sudo apt-get install -y texlive
 
+sudo apt-get install -y openssh-server
+
 echo install linux-tools end...

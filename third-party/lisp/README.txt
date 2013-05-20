@@ -27,6 +27,16 @@ Hello, world
 3. Getting started with ASDF
 http://common-lisp.net/~mmommer/asdf-howto.shtml
 
+(require :asdf)
+(setf asdf:*central-registry*
+      ;; Default directories, usually just the ``current directory''
+      '(*default-pathname-defaults*
+
+        ;; Additional places where ASDF can find
+        ;; system definition files
+        #p"/home/zhoujd/lisp/systems/"
+        #p"/usr/share/common-lisp/systems/"))
+
 4. Some lisp git repo
 git clone https://github.com/sbcl/sbcl.git
 git clone https://github.com/feeley/gambit.git 

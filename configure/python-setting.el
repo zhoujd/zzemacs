@@ -19,8 +19,12 @@
 (pymacs-load "ropemacs" "rope-") 
 (setq ropemacs-enable-autoimport t)
 
-
 (require 'pycomplete)
+
+;;sudo apt-get install ipython
+;;https://github.com/ipython/ipython.git
+(setq ipython-command "/usr/bin/ipython")
+(require 'ipython)
 
 (provide 'python-setting)
 

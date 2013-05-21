@@ -28,6 +28,10 @@
   (setq ipython-command "/usr/bin/ipython"))
 (require 'ipython)
 
+;;load pydb
+(require 'pydb)
+(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
+
 (provide 'python-setting)
 
 ;;; python-setting.el end here

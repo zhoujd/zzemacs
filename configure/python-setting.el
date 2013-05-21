@@ -28,7 +28,10 @@
   (setq ipython-command "/usr/bin/ipython"))
 (require 'ipython)
 
-;;load pydb
+;;sudo apt-get install pydb
+;;http://sourceforge.net/projects/bashdb/
+;;https://github.com/rocky/pydb.git
+(zz-load-path "site-lisp/pydb")
 (require 'pydb)
 (autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
 

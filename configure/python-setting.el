@@ -22,8 +22,10 @@
 (require 'pycomplete)
 
 ;;sudo apt-get install ipython
-;;https://github.com/ipython/ipython.git
-(setq ipython-command "/usr/bin/ipython")
+;;git clone https://github.com/ipython/ipython.git
+(unless (or (eq window-system 'w32)
+            (eq window-system 'win32))
+  (setq ipython-command "/usr/bin/ipython"))
 (require 'ipython)
 
 (provide 'python-setting)

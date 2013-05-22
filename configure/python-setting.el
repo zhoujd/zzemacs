@@ -26,7 +26,9 @@
 (unless (or (eq window-system 'w32)
             (eq window-system 'win32))
   (setq ipython-command "/usr/bin/ipython"))
+(setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
+
 
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/

@@ -647,6 +647,4 @@ off the specialized speedbar mode."
 	(add-hook 'cdb-mode-hook 'cdb-ac-mode-init))
 
 
-(provide 'cdb-gud)
-
 ;;; cdb-gud.el ends here

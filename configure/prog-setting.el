@@ -434,6 +434,7 @@ the mru bookmark stack."
 (xmsi-mode t)
 
 ;;for cdb.exe debug on windows
+;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1
 (when (or (eq window-system 'w32) (eq window-system 'win32))
   (require 'cdb-gud))
 

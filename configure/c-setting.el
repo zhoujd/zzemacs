@@ -7,6 +7,7 @@
 (c-set-offset 'friend '-)
 (c-set-offset 'substatement-open 0)
 
+;;win32->http://sourceforge.net/project/showfiles.php?group_id=196604
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 

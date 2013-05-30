@@ -433,6 +433,10 @@ the mru bookmark stack."
 (require 'xmsi-math-symbols-input)
 (xmsi-mode t)
 
+;;for cdb.exe debug on windows
+(when (or (eq window-system 'w32) (eq window-system 'win32))
+  (require 'cdb-gud))
+
 (provide 'prog-setting)
 
 ;;; c-setting.el ends here

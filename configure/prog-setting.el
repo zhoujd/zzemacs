@@ -435,6 +435,9 @@ the mru bookmark stack."
 
 ;;for cdb.exe debug on windows
 ;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1
+;;http://www.microsoft.com/whdc/devtools/debugging/default.mspx
+;;A word for WinDbg
+;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
 (when (or (eq window-system 'w32) (eq window-system 'win32))
   (load-library "cdb-gud.el"))
 

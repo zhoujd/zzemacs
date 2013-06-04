@@ -26,6 +26,7 @@
           (require setting)
           (message "Load %s end ..." setting))
         '(
+          key-setting
           common-setting
           dired-setting
           prog-setting
@@ -42,7 +43,6 @@
           csharp-setting
           php-setting
           muse-setting
-          key-setting
           ))
 
 ;;develop setting for tags path etc.

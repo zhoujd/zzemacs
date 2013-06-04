@@ -124,8 +124,8 @@ Emacs buffer are those starting with “*”."
 (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
 ;;tabbar font name setting
-(if (boundp 'my-font-en-name)
-    (setq tabbar-font-name (car (split-string my-font-en-name)))
+(if (boundp 'zz-font-en-name)
+    (setq tabbar-font-name (car (split-string zz-font-en-name)))
     (setq tabbar-font-name "Consolas"))
 
 (if window-system

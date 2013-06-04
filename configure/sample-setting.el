@@ -2,7 +2,7 @@
 ;;;
 
 ;;my unicad enable/disable switch
-(defun my-unicad-switch ()
+(defun zz-unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
   (if (eq t unicad-global-enable)
@@ -33,58 +33,58 @@
   (delete-trailing-whitespace))
 
 ;;File coding for Unix Dos Mac switcher
-(defvar my-os-flag 0)
-(defun my-os-file-switch ()
+(defvar zz-os-flag 0)
+(defun zz-os-file-switch ()
     "for unix dos max"
     (interactive)
-    (if (> my-os-flag 2)
-      (setq my-os-flag 0))
-    (cond ((eq my-os-flag 0)
+    (if (> zz-os-flag 2)
+      (setq zz-os-flag 0))
+    (cond ((eq zz-os-flag 0)
            (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
-          ((eq my-os-flag 1)
+          ((eq zz-os-flag 1)
            (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
-          ((eq my-os-flag 2)
+          ((eq zz-os-flag 2)
            (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
-    (setq my-os-flag (+ my-os-flag 1)))
+    (setq zz-os-flag (+ zz-os-flag 1)))
 
 ;;; Maximum Windows Frame
-(defvar my-fullscreen-p t "Check if fullscreen is on or off")
-(defun my-sub-fullscreen ()
+(defvar zz-fullscreen-p t "Check if fullscreen is on or off")
+(defun zz-sub-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen)
                            nil
                            'fullboth)))
 
-(defun my-non-fullscreen ()
+(defun zz-non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND restore #xf120
 	  (w32-send-sys-command 61728)
-      (run-with-idle-timer 0.1 nil 'my-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz-sub-fullscreen)))
 
-(defun my-fullscreen ()
+(defun zz-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND maximaze #xf030
 	  (w32-send-sys-command 61488)
-      (run-with-idle-timer 0.1 nil 'my-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz-sub-fullscreen)))
 
-(defun my-toggle-fullscreen ()
+(defun zz-toggle-fullscreen ()
   (interactive)
-  (setq my-fullscreen-p (not my-fullscreen-p))
-  (if my-fullscreen-p
-	  (my-non-fullscreen)
-	(my-fullscreen)))
+  (setq zz-fullscreen-p (not zz-fullscreen-p))
+  (if zz-fullscreen-p
+	  (zz-non-fullscreen)
+	(zz-fullscreen)))
 
-(defvar my-maxframe-p t "Check if maxframe is on or off")
-(defun my-toggle-maxframe ()
+(defvar zz-maxframe-p t "Check if maxframe is on or off")
+(defun zz-toggle-maxframe ()
   (interactive)
-  (setq my-maxframe-p (not my-maxframe-p))
-  (if my-maxframe-p
+  (setq zz-maxframe-p (not zz-maxframe-p))
+  (if zz-maxframe-p
 	  (restore-frame)
 	(maximize-frame)))
 
@@ -94,7 +94,7 @@
   (message (buffer-file-name (current-buffer))))
 
 ;;set file to utf-8
-(defun my-utf-8 ()
+(defun zz-utf-8 ()
   (interactive)
   (set-buffer-file-coding-system 'utf-8)
   (save-buffer)
@@ -141,7 +141,7 @@
                   ))
 
 ;;go to last buffer
-(defun my-last-buffer-go ()
+(defun zz-last-buffer-go ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
@@ -155,14 +155,14 @@
                               (delete-frame frame)))
           (frame-list)))
 
-(defun make-my-frames ()
+(defun make-zz-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary")))
   )
 
 ;;file transform
-(defun my-dos2unix (buffer)
+(defun zz-dos2unix (buffer)
   "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
@@ -181,7 +181,7 @@
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun my-occur (&optional arg)
+(defun zz-occur (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.

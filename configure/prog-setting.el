@@ -144,7 +144,7 @@ the mru bookmark stack."
         try-expand-all-abbrevs))
 
 
-(defun my-indent-or-complete ()
+(defun zz-indent-or-complete ()
    (interactive)
    (if (looking-at "\\>")
       (hippie-expand nil)
@@ -282,15 +282,15 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq my-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
+(setq zz-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
 
-(defun gen-find-parts (my-file-name)
-  (setq my-find-parts "")
-  (dolist (cell (split-string my-file-name))
-    (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -o ")))
-  (setq my-find-parts (substring my-find-parts 0 -4)))
+(defun gen-find-parts (zz-file-name)
+  (setq zz-find-parts "")
+  (dolist (cell (split-string zz-file-name))
+    (setq zz-find-parts (concat zz-find-parts "-name \"" cell "\" -o ")))
+  (setq zz-find-parts (substring zz-find-parts 0 -4)))
 
-;(setq  my-c/c++-file-regex
+;(setq  zz-c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "
 ;              "-type f -name \"*.[hc]pp\" -print -or "
 ;              "-type f -name \"*.[hc]++\" -print -or "
@@ -299,7 +299,7 @@ the mru bookmark stack."
 
 (defun gen-etags-cmd (dir-name)
   (format "find %s -type f \\( %s \\) -print | etags -"
-          dir-name (gen-find-parts my-find-regex)))
+          dir-name (gen-find-parts zz-find-regex)))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -313,7 +313,7 @@ the mru bookmark stack."
 (defun gen-cscope-cmd (dir-name)
   (concat
    (format "find %s -type f \\( %s \\) -print > %s/cscope.files;"
-           dir-name (gen-find-parts my-find-regex)  default-directory)
+           dir-name (gen-find-parts zz-find-regex)  default-directory)
    (format "cscope -b -R -q -i %s/cscope.files" default-directory)
    ))
 
@@ -413,12 +413,12 @@ the mru bookmark stack."
 (require 'git-show)
 
 ;;rgrep for c/c++
-(setq my-c-file-regex "*.[hc]")
-(defun my-c-rgrep (term &optional dir)
+(setq zz-c-file-regex "*.[hc]")
+(defun zz-c-rgrep (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term my-c-file-regex dir)))
+    (rgrep term zz-c-file-regex dir)))
 
 ;;self set for rgrep
 (require 'grep)

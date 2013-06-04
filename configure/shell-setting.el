@@ -145,8 +145,8 @@ Dmitriy Igrishin's patched version of comint.el."
   
 ;; switch to named shell
 (setq multi-shell-buffer-name "shell")
-(defun zz-shell-list ()
-  (setq zz-shells ())
+(defun zz/shell-shell-list ()
+  (setq zz/shell-shells ())
   (dolist (b (buffer-list))
     (if (or (string-match
              (format "^\\\*%s\\\*$" "shell")
@@ -158,13 +158,13 @@ Dmitriy Igrishin's patched version of comint.el."
              (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
              (buffer-name b)))
       (progn
-        (setq zz-shells (cons  (buffer-name b) zz-shells)))))
+        (setq zz/shell-shells (cons  (buffer-name b) zz/shell-shells)))))
   (catch 'return
-    (throw 'return zz-shells)))
+    (throw 'return zz/shell-shells)))
 
 (defun switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Shell name: " (zz-shell-list))))
+  (interactive (list (ido-completing-read "Shell name: " (zz/shell-shell-list))))
   (if (get-buffer buf-name)
       (progn 
         (switch-to-buffer buf-name))
@@ -175,20 +175,20 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;; switch to named term
 (setq multi-term-buffer-name "term")
-(defun zz-term-list ()
-  (setq zz-terms ())
+(defun zz/shell-term-list ()
+  (setq zz/shell-terms ())
   (dolist (b (buffer-list))
     (if (string-match
          (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
          (buffer-name b))
       (progn
-        (setq zz-terms (cons  (buffer-name b) zz-terms)))))
+        (setq zz/shell-terms (cons  (buffer-name b) zz/shell-terms)))))
   (catch 'return
-    (throw 'return zz-terms)))
+    (throw 'return zz/shell-terms)))
 
 (defun switch-to-term (buf-name)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Term name: " (zz-term-list))))
+  (interactive (list (ido-completing-read "Term name: " (zz/shell-term-list))))
   (if (get-buffer buf-name)
       (progn 
         (switch-to-buffer buf-name)
@@ -205,9 +205,9 @@ Dmitriy Igrishin's patched version of comint.el."
      (comint-truncate-buffer)
      (setq comint-buffer-maximum-size old-max)))
 
-(defun zz-comint-hook ()
+(defun zz/shell-comint-hook ()
   (define-key comint-mode-map (kbd "C-c M-o") 'clear-input))
-(add-hook 'comint-mode-hook 'zz-comint-hook)
+(add-hook 'comint-mode-hook 'zz/shell-comint-hook)
 
 
 (add-hook 'comint-output-filter-functions

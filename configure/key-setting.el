@@ -55,7 +55,7 @@
 
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
 (define-key f1-backquote-map (kbd "i") 'info)
-(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
+(define-key f1-backquote-map (kbd "I") 'zz/smp-info-open-file)
 
 ;;for keymap switch
 (when window-system
@@ -96,20 +96,20 @@
 
 (if use-graph-keymap-p
     (progn
-      (global-set-key   [f3]    'zz-last-buffer-go)
+      (global-set-key   [f3]    'zz/smp-last-buffer-go)
       (global-set-key [S-f3]    'list-bookmarks)
       (global-set-key [C-f3]    'bc-local-next)
       (global-set-key [M-f3]    'bc-local-previous)
       )
     (progn
-      (define-key esc-map   [f3]          'zz-last-buffer-go)
+      (define-key esc-map   [f3]          'zz/smp-last-buffer-go)
       (global-set-key (kbd "<f1> <f3>")   'list-bookmarks)
       (global-set-key (kbd "<f2> <f3>")   'bc-local-next)
       (global-set-key (kbd "<f3> <f3>")   'bc-local-previous)
       ))
 
-(global-set-key (kbd "C-x <f3>") 'zz-occur)
-(global-set-key (kbd "C-c <f3>") 'zz-woman-at-point)
+(global-set-key (kbd "C-x <f3>") 'zz/samp-occur)
+(global-set-key (kbd "C-c <f3>") 'zz/cmn-woman-at-point)
 
 (if use-graph-keymap-p
     (progn
@@ -214,12 +214,12 @@
 (if use-graph-keymap-p
     (progn
       (global-set-key [S-f10]   'tool-bar-mode)
-      (global-set-key [C-f10]   'zz-toggle-maxframe)
-      (global-set-key [M-f10]   'zz-toggle-fullscreen))
+      (global-set-key [C-f10]   'zz/smp-toggle-maxframe)
+      (global-set-key [M-f10]   'zz/smp-toggle-fullscreen))
     (progn    
       (global-set-key (kbd "<f1> <f10>")  'tool-bar-mode)
-      (global-set-key (kbd "<f2> <f10>")  'zz-toggle-maxframe)
-      (global-set-key (kbd "<f3> <f10>")  'zz-toggle-fullscreen)))
+      (global-set-key (kbd "<f2> <f10>")  'zz/smp-toggle-maxframe)
+      (global-set-key (kbd "<f3> <f10>")  'zz/smp-toggle-fullscreen)))
 
 (global-set-key (kbd "C-x <f10>")  'scroll-bar-mode)
 (global-set-key (kbd "C-c <f10>")  'tabbar-mode)
@@ -241,17 +241,17 @@
       (global-set-key [f12]     'find-grep)
       (global-set-key [S-f12]   'rgrep)
       (global-set-key [C-f12]   'find-name-dired)
-      (global-set-key [M-f12]   'zz-c-rgrep))
+      (global-set-key [M-f12]   'zz/prog-c-rgrep))
     (progn
       (define-key esc-map   [f12]        'find-grep)
       (global-set-key (kbd "<f1> <f12>") 'rgrep)
       (global-set-key (kbd "<f2> <f12>") 'find-name-dired)
-      (global-set-key (kbd "<f3> <f12>") 'zz-c-rgrep)
+      (global-set-key (kbd "<f3> <f12>") 'zz/prog-c-rgrep)
       ))
 
 
-(global-set-key (kbd "C-x <f12>") 'zz-unicad-switch)
-(global-set-key (kbd "C-c <f12>") 'zz-os-file-switch)
+(global-set-key (kbd "C-x <f12>") 'zz/smp-unicad-switch)
+(global-set-key (kbd "C-c <f12>") 'zz/smp-os-file-switch)
 
 ;;number 0-1/-/=
 (global-set-key (kbd "M-1")    'delete-other-windows)
@@ -343,8 +343,7 @@
 (global-set-key (kbd "C-c h") 'helm-mini)
 
 ;;f2-map setting
-(define-key f4-map (kbd "C-1") 'zz-utf-8)
-
+(define-key f4-map (kbd "C-1") 'zz/smp-utf-8)
 
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless (or (eq window-system 'w32)

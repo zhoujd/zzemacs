@@ -16,7 +16,7 @@
 ;(add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
-(defun zz-set-language-chinese ()
+(defun zz/cmn-set-language-chinese ()
   "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
@@ -24,7 +24,7 @@
   (message "This is for chinese"))
 
 ;; -*- Japanese -*-
-(defun zz-set-language-japanese ()
+(defun zz/cmn-set-language-japanese ()
   "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
@@ -32,7 +32,7 @@
   (message "This is for japanese"))
 
 ;; -*- utf-8 -*-
-(defun zz-set-language-utf-8 ()
+(defun zz/cmn-set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
@@ -42,22 +42,22 @@
 ;; -*- Language switch -*-
 (cond
   ((string-match "j[ap].*" (getenv "LANG"))
-   (zz-set-language-japanese))
+   (zz/cmn-set-language-japanese))
   ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
-   (zz-set-language-chinese))
-  (t (zz-set-language-utf-8)))
+   (zz/cmn-set-language-chinese))
+  (t (zz/cmn-set-language-utf-8)))
 
 ;;font setting
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(defun zz-cn-font-name (name)
+(defun zz/cmn-cn-font-name (name)
   (string-match ".*[ ]" name)
-  (setq zz-cn-name (substring (match-string 0 name) 0 -1)))
-(defun zz-cn-font-size (name)
+  (setq zz/cmn-cn-name (substring (match-string 0 name) 0 -1)))
+(defun zz/cmn-cn-font-size (name)
   (string-to-number (car (last (split-string name)))))
 
-(defun zz-frame-font (font-en-name font-cn-name)
+(defun zz/cmn-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute
@@ -66,18 +66,18 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family (zz-cn-font-name font-cn-name)
-                                 :size   (zz-cn-font-size font-cn-name)))))
+                      (font-spec :family (zz/cmn-cn-font-name font-cn-name)
+                                 :size   (zz/cmn-cn-font-size font-cn-name)))))
 
-(defun zz-console-font (font-console-name)
+(defun zz/cmn-console-font (font-console-name)
   "my console font setting"
   (progn
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
 (if window-system
-    (zz-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
-    (zz-console-font (nth 1 cn-font-list)))
+    (zz/cmn-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
+    (zz/cmn-console-font (nth 1 cn-font-list)))
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
@@ -410,7 +410,7 @@
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 ;;manpath
-(defun zz-woman-at-point ()
+(defun zz/cmn-woman-at-point ()
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))

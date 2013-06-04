@@ -81,7 +81,7 @@
       (setq semantic-c-dependency-system-include-path "/usr/include/")))
 
 ;;; my c setting hook
-(defun zz-c-mode-common-hook()
+(defun zz/c-c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   ;; Semantic functions.
   (semantic-default-c-setup)
@@ -109,16 +109,16 @@
   (abbrev-mode t)
   (hide-ifdef-mode t))
 
-(add-hook 'c-mode-common-hook 'zz-c-mode-common-hook)
+(add-hook 'c-mode-common-hook 'zz/c-c-mode-common-hook)
 
 ;;;;my c++ setting
-(defun zz-c++-mode-hook()
+(defun zz/c-c++-mode-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   (c-set-style "stroustrup"))
 
 ;; c++-mode
-(add-hook 'c++-mode-hook 'zz-c++-mode-hook)
-(add-hook 'c-mode-hook   'zz-c++-mode-hook)
+(add-hook 'c++-mode-hook 'zz/c-c++-mode-hook)
+(add-hook 'c-mode-hook   'zz/c-c++-mode-hook)
 
 (provide 'c-setting)
 

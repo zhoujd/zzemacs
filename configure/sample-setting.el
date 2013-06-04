@@ -2,7 +2,7 @@
 ;;;
 
 ;;my unicad enable/disable switch
-(defun zz-unicad-switch ()
+(defun zz/smp-unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
   (if (eq t unicad-global-enable)
@@ -33,58 +33,58 @@
   (delete-trailing-whitespace))
 
 ;;File coding for Unix Dos Mac switcher
-(defvar zz-os-flag 0)
-(defun zz-os-file-switch ()
+(defvar zz/smp-os-flag 0)
+(defun zz/smp-os-file-switch ()
     "for unix dos max"
     (interactive)
-    (if (> zz-os-flag 2)
-      (setq zz-os-flag 0))
-    (cond ((eq zz-os-flag 0)
+    (if (> zz/smp-os-flag 2)
+      (setq zz/smp-os-flag 0))
+    (cond ((eq zz/smp-os-flag 0)
            (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
-          ((eq zz-os-flag 1)
+          ((eq zz/smp-os-flag 1)
            (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
-          ((eq zz-os-flag 2)
+          ((eq zz/smp-os-flag 2)
            (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
-    (setq zz-os-flag (+ zz-os-flag 1)))
+    (setq zz/smp-os-flag (+ zz/smp-os-flag 1)))
 
 ;;; Maximum Windows Frame
-(defvar zz-fullscreen-p t "Check if fullscreen is on or off")
-(defun zz-sub-fullscreen ()
+(defvar zz/smp-fullscreen-p t "Check if fullscreen is on or off")
+(defun zz/smp-sub-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen)
                            nil
                            'fullboth)))
 
-(defun zz-non-fullscreen ()
+(defun zz/smp-non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND restore #xf120
 	  (w32-send-sys-command 61728)
-      (run-with-idle-timer 0.1 nil 'zz-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz/smp-sub-fullscreen)))
 
-(defun zz-fullscreen ()
+(defun zz/smp-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND maximaze #xf030
 	  (w32-send-sys-command 61488)
-      (run-with-idle-timer 0.1 nil 'zz-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz/smp-sub-fullscreen)))
 
-(defun zz-toggle-fullscreen ()
+(defun zz/smp-toggle-fullscreen ()
   (interactive)
-  (setq zz-fullscreen-p (not zz-fullscreen-p))
-  (if zz-fullscreen-p
-	  (zz-non-fullscreen)
-	(zz-fullscreen)))
+  (setq zz/smp-fullscreen-p (not zz/smp-fullscreen-p))
+  (if zz/smp-fullscreen-p
+	  (zz/smp-non-fullscreen)
+	(zz/smp-fullscreen)))
 
-(defvar zz-maxframe-p t "Check if maxframe is on or off")
-(defun zz-toggle-maxframe ()
+(defvar zz/smp-maxframe-p t "Check if maxframe is on or off")
+(defun zz/smp-toggle-maxframe ()
   (interactive)
-  (setq zz-maxframe-p (not zz-maxframe-p))
-  (if zz-maxframe-p
+  (setq zz/smp-maxframe-p (not zz/smp-maxframe-p))
+  (if zz/smp-maxframe-p
 	  (restore-frame)
 	(maximize-frame)))
 
@@ -94,7 +94,7 @@
   (message (buffer-file-name (current-buffer))))
 
 ;;set file to utf-8
-(defun zz-utf-8 ()
+(defun zz/smp-utf-8 ()
   (interactive)
   (set-buffer-file-coding-system 'utf-8)
   (save-buffer)
@@ -141,7 +141,7 @@
                   ))
 
 ;;go to last buffer
-(defun zz-last-buffer-go ()
+(defun zz/smp-last-buffer-go ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
@@ -155,14 +155,14 @@
                               (delete-frame frame)))
           (frame-list)))
 
-(defun make-zz-frames ()
+(defun make-zz/smp-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary")))
   )
 
 ;;file transform
-(defun zz-dos2unix (buffer)
+(defun zz/smp-dos2unix (buffer)
   "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
@@ -181,7 +181,7 @@
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun zz-occur (&optional arg)
+(defun zz/smp-occur (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.
@@ -194,11 +194,11 @@
              (if (listp arg) 0 arg))))
 
 ;;emacs with sudo
-(defun zz-sudo-find-file (file dir)
+(defun zz/smp-sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
 ;;open special info file
-(defun zz-info-open-file (dir-name)
+(defun zz/smp-info-open-file (dir-name)
   "Create tags file."
   (interactive "FInfo file: ")
   (info dir-name))

@@ -51,23 +51,22 @@
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(require 'cl) ;;for flet labels etc
 (defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
-  (flet ((my-cn-font-name (name)
-           (string-match ".*[ ]" name)
-           (setq my-cn-name (substring (match-string 0 name) 0 -1)))
-         (my-cn-font-size (name)
-           (string-to-number (car (last (split-string name))))))
-    (set-face-attribute
-     'default nil :font font-en-name)
-    ;; Chinese Font
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font)
-                        charset
-                        (font-spec :family (my-cn-font-name font-cn-name)
-                                   :size   (my-cn-font-size font-cn-name))))))
+  (defun my-cn-font-name (name)
+    (string-match ".*[ ]" name)
+    (setq my-cn-name (substring (match-string 0 name) 0 -1)))
+  (defun my-cn-font-size (name)
+    (string-to-number (car (last (split-string name)))))
+  (set-face-attribute
+   'default nil :font font-en-name)
+  ;; Chinese Font
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset
+                      (font-spec :family (my-cn-font-name font-cn-name)
+                                 :size   (my-cn-font-size font-cn-name)))))
 
 (defun my-console-font (font-console-name)
   "my console font setting"

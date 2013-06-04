@@ -51,36 +51,33 @@
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(setq my-font-en-name (nth 0 en-font-list))
-(setq my-font-cn-name (nth 1 cn-font-list))
-
-(defun my-cn-font-name ()
-  (string-match ".*[ ]" my-font-cn-name)
-  (setq my-cn-name (substring (match-string 0 my-font-cn-name) 0 -1)))
-
-(defun my-cn-font-size ()
-  (string-to-number (car (last (split-string my-font-cn-name)))))
-
-(defun my-frame-font ()
+(require 'cl) ;;for flet labels etc
+(defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
-  (set-face-attribute
-   'default nil :font my-font-en-name)
-  ;; Chinese Font
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec :family (my-cn-font-name)
-                                 :size   (my-cn-font-size)))))
+  (flet ((my-cn-font-name (name)
+           (string-match ".*[ ]" name)
+           (setq my-cn-name (substring (match-string 0 name) 0 -1)))
+         (my-cn-font-size (name)
+           (string-to-number (car (last (split-string name))))))
+    (set-face-attribute
+     'default nil :font font-en-name)
+    ;; Chinese Font
+    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font)
+                        charset
+                        (font-spec :family (my-cn-font-name font-cn-name)
+                                   :size   (my-cn-font-size font-cn-name))))))
 
-(setq my-font-console-name (nth 1 cn-font-list))
-(defun my-console-font ()
+(defun my-console-font (font-console-name)
   "my console font setting"
   (progn
     (add-to-list 'default-frame-alist
-                 '(font . my-font-console-name))))
+                 '(font . font-console-name))))
 
-(if window-system (my-frame-font) (my-console-font))
+(if window-system
+    (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
+    (my-console-font (nth 1 cn-font-list)))
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file

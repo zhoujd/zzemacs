@@ -70,9 +70,9 @@
 (defun zz-setup-third-party ()
   "setup third partys"
   (let ((third-setup-name "setup.el"))
-  (if (file-exists-p third-setup-name)
-      (load third-setup-name)
-      (message "setup third party %s does not exist" third-setup-name))))
+    (if (file-exists-p third-setup-name)
+        (load third-setup-name)
+        (message "setup third party %s does not exist" third-setup-name))))
 
 (zz-setup-dotemacs)
 (zz-setup-font)

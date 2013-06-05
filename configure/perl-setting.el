@@ -12,7 +12,7 @@
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 
 ;;;perl code style
-(defun pde-perl-mode-hook ()
+(defun zz/perl-pde-perl-mode-hook ()
   (abbrev-mode t)
   (hs-minor-mode t)
   (setq cperl-lazy-help-time 2)
@@ -33,7 +33,7 @@
                  (cperl-tab-always-indent                    . t)))
   (cperl-set-style "PDE"))
 
-(add-hook 'cperl-mode-hook 'pde-perl-mode-hook)
+(add-hook 'cperl-mode-hook 'zz/perl-pde-perl-mode-hook)
 
 ;;;perl completing
 (add-hook  'cperl-mode-hook

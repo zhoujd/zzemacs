@@ -74,12 +74,12 @@
 ;;for info
 (if zz/key-use-graph-keymap-p
     (progn
-      (global-set-key [C-f1]    'session-save)
-      (global-set-key [M-f1]    'session-restore)
+      (global-set-key [C-f1]    'zz/other-session-save)
+      (global-set-key [M-f1]    'zz/other-session-restore)
       )
     (progn
-      (global-set-key (kbd "<f2> <f1>")   'session-save)
-      (global-set-key (kbd "<f3> <f1>")   'session-restore)
+      (global-set-key (kbd "<f2> <f1>")   'zz/other-session-save)
+      (global-set-key (kbd "<f3> <f1>")   'zz/other-session-restore)
       ))
 
 (if zz/key-use-graph-keymap-p

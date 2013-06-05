@@ -40,7 +40,7 @@
   (add-hook hook 'hs-minor-mode))
 
 
-(defun newline-indents ()
+(defun zz/prog-newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent))
 
@@ -56,7 +56,7 @@
            'java-mode-hook
            'cperl-mode-hook
            'php-mode-hook))
-  (add-hook hook (function newline-indents)))
+  (add-hook hook (function zz/prog-newline-indents)))
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
@@ -162,11 +162,11 @@ the mru bookmark stack."
 (setq sr-speedbar-max-width 60)
 
 ;; his-speedbar-no-separate-frame
-(defconst his-speedbar-buffer-name "SpeedBar")
-(defun his-speedbar-no-separate-frame ()
+(defconst zz/prog-his-speedbar-buffer-name "SpeedBar")
+(defun zz/prog-his-speedbar-no-separate-frame ()
   (interactive)
   (when (not (buffer-live-p speedbar-buffer))
-    (setq speedbar-buffer (get-buffer-create his-speedbar-buffer-name)
+    (setq speedbar-buffer (get-buffer-create zz/prog-his-speedbar-buffer-name)
           speedbar-frame (selected-frame)
           dframe-attached-frame (selected-frame)
           speedbar-select-frame-method 'attached
@@ -185,7 +185,7 @@ the mru bookmark stack."
                                  speedbar-buffer nil)
                            (speedbar-set-timer nil)))))
   (set-window-buffer (selected-window)
-                     (get-buffer his-speedbar-buffer-name)))
+                     (get-buffer zz/prog-his-speedbar-buffer-name)))
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")

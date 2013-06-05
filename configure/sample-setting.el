@@ -12,20 +12,20 @@
            (message "unicad is enabled"))))
 
 ;;using spaces repalce tabs
-(defun untabify-buffer ()
+(defun zz/smp-untabify-buffer ()
   "untabify whole buffer"
   (interactive)
   (untabify (point-min) (point-max))
   (save-buffer))
 
 ;;using tabs repalce spaces
-(defun tabify-buffer ()
+(defun zz/smp-tabify-buffer ()
   "tabify whole buffer"
   (interactive)
   (tabify (point-min) (point-max))
   (save-buffer))
 
-(defun cleanup-buffer ()
+(defun zz/smp-cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
   (indent-buffer)
@@ -89,7 +89,7 @@
 	(maximize-frame)))
 
 ;;display current buffer name
-(defun display-buffer-name ()
+(defun zz/smp-display-buffer-name ()
   (interactive)
   (message (buffer-file-name (current-buffer))))
 
@@ -100,19 +100,19 @@
   (save-buffer)
   (message "this file to utf-8 ok!"))
 
-(defun switch-to-scratch ()
+(defun zz/smp-switch-to-scratch ()
   "switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun switch-to-compilation ()
+(defun zz/smp-switch-to-compilation ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun edit-with-gvim()
+(defun zz/smp-edit-with-gvim()
   "Edit current buffer file with gvim"
   (interactive)
   (start-process  "gvim"
@@ -121,7 +121,7 @@
                   (display-buffer-name)))
 
 
-(defun open-with-terminal()
+(defun zz/smp-open-with-terminal()
   "Open terminal to current dired"
   (interactive)
   (start-process  "gnome-terminal"
@@ -130,7 +130,7 @@
                   ""
                   ))
 
-(defun open-with-nautilus()
+(defun zz/smp-open-with-nautilus()
   "Open nautilus on current dired"
   (interactive)
   (start-process  "nautilus"
@@ -145,17 +145,17 @@
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
-(defun line-to-top-of-window ()
+(defun zz/smp-line-to-top-of-window ()
     (interactive)
     (recenter 0))
 
 ;; used in my ion C-F2 key binding. run before shutting down X!
-(defun delete-all-x-frames ()
+(defun zz/smp-delete-all-x-frames ()
   (mapcar (lambda (frame) (if (eq 'x (frame-live-p frame))
                               (delete-frame frame)))
           (frame-list)))
 
-(defun make-zz/smp-frames ()
+(defun zz/smp-make-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary")))
@@ -170,12 +170,12 @@
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
 
-(defun dos2unix ()
+(defun zz/smp-dos2unix ()
   "Automate M-% C-q C-m RET RET !"
   (interactive)
   (set-buffer-file-coding-system 'unix))
 
-(defun unix2dos ()
+(defun zz/smp-unix2dos ()
   "Automate M-% C-q C-j RET C-q C-m C-q C-j RET !"
   (interactive)
   (set-buffer-file-coding-system 'dos))

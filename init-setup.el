@@ -55,7 +55,7 @@
       '()
       (progn
         (let ((sys-font-path "/usr/share/fonts/truetype/"))
-          (if (yes-or-no-p "Are you script under sudo?")
+          (if (= 0 (user-uid))
               (progn
                 (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
                 (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)

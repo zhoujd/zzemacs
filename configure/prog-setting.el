@@ -40,7 +40,7 @@
   (add-hook hook 'hs-minor-mode))
 
 
-(defun zz/prog-newline-indents ()
+(defun newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent))
 
@@ -56,7 +56,7 @@
            'java-mode-hook
            'cperl-mode-hook
            'php-mode-hook))
-  (add-hook hook (function zz/prog-newline-indents)))
+  (add-hook hook (function newline-indents)))
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
@@ -144,7 +144,7 @@ the mru bookmark stack."
         try-expand-all-abbrevs))
 
 
-(defun zz/prog-indent-or-complete ()
+(defun my-indent-or-complete ()
    (interactive)
    (if (looking-at "\\>")
       (hippie-expand nil)
@@ -162,11 +162,11 @@ the mru bookmark stack."
 (setq sr-speedbar-max-width 60)
 
 ;; his-speedbar-no-separate-frame
-(defconst zz/prog-his-speedbar-buffer-name "SpeedBar")
-(defun zz/prog-his-speedbar-no-separate-frame ()
+(defconst his-speedbar-buffer-name "SpeedBar")
+(defun his-speedbar-no-separate-frame ()
   (interactive)
   (when (not (buffer-live-p speedbar-buffer))
-    (setq speedbar-buffer (get-buffer-create zz/prog-his-speedbar-buffer-name)
+    (setq speedbar-buffer (get-buffer-create his-speedbar-buffer-name)
           speedbar-frame (selected-frame)
           dframe-attached-frame (selected-frame)
           speedbar-select-frame-method 'attached
@@ -185,7 +185,7 @@ the mru bookmark stack."
                                  speedbar-buffer nil)
                            (speedbar-set-timer nil)))))
   (set-window-buffer (selected-window)
-                     (get-buffer zz/prog-his-speedbar-buffer-name)))
+                     (get-buffer his-speedbar-buffer-name)))
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
@@ -282,15 +282,15 @@ the mru bookmark stack."
   (async-shell-command (gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq zz/prog-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
+(setq my-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
 
-(defun gen-find-parts (zz/prog-file-name)
-  (setq zz/prog-find-parts "")
-  (dolist (cell (split-string zz/prog-file-name))
-    (setq zz/prog-find-parts (concat zz/prog-find-parts "-name \"" cell "\" -o ")))
-  (setq zz/prog-find-parts (substring zz/prog-find-parts 0 -4)))
+(defun gen-find-parts (my-file-name)
+  (setq my-find-parts "")
+  (dolist (cell (split-string my-file-name))
+    (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -o ")))
+  (setq my-find-parts (substring my-find-parts 0 -4)))
 
-;(setq  zz/prog-c/c++-file-regex
+;(setq  my-c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "
 ;              "-type f -name \"*.[hc]pp\" -print -or "
 ;              "-type f -name \"*.[hc]++\" -print -or "
@@ -299,7 +299,7 @@ the mru bookmark stack."
 
 (defun gen-etags-cmd (dir-name)
   (format "find %s -type f \\( %s \\) -print | etags -"
-          dir-name (gen-find-parts zz/prog-find-regex)))
+          dir-name (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -313,7 +313,7 @@ the mru bookmark stack."
 (defun gen-cscope-cmd (dir-name)
   (concat
    (format "find %s -type f \\( %s \\) -print > %s/cscope.files;"
-           dir-name (gen-find-parts zz/prog-find-regex)  default-directory)
+           dir-name (gen-find-parts my-find-regex)  default-directory)
    (format "cscope -b -R -q -i %s/cscope.files" default-directory)
    ))
 
@@ -413,12 +413,12 @@ the mru bookmark stack."
 (require 'git-show)
 
 ;;rgrep for c/c++
-(setq zz/prog-c-file-regex "*.[hc]")
-(defun zz/prog-c-rgrep (term &optional dir)
+(setq my-c-file-regex "*.[hc]")
+(defun my-c-rgrep (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term zz/prog-c-file-regex dir)))
+    (rgrep term my-c-file-regex dir)))
 
 ;;self set for rgrep
 (require 'grep)

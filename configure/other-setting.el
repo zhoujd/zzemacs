@@ -27,22 +27,22 @@
 	     (desktop-remove)
 	     (setq desktop-dirname desktop-dirname-tmp)))
 
-(defun zz/other-saved-session ()
+(defun saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
 
-;; use zz/other-session-restore to restore the desktop manually
-(defun zz/other-session-restore ()
+;; use session-restore to restore the desktop manually
+(defun session-restore ()
   "Restore a saved emacs session."
   (interactive)
-  (if (zz/other-saved-session)
+  (if (saved-session)
       (desktop-read)
     (message "No desktop found.")))
 
-;; use zz/other-session-save to save the desktop manually
-(defun zz/other-session-save ()
+;; use session-save to save the desktop manually
+(defun session-save ()
   "Save an emacs session."
   (interactive)
-  (if (zz/other-saved-session)
+  (if (saved-session)
       (if (y-or-n-p "Overwrite existing desktop? ")
 	  (desktop-save-in-desktop-dir)
 	(message "Session not saved."))
@@ -51,12 +51,12 @@
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
 	  '(lambda ()
-	     (if (zz/other-saved-session)
+	     (if (saved-session)
              (if (y-or-n-p "Restore desktop? ")
-                 (zz/other-session-restore)))))
+                 (session-restore)))))
 
 ;;save desktop when exit
-;(add-hook 'kill-emacs-hook '(lambda () (zz/other-session-save)))
+;(add-hook 'kill-emacs-hook '(lambda () (session-save)))
 
 ;;Filecode Autoprocess
 ;;distct with mpg123
@@ -86,7 +86,7 @@
 ;;Excluded buffers in tabbar
 (setq tabbar-excluded-buffers '("*Messages*" "*Completions*" "*ESS*" "*Pymacs*" "*WoMan-Log*"))
 
-(defun zz/other-tabbar-buffer-list ()
+(defun tabbar-buffer-list ()
   "Return the list of buffers to show in tabs.
 Exclude buffers whose name starts with a space or *, when they are not
 visiting a file.  The current buffer is always included."
@@ -101,10 +101,10 @@ visiting a file.  The current buffer is always included."
                       ((buffer-live-p b) b)))
                 (buffer-list))))
 
-(setq tabbar-buffer-list-function 'zz/other-tabbar-buffer-list)
+(setq tabbar-buffer-list-function 'tabbar-buffer-list)
 
 ;;define all tabs to be one of 2 possible groups: “Emacs Buffer”, “User Buffer”.
-(defun zz/other-tabbar-buffer-groups ()
+(defun tabbar-buffer-groups ()
   "Return the list of group names the current buffer belongs to.
 This function is a custom function for tabbar-mode's tabbar-buffer-groups.
 This function group all buffers into 3 groups:
@@ -121,11 +121,11 @@ Emacs buffer are those starting with “*”."
      )
     )))
 
-(setq tabbar-buffer-groups-function 'zz/other-tabbar-buffer-groups)
+(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
 
 ;;tabbar font name setting
-(if (boundp 'zz/cmn-font-en-name)
-    (setq tabbar-font-name (car (split-string zz/cmn-font-en-name)))
+(if (boundp 'my-font-en-name)
+    (setq tabbar-font-name (car (split-string my-font-en-name)))
     (setq tabbar-font-name "Consolas"))
 
 (if window-system
@@ -202,7 +202,7 @@ Emacs buffer are those starting with “*”."
 (setq fci-rule-color "gray30")
 
 ;;paren switch
-(defun zz/other-match-paren (arg)
+(defun match-paren (arg)
   "Go to the matching paren if on a paren; otherwise insert %."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
@@ -215,7 +215,7 @@ Emacs buffer are those starting with “*”."
  '(uniquify-buffer-name-style 'reverse)
  '(uniquify-after-kill-buffer-p t))
 
-;(defun zz/other-kill-buffer-when-exit ()
+;(defun kill-buffer-when-exit ()
 ;  "Close assotiated buffer when a process exited"
 ;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
 ;    (when current-process
@@ -224,8 +224,8 @@ Emacs buffer are those starting with “*”."
 ;                              (when (string-match "//(finished//|exited//)" change-state)
 ;                                (kill-buffer (process-buffer watch-process))))))))
 
-;(add-hook 'gdb-mode-hook 'zz/other-kill-buffer-when-exit)
-;(add-hook 'shell-mode-hook 'zz/other-kill-buffer-when-exit)
+;(add-hook 'gdb-mode-hook 'kill-buffer-when-exit)
+;(add-hook 'shell-mode-hook 'kill-buffer-when-exit)
 
 ;;tramp setting
 (require 'tramp)
@@ -254,7 +254,7 @@ Emacs buffer are those starting with “*”."
 ;(setq bm-highlight-style 'bm-highlight-only-fringe)
 
 ;;show *bm-bookmarks* buffer
-;(defun zz/other-bm-menu-show ()
+;(defun bm-menu-show ()
 ;  (interactive)
 ;  (bm-show-all)
 ;  (delete-other-windows))

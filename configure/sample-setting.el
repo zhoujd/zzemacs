@@ -2,7 +2,7 @@
 ;;;
 
 ;;my unicad enable/disable switch
-(defun zz/smp-unicad-switch ()
+(defun my-unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
   (if (eq t unicad-global-enable)
@@ -12,20 +12,20 @@
            (message "unicad is enabled"))))
 
 ;;using spaces repalce tabs
-(defun zz/smp-untabify-buffer ()
+(defun untabify-buffer ()
   "untabify whole buffer"
   (interactive)
   (untabify (point-min) (point-max))
   (save-buffer))
 
 ;;using tabs repalce spaces
-(defun zz/smp-tabify-buffer ()
+(defun tabify-buffer ()
   "tabify whole buffer"
   (interactive)
   (tabify (point-min) (point-max))
   (save-buffer))
 
-(defun zz/smp-cleanup-buffer ()
+(defun cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
   (indent-buffer)
@@ -33,86 +33,86 @@
   (delete-trailing-whitespace))
 
 ;;File coding for Unix Dos Mac switcher
-(defvar zz/smp-os-flag 0)
-(defun zz/smp-os-file-switch ()
+(defvar my-os-flag 0)
+(defun my-os-file-switch ()
     "for unix dos max"
     (interactive)
-    (if (> zz/smp-os-flag 2)
-      (setq zz/smp-os-flag 0))
-    (cond ((eq zz/smp-os-flag 0)
+    (if (> my-os-flag 2)
+      (setq my-os-flag 0))
+    (cond ((eq my-os-flag 0)
            (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
-          ((eq zz/smp-os-flag 1)
+          ((eq my-os-flag 1)
            (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
-          ((eq zz/smp-os-flag 2)
+          ((eq my-os-flag 2)
            (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
-    (setq zz/smp-os-flag (+ zz/smp-os-flag 1)))
+    (setq my-os-flag (+ my-os-flag 1)))
 
 ;;; Maximum Windows Frame
-(defvar zz/smp-fullscreen-p t "Check if fullscreen is on or off")
-(defun zz/smp-sub-fullscreen ()
+(defvar my-fullscreen-p t "Check if fullscreen is on or off")
+(defun my-sub-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen)
                            nil
                            'fullboth)))
 
-(defun zz/smp-non-fullscreen ()
+(defun my-non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND restore #xf120
 	  (w32-send-sys-command 61728)
-      (run-with-idle-timer 0.1 nil 'zz/smp-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'my-sub-fullscreen)))
 
-(defun zz/smp-fullscreen ()
+(defun my-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND maximaze #xf030
 	  (w32-send-sys-command 61488)
-      (run-with-idle-timer 0.1 nil 'zz/smp-sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'my-sub-fullscreen)))
 
-(defun zz/smp-toggle-fullscreen ()
+(defun my-toggle-fullscreen ()
   (interactive)
-  (setq zz/smp-fullscreen-p (not zz/smp-fullscreen-p))
-  (if zz/smp-fullscreen-p
-	  (zz/smp-non-fullscreen)
-	(zz/smp-fullscreen)))
+  (setq my-fullscreen-p (not my-fullscreen-p))
+  (if my-fullscreen-p
+	  (my-non-fullscreen)
+	(my-fullscreen)))
 
-(defvar zz/smp-maxframe-p t "Check if maxframe is on or off")
-(defun zz/smp-toggle-maxframe ()
+(defvar my-maxframe-p t "Check if maxframe is on or off")
+(defun my-toggle-maxframe ()
   (interactive)
-  (setq zz/smp-maxframe-p (not zz/smp-maxframe-p))
-  (if zz/smp-maxframe-p
+  (setq my-maxframe-p (not my-maxframe-p))
+  (if my-maxframe-p
 	  (restore-frame)
 	(maximize-frame)))
 
 ;;display current buffer name
-(defun zz/smp-display-buffer-name ()
+(defun display-buffer-name ()
   (interactive)
   (message (buffer-file-name (current-buffer))))
 
 ;;set file to utf-8
-(defun zz/smp-utf-8 ()
+(defun my-utf-8 ()
   (interactive)
   (set-buffer-file-coding-system 'utf-8)
   (save-buffer)
   (message "this file to utf-8 ok!"))
 
-(defun zz/smp-switch-to-scratch ()
+(defun switch-to-scratch ()
   "switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun zz/smp-switch-to-compilation ()
+(defun switch-to-compilation ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun zz/smp-edit-with-gvim()
+(defun edit-with-gvim()
   "Edit current buffer file with gvim"
   (interactive)
   (start-process  "gvim"
@@ -121,7 +121,7 @@
                   (display-buffer-name)))
 
 
-(defun zz/smp-open-with-terminal()
+(defun open-with-terminal()
   "Open terminal to current dired"
   (interactive)
   (start-process  "gnome-terminal"
@@ -130,7 +130,7 @@
                   ""
                   ))
 
-(defun zz/smp-open-with-nautilus()
+(defun open-with-nautilus()
   "Open nautilus on current dired"
   (interactive)
   (start-process  "nautilus"
@@ -141,28 +141,28 @@
                   ))
 
 ;;go to last buffer
-(defun zz/smp-last-buffer-go ()
+(defun my-last-buffer-go ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
-(defun zz/smp-line-to-top-of-window ()
+(defun line-to-top-of-window ()
     (interactive)
     (recenter 0))
 
 ;; used in my ion C-F2 key binding. run before shutting down X!
-(defun zz/smp-delete-all-x-frames ()
+(defun delete-all-x-frames ()
   (mapcar (lambda (frame) (if (eq 'x (frame-live-p frame))
                               (delete-frame frame)))
           (frame-list)))
 
-(defun zz/smp-make-frames ()
+(defun make-my-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary")))
   )
 
 ;;file transform
-(defun zz/smp-dos2unix (buffer)
+(defun my-dos2unix (buffer)
   "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
@@ -170,18 +170,18 @@
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
 
-(defun zz/smp-dos2unix ()
+(defun dos2unix ()
   "Automate M-% C-q C-m RET RET !"
   (interactive)
   (set-buffer-file-coding-system 'unix))
 
-(defun zz/smp-unix2dos ()
+(defun unix2dos ()
   "Automate M-% C-q C-j RET C-q C-m C-q C-j RET !"
   (interactive)
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun zz/smp-occur (&optional arg)
+(defun my-occur (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.
@@ -194,11 +194,11 @@
              (if (listp arg) 0 arg))))
 
 ;;emacs with sudo
-(defun zz/smp-sudo-find-file (file dir)
+(defun zz-sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
 ;;open special info file
-(defun zz/smp-info-open-file (dir-name)
+(defun zz-info-open-file (dir-name)
   "Create tags file."
   (interactive "FInfo file: ")
   (info dir-name))

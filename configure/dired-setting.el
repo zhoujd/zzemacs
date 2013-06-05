@@ -48,7 +48,7 @@
 ))
 
 ;;dir first
-(defun zz/other-dired-sort ()
+(defun sof/dired-sort ()
   "Dired sort hook to list directories first."
   (save-excursion
     (let (buffer-read-only)
@@ -58,7 +58,7 @@
        (fboundp 'dired-insert-set-properties)
        (dired-insert-set-properties (point-min) (point-max)))
   (set-buffer-modified-p nil))
-(add-hook 'dired-after-readin-hook 'zz/other-dired-sort)
+(add-hook 'dired-after-readin-hook 'sof/dired-sort)
 
 
 ;;      过滤文件

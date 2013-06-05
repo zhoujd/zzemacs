@@ -16,7 +16,7 @@
 ;(add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
-(defun zz/cmn-set-language-chinese ()
+(defun my-set-language-chinese ()
   "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
@@ -24,7 +24,7 @@
   (message "This is for chinese"))
 
 ;; -*- Japanese -*-
-(defun zz/cmn-set-language-japanese ()
+(defun my-set-language-japanese ()
   "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
@@ -32,7 +32,7 @@
   (message "This is for japanese"))
 
 ;; -*- utf-8 -*-
-(defun zz/cmn-set-language-utf-8 ()
+(defun my-set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
@@ -42,22 +42,22 @@
 ;; -*- Language switch -*-
 (cond
   ((string-match "j[ap].*" (getenv "LANG"))
-   (zz/cmn-set-language-japanese))
+   (my-set-language-japanese))
   ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
-   (zz/cmn-set-language-chinese))
-  (t (zz/cmn-set-language-utf-8)))
+   (my-set-language-chinese))
+  (t (my-set-language-utf-8)))
 
 ;;font setting
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(defun zz/cmn-cn-font-name (name)
+(defun my-cn-font-name (name)
   (string-match ".*[ ]" name)
-  (setq zz/cmn-cn-name (substring (match-string 0 name) 0 -1)))
-(defun zz/cmn-cn-font-size (name)
+  (setq my-cn-name (substring (match-string 0 name) 0 -1)))
+(defun my-cn-font-size (name)
   (string-to-number (car (last (split-string name)))))
 
-(defun zz/cmn-frame-font (font-en-name font-cn-name)
+(defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute
@@ -66,18 +66,18 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family (zz/cmn-cn-font-name font-cn-name)
-                                 :size   (zz/cmn-cn-font-size font-cn-name)))))
+                      (font-spec :family (my-cn-font-name font-cn-name)
+                                 :size   (my-cn-font-size font-cn-name)))))
 
-(defun zz/cmn-console-font (font-console-name)
+(defun my-console-font (font-console-name)
   "my console font setting"
   (progn
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
 (if window-system
-    (zz/cmn-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
-    (zz/cmn-console-font (nth 1 cn-font-list)))
+    (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
+    (my-console-font (nth 1 cn-font-list)))
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
@@ -178,7 +178,7 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun zz/cmn-insert-time-stamp ()
+(defun insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
@@ -377,7 +377,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun zz/cmn-undo-kill-buffer (arg)
+(defun undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -393,7 +393,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun zz/cmn-recentf-open-files-compl ()
+(defun recentf-open-files-compl ()
    (interactive)
    (let* ((all-files recentf-list)
      (tocpl (mapcar (function 
@@ -410,7 +410,7 @@
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 ;;manpath
-(defun zz/cmn-woman-at-point ()
+(defun my-woman-at-point ()
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))

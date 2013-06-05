@@ -9,21 +9,21 @@
 ;;M-f1/f12 -- f3 -f1/f12
 
 ;;use keymaps control flag
-(defvar use-graph-keymap-p window-system "use console keymap setting")
+(defvar zz/key-use-graph-keymap-p window-system "use console keymap setting")
 
-(defun show-keymap-select ()
-  (if use-graph-keymap-p
+(defun zz/key-show-keymap-select ()
+  (if zz/key-use-graph-keymap-p
       (message "switch to graph keymap")
       (message "switch to console keymap")))
 
-(defun switch-to-keymap ()
+(defun zz/key-switch-to-keymap ()
   (interactive)
-  (setq use-graph-keymap-p (not use-graph-keymap-p))
+  (setq zz/key-use-graph-keymap-p (not zz/key-use-graph-keymap-p))
   (zz-load-configure "key-setting.el")
-  (show-keymap-select))
+  (zz/key-show-keymap-select))
 
 ;;define new keymap for terminal
-(unless use-graph-keymap-p
+(unless zz/key-use-graph-keymap-p
   ;;f2 key map
   (defvar f2-map (make-sparse-keymap) "f2 <=> control.")
   (define-key global-map [f2] f2-map)  
@@ -59,7 +59,7 @@
 
 ;;for keymap switch
 (when window-system
-  (global-set-key (kbd "<f4> `") 'switch-to-keymap))
+  (global-set-key (kbd "<f4> `") 'zz/key-switch-to-keymap))
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  
@@ -72,7 +72,7 @@
                 (lambda () (interactive) (switch-to-shell "*shell-f12*")))
 
 ;;for info
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key [C-f1]    'session-save)
       (global-set-key [M-f1]    'session-restore)
@@ -82,7 +82,7 @@
       (global-set-key (kbd "<f3> <f1>")   'session-restore)
       ))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f2]    'bc-next)
       (global-set-key [S-f2]    'bc-previous)
@@ -94,7 +94,7 @@
       (global-set-key (kbd "<f2> <f2>")   'bc-set)
       (global-set-key (kbd "<f3> <f2>")   'bc-list)))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f3]    'zz/smp-last-buffer-go)
       (global-set-key [S-f3]    'list-bookmarks)
@@ -111,23 +111,23 @@
 (global-set-key (kbd "C-x <f3>") 'zz/samp-occur)
 (global-set-key (kbd "C-c <f3>") 'zz/cmn-woman-at-point)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
-      (global-set-key [S-f4]    'undo-kill-buffer)
+      (global-set-key [S-f4]    'zz/cmn-undo-kill-buffer)
       (global-set-key [C-f4]    'highlight-symbol-next)
       (global-set-key [M-f4]    'highlight-symbol-prev)
       )
     (progn
-      (global-set-key (kbd "<f1> <f4>")   'undo-kill-buffer)
+      (global-set-key (kbd "<f1> <f4>")   'zz/cmn-undo-kill-buffer)
       (global-set-key (kbd "<f2> <f4>")   'highlight-symbol-next)
       (global-set-key (kbd "<f3> <f4>")   'highlight-symbol-prev)
       ))
 
 (global-set-key (kbd "<f4> <f4>")  'kill-this-buffer)
 (global-set-key (kbd "C-x  <f4>")  'recentf-open-files)
-(global-set-key (kbd "C-c  <f4>")  'recentf-open-files-compl)
+(global-set-key (kbd "C-c  <f4>")  'zz/cmn-recentf-open-files-compl)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f5]    'speedbar-get-focus)
       (global-set-key [S-f5]    'sr-speedbar-toggle)
@@ -139,7 +139,7 @@
       (global-set-key (kbd "<f2> <f5>")   'line-to-top-of-window)
       (global-set-key (kbd "<f3> <f5>")   'etags-stack-show)))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (if (or (eq window-system 'w32)
               (eq window-system 'win32))
@@ -167,7 +167,7 @@
       (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
       ))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f7]    'compile)
       (global-set-key [S-f7]    'switch-to-compilation)
@@ -179,7 +179,7 @@
       (global-set-key (kbd "<f2> <f7>")   'next-error)
       (global-set-key (kbd "<f3> <f7>")   'previous-error)))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f8]    'gdb)
       (global-set-key [S-f8]    'gud-kill)
@@ -194,7 +194,7 @@
 (global-set-key (kbd "C-x <f8>")  'gdb-use-separate-io)
 (global-set-key (kbd "C-c <f8>")  'gud-tooltip-mode)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f9]    'shell)
       (global-set-key [S-f9]    'multi-shell-new)
@@ -211,7 +211,7 @@
 (global-set-key (kbd "C-x <f9>")  'switch-to-shell)
 (global-set-key (kbd "C-c <f9>")  'eshell)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key [S-f10]   'tool-bar-mode)
       (global-set-key [C-f10]   'zz/smp-toggle-maxframe)
@@ -224,7 +224,7 @@
 (global-set-key (kbd "C-x <f10>")  'scroll-bar-mode)
 (global-set-key (kbd "C-c <f10>")  'tabbar-mode)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key   [f11]   'linum-mode)
       (global-set-key [S-f11]   'fci-mode)
@@ -236,7 +236,7 @@
       (global-set-key (kbd "<f2> <f11>")   'hl-line-mode)
       (global-set-key (kbd "<f3> <f11>")   'blank-mode)))
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key [f12]     'find-grep)
       (global-set-key [S-f12]   'rgrep)
@@ -266,7 +266,7 @@
 (global-set-key (kbd "M-9")    'gud-print)
 (global-set-key (kbd "M-0")    'other-window)
 
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (global-set-key (kbd "C-`") 'imenu)
       (global-set-key (kbd "C-1") 'delete-window)
@@ -352,7 +352,7 @@
   (define-key f4-map (kbd "C-t") 'open-with-terminal))
 
 ;;undo/redo
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (define-key global-map (kbd "C--") 'undo)
       (define-key global-map (kbd "C-=") 'redo))
@@ -362,7 +362,7 @@
     )
 
 ;;winner restore
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (define-key global-map (kbd "C-,") 'winner-undo)
       (define-key global-map (kbd "C-.") 'winner-redo))
@@ -372,7 +372,7 @@
     )
 
 ;;quick move other windows
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (define-key global-map [M-up]    'windmove-up)
       (define-key global-map [M-down]  'windmove-down)
@@ -386,13 +386,13 @@
     )
 
 ;;for mark
-(unless use-graph-keymap-p
+(unless zz/key-use-graph-keymap-p
   (define-key f2-map (kbd "<SPC>") 'set-mark-command)
   )
 
 ;;;f3-map setting
 ;;window size change
-(if use-graph-keymap-p
+(if zz/key-use-graph-keymap-p
     (progn
       (define-key global-map [S-up]    'enlarge-window)
       (define-key global-map [S-down]  'shrink-window)

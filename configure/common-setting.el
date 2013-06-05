@@ -178,7 +178,7 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun insert-time-stamp ()
+(defun zz/cmn-insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
@@ -377,7 +377,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun undo-kill-buffer (arg)
+(defun zz/cmn-undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -393,7 +393,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun recentf-open-files-compl ()
+(defun zz/cmn-recentf-open-files-compl ()
    (interactive)
    (let* ((all-files recentf-list)
      (tocpl (mapcar (function 

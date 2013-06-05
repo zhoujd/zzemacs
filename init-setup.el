@@ -69,7 +69,7 @@
 
 (defun zz-setup-third-party ()
   "setup third partys"
-  (let ((third-setup-name "setup.el"))
+  (let ((third-setup-name (format "%s/third-party/setup.el" zz-home-path)))
     (if (file-exists-p third-setup-name)
         (load third-setup-name)
         (message "setup third party %s does not exist" third-setup-name))))

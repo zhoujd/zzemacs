@@ -4,12 +4,8 @@
 ;;$cd <init-setup.el>
 ;;$emacs --script init-setup.el
 
-(message "hello, zzemacs")
-
-;;check os type
-(if (eq system-type 'windows-nt)
-    (message "emacs run on windows")
-    (message "emacs run on un*x"))
+(message "zzemacs setup script start ...")
+(message "zzemacs run on %s" system-type)
 
 (defun zz-create-file (fpath content)
   "Process the file at path FPATH ..."
@@ -77,6 +73,9 @@
 (zz-setup-dotemacs)
 (zz-setup-font)
 (zz-setup-third-party)
+
+
+(message "zzemacs setup script end ...")
 
 (provide 'init-setup)
 ;;;;init-setup.el is end

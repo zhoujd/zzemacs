@@ -1,6 +1,9 @@
 ;;;; shell-setting.el --- sample config file
 ;;;
 
+;;;For shell ls color on folder
+;;export LS_COLORS='di=1'
+
 ;;shell settting
 (custom-set-variables
  '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom

@@ -406,6 +406,9 @@
       (define-key f2-map [left]  'shrink-window-horizontally))
     )
 
+;;set apps do M+x
+(define-key global-map  [apps]  'execute-extended-command)
+
 (provide 'key-setting)
 
 ;;; key-setting.el ends here

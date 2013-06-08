@@ -2,7 +2,8 @@
 ;;
 
 ;;tell me if there's something wrong
-;(toggle-debug-on-error t) 
+;(setq debug-on-error t) ;; goes into debug mode on errors
+;(setq debug-on-quit t)  ;; goes into debug mode when C-g is entered
 
 (zz-load-path "site-lisp")
 
@@ -425,6 +426,11 @@
 ;(setq resize-mini-windows nil)
 ;(setq default-line-spacing 0)
 
+;; set the mouse scroll wheel to move 1 line per event
+(setq mouse-wheel-scroll-amount '(1))
+
+;;when deleted a file goes to the OS's trash folder:
+(setq delete-by-moving-to-trash t)
 
 (provide 'common-setting)
 

@@ -203,6 +203,19 @@
   (interactive "FInfo file: ")
   (info dir-name))
 
+(defun my-insert-numbers (arg)
+  "insert number into a file, starting with 1   -mdf"
+  (interactive "NHow many numbers to insert: ")
+  (setq i 0)
+  (while (< i arg)
+    (setq i (1+ i))
+    (insert (int-to-string i))
+	(backward-char 1)
+    (next-line 2)
+    (beginning-of-line 0)
+    )
+  )
+
 
 (provide 'sample-setting)
 

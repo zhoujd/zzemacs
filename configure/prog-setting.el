@@ -86,16 +86,15 @@
       )
     (progn
       ;; Disable cedet inside emacs
-      (if (or (eq window-system 'w32)
-              (eq window-system 'win32))
-          (progn
-            (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
-                                            emacs-major-version emacs-minor-version) load-path)))
-          (progn
-            (setq load-path (remove "/usr/share/emacs/cedet" load-path))
-            (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
-                                            emacs-major-version emacs-minor-version)
-                                    load-path))))
+      (if-ms-windows
+       (progn
+         (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
+                                         emacs-major-version emacs-minor-version) load-path)))
+       (progn
+         (setq load-path (remove "/usr/share/emacs/cedet" load-path))
+         (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
+                                         emacs-major-version emacs-minor-version)
+                                 load-path))))
       
       (setq byte-compile-warnings nil)
       (zz-load-path "site-lisp/cedet/common")
@@ -439,8 +438,8 @@ the mru bookmark stack."
 ;;A word for WinDbg
 ;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
 ;;http://www.windbg.org/
-(when (or (eq window-system 'w32) (eq window-system 'win32))
-  (load-library "cdb-gud.el"))
+(when-ms-windows  
+ (load-library "cdb-gud.el"))
 
 (provide 'prog-setting)
 

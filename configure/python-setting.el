@@ -23,9 +23,8 @@
 
 ;;sudo apt-get install ipython
 ;;git clone https://github.com/ipython/ipython.git
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32))
-  (setq ipython-command "/usr/bin/ipython"))
+(unless-ms-windows  
+ (setq ipython-command "/usr/bin/ipython"))
 (setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
 

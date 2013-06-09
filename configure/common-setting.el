@@ -18,11 +18,19 @@
 
 (defmacro unless-ms-windows (&rest body)
   `(unless ,(or (eq window-system 'w32) (eq window-system 'win32))
-       ,@body))
+     ,@body))
 
 (defmacro when-ms-windows (&rest body)
   `(when ,(or (eq window-system 'w32) (eq window-system 'win32))
-       ,@body))
+     ,@body))
+
+(defmacro if-ms-windows (if-cause &optional else-cause)
+  `(if ,(or (eq window-system 'w32) (eq window-system 'win32))
+       ,if-cause ,else-cause))
+
+(defmacro if-not-ms-windows (if-cause &optional else-cause)
+  `(if ,(not (or (eq window-system 'w32) (eq window-system 'win32)))
+       ,if-cause ,else-cause))
 
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()
@@ -93,13 +101,12 @@
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
 (defvar server-directory-name "~/.emacs.d/server")
-(if (eq system-type 'windows-nt)
+(when-ms-windows    
     (when (not (file-directory-p server-directory-name))
       (make-directory server-directory-name)))
 
 (require 'server)
-(when (and (>= emacs-major-version 23)
-           (or (eq window-system 'w32) (eq window-system 'win32)))
+(when-ms-windows  
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
                                                  ; ~/.emacs.d/server is unsafe"
                                                  ; on windows.
@@ -194,8 +201,7 @@
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
 ;;ftp client
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
+(when-ms-windows    
     (setq ange-ftp-ftp-program-name "ftp.exe"))
 
 ;;mouset avoidance
@@ -378,7 +384,7 @@
       recentf-max-menu-items      30      
       )
 
-(unless (or (eq window-system 'w32) (eq window-system 'win32))
+(unless-ms-windows  
   (setq recentf-exclude '("/tmp/" "/ssh:")))
 
 (recentf-mode t)
@@ -427,8 +433,7 @@
 ;;do not open new frame
 (setq woman-use-own-frame nil)
 
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32))
+(unless-ms-windows  
   (setq woman-manpath (quote ("/usr/share/man"))))
 
 ;(setq resize-mini-windows nil)

@@ -141,23 +141,22 @@
 
 (if use-graph-keymap-p
     (progn
-      (if (or (eq window-system 'w32)
-              (eq window-system 'win32))
-          (progn ;; For Windows
-            (global-set-key   [f6]   'multi-shell-new)
-            (global-set-key [S-f6]   'multi-shell-current-directory)
-            (global-set-key [C-f6]   'multi-shell-next)
-            (global-set-key [M-f6]   'multi-shell-prev)
-            (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
-            )   
-          (progn ;; For Linux
-            (global-set-key   [f6]   'get-term)
-            (global-set-key [S-f6]   'multi-term-dedicated-toggle)
-            (global-set-key [C-f6]   'multi-term-next)
-            (global-set-key [M-f6]   'multi-term-prev)
-            (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
-            (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
-            )))
+      (if-ms-windows          
+       (progn ;; For Windows
+         (global-set-key   [f6]   'multi-shell-new)
+         (global-set-key [S-f6]   'multi-shell-current-directory)
+         (global-set-key [C-f6]   'multi-shell-next)
+         (global-set-key [M-f6]   'multi-shell-prev)
+         (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
+         )   
+       (progn ;; For Linux
+         (global-set-key   [f6]   'get-term)
+         (global-set-key [S-f6]   'multi-term-dedicated-toggle)
+         (global-set-key [C-f6]   'multi-term-next)
+         (global-set-key [M-f6]   'multi-term-prev)
+         (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
+         (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
+         )))
     (progn   
       (define-key esc-map   [f6]         'get-term)
       (global-set-key (kbd "<f1> <f6>")  'multi-term-dedicated-toggle)
@@ -329,14 +328,13 @@
 (global-set-key (kbd "M-]") 'tabbar-forward)
 (global-set-key (kbd "M-[") 'tabbar-backward)
 
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (progn ;; For Windows
-      (global-set-key [C-wheel-up]   'text-scale-increase)
-      (global-set-key [C-wheel-down] 'text-scale-decrease))
-    (progn ;; For Linux
-      (global-set-key [C-mouse-4] 'text-scale-increase)
-      (global-set-key [C-mouse-5] 'text-scale-decrease)))
+(if-ms-windows    
+ (progn ;; For Windows
+   (global-set-key [C-wheel-up]   'text-scale-increase)
+   (global-set-key [C-wheel-down] 'text-scale-decrease))
+ (progn ;; For Linux
+   (global-set-key [C-mouse-4] 'text-scale-increase)
+   (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
@@ -347,10 +345,9 @@
 
 
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32))
-  (define-key f4-map (kbd "C-d") 'open-with-nautilus)
-  (define-key f4-map (kbd "C-t") 'open-with-terminal))
+(unless-ms-windows  
+ (define-key f4-map (kbd "C-d") 'open-with-nautilus)
+ (define-key f4-map (kbd "C-t") 'open-with-terminal))
 
 ;;undo/redo
 (if use-graph-keymap-p

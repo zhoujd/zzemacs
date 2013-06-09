@@ -77,7 +77,7 @@ Dmitriy Igrishin's patched version of comint.el."
        (setq w32-quote-process-args ?\"))))
 
 ;;popup term
-(when-ms-windows    
+(if-ms-windows    
  (setq popup-terminal-command '("cmd" "/c" "start"))
  (setq popup-terminal-command '("gnome-terminal")))
 

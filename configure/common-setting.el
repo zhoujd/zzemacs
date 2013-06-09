@@ -99,8 +99,8 @@
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
 (defvar server-directory-name "~/.emacs.d/server")
 (when-ms-windows    
-    (when (not (file-directory-p server-directory-name))
-      (make-directory server-directory-name)))
+ (when (not (file-directory-p server-directory-name))
+   (make-directory server-directory-name)))
 
 (require 'server)
 (when-ms-windows  
@@ -199,7 +199,7 @@
 
 ;;ftp client
 (when-ms-windows    
-    (setq ange-ftp-ftp-program-name "ftp.exe"))
+ (setq ange-ftp-ftp-program-name "ftp.exe"))
 
 ;;mouset avoidance
 ;(mouse-avoidance-mode 'animate)

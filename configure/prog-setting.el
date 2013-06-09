@@ -438,6 +438,7 @@ the mru bookmark stack."
 ;;http://www.microsoft.com/whdc/devtools/debugging/default.mspx
 ;;A word for WinDbg
 ;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
+;;http://www.windbg.org/
 (when (or (eq window-system 'w32) (eq window-system 'win32))
   (load-library "cdb-gud.el"))
 

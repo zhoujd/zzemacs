@@ -16,6 +16,14 @@
 ;(set-frame-parameter (selected-frame) 'alpha '(95 70))
 ;(add-to-list 'default-frame-alist '(alpha 95 70))
 
+(defmacro unless-ms-windows (&rest body)
+  `(unless ,(or (eq window-system 'w32) (eq window-system 'win32))
+       ,@body))
+
+(defmacro when-ms-windows (&rest body)
+  `(when ,(or (eq window-system 'w32) (eq window-system 'win32))
+       ,@body))
+
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()
   "This is for chinese setting"

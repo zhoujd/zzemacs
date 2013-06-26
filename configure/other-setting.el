@@ -281,7 +281,7 @@ Emacs buffer are those starting with “*”."
 ;;win32 find grep set
 (when-ms-windows    
  (progn
-   (setq find-program "\"find.exe\"")
+   (setq find-program "\"find2.exe\"")
    (setq grep-program "\"grep.exe\"")))
 
 (fset 'rm 'delete-file)

@@ -24,7 +24,7 @@
 (zz-load-path "configure")
 (mapcar '(lambda (setting)
           (require setting)
-          (message "load %s end ..." setting))
+          (message "Load %s end ..." setting))
         '(
           common-setting
           dired-setting
@@ -42,7 +42,7 @@
           csharp-setting
           php-setting
           muse-setting
-          key-setting
+          key-setting          
           ))
 
 ;;develop setting for tags path etc.

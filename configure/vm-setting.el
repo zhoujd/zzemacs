@@ -4,14 +4,14 @@
 ;;;Check your Linux distribution's available packages to see if it can be installed via rpm, apt-get, or whatever tool is appropriate.
 ;;;sudo apt-get install vm
 
-(unless (or (eq window-system 'w32) (eq window-system 'win32))
-    (autoload 'vm "vm" "Start VM on your primary inbox." t)
-    (autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)
-    (autoload 'vm-visit-folder "vm" "Start VM on an arbitrary folder." t)
-    (autoload 'vm-visit-virtual-folder "vm" "Visit a VM virtual folder." t)
-    (autoload 'vm-mode "vm" "Run VM major mode on a buffer" t)
-    (autoload 'vm-mail "vm" "Send a mail message using VM." t)
-    (autoload 'vm-submit-bug-report "vm" "Send a bug report about VM." t))
+(unless-ms-windows  
+ (autoload 'vm "vm" "Start VM on your primary inbox." t)
+ (autoload 'vm-other-frame "vm" "Like `vm' but starts in another frame." t)
+ (autoload 'vm-visit-folder "vm" "Start VM on an arbitrary folder." t)
+ (autoload 'vm-visit-virtual-folder "vm" "Visit a VM virtual folder." t)
+ (autoload 'vm-mode "vm" "Run VM major mode on a buffer" t)
+ (autoload 'vm-mail "vm" "Send a mail message using VM." t)
+ (autoload 'vm-submit-bug-report "vm" "Send a bug report about VM." t))
 
 (setq user-full-name "Your Full Name"
       mail-from-style 'angles

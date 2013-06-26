@@ -19,8 +19,26 @@
 (pymacs-load "ropemacs" "rope-") 
 (setq ropemacs-enable-autoimport t)
 
-
 (require 'pycomplete)
+
+;;sudo apt-get install ipython
+;;git clone https://github.com/ipython/ipython.git
+(unless-ms-windows  
+ (setq ipython-command "/usr/bin/ipython"))
+(setq-default py-python-command-args '("--colors=Linux"))
+(require 'ipython)
+
+
+;;sudo apt-get install pydb
+;;http://sourceforge.net/projects/bashdb/
+;;https://github.com/rocky/pydb.git
+(zz-load-path "site-lisp/pydb")
+(require 'pydb)
+(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
+
+;;scons file setting
+(setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
 
 (provide 'python-setting)
 

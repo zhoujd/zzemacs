@@ -1,6 +1,9 @@
 ;;;; shell-setting.el --- sample config file
 ;;;
 
+;;;For shell ls color on folder
+;;export LS_COLORS='di=1'
+
 ;;shell settting
 (custom-set-variables
  '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
@@ -62,22 +65,21 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
 
 ;;windows shell setting
-(if (or (eq window-system 'w32) (eq window-system 'win32))
-    (progn 
-      ;;set current shell
-      (setq shell-file-name "bash")
-      (setq shell-command-switch "-c")
-      (setq explicit-shell-file-name shell-file-name)
-      (setenv "SHELL" shell-file-name)
-      (setq explicit-sh-args '("--login" "-i"))
-      (if (boundp 'w32-quote-process-args)
-          (setq w32-quote-process-args ?\"))))
+(when-ms-windows    
+ (progn 
+   ;;set current shell
+   (setq shell-file-name "bash")
+   (setq shell-command-switch "-c")
+   (setq explicit-shell-file-name shell-file-name)
+   (setenv "SHELL" shell-file-name)
+   (setq explicit-sh-args '("--login" "-i"))
+   (if (boundp 'w32-quote-process-args)
+       (setq w32-quote-process-args ?\"))))
 
 ;;popup term
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (setq popup-terminal-command '("cmd" "/c" "start"))
-    (setq popup-terminal-command '("gnome-terminal")))
+(if-ms-windows    
+ (setq popup-terminal-command '("cmd" "/c" "start"))
+ (setq popup-terminal-command '("gnome-terminal")))
 
 (defun popup-term ()
   (interactive)
@@ -87,13 +89,12 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32)) 
-  (require 'multi-term)
-  (setq multi-term-switch-after-close nil)
-  (setq multi-term-dedicated-select-after-open-p t)
-  (setq multi-term-program "/bin/bash")
-  (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
+(unless-ms-windows  
+ (require 'multi-term)
+ (setq multi-term-switch-after-close nil)
+ (setq multi-term-dedicated-select-after-open-p t)
+ (setq multi-term-program "/bin/bash")
+ (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
 
 (defun term-send-esc ()
   "Send ESC in term mode."
@@ -214,19 +215,19 @@ Dmitriy Igrishin's patched version of comint.el."
           'comint-strip-ctrl-m)
 
 ;;readline complete
-(unless (or (eq window-system 'w32) (eq window-system 'win32))
-  ;;shell completion
-  (require 'shell-completion)
-
-  (setq explicit-shell-file-name "bash")
-  (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
-  (setq comint-process-echoes nil)
-
-  (require 'readline-complete)
-
-  (add-to-list 'ac-modes 'shell-mode)
-  (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
-  )
+(unless-ms-windows  
+ ;;shell completion
+ (require 'shell-completion)
+ 
+ (setq explicit-shell-file-name "bash")
+ (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+ (setq comint-process-echoes nil)
+ 
+ (require 'readline-complete)
+ 
+ (add-to-list 'ac-modes 'shell-mode)
+ (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+ )
 
 ;;eshell setting
 (setq eshell-prompt-function

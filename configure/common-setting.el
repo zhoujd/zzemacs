@@ -2,7 +2,8 @@
 ;;
 
 ;;tell me if there's something wrong
-;(toggle-debug-on-error t) 
+;(setq debug-on-error t) ;; goes into debug mode on errors
+;(setq debug-on-quit t)  ;; goes into debug mode when C-g is entered
 
 (zz-load-path "site-lisp")
 
@@ -14,6 +15,19 @@
 ;;the current frame to make it transparent
 ;(set-frame-parameter (selected-frame) 'alpha '(95 70))
 ;(add-to-list 'default-frame-alist '(alpha 95 70))
+
+(defmacro if-ms-windows (if-cause &optional else-cause)
+  `(if ,(or (eq window-system 'w32) (eq window-system 'win32))
+       ,if-cause ,else-cause))
+
+(defmacro if-not-ms-windows (if-cause &optional else-cause)
+  `(if-ms-windows ,else-cause ,if-cause))
+
+(defmacro unless-ms-windows (&rest body)
+  `(if-not-ms-windows (progn ,@body)))
+
+(defmacro when-ms-windows (&rest body)
+  `(if-ms-windows (progn ,@body)))
 
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()
@@ -49,49 +63,45 @@
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
 
-(setq my-font-en-name (nth 0 en-font-list))
-(setq my-font-cn-name (nth 1 cn-font-list))
+(defun my-cn-font-name (name)
+  (string-match ".*[ ]" name)
+  (setq my-cn-name (substring (match-string 0 name) 0 -1)))
+(defun my-cn-font-size (name)
+  (string-to-number (car (last (split-string name)))))
 
-(defun my-cn-font-name ()
-  (string-match ".*[ ]" my-font-cn-name)
-  (setq my-cn-name (substring (match-string 0 my-font-cn-name) 0 -1)))
-
-(defun my-cn-font-size ()
-  (string-to-number (car (last (split-string my-font-cn-name)))))
-
-(defun my-frame-font ()
+(defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute
-   'default nil :font my-font-en-name)
+   'default nil :font font-en-name)
   ;; Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family (my-cn-font-name)
-                                 :size   (my-cn-font-size)))))
+                      (font-spec :family (my-cn-font-name font-cn-name)
+                                 :size   (my-cn-font-size font-cn-name)))))
 
-(setq my-font-console-name (nth 1 cn-font-list))
-(defun my-console-font ()
+(defun my-console-font (font-console-name)
   "my console font setting"
   (progn
     (add-to-list 'default-frame-alist
-                 '(font . my-font-console-name))))
+                 '(font . font-console-name))))
 
-(if window-system (my-frame-font) (my-console-font))
+(if window-system
+    (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
+    (my-console-font (nth 1 cn-font-list)))
 
 ;;server-mode
 ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
 ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
 ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
 (defvar server-directory-name "~/.emacs.d/server")
-(if (eq system-type 'windows-nt)
-    (when (not (file-directory-p server-directory-name))
-      (make-directory server-directory-name)))
+(when-ms-windows    
+ (when (not (file-directory-p server-directory-name))
+   (make-directory server-directory-name)))
 
 (require 'server)
-(when (and (>= emacs-major-version 23)
-           (or (eq window-system 'w32) (eq window-system 'win32)))
+(when-ms-windows  
   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
                                                  ; ~/.emacs.d/server is unsafe"
                                                  ; on windows.
@@ -186,9 +196,8 @@
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
 ;;ftp client
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (setq ange-ftp-ftp-program-name "ftp.exe"))
+(when-ms-windows    
+ (setq ange-ftp-ftp-program-name "ftp.exe"))
 
 ;;mouset avoidance
 ;(mouse-avoidance-mode 'animate)
@@ -370,7 +379,7 @@
       recentf-max-menu-items      30      
       )
 
-(unless (or (eq window-system 'w32) (eq window-system 'win32))
+(unless-ms-windows  
   (setq recentf-exclude '("/tmp/" "/ssh:")))
 
 (recentf-mode t)
@@ -419,13 +428,17 @@
 ;;do not open new frame
 (setq woman-use-own-frame nil)
 
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32))
+(unless-ms-windows  
   (setq woman-manpath (quote ("/usr/share/man"))))
 
 ;(setq resize-mini-windows nil)
 ;(setq default-line-spacing 0)
 
+;; set the mouse scroll wheel to move 1 line per event
+(setq mouse-wheel-scroll-amount '(1))
+
+;;when deleted a file goes to the OS's trash folder:
+(setq delete-by-moving-to-trash t)
 
 (provide 'common-setting)
 

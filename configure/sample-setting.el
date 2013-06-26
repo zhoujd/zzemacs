@@ -193,8 +193,29 @@
       (occur (completing-read "Search Term: " nil nil nil (thing-at-point 'word))
              (if (listp arg) 0 arg))))
 
+;;emacs with sudo
 (defun zz-sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
+
+;;open special info file
+(defun zz-info-open-file (dir-name)
+  "Create tags file."
+  (interactive "FInfo file: ")
+  (info dir-name))
+
+(defun my-insert-numbers (arg)
+  "insert number into a file, starting with 1   -mdf"
+  (interactive "NHow many numbers to insert: ")
+  (setq i 0)
+  (while (< i arg)
+    (setq i (1+ i))
+    (insert (int-to-string i))
+	(backward-char 1)
+    (next-line 2)
+    (beginning-of-line 0)
+    )
+  )
+
 
 (provide 'sample-setting)
 

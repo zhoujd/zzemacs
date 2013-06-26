@@ -1,18 +1,8 @@
 1. Quicklisp makes it easy to get started with a rich set of community-developed Common Lisp libraries. 
 $ curl -O http://beta.quicklisp.org/quicklisp.lisp
-$ sbcl --load quicklisp.lisp
-This is SBCL 1.0.42.52, an implementation of ANSI Common Lisp.
-More information about SBCL is available at <http://www.sbcl.org/>.
 
-SBCL is free software, provided as is, with absolutely no warranty.
-It is mostly in the public domain; some portions are provided under
-BSD-style licenses.  See the CREDITS and COPYING files in the
-distribution for more information.
-
-  ==== quicklisp quickstart loaded ====
-
-    To continue, evaluate: (quicklisp-quickstart:install)
-
+* (load "quicklisp")
+* (setq quicklisp-quickstart:*proxy-url* "http://host:port")
 * (quicklisp-quickstart:install)
 * (ql:system-apropos "vecto")
 * (ql:quickload "vecto")
@@ -33,4 +23,23 @@ $ buildapp \
     --output hello-world
 $ ./hello-world
 Hello, world
+
+3. Getting started with ASDF
+http://common-lisp.net/~mmommer/asdf-howto.shtml
+
+(require :asdf)
+(setf asdf:*central-registry*
+      ;; Default directories, usually just the ``current directory''
+      '(*default-pathname-defaults*
+
+        ;; Additional places where ASDF can find
+        ;; system definition files
+        #p"/home/zhoujd/lisp/systems/"
+        #p"/usr/share/common-lisp/systems/"))
+
+4. Some lisp git repo
+git clone https://github.com/sbcl/sbcl.git
+git clone https://github.com/feeley/gambit.git 
+git clone http://git.code.sf.net/p/ecls/ecl ecls-ecl
+git clone http://git.code.sf.net/p/ecls/ecl-doc ecls-ecl-doc
 

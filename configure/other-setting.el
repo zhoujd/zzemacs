@@ -229,11 +229,9 @@ Emacs buffer are those starting with “*”."
 
 ;;tramp setting
 (require 'tramp)
-(cond ((or (eq window-system 'w32)
-           (eq window-system 'win32))
-       (setq tramp-default-method "scpx"))
-      (t
-       (setq tramp-default-method "sshx")))
+(if-ms-windows       
+ (setq tramp-default-method "scpx")
+ (setq tramp-default-method "sshx"))
 
 ;;https://github.com/nonsequitur/smex/
 ;(require 'smex)  
@@ -262,8 +260,7 @@ Emacs buffer are those starting with “*”."
 (require 'breadcrumb)
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
-(when (or (eq window-system 'w32)
-          (eq window-system 'win32))
+(when-ms-windows  
   (require 'w32-browser)
   (eval-after-load "dired"
     '(define-key dired-mode-map [C-f4] (lambda ()
@@ -282,11 +279,10 @@ Emacs buffer are those starting with “*”."
 (ad-activate 'ibuffer)
 
 ;;win32 find grep set
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (progn
-      (setq find-program "\"find.exe\"")
-      (setq grep-program "\"grep.exe\"")))
+(when-ms-windows    
+ (progn
+   (setq find-program "\"find.exe\"")
+   (setq grep-program "\"grep.exe\"")))
 
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)

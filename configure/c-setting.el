@@ -7,6 +7,7 @@
 (c-set-offset 'friend '-)
 (c-set-offset 'substatement-open 0)
 
+;;win32->http://sourceforge.net/project/showfiles.php?group_id=196604
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 
@@ -37,47 +38,46 @@
 ;(require 'auto-complete-clang)
 
 ;;;; Include settings
-(if (not (or (eq window-system 'w32)
-             (eq window-system 'win32)))
-    (progn
-      (if use-cedet-inside-flag
-          (progn
-            (require 'semantic/bovine/gcc)
-            (require 'semantic/bovine/c)          
-            )
-          (progn
-            (zz-load-path "site-lisp/cedet/semantic/bovine")
-            (require 'semantic-gcc)
-            (eval-after-load "semantic-c"
-              '(dolist (d (list
-                           "/usr/include"
-                           "/usr/local/include"
-                           ))
-                (semantic-add-system-include d)))
-            ))
-
-      (defconst cedet-user-include-dirs
-        (list ".." "../include" "../inc" "../common" "../public" "."
-              "../.." "../../include" "../../inc" "../../common" "../../public"))
-
-      (setq cedet-sys-include-dirs (list
-                                    "/usr/include"
-                                    "/usr/include/bits"
-                                    "/usr/include/glib-2.0"
-                                    "/usr/include/gnu"
-                                    "/usr/include/gtk-2.0"
-                                    "/usr/include/gtk-2.0/gdk-pixbuf"
-                                    "/usr/include/gtk-2.0/gtk"
-                                    "/usr/local/include"))
-
-      (let ((include-dirs cedet-user-include-dirs))
-        (setq include-dirs (append include-dirs cedet-sys-include-dirs))
-        (mapc (lambda (dir)
-                (semantic-add-system-include dir 'c++-mode)
-                (semantic-add-system-include dir 'c-mode))
-              include-dirs))
-
-      (setq semantic-c-dependency-system-include-path "/usr/include/")))
+(unless-ms-windows    
+ (progn
+   (if use-cedet-inside-flag
+       (progn
+         (require 'semantic/bovine/gcc)
+         (require 'semantic/bovine/c)          
+         )
+       (progn
+         (zz-load-path "site-lisp/cedet/semantic/bovine")
+         (require 'semantic-gcc)
+         (eval-after-load "semantic-c"
+           '(dolist (d (list
+                        "/usr/include"
+                        "/usr/local/include"
+                        ))
+             (semantic-add-system-include d)))
+         ))
+   
+   (defconst cedet-user-include-dirs
+     (list ".." "../include" "../inc" "../common" "../public" "."
+           "../.." "../../include" "../../inc" "../../common" "../../public"))
+   
+   (setq cedet-sys-include-dirs (list
+                                 "/usr/include"
+                                 "/usr/include/bits"
+                                 "/usr/include/glib-2.0"
+                                 "/usr/include/gnu"
+                                 "/usr/include/gtk-2.0"
+                                 "/usr/include/gtk-2.0/gdk-pixbuf"
+                                 "/usr/include/gtk-2.0/gtk"
+                                 "/usr/local/include"))
+   
+   (let ((include-dirs cedet-user-include-dirs))
+     (setq include-dirs (append include-dirs cedet-sys-include-dirs))
+     (mapc (lambda (dir)
+             (semantic-add-system-include dir 'c++-mode)
+             (semantic-add-system-include dir 'c-mode))
+           include-dirs))
+   
+   (setq semantic-c-dependency-system-include-path "/usr/include/")))
 
 ;;; my c setting hook
 (defun my-c-mode-common-hook()

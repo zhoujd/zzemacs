@@ -12,6 +12,7 @@ case "$answer" in
         sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
         sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core
+        sudo apt-get install -y gitk
 esac
 
 # setup git configure

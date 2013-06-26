@@ -86,16 +86,15 @@
       )
     (progn
       ;; Disable cedet inside emacs
-      (if (or (eq window-system 'w32)
-              (eq window-system 'win32))
-          (progn
-            (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
-                                            emacs-major-version emacs-minor-version) load-path)))
-          (progn
-            (setq load-path (remove "/usr/share/emacs/cedet" load-path))
-            (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
-                                            emacs-major-version emacs-minor-version)
-                                    load-path))))
+      (if-ms-windows
+       (progn
+         (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
+                                         emacs-major-version emacs-minor-version) load-path)))
+       (progn
+         (setq load-path (remove "/usr/share/emacs/cedet" load-path))
+         (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
+                                         emacs-major-version emacs-minor-version)
+                                 load-path))))
       
       (setq byte-compile-warnings nil)
       (zz-load-path "site-lisp/cedet/common")
@@ -432,6 +431,15 @@ the mru bookmark stack."
 ;;xmsi-mode for inputting math (Unicode) symbols.
 (require 'xmsi-math-symbols-input)
 (xmsi-mode t)
+
+;;for cdb.exe debug on windows
+;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1
+;;http://www.microsoft.com/whdc/devtools/debugging/default.mspx
+;;A word for WinDbg
+;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
+;;http://www.windbg.org/
+(when-ms-windows  
+ (load-library "cdb-gud.el"))
 
 (provide 'prog-setting)
 

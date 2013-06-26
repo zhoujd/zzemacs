@@ -26,7 +26,7 @@
 (define-key evil-normal-state-map (kbd "M-f") 'dired)
 (define-key evil-normal-state-map (kbd "C-w") 'delete-trailing-whitespace)
 (define-key evil-normal-state-map (kbd "M-j") 'evil-window-next)
-(define-key evil-normal-state-map (kbd "M-.") 'my-find-tag)
+(define-key evil-normal-state-map (kbd "M-.") 'find-tag)
 (define-key evil-normal-state-map (kbd "C-w") 'delete-trailing-whitespace)
 (define-key evil-normal-state-map (kbd "C-SPC") 'comment-or-uncomment-region-or-line)
 (define-key evil-normal-state-map (kbd "M-k") 'cycle-buffer)

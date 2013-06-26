@@ -25,25 +25,37 @@
 ;;define new keymap for terminal
 (unless use-graph-keymap-p
   ;;f2 key map
-  (defvar f2-map (make-sparse-keymap) "Keymap for self related commands.")
+  (defvar f2-map (make-sparse-keymap) "f2 <=> control.")
   (define-key global-map [f2] f2-map)  
   ;;f3 key map
-  (defvar f3-map (make-sparse-keymap) "Keymap for self related commands.")
+  (defvar f3-map (make-sparse-keymap) "f3 <=> alt.")
   (define-key global-map [f3] f3-map)
   )
 
 ;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4] f4-map)
 (define-key esc-map    [f4] f4-map)
 
 ;;f4-esc key map 
-(defvar f4-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+(defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
-;;f1-esc key map 
-(defvar f1-esc-map (make-sparse-keymap) "Keymap for self related commands.")
+;;f4-e key map 
+(defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
+(define-key f4-map "e" f4-e-map)
+
+;;f1-esc key map for help using
+(defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
 (define-key help-map [escape] f1-esc-map)
+
+;;f1-esc key map for help using
+(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
+(define-key help-map (kbd "`") f1-backquote-map)
+
+(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
+(define-key f1-backquote-map (kbd "i") 'info)
+(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
 
 ;;for keymap switch
 (when window-system
@@ -129,23 +141,22 @@
 
 (if use-graph-keymap-p
     (progn
-      (if (or (eq window-system 'w32)
-              (eq window-system 'win32))
-          (progn ;; For Windows
-            (global-set-key   [f6]   'multi-shell-new)
-            (global-set-key [S-f6]   'multi-shell-current-directory)
-            (global-set-key [C-f6]   'multi-shell-next)
-            (global-set-key [M-f6]   'multi-shell-prev)
-            (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
-            )   
-          (progn ;; For Linux
-            (global-set-key   [f6]   'get-term)
-            (global-set-key [S-f6]   'multi-term-dedicated-toggle)
-            (global-set-key [C-f6]   'multi-term-next)
-            (global-set-key [M-f6]   'multi-term-prev)
-            (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
-            (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
-            )))
+      (if-ms-windows          
+       (progn ;; For Windows
+         (global-set-key   [f6]   'multi-shell-new)
+         (global-set-key [S-f6]   'multi-shell-current-directory)
+         (global-set-key [C-f6]   'multi-shell-next)
+         (global-set-key [M-f6]   'multi-shell-prev)
+         (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
+         )   
+       (progn ;; For Linux
+         (global-set-key   [f6]   'get-term)
+         (global-set-key [S-f6]   'multi-term-dedicated-toggle)
+         (global-set-key [C-f6]   'multi-term-next)
+         (global-set-key [M-f6]   'multi-term-prev)
+         (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
+         (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
+         )))
     (progn   
       (define-key esc-map   [f6]         'get-term)
       (global-set-key (kbd "<f1> <f6>")  'multi-term-dedicated-toggle)
@@ -237,6 +248,7 @@
       (global-set-key (kbd "<f3> <f12>") 'my-c-rgrep)
       ))
 
+
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
@@ -283,7 +295,6 @@
     )
 
 ;;f1 1,2,3,4 for highlight-symbol
-(global-set-key (kbd "<f1> `") 'info)
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f1> 2") 'highlight-symbol-remove-all)
 (global-set-key (kbd "<f1> 3") 'highlight-symbol-query-replace)
@@ -317,14 +328,13 @@
 (global-set-key (kbd "M-]") 'tabbar-forward)
 (global-set-key (kbd "M-[") 'tabbar-backward)
 
-(if (or (eq window-system 'w32)
-        (eq window-system 'win32))
-    (progn ;; For Windows
-      (global-set-key [C-wheel-up]   'text-scale-increase)
-      (global-set-key [C-wheel-down] 'text-scale-decrease))
-    (progn ;; For Linux
-      (global-set-key [C-mouse-4] 'text-scale-increase)
-      (global-set-key [C-mouse-5] 'text-scale-decrease)))
+(if-ms-windows    
+ (progn ;; For Windows
+   (global-set-key [C-wheel-up]   'text-scale-increase)
+   (global-set-key [C-wheel-down] 'text-scale-decrease))
+ (progn ;; For Linux
+   (global-set-key [C-mouse-4] 'text-scale-increase)
+   (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab.
 (global-set-key [C-tab] "\C-q\t")
@@ -332,11 +342,12 @@
 
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)
+
+
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
-(unless (or (eq window-system 'w32)
-            (eq window-system 'win32))
-  (define-key f4-map (kbd "C-d") 'open-with-nautilus)
-  (define-key f4-map (kbd "C-t") 'open-with-terminal))
+(unless-ms-windows  
+ (define-key f4-map (kbd "C-d") 'open-with-nautilus)
+ (define-key f4-map (kbd "C-t") 'open-with-terminal))
 
 ;;undo/redo
 (if use-graph-keymap-p
@@ -391,6 +402,9 @@
       (define-key f2-map [right] 'enlarge-window-horizontally)
       (define-key f2-map [left]  'shrink-window-horizontally))
     )
+
+;;set apps do M+x
+(define-key global-map  [apps]  'execute-extended-command)
 
 (provide 'key-setting)
 

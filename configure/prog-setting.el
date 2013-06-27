@@ -441,6 +441,14 @@ the mru bookmark stack."
 (when-ms-windows  
  (load-library "cdb-gud.el"))
 
+;;cmake file support
+(require 'cmake-mode)
+(setq auto-mode-alist
+      (append '(("CMakeLists\\.txt\\'" . cmake-mode)
+                ("\\.cmake\\'" . cmake-mode))
+              auto-mode-alist))
+
+
 (provide 'prog-setting)
 
 ;;; c-setting.el ends here

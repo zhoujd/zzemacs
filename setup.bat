@@ -1,7 +1,7 @@
 @echo off
 echo setup to %OS% start ...
 set MYCFG_PATH="%APPDATA%\.emacs"
-set MYHOME="d:/develop/znix/home/zhoujd"
+set MYHOME="d:/develop/zznix/home/zhoujd"
 
 if exist %MYCFG_PATH% del %MYCFG_PATH%
 

@@ -8,9 +8,9 @@
 
 (setq slime-lisp-implementations
       '(
+        (ecl   ("ecl"))
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
         (clisp ("clisp"))
-        (ecl   ("ecl"))
         ))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
@@ -19,6 +19,9 @@
 (require 'slime)
 (slime-setup '(slime-fancy))
 (slime-setup '(slime-repl))
+
+;;reset slime temp directory
+(setq temporary-file-directory "tmp")
 
 ;;set slime coding
 (setq slime-net-coding-system 'utf-8-unix)

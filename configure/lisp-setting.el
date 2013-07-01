@@ -16,12 +16,12 @@
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 ;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system
 
+;;reset slime temp directory
+(setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))
+
 (require 'slime)
 (slime-setup '(slime-fancy))
 (slime-setup '(slime-repl))
-
-;;reset slime temp directory
-(setq temporary-file-directory "../../tmp")
 
 ;;set slime coding
 (setq slime-net-coding-system 'utf-8-unix)

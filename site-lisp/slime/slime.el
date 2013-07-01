@@ -9365,7 +9365,7 @@ If they are not, position point at the first syntax error found."
   (defvar temporary-file-directory
     (file-name-as-directory
      (cond ((memq system-type '(ms-dos windows-nt))
-            (or "c:/temp" (getenv "TEMP") (getenv "TMPDIR") (getenv "TMP") ))
+            (or (getenv "TEMP") (getenv "TMPDIR") (getenv "TMP") "c:/temp"))
            ((memq system-type '(vax-vms axp-vms))
             (or (getenv "TMPDIR") (getenv "TMP") 
                 (getenv "TEMP") "SYS$SCRATCH:"))

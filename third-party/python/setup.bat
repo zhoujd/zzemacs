@@ -1,7 +1,7 @@
 @echo off
 
-set CURRENT_ROOT="D:\develop\zznix\home\zhoujd\zzemacs\third-party\python"
-set PYTHON_LIB_ROOT="D:\develop\Python27\Lib\site-packages"
+set CURRENT_ROOT="C:\zznix\home\zhoujd\zzemacs\third-party\python"
+set PYTHON_LIB_ROOT="C:\Python27\Lib\site-packages"
 
 echo for python develop start ...
 

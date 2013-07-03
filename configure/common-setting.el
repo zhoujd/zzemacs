@@ -438,7 +438,7 @@
 (setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
-(setq delete-by-moving-to-trash t)
+;(setq delete-by-moving-to-trash t)
 
 (provide 'common-setting)
 

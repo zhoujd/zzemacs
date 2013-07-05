@@ -8,9 +8,9 @@
 
 (setq slime-lisp-implementations
       '(
+        (ecl   ("ecl"))
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
         (clisp ("clisp"))
-        (ecl   ("ecl"))
         ))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system

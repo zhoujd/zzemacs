@@ -43,3 +43,7 @@ git clone https://github.com/feeley/gambit.git
 git clone http://git.code.sf.net/p/ecls/ecl ecls-ecl
 git clone http://git.code.sf.net/p/ecls/ecl-doc ecls-ecl-doc
 
+5. Some lisp url
+http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/prebuilt/
+http://sourceforge.net/projects/ecls/?source=directory
+

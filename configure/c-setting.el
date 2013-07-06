@@ -79,6 +79,29 @@
    
    (setq semantic-c-dependency-system-include-path "/usr/include/")))
 
+;;c/c++ code style
+(c-add-style "my-coding-style"
+             '( "k&r"
+               (c-basic-offset . 4)
+               (indent-tabs-mode . nil)
+               (tab-width . 4)
+               (c-comment-only-line-offset . 0)
+               (c-hanging-braces-alist
+                (brace-list-open)
+                (brace-entry-open)
+                (substatement-open after)
+                (block-close . c-snug-do-while)
+                (arglist-cont-nonempty))
+               (c-cleanup-list brace-else-brace)
+               (c-offsets-alist
+                (statement-block-intro . +)
+                (knr-argdecl-intro . 0)
+                (substatement-open . 0)
+                (substatement-label . 0)
+                (label . 0)
+                (statement-cont . +))
+               ))
+
 ;;; my c setting hook
 (defun my-c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)

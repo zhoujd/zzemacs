@@ -91,27 +91,45 @@
     (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
     (my-console-font (nth 1 cn-font-list)))
 
-;;server-mode
-;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
-;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
-;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
-(defvar server-directory-name "~/.emacs.d/server")
-(when-ms-windows    
- (when (not (file-directory-p server-directory-name))
-   (make-directory server-directory-name)))
+(defun my-use-server-mode ()
+  ;;server-mode
+  ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
+  ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
+  ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
+  (defvar server-directory-name "~/.emacs.d/server")
+  (when-ms-windows    
+   (when (not (file-directory-p server-directory-name))
+     (make-directory server-directory-name)))
+  
+  (require 'server)
+  (when-ms-windows  
+   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
+                                        ; ~/.emacs.d/server is unsafe"
+                                        ; on windows.
+  (unless (server-running-p)
+    (server-start))
+  
+  (add-hook 'kill-emacs-hook
+            (lambda()
+              (if (file-exists-p  (concat server-directory-name "/server"))
+                  (delete-file (concat server-directory-name "/server"))))))
 
-(require 'server)
-(when-ms-windows  
-  (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
-                                                 ; ~/.emacs.d/server is unsafe"
-                                                 ; on windows.
-(unless (server-running-p)
-  (server-start))
+(defun my-use-gnusvr ()
+  ;; start gnuserv on Windows 
+  (progn 
+    (require 'gnuserv) 
+    (setq server-done-function 'bury-buffer gnuserv-frame (car (frame-list))) 
+    (gnuserv-start) 
+      ;;; open buffer in existing frame instead of creating new one... 
+    (setq gnuserv-frame (selected-frame)) 
+    (message "gnuserv started."))) 
 
-(add-hook 'kill-emacs-hook
-          (lambda()
-            (if (file-exists-p  (concat server-directory-name "/server"))
-                (delete-file (concat server-directory-name "/server")))))
+(if-ms-windows
+ (let ((use-gnusvr-flag t))
+   (if use-gnusvr-flag
+       (my-use-gnusvr)
+       (my-use-server-mode)))
+ (my-use-server-mode))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

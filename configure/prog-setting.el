@@ -440,6 +440,7 @@ the mru bookmark stack."
 ;;http://www.windbg.org/
 ;;command line: "windbg.exe" -y "Debug;for-windbg\Debug" -srcpath "for-windbg" Debug\for-windbg.exe
 ;;start folder: D:\work\for-windbg
+;;Symbol Server (Microsoft): srv*c:\mss*http://msdl.microsoft.com/download/symbols
 (when-ms-windows  
  (load-library "cdb-gud.el"))
 

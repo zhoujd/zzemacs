@@ -438,6 +438,8 @@ the mru bookmark stack."
 ;;A word for WinDbg
 ;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
 ;;http://www.windbg.org/
+;;command line: "windbg.exe" -y "Debug;for-windbg\Debug" -srcpath "for-windbg" Debug\for-windbg.exe
+;;start folder: D:\work\for-windbg
 (when-ms-windows  
  (load-library "cdb-gud.el"))
 

@@ -59,7 +59,7 @@
   (add-hook hook (function newline-indents)))
 
 ;;;cedet version flag t for inside
-(setq use-cedet-inside-flag t)
+(setq use-cedet-inside-flag nil)
 (if use-cedet-inside-flag
     (progn
       ;;auto complete

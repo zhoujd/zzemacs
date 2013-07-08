@@ -6,6 +6,13 @@
 (autoload 'common-lisp-indent-function "cl-indent")
 (setq lisp-indent-function 'common-lisp-indent-function)
 
+;;add common lisp configure file mode alias
+(setq auto-mode-alist
+   (append
+    (list (cons "\\.sbclrc$" 'lisp-mode))  ;;sbcl configure file
+    (list (cons "\\.eclrc$"  'lisp-mode))  ;;ecl configure file
+    auto-mode-alist))
+
 (setq slime-lisp-implementations
       '(
         (ecl   ("ecl"))

@@ -109,9 +109,9 @@
   (server-start))
 
 (add-hook 'kill-emacs-hook
-      (lambda()
-        (if (file-exists-p  (concat server-directory-name "/server"))
-        (delete-file (concat server-directory-name "/server")))))
+          (lambda()
+            (if (file-exists-p  (concat server-directory-name "/server"))
+                (delete-file (concat server-directory-name "/server")))))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")

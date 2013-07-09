@@ -87,6 +87,15 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (apply 'start-process "terminal" nil popup-terminal-command))
 
+;;visual stadio prompt
+(when-ms-windows
+ (defun popup-vs-prompt-x86 ()
+   (interactive)
+   (apply 'start-process "terminal" nil '("cmd" "/c" "start" "vcvarsall" "x86")))
+ (defun popup-vs-prompt-x64 ()
+   (interactive)
+   (apply 'start-process "terminal" nil '("cmd" "/c" "start" "vcvarsall" "x64"))))
+
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
 ;;http://www.emacswiki.org/emacs/MultiTerm

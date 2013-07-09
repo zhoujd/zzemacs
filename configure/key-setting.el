@@ -57,6 +57,11 @@
 (define-key f1-backquote-map (kbd "i") 'info)
 (define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
 
+;;f4-e-map
+(when-ms-windows
+ (define-key f4-e-map (kbd "1") 'popup-vs-prompt-x86)
+ (define-key f4-e-map (kbd "2") 'popup-vs-prompt-x64))
+
 ;;for keymap switch
 (when window-system
   (global-set-key (kbd "<f4> `") 'switch-to-keymap))

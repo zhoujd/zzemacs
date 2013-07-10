@@ -303,8 +303,8 @@ the mru bookmark stack."
 ;              ))
 
 (defun gen-etags-cmd (dir-name)
-  (format "%s %s -type f \\( %s \\) -print | etags -" find-program
-          dir-name (gen-find-parts my-find-regex)))
+  (format "%s %s -type f \\( %s \\) -print | etags -"
+          find-program dir-name (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -317,8 +317,8 @@ the mru bookmark stack."
 ; cscope -bq -i ./csope.files
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "%s %s -type f \\( %s \\) -print > %s/cscope.files;" find-program
-           dir-name (gen-find-parts my-find-regex)  default-directory)
+   (format "%s %s -type f \\( %s \\) -print > %s/cscope.files;"
+           find-program dir-name (gen-find-parts my-find-regex)  default-directory)
    (format "cscope -b -R -q -i %s/cscope.files" default-directory)
    ))
 

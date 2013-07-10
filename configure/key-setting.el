@@ -45,6 +45,10 @@
 (defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
 (define-key f4-map "e" f4-e-map)
 
+;;f4-p key map 
+(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
+(define-key f4-map "p" f4-p-map)
+
 ;;f1-esc key map for help using
 (defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
 (define-key help-map [escape] f1-esc-map)
@@ -73,6 +77,11 @@
   (lambda ()
     (interactive)
     (apply 'start-process "firefox" nil '("firefox"))))
+
+(define-key f4-e-map (kbd "b")
+  (lambda ()
+    (interactive)
+    (apply 'start-process "beyond-compare" nil '("bcompare"))))
 
 ;;for keymap switch
 (when window-system

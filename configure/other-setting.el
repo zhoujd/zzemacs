@@ -278,12 +278,6 @@ Emacs buffer are those starting with “*”."
              (ibuffer-jump-to-buffer recent-buffer-name)))
 (ad-activate 'ibuffer)
 
-;;win32 find grep set
-(when-ms-windows    
- (progn
-   (setq find-program "\"find2.exe\"")
-   (setq grep-program "\"grep.exe\"")))
-
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)
 (fset 'cp 'copy-file)

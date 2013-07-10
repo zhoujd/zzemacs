@@ -26,6 +26,12 @@
 
 (zz-load-path "site-lisp")
 
+;;win32 find grep set
+(when-ms-windows    
+ (progn
+   (setq find-program "\"find2.exe\"")
+   (setq grep-program "\"grep.exe\"")))
+
 ;; holding
 (require 'hideshow)
 (dolist (hook
@@ -297,7 +303,7 @@ the mru bookmark stack."
 ;              ))
 
 (defun gen-etags-cmd (dir-name)
-  (format "find %s -type f \\( %s \\) -print | etags -"
+  (format "%s %s -type f \\( %s \\) -print | etags -" find-program
           dir-name (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
@@ -311,7 +317,7 @@ the mru bookmark stack."
 ; cscope -bq -i ./csope.files
 (defun gen-cscope-cmd (dir-name)
   (concat
-   (format "find %s -type f \\( %s \\) -print > %s/cscope.files;"
+   (format "%s %s -type f \\( %s \\) -print > %s/cscope.files;" find-program
            dir-name (gen-find-parts my-find-regex)  default-directory)
    (format "cscope -b -R -q -i %s/cscope.files" default-directory)
    ))

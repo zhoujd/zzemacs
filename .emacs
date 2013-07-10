@@ -27,6 +27,7 @@
           (message "Load %s end ..." setting))
         '(
           common-setting
+          env-setting
           dired-setting
           prog-setting
           other-setting

@@ -59,8 +59,20 @@
 
 ;;f4-e-map
 (when-ms-windows
- (define-key f4-e-map (kbd "1") 'popup-vs-prompt-x86)
- (define-key f4-e-map (kbd "2") 'popup-vs-prompt-x64))
+ (define-key f4-e-map (kbd "1")
+   (lambda ()
+     (interactive)
+     (apply 'start-process "vs-x86-prompt" nil '("cmd" "/c" "start" "vcvarsall" "x86"))))
+
+ (define-key f4-e-map (kbd "2")
+   (lambda ()
+     (interactive)
+     (apply 'start-process "vs-x64-prompt" nil '("cmd" "/c" "start" "vcvarsall" "x64")))))
+
+(define-key f4-e-map (kbd "f")
+  (lambda ()
+    (interactive)
+    (apply 'start-process "firefox" nil '("firefox"))))
 
 ;;for keymap switch
 (when window-system

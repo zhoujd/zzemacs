@@ -216,6 +216,12 @@
     )
   )
 
+(defun my-unix-path-to-dos (path)
+  (let ((tmp ""))
+    (dolist (item (split-string path "/"))
+      (setq tmp (concat tmp item "\\")))
+    (setq tmp (substring tmp 0 -2))
+    tmp))
 
 (provide 'sample-setting)
 

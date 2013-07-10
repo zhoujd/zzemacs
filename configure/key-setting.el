@@ -368,12 +368,17 @@
 
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)
-
-
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
 (unless-ms-windows  
  (define-key f4-map (kbd "C-d") 'open-with-nautilus)
  (define-key f4-map (kbd "C-t") 'open-with-terminal))
+
+(when-ms-windows
+ (define-key f4-map (kbd "C-d")
+   (lambda ()
+     (interactive)
+     (apply 'start-process "explorer" nil
+            (list "explorer" (my-unix-path-to-dos default-directory))))))
 
 ;;undo/redo
 (if use-graph-keymap-p

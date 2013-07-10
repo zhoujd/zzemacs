@@ -2,13 +2,14 @@
 ;;
 
 ;;add path for excute files
-(if-ms-windows
+(when-ms-windows
+ (setq my-env-path '(
+                     "C:/Program Files (x86)/Mozilla Firefox/"
+                     )))
+(unless-ms-windows
  (setq my-env-path '(
                      ""
-                     ))
- (setq my-env-path '(
-                     ""
-                     ))
+                     )))
 
 (mapcar 'zz-add-os-path my-env-path)
 

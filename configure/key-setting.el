@@ -57,31 +57,22 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
+;;marcro for start-process
+(defmacro execute-set-key (key-map key name args)
+  `(define-key ,key-map (kbd ,key)
+     (lambda ()
+       (interactive)
+       (apply 'start-process ,name nil ,args))))
+
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
 (define-key f1-backquote-map (kbd "i") 'info)
 (define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
 
-;;f4-e-map
-(when-ms-windows
- (define-key f4-e-map (kbd "1")
-   (lambda ()
-     (interactive)
-     (apply 'start-process "vs-x86-prompt" nil '("cmd" "/c" "start" "vcvarsall" "x86"))))
-
- (define-key f4-e-map (kbd "2")
-   (lambda ()
-     (interactive)
-     (apply 'start-process "vs-x64-prompt" nil '("cmd" "/c" "start" "vcvarsall" "x64")))))
-
-(define-key f4-e-map (kbd "f")
-  (lambda ()
-    (interactive)
-    (apply 'start-process "firefox" nil '("firefox"))))
-
-(define-key f4-e-map (kbd "b")
-  (lambda ()
-    (interactive)
-    (apply 'start-process "beyond-compare" nil '("bcompare"))))
+;;execute start-process key
+(execute-set-key f4-e-map "1" "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
+(execute-set-key f4-e-map "2" "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64"))
+(execute-set-key f4-e-map "f" "firefox"       '("firefox" "http://www.baidu.com"))
+(execute-set-key f4-e-map "b" "bcompare"      '("bcompare"))
 
 ;;for keymap switch
 (when window-system

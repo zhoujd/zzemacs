@@ -58,9 +58,6 @@
 (zz-load-path "site-lisp/geiser/elisp")
 (require 'geiser)
 (setq geiser-active-implementations '(racket))
-(unless-ms-windows  
- (zz-add-os-path "/usr/racket/bin")
- (zz-add-os-path "/usr/local/Gambit-C/bin/"))
 
 ;;Gambit-C
 (autoload 'gambit-inferior-mode "gambit" "Hook Gambit mode into cmuscheme.")

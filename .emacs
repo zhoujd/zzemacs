@@ -5,8 +5,9 @@
 
 (defun zz-add-os-path (path)
   (interactive "DDirectory: ")
-  (setenv "PATH" (concat path path-separator (getenv "PATH")))
-  (setq exec-path (cons path exec-path)))
+  (when (file-exists-p path)
+    (setenv "PATH" (concat path path-separator (getenv "PATH")))
+    (setq exec-path (cons path exec-path))))
 
 (defun zz-load-path (path)
   "my add to list"
@@ -20,7 +21,6 @@
   "my load configure file"
   (load-file (concat zzemacs-path "configure/" file)))
 
-(zz-add-os-path (concat zzemacs-path "bin"))
 (zz-load-path "configure")
 (mapcar '(lambda (setting)
           (require setting)

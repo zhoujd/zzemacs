@@ -94,8 +94,7 @@
       ;; Disable cedet inside emacs
       (if-ms-windows
        (progn
-         (setq load-path (remove (format "d:/develop/emacs-%s.%s/lisp/cedet"
-                                         emacs-major-version emacs-minor-version) load-path)))
+         (setq load-path (remove (format "%s/lisp/cedet" (getenv "EMACS_DIR")) load-path)))
        (progn
          (setq load-path (remove "/usr/share/emacs/cedet" load-path))
          (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"

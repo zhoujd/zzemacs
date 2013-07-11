@@ -216,10 +216,10 @@
     )
   )
 
-(defun my-unix-path-to-dos (path)
+(defun my-trans-path-sep (path origin-sep target-sep)
   (let ((tmp ""))
-    (dolist (item (split-string path "/"))
-      (setq tmp (concat tmp item "\\")))
+    (dolist (item (split-string path origin-sep))
+      (setq tmp (concat tmp item target-sep)))
     (setq tmp (substring tmp 0 -2))
     tmp))
 

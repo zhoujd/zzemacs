@@ -365,11 +365,7 @@
  (define-key f4-map (kbd "C-t") 'open-with-terminal))
 
 (when-ms-windows
- (define-key f4-map (kbd "C-d")
-   (lambda ()
-     (interactive)
-     (apply 'start-process "explorer" nil
-            (list "explorer" (my-unix-path-to-dos default-directory))))))
+ (execute-set-key f4-map "C-d" "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\"))))
 
 ;;undo/redo
 (if use-graph-keymap-p

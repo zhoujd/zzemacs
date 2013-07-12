@@ -212,13 +212,13 @@
 
 (if use-graph-keymap-p
     (progn
-      (global-set-key   [f9]    'shell)
+      (global-set-key   [f9]    (lambda () (interactive) (start-shell "*shell*")))
       (global-set-key [S-f9]    'multi-shell-new)
       (global-set-key [C-f9]    'switch-to-scratch)
       (global-set-key [M-f9]    'popup-term)
       )
     (progn   
-      (define-key esc-map   [f9]          'shell)
+      (define-key esc-map   [f9]          (lambda () (interactive) (start-shell "*shell*")))
       (global-set-key (kbd "<f1> <f9>")   'multi-shell-new)
       (global-set-key (kbd "<f2> <f9>")   'switch-to-scratch)
       (global-set-key (kbd "<f3> <f9>")   'popup-term)

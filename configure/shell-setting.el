@@ -65,18 +65,18 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
 
 ;;windows shell setting
-(when-ms-windows    
- (progn 
-   ;;set current shell
-   (setq shell-file-name "bash")
-   (setq shell-command-switch "-c")
-   (setq explicit-shell-file-name shell-file-name)
-   (setenv "SHELL" shell-file-name)
-   (setenv "PS1" "\\033[32m\\]\\u@\\h \\[\\033[33m\\w\\033[0m\\]$ ")
-   (setenv "LS_COLORS" "di=1")
-   (setq explicit-sh-args '("--login" "-i"))
-   (if (boundp 'w32-quote-process-args)
-       (setq w32-quote-process-args ?\"))))
+;(when-ms-windows    
+; (progn 
+;   ;;set current shell
+;   (setq shell-file-name "bash")
+;   (setq shell-command-switch "-c")
+;   (setq explicit-shell-file-name shell-file-name)
+;   (setenv "SHELL" shell-file-name)
+;   (setenv "PS1" "\\033[32m\\]\\u@\\h \\[\\033[33m\\w\\033[0m\\]$ ")
+;   (setenv "LS_COLORS" "di=1")
+;   (setq explicit-sh-args '("--login" "-i"))
+;   (if (boundp 'w32-quote-process-args)
+;       (setq w32-quote-process-args ?\"))))
 
 ;;popup term
 (if-ms-windows    
@@ -89,6 +89,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
+
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
 (unless-ms-windows  

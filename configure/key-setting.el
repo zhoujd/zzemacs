@@ -80,7 +80,14 @@
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")  
-                (lambda () (interactive) (switch-to-shell "*shell-f9*")))
+                (lambda ()
+                  (interactive)
+                  (let ((temp explicit-shell-file-name))
+                    (setq explicit-shell-file-name "bash")
+                    (setq explicit-sh-args '("--login" "-i"))
+                    (switch-to-shell "*shell-f9*")
+                    (setq explicit-shell-file-name temp)
+                    )))
 (global-set-key (kbd "<f4> <f10>")    
                 (lambda () (interactive) (switch-to-shell "*shell-f10*")))
 (global-set-key (kbd "<f4> <f11>")  

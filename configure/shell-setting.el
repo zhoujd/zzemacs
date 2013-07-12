@@ -78,6 +78,21 @@ Dmitriy Igrishin's patched version of comint.el."
 ;   (if (boundp 'w32-quote-process-args)
 ;       (setq w32-quote-process-args ?\"))))
 
+(defun start-shell (buf-name)
+  (interactive)
+  (let ((temp explicit-shell-file-name)
+        (lang current-language-environment))
+    (if-ms-windows
+     (progn
+       (setq explicit-shell-file-name "bash")
+       (setq explicit-sh-args '("--login" "-i"))
+       (set-language-environment 'utf-8)
+       (switch-to-shell buf-name)
+       (setq explicit-shell-file-name temp)
+       (set-language-environment lang))
+     (progn
+       (switch-to-shell buf-name)))))
+
 ;;popup term
 (if-ms-windows    
  (setq popup-terminal-command '("cmd" "/c" "start"))

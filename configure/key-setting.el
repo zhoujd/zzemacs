@@ -79,24 +79,14 @@
   (global-set-key (kbd "<f4> `") 'switch-to-keymap))
 
 ;;switch to shells
-(global-set-key (kbd "<f4> <f9>")  
-                (lambda ()
-                  (interactive)
-                  (let ((temp explicit-shell-file-name)
-                        (lang current-language-environment))
-                    (setq explicit-shell-file-name "bash")
-                    (setq explicit-sh-args '("--login" "-i"))
-                    (set-language-environment 'utf-8)
-                    (switch-to-shell "*shell-f9*")
-                    (setq explicit-shell-file-name temp)
-                    (set-language-environment lang)
-                    )))
+(global-set-key (kbd "<f4> <f9>")    
+                (lambda () (interactive) (start-shell "*shell-f9*")))
 (global-set-key (kbd "<f4> <f10>")    
-                (lambda () (interactive) (switch-to-shell "*shell-f10*")))
+                (lambda () (interactive) (start-shell "*shell-f10*")))
 (global-set-key (kbd "<f4> <f11>")  
-                (lambda () (interactive) (switch-to-shell "*shell-f11*")))
+                (lambda () (interactive) (start-shell "*shell-f11*")))
 (global-set-key (kbd "<f4> <f12>")  
-                (lambda () (interactive) (switch-to-shell "*shell-f12*")))
+                (lambda () (interactive) (start-shell "*shell-f12*")))
 
 ;;for info
 (if use-graph-keymap-p

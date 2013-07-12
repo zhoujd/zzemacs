@@ -275,7 +275,10 @@
 (global-set-key (kbd "M-3")    'tabbar-forward-group)
 (global-set-key (kbd "M-4")    'kill-this-buffer)
 ;;gud control setting
-(global-set-key (kbd "M-5")    'gud-go)
+(if-ms-windows
+ (global-set-key (kbd "M-5")   'gud-cont)
+ (global-set-key (kbd "M-5")   'gud-go))
+
 (global-set-key (kbd "M-6")    'gud-break-remove)
 (global-set-key (kbd "M-7")    'gud-next)
 (global-set-key (kbd "M-8")    'gud-step)

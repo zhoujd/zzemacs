@@ -80,7 +80,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun start-shell (buf-name)
   (interactive)
-  (let ((temp explicit-shell-file-name)
+  (let ((sh explicit-shell-file-name)
         (lang current-language-environment))
     (if-ms-windows
      (progn
@@ -88,7 +88,7 @@ Dmitriy Igrishin's patched version of comint.el."
        (setq explicit-sh-args '("--login" "-i"))
        (set-language-environment 'utf-8)
        (switch-to-shell buf-name)
-       (setq explicit-shell-file-name temp)
+       (setq explicit-shell-file-name sh)
        (set-language-environment lang))
      (progn
        (switch-to-shell buf-name)))))

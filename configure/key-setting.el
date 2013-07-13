@@ -65,8 +65,7 @@
        (apply 'start-process ,name nil ,args))))
 
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-backquote-map (kbd "i") 'info)
-(define-key f1-backquote-map (kbd "I") 'zz-info-open-file)
+(define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
 
 ;;execute start-process key
 (execute-set-key f4-e-map "1" "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))

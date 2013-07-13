@@ -12,12 +12,13 @@ zhoujd emacs configure
    before you setup zzemacs configure you should
    check path setting in script.
 
-   
+2. I code mostly configure file for zzemacs, make I feel
+   well on linux and windows, thanks for plugin owners and github.
 
-some url for emacs
-for emacs:
-http://ftp.gnu.org/emacs
-third party for emacs refer to
-zzemacs/third-party/readme.txt
+3. Some url for emacs
+   for emacs:
+   http://ftp.gnu.org/emacs
+   third party for emacs refer to
+   zzemacs/third-party/readme.txt
 
-
+4. zzemacs will update as I using, hope your support.

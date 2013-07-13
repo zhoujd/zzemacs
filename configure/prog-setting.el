@@ -86,7 +86,6 @@
       (setq-mode-local c++-mode semanticdb-find-default-throttle
                        '(project unloaded system recursive))
 
-
       (global-ede-mode t)
       (semantic-mode t)
       )
@@ -118,6 +117,12 @@
       (when window-system
           (global-semantic-tag-folding-mode 1))
       ))
+
+;; 1:list methold in current buffer
+;; 2:switch buffer in h & cpp file
+(require 'eassist)
+(define-key eassist-mode-map (kbd "C-b") 'eassist-backspace-pressed)
+(define-key eassist-mode-map (kbd "C-q") 'eassist-escape)
 
 ;; Semantic DataBase
 (setq semanticdb-default-save-directory

@@ -26,9 +26,7 @@
 ;;holding #if
 (load-library "hideif")
 
-;; 1:list methold in current buffer
-;; 2:switch buffer in h & cpp file
-(require 'eassist)
+;;source pair
 (require 'sourcepair)
 (setq sourcepair-source-path    '( "." "../*" "../../*" ))
 (setq sourcepair-header-path    '( "." "include" "../include" "../*" "../../*"))

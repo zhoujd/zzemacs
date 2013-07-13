@@ -332,8 +332,6 @@ buffer and sets the point to a method/function, corresponding the line."
 
     (define-key map (kbd "<RET>") 'eassist-jump-to-method)
     (define-key map (kbd "<backspace>") 'eassist-backspace-pressed)
-    (define-key map (kbd "C-b") 'eassist-backspace-pressed)  ;;zhoujd for terminal
-    (define-key map (kbd "C-q") 'eassist-escape)             ;;zhoujd for quit
     (define-key map (kbd "<ESC>") 'eassist-escape)
     map)
   "Keymap for `eassist-mode'.")

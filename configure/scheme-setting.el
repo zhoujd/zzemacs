@@ -13,13 +13,6 @@
    (cons "\\.rkt$" 'scheme-mode))
   auto-mode-alist))
 
-;;eldoc
-(require 'eldoc-extension)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-inteeraction-mode-hook 'turn-on-eldoc-mode)
-(setq eldoc-idle-delay 0.2)
-(setq eldoc-minor-mode-string "")
-
 ;;auto-complete setting
 (defvar ac-source-scheme
   '((candidates

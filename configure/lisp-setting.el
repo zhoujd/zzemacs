@@ -44,6 +44,14 @@
 ;;hpperspec.el
 (require 'hyperspec)
 
+;;eldoc
+(defun turn-on-eldoc-mode () (eldoc-mode t))
+(require 'eldoc-extension)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-inteeraction-mode-hook 'turn-on-eldoc-mode)
+(setq eldoc-idle-delay 0.2)
+(setq eldoc-minor-mode-string "")
+
 (provide 'lisp-setting)
 
 ;; lisp-setting.el end here

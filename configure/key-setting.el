@@ -32,6 +32,12 @@
   (define-key global-map [f3] f3-map)
   )
 
+(when-ms-windows
+ (setq w32-pass-rwindow-to-system nil)
+ (setq w32-rwindow-modifier 'hyper)
+ (setq w32-pass-lwindow-to-system nil)
+ (setq w32-lwindow-modifier 'hyper))
+
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4] f4-map)

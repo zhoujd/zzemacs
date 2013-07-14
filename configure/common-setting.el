@@ -59,6 +59,9 @@
   ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my-set-language-chinese))
   (t (my-set-language-utf-8)))
 
+;;Bufer file coding
+(set-buffer-file-coding-system 'utf-8)
+
 ;;font setting
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
 (setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 

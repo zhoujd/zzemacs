@@ -368,6 +368,8 @@
 ;;f2-map setting
 (define-key f4-map (kbd "C-1") 'my-utf-8)
 (define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
+(define-key f4-map (kbd "C-l") 'command-history)
+
 (unless-ms-windows  
  (define-key f4-map (kbd "C-d") 'open-with-nautilus)
  (define-key f4-map (kbd "C-t") 'open-with-terminal))

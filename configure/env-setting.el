@@ -13,6 +13,7 @@
                     "C:/Program Files (x86)/Beyond Compare 3"
                     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/bin"
                     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC"
+                    "C:/Program Files (x86)/Microsoft Visual Studio 10.0/Common7/IDE"
                     "C:/Program Files/Windows Kits/8.0/Debuggers/x64"
                     "C:/Scheme/Gambit-C/v4.6.7/bin"
                     "C:/Scheme/Racket"

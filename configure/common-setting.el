@@ -456,7 +456,7 @@
 ;(setq default-line-spacing 0)
 
 ;; set the mouse scroll wheel to move 1 line per event
-(setq mouse-wheel-scroll-amount '(1))
+;(setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
 ;(setq delete-by-moving-to-trash t)

@@ -417,6 +417,7 @@ the mru bookmark stack."
 ;(require 'vc-svn)
 
 ;;Git Support
+;;$ ssh-keygen -t rsa -C "your_email@example.com"
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs-autoloads)
 (require 'git-show)

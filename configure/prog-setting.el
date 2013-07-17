@@ -420,7 +420,8 @@ the mru bookmark stack."
 ;;github ssh-keygen
 ;;$ ssh-keygen -t rsa -C "your_email@example.com"
 ;;gitisos ssh-keygen
-;;$ ssh-keygen -t dsa 
+;;$ ssh-keygen -t dsa
+;;$ ssh -T git@github.com
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs-autoloads)
 (require 'git-show)

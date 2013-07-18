@@ -84,12 +84,11 @@ Dmitriy Igrishin's patched version of comint.el."
         (lang current-language-environment))
     (if-ms-windows
      (progn
-       (setq explicit-shell-file-name "bash")
-       (setq explicit-sh-args '("--login" "-i"))
-       (set-language-environment 'utf-8)
-       (switch-to-shell buf-name)
-       (setq explicit-shell-file-name sh)
-       (set-language-environment lang))
+       (with-utf/8-environment
+           (setq explicit-shell-file-name "bash")
+         (setq explicit-sh-args '("--login" "-i"))
+         (switch-to-shell buf-name)
+         (setq explicit-shell-file-name sh)))
      (progn
        (switch-to-shell buf-name)))))
 

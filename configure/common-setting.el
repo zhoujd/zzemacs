@@ -29,6 +29,12 @@
 (defmacro when-ms-windows (&rest body)
   `(if-ms-windows (progn ,@body)))
 
+(defmacro with-utf/8-environment (&rest body)
+  `(let ((curr-lang current-language-environment))
+     (set-language-environment 'utf-8)
+     ,@body
+     (set-language-environment curr-lang)))
+
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()
   "This is for chinese setting"

@@ -128,16 +128,16 @@
             (lambda()
               (if (file-exists-p  (concat server-directory-name "/server"))
                   (delete-file (concat server-directory-name "/server"))))))
-
-(defun my-use-gnusvr ()
-  ;; start gnuserv on Windows 
-  (progn 
-    (require 'gnuserv) 
-    (setq server-done-function 'bury-buffer gnuserv-frame (car (frame-list))) 
-    (gnuserv-start) 
+(when-ms-windows
+ (defun my-use-gnusvr ()
+   ;; start gnuserv on Windows 
+   (progn 
+     (require 'gnuserv) 
+     (setq server-done-function 'bury-buffer gnuserv-frame (car (frame-list))) 
+     (gnuserv-start) 
       ;;; open buffer in existing frame instead of creating new one... 
-    (setq gnuserv-frame (selected-frame)) 
-    (message "gnuserv started."))) 
+     (setq gnuserv-frame (selected-frame)) 
+     (message "gnuserv started.")))) 
 
 (if-ms-windows
  (let ((use-gnusvr-flag t))

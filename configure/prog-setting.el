@@ -454,7 +454,7 @@ the mru bookmark stack."
 ;;http://mtaulty.com/communityserver/blogs/mike_taultys_blog/archive/2004/08/03/4656.aspx
 ;;http://www.windbg.org/
 ;;http://www.windbg.info/
-;;command line: "windbg.exe" -y "Debug;for-windbg\Debug" -srcpath "for-windbg" Debug\for-windbg.exe
+;;command line: "windbg.exe" -y "Debug;for-windbg\Debug" -srcpath "for-windbg" Debug\for-windbg.exe args
 ;;start folder: D:\work\for-windbg
 ;;Symbol Server (Microsoft): srv*c:\mss*http://msdl.microsoft.com/download/symbols
 (when-ms-windows  

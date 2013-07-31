@@ -18,7 +18,8 @@ esac
 # setup git configure
 git config --global user.name  "zhoujd"
 git config --global user.email "zjd-405@163.com"
-git config --global merge.tool "meld" 
+#git config --global merge.tool "kdiff3" 
+#git config --global merge.tool "meld"
 git config --global color.ui   true
 
 # setup diff setting

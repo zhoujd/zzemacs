@@ -23,11 +23,11 @@
 
 ;;sudo apt-get install ipython
 ;;git clone https://github.com/ipython/ipython.git
+;;pyreadline https://pypi.python.org/pypi/pyreadline/2.0
 (unless-ms-windows  
  (setq ipython-command "/usr/bin/ipython"))
 (setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
-
 
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/

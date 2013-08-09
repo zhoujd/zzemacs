@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$OS" = "Windows_NT" ] ; then
-    DIFF_TOOL="D:/develop/BCompare3/BCompare.exe"
+    DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else
     #DIFF_TOOL="meld"
     DIFF_TOOL="bcompare"

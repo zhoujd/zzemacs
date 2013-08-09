@@ -9,6 +9,7 @@
                     "C:/emacs-23.4/bin"
                     "C:/Git/bin"
                     "C:/Vim/vim73"
+                    "C:/BCompare3"
                     "C:/Program Files (x86)/CMake 2.8/bin"
                     "C:/Program Files (x86)/Mozilla Firefox"
                     "C:/Program Files (x86)/Beyond Compare 3"

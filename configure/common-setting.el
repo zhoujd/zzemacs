@@ -140,7 +140,7 @@
      (message "gnuserv started.")))) 
 
 (if-ms-windows
- (let ((use-gnusvr-flag t))
+ (let ((use-gnusvr-flag nil))
    (if use-gnusvr-flag
        (my-use-gnusvr)
        (my-use-server-mode)))

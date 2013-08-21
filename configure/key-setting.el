@@ -74,8 +74,10 @@
 (define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
 
 ;;execute start-process key
-(execute-set-key f4-e-map "1" "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
-(execute-set-key f4-e-map "2" "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64"))
+(when-ms-windows
+ (execute-set-key f4-e-map "1" "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
+ (execute-set-key f4-e-map "2" "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
+
 (execute-set-key f4-e-map "f" "firefox"       '("firefox" "http://www.baidu.com"))
 (execute-set-key f4-e-map "b" "bcompare"      '("bcompare"))
 

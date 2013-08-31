@@ -17,13 +17,24 @@ esac
 
 # setup git configure
 git config --global user.name  "zhoujd"
-git config --global user.email "zjd-405@163.com"
-git config --global merge.tool "bc3" #(bc3 meld p4merge)
-git config --global color.ui   true
+#git config --global user.email "zjd-405@163.com"
+#git config --global merge.tool "bc3" #(bc3 meld p4merge)
+#git config --global color.ui   true
 
 # setup diff setting
-chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh 
+chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
+chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
+
 git config --global diff.external $GIT_SETUP_HOME/git-diff-wrapper.sh
+
+git config --global merge.tool ext-merge
+git config --global mergetool.ext-merge.cmd \
+    "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+
+#'git-merge-wrapper.sh "$BASE" "$LOCAL" "$REMOTE" "$MERGED"'
+
+git config --global mergetool.trustExitCode false
+
 
 echo ===========git config start ===============
 git config --list

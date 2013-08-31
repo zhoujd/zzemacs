@@ -17,7 +17,8 @@ esac
 
 # setup git configure
 git config --global user.name  "zhoujd"
-#git config --global user.email "zjd-405@163.com"
+git config --global user.email "zjd-405@163.com"
+
 #git config --global merge.tool "bc3" #(bc3 meld p4merge)
 #git config --global color.ui   true
 
@@ -25,6 +26,7 @@ git config --global user.name  "zhoujd"
 chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
 git config --global diff.external $GIT_SETUP_HOME/git-diff-wrapper.sh
 
+# setup merge setting
 chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd \

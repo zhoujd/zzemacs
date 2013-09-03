@@ -4,7 +4,7 @@ GIT_SETUP_HOME=`pwd`
 
 echo git diff setup start ...
 
-# setup packages
+## setup packages
 echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
@@ -15,18 +15,23 @@ case "$answer" in
         sudo apt-get install -y gitk
 esac
 
-# setup git configure
+## setup git configure
 git config --global user.name  "zhoujd"
 git config --global user.email "zjd-405@163.com"
+git config --global color.ui   true
 
-#git config --global merge.tool "bc3" #(bc3 meld p4merge)
-#git config --global color.ui   true
+## git default diff using external
+#chmod +x $GIT_SETUP_HOME/git-diff-external.sh
+#git config --global diff.external $GIT_SETUP_HOME/git-diff-external.sh
 
-# setup diff setting
+## git difftool setting
 chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
-git config --global diff.external $GIT_SETUP_HOME/git-diff-wrapper.sh
+git config --global diff.tool extdiff
+git config --global difftool.extdiff.cmd \
+    "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config --global difftool.prompt false
 
-# setup merge setting
+## setup merge setting
 chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd \

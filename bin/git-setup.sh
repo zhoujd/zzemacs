@@ -16,9 +16,10 @@ case "$answer" in
 esac
 
 ## setup git configure
-git config --global user.name  "zhoujd"
-git config --global user.email "zjd-405@163.com"
-git config --global color.ui   true
+git config --global user.name    "zhoujd"
+git config --global user.email   "zjd-405@163.com"
+git config --global color.ui     true
+git config --global push.default sample
 
 ## git default diff using external
 #chmod +x $GIT_SETUP_HOME/git-diff-external.sh
@@ -27,15 +28,13 @@ git config --global color.ui   true
 ## git difftool setting
 chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
 git config --global diff.tool extdiff
-git config --global difftool.extdiff.cmd \
-    "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config --global difftool.extdiff.cmd "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config --global difftool.prompt false
 
 ## setup merge setting
 chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
-git config --global mergetool.extmerge.cmd \
-    "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.trustExitCode false
 
 

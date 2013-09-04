@@ -1,5 +1,7 @@
 #!/bin/sh
 
+###If you need to modify the author info in your repository's history,
+###you can do so with this script.
 ###https://help.github.com/articles/changing-author-info
 
 new_name="zhoujd"

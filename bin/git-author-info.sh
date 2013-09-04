@@ -1,8 +1,11 @@
 #!/bin/sh
 
-###If you need to modify the author info in your repository's history,
-###you can do so with this script.
 ###https://help.github.com/articles/changing-author-info
+###If you need to modify the author info in your repository's history.
+###1. you can do so with this script.
+###$<$PWD>/git-author-info.sh
+###2. Force-push the new history up (be careful).
+###$git push --force
 
 new_name="zhoujd"
 new_email="zjd-405@163.com"

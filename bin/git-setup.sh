@@ -19,11 +19,11 @@ esac
 git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"
 git config --global color.ui     true
-git config --global push.default sample
+git config --global push.default simple
 
 ## git default diff using external
-#chmod +x $GIT_SETUP_HOME/git-diff-external.sh
-#git config --global diff.external $GIT_SETUP_HOME/git-diff-external.sh
+#chmod +x $GIT_SETUP_HOME/git-diff-default.sh
+#git config --global diff.external $GIT_SETUP_HOME/git-diff-default.sh
 
 ## git difftool setting
 chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh

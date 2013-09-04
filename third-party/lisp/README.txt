@@ -47,3 +47,6 @@ git clone http://git.code.sf.net/p/ecls/ecl-doc ecls-ecl-doc
 http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/prebuilt/
 http://sourceforge.net/projects/ecls/?source=directory
 
+6. Design Patterns in Dynamic Languanges
+http://norvig.com/design-patterns/
+

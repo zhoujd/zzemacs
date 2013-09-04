@@ -6,6 +6,7 @@
 ###$<$PWD>/git-author-info.sh
 ###2. Force-push the new history up (be careful).
 ###$git push --force
+###$git push -f
 
 new_name="zhoujd"
 new_email="zjd-405@163.com"

@@ -1,29 +1,5 @@
 ;;;; prog-setting.el --- program common file
 
-;;; project setting sample
-;;;=============================================================================
-;; set project direcitory list
-;(setq proj-list '("~/zzsawfish/" "~/zzemacs/"))
-;
-;; call below function to create etags
-;(create-proj-etags)
-;; call below function to create cscope
-;(create-proj-cscope)
-;;
-;; tags project setting
-;(setq tags-table-list '("~/work/TAGS"))
-;
-;; cscope project setting 
-;(setq cscope-database-regexps '(("~/work/"  (t ("-q" "-d")) t)))
-;
-;; add to PATH
-;(setq add-path-list '("~/study/script"))
-;(mapcar 'zz-add-os-path add-path-list)
-;
-;(setenv "LD_LIBRARY_PATH" (concat "~/work/lib"
-;                                  path-separator (getenv "LD_LIBRARY_PATH")))
-;;;=============================================================================
-
 (zz-load-path "site-lisp")
 
 ;;generate temp-setting.el
@@ -45,8 +21,8 @@
         (content (list
                   ";;;; temp-setting.el --- program temp file"
                   ";; set project direcitory list"
-                  "(setq proj-list '(\"~/zzsawfish/\" \"~/zzemacs/\"))"
-                  ""
+                  "(setq proj-list '(\"~/zzsawfish/\""
+                  "                  \"~/zzemacs/\"))"
                   ";; call below function to create etags"
                   ";(create-proj-etags)"
                   ";; call below function to create cscope"
@@ -62,9 +38,10 @@
                   "(setq add-path-list '(\"~/study/script\"))"
                   "(mapcar 'zz-add-os-path add-path-list)"
                   ""
-                  "(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
-                  "                path-separator (getenv \"LD_LIBRARY_PATH\")))"
+                  ";(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
+                  ";                path-separator (getenv \"LD_LIBRARY_PATH\")))"
                   ""
+                  
                   )))
     (my-create-file path content)))
 

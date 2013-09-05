@@ -26,6 +26,48 @@
 
 (zz-load-path "site-lisp")
 
+;;generate temp-setting.el
+(defun my-create-file (fpath content)
+  "Process the file at path FPATH ..."
+  (let ((tmp-buf-name (file-name-nondirectory fpath)))
+    (set-buffer (get-buffer-create tmp-buf-name))  
+    (goto-char 0)
+    (dolist (item content)
+      (insert item)
+      (insert "\n"))
+    (write-file fpath)
+    (kill-buffer tmp-buf-name)))
+
+(defun my-temp-setting ()
+  "Create configure/temp-setting.el"
+  (interactive)
+  (let ((path  (concat zzemacs-path "configure/" zz-dev-set-file))
+        (content (list
+                  ";;;; temp-setting.el --- program temp file"
+                  ";; set project direcitory list"
+                  "(setq proj-list '(\"~/zzsawfish/\" \"~/zzemacs/\"))"
+                  ""
+                  ";; call below function to create etags"
+                  ";(create-proj-etags)"
+                  ";; call below function to create cscope"
+                  ";(create-proj-cscope)"
+                  ""
+                  ";; tags project setting"
+                  "(setq tags-table-list '(\"~/work/TAGS\"))"
+                  ""
+                  ";; cscope project setting"
+                  "(setq cscope-database-regexps '((\"~/work/\"  (t (\"-q\" \"-d\")) t)))"
+                  ""
+                  ";; add to PATH"
+                  "(setq add-path-list '(\"~/study/script\"))"
+                  "(mapcar 'zz-add-os-path add-path-list)"
+                  ""
+                  "(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
+                  "                path-separator (getenv \"LD_LIBRARY_PATH\")))"
+                  ""
+                  )))
+    (my-create-file path content)))
+
 ;;win32 find grep set
 (when-ms-windows    
  (progn

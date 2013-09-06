@@ -94,6 +94,7 @@
 (zz-load-path "site-lisp/company-mode")
 (autoload 'company-mode "company" nil t)
 (setq company-idle-delay nil)
+(setq company-minimum-prefix-length 1)
 (company-mode t)
 (add-hook 'after-init-hook 'global-company-mode)
 

@@ -90,11 +90,12 @@
            'php-mode-hook))
   (add-hook hook (function newline-indents)))
 
-;;;company-mode
+;;;company-mode <f4+tab> to open complete menu
 (zz-load-path "site-lisp/company-mode")
 (autoload 'company-mode "company" nil t)
 (setq company-idle-delay nil)
-(global-company-mode t)
+(company-mode t)
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)

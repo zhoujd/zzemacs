@@ -26,6 +26,7 @@
           (require setting)
           (message "Load %s end ..." setting))
         '(
+          macro-setting
           common-setting
           env-setting
           dired-setting

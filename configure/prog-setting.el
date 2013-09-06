@@ -14,36 +14,43 @@
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
+(defconst my-temp-setting
+  '(
+    ";;;; temp-setting.el --- program temp file"
+    ";; set project direcitory list"
+    "(setq proj-list '(\"~/zzsawfish/\""
+    "                  \"~/zzemacs/\"))"
+    ""
+    ";; call below function to create etags"
+    ";(create-proj-etags)"
+    ";; call below function to create cscope"
+    ";(create-proj-cscope)"
+    ""
+    ";; tags project setting"
+    "(setq tags-table-list '(\"~/work/TAGS\"))"
+    ""
+    ";; cscope project setting"
+    "(setq cscope-database-regexps '((\"~/work/\"  (t (\"-q\" \"-d\")) t)))"
+    ""
+    ";; add to PATH"
+    "(setq add-path-list '(\"~/study/script\"))"
+    "(mapcar 'zz-add-os-path add-path-list)"
+    ""
+    ";(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
+    ";        path-separator (getenv \"LD_LIBRARY_PATH\")))"
+    ""
+    ";; project key setting"
+    ";(execute-set-key f4-p-map \"f\" \"firefox\" '(\"firefox\" \"http://www.baidu.com\"))"
+    ""
+    ))
+
 (defun my-temp-setting ()
   "Create configure/temp-setting.el"
   (interactive)
-  (let ((path  (concat zzemacs-path "configure/" zz-dev-set-file))
-        (content (list
-                  ";;;; temp-setting.el --- program temp file"
-                  ";; set project direcitory list"
-                  "(setq proj-list '(\"~/zzsawfish/\""
-                  "                  \"~/zzemacs/\"))"
-                  ";; call below function to create etags"
-                  ";(create-proj-etags)"
-                  ";; call below function to create cscope"
-                  ";(create-proj-cscope)"
-                  ""
-                  ";; tags project setting"
-                  "(setq tags-table-list '(\"~/work/TAGS\"))"
-                  ""
-                  ";; cscope project setting"
-                  "(setq cscope-database-regexps '((\"~/work/\"  (t (\"-q\" \"-d\")) t)))"
-                  ""
-                  ";; add to PATH"
-                  "(setq add-path-list '(\"~/study/script\"))"
-                  "(mapcar 'zz-add-os-path add-path-list)"
-                  ""
-                  ";(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
-                  ";                path-separator (getenv \"LD_LIBRARY_PATH\")))"
-                  ""
-                  
-                  )))
-    (my-create-file path content)))
+  (let ((path  (concat zzemacs-path "configure/" zz-dev-set-file)))
+    (my-create-file path my-temp-setting)
+    (message "create %s successful." path)
+    ))
 
 ;;win32 find grep set
 (when-ms-windows    
@@ -85,6 +92,8 @@
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
+(when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
+  (setq use-cedet-inside-flag t))
 (if use-cedet-inside-flag
     (progn
       ;;auto complete

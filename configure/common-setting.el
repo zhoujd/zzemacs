@@ -89,7 +89,7 @@
   (defvar server-directory-name "~/.emacs.d/server")
   (when-ms-windows    
    (when (not (file-directory-p server-directory-name))
-     (make-directory server-directory-name)))
+     (make-directory server-directory-name t)))
   
   (require 'server)
   (when-ms-windows  

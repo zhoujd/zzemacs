@@ -90,6 +90,12 @@
            'php-mode-hook))
   (add-hook hook (function newline-indents)))
 
+;;;company-mode
+(zz-load-path "site-lisp/company-mode")
+(autoload 'company-mode "company" nil t)
+(setq company-idle-delay nil)
+(global-company-mode t)
+
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
 (when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))

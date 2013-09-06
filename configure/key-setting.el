@@ -95,6 +95,8 @@
 (global-set-key (kbd "<f4> <f12>")  
                 (lambda () (interactive) (start-shell "*shell-f12*")))
 
+(global-set-key (kbd "<f4> <tab>")   'company-complete-common)
+
 ;;for info
 (if use-graph-keymap-p
     (progn

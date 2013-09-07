@@ -97,7 +97,7 @@
  (autoload 'company-mode "company" nil t)
  (setq company-idle-delay 0.2)
  (setq company-minimum-prefix-length 1)
- (setq company-show-numbers t)
+ (setq company-show-numbers nil)
  (dolist (hook (list
                 ;;'emacs-lisp-mode-hook
                 ;;'lisp-mode-hook

@@ -86,17 +86,32 @@
            'c-mode-hook
            'c++-mode-hook
            'java-mode-hook
-           'cperl-mode-hook
+           'perl-mode-hook
+           'python-mode-hook
            'php-mode-hook))
   (add-hook hook (function newline-indents)))
 
 ;;;company-mode <f4+tab> to open complete menu
 (zz-load-path "site-lisp/company-mode")
 (autoload 'company-mode "company" nil t)
-(setq company-idle-delay nil)
+(setq company-idle-delay nil)   ;;not auto popup menu
 (setq company-minimum-prefix-length 1)
-(company-mode t)
-(add-hook 'after-init-hook 'global-company-mode)
+(setq company-show-numbers nil)
+(dolist (hook (list
+               'emacs-lisp-mode-hook
+               'lisp-mode-hook
+               'lisp-interaction-mode-hook
+               'scheme-mode-hook
+               'c-mode-hook
+               'c++-mode-hook
+               'java-mode-hook
+               'perl-mode-hook
+               'python-mode-hook
+               'asm-mode-hook
+               'shell-mode-hook
+               ))
+  (add-hook hook 'company-mode))
+
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)

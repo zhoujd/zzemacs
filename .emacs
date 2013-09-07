@@ -1,6 +1,9 @@
 ;;;; .emacs --- emacs config file
 ;;;
 
+;;open debug-on-error when starup begin
+(setq debug-on-error t) 
+
 (defvar zzemacs-path "~/zzemacs/" "zzemacs`s path")
 
 (defun zz-add-os-path (path)
@@ -55,5 +58,7 @@
 ;;configure saved from menu "Save Options"
 (setq custom-file (concat zzemacs-path "custom.el"))
 
+;;close debug-on-error when starup end
+(setq debug-on-error nil)
 
 ;;;; .emacs end here

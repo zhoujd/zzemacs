@@ -96,6 +96,7 @@
                 (lambda () (interactive) (start-shell "*shell-f12*")))
 
 (global-set-key (kbd "<f4> <tab>")   'company-complete-common)
+(global-set-key (kbd "<f4> =") 'er/expand-region)
 
 ;;for info
 (if use-graph-keymap-p

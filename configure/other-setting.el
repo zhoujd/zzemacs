@@ -306,6 +306,11 @@ Emacs buffer are those starting with “*”."
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
 
+;;expand-region
+(zz-load-path "site-lisp/expand-region")
+(require 'expand-region)
+
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

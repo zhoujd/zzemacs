@@ -310,6 +310,11 @@ Emacs buffer are those starting with “*”."
 (zz-load-path "site-lisp/expand-region")
 (require 'expand-region)
 
+;;smartparens
+(when-emacs24-3
+ (zz-load-path "site-lisp/smartparens")
+ (zz-load-path "site-lisp/dash") ;;for dash.el
+ (require 'smartparens-config))
 
 (provide 'other-setting)
 

@@ -115,8 +115,9 @@
 
 ;;;cedet version flag t for inside
 (setq use-cedet-inside-flag nil)
-(when (and (>= emacs-major-version 24) (>= emacs-minor-version 3))
-  (setq use-cedet-inside-flag t))
+(when-emacs24-3
+ (setq use-cedet-inside-flag t))
+
 (if use-cedet-inside-flag
     (progn
       ;;auto complete

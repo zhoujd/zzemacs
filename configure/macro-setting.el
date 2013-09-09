@@ -2,7 +2,8 @@
 ;;
 
 (defmacro if-ms-windows (if-cause &optional else-cause)
-  `(if ,(or (eq window-system 'w32) (eq window-system 'win32))
+  `(if ,(or (eq window-system 'w32)
+            (eq window-system 'win32))
        ,if-cause ,else-cause))
 
 (defmacro if-not-ms-windows (if-cause &optional else-cause)
@@ -25,6 +26,12 @@
      (set-language-environment 'Chinese-GB18030)
      ,@body
      (set-language-environment curr-lang)))
+
+(defmacro when-emacs24-3 (&rest body)
+  `(when ,(and (>= emacs-major-version 24)
+               (>= emacs-minor-version 3))
+       ,@body))
+
 
 (provide 'macro-setting)
 

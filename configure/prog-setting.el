@@ -152,7 +152,6 @@
                                          emacs-major-version emacs-minor-version)
                                  load-path))))
       
-      (setq byte-compile-warnings nil)
       (zz-load-path "site-lisp/cedet/common")
       
       ;; Load CEDET.

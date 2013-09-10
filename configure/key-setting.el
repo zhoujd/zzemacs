@@ -97,6 +97,8 @@
 
 (global-set-key (kbd "<f4> <tab>")   'company-complete-common)
 (global-set-key (kbd "<f4> =") 'er/expand-region)
+(when-emacs24-3
+ (global-set-key (kbd "<f4> -") 'smartparens-mode))
 
 ;;for info
 (if use-graph-keymap-p

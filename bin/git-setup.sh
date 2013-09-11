@@ -20,6 +20,9 @@ git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"
 git config --global color.ui     true
 
+### git diff is called by git with 7 parameters:
+### path old-file old-hex old-mode new-file new-hex new-mode
+
 ## git default diff using external
 #chmod +x $GIT_SETUP_HOME/git-diff-default.sh
 #git config --global diff.external $GIT_SETUP_HOME/git-diff-default.sh

@@ -284,6 +284,7 @@
 ;;number 0-1/-/=
 (global-set-key (kbd "M-1")    'delete-other-windows)
 (global-set-key (kbd "M-2")    'delete-other-frames)
+(global-set-key (kbd "M-3")    'tabbar-forward-group)
 (global-set-key (kbd "M-4")    'kill-this-buffer)
 ;;gud control setting
 (if-ms-windows
@@ -301,6 +302,7 @@
       (global-set-key (kbd "C-`") 'imenu)
       (global-set-key (kbd "C-1") 'delete-window)
       (global-set-key (kbd "C-2") 'delete-frame)
+      (global-set-key (kbd "C-3") 'tabbar-backward-group)
       (global-set-key (kbd "C-4") 'delete-frame)
       ;;gud control setting
       (global-set-key (kbd "C-5") 'gud-until)

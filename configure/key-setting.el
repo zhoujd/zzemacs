@@ -357,8 +357,8 @@
 (global-unset-key [delete])
 (global-set-key   [delete]    'delete-char)
 
-(global-set-key (kbd "M-]") 'tabbar-forward)
-(global-set-key (kbd "M-[") 'tabbar-backward)
+(global-set-key (kbd "M-]") 'tabbar-forward-tab)
+(global-set-key (kbd "M-[") 'tabbar-backward-tab)
 
 (if-ms-windows    
  (progn ;; For Windows

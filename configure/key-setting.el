@@ -284,7 +284,6 @@
 ;;number 0-1/-/=
 (global-set-key (kbd "M-1")    'delete-other-windows)
 (global-set-key (kbd "M-2")    'delete-other-frames)
-(global-set-key (kbd "M-3")    'tabbar-forward-group)
 (global-set-key (kbd "M-4")    'kill-this-buffer)
 ;;gud control setting
 (if-ms-windows
@@ -302,7 +301,6 @@
       (global-set-key (kbd "C-`") 'imenu)
       (global-set-key (kbd "C-1") 'delete-window)
       (global-set-key (kbd "C-2") 'delete-frame)
-      (global-set-key (kbd "C-3") 'tabbar-backward-group)
       (global-set-key (kbd "C-4") 'delete-frame)
       ;;gud control setting
       (global-set-key (kbd "C-5") 'gud-until)
@@ -357,9 +355,6 @@
 (global-unset-key [delete])
 (global-set-key   [delete]    'delete-char)
 
-(global-set-key (kbd "M-]") 'tabbar-forward-tab)
-(global-set-key (kbd "M-[") 'tabbar-backward-tab)
-
 (if-ms-windows    
  (progn ;; For Windows
    (global-set-key [C-wheel-up]   'text-scale-increase)
@@ -368,8 +363,15 @@
    (global-set-key [C-mouse-4] 'text-scale-increase)
    (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
-;;Control tab quotes a tab.
-(global-set-key [C-tab] "\C-q\t")
+;;Control tab quotes a tab => "\C-q\t"
+
+;;tabbar switch group
+(global-set-key [(control shift tab)] 'tabbar-backward-group)
+(global-set-key [(control tab)]       'tabbar-forward-group)
+(global-set-key (kbd "M-]")           'tabbar-forward-tab)
+(global-set-key (kbd "M-[")           'tabbar-backward-tab)
+
+
 (global-set-key (kbd "C-c h") 'helm-mini)
 
 ;;f2-map setting

@@ -294,7 +294,7 @@
  (global-set-key (kbd "M-5")   'gud-cont)
  (global-set-key (kbd "M-5")   'gud-go))
 
-(global-set-key (kbd "M-6")    'gud-break-remove)
+(global-set-key (kbd "M-6")    'gud-break)
 (global-set-key (kbd "M-7")    'gud-next)
 (global-set-key (kbd "M-8")    'gud-step)
 (global-set-key (kbd "M-9")    'gud-print)
@@ -309,7 +309,7 @@
       (global-set-key (kbd "C-4") 'delete-frame)
       ;;gud control setting
       (global-set-key (kbd "C-5") 'gud-until)
-      (global-set-key (kbd "C-6") 'gud-watch)
+      (global-set-key (kbd "C-6") 'gud-remove)
       (global-set-key (kbd "C-7") 'gud-finish)
       (global-set-key (kbd "C-8") 'gud-jump)
       (global-set-key (kbd "C-9") 'gud-pstar)
@@ -322,7 +322,7 @@
       (global-set-key (kbd "<f2> 4") 'delete-frame)
       ;;gud control setting
       (global-set-key (kbd "<f2> 5") 'gud-until)
-      (global-set-key (kbd "<f2> 6") 'gud-watch)
+      (global-set-key (kbd "<f2> 6") 'gud-remove)
       (global-set-key (kbd "<f2> 7") 'gud-finish)
       (global-set-key (kbd "<f2> 8") 'gud-jump)
       (global-set-key (kbd "<f2> 9") 'gud-pstar)

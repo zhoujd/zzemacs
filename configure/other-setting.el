@@ -103,18 +103,21 @@ visiting a file.  The current buffer is always included."
 
 (setq tabbar-buffer-list-function 'tabbar-buffer-list)
 
-;;define all tabs to be one of 2 possible groups: “Emacs Buffer”, “User Buffer”.
+;;define all tabs to be one of 2 possible groups: "Emacs Buffer", "User Buffer".
 (defun tabbar-buffer-groups ()
   "Return the list of group names the current buffer belongs to.
 This function is a custom function for tabbar-mode's tabbar-buffer-groups.
 This function group all buffers into 3 groups:
 Those Dired, those user buffer, and those emacs buffer.
-Emacs buffer are those starting with “*”."
+Emacs buffer are those starting with *."
   (list
    (cond
     ((or (string-match "\\*.*\\*"  (buffer-name))
          (string-match "^ "  (buffer-name)))
      "Emacs Buffer"
+     )
+    ((eq major-mode 'dired-mode)
+      "Dired"
      )
     (t
      "User Buffer"

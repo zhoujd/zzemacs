@@ -100,6 +100,9 @@
 (when-emacs24-3
  (global-set-key (kbd "<f4> -") 'smartparens-mode))
 
+(global-set-key (kbd "<f4> <backtab>")   'tabbar-forward-group)
+
+
 ;;for info
 (if use-graph-keymap-p
     (progn
@@ -366,13 +369,11 @@
    (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab => "\C-q\t"
+(global-set-key [(control tab)]       "\C-q\t")
 
 ;;tabbar switch group
-(global-set-key [(control shift tab)] 'tabbar-backward-group)
-(global-set-key [(control tab)]       'tabbar-forward-group)
 (global-set-key (kbd "M-]")           'tabbar-forward-tab)
 (global-set-key (kbd "M-[")           'tabbar-backward-tab)
-
 
 (global-set-key (kbd "C-c h") 'helm-mini)
 
@@ -404,8 +405,8 @@
       (define-key global-map (kbd "C-,") 'winner-undo)
       (define-key global-map (kbd "C-.") 'winner-redo))
     (progn
-      (define-key f3-map (kbd ",") 'winner-undo)
-      (define-key f3-map (kbd ".") 'winner-redo))
+      (define-key f2-map (kbd ",") 'winner-undo)
+      (define-key f2-map (kbd ".") 'winner-redo))
     )
 
 ;;quick move other windows

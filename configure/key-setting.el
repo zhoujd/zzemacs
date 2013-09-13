@@ -2,17 +2,13 @@
 ;;;
 
 ;;;;1/+ key setting on console
-;;;f1      1/+ <===> f1      + 1/+
-;;;f2      1/+ <===> control + 1/+
-;;;f3      1/+ <===> alt     + 1/+
-;;;f4      1/+ <===> reverse
-
 ;;;;function key setting on console
-;;;esc     1/+ <===> f1/f12
-;;;f1-esc  1/+ <===> shift   + f1/f12
-;;;f2-esc  1/+ <===> control + f1/f12
-;;;f3-esc  1/+ <===> alt     + f1/f12
-;;;f4-esc  1/+ <===> reverse
+;;;f1-f5 + 1/= <===> f1/f12
+;;;f1-f6 + 1/= <===> shift   + f1/f12
+;;;f1-f7 + 1/= <===> control + f1/f12
+;;;f1-f8 + 1/= <===> alt     + f1/f12
+;;;f1-f2 + 1/= <===> control + 1/=
+;;;f1-f3 + 1/= <===> alt     + 1/=
 
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")

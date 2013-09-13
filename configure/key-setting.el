@@ -1,12 +1,15 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;  x11        console
-;;---------------------
-;;f1-f12   -- esc-f1/f12
-;;S-f1/f12 -- f1 -f1/f12
-;;C-f1/f12 -- f2 -f1/f12
-;;M-f1/f12 -- f3 -f1/f12
+;;;;console keymap setting
+;;;f1      1/+ <===> shift   + 1/+
+;;;f2      1/+ <===> control + 1/+
+;;;f3      1/+ <===> alt     + 1/+
+
+;;;esc     1/+ <===> f1/f12
+;;;f1-esc  1/+ <===> shift   + f1/f12
+;;;f2-esc  1/+ <===> control + f1/f12
+;;;f3-esc  1/+ <===> alt     + f1/f12
 
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")

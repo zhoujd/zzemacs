@@ -3,12 +3,12 @@
 
 ;;;;1/+ key setting on console
 ;;;;function key setting on console
-;;;f1-f5 + 1/= <===> f1/f12
-;;;f1-f6 + 1/= <===> shift   + f1/f12
-;;;f1-f7 + 1/= <===> control + f1/f12
-;;;f1-f8 + 1/= <===> alt     + f1/f12
-;;;f1-f2 + 1/= <===> control + 1/=
-;;;f1-f3 + 1/= <===> alt     + 1/=
+;;;f1-f9  + 1/= <===> f1/f12
+;;;f1-f10 + 1/= <===> shift   + f1/f12
+;;;f1-f11 + 1/= <===> control + f1/f12
+;;;f1-f12 + 1/= <===> alt     + f1/f12
+;;;f1-f7  + 1/= <===> control + 1/=
+;;;f1-f8  + 1/= <===> alt     + 1/=
 
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")

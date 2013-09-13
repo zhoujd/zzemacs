@@ -14,6 +14,15 @@
 ;;;f3-esc  1/+ <===> alt     + f1/f12
 ;;;f4-esc  1/+ <===> reverse
 
+;;;esc-f2   1/+ => C-1/+
+;;;esc-f3   1/+ => M-1/+
+
+;;;esc-f9   1/+ => f1/f12
+;;;esc-f10  1/+ => S-f1/f12
+;;;esc-f11  1/+ => C-f1/f12
+;;;esc-f12  1/+ => M-f1/f12
+
+
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")
 

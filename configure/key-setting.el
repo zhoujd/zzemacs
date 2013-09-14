@@ -35,18 +35,23 @@
 ;;f1-f7 => C-1/+
 (defvar zz/ctrl-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "1" [C-1])
-    (define-key map "2" [C-2])
-    (define-key map "3" [C-3])
-    (define-key map "4" [C-4])
-    (define-key map "5" [C-5])
-    (define-key map "6" [C-6])
-    (define-key map "7" [C-7])
-    (define-key map "8" [C-8])
-    (define-key map "9" [C-9])
-    (define-key map "0" [C-0])
-    (define-key map "-" [C--])
-    (define-key map "+" [C-+])
+    (define-key map "`" 'imenu)
+    (define-key map "1" 'delete-window)
+    (define-key map "2" 'delete-frame)
+    (define-key map "3" 'tabbar-backward-group)
+    (define-key map "4" 'delete-frame)
+    (define-key map "5" 'gud-until)
+    (define-key map "6" 'gud-remove)
+    (define-key map "7" 'gud-finish)
+    (define-key map "8" 'gud-jump)
+    (define-key map "9" 'gud-pstar)
+    (define-key map "0" 'other-frame)
+    (define-key map "-" 'undo)
+    (define-key map "+" 'redo)
+    (define-key map "," 'winner-undo)
+    (define-key map "." 'winner-redo)
+    
+    (define-key map [(tab)] "\C-q\t")
     map)
   "f7 <=> control")
 (define-key global-map (kbd "<f1> <f7>") zz/ctrl-map)
@@ -54,18 +59,25 @@
 ;;f1-f8 => M-1/+
 (defvar zz/alt-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "1" [M-1])
-    (define-key map "2" [M-2])
-    (define-key map "3" [M-3])
-    (define-key map "4" [M-4])
-    (define-key map "5" [M-5])
-    (define-key map "6" [M-6])
-    (define-key map "7" [M-7])
-    (define-key map "8" [M-8])
-    (define-key map "9" [M-9])
-    (define-key map "0" [M-0])
-    (define-key map "-" [M--])
-    (define-key map "+" [M-+])
+    (define-key map "1"  'delete-other-windows)
+    (define-key map "2"  'delete-other-frames)
+    (define-key map "3"  'tabbar-forward-group)
+    (define-key map "4"  'kill-this-buffer)
+    (if-ms-windows
+     (define-key map "5" 'gud-cont)
+     (define-key map "5" 'gud-go))
+    
+    (define-key map "6"  'gud-break)
+    (define-key map "7"  'gud-next)
+    (define-key map "8"  'gud-step)
+    (define-key map "9"  'gud-print)
+    (define-key map "0"  'other-window)
+    (define-key map "-"  nil)
+    (define-key map "+"  nil)
+
+    (define-key map "]"  'tabbar-forward-tab)
+    (define-key map "["  'tabbar-backward-tab)
+    
     map)
   "f8 <=> alt")
 (define-key global-map (kbd "<f1> <f8>") zz/alt-map)
@@ -220,7 +232,6 @@
 (global-set-key (kbd "<f4> <f12>")  
                 (lambda () (interactive) (start-shell "*shell-f12*")))
 
-(global-set-key (kbd "<f4> <tab>")   'company-complete-common)
 (global-set-key (kbd "<f4> =") 'er/expand-region)
 (when-emacs24-3
  (global-set-key (kbd "<f4> -") 'smartparens-mode))
@@ -321,33 +332,30 @@
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
 ;;number 0-1/-/=
-(global-set-key (kbd "M-1")    'delete-other-windows)
-(global-set-key (kbd "M-2")    'delete-other-frames)
-(global-set-key (kbd "M-3")    'tabbar-forward-group)
-(global-set-key (kbd "M-4")    'kill-this-buffer)
+(global-set-key (kbd "M-1") (lookup-key zz/alt-map "1"))
+(global-set-key (kbd "M-2") (lookup-key zz/alt-map "2"))
+(global-set-key (kbd "M-3") (lookup-key zz/alt-map "3"))
+(global-set-key (kbd "M-4") (lookup-key zz/alt-map "4"))
 ;;gud control setting
-(if-ms-windows
- (global-set-key (kbd "M-5")   'gud-cont)
- (global-set-key (kbd "M-5")   'gud-go))
+(global-set-key (kbd "M-5") (lookup-key zz/alt-map "5"))
+(global-set-key (kbd "M-6") (lookup-key zz/alt-map "6"))
+(global-set-key (kbd "M-7") (lookup-key zz/alt-map "7"))
+(global-set-key (kbd "M-8") (lookup-key zz/alt-map "8"))
+(global-set-key (kbd "M-9") (lookup-key zz/alt-map "9"))
+(global-set-key (kbd "M-0") (lookup-key zz/alt-map "0"))
 
-(global-set-key (kbd "M-6")    'gud-break)
-(global-set-key (kbd "M-7")    'gud-next)
-(global-set-key (kbd "M-8")    'gud-step)
-(global-set-key (kbd "M-9")    'gud-print)
-(global-set-key (kbd "M-0")    'other-window)
-
-(global-set-key (kbd "C-`") 'imenu)
-(global-set-key (kbd "C-1") 'delete-window)
-(global-set-key (kbd "C-2") 'delete-frame)
-(global-set-key (kbd "C-3") 'tabbar-backward-group)
-(global-set-key (kbd "C-4") 'delete-frame)
+(global-set-key (kbd "C-`") (lookup-key zz/ctrl-map "`"))
+(global-set-key (kbd "C-1") (lookup-key zz/ctrl-map "1"))
+(global-set-key (kbd "C-2") (lookup-key zz/ctrl-map "2"))
+(global-set-key (kbd "C-3") (lookup-key zz/ctrl-map "3"))
+(global-set-key (kbd "C-4") (lookup-key zz/ctrl-map "4"))
 ;;gud control setting
-(global-set-key (kbd "C-5") 'gud-until)
-(global-set-key (kbd "C-6") 'gud-remove)
-(global-set-key (kbd "C-7") 'gud-finish)
-(global-set-key (kbd "C-8") 'gud-jump)
-(global-set-key (kbd "C-9") 'gud-pstar)
-(global-set-key (kbd "C-0") 'other-frame)
+(global-set-key (kbd "C-5") (lookup-key zz/ctrl-map "5"))
+(global-set-key (kbd "C-6") (lookup-key zz/ctrl-map "6"))
+(global-set-key (kbd "C-7") (lookup-key zz/ctrl-map "7"))
+(global-set-key (kbd "C-8") (lookup-key zz/ctrl-map "8"))
+(global-set-key (kbd "C-9") (lookup-key zz/ctrl-map "9"))
+(global-set-key (kbd "C-0") (lookup-key zz/ctrl-map "0"))
 
 ;;f1 1,2,3,4 for highlight-symbol
 (global-set-key (kbd "<f1> 1") 'highlight-symbol-at-point)
@@ -364,16 +372,12 @@
 (global-set-key (kbd "<f1> -") 'gud-up)
 (global-set-key (kbd "<f1> =") 'gud-down)
 
-(global-unset-key (kbd "C-x C-b"))
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-j") 'dired-jump)
 (global-set-key (kbd "C-c w")   'compare-windows)
 (global-set-key (kbd "M-#")     'query-replace-regexp)
 
-(global-set-key (kbd "C-x M-s") 'sudo-unset-ro-or-save)
-(global-set-key (kbd "C-x M-f") 'sudo-find-file)
-
-(global-set-key (kbd "%") 'match-paren)
+(global-set-key (kbd "%")       'match-paren)
 
 (global-unset-key [backspace])
 (global-set-key   [backspace] 'delete-backward-char)
@@ -389,11 +393,11 @@
    (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab => "\C-q\t"
-(global-set-key [(control tab)]       "\C-q\t")
+(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(tab)]))
 
 ;;tabbar switch group
-(global-set-key (kbd "M-]")           'tabbar-forward-tab)
-(global-set-key (kbd "M-[")           'tabbar-backward-tab)
+(global-set-key (kbd "M-]")  (lookup-key zz/alt-map "]"))
+(global-set-key (kbd "M-[")  (lookup-key zz/alt-map "["))
 
 (global-set-key (kbd "C-c h") 'helm-mini)
 
@@ -410,61 +414,27 @@
  (execute-set-key f4-map "C-d" "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\"))))
 
 ;;undo/redo
-(if use-graph-keymap-p
-    (progn
-      (define-key global-map (kbd "C--") 'undo)
-      (define-key global-map (kbd "C-=") 'redo))
-    (progn
-      (define-key f2-map (kbd "-") 'undo)
-      (define-key f2-map (kbd "=") 'redo))
-    )
+(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map "-"))
+(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map "="))
 
 ;;winner restore
-(if use-graph-keymap-p
-    (progn
-      (define-key global-map (kbd "C-,") 'winner-undo)
-      (define-key global-map (kbd "C-.") 'winner-redo))
-    (progn
-      (define-key f2-map (kbd ",") 'winner-undo)
-      (define-key f2-map (kbd ".") 'winner-redo))
-    )
+(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map ","))
+(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map "."))
 
 ;;quick move other windows
-(if use-graph-keymap-p
-    (progn
-      (define-key global-map [M-up]    'windmove-up)
-      (define-key global-map [M-down]  'windmove-down)
-      (define-key global-map [M-right] 'windmove-right)
-      (define-key global-map [M-left]  'windmove-left))
-    (progn
-      (define-key f3-map [up]    'windmove-up)
-      (define-key f3-map [down]  'windmove-down)
-      (define-key f3-map [right] 'windmove-right)
-      (define-key f3-map [left]  'windmove-left))
-    )
+(define-key global-map [M-up]    'windmove-up)
+(define-key global-map [M-down]  'windmove-down)
+(define-key global-map [M-right] 'windmove-right)
+(define-key global-map [M-left]  'windmove-left)
 
-;;for mark
-(unless use-graph-keymap-p
-  (define-key f2-map (kbd "<SPC>") 'set-mark-command)
-  )
-
-;;;f3-map setting
 ;;window size change
-(if use-graph-keymap-p
-    (progn
-      (define-key global-map [S-up]    'enlarge-window)
-      (define-key global-map [S-down]  'shrink-window)
-      (define-key global-map [S-right] 'enlarge-window-horizontally)
-      (define-key global-map [S-left]  'shrink-window-horizontally))
-    (progn
-      (define-key f2-map [up]    'enlarge-window)
-      (define-key f2-map [down]  'shrink-window)
-      (define-key f2-map [right] 'enlarge-window-horizontally)
-      (define-key f2-map [left]  'shrink-window-horizontally))
-    )
+(define-key global-map [S-up]    'enlarge-window)
+(define-key global-map [S-down]  'shrink-window)
+(define-key global-map [S-right] 'enlarge-window-horizontally)
+(define-key global-map [S-left]  'shrink-window-horizontally)
 
 ;;set apps do M+x
-(define-key global-map  [apps]  'execute-extended-command)
+(define-key global-map [apps]    'execute-extended-command)
 
 (provide 'key-setting)
 

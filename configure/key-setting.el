@@ -161,6 +161,10 @@
 (defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
+;;f4-quote key map for help using
+(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
+(define-key f4-map (kbd "`") f4-backquote-map)
+
 ;;f4-e key map 
 (defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
 (define-key f4-map "e" f4-e-map)
@@ -173,7 +177,7 @@
 (defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
 (define-key help-map [escape] f1-esc-map)
 
-;;f1-esc key map for help using
+;;f1-quote key map for help using
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 

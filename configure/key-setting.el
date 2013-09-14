@@ -2,12 +2,12 @@
 ;;;
 
 ;;;;function key setting on console
-;;;keymap:fn-map            f1-f9  + 1/= <===> f1/f12
-;;;keymap:shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
-;;;keymap:control-fn-map    f1-f11 + 1/= <===> control + f1/f12
-;;;keymap:alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
-;;;keymap:control-num-map   f1-f7  + 1/= <===> control + 1/=
-;;;keymap:alt-num-map       f1-f8  + 1/= <===> alt     + 1/=
+;;;keymap:zz/fn-map            f1-f9  + 1/= <===> f1/f12
+;;;keymap:zz/shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
+;;;keymap:zz/control-fn-map    f1-f11 + 1/= <===> control + f1/f12
+;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
+;;;keymap:zz/control-map       f1-f7  + 1/= <===> control + 1/=
+;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
 
 
 ;;use keymaps control flag
@@ -25,7 +25,7 @@
   (show-keymap-select))
 
 ;;f1-f7 => C-1/+
-(defvar control-num-map
+(defvar zz/control-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [C-1])
     (define-key map "2" [C-2])
@@ -36,15 +36,15 @@
     (define-key map "7" [C-7])
     (define-key map "8" [C-8])
     (define-key map "9" [C-9])
-    (define-key map "0" [C-10])
+    (define-key map "0" [C-0])
     (define-key map "-" [C--])
     (define-key map "+" [C-+])
     map)
   "f7 <=> control")
-(define-key global-map (kbd "<f1> <f7>") control-num-map)
+(define-key global-map (kbd "<f1> <f7>") zz/control-map)
  
 ;;f1-f8 => M-1/+
-(defvar alt-num-map
+(defvar zz/alt-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [M-1])
     (define-key map "2" [M-2])
@@ -55,7 +55,7 @@
     (define-key map "7" [M-7])
     (define-key map "8" [M-8])
     (define-key map "9" [M-9])
-    (define-key map "0" [M-10])
+    (define-key map "0" [M-0])
     (define-key map "-" [M--])
     (define-key map "+" [M-+])
     map)
@@ -63,7 +63,7 @@
 (define-key global-map (kbd "<f1> <f8>") alt-num-map)
 
 ;;f1-f9 => f1/f12
-(defvar fn-map
+(defvar zz/fn-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [f1])
     (define-key map "2" [f2])
@@ -79,10 +79,10 @@
     (define-key map "+" [f12])
     map)
   "f9 <=> f1/f12")
-(define-key global-map [(f1) (f9)] fn-map)
+(define-key global-map [(f1) (f9)] zz/fn-map)
 
 ;;f1-f10 => S-f1/f12
-(defvar shift-fn-map
+(defvar zz/shift-fn-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [S-f1])
     (define-key map "2" [S-f2])
@@ -101,7 +101,7 @@
 (define-key global-map [(f1) (f10)] shift-fn-map)
 
 ;;f1-f11 => C-f1/f12
-(defvar f1/f11-map
+(defvar zz/control-fn-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [C-f1])
     (define-key map "2" [C-f2])
@@ -117,10 +117,10 @@
     (define-key map "+" [C-f12])
     map)
   "f11 <=> C-f1/f12")
-(define-key global-map [(f1) (f11)] f1/f11-map)
+(define-key global-map [(f1) (f11)] zz/control-fn-map)
 
 ;;esc-f12 => M-f1/f12
-(defvar f1/f12-map
+(defvar zz/alt-fn-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [M-f1])
     (define-key map "2" [M-f2])
@@ -136,7 +136,7 @@
     (define-key map "+" [M-f12])
     map)
   "f12 <=> M-f1/f12")
-(define-key global-map [(f1) (f12)] f1/f12-map)
+(define-key global-map [(f1) (f12)] zz/alt-fn-map)
 
 ;;define new keymap for terminal
 (unless use-graph-keymap-p

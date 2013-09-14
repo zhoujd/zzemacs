@@ -18,20 +18,6 @@
 ;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
 
 
-;;use keymaps control flag
-(defvar use-graph-keymap-p window-system "use console keymap setting")
-
-(defun show-keymap-select ()
-  (if use-graph-keymap-p
-      (message "switch to graph keymap")
-      (message "switch to console keymap")))
-
-(defun switch-to-keymap ()
-  (interactive)
-  (setq use-graph-keymap-p (not use-graph-keymap-p))
-  (zz-load-configure "key-setting.el")
-  (show-keymap-select))
-
 ;;f1-f7 => C-1/+
 (defvar zz/ctrl-map
   (let ((map (make-sparse-keymap)))
@@ -54,33 +40,31 @@
     (define-key map [(tab)] "\C-q\t")
     map)
   "f7 <=> control")
-(define-key global-map (kbd "<f1> <f7>") zz/ctrl-map)
  
 ;;f1-f8 => M-1/+
 (defvar zz/alt-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "1"  'delete-other-windows)
-    (define-key map "2"  'delete-other-frames)
-    (define-key map "3"  'tabbar-forward-group)
-    (define-key map "4"  'kill-this-buffer)
+    (define-key  map "1"  'delete-other-windows)
+    (define-key  map "2"  'delete-other-frames)
+    (define-key  map "3"  'tabbar-forward-group)
+    (define-key  map "4"  'kill-this-buffer)
     (if-ms-windows
-     (define-key map "5" 'gud-cont)
-     (define-key map "5" 'gud-go))
+     (define-key map "5"  'gud-cont)
+     (define-key map "5"  'gud-go))
     
-    (define-key map "6"  'gud-break)
-    (define-key map "7"  'gud-next)
-    (define-key map "8"  'gud-step)
-    (define-key map "9"  'gud-print)
-    (define-key map "0"  'other-window)
-    (define-key map "-"  nil)
-    (define-key map "+"  nil)
+    (define-key  map "6"  'gud-break)
+    (define-key  map "7"  'gud-next)
+    (define-key  map "8"  'gud-step)
+    (define-key  map "9"  'gud-print)
+    (define-key  map "0"  'other-window)
+    (define-key  map "-"  nil)
+    (define-key  map "+"  nil)
 
-    (define-key map "]"  'tabbar-forward-tab)
-    (define-key map "["  'tabbar-backward-tab)
+    (define-key  map "]"  'tabbar-forward-tab)
+    (define-key  map "["  'tabbar-backward-tab)
     
     map)
   "f8 <=> alt")
-(define-key global-map (kbd "<f1> <f8>") zz/alt-map)
 
 ;;f1-f9 => f1/f12
 (defvar zz/fn-map
@@ -88,7 +72,7 @@
     (define-key map "1" [f1])
     (define-key map "2" [f2])
     (define-key map "3" [f3])
-    (define-key map "4" [f4])
+    (define-key map "4" [f4 f4])
     (define-key map "5" [f5])
     (define-key map "6" [f6])
     (define-key map "7" [f7])
@@ -99,7 +83,6 @@
     (define-key map "+" [f12])
     map)
   "f9 <=> f1/f12")
-(define-key global-map [(f1) (f9)] zz/fn-map)
 
 ;;f1-f10 => S-f1/f12
 (defvar zz/shift-fn-map
@@ -118,7 +101,6 @@
     (define-key map "+" [S-f12])
     map)
   "f10 <=> S-f1/f12")
-(define-key global-map [(f1) (f10)] zz/shift-fn-map)
 
 ;;f1-f11 => C-f1/f12
 (defvar zz/ctrl-fn-map
@@ -137,7 +119,6 @@
     (define-key map "+" [C-f12])
     map)
   "f11 <=> C-f1/f12")
-(define-key global-map [(f1) (f11)] zz/ctrl-fn-map)
 
 ;;esc-f12 => M-f1/f12
 (defvar zz/alt-fn-map
@@ -156,24 +137,20 @@
     (define-key map "+" [M-f12])
     map)
   "f12 <=> M-f1/f12")
-(define-key global-map [(f1) (f12)] zz/alt-fn-map)
 
-;;define new keymap for terminal
-(unless use-graph-keymap-p
-  ;;f2 key map
-  (defvar f2-map (make-sparse-keymap) "f2 <=> control.")
-  (define-key global-map [f2] f2-map)  
-  ;;f3 key map
-  (defvar f3-map (make-sparse-keymap) "f3 <=> alt.")
-  (define-key global-map [f3] f3-map)
-  )
+(define-key global-map (kbd "<f1> <f7>") zz/ctrl-map)
+(define-key global-map (kbd "<f1> <f8>") zz/alt-map)
+
+(define-key global-map [(f1) (f9)]  zz/fn-map)
+(define-key global-map [(f1) (f10)] zz/shift-fn-map)
+(define-key global-map [(f1) (f11)] zz/ctrl-fn-map)
+(define-key global-map [(f1) (f12)] zz/alt-fn-map)
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
  (setq w32-pass-lwindow-to-system nil)
  (setq w32-rwindow-modifier 'hyper)
  (setq w32-lwindow-modifier 'super))
-
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
@@ -200,13 +177,6 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
-;;marcro for start-process
-(defmacro execute-set-key (key-map key name args)
-  `(define-key ,key-map (kbd ,key)
-     (lambda ()
-       (interactive)
-       (apply 'start-process ,name nil ,args))))
-
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
 (define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
 
@@ -217,10 +187,6 @@
 
 (execute-set-key f4-e-map "f" "firefox"       '("firefox" "http://www.baidu.com"))
 (execute-set-key f4-e-map "b" "bcompare"      '("bcompare"))
-
-;;for keymap switch
-(when window-system
-  (global-set-key (kbd "<f4> `") 'switch-to-keymap))
 
 ;;switch to shells
 (global-set-key (kbd "<f4> <f9>")    
@@ -435,6 +401,7 @@
 
 ;;set apps do M+x
 (define-key global-map [apps]    'execute-extended-command)
+
 
 (provide 'key-setting)
 

@@ -32,6 +32,13 @@
                (>= emacs-minor-version 3))
        ,@body))
 
+;;marcro for start-process
+(defmacro execute-set-key (key-map key name args)
+  `(define-key ,key-map (kbd ,key)
+     (lambda ()
+       (interactive)
+       (apply 'start-process ,name nil ,args))))
+
 
 (provide 'macro-setting)
 

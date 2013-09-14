@@ -2,12 +2,12 @@
 ;;;
 
 ;;;;function key setting on console
-;;;f1-f9  + 1/= <===> f1/f12
-;;;f1-f10 + 1/= <===> shift   + f1/f12
-;;;f1-f11 + 1/= <===> control + f1/f12
-;;;f1-f12 + 1/= <===> alt     + f1/f12
-;;;f1-f7  + 1/= <===> control + 1/=
-;;;f1-f8  + 1/= <===> alt     + 1/=
+;;;keymap:fn-map            f1-f9  + 1/= <===> f1/f12
+;;;keymap:shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
+;;;keymap:control-fn-map    f1-f11 + 1/= <===> control + f1/f12
+;;;keymap:alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
+;;;keymap:control-num-map   f1-f7  + 1/= <===> control + 1/=
+;;;keymap:alt-num-map       f1-f8  + 1/= <===> alt     + 1/=
 
 
 ;;use keymaps control flag

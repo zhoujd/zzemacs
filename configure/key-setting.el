@@ -106,9 +106,6 @@
 (when-emacs24-3
  (global-set-key (kbd "<f4> -") 'smartparens-mode))
 
-(global-set-key (kbd "<f4> <backtab>")   'tabbar-forward-group)
-
-
 ;;for info
 (if use-graph-keymap-p
     (progn

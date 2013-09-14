@@ -1,18 +1,14 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;;1/+ key setting on console
-;;;f1      1/+ <===> f1      + 1/+
-;;;f2      1/+ <===> control + 1/+
-;;;f3      1/+ <===> alt     + 1/+
-;;;f4      1/+ <===> reverse
-
 ;;;;function key setting on console
-;;;esc     1/+ <===> f1/f12
-;;;f1-esc  1/+ <===> shift   + f1/f12
-;;;f2-esc  1/+ <===> control + f1/f12
-;;;f3-esc  1/+ <===> alt     + f1/f12
-;;;f4-esc  1/+ <===> reverse
+;;;f1-f9  + 1/= <===> f1/f12
+;;;f1-f10 + 1/= <===> shift   + f1/f12
+;;;f1-f11 + 1/= <===> control + f1/f12
+;;;f1-f12 + 1/= <===> alt     + f1/f12
+;;;f1-f7  + 1/= <===> control + 1/=
+;;;f1-f8  + 1/= <===> alt     + 1/=
+
 
 ;;use keymaps control flag
 (defvar use-graph-keymap-p window-system "use console keymap setting")
@@ -27,6 +23,120 @@
   (setq use-graph-keymap-p (not use-graph-keymap-p))
   (zz-load-configure "key-setting.el")
   (show-keymap-select))
+
+;;f1-f7 => C-1/+
+(defvar f1/f7-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [C-1])
+    (define-key map "2" [C-2])
+    (define-key map "3" [C-3])
+    (define-key map "4" [C-4])
+    (define-key map "5" [C-5])
+    (define-key map "6" [C-6])
+    (define-key map "7" [C-7])
+    (define-key map "8" [C-8])
+    (define-key map "9" [C-9])
+    (define-key map "0" [C-10])
+    (define-key map "-" [C--])
+    (define-key map "+" [C-+])
+    map)
+  "f7 <=> control")
+(define-key global-map (kbd "<f1> <f7>") f1/f7-map)
+ 
+;;f1-f8 => M-1/+
+(defvar f1/f8-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [M-1])
+    (define-key map "2" [M-2])
+    (define-key map "3" [M-3])
+    (define-key map "4" [M-4])
+    (define-key map "5" [M-5])
+    (define-key map "6" [M-6])
+    (define-key map "7" [M-7])
+    (define-key map "8" [M-8])
+    (define-key map "9" [M-9])
+    (define-key map "0" [M-10])
+    (define-key map "-" [M--])
+    (define-key map "+" [M-+])
+    map)
+  "f8 <=> alt")
+(define-key global-map (kbd "<f1> <f8>") f1/f8-map)
+
+;;f1-f9 => f1/f12
+(defvar f1/f9-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [f1])
+    (define-key map "2" [f2])
+    (define-key map "3" [f3])
+    (define-key map "4" [f4])
+    (define-key map "5" [f5])
+    (define-key map "6" [f6])
+    (define-key map "7" [f7])
+    (define-key map "8" [f8])
+    (define-key map "9" [f9])
+    (define-key map "0" [f10])
+    (define-key map "-" [f11])
+    (define-key map "+" [f12])
+    map)
+  "f9 <=> f1/f12")
+(define-key global-map [(f1) (f9)] f1/f9-map)
+
+;;f1-f10 => S-f1/f12
+(defvar f1/f10-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [S-f1])
+    (define-key map "2" [S-f2])
+    (define-key map "3" [S-f3])
+    (define-key map "4" [S-f4])
+    (define-key map "5" [S-f5])
+    (define-key map "6" [S-f6])
+    (define-key map "7" [S-f7])
+    (define-key map "8" [S-f8])
+    (define-key map "9" [S-f9])
+    (define-key map "0" [S-f10])
+    (define-key map "-" [S-f11])
+    (define-key map "+" [S-f12])
+    map)
+  "f10 <=> S-f1/f12")
+(define-key global-map [(f1) (f10)] f1/f10-map)
+
+;;f1-f11 => C-f1/f12
+(defvar f1/f11-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [C-f1])
+    (define-key map "2" [C-f2])
+    (define-key map "3" [C-f3])
+    (define-key map "4" [C-f4])
+    (define-key map "5" [C-f5])
+    (define-key map "6" [C-f6])
+    (define-key map "7" [C-f7])
+    (define-key map "8" [C-f8])
+    (define-key map "9" [C-f9])
+    (define-key map "0" [C-f10])
+    (define-key map "-" [C-f11])
+    (define-key map "+" [C-f12])
+    map)
+  "f11 <=> C-f1/f12")
+(define-key global-map [(f1) (f11)] f1/f11-map)
+
+;;esc-f12 => M-f1/f12
+(defvar f1/f12-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [M-f1])
+    (define-key map "2" [M-f2])
+    (define-key map "3" [M-f3])
+    (define-key map "4" [M-f4])
+    (define-key map "5" [M-f5])
+    (define-key map "6" [M-f6])
+    (define-key map "7" [M-f7])
+    (define-key map "8" [M-f8])
+    (define-key map "9" [M-f9])
+    (define-key map "0" [M-f10])
+    (define-key map "-" [M-f11])
+    (define-key map "+" [M-f12])
+    map)
+  "f12 <=> M-f1/f12")
+(define-key global-map [(f1) (f12)] f1/f12-map)
 
 ;;define new keymap for terminal
 (unless use-graph-keymap-p
@@ -43,6 +153,7 @@
  (setq w32-pass-lwindow-to-system nil)
  (setq w32-rwindow-modifier 'hyper)
  (setq w32-lwindow-modifier 'super))
+
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")

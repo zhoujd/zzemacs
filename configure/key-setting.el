@@ -178,20 +178,19 @@
     map)
   "f12 <=> M-f1/f12")
 
-(define-key global-map (kbd "<f1> <f7>") zz/ctrl-map)
-(define-key global-map (kbd "<f1> <f8>") zz/alt-map)
+(define-key help-map (kbd "<f7>") zz/ctrl-map)
+(define-key help-map (kbd "<f8>") zz/alt-map)
 
-(define-key global-map [(f1) (f9)]  zz/fn-map)
-(define-key global-map [(f1) (f10)] zz/shift-fn-map)
-(define-key global-map [(f1) (f11)] zz/ctrl-fn-map)
-(define-key global-map [(f1) (f12)] zz/alt-fn-map)
+(define-key help-map [f9]  zz/fn-map)
+(define-key help-map [f10] zz/shift-fn-map)
+(define-key help-map [f11] zz/ctrl-fn-map)
+(define-key help-map [f12] zz/alt-fn-map)
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
  (setq w32-pass-lwindow-to-system nil)
  (setq w32-rwindow-modifier 'hyper)
  (setq w32-lwindow-modifier 'super))
-
 
 (define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
 (define-key f1-backquote-map (kbd "i") 'zz-info-open-file)

@@ -205,19 +205,26 @@
 (execute-set-key f4-e-map "b" "bcompare"      '("bcompare"))
 
 ;;switch to shells
-(global-set-key (kbd "<f4> <f9>")    
-                (lambda () (interactive) (start-shell "*shell-f9*")))
-(global-set-key (kbd "<f4> <f10>")    
-                (lambda () (interactive) (start-shell "*shell-f10*")))
-(global-set-key (kbd "<f4> <f11>")  
-                (lambda () (interactive) (start-shell "*shell-f11*")))
-(global-set-key (kbd "<f4> <f12>")  
-                (lambda () (interactive) (start-shell "*shell-f12*")))
+(define-key f4-map (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*")))
+(define-key f4-map (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*")))
+(define-key f4-map (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*")))
+(define-key f4-map (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*")))
 
-(global-set-key (kbd "<f4> =") 'er/expand-region)
-(when-emacs24-3
- (global-set-key (kbd "<f4> -") 'smartparens-mode))
+(define-key f4-map (kbd "=") 'er/expand-region)
+(define-key f4-map (kbd "-") 'smartparens-mode)
 
+;;f4-map setting
+(define-key f4-map (kbd "C-1") 'my-utf-8)
+(define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
+(define-key f4-map (kbd "C-l") 'command-history)
+
+(if-ms-windows
+ (progn
+   (execute-set-key f4-map "C-d" "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\"))))
+ (progn
+   (define-key f4-map (kbd "C-d") 'open-with-nautilus)
+   (define-key f4-map (kbd "C-t") 'open-with-terminal)))
+ 
 ;;for info
 (global-set-key [C-f1]    'session-save)
 (global-set-key [M-f1]    'session-restore)
@@ -226,7 +233,6 @@
 (global-set-key [S-f2]    'bc-previous)
 (global-set-key [C-f2]    'bc-set)
 (global-set-key [M-f2]    'bc-list)
-
 
 (global-set-key   [f3]    'my-last-buffer-go)
 (global-set-key [S-f3]    'list-bookmarks)
@@ -382,18 +388,6 @@
 (global-set-key (kbd "M-[")  (lookup-key zz/alt-map "["))
 
 (global-set-key (kbd "C-c h") 'helm-mini)
-
-;;f2-map setting
-(define-key f4-map (kbd "C-1") 'my-utf-8)
-(define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
-(define-key f4-map (kbd "C-l") 'command-history)
-
-(unless-ms-windows  
- (define-key f4-map (kbd "C-d") 'open-with-nautilus)
- (define-key f4-map (kbd "C-t") 'open-with-terminal))
-
-(when-ms-windows
- (execute-set-key f4-map "C-d" "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\"))))
 
 ;;undo/redo
 (define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map "-"))

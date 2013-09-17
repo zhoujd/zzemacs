@@ -20,6 +20,8 @@ git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"
 git config --global color.ui     true
 
+## win7 git server (gitblit)
+## http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
 ## error: RPC failed; result=18, HTTP code = 0
 git config --global http.postBuffer 524288000
 

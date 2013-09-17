@@ -20,6 +20,9 @@ git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"
 git config --global color.ui     true
 
+## error: RPC failed; result=18, HTTP code = 0
+git config --global http.postBuffer 524288000
+
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode
 

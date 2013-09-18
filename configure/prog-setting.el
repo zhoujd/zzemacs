@@ -98,8 +98,10 @@
  (setq company-idle-delay 0.2)
  (setq company-minimum-prefix-length 1)
  (setq company-show-numbers t)
- (define-key company-active-map [return] nil)
- (define-key company-active-map [tab]    'company-complete-selection)
+ (define-key company-active-map [return]    nil)
+ (define-key company-active-map (kbd "RET") nil)
+ (define-key company-active-map [tab]       'company-complete-selection)
+ (define-key company-active-map (kbd "TAB") 'company-complete-selection)
  (dolist (hook (list
                 ;;'emacs-lisp-mode-hook
                 ;;'lisp-mode-hook

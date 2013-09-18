@@ -24,6 +24,8 @@ git config --global color.ui     true
 #git config --global pack.windowMemory  10m
 #git config --global pack.packSizeLimit 20m
 
+### win7 git server (gitblit)
+### http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
 ### error: RPC failed; result=18, HTTP code = 0
 #git config --global http.postBuffer 524288000
 

@@ -1,9 +1,9 @@
 ;;;; shell-setting.el --- sample config file
 ;;;
 
-;;Shell in emacs configure file name like below
-;;".emacs_cmdproxy.exe"  ;;for win-7
-;;".emacs_shellname"
+;;Shell in emacs configure file name by ".emacs_shellname"
+;;".emacs_cmdproxy.exe"  ;;for win-7 cmd
+;;".emacs_bash"          ;;for bash
 
 ;;;For shell ls color on folder
 ;;export LS_COLORS='di=1'

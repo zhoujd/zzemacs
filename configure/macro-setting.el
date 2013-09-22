@@ -32,9 +32,7 @@
        ,if-cause ,else-cause))
 
 (defmacro when-emacs24-3 (&rest body)
-  `(when ,(and (>= emacs-major-version 24)
-               (>= emacs-minor-version 3))
-     ,@body))
+  `(if-emacs24-3 (progn ,@body)))
 
 ;;marcro for start-process
 (defmacro execute-set-key (key-map key name args)

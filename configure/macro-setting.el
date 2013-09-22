@@ -27,10 +27,15 @@
      ,@body
      (set-language-environment curr-lang)))
 
+(defmacro if-emacs24-3 (if-cause &optional else-cause)
+  `(if ,(and (>= emacs-major-version 24)
+             (>= emacs-minor-version 3))
+       ,if-cause ,else-cause))
+
 (defmacro when-emacs24-3 (&rest body)
   `(when ,(and (>= emacs-major-version 24)
                (>= emacs-minor-version 3))
-       ,@body))
+     ,@body))
 
 ;;marcro for start-process
 (defmacro execute-set-key (key-map key name args)

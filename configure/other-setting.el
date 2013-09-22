@@ -69,10 +69,9 @@
 (require 'linum)
 
 ;;redo+ failed at emacs 24.3
-(if (and (=  emacs-major-version 24)
-         (>= emacs-minor-version 3))
-    (require 'redo)
-    (require 'redo+))
+(if-emacs24-3
+ (require 'redo)
+ (require 'redo+))
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))

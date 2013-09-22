@@ -84,15 +84,23 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun start-shell (buf-name)
   (interactive)
-  (let ((sh explicit-shell-file-name)
-        (lang current-language-environment))
+  (let ((env-shell-file explicit-shell-file-name)
+        (env-shell (getenv "SHELL")))
     (if-ms-windows
      (progn
        (with-utf-8-env
-         (setq explicit-shell-file-name "bash")
+         (setq shell-file-name "bash")
+         (setq shell-command-switch "-c")
          (setq explicit-sh-args '("--login" "-i"))
+         ;;bash shell start setting
+         (setq explicit-shell-file-name shell-file-name)
+         (setenv "SHELL" shell-file-name)
+         ;;start new shell buffer
          (switch-to-shell buf-name)
-         (setq explicit-shell-file-name sh)))
+         ;;restore before setting
+         (setq explicit-shell-file-name env-shell-file)
+         (setenv "SHELL" env-shell)
+         ))
      (progn
        (switch-to-shell buf-name)))))
 

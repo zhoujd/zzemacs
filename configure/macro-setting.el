@@ -2,8 +2,7 @@
 ;;
 
 (defmacro if-ms-windows (if-cause &optional else-cause)
-  `(if ,(or (eq window-system 'w32)
-            (eq window-system 'win32))
+  `(if ,(eq system-type 'windows-nt)
        ,if-cause ,else-cause))
 
 (defmacro if-not-ms-windows (if-cause &optional else-cause)

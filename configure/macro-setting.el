@@ -44,13 +44,11 @@
 (defmacro with-start-shell (&rest body)
   `(let ((env-shell      shell-file-name)
          (env-shell-cmd  shell-command-switch)
-         (env-sh-args    explicit-sh-args)
          (env-shell-file explicit-shell-file-name)
          (env-shell      (getenv "SHELL")))
      ,@body
      (setq shell-file-name env-shell)
      (setq shell-command-switch env-shell-cmd)
-     (setq explicit-sh-args env-sh-args)
      (setq explicit-shell-file-name env-shell-file)
      (setenv "SHELL" env-shell)
      ))

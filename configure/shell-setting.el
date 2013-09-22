@@ -89,17 +89,15 @@ Dmitriy Igrishin's patched version of comint.el."
     (if-ms-windows
      (progn
        (with-utf-8-env
-         (setq shell-file-name "bash")
-         (setq shell-command-switch "-c")
-         (setq explicit-sh-args '("--login" "-i"))
-         ;;bash shell start setting
-         (setq explicit-shell-file-name shell-file-name)
-         (setenv "SHELL" shell-file-name)
-         ;;start new shell buffer
-         (switch-to-shell buf-name)
-         ;;restore before setting
-         (setq explicit-shell-file-name env-shell-file)
-         (setenv "SHELL" env-shell)
+         (with-start-shell
+           (setq shell-file-name "bash")
+           (setq shell-command-switch "-c")
+           (setq explicit-sh-args '("--login" "-i"))
+           ;;bash shell start setting
+           (setq explicit-shell-file-name "bash")
+           (setenv "SHELL" shell-file-name)
+           ;;start new shell buffer
+           (switch-to-shell buf-name))
          ))
      (progn
        (switch-to-shell buf-name)))))

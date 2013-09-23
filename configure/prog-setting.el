@@ -118,9 +118,9 @@
   (add-hook hook 'company-mode)))
 
 ;;;cedet version flag t for inside
-(setq use-cedet-inside-flag nil)
-(when-emacs24-3
- (setq use-cedet-inside-flag t))
+(if-emacs24-3
+ (setq use-cedet-inside-flag t)
+ (setq use-cedet-inside-flag nil))
 
 (if use-cedet-inside-flag
     (progn

@@ -4,7 +4,7 @@
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
-(defun w3m-build ()
+(defun w3m-build-in-emacs ()
   "compile emacs-w3m"
   (interactive)
   (apply

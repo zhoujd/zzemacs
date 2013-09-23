@@ -39,6 +39,7 @@
           shell-setting
           sample-setting
           media-setting
+          w3m-setting
           c-setting
           lisp-setting
           scheme-setting

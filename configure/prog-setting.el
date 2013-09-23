@@ -528,4 +528,4 @@ the mru bookmark stack."
 
 (provide 'prog-setting)
 
-;;; c-setting.el ends here
+;;; prog-setting.el ends here

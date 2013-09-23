@@ -1,4 +1,4 @@
-;;;; common-setting.el --- common config file
+;;;; macro-setting.el --- macro config file
 ;;
 
 (defmacro if-ms-windows (if-cause &optional else-cause)
@@ -55,4 +55,4 @@
 
 (provide 'macro-setting)
 
-;;; common-setting.el ends here
+;;; macro-setting.el ends here

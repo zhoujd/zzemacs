@@ -29,7 +29,9 @@
 (setq w3m-use-mule-ucs t)
 (setq w3m-use-toolbar t)  
 (setq w3m-use-cookies t)
-(setq w3m-display-inline-image t)
+
+;;;show images
+(setq w3m-toggle-inline-image t)
 
 ;;(setq w3m-bookmark-file-coding-system 'chinese-iso-8bit)
 ;;(setq w3m-coding-system 'chinese-iso-8bit)

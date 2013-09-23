@@ -1,12 +1,14 @@
 ;;;; w3m-setting.el --- w3m setting file
 ;;
 
-(setq load-path (cons "~/site-lisp/emacs-w3m" load-path))
+(zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
+
 (setq exec-path (cons "~/bin" exec-path))
 (setq w3m-command (concat "~/bin/w3m.exe" ""))
 (setq w3m-browse-url (concat "~/bin/w3m.exe" ""))
 (setq w3m-find-file (concat "~/bin/w3m.exe" ""))
+
 (setq browse-url-browser-function 'w3m-browse-url)
 ;(setq w3m-local-find-file-function nil)
 ;;; Allow browsing of local files:
@@ -46,5 +48,7 @@
 
 ;;(setq w3m-no-proxy-domains '("local.com" "neighbor.com"))
 ;;
+
+(provide 'w3m-setting)
 
 ;;; w3m-setting.el ends here

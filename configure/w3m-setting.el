@@ -4,6 +4,16 @@
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
+(defun w3m-build ()
+  "compile emacs-w3m"
+  (interactive)
+  (apply
+   'start-process
+   "my-w3m-cmp"
+   nil
+   (split-string "emacs -batch -q -no-site-file -l w3mhack.el NONE -f w3mhack-nonunix-install"))
+  (message "build emacs-w3m ok"))
+
 ;;(setq exec-path (cons "~/bin" exec-path))
 ;;(setq w3m-command (concat "~/bin/w3m.exe" ""))
 ;;(setq w3m-browse-url (concat "~/bin/w3m.exe" ""))

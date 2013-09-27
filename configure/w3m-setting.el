@@ -12,8 +12,8 @@
    "my-w3m-cmp"
    nil
    (split-string
-    (format "%s/bin/emacs -batch -q -no-site-file -l w3mhack.el NONE -f w3mhack-nonunix-install"
-            (getenv "EMACS_DIR"))))
+    (format "%s -batch -q -no-site-file -l w3mhack.el NONE -f w3mhack-nonunix-install"
+            (if-ms-windows (concat (getenv "EMACS_DIR") "/bin/emacs") "emacs"))))
   (message "build emacs-w3m ok"))
 
 ;;(setq exec-path (cons "~/bin" exec-path))

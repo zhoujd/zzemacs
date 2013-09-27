@@ -19,8 +19,8 @@
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
-(define-key global-map [f4] f4-map)
-(define-key esc-map    [f4] f4-map)
+(define-key global-map [f4]      f4-map)
+(define-key help-map   [escape]  f4-map)
 
 ;;f4-esc key map 
 (defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
@@ -38,14 +38,9 @@
 (defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
-;;f1-esc key map for help using
-(defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
-(define-key help-map [escape] f1-esc-map)
-
 ;;f1-quote key map for help using
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
-
 
 ;;f1-f7 => C-1/+
 (defvar zz/ctrl-map

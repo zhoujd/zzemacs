@@ -87,12 +87,7 @@
 
     (define-key  map (kbd "M-]")  'tabbar-forward-tab)
     (define-key  map (kbd "M-[")  'tabbar-backward-tab)
-    
-    (define-key  map "h"  'windmove-left)
-    (define-key  map "j"  'windmove-down)
-    (define-key  map "k"  'windmove-up)
-    (define-key  map "l"  'windmove-right)
-        
+            
     map)
   "f8 <=> alt")
 
@@ -128,13 +123,7 @@
     (define-key map (kbd "(") [S-f9])
     (define-key map (kbd ")") [S-f10])
     (define-key map (kbd "_") [S-f11])
-    (define-key map (kbd "+") [S-f12])
-
-    (define-key map "h" [S-left])
-    (define-key map "j" [S-down])
-    (define-key map "k" [S-up])
-    (define-key map "l" [S-right])
-    
+    (define-key map (kbd "+") [S-f12])   
     map)
   "f10 <=> S-f1/f12")
 
@@ -173,6 +162,17 @@
     (define-key map (kbd "M-=") [M-f12])
     map)
   "f12 <=> M-f1/f12")
+
+;;shift -> up/down/left/right
+(define-key help-map [left]  [S-left])
+(define-key help-map [down]  [S-down])
+(define-key help-map [up]    [S-up])
+(define-key help-map [right] [S-right])
+;;alt -> up/down/left/right
+(define-key esc-map [left]   'windmove-left)
+(define-key esc-map [down]   'windmove-down)
+(define-key esc-map [up]     'windmove-up)
+(define-key esc-map [right]  'windmove-right)
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
@@ -368,7 +368,7 @@
    (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab => "\C-q\t"
-(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(tab)]))
+(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(control) (tab)]))
 
 ;;tabbar switch group
 (global-set-key (kbd "M-]")  (lookup-key zz/alt-map (kbd "M-]")))
@@ -385,10 +385,10 @@
 (define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map (kbd "C-.")))
 
 ;;quick move other windows
-(define-key global-map [M-up]    (lookup-key zz/alt-map "k"))
-(define-key global-map [M-down]  (lookup-key zz/alt-map "j"))
-(define-key global-map [M-right] (lookup-key zz/alt-map "l"))
-(define-key global-map [M-left]  (lookup-key zz/alt-map "h"))
+(define-key global-map [M-up]    (lookup-key zz/alt-map [up]))
+(define-key global-map [M-down]  (lookup-key zz/alt-map [down]))
+(define-key global-map [M-right] (lookup-key zz/alt-map [right]))
+(define-key global-map [M-left]  (lookup-key zz/alt-map [left]))
 
 ;;window size change
 (define-key global-map [S-up]    'enlarge-window)

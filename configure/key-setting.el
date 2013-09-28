@@ -209,6 +209,7 @@
 ;;for info
 (global-set-key [C-f1]    'session-save)
 (global-set-key [M-f1]    'session-restore)
+(global-set-key [S-f1]    'planner-create-task-from-buffer)
 
 (global-set-key   [f2]    'bc-next)
 (global-set-key [S-f2]    'bc-previous)

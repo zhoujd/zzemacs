@@ -174,14 +174,6 @@
     map)
   "f12 <=> M-f1/f12")
 
-;(define-key help-map (kbd "<f7>") zz/ctrl-map)
-;(define-key help-map (kbd "<f8>") zz/alt-map)
-
-;(define-key help-map [f9]  zz/fn-map)
-;(define-key help-map [f10] zz/shift-fn-map)
-;(define-key help-map [f11] zz/ctrl-fn-map)
-;(define-key help-map [f12] zz/alt-fn-map)
-
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
  (setq w32-pass-lwindow-to-system nil)
@@ -315,30 +307,30 @@
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
 
 ;;number 0-1/-/=
-(global-set-key (kbd "M-1") (lookup-key zz/alt-map "1"))
-(global-set-key (kbd "M-2") (lookup-key zz/alt-map "2"))
-(global-set-key (kbd "M-3") (lookup-key zz/alt-map "3"))
-(global-set-key (kbd "M-4") (lookup-key zz/alt-map "4"))
+(global-set-key (kbd "M-1") (lookup-key zz/alt-map (kbd "M-1")))
+(global-set-key (kbd "M-2") (lookup-key zz/alt-map (kbd "M-2")))
+(global-set-key (kbd "M-3") (lookup-key zz/alt-map (kbd "M-3")))
+(global-set-key (kbd "M-4") (lookup-key zz/alt-map (kbd "M-4")))
 ;;gud control setting
-(global-set-key (kbd "M-5") (lookup-key zz/alt-map "5"))
-(global-set-key (kbd "M-6") (lookup-key zz/alt-map "6"))
-(global-set-key (kbd "M-7") (lookup-key zz/alt-map "7"))
-(global-set-key (kbd "M-8") (lookup-key zz/alt-map "8"))
-(global-set-key (kbd "M-9") (lookup-key zz/alt-map "9"))
-(global-set-key (kbd "M-0") (lookup-key zz/alt-map "0"))
+(global-set-key (kbd "M-5") (lookup-key zz/alt-map (kbd "M-5")))
+(global-set-key (kbd "M-6") (lookup-key zz/alt-map (kbd "M-6")))
+(global-set-key (kbd "M-7") (lookup-key zz/alt-map (kbd "M-7")))
+(global-set-key (kbd "M-8") (lookup-key zz/alt-map (kbd "M-8")))
+(global-set-key (kbd "M-9") (lookup-key zz/alt-map (kbd "M-9")))
+(global-set-key (kbd "M-0") (lookup-key zz/alt-map (kbd "M-0")))
 
-(global-set-key (kbd "C-`") (lookup-key zz/ctrl-map "`"))
-(global-set-key (kbd "C-1") (lookup-key zz/ctrl-map "1"))
-(global-set-key (kbd "C-2") (lookup-key zz/ctrl-map "2"))
-(global-set-key (kbd "C-3") (lookup-key zz/ctrl-map "3"))
-(global-set-key (kbd "C-4") (lookup-key zz/ctrl-map "4"))
+(global-set-key (kbd "C-`") (lookup-key zz/ctrl-map (kbd "C-`")))
+(global-set-key (kbd "C-1") (lookup-key zz/ctrl-map (kbd "C-1")))
+(global-set-key (kbd "C-2") (lookup-key zz/ctrl-map (kbd "C-2")))
+(global-set-key (kbd "C-3") (lookup-key zz/ctrl-map (kbd "C-3")))
+(global-set-key (kbd "C-4") (lookup-key zz/ctrl-map (kbd "C-4")))
 ;;gud control setting
-(global-set-key (kbd "C-5") (lookup-key zz/ctrl-map "5"))
-(global-set-key (kbd "C-6") (lookup-key zz/ctrl-map "6"))
-(global-set-key (kbd "C-7") (lookup-key zz/ctrl-map "7"))
-(global-set-key (kbd "C-8") (lookup-key zz/ctrl-map "8"))
-(global-set-key (kbd "C-9") (lookup-key zz/ctrl-map "9"))
-(global-set-key (kbd "C-0") (lookup-key zz/ctrl-map "0"))
+(global-set-key (kbd "C-5") (lookup-key zz/ctrl-map (kbd "C-5")))
+(global-set-key (kbd "C-6") (lookup-key zz/ctrl-map (kbd "C-6")))
+(global-set-key (kbd "C-7") (lookup-key zz/ctrl-map (kbd "C-7")))
+(global-set-key (kbd "C-8") (lookup-key zz/ctrl-map (kbd "C-8")))
+(global-set-key (kbd "C-9") (lookup-key zz/ctrl-map (kbd "C-9")))
+(global-set-key (kbd "C-0") (lookup-key zz/ctrl-map (kbd "C-0")))
 
 ;;f1 1,2,3,4 for highlight-symbol
 (global-set-key (kbd "<f4> 1") 'highlight-symbol-at-point)
@@ -379,18 +371,18 @@
 (global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(tab)]))
 
 ;;tabbar switch group
-(global-set-key (kbd "M-]")  (lookup-key zz/alt-map "]"))
-(global-set-key (kbd "M-[")  (lookup-key zz/alt-map "["))
+(global-set-key (kbd "M-]")  (lookup-key zz/alt-map (kbd "M-]")))
+(global-set-key (kbd "M-[")  (lookup-key zz/alt-map (kbd "M-[")))
 
 (global-set-key (kbd "C-c h") 'helm-mini)
 
 ;;undo/redo
-(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map "-"))
-(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map "="))
+(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map (kbd "C--")))
+(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map (kbd "C-=")))
 
 ;;winner restore
-(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map ","))
-(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map "."))
+(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map (kbd "C-,")))
+(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map (kbd "C-.")))
 
 ;;quick move other windows
 (define-key global-map [M-up]    (lookup-key zz/alt-map "k"))

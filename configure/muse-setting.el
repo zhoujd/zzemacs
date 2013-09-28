@@ -24,11 +24,18 @@
 (setq muse-project-alist
       '(("Website" ("~/Pages" :default "index")
          (:base "html" :path "~/public_html")
-         (:base "pdf" :path "~/public_html/pdf"))))
+         (:base "pdf" :path "~/public_html/pdf"))
+        ("Plans"
+         ("~/Plans" :default "index" :major-mode planner-mode
+          :visit-link planner-visit-link)
+         (:base "planner-html" :path "~/Plans"))
+        ))
 
 ;;add planner support
+(setq planner-project "Plans")
 (zz-load-path "site-lisp/planner")
 (require 'planner)
+(require 'planner-publish)
 
 
 (provide 'muse-setting)

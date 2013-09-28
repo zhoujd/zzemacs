@@ -80,6 +80,12 @@
 
     (define-key  map (kbd "M-]")  'tabbar-forward-tab)
     (define-key  map (kbd "M-[")  'tabbar-backward-tab)
+
+    ;;alt -> up/down/left/right
+    (define-key  map [left]       'windmove-left)
+    (define-key  map [down]       'windmove-down)
+    (define-key  map [up]         'windmove-up)
+    (define-key  map [right]      'windmove-right)
             
     map)
   "alt")
@@ -161,11 +167,6 @@
 (define-key help-map [down]  [S-down])
 (define-key help-map [up]    [S-up])
 (define-key help-map [right] [S-right])
-;;alt -> up/down/left/right
-(define-key esc-map [left]   'windmove-left)
-(define-key esc-map [down]   'windmove-down)
-(define-key esc-map [up]     'windmove-up)
-(define-key esc-map [right]  'windmove-right)
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)

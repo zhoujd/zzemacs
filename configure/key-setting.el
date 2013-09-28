@@ -43,7 +43,7 @@
 (define-key help-map (kbd "`") f1-backquote-map)
 
 
-;;f1-f7 => C-1/+
+;;C-1/+
 (defvar zz/ctrl-map
   (let ((map esc-map))
     (define-key map (kbd "C-`") 'imenu)
@@ -64,9 +64,9 @@
     
     (define-key map [(control) (tab)] "\C-q\t")
     map)
-  "f7 <=> control")
+  "control")
  
-;;f1-f8 => M-1/+
+;;M-1/+
 (defvar zz/alt-map
   (let ((map esc-map))
     (define-key  map (kbd "M-1")  'delete-other-windows)
@@ -89,9 +89,9 @@
     (define-key  map (kbd "M-[")  'tabbar-backward-tab)
             
     map)
-  "f8 <=> alt")
+  "alt")
 
-;;f1-f9 => f1/f12
+;;f1/f12
 (defvar zz/fn-map
   (let ((map help-map))
     (define-key map (kbd "1") [f1])
@@ -107,27 +107,27 @@
     (define-key map (kbd "-") [f11])
     (define-key map (kbd "=") [f12])
     map)
-  "f9 <=> f1/f12")
+  "f1/f12")
 
-;;f1-f10 => S-f1/f12
+;;S-f1/f12
 (defvar zz/shift-fn-map
   (let ((map help-map))
-    (define-key map (kbd "!") [S-f1])
-    (define-key map (kbd "@") [S-f2])
-    (define-key map (kbd "#") [S-f3])
-    (define-key map (kbd "$") [S-f4])
-    (define-key map (kbd "%") [S-f5])
-    (define-key map (kbd "^") [S-f6])
-    (define-key map (kbd "&") [S-f7])
-    (define-key map (kbd "*") [S-f8])
-    (define-key map (kbd "(") [S-f9])
-    (define-key map (kbd ")") [S-f10])
-    (define-key map (kbd "_") [S-f11])
-    (define-key map (kbd "+") [S-f12])   
+    (define-key map (kbd "!") [S-f1])   ;; 1
+    (define-key map (kbd "@") [S-f2])   ;; 2
+    (define-key map (kbd "#") [S-f3])   ;; 3
+    (define-key map (kbd "$") [S-f4])   ;; 4
+    (define-key map (kbd "%") [S-f5])   ;; 5
+    (define-key map (kbd "^") [S-f6])   ;; 6
+    (define-key map (kbd "&") [S-f7])   ;; 7
+    (define-key map (kbd "*") [S-f8])   ;; 8
+    (define-key map (kbd "(") [S-f9])   ;; 9
+    (define-key map (kbd ")") [S-f10])  ;; 0
+    (define-key map (kbd "_") [S-f11])  ;; -
+    (define-key map (kbd "+") [S-f12])  ;; =
     map)
-  "f10 <=> S-f1/f12")
+  "S-f1/f12")
 
-;;f1-f11 => C-f1/f12
+;;C-f1/f12
 (defvar zz/ctrl-fn-map
   (let ((map help-map))
     (define-key map (kbd "C-1") [C-f1])
@@ -143,7 +143,7 @@
     (define-key map (kbd "C--") [C-f11])
     (define-key map (kbd "C-=") [C-f12])
     map)
-  "f11 <=> C-f1/f12")
+  "C-f1/f12")
 
 ;;esc-f12 => M-f1/f12
 (defvar zz/alt-fn-map
@@ -161,7 +161,7 @@
     (define-key map (kbd "M--") [M-f11])
     (define-key map (kbd "M-=") [M-f12])
     map)
-  "f12 <=> M-f1/f12")
+  "M-f1/f12")
 
 ;;shift -> up/down/left/right
 (define-key help-map [left]  [S-left])

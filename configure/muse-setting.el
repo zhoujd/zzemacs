@@ -26,6 +26,10 @@
          (:base "html" :path "~/public_html")
          (:base "pdf" :path "~/public_html/pdf"))))
 
+;;add planner support
+(zz-load-path "site-lisp/planner")
+(require 'planner)
+
 
 (provide 'muse-setting)
 

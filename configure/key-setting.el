@@ -1,22 +1,7 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;;function key setting on console
-;;;keymap:zz/esc-fn-map        f1-f2  + 1/= <===> esc + f1/f12
-;;;keymap:zz/f1-fn-map         f1-f3  + 1/= <===> f1  + f1/f12
-;;;keymap:zz/f4-fn-map         f1-f4  + 1/= <===> f4  + f1/f12
-
-;;;keymap:zz/ctr-x-fn-map      f1-f5  + 1/= <===> ctrl-x + f1/f12
-;;;keymap:zz/ctr-c-fn-map      f1-f6  + 1/= <===> ctrl-x + f1/f12
-
-;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
-;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
-
-;;;keymap:zz/fn-map            f1-f9  + 1/= <===> f1/f12
-;;;keymap:zz/shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
-;;;keymap:zz/ctrl-fn-map       f1-f11 + 1/= <===> control + f1/f12
-;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
-
+;;;function key map setting
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4]      f4-map)
@@ -42,10 +27,18 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
+;;ctrl/alt key proxy setting
+(defvar zz/ctrl-proxy     esc-map "zz/ctrl-proxy")
+(defvar zz/alt-proxy      esc-map "zz/alt-proxy")
+;;fn-ctrl/alt key proxy setting
+(defvar zz/ctrl-fn-proxy  help-map "zz/ctrl-fn-proxy")
+(defvar zz/alt-fn-proxy   help-map "zz/alt-fn-proxy")
+(defvar zz/shift-fn-proxy help-map "zz/shift-fn-proxy")
+(defvar zz/fn-proxy       help-map "zz/fn-proxy")
 
 ;;C-1/+
 (defvar zz/ctrl-map
-  (let ((map esc-map))
+  (let ((map zz/ctrl-proxy))
     (define-key map (kbd "C-`") 'imenu)
     (define-key map (kbd "C-1") 'delete-window)
     (define-key map (kbd "C-2") 'delete-frame)
@@ -68,7 +61,7 @@
  
 ;;M-1/+
 (defvar zz/alt-map
-  (let ((map esc-map))
+  (let ((map zz/alt-proxy))
     (define-key  map (kbd "M-1")  'delete-other-windows)
     (define-key  map (kbd "M-2")  'delete-other-frames)
     (define-key  map (kbd "M-3")  'tabbar-forward-group)
@@ -93,7 +86,7 @@
 
 ;;f1/f12
 (defvar zz/fn-map
-  (let ((map help-map))
+  (let ((map zz/fn-proxy))
     (define-key map (kbd "1") [f1])
     (define-key map (kbd "2") [f2])
     (define-key map (kbd "3") [f3])
@@ -111,25 +104,25 @@
 
 ;;S-f1/f12
 (defvar zz/shift-fn-map
-  (let ((map help-map))
-    (define-key map (kbd "!") [S-f1])   ;; 1
-    (define-key map (kbd "@") [S-f2])   ;; 2
-    (define-key map (kbd "#") [S-f3])   ;; 3
-    (define-key map (kbd "$") [S-f4])   ;; 4
-    (define-key map (kbd "%") [S-f5])   ;; 5
-    (define-key map (kbd "^") [S-f6])   ;; 6
-    (define-key map (kbd "&") [S-f7])   ;; 7
-    (define-key map (kbd "*") [S-f8])   ;; 8
-    (define-key map (kbd "(") [S-f9])   ;; 9
-    (define-key map (kbd ")") [S-f10])  ;; 0
-    (define-key map (kbd "_") [S-f11])  ;; -
-    (define-key map (kbd "+") [S-f12])  ;; =
+  (let ((map zz/shift-fn-proxy))
+    (define-key map (kbd "!") [S-f1])   ;;shift + 1
+    (define-key map (kbd "@") [S-f2])   ;;shift + 2
+    (define-key map (kbd "#") [S-f3])   ;;shift + 3
+    (define-key map (kbd "$") [S-f4])   ;;shift + 4
+    (define-key map (kbd "%") [S-f5])   ;;shift + 5
+    (define-key map (kbd "^") [S-f6])   ;;shift + 6
+    (define-key map (kbd "&") [S-f7])   ;;shift + 7
+    (define-key map (kbd "*") [S-f8])   ;;shift + 8
+    (define-key map (kbd "(") [S-f9])   ;;shift + 9
+    (define-key map (kbd ")") [S-f10])  ;;shift + 0
+    (define-key map (kbd "_") [S-f11])  ;;shift + -
+    (define-key map (kbd "+") [S-f12])  ;;shift + =
     map)
   "S-f1/f12")
 
 ;;C-f1/f12
 (defvar zz/ctrl-fn-map
-  (let ((map help-map))
+  (let ((map zz/ctrl-fn-proxy))
     (define-key map (kbd "C-1") [C-f1])
     (define-key map (kbd "C-2") [C-f2])
     (define-key map (kbd "C-3") [C-f3])
@@ -147,7 +140,7 @@
 
 ;;esc-f12 => M-f1/f12
 (defvar zz/alt-fn-map
-  (let ((map help-map))
+  (let ((map zz/alt-fn-proxy))
     (define-key map (kbd "M-1") [M-f1])
     (define-key map (kbd "M-2") [M-f2])
     (define-key map (kbd "M-3") [M-f3])

@@ -222,7 +222,9 @@
 ;;switch to shells
 (apply-keys-to-map
  f4-map
- (list
+ (list  
+  (kbd "<f4>")  'kill-this-buffer
+  
   (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*"))
   (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
   (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
@@ -313,15 +315,14 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-x <f3>") 'my-occur
-  (kbd "C-c <f3>") 'my-woman-at-point
+  (kbd "C-x <f3>")  'my-occur
+  (kbd "C-c <f3>")  'my-woman-at-point
 
-  (kbd "<f4> <f4>")  'kill-this-buffer
-  (kbd "C-x  <f4>")  'recentf-open-files
-  (kbd "C-c  <f4>")  'recentf-open-files-compl
+  (kbd "C-x <f4>")  'recentf-open-files
+  (kbd "C-c <f4>")  'recentf-open-files-compl
   
-  (kbd "C-x <f6>") (if-ms-windows 'switch-to-shell 'switch-to-term)
-  (kbd "C-c  <f6>")  (unless-ms-windows 'switch-term-and-text)
+  (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
+  (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
   
   (kbd "C-x <f8>")  'gdb-use-separate-io
   (kbd "C-c <f8>")  'gud-tooltip-mode
@@ -329,8 +330,8 @@
   (kbd "C-x <f9>")  'switch-to-shell
   (kbd "C-c <f9>")  'eshell
   
-  (kbd "C-x <f10>")  'scroll-bar-mode
-  (kbd "C-c <f10>")  'tabbar-mode
+  (kbd "C-x <f10>") 'scroll-bar-mode
+  (kbd "C-c <f10>") 'tabbar-mode
   
   (kbd "C-x <f12>") 'my-unicad-switch
   (kbd "C-c <f12>") 'my-os-file-switch

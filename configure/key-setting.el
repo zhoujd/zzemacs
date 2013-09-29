@@ -27,6 +27,20 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
+(defun apply-keys-to-map (map key-pairs)
+  "apply multi key defines"
+  (let ((i 0))
+    (while (< i (length key-pairs))
+      (define-key map (nth i key-pairs) (nth (1+ i) key-pairs))
+      (setq i (+ i 2)))))
+
+;;apply multi-key setting
+;(apply-keys-to-map
+; global-map
+; (list
+;  [f5]  'my-last-buffer-go
+;  ))
+
 ;;ctrl/alt key proxy setting
 (defvar zz/ctrl-proxy     esc-map "zz/ctrl-proxy")
 (defvar zz/alt-proxy      esc-map "zz/alt-proxy")

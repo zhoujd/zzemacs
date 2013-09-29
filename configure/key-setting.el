@@ -27,154 +27,72 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
+;;ctrl/alt key proxy setting
+(defvar zz/ctrl-map     esc-map "zz/ctrl-map")
+(defvar zz/alt-map      esc-map "zz/alt-map")
+;;fn-ctrl/alt key proxy setting
+(defvar zz/fn-map       esc-map "zz/fn-map")
+
+;;multi key setting
 (defun apply-keys-to-map (map key-pairs)
   "apply multi key defines"
   (let ((i 0))
     (while (< i (length key-pairs))
-      (define-key map (nth i key-pairs) (nth (1+ i) key-pairs))
+      (let ((key (nth i key-pairs))
+            (fn (nth (1+ i) key-pairs)))
+        (when fn
+          (define-key map key fn)))
       (setq i (+ i 2)))))
 
-;;apply multi-key setting
-;(apply-keys-to-map
-; global-map
-; (list
-;  [f5]  (if t "1" "zhoujd")
-;  ))
+;;;esc-map C-1/=
+(apply-keys-to-map
+ zz/ctrl-map
+ (list
+  (kbd "C-`") 'imenu
+  (kbd "C-1") 'delete-window
+  (kbd "C-2") 'delete-frame
+  (kbd "C-3") 'tabbar-backward-group
+  (kbd "C-4") 'delete-frame
+  (kbd "C-5") 'gud-until
+  (kbd "C-6") 'gud-remove
+  (kbd "C-7") 'gud-finish
+  (kbd "C-8") 'gud-jump
+  (kbd "C-9") 'gud-pstar
+  (kbd "C-0") 'other-frame
+  (kbd "C--") 'undo
+  (kbd "C-=") 'redo
+  (kbd "C-,") 'winner-undo
+  (kbd "C-.") 'winner-redo
+  
+  [(control) (tab)] "\C-q\t"
+  ))
 
-;;ctrl/alt key proxy setting
-(defvar zz/ctrl-proxy     esc-map "zz/ctrl-proxy")
-(defvar zz/alt-proxy      esc-map "zz/alt-proxy")
-;;fn-ctrl/alt key proxy setting
-(defvar zz/ctrl-fn-proxy  help-map "zz/ctrl-fn-proxy")
-(defvar zz/alt-fn-proxy   help-map "zz/alt-fn-proxy")
-(defvar zz/shift-fn-proxy help-map "zz/shift-fn-proxy")
-(defvar zz/fn-proxy       help-map "zz/fn-proxy")
-
-;;C-1/+
-(defvar zz/ctrl-map
-  (let ((map zz/ctrl-proxy))
-    (define-key map (kbd "C-`") 'imenu)
-    (define-key map (kbd "C-1") 'delete-window)
-    (define-key map (kbd "C-2") 'delete-frame)
-    (define-key map (kbd "C-3") 'tabbar-backward-group)
-    (define-key map (kbd "C-4") 'delete-frame)
-    (define-key map (kbd "C-5") 'gud-until)
-    (define-key map (kbd "C-6") 'gud-remove)
-    (define-key map (kbd "C-7") 'gud-finish)
-    (define-key map (kbd "C-8") 'gud-jump)
-    (define-key map (kbd "C-9") 'gud-pstar)
-    (define-key map (kbd "C-0") 'other-frame)
-    (define-key map (kbd "C--") 'undo)
-    (define-key map (kbd "C-=") 'redo)
-    (define-key map (kbd "C-,") 'winner-undo)
-    (define-key map (kbd "C-.") 'winner-redo)
-    
-    (define-key map [(control) (tab)] "\C-q\t")
-    map)
-  "control")
- 
-;;M-1/+
-(defvar zz/alt-map
-  (let ((map zz/alt-proxy))
-    (define-key  map (kbd "M-1")  'delete-other-windows)
-    (define-key  map (kbd "M-2")  'delete-other-frames)
-    (define-key  map (kbd "M-3")  'tabbar-forward-group)
-    (define-key  map (kbd "M-4")  'kill-this-buffer)
-    (if-ms-windows
-     (define-key map (kbd "M-5")  'gud-cont)
-     (define-key map (kbd "M-5")  'gud-go))
-    
-    (define-key  map (kbd "M-6")  'gud-break)
-    (define-key  map (kbd "M-7")  'gud-next)
-    (define-key  map (kbd "M-8")  'gud-step)
-    (define-key  map (kbd "M-9")  'gud-print)
-    (define-key  map (kbd "M-0")  'other-window)
-    (define-key  map (kbd "M--")  nil)
-    (define-key  map (kbd "M-=")  nil)
-
-    (define-key  map (kbd "M-]")  'tabbar-forward-tab)
-    (define-key  map (kbd "M-[")  'tabbar-backward-tab)
-
-    ;;alt -> up/down/left/right
-    (define-key  map [left]       'windmove-left)
-    (define-key  map [down]       'windmove-down)
-    (define-key  map [up]         'windmove-up)
-    (define-key  map [right]      'windmove-right)
-            
-    map)
-  "alt")
-
-;;f1/f12
-(defvar zz/fn-map
-  (let ((map zz/fn-proxy))
-    (define-key map (kbd "1") [f1])
-    (define-key map (kbd "2") [f2])
-    (define-key map (kbd "3") [f3])
-    (define-key map (kbd "4") (lookup-key zz/alt-map "4"))
-    (define-key map (kbd "5") [f5])
-    (define-key map (kbd "6") [f6])
-    (define-key map (kbd "7") [f7])
-    (define-key map (kbd "8") [f8])
-    (define-key map (kbd "9") [f9])
-    (define-key map (kbd "0") [f10])
-    (define-key map (kbd "-") [f11])
-    (define-key map (kbd "=") [f12])
-    map)
-  "f1/f12")
-
-;;S-f1/f12
-(defvar zz/shift-fn-map
-  (let ((map zz/shift-fn-proxy))
-    (define-key map (kbd "!") [S-f1])   ;;shift + 1
-    (define-key map (kbd "@") [S-f2])   ;;shift + 2
-    (define-key map (kbd "#") [S-f3])   ;;shift + 3
-    (define-key map (kbd "$") [S-f4])   ;;shift + 4
-    (define-key map (kbd "%") [S-f5])   ;;shift + 5
-    (define-key map (kbd "^") [S-f6])   ;;shift + 6
-    (define-key map (kbd "&") [S-f7])   ;;shift + 7
-    (define-key map (kbd "*") [S-f8])   ;;shift + 8
-    (define-key map (kbd "(") [S-f9])   ;;shift + 9
-    (define-key map (kbd ")") [S-f10])  ;;shift + 0
-    (define-key map (kbd "_") [S-f11])  ;;shift + -
-    (define-key map (kbd "+") [S-f12])  ;;shift + =
-    map)
-  "S-f1/f12")
-
-;;C-f1/f12
-(defvar zz/ctrl-fn-map
-  (let ((map zz/ctrl-fn-proxy))
-    (define-key map (kbd "C-1") [C-f1])
-    (define-key map (kbd "C-2") [C-f2])
-    (define-key map (kbd "C-3") [C-f3])
-    (define-key map (kbd "C-4") [C-f4])
-    (define-key map (kbd "C-5") [C-f5])
-    (define-key map (kbd "C-6") [C-f6])
-    (define-key map (kbd "C-7") [C-f7])
-    (define-key map (kbd "C-8") [C-f8])
-    (define-key map (kbd "C-9") [C-f9])
-    (define-key map (kbd "C-0") [C-f10])
-    (define-key map (kbd "C--") [C-f11])
-    (define-key map (kbd "C-=") [C-f12])
-    map)
-  "C-f1/f12")
-
-;;esc-f12 => M-f1/f12
-(defvar zz/alt-fn-map
-  (let ((map zz/alt-fn-proxy))
-    (define-key map (kbd "M-1") [M-f1])
-    (define-key map (kbd "M-2") [M-f2])
-    (define-key map (kbd "M-3") [M-f3])
-    (define-key map (kbd "M-4") [M-f4])
-    (define-key map (kbd "M-5") [M-f5])
-    (define-key map (kbd "M-6") [M-f6])
-    (define-key map (kbd "M-7") [M-f7])
-    (define-key map (kbd "M-8") [M-f8])
-    (define-key map (kbd "M-9") [M-f9])
-    (define-key map (kbd "M-0") [M-f10])
-    (define-key map (kbd "M--") [M-f11])
-    (define-key map (kbd "M-=") [M-f12])
-    map)
-  "M-f1/f12")
+;;;esc-map M-1/=
+(apply-keys-to-map
+ zz/alt-map
+ (list
+  (kbd "M-1")  'delete-other-windows
+  (kbd "M-2")  'delete-other-frames
+  (kbd "M-3")  'tabbar-forward-group
+  (kbd "M-4")  'kill-this-buffer
+  (kbd "M-5")  (if-ms-windows 'gud-cont 'gud-go)
+  (kbd "M-6")  'gud-break
+  (kbd "M-7")  'gud-next
+  (kbd "M-8")  'gud-step
+  (kbd "M-9")  'gud-print
+  (kbd "M-0")  'other-window
+  (kbd "M--")  nil
+  (kbd "M-=")  nil
+  
+  (kbd "M-]")  'tabbar-forward-tab
+  (kbd "M-[")  'tabbar-backward-tab
+  
+  ;;alt -> up/down/left/right
+  [left]       'windmove-left
+  [down]       'windmove-down
+  [up]         'windmove-up
+  [right]      'windmove-right
+  ))
 
 ;;shift -> up/down/left/right
 (define-key help-map [left]  [S-left])
@@ -222,12 +140,12 @@
 
 ;;apply fn-key setting
 (apply-keys-to-map
- global-map
+ zz/fn-map
  (list
   ;;for info
+  [S-f1]    'planner-create-task-from-buffer
   [C-f1]    'session-save
   [M-f1]    'session-restore
-  [S-f1]    'planner-create-task-from-buffer
   
   [f2]      'bc-next
   [S-f2]    'bc-previous
@@ -281,37 +199,105 @@
   [S-f12]   'rgrep
   [C-f12]   'find-name-dired
   [M-f12]   'my-c-rgrep
- 
   ))
 
-    
-(global-set-key (kbd "C-x <f3>") 'my-occur)
-(global-set-key (kbd "C-c <f3>") 'my-woman-at-point)
-     
-(global-set-key (kbd "<f4> <f4>")  'kill-this-buffer)
-(global-set-key (kbd "C-x  <f4>")  'recentf-open-files)
-(global-set-key (kbd "C-c  <f4>")  'recentf-open-files-compl)
+;;global-map f1-f12
+(apply-keys-to-map
+ global-map
+ (list
+  ;;->f1 for help-map
+  [f2]   (lookup-key zz/fn-map [f2])
+  [f3]   (lookup-key zz/fn-map [f3])
+  ;;->f4 for f4-map
+  [f5]   (lookup-key zz/fn-map [f5])
+  [f6]   (lookup-key zz/fn-map [f6])
+  [f7]   (lookup-key zz/fn-map [f7])
+  [f8]   (lookup-key zz/fn-map [f8])
+  [f9]   (lookup-key zz/fn-map [f9])
+  [f10]  (lookup-key zz/fn-map [f10])
+  [f11]  (lookup-key zz/fn-map [f11])
+  [f12]  (lookup-key zz/fn-map [f12])  
+  ))
 
-(if-ms-windows          
- (progn ;; For Windows
-   (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
-   )   
- (progn ;; For Linux
-   (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
-   (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
-   ))
+;;global-map shift + f1-f12
+(apply-keys-to-map
+ global-map
+ (list
+  [S-f1]   (lookup-key zz/fn-map [S-f1])
+  [S-f2]   (lookup-key zz/fn-map [S-f2])
+  [S-f3]   (lookup-key zz/fn-map [S-f3])
+  [S-f4]   (lookup-key zz/fn-map [S-f4])
+  [S-f5]   (lookup-key zz/fn-map [S-f5])
+  [S-f6]   (lookup-key zz/fn-map [S-f6])
+  [S-f7]   (lookup-key zz/fn-map [S-f7])
+  [S-f8]   (lookup-key zz/fn-map [S-f8])
+  [S-f9]   (lookup-key zz/fn-map [S-f9])
+  [S-f10]  (lookup-key zz/fn-map [S-f10])
+  [S-f11]  (lookup-key zz/fn-map [S-f11])
+  [S-f12]  (lookup-key zz/fn-map [S-f12])  
+  ))
 
-(global-set-key (kbd "C-x <f8>")  'gdb-use-separate-io)
-(global-set-key (kbd "C-c <f8>")  'gud-tooltip-mode)
- 
-(global-set-key (kbd "C-x <f9>")  'switch-to-shell)
-(global-set-key (kbd "C-c <f9>")  'eshell)
+;;global-map control + f1-f12
+(apply-keys-to-map
+ global-map
+ (list
+  [C-f1]   (lookup-key zz/fn-map [C-f1])
+  [C-f2]   (lookup-key zz/fn-map [C-f2])
+  [C-f3]   (lookup-key zz/fn-map [C-f3])
+  [C-f4]   (lookup-key zz/fn-map [C-f4])
+  [C-f5]   (lookup-key zz/fn-map [C-f5])
+  [C-f6]   (lookup-key zz/fn-map [C-f6])
+  [C-f7]   (lookup-key zz/fn-map [C-f7])
+  [C-f8]   (lookup-key zz/fn-map [C-f8])
+  [C-f9]   (lookup-key zz/fn-map [C-f9])
+  [C-f10]  (lookup-key zz/fn-map [C-f10])
+  [C-f11]  (lookup-key zz/fn-map [C-f11])
+  [C-f12]  (lookup-key zz/fn-map [C-f12])  
+  ))
 
-(global-set-key (kbd "C-x <f10>")  'scroll-bar-mode)
-(global-set-key (kbd "C-c <f10>")  'tabbar-mode)
+;;global-map alt + f1-f12
+(apply-keys-to-map
+ global-map
+ (list
+  [M-f1]   (lookup-key zz/fn-map [M-f1])
+  [M-f2]   (lookup-key zz/fn-map [M-f2])
+  [M-f3]   (lookup-key zz/fn-map [M-f3])
+  [M-f4]   (lookup-key zz/fn-map [M-f4])
+  [M-f5]   (lookup-key zz/fn-map [M-f5])
+  [M-f6]   (lookup-key zz/fn-map [M-f6])
+  [M-f7]   (lookup-key zz/fn-map [M-f7])
+  [M-f8]   (lookup-key zz/fn-map [M-f8])
+  [M-f9]   (lookup-key zz/fn-map [M-f9])
+  [M-f10]  (lookup-key zz/fn-map [M-f10])
+  [M-f11]  (lookup-key zz/fn-map [M-f11])
+  [M-f12]  (lookup-key zz/fn-map [M-f12])  
+  ))
 
-(global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
-(global-set-key (kbd "C-c <f12>") 'my-os-file-switch)
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-x <f3>") 'my-occur
+  (kbd "C-c <f3>") 'my-woman-at-point
+
+  (kbd "<f4> <f4>")  'kill-this-buffer
+  (kbd "C-x  <f4>")  'recentf-open-files
+  (kbd "C-c  <f4>")  'recentf-open-files-compl
+  
+  (kbd "C-x <f6>") (if-ms-windows 'switch-to-shell 'switch-to-term)
+  (kbd "C-c  <f6>")  (unless-ms-windows 'switch-term-and-text)
+  
+  (kbd "C-x <f8>")  'gdb-use-separate-io
+  (kbd "C-c <f8>")  'gud-tooltip-mode
+  
+  (kbd "C-x <f9>")  'switch-to-shell
+  (kbd "C-c <f9>")  'eshell
+  
+  (kbd "C-x <f10>")  'scroll-bar-mode
+  (kbd "C-c <f10>")  'tabbar-mode
+  
+  (kbd "C-x <f12>") 'my-unicad-switch
+  (kbd "C-c <f12>") 'my-os-file-switch
+  ))
 
 ;;number 0-1/-/=
 (global-set-key (kbd "M-1") (lookup-key zz/alt-map (kbd "M-1")))
@@ -340,19 +326,23 @@
 (global-set-key (kbd "C-0") (lookup-key zz/ctrl-map (kbd "C-0")))
 
 ;;f1 1,2,3,4 for highlight-symbol
-(global-set-key (kbd "<f4> 1") 'highlight-symbol-at-point)
-(global-set-key (kbd "<f4> 2") 'highlight-symbol-remove-all)
-(global-set-key (kbd "<f4> 3") 'highlight-symbol-query-replace)
-
-;;gdb frame show setting
-(global-set-key (kbd "<f4> 5") 'gdb-frame-stack-buffer)
-(global-set-key (kbd "<f4> 6") 'gdb-frame-breakpoints-buffer)
-(global-set-key (kbd "<f4> 7") 'gdb-frame-assembler-buffer)
-(global-set-key (kbd "<f4> 8") 'gdb-frame-memory-buffer)
-(global-set-key (kbd "<f4> 9") 'gdb-frame-locals-buffer)
-(global-set-key (kbd "<f4> 0") 'gdb-frame-gdb-buffer)
-(global-set-key (kbd "<f4> -") 'gud-up)
-(global-set-key (kbd "<f4> =") 'gud-down)
+(apply-keys-to-map
+ help-map
+ (list
+  (kbd "1") 'highlight-symbol-at-point
+  (kbd "2") 'highlight-symbol-remove-all
+  (kbd "3") 'highlight-symbol-query-replace
+  
+  ;;gdb frame show setting
+  (kbd "5") 'gdb-frame-stack-buffer
+  (kbd "6") 'gdb-frame-breakpoints-buffer
+  (kbd "7") 'gdb-frame-assembler-buffer
+  (kbd "8") 'gdb-frame-memory-buffer
+  (kbd "9") 'gdb-frame-locals-buffer
+  (kbd "0") 'gdb-frame-gdb-buffer
+  (kbd "-") 'gud-up
+  (kbd "=") 'gud-down
+  ))
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-j") 'dired-jump)

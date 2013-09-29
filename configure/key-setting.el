@@ -110,33 +110,35 @@
 (define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
 
 ;;execute start-process key
-(when-ms-windows
- (execute-set-key f4-e-map "1" "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
- (execute-set-key f4-e-map "2" "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
-
-(execute-set-key f4-e-map "f" "firefox"       '("firefox" "http://www.baidu.com"))
-(execute-set-key f4-e-map "b" "bcompare"      '("bcompare"))
+(apply-keys-to-map
+ f4-e-map
+ (list
+  "1" (when-ms-windows (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86")))
+  "2" (when-ms-windows (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
+  "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
+  "b" (execute-set-key "bcompare" '("bcompare"))
+  ))
 
 ;;switch to shells
-(define-key f4-map (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*")))
-(define-key f4-map (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*")))
-(define-key f4-map (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*")))
-(define-key f4-map (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*")))
+(apply-keys-to-map
+ f4-map
+ (list
+  (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*"))
+  (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
+  (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
+  (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*"))
+  
+  (kbd "=")     'er/expand-region
+  (kbd "-")     'smartparens-mode
+  
+  (kbd "C-1")   'my-utf-8
+  (kbd "C-h")   'sourcepair-jump-to-headerfile
+  (kbd "C-l")   'command-history
 
-(define-key f4-map (kbd "=") 'er/expand-region)
-(define-key f4-map (kbd "-") 'smartparens-mode)
-
-;;f4-map setting
-(define-key f4-map (kbd "C-1") 'my-utf-8)
-(define-key f4-map (kbd "C-h") 'sourcepair-jump-to-headerfile)
-(define-key f4-map (kbd "C-l") 'command-history)
-
-(if-ms-windows
- (progn
-   (execute-set-key f4-map "C-d" "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\"))))
- (progn
-   (define-key f4-map (kbd "C-d") 'open-with-nautilus)
-   (define-key f4-map (kbd "C-t") 'open-with-terminal)))
+  (kbd "C-d")   (if-ms-windows (execute-set-key "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\")))
+                               'open-with-nautilus)  
+  (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
+  ))
 
 ;;apply fn-key setting
 (apply-keys-to-map

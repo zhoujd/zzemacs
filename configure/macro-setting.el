@@ -35,11 +35,10 @@
   `(if-emacs24-3 (progn ,@body)))
 
 ;;marcro for start-process
-(defmacro execute-set-key (key-map key name args)
-  `(define-key ,key-map (kbd ,key)
-     (lambda ()
-       (interactive)
-       (apply 'start-process ,name nil ,args))))
+(defmacro execute-set-key (name args)
+  `(lambda ()
+    (interactive)
+    (apply 'start-process ,name nil ,args)))
 
 (defmacro with-start-shell (&rest body)
   `(let ((env-shell      shell-file-name)

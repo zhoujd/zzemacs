@@ -1,43 +1,50 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;function key map setting
+;;;;function key setting on console
+;;;keymap:zz/esc-fn-map        f1-f2  + 1/= <===> esc + f1/f12
+;;;keymap:zz/f1-fn-map         f1-f3  + 1/= <===> f1  + f1/f12
+;;;keymap:zz/f4-fn-map         f1-f4  + 1/= <===> f4  + f1/f12
+
+;;;keymap:zz/ctr-x-fn-map      f1-f5  + 1/= <===> ctrl-x + f1/f12
+;;;keymap:zz/ctr-c-fn-map      f1-f6  + 1/= <===> ctrl-x + f1/f12
+
+;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
+;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
+
+;;;keymap:zz/fn-map            f1-f9  + 1/= <===> f1/f12
+;;;keymap:zz/shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
+;;;keymap:zz/ctrl-fn-map       f1-f11 + 1/= <===> control + f1/f12
+;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
+
 ;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap)
-  "f4 map for self functions.")
-(define-key global-map [f4]      f4-map)
-(define-key help-map   [escape]  f4-map)
+(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
+(define-key global-map [f4] f4-map)
+(define-key help-map   "4"  f4-map)
 
 ;;f4-esc key map 
-(defvar f4-esc-map (make-sparse-keymap)
-  "f4-escape for extend functions.")
+(defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
 ;;f4-quote key map for help using
-(defvar f4-backquote-map (make-sparse-keymap)
-  "f4-backquote for self help function.")
+(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
 (define-key f4-map (kbd "`") f4-backquote-map)
 
 ;;f4-e key map 
-(defvar f4-e-map (make-sparse-keymap)
-  "f4-e for execute functions.")
+(defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
 (define-key f4-map "e" f4-e-map)
 
 ;;f4-p key map 
-(defvar f4-p-map (make-sparse-keymap)
-  "f4-p for execute functions, can define in temp-setting.el.")
+(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
-;;f1-quote key map for help using
-(defvar f1-backquote-map (make-sparse-keymap)
-  "f1-backquote for self help function.")
-(define-key help-map (kbd "`") f1-backquote-map)
+;;f1-esc key map for help using
+(defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
+(define-key help-map [escape] f1-esc-map)
 
-;;ctrl/alt key proxy setting
-(defvar zz/ctrl-map     esc-map "zz/ctrl-map")
-(defvar zz/alt-map      esc-map "zz/alt-map")
-;;fn-ctrl/alt key proxy setting
-(defvar zz/fn-map       esc-map "zz/fn-map")
+;;f1-quote key map for help using
+(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
+(define-key help-map (kbd "`") f1-backquote-map)
 
 ;;multi key setting
 (defun apply-keys-to-map (map key-pairs)
@@ -50,61 +57,144 @@
           (define-key map key fn)))
       (setq i (+ i 2)))))
 
-;;;esc-map C-1/=
-(apply-keys-to-map
- zz/ctrl-map
- (list
-  (kbd "C-`") 'imenu
-  (kbd "C-1") 'delete-window
-  (kbd "C-2") 'delete-frame
-  (kbd "C-3") 'tabbar-backward-group
-  (kbd "C-4") 'delete-frame
-  (kbd "C-5") 'gud-until
-  (kbd "C-6") 'gud-remove
-  (kbd "C-7") 'gud-finish
-  (kbd "C-8") 'gud-jump
-  (kbd "C-9") 'gud-pstar
-  (kbd "C-0") 'other-frame
-  (kbd "C--") 'undo
-  (kbd "C-=") 'redo
-  (kbd "C-,") 'winner-undo
-  (kbd "C-.") 'winner-redo
-  
-  [(control) (tab)] "\C-q\t"
-  ))
+;;f1-f7 => C-1/+
+(defvar zz/ctrl-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "`" 'imenu)
+    (define-key map "1" 'delete-window)
+    (define-key map "2" 'delete-frame)
+    (define-key map "3" 'tabbar-backward-group)
+    (define-key map "4" 'delete-frame)
+    (define-key map "5" 'gud-until)
+    (define-key map "6" 'gud-remove)
+    (define-key map "7" 'gud-finish)
+    (define-key map "8" 'gud-jump)
+    (define-key map "9" 'gud-pstar)
+    (define-key map "0" 'other-frame)
+    (define-key map "-" 'undo)
+    (define-key map "=" 'redo)
+    (define-key map "," 'winner-undo)
+    (define-key map "." 'winner-redo)
+    
+    (define-key map [(tab)] "\C-q\t")
+    map)
+  "f7 <=> control")
+ 
+;;f1-f8 => M-1/+
+(defvar zz/alt-map
+  (let ((map (make-sparse-keymap)))
+    (define-key  map "1"  'delete-other-windows)
+    (define-key  map "2"  'delete-other-frames)
+    (define-key  map "3"  'tabbar-forward-group)
+    (define-key  map "4"  'kill-this-buffer)
+    (if-ms-windows
+     (define-key map "5"  'gud-cont)
+     (define-key map "5"  'gud-go))
+    
+    (define-key  map "6"  'gud-break)
+    (define-key  map "7"  'gud-next)
+    (define-key  map "8"  'gud-step)
+    (define-key  map "9"  'gud-print)
+    (define-key  map "0"  'other-window)
+    (define-key  map "-"  nil)
+    (define-key  map "="  nil)
 
-;;;esc-map M-1/=
-(apply-keys-to-map
- zz/alt-map
- (list
-  (kbd "M-1")  'delete-other-windows
-  (kbd "M-2")  'delete-other-frames
-  (kbd "M-3")  'tabbar-forward-group
-  (kbd "M-4")  'kill-this-buffer
-  (kbd "M-5")  (if-ms-windows 'gud-cont 'gud-go)
-  (kbd "M-6")  'gud-break
-  (kbd "M-7")  'gud-next
-  (kbd "M-8")  'gud-step
-  (kbd "M-9")  'gud-print
-  (kbd "M-0")  'other-window
-  (kbd "M--")  nil
-  (kbd "M-=")  nil
-  
-  (kbd "M-]")  'tabbar-forward-tab
-  (kbd "M-[")  'tabbar-backward-tab
-  
-  ;;alt -> up/down/left/right
-  [left]       'windmove-left
-  [down]       'windmove-down
-  [up]         'windmove-up
-  [right]      'windmove-right
-  ))
+    (define-key  map "]"  'tabbar-forward-tab)
+    (define-key  map "["  'tabbar-backward-tab)
+    
+    (define-key  map "h"  'windmove-left)
+    (define-key  map "j"  'windmove-down)
+    (define-key  map "k"  'windmove-up)
+    (define-key  map "l"  'windmove-right)
+        
+    map)
+  "f8 <=> alt")
 
-;;shift -> up/down/left/right
-(define-key help-map [left]  [S-left])
-(define-key help-map [down]  [S-down])
-(define-key help-map [up]    [S-up])
-(define-key help-map [right] [S-right])
+;;f1-f9 => f1/f12
+(defvar zz/fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [f1])
+    (define-key map "2" [f2])
+    (define-key map "3" [f3])
+    (define-key map "4" (lookup-key zz/alt-map "4"))
+    (define-key map "5" [f5])
+    (define-key map "6" [f6])
+    (define-key map "7" [f7])
+    (define-key map "8" [f8])
+    (define-key map "9" [f9])
+    (define-key map "0" [f10])
+    (define-key map "-" [f11])
+    (define-key map "=" [f12])
+    map)
+  "f9 <=> f1/f12")
+
+;;f1-f10 => S-f1/f12
+(defvar zz/shift-fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [S-f1])
+    (define-key map "2" [S-f2])
+    (define-key map "3" [S-f3])
+    (define-key map "4" [S-f4])
+    (define-key map "5" [S-f5])
+    (define-key map "6" [S-f6])
+    (define-key map "7" [S-f7])
+    (define-key map "8" [S-f8])
+    (define-key map "9" [S-f9])
+    (define-key map "0" [S-f10])
+    (define-key map "-" [S-f11])
+    (define-key map "=" [S-f12])
+
+    (define-key map "h" [S-left])
+    (define-key map "j" [S-down])
+    (define-key map "k" [S-up])
+    (define-key map "l" [S-right])
+    
+    map)
+  "f10 <=> S-f1/f12")
+
+;;f1-f11 => C-f1/f12
+(defvar zz/ctrl-fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [C-f1])
+    (define-key map "2" [C-f2])
+    (define-key map "3" [C-f3])
+    (define-key map "4" [C-f4])
+    (define-key map "5" [C-f5])
+    (define-key map "6" [C-f6])
+    (define-key map "7" [C-f7])
+    (define-key map "8" [C-f8])
+    (define-key map "9" [C-f9])
+    (define-key map "0" [C-f10])
+    (define-key map "-" [C-f11])
+    (define-key map "=" [C-f12])
+    map)
+  "f11 <=> C-f1/f12")
+
+;;esc-f12 => M-f1/f12
+(defvar zz/alt-fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" [M-f1])
+    (define-key map "2" [M-f2])
+    (define-key map "3" [M-f3])
+    (define-key map "4" [M-f4])
+    (define-key map "5" [M-f5])
+    (define-key map "6" [M-f6])
+    (define-key map "7" [M-f7])
+    (define-key map "8" [M-f8])
+    (define-key map "9" [M-f9])
+    (define-key map "0" [M-f10])
+    (define-key map "-" [M-f11])
+    (define-key map "=" [M-f12])
+    map)
+  "f12 <=> M-f1/f12")
+
+(define-key help-map (kbd "<f7>") zz/ctrl-map)
+(define-key help-map (kbd "<f8>") zz/alt-map)
+
+(define-key help-map [f9]  zz/fn-map)
+(define-key help-map [f10] zz/shift-fn-map)
+(define-key help-map [f11] zz/ctrl-fn-map)
+(define-key help-map [f12] zz/alt-fn-map)
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
@@ -157,7 +247,7 @@
 
 ;;apply fn-key setting
 (apply-keys-to-map
- zz/fn-map
+ global-map
  (list
   ;;for info
   [S-f1]    'planner-create-task-from-buffer
@@ -220,78 +310,6 @@
   [M-f12]   'my-c-rgrep
   ))
 
-;;global-map f1-f12
-(apply-keys-to-map
- global-map
- (list
-  ;;->f1 for help-map
-  [f2]   (lookup-key zz/fn-map [f2])
-  [f3]   (lookup-key zz/fn-map [f3])
-  ;;->f4 for f4-map
-  [f5]   (lookup-key zz/fn-map [f5])
-  [f6]   (lookup-key zz/fn-map [f6])
-  [f7]   (lookup-key zz/fn-map [f7])
-  [f8]   (lookup-key zz/fn-map [f8])
-  [f9]   (lookup-key zz/fn-map [f9])
-  [f10]  (lookup-key zz/fn-map [f10])
-  [f11]  (lookup-key zz/fn-map [f11])
-  [f12]  (lookup-key zz/fn-map [f12])  
-  ))
-
-;;global-map shift + f1-f12
-(apply-keys-to-map
- global-map
- (list
-  [S-f1]   (lookup-key zz/fn-map [S-f1])
-  [S-f2]   (lookup-key zz/fn-map [S-f2])
-  [S-f3]   (lookup-key zz/fn-map [S-f3])
-  [S-f4]   (lookup-key zz/fn-map [S-f4])
-  [S-f5]   (lookup-key zz/fn-map [S-f5])
-  [S-f6]   (lookup-key zz/fn-map [S-f6])
-  [S-f7]   (lookup-key zz/fn-map [S-f7])
-  [S-f8]   (lookup-key zz/fn-map [S-f8])
-  [S-f9]   (lookup-key zz/fn-map [S-f9])
-  [S-f10]  (lookup-key zz/fn-map [S-f10])
-  [S-f11]  (lookup-key zz/fn-map [S-f11])
-  [S-f12]  (lookup-key zz/fn-map [S-f12])  
-  ))
-
-;;global-map control + f1-f12
-(apply-keys-to-map
- global-map
- (list
-  [C-f1]   (lookup-key zz/fn-map [C-f1])
-  [C-f2]   (lookup-key zz/fn-map [C-f2])
-  [C-f3]   (lookup-key zz/fn-map [C-f3])
-  [C-f4]   (lookup-key zz/fn-map [C-f4])
-  [C-f5]   (lookup-key zz/fn-map [C-f5])
-  [C-f6]   (lookup-key zz/fn-map [C-f6])
-  [C-f7]   (lookup-key zz/fn-map [C-f7])
-  [C-f8]   (lookup-key zz/fn-map [C-f8])
-  [C-f9]   (lookup-key zz/fn-map [C-f9])
-  [C-f10]  (lookup-key zz/fn-map [C-f10])
-  [C-f11]  (lookup-key zz/fn-map [C-f11])
-  [C-f12]  (lookup-key zz/fn-map [C-f12])  
-  ))
-
-;;global-map alt + f1-f12
-(apply-keys-to-map
- global-map
- (list
-  [M-f1]   (lookup-key zz/fn-map [M-f1])
-  [M-f2]   (lookup-key zz/fn-map [M-f2])
-  [M-f3]   (lookup-key zz/fn-map [M-f3])
-  [M-f4]   (lookup-key zz/fn-map [M-f4])
-  [M-f5]   (lookup-key zz/fn-map [M-f5])
-  [M-f6]   (lookup-key zz/fn-map [M-f6])
-  [M-f7]   (lookup-key zz/fn-map [M-f7])
-  [M-f8]   (lookup-key zz/fn-map [M-f8])
-  [M-f9]   (lookup-key zz/fn-map [M-f9])
-  [M-f10]  (lookup-key zz/fn-map [M-f10])
-  [M-f11]  (lookup-key zz/fn-map [M-f11])
-  [M-f12]  (lookup-key zz/fn-map [M-f12])  
-  ))
-
 (apply-keys-to-map
  global-map
  (list
@@ -319,30 +337,34 @@
   ))
 
 ;;number 0-1/-/=
-(global-set-key (kbd "M-1") (lookup-key zz/alt-map (kbd "M-1")))
-(global-set-key (kbd "M-2") (lookup-key zz/alt-map (kbd "M-2")))
-(global-set-key (kbd "M-3") (lookup-key zz/alt-map (kbd "M-3")))
-(global-set-key (kbd "M-4") (lookup-key zz/alt-map (kbd "M-4")))
-;;gud control setting
-(global-set-key (kbd "M-5") (lookup-key zz/alt-map (kbd "M-5")))
-(global-set-key (kbd "M-6") (lookup-key zz/alt-map (kbd "M-6")))
-(global-set-key (kbd "M-7") (lookup-key zz/alt-map (kbd "M-7")))
-(global-set-key (kbd "M-8") (lookup-key zz/alt-map (kbd "M-8")))
-(global-set-key (kbd "M-9") (lookup-key zz/alt-map (kbd "M-9")))
-(global-set-key (kbd "M-0") (lookup-key zz/alt-map (kbd "M-0")))
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "M-1") (lookup-key zz/alt-map "1")
+  (kbd "M-2") (lookup-key zz/alt-map "2")
+  (kbd "M-3") (lookup-key zz/alt-map "3")
+  (kbd "M-4") (lookup-key zz/alt-map "4")
+  ;;gud control setting
+  (kbd "M-5") (lookup-key zz/alt-map "5")
+  (kbd "M-6") (lookup-key zz/alt-map "6")
+  (kbd "M-7") (lookup-key zz/alt-map "7")
+  (kbd "M-8") (lookup-key zz/alt-map "8")
+  (kbd "M-9") (lookup-key zz/alt-map "9")
+  (kbd "M-0") (lookup-key zz/alt-map "0")
 
-(global-set-key (kbd "C-`") (lookup-key zz/ctrl-map (kbd "C-`")))
-(global-set-key (kbd "C-1") (lookup-key zz/ctrl-map (kbd "C-1")))
-(global-set-key (kbd "C-2") (lookup-key zz/ctrl-map (kbd "C-2")))
-(global-set-key (kbd "C-3") (lookup-key zz/ctrl-map (kbd "C-3")))
-(global-set-key (kbd "C-4") (lookup-key zz/ctrl-map (kbd "C-4")))
-;;gud control setting
-(global-set-key (kbd "C-5") (lookup-key zz/ctrl-map (kbd "C-5")))
-(global-set-key (kbd "C-6") (lookup-key zz/ctrl-map (kbd "C-6")))
-(global-set-key (kbd "C-7") (lookup-key zz/ctrl-map (kbd "C-7")))
-(global-set-key (kbd "C-8") (lookup-key zz/ctrl-map (kbd "C-8")))
-(global-set-key (kbd "C-9") (lookup-key zz/ctrl-map (kbd "C-9")))
-(global-set-key (kbd "C-0") (lookup-key zz/ctrl-map (kbd "C-0")))
+  (kbd "C-`") (lookup-key zz/ctrl-map "`")
+  (kbd "C-1") (lookup-key zz/ctrl-map "1")
+  (kbd "C-2") (lookup-key zz/ctrl-map "2")
+  (kbd "C-3") (lookup-key zz/ctrl-map "3")
+  (kbd "C-4") (lookup-key zz/ctrl-map "4")
+  ;;gud control setting
+  (kbd "C-5") (lookup-key zz/ctrl-map "5")
+  (kbd "C-6") (lookup-key zz/ctrl-map "6")
+  (kbd "C-7") (lookup-key zz/ctrl-map "7")
+  (kbd "C-8") (lookup-key zz/ctrl-map "8")
+  (kbd "C-9") (lookup-key zz/ctrl-map "9")
+  (kbd "C-0") (lookup-key zz/ctrl-map "0")
+  ))
 
 ;;f1 1,2,3,4 for highlight-symbol
 (apply-keys-to-map
@@ -351,6 +373,7 @@
   (kbd "1") 'highlight-symbol-at-point
   (kbd "2") 'highlight-symbol-remove-all
   (kbd "3") 'highlight-symbol-query-replace
+  ;;"4" -> f4-map
   
   ;;gdb frame show setting
   (kbd "5") 'gdb-frame-stack-buffer
@@ -384,27 +407,27 @@
    (global-set-key [C-mouse-5] 'text-scale-decrease)))
 
 ;;Control tab quotes a tab => "\C-q\t"
-(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(control) (tab)]))
+(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(tab)]))
 
 ;;tabbar switch group
-(global-set-key (kbd "M-]")  (lookup-key zz/alt-map (kbd "M-]")))
-(global-set-key (kbd "M-[")  (lookup-key zz/alt-map (kbd "M-[")))
+(global-set-key (kbd "M-]")  (lookup-key zz/alt-map "]"))
+(global-set-key (kbd "M-[")  (lookup-key zz/alt-map "["))
 
 (global-set-key (kbd "C-c h") 'helm-mini)
 
 ;;undo/redo
-(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map (kbd "C--")))
-(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map (kbd "C-=")))
+(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map "-"))
+(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map "="))
 
 ;;winner restore
-(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map (kbd "C-,")))
-(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map (kbd "C-.")))
+(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map ","))
+(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map "."))
 
 ;;quick move other windows
-(define-key global-map [M-up]    (lookup-key zz/alt-map [up]))
-(define-key global-map [M-down]  (lookup-key zz/alt-map [down]))
-(define-key global-map [M-right] (lookup-key zz/alt-map [right]))
-(define-key global-map [M-left]  (lookup-key zz/alt-map [left]))
+(define-key global-map [M-up]    (lookup-key zz/alt-map "k"))
+(define-key global-map [M-down]  (lookup-key zz/alt-map "j"))
+(define-key global-map [M-right] (lookup-key zz/alt-map "l"))
+(define-key global-map [M-left]  (lookup-key zz/alt-map "h"))
 
 ;;window size change
 (define-key global-map [S-up]    'enlarge-window)

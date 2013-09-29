@@ -500,7 +500,6 @@ the mru bookmark stack."
 
 ;;xmsi-mode for inputting math (Unicode) symbols.
 (require 'xmsi-math-symbols-input)
-(xmsi-mode t)
 
 ;;for cdb.exe debug on windows
 ;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1

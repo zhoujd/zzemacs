@@ -201,8 +201,13 @@
  (setq w32-rwindow-modifier 'hyper)
  (setq w32-lwindow-modifier 'super))
 
-(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
+;;key for f1-backquote-map
+(apply-keys-to-map
+ f1-backquote-map
+ (list
+  (kbd "h") 'common-lisp-hyperspec
+  (kbd "i") 'zz-info-open-file
+  ))
 
 ;;execute start-process key
 (apply-keys-to-map

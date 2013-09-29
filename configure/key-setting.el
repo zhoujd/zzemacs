@@ -96,9 +96,8 @@
     (define-key  map "8"  'gud-step)
     (define-key  map "9"  'gud-print)
     (define-key  map "0"  'other-window)
-    (define-key  map "-"  nil)
-    (define-key  map "="  nil)
 
+    (define-key  map "#"  'query-replace-regexp)
     (define-key  map "]"  'tabbar-forward-tab)
     (define-key  map "["  'tabbar-backward-tab)
     
@@ -387,58 +386,56 @@
   (kbd "=") 'gud-down
   ))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-x C-j") 'dired-jump)
-(global-set-key (kbd "C-c w")   'compare-windows)
-(global-set-key (kbd "M-#")     'query-replace-regexp)
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-x C-b") 'ibuffer
+  (kbd "C-x C-j") 'dired-jump
+  (kbd "C-c w")   'compare-windows
+  (kbd "M-#")     (lookup-key zz/alt-map "#")
 
-(global-set-key (kbd "%")       'match-paren)
+  (kbd "%")       'match-paren
 
-(global-unset-key [backspace])
-(global-set-key   [backspace] 'delete-backward-char)
-(global-unset-key [delete])
-(global-set-key   [delete]    'delete-char)
+  [backspace]     'delete-backward-char
+  [delete]        'delete-char
 
-(if-ms-windows    
- (progn ;; For Windows
-   (global-set-key [C-wheel-up]   'text-scale-increase)
-   (global-set-key [C-wheel-down] 'text-scale-decrease))
- (progn ;; For Linux
-   (global-set-key [C-mouse-4] 'text-scale-increase)
-   (global-set-key [C-mouse-5] 'text-scale-decrease)))
+  [C-wheel-up]    (when-ms-windows 'text-scale-increase)
+  [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
+  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
+  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
 
-;;Control tab quotes a tab => "\C-q\t"
-(global-set-key [(control tab)]  (lookup-key zz/ctrl-map [(tab)]))
+  ;;Control tab quotes a tab => "\C-q\t"
+  [(control tab)] (lookup-key zz/ctrl-map [(tab)])
 
-;;tabbar switch group
-(global-set-key (kbd "M-]")  (lookup-key zz/alt-map "]"))
-(global-set-key (kbd "M-[")  (lookup-key zz/alt-map "["))
+  ;;tabbar switch group
+  (kbd "M-]")    (lookup-key zz/alt-map "]")
+  (kbd "M-[")    (lookup-key zz/alt-map "[")
 
-(global-set-key (kbd "C-c h") 'helm-mini)
+  (kbd "C-c h")  'helm-mini
 
-;;undo/redo
-(define-key global-map (kbd "C--")  (lookup-key zz/ctrl-map "-"))
-(define-key global-map (kbd "C-=")  (lookup-key zz/ctrl-map "="))
+  ;;undo/redo
+  (kbd "C--")    (lookup-key zz/ctrl-map "-")
+  (kbd "C-=")    (lookup-key zz/ctrl-map "=")
 
-;;winner restore
-(define-key global-map (kbd "C-,")  (lookup-key zz/ctrl-map ","))
-(define-key global-map (kbd "C-.")  (lookup-key zz/ctrl-map "."))
+  ;;winner restore
+  (kbd "C-,")    (lookup-key zz/ctrl-map ",")
+  (kbd "C-.")    (lookup-key zz/ctrl-map ".")
 
-;;quick move other windows
-(define-key global-map [M-up]    (lookup-key zz/alt-map "k"))
-(define-key global-map [M-down]  (lookup-key zz/alt-map "j"))
-(define-key global-map [M-right] (lookup-key zz/alt-map "l"))
-(define-key global-map [M-left]  (lookup-key zz/alt-map "h"))
+  ;;quick move other windows
+  [M-up]         (lookup-key zz/alt-map "k")
+  [M-down]       (lookup-key zz/alt-map "j")
+  [M-right]      (lookup-key zz/alt-map "l")
+  [M-left]       (lookup-key zz/alt-map "h")
 
-;;window size change
-(define-key global-map [S-up]    'enlarge-window)
-(define-key global-map [S-down]  'shrink-window)
-(define-key global-map [S-right] 'enlarge-window-horizontally)
-(define-key global-map [S-left]  'shrink-window-horizontally)
+  ;;window size change
+  [S-up]         'enlarge-window
+  [S-down]       'shrink-window
+  [S-right]      'enlarge-window-horizontally
+  [S-left]       'shrink-window-horizontally
 
-;;set apps do M+x
-(define-key global-map [apps]    'execute-extended-command)
-
+  ;;set apps do M+x
+  [apps]         'execute-extended-command
+  ))
 
 (provide 'key-setting)
 

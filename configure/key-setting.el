@@ -38,7 +38,7 @@
 ;(apply-keys-to-map
 ; global-map
 ; (list
-;  [f5]  'my-last-buffer-go
+;  [f5]  (if t "1" "zhoujd")
 ;  ))
 
 ;;ctrl/alt key proxy setting
@@ -219,98 +219,96 @@
  (progn
    (define-key f4-map (kbd "C-d") 'open-with-nautilus)
    (define-key f4-map (kbd "C-t") 'open-with-terminal)))
+
+;;apply fn-key setting
+(apply-keys-to-map
+ global-map
+ (list
+  ;;for info
+  [C-f1]    'session-save
+  [M-f1]    'session-restore
+  [S-f1]    'planner-create-task-from-buffer
+  
+  [f2]      'bc-next
+  [S-f2]    'bc-previous
+  [C-f2]    'bc-set
+  [M-f2]    'bc-list
+  
+  [f3]      'my-last-buffer-go
+  [S-f3]    'list-bookmarks
+  [C-f3]    'bc-local-next
+  [M-f3]    'bc-local-previous
+
+  [S-f4]    'undo-kill-buffer
+  [C-f4]    'highlight-symbol-next
+  [M-f4]    'highlight-symbol-prev
+
+  [f5]      'speedbar-get-focus
+  [S-f5]    'sr-speedbar-toggle
+  [C-f5]    'line-to-top-of-window
+  [M-f5]    'etags-stack-show
+
+  [f6]      (if-ms-windows 'multi-shell-new  'get-term)
+  [S-f6]    (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)
+  [C-f6]    (if-ms-windows 'multi-shell-next 'multi-term-next)
+  [M-f6]    (if-ms-windows 'multi-shell-prev 'multi-term-prev)
+    
+  [f7]      'compile
+  [S-f7]    'switch-to-compilation
+  [C-f7]    'next-error
+  [M-f7]    'previous-error
+  
+  [f8]      'gdb
+  [S-f8]    'gud-kill
+  [C-f8]    'gdb-restore-windows
+  [M-f8]    'gdb-many-windows
+
+  [f9]      (lambda () (interactive) (start-shell "*shell*"))
+  [S-f9]    'multi-shell-new
+  [C-f9]    'switch-to-scratch
+  [M-f9]    'popup-term
+
+  [S-f10]   'tool-bar-mode
+  [C-f10]   'my-toggle-maxframe
+  [M-f10]   'my-toggle-fullscreen
+
+  [f11]     'linum-mode
+  [S-f11]   'fci-mode
+  [C-f11]   'hl-line-mode
+  [M-f11]   'blank-mode
+  
+  [f12]     'find-grep
+  [S-f12]   'rgrep
+  [C-f12]   'find-name-dired
+  [M-f12]   'my-c-rgrep
  
-;;for info
-(global-set-key [C-f1]    'session-save)
-(global-set-key [M-f1]    'session-restore)
-(global-set-key [S-f1]    'planner-create-task-from-buffer)
+  ))
 
-(global-set-key   [f2]    'bc-next)
-(global-set-key [S-f2]    'bc-previous)
-(global-set-key [C-f2]    'bc-set)
-(global-set-key [M-f2]    'bc-list)
-
-(global-set-key   [f3]    'my-last-buffer-go)
-(global-set-key [S-f3]    'list-bookmarks)
-(global-set-key [C-f3]    'bc-local-next)
-(global-set-key [M-f3]    'bc-local-previous)
     
 (global-set-key (kbd "C-x <f3>") 'my-occur)
 (global-set-key (kbd "C-c <f3>") 'my-woman-at-point)
-
-
-(global-set-key [S-f4]    'undo-kill-buffer)
-(global-set-key [C-f4]    'highlight-symbol-next)
-(global-set-key [M-f4]    'highlight-symbol-prev)
      
 (global-set-key (kbd "<f4> <f4>")  'kill-this-buffer)
 (global-set-key (kbd "C-x  <f4>")  'recentf-open-files)
 (global-set-key (kbd "C-c  <f4>")  'recentf-open-files-compl)
 
-
-(global-set-key   [f5]    'speedbar-get-focus)
-(global-set-key [S-f5]    'sr-speedbar-toggle)
-(global-set-key [C-f5]    'line-to-top-of-window)
-(global-set-key [M-f5]    'etags-stack-show)
-
-
 (if-ms-windows          
  (progn ;; For Windows
-   (global-set-key   [f6]   'multi-shell-new)
-   (global-set-key [S-f6]   'multi-shell-current-directory)
-   (global-set-key [C-f6]   'multi-shell-next)
-   (global-set-key [M-f6]   'multi-shell-prev)
    (global-set-key (kbd "C-x <f6>") 'switch-to-shell)
    )   
  (progn ;; For Linux
-   (global-set-key   [f6]   'get-term)
-   (global-set-key [S-f6]   'multi-term-dedicated-toggle)
-   (global-set-key [C-f6]   'multi-term-next)
-   (global-set-key [M-f6]   'multi-term-prev)
    (global-set-key (kbd "C-x  <f6>")  'switch-to-term)
    (global-set-key (kbd "C-c  <f6>")  'switch-term-and-text)
    ))
 
-
-(global-set-key   [f7]    'compile)
-(global-set-key [S-f7]    'switch-to-compilation)
-(global-set-key [C-f7]    'next-error)
-(global-set-key [M-f7]    'previous-error)
-
-(global-set-key   [f8]    'gdb)
-(global-set-key [S-f8]    'gud-kill)
-(global-set-key [C-f8]    'gdb-restore-windows)
-(global-set-key [M-f8]    'gdb-many-windows)
-
 (global-set-key (kbd "C-x <f8>")  'gdb-use-separate-io)
 (global-set-key (kbd "C-c <f8>")  'gud-tooltip-mode)
-
-
-(global-set-key   [f9]    (lambda () (interactive) (start-shell "*shell*")))
-(global-set-key [S-f9]    'multi-shell-new)
-(global-set-key [C-f9]    'switch-to-scratch)
-(global-set-key [M-f9]    'popup-term)
  
 (global-set-key (kbd "C-x <f9>")  'switch-to-shell)
 (global-set-key (kbd "C-c <f9>")  'eshell)
 
-(global-set-key [S-f10]   'tool-bar-mode)
-(global-set-key [C-f10]   'my-toggle-maxframe)
-(global-set-key [M-f10]   'my-toggle-fullscreen)
-
 (global-set-key (kbd "C-x <f10>")  'scroll-bar-mode)
 (global-set-key (kbd "C-c <f10>")  'tabbar-mode)
-
-
-(global-set-key   [f11]   'linum-mode)
-(global-set-key [S-f11]   'fci-mode)
-(global-set-key [C-f11]   'hl-line-mode)
-(global-set-key [M-f11]   'blank-mode)
-
-(global-set-key [f12]     'find-grep)
-(global-set-key [S-f12]   'rgrep)
-(global-set-key [C-f12]   'find-name-dired)
-(global-set-key [M-f12]   'my-c-rgrep)
 
 (global-set-key (kbd "C-x <f12>") 'my-unicad-switch)
 (global-set-key (kbd "C-c <f12>") 'my-os-file-switch)

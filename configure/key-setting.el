@@ -7,7 +7,7 @@
 ;;;keymap:zz/f4-fn-map         f1-f4  + 1/= <===> f4  + f1/f12
 
 ;;;keymap:zz/ctr-x-fn-map      f1-f5  + 1/= <===> ctrl-x + f1/f12
-;;;keymap:zz/ctr-c-fn-map      f1-f6  + 1/= <===> ctrl-x + f1/f12
+;;;keymap:zz/ctr-c-fn-map      f1-f6  + 1/= <===> ctrl-c + f1/f12
 
 ;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
 ;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
@@ -83,29 +83,26 @@
 ;;f1-f8 => M-1/+
 (defvar zz/alt-map
   (let ((map (make-sparse-keymap)))
-    (define-key  map "1"  'delete-other-windows)
-    (define-key  map "2"  'delete-other-frames)
-    (define-key  map "3"  'tabbar-forward-group)
-    (define-key  map "4"  'kill-this-buffer)
-    (if-ms-windows
-     (define-key map "5"  'gud-cont)
-     (define-key map "5"  'gud-go))
+    (define-key map "1"  'delete-other-windows)
+    (define-key map "2"  'delete-other-frames)
+    (define-key map "3"  'tabbar-forward-group)
+    (define-key map "4"  'kill-this-buffer)
+    (define-key map "5"  (if-ms-windows 'gud-cont 'gud-go)
     
-    (define-key  map "6"  'gud-break)
-    (define-key  map "7"  'gud-next)
-    (define-key  map "8"  'gud-step)
-    (define-key  map "9"  'gud-print)
-    (define-key  map "0"  'other-window)
+    (define-key map "6"  'gud-break)
+    (define-key map "7"  'gud-next)
+    (define-key map "8"  'gud-step)
+    (define-key map "9"  'gud-print)
+    (define-key map "0"  'other-window)
 
-    (define-key  map "#"  'query-replace-regexp)
-    (define-key  map "]"  'tabbar-forward-tab)
-    (define-key  map "["  'tabbar-backward-tab)
+    (define-key map "#"  'query-replace-regexp)
+    (define-key map "]"  'tabbar-forward-tab)
+    (define-key map "["  'tabbar-backward-tab)
     
-    (define-key  map "h"  'windmove-left)
-    (define-key  map "j"  'windmove-down)
-    (define-key  map "k"  'windmove-up)
-    (define-key  map "l"  'windmove-right)
-        
+    (define-key map "h"  'windmove-left)
+    (define-key map "j"  'windmove-down)
+    (define-key map "k"  'windmove-up)
+    (define-key map "l"  'windmove-right)
     map)
   "f8 <=> alt")
 
@@ -146,8 +143,7 @@
     (define-key map "h" [S-left])
     (define-key map "j" [S-down])
     (define-key map "k" [S-up])
-    (define-key map "l" [S-right])
-    
+    (define-key map "l" [S-right])   
     map)
   "f10 <=> S-f1/f12")
 

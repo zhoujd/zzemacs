@@ -139,7 +139,7 @@
   (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*"))
   
   (kbd "=")     'er/expand-region
-  (kbd "-")     'smartparens-mode
+  (kbd "-")     (if-emacs24-3 'smartparens-mode)
   
   (kbd "C-1")   'my-utf-8
   (kbd "C-h")   'sourcepair-jump-to-headerfile

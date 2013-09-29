@@ -3,28 +3,34 @@
 
 ;;;function key map setting
 ;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
+(defvar f4-map (make-sparse-keymap)
+  "f4 map for self functions.")
 (define-key global-map [f4]      f4-map)
 (define-key help-map   [escape]  f4-map)
 
 ;;f4-esc key map 
-(defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
+(defvar f4-esc-map (make-sparse-keymap)
+  "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
 ;;f4-quote key map for help using
-(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
+(defvar f4-backquote-map (make-sparse-keymap)
+  "f4-backquote for self help function.")
 (define-key f4-map (kbd "`") f4-backquote-map)
 
 ;;f4-e key map 
-(defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
+(defvar f4-e-map (make-sparse-keymap)
+  "f4-e for execute functions.")
 (define-key f4-map "e" f4-e-map)
 
 ;;f4-p key map 
-(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
+(defvar f4-p-map (make-sparse-keymap)
+  "f4-p for execute functions, can define in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
 ;;f1-quote key map for help using
-(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
+(defvar f1-backquote-map (make-sparse-keymap)
+  "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
 ;;ctrl/alt key proxy setting
@@ -113,8 +119,12 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  "1" (when-ms-windows (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86")))
-  "2" (when-ms-windows (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
+  "1" (when-ms-windows (execute-set-key
+                        "vs-x86-prompt"
+                        '("cmd" "/c" "start" "vcvarsall" "x86")))
+  "2" (when-ms-windows (execute-set-key
+                        "vs-x64-prompt"
+                        '("cmd" "/c" "start" "vcvarsall" "x64")))
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
   ))
@@ -135,8 +145,13 @@
   (kbd "C-h")   'sourcepair-jump-to-headerfile
   (kbd "C-l")   'command-history
 
-  (kbd "C-d")   (if-ms-windows (execute-set-key "explorer" (list "explorer" (my-trans-path-sep default-directory "/" "\\")))
-                               'open-with-nautilus)  
+  (kbd "C-d")   (if-ms-windows
+                 (execute-set-key
+                  "explorer"
+                  (list "explorer"
+                        (my-trans-path-sep
+                         default-directory "/" "\\")))
+                 'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   ))
 
@@ -169,7 +184,9 @@
   [M-f5]    'etags-stack-show
 
   [f6]      (if-ms-windows 'multi-shell-new  'get-term)
-  [S-f6]    (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)
+  [S-f6]    (if-ms-windows
+             'multi-shell-current-directory
+             'multi-term-dedicated-toggle)
   [C-f6]    (if-ms-windows 'multi-shell-next 'multi-term-next)
   [M-f6]    (if-ms-windows 'multi-shell-prev 'multi-term-prev)
     

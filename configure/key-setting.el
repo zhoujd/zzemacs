@@ -196,7 +196,8 @@
     (define-key map "6" (kbd "C-x  <f6>"))
     (define-key map "7" (kbd "C-x  <f7>"))
     (define-key map "8" (kbd "C-x  <f8>"))
-    (define-key map "9" (kbd "C-x  <f9>"))
+    ;;(define-key map "9" (kbd "C-x  <f9>"))
+    (define-key map "9" 'switch-to-shell)
     (define-key map "0" (kbd "C-x  <f10>"))
     (define-key map "-" (kbd "C-x  <f11>"))
     (define-key map "=" (kbd "C-x  <f12>"))
@@ -367,7 +368,8 @@
   (kbd "C-x <f8>")  'gdb-use-separate-io
   (kbd "C-c <f8>")  'gud-tooltip-mode
   
-  (kbd "C-x <f9>")  'switch-to-shell
+  ;;(kbd "C-x <f9>")  'switch-to-shell
+  (kbd "C-x <f9>")  (lookup-key zz/ctrl-x-fn-map "9")
   (kbd "C-c <f9>")  'eshell
   
   (kbd "C-x <f10>") 'scroll-bar-mode

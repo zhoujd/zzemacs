@@ -1,53 +1,46 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;;function key setting on console
-;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
-;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
-
+;;;function key map setting
 ;;;;emacs default setting
+;;;(define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
 ;;C-x @ S         event-apply-shift-modifier
 ;;C-x @ a         event-apply-alt-modifier
 ;;C-x @ c         event-apply-control-modifier
 ;;C-x @ h         event-apply-hyper-modifier
 ;;C-x @ m         event-apply-meta-modifier
 ;;C-x @ s         event-apply-super-modifier
-;;(define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
 
 ;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
-(define-key global-map [f4] f4-map)
-(define-key help-map   "4"  f4-map)
+(defvar f4-map (make-sparse-keymap)
+  "f4 map for self functions.")
+(define-key global-map [f4]      f4-map)
+(define-key help-map   "4"       f4-map)
 
 ;;f4-esc key map 
-(defvar f4-esc-map (make-sparse-keymap) "f4-escape for extend functions.")
+(defvar f4-esc-map (make-sparse-keymap)
+  "f4-escape for extend functions.")
 (define-key f4-map [escape] f4-esc-map)
 
 ;;f4-quote key map for help using
-(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
+(defvar f4-backquote-map (make-sparse-keymap)
+  "f4-backquote for self help function.")
 (define-key f4-map (kbd "`") f4-backquote-map)
 
 ;;f4-e key map 
-(defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
+(defvar f4-e-map (make-sparse-keymap)
+  "f4-e for execute functions.")
 (define-key f4-map "e" f4-e-map)
 
 ;;f4-p key map 
-(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
+(defvar f4-p-map (make-sparse-keymap)
+  "f4-p for execute functions, can define in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
-;;f1-esc key map for help using
-(defvar f1-esc-map (make-sparse-keymap) "f1-escape for self help functions.")
-(define-key help-map [escape] f1-esc-map)
-
 ;;f1-quote key map for help using
-(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
+(defvar f1-backquote-map (make-sparse-keymap)
+  "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
-
-(when-ms-windows
- (setq w32-pass-rwindow-to-system nil)
- (setq w32-pass-lwindow-to-system nil)
- (setq w32-rwindow-modifier 'hyper)
- (setq w32-lwindow-modifier 'super))
 
 ;;multi key setting
 (defun apply-keys-to-map (map key-pairs)
@@ -60,68 +53,62 @@
           (define-key map key fn)))
       (setq i (+ i 2)))))
 
-;;f1-f7 => C-1/+
-(defvar zz/ctrl-map  (make-sparse-keymap))
-(define-key help-map (kbd "<f7>") zz/ctrl-map)
-
+;;;global-map C-1/=
 (apply-keys-to-map
- zz/ctrl-map
- (list 
-  "`" 'imenu
-  "1" 'delete-window
-  "2" 'delete-frame
-  "3" 'tabbar-backward-group
-  "4" 'delete-frame
-  "5" 'gud-until
-  "6" 'gud-remove
-  "7" 'gud-finish
-  "8" 'gud-jump
-  "9" 'gud-pstar
-  "0" 'other-frame
-  "-" 'undo
-  "=" 'redo
-  "," 'winner-undo
-  "." 'winner-redo
-
-  [(tab)] "\C-q\t"
-  ))
- 
-;;f1-f8 => M-1/+
-(defvar zz/alt-map (make-sparse-keymap))
-(define-key help-map (kbd "<f8>") zz/alt-map)
-
-(apply-keys-to-map
- zz/alt-map
+ global-map
  (list
-  "1"  'delete-other-windows
-  "2"  'delete-other-frames
-  "3"  'tabbar-forward-group
-  "4"  'kill-this-buffer
-  "5"  (if-ms-windows 'gud-cont 'gud-go)
+  (kbd "C-`") 'imenu
+  (kbd "C-1") 'delete-window
+  (kbd "C-2") 'delete-frame
+  (kbd "C-3") 'tabbar-backward-group
+  (kbd "C-4") 'delete-frame
+  (kbd "C-5") 'gud-until
+  (kbd "C-6") 'gud-remove
+  (kbd "C-7") 'gud-finish
+  (kbd "C-8") 'gud-jump
+  (kbd "C-9") 'gud-pstar
+  (kbd "C-0") 'other-frame
+  (kbd "C--") 'undo
+  (kbd "C-=") 'redo
+  (kbd "C-,") 'winner-undo
+  (kbd "C-.") 'winner-redo
   
-  "6"  'gud-break
-  "7"  'gud-next
-  "8"  'gud-step
-  "9"  'gud-print
-  "0"  'other-window
-  
-  "#"  'query-replace-regexp
-  "]"  'tabbar-forward-tab
-  "["  'tabbar-backward-tab
-  
-  "h"  'windmove-left
-  "j"  'windmove-down
-  "k"  'windmove-up
-  "l"  'windmove-right
+  [control tab]   "\C-q\t"
+  [C-wheel-up]    (when-ms-windows   'text-scale-increas)
+  [C-wheel-down]  (when-ms-windows   'text-scale-decrease)
+  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
+  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
   ))
 
-;;key for f1-backquote-map
+;;;global-map M-1/=
 (apply-keys-to-map
- f1-backquote-map
+ global-map
  (list
-  (kbd "h") 'common-lisp-hyperspec
-  (kbd "i") 'zz-info-open-file
+  (kbd "M-1")  'delete-other-windows
+  (kbd "M-2")  'delete-other-frames
+  (kbd "M-3")  'tabbar-forward-group
+  (kbd "M-4")  'kill-this-buffer
+  (kbd "M-5")  (if-ms-windows 'gud-cont 'gud-go)
+  (kbd "M-6")  'gud-break
+  (kbd "M-7")  'gud-next
+  (kbd "M-8")  'gud-step
+  (kbd "M-9")  'gud-print
+  (kbd "M-0")  'other-window
+  
+  (kbd "M-]")  'tabbar-forward-tab
+  (kbd "M-[")  'tabbar-backward-tab
+
+  (kbd "M-#")  'query-replace-regexp
+  
+  ;;alt -> up/down/left/right
+  [M-left]     'windmove-left
+  [M-down]     'windmove-down
+  [M-up]       'windmove-up
+  [M-right]    'windmove-right
   ))
+
+(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
+(define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
 
 ;;execute start-process key
 (apply-keys-to-map
@@ -140,9 +127,8 @@
 ;;switch to shells
 (apply-keys-to-map
  f4-map
- (list  
+ (list
   (kbd "<f4>")  'kill-this-buffer
-  
   (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*"))
   (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
   (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
@@ -165,34 +151,100 @@
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   ))
 
-;;number 0-1/-/=
+;;apply fn-key setting
 (apply-keys-to-map
  global-map
  (list
-  (kbd "M-1") (lookup-key zz/alt-map "1")
-  (kbd "M-2") (lookup-key zz/alt-map "2")
-  (kbd "M-3") (lookup-key zz/alt-map "3")
-  (kbd "M-4") (lookup-key zz/alt-map "4")
-  ;;gud control setting
-  (kbd "M-5") (lookup-key zz/alt-map "5")
-  (kbd "M-6") (lookup-key zz/alt-map "6")
-  (kbd "M-7") (lookup-key zz/alt-map "7")
-  (kbd "M-8") (lookup-key zz/alt-map "8")
-  (kbd "M-9") (lookup-key zz/alt-map "9")
-  (kbd "M-0") (lookup-key zz/alt-map "0")
+  ;;for info
+  [S-f1]            'planner-create-task-from-buffer
+  [C-f1]            'session-save
+  [M-f1]            'session-restore
+  
+  [f2]              'bc-next
+  [S-f2]            'bc-previous
+  [C-f2]            'bc-set
+  [M-f2]            'bc-list
+  
+  [f3]              'my-last-buffer-go
+  [S-f3]            'list-bookmarks
+  [C-f3]            'bc-local-next
+  [M-f3]            'bc-local-previous
+  (kbd "C-x <f3>")  'my-occur
+  (kbd "C-c <f3>")  'my-woman-at-point
 
-  (kbd "C-`") (lookup-key zz/ctrl-map "`")
-  (kbd "C-1") (lookup-key zz/ctrl-map "1")
-  (kbd "C-2") (lookup-key zz/ctrl-map "2")
-  (kbd "C-3") (lookup-key zz/ctrl-map "3")
-  (kbd "C-4") (lookup-key zz/ctrl-map "4")
-  ;;gud control setting
-  (kbd "C-5") (lookup-key zz/ctrl-map "5")
-  (kbd "C-6") (lookup-key zz/ctrl-map "6")
-  (kbd "C-7") (lookup-key zz/ctrl-map "7")
-  (kbd "C-8") (lookup-key zz/ctrl-map "8")
-  (kbd "C-9") (lookup-key zz/ctrl-map "9")
-  (kbd "C-0") (lookup-key zz/ctrl-map "0")
+  [S-f4]            'undo-kill-buffer
+  [C-f4]            'highlight-symbol-next
+  [M-f4]            'highlight-symbol-prev
+  (kbd "C-x <f4>")  'recentf-open-files
+  (kbd "C-c <f4>")  'recentf-open-files-compl
+  
+  [f5]              'speedbar-get-focus
+  [S-f5]            'sr-speedbar-toggle
+  [C-f5]            'line-to-top-of-window
+  [M-f5]            'etags-stack-show
+
+  [f6]              (if-ms-windows 'multi-shell-new  'get-term)
+  [S-f6]            (if-ms-windows
+                     'multi-shell-current-directory
+                     'multi-term-dedicated-toggle)
+  [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
+  [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
+  (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
+  (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
+  
+  [f7]              'compile
+  [S-f7]            'switch-to-compilation
+  [C-f7]            'next-error
+  [M-f7]            'previous-error
+  
+  [f8]              'gdb
+  [S-f8]            'gud-kill
+  [C-f8]            'gdb-restore-windows
+  [M-f8]            'gdb-many-windows
+  (kbd "C-x <f8>")  'gdb-use-separate-io
+  (kbd "C-c <f8>")  'gud-tooltip-mode
+  
+  [f9]              (lambda () (interactive) (start-shell "*shell*"))
+  [S-f9]            'multi-shell-new
+  [C-f9]            'switch-to-scratch
+  [M-f9]            'popup-term
+  (kbd "C-x <f9>")  'switch-to-shell
+  (kbd "C-c <f9>")  'eshell
+  
+  [S-f10]           'tool-bar-mode
+  [C-f10]           'my-toggle-maxframe
+  [M-f10]           'my-toggle-fullscreen
+  (kbd "C-x <f10>") 'scroll-bar-mode
+  (kbd "C-c <f10>") 'tabbar-mode
+  
+  [f11]             'linum-mode
+  [S-f11]           'fci-mode
+  [C-f11]           'hl-line-mode
+  [M-f11]           'blank-mode
+  
+  [f12]             'find-grep
+  [S-f12]           'rgrep
+  [C-f12]           'find-name-dired
+  [M-f12]           'my-c-rgrep
+  (kbd "C-x <f12>") 'my-unicad-switch
+  (kbd "C-c <f12>") 'my-os-file-switch
+  ))
+
+;;;for console f1/f12
+(apply-keys-to-map
+ help-map
+ (list
+  [f2]  (lookup-key global-map [f2])
+  [f3]  (lookup-key global-map [f3])
+  [f4]  (lookup-key global-map [f4])
+  [f5]  (lookup-key global-map [f5])
+  [f6]  (lookup-key global-map [f6])
+  [f7]  (lookup-key global-map [f7])
+  [f8]  (lookup-key global-map [f8])
+  [f9]  (lookup-key global-map [f9])
+  [f10] (lookup-key global-map [f10])
+  [f11] (lookup-key global-map [f11])
+  [f12] (lookup-key global-map [f12])
   ))
 
 ;;f1 1,2,3,4 for highlight-symbol
@@ -202,7 +254,6 @@
   (kbd "1") 'highlight-symbol-at-point
   (kbd "2") 'highlight-symbol-remove-all
   (kbd "3") 'highlight-symbol-query-replace
-  ;;"4" -> f4-map
   
   ;;gdb frame show setting
   (kbd "5") 'gdb-frame-stack-buffer
@@ -221,49 +272,22 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-x C-j") 'dired-jump
   (kbd "C-c w")   'compare-windows
-  (kbd "M-#")     (lookup-key zz/alt-map "#")
-
-  (kbd "%")       'match-paren
-
+  
+  (kbd "%")       'match-paren  
   [backspace]     'delete-backward-char
   [delete]        'delete-char
 
-  [C-wheel-up]    (when-ms-windows 'text-scale-increase)
-  [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
-  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
-  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
-
   ;;Control tab quotes a tab => "\C-q\t"
-  [(control tab)] (lookup-key zz/ctrl-map [(tab)])
-
-  ;;tabbar switch group
-  (kbd "M-]")     (lookup-key zz/alt-map "]")
-  (kbd "M-[")     (lookup-key zz/alt-map "[")
-
   (kbd "C-c h")   'helm-mini
-
-  ;;undo/redo
-  (kbd "C--")     (lookup-key zz/ctrl-map "-")
-  (kbd "C-=")     (lookup-key zz/ctrl-map "=")
-
-  ;;winner restore
-  (kbd "C-,")     (lookup-key zz/ctrl-map ",")
-  (kbd "C-.")     (lookup-key zz/ctrl-map ".")
-
-  ;;quick move other windows
-  [M-up]          (lookup-key zz/alt-map "k")
-  [M-down]        (lookup-key zz/alt-map "j")
-  [M-right]       (lookup-key zz/alt-map "l")
-  [M-left]        (lookup-key zz/alt-map "h")
-
+  
   ;;window size change
-  [S-up]         'enlarge-window
-  [S-down]       'shrink-window
-  [S-right]      'enlarge-window-horizontally
-  [S-left]       'shrink-window-horizontally
-
+  [S-up]          'enlarge-wind
+  [S-down]        'shrink-window
+  [S-right]       'enlarge-window-horizontally
+  [S-left]        'shrink-window-horizontally
+  
   ;;set apps do M+x
-  [apps]         'execute-extended-command
+  [apps]          'execute-extended-command
   ))
 
 (provide 'key-setting)

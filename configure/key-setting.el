@@ -15,7 +15,6 @@
 (apply-keys-to-map
  key-translation-map
  (list 
-  (kbd "C-c `") 'event-apply-shift-modifier
   (kbd "C-c -") 'event-apply-control-modifier
   (kbd "C-c =") 'event-apply-meta-modifier
   ))

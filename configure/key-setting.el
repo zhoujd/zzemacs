@@ -243,6 +243,15 @@
   "=" (kbd "C-c  <f12>")
   ))
 
+;;group define fn key
+(defun define-fn-key (fn-name &optional fn s-fn c-fn m-fn ctrl-x-fn ctrl-c-fn)
+  (when fn        (define-key zz/fn-map        fn-name fn))
+  (when s-fn      (define-key zz/shift-fn-map  fn-name s-fn))
+  (when c-fn      (define-key zz/ctrl-fn-map   fn-name c-fn))
+  (when m-fn      (define-key zz/alt-fn-map    fn-name m-fn))
+  (when ctrl-x-fn (define-key zz/ctrl-x-fn-map fn-name ctrl-x-fn))
+  (when ctrl-c-fn (define-key zz/ctrl-c-fn-map fn-name ctrl-c-fn)))
+
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)
  (setq w32-pass-lwindow-to-system nil)

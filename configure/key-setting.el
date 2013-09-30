@@ -46,6 +46,12 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
+(when-ms-windows
+ (setq w32-pass-rwindow-to-system nil)
+ (setq w32-pass-lwindow-to-system nil)
+ (setq w32-rwindow-modifier 'hyper)
+ (setq w32-lwindow-modifier 'super))
+
 ;;multi key setting
 (defun apply-keys-to-map (map key-pairs)
   "apply multi key defines"
@@ -116,132 +122,25 @@
 (defvar zz/fn-map (make-sparse-keymap))
 (define-key help-map [f9]  zz/fn-map)
 
-(apply-keys-to-map
- zz/fn-map
- (list
-  "1" [f1]
-  "2" [f2]
-  "3" [f3]
-  "4" (lookup-key zz/alt-map "4")
-  "5" [f5]
-  "6" [f6]
-  "7" [f7]
-  "8" [f8]
-  "9" [f9]
-  "0" [f10]
-  "-" [f11]
-  "=" [f12]
-  ))
-
 ;;f1-f10 => S-f1/f12
 (defvar zz/shift-fn-map (make-sparse-keymap))
 (define-key help-map [f10] zz/shift-fn-map)
-
-(apply-keys-to-map
- zz/shift-fn-map
- (list
-  "1" [S-f1]
-  "2" [S-f2]
-  "3" [S-f3]
-  "4" [S-f4]
-  "5" [S-f5]
-  "6" [S-f6]
-  "7" [S-f7]
-  "8" [S-f8]
-  "9" [S-f9]
-  "0" [S-f10]
-  "-" [S-f11]
-  "=" [S-f12]
-
-  "h" [S-left]
-  "j" [S-down]
-  "k" [S-up]
-  "l" [S-right]
-  ))
 
 ;;f1-f11 => C-f1/f12
 (defvar zz/ctrl-fn-map (make-sparse-keymap))
 (define-key help-map [f11] zz/ctrl-fn-map)
 
-(apply-keys-to-map
- zz/ctrl-fn-map
- (list
-  "1" [C-f1]
-  "2" [C-f2]
-  "3" [C-f3]
-  "4" [C-f4]
-  "5" [C-f5]
-  "6" [C-f6]
-  "7" [C-f7]
-  "8" [C-f8]
-  "9" [C-f9]
-  "0" [C-f10]
-  "-" [C-f11]
-  "=" [C-f12]
-  ))
-
 ;;f1-f12 => M-f1/f12
 (defvar zz/alt-fn-map (make-sparse-keymap))
 (define-key help-map [f12] zz/alt-fn-map)
-
-(apply-keys-to-map
- zz/alt-fn-map
- (list
-  "1" [M-f1]
-  "2" [M-f2]
-  "3" [M-f3]
-  "4" [M-f4]
-  "5" [M-f5]
-  "6" [M-f6]
-  "7" [M-f7]
-  "8" [M-f8]
-  "9" [M-f9]
-  "0" [M-f10]
-  "-" [M-f11]
-  "=" [M-f12]
-  ))
 
 ;;f1-f5 => ctrl-x f1/f12
 (defvar zz/ctrl-x-fn-map (make-sparse-keymap))
 (define-key help-map (kbd "<f5>") zz/ctrl-x-fn-map)
 
-(apply-keys-to-map
- zz/ctrl-x-fn-map
- (list
-  "1" (kbd "C-x  <f1>")
-  "2" (kbd "C-x  <f2>")
-  "3" (kbd "C-x  <f3>")
-  "4" (kbd "C-x  <f4>")
-  "5" (kbd "C-x  <f5>")
-  "6" (kbd "C-x  <f6>")
-  "7" (kbd "C-x  <f7>")
-  "8" (kbd "C-x  <f8>")
-  "9" 'switch-to-shell
-  "0" (kbd "C-x  <f10>")
-  "-" (kbd "C-x  <f11>")
-  "=" (kbd "C-x  <f12>")
-  ))
-
 ;;f1-f5 => ctrl-c f1/f12
 (defvar zz/ctrl-c-fn-map (make-sparse-keymap))
 (define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
-
-(apply-keys-to-map
- zz/ctrl-c-fn-map
- (list
-  "1" (kbd "C-c  <f1>")
-  "2" (kbd "C-c  <f2>")
-  "3" (kbd "C-c  <f3>")
-  "4" (kbd "C-c  <f4>")
-  "5" (kbd "C-c  <f5>")
-  "6" (kbd "C-c  <f6>")
-  "7" (kbd "C-c  <f7>")
-  "8" (kbd "C-c  <f8>")
-  "9" (kbd "C-c  <f9>")
-  "0" (kbd "C-c  <f10>")
-  "-" (kbd "C-c  <f11>")
-  "=" (kbd "C-c  <f12>")
-  ))
 
 ;;group define fn key
 (defun define-fn-key (fn-name &optional fn s-fn c-fn m-fn ctrl-x-fn ctrl-c-fn)
@@ -252,11 +151,12 @@
   (when ctrl-x-fn (define-key zz/ctrl-x-fn-map fn-name ctrl-x-fn))
   (when ctrl-c-fn (define-key zz/ctrl-c-fn-map fn-name ctrl-c-fn)))
 
-(when-ms-windows
- (setq w32-pass-rwindow-to-system nil)
- (setq w32-pass-lwindow-to-system nil)
- (setq w32-rwindow-modifier 'hyper)
- (setq w32-lwindow-modifier 'super))
+(define-fn-key "1"  ;;==> f1
+    nil ;;[f1]
+    nil ;;[S-f1]
+    nil ;;[C-f1]
+    nil ;;[M-f1]
+    )
 
 ;;key for f1-backquote-map
 (apply-keys-to-map
@@ -308,6 +208,117 @@
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   ))
 
+(define-fn-key "1"                   ;;==> f1
+    nil                              ;;[f1]
+    'planner-create-task-from-buffer ;;[S-f1]
+    'session-save                    ;;[C-f1]
+    'session-restore                 ;;[M-f1]
+    nil                              ;;C-x f1
+    nil                              ;;C-c f1
+    )
+
+(define-fn-key "2"                   ;;==> f2
+    'bc-next                         ;;[f2]
+    'bc-previous                     ;;[S-f2]
+    'bc-set                          ;;[C-f2]
+    'bc-list                         ;;[M-f2]
+    nil                              ;;C-x f2
+    nil                              ;;C-c f2
+    )
+
+(define-fn-key "3"                   ;;==> f3
+    'my-last-buffer-go               ;;[f3]
+    'list-bookmarks                  ;;[S-f3]
+    'bc-local-next                   ;;[C-f3]
+    'bc-local-previous               ;;[M-f3]
+    'my-occur                        ;;C-x f3
+    'my-woman-at-point               ;;C-c f3
+    )
+
+(define-fn-key "4"                   ;;==> f4
+    (lookup-key zz/alt-map "4")      ;;[f4]
+    'undo-kill-buffer                ;;[S-f4]
+    'highlight-symbol-next           ;;[C-f4]
+    'highlight-symbol-prev           ;;[M-f4]
+    nil                              ;;C-x f4
+    nil                              ;;C-c f4
+    )
+
+(define-fn-key "5"                   ;;==> f5
+    'speedbar-get-focus              ;;[f5]
+    'sr-speedbar-toggle              ;;[S-f5]
+    'line-to-top-of-window           ;;[C-f5]
+    'etags-stack-show                ;;[M-f5]
+    nil                              ;;C-x f5
+    nil                              ;;C-c f5
+    )
+
+
+(define-fn-key "6"                   ;;==> f6
+    (if-ms-windows 'multi-shell-new  'get-term) ;;[f6]
+    (if-ms-windows
+     'multi-shell-current-directory
+     'multi-term-dedicated-toggle)   ;;[S-f6]
+    (if-ms-windows 'multi-shell-next 'multi-term-next) ;;[C-f6]
+    (if-ms-windows 'multi-shell-prev 'multi-term-prev) ;;[M-f6]    
+    (if-ms-windows 'switch-to-shell  'switch-to-term)  ;;C-x f6
+    (unless-ms-windows 'switch-term-and-text)          ;;C-c f6
+    )
+
+(define-fn-key "7"                   ;;==> f7
+    'compile                         ;;[f7]
+    'switch-to-compilation           ;;[S-f7]
+    'next-error                      ;;[C-f7]
+    'previous-error                  ;;[M-f7]
+    nil                              ;;C-x f7
+    nil                              ;;C-c f7
+    )
+
+(define-fn-key "8"                   ;;==> f8
+    'gdb                             ;;[f8]
+    'gud-kill                        ;;[S-f8]
+    'gdb-restore-windows             ;;[C-f8]
+    'gdb-many-windows                ;;[M-f8]
+    'gdb-use-separate-io             ;;C-x f8
+    'gud-tooltip-mode                ;;C-c f8
+    )
+
+(define-fn-key "9"                   ;;==> f9
+    (lambda () (interactive) (start-shell "*shell*")) ;;[f9]
+    'multi-shell-new                 ;;[S-f9]
+    'switch-to-scratch               ;;[C-f9]
+    'popup-term                      ;;[M-f9]
+    'switch-to-shell                 ;;C-x f9
+    'eshell                          ;;C-c f9
+    )
+
+(define-fn-key "0"                   ;;==> f10
+    nil                              ;;[f10]
+    'tool-bar-mode                   ;;[S-f10]
+    'my-toggle-maxframe              ;;[C-f10]
+    'my-toggle-fullscreen            ;;[M-f10]
+    'scroll-bar-mode                 ;;C-x f10
+    'tabbar-mode                     ;;C-c f10
+    )
+
+(define-fn-key "-"                   ;;==> f11
+    'linum-mode                      ;;[f11]
+    'fci-mode                        ;;[S-f11]
+    'hl-line-mode                    ;;[C-f11]
+    'blank-mode                      ;;[M-f11]
+    nil                              ;;C-x f11
+    nil                              ;;C-c f11
+    )
+
+(define-fn-key "="                   ;;==> f12
+    'find-grep                       ;;[f12]
+    'rgrep                           ;;[S-f12]
+    'find-name-dired                 ;;[C-f12]
+    'my-c-rgrep                      ;;[M-f12]
+    'my-unicad-switch                ;;(kbd "C-x <f12>")
+    'my-os-file-switch               ;;(kbd "C-c <f12>")
+    )
+
 ;;apply fn-key setting
 (apply-keys-to-map
  global-map
@@ -326,11 +337,17 @@
   [S-f3]    'list-bookmarks
   [C-f3]    'bc-local-next
   [M-f3]    'bc-local-previous
+  (kbd "C-x <f3>")  'my-occur
+  (kbd "C-c <f3>")  'my-woman-at-point
 
+  
   [S-f4]    'undo-kill-buffer
   [C-f4]    'highlight-symbol-next
   [M-f4]    'highlight-symbol-prev
+  (kbd "C-x <f4>")  'recentf-open-files
+  (kbd "C-c <f4>")  'recentf-open-files-compl
 
+  
   [f5]      'speedbar-get-focus
   [S-f5]    'sr-speedbar-toggle
   [C-f5]    'line-to-top-of-window
@@ -342,7 +359,9 @@
              'multi-term-dedicated-toggle)
   [C-f6]    (if-ms-windows 'multi-shell-next 'multi-term-next)
   [M-f6]    (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-    
+  (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
+  (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
+  
   [f7]      'compile
   [S-f7]    'switch-to-compilation
   [C-f7]    'next-error
@@ -352,16 +371,22 @@
   [S-f8]    'gud-kill
   [C-f8]    'gdb-restore-windows
   [M-f8]    'gdb-many-windows
-
+  (kbd "C-x <f8>")  'gdb-use-separate-io
+  (kbd "C-c <f8>")  'gud-tooltip-mode
+  
   [f9]      (lambda () (interactive) (start-shell "*shell*"))
   [S-f9]    'multi-shell-new
   [C-f9]    'switch-to-scratch
   [M-f9]    'popup-term
-
+  (kbd "C-x <f9>")  (lookup-key zz/ctrl-x-fn-map "9")
+  (kbd "C-c <f9>")  'eshell
+  
   [S-f10]   'tool-bar-mode
   [C-f10]   'my-toggle-maxframe
   [M-f10]   'my-toggle-fullscreen
-
+  (kbd "C-x <f10>") 'scroll-bar-mode
+  (kbd "C-c <f10>") 'tabbar-mode
+  
   [f11]     'linum-mode
   [S-f11]   'fci-mode
   [C-f11]   'hl-line-mode
@@ -371,30 +396,6 @@
   [S-f12]   'rgrep
   [C-f12]   'find-name-dired
   [M-f12]   'my-c-rgrep
-  ))
-
-(apply-keys-to-map
- global-map
- (list
-  (kbd "C-x <f3>")  'my-occur
-  (kbd "C-c <f3>")  'my-woman-at-point
-
-  (kbd "C-x <f4>")  'recentf-open-files
-  (kbd "C-c <f4>")  'recentf-open-files-compl
-  
-  (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
-  (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
-  
-  (kbd "C-x <f8>")  'gdb-use-separate-io
-  (kbd "C-c <f8>")  'gud-tooltip-mode
-  
-  ;;(kbd "C-x <f9>")  'switch-to-shell
-  (kbd "C-x <f9>")  (lookup-key zz/ctrl-x-fn-map "9")
-  (kbd "C-c <f9>")  'eshell
-  
-  (kbd "C-x <f10>") 'scroll-bar-mode
-  (kbd "C-c <f10>") 'tabbar-mode
-  
   (kbd "C-x <f12>") 'my-unicad-switch
   (kbd "C-c <f12>") 'my-os-file-switch
   ))

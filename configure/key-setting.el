@@ -46,7 +46,7 @@
 ;;f1-esc key map 
 (defvar f1-esc-map (make-sparse-keymap)
   "f1-escape for extend functions.")
-(define-key f1-map [escape] f1-esc-map)
+(define-key help-map [escape] f1-esc-map)
 
 ;;f1-quote key map for help using
 (defvar f1-backquote-map (make-sparse-keymap)

@@ -2,20 +2,8 @@
 ;;;
 
 ;;;;function key setting on console
-;;;keymap:zz/esc-fn-map        f1-f2  + 1/= <===> esc + f1/f12
-;;;keymap:zz/f1-fn-map         f1-f3  + 1/= <===> f1  + f1/f12
-;;;keymap:zz/f4-fn-map         f1-f4  + 1/= <===> f4  + f1/f12
-
-;;;keymap:zz/ctr-x-fn-map      f1-f5  + 1/= <===> ctrl-x + f1/f12
-;;;keymap:zz/ctr-c-fn-map      f1-f6  + 1/= <===> ctrl-c + f1/f12
-
 ;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
 ;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
-
-;;;keymap:zz/fn-map            f1-f9  + 1/= <===> f1/f12
-;;;keymap:zz/shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
-;;;keymap:zz/ctrl-fn-map       f1-f11 + 1/= <===> control + f1/f12
-;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")

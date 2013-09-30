@@ -43,6 +43,11 @@
   "f4-p for execute functions, can define in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
+;;f1-esc key map 
+(defvar f1-esc-map (make-sparse-keymap)
+  "f1-escape for extend functions.")
+(define-key f1-map [escape] f1-esc-map)
+
 ;;f1-quote key map for help using
 (defvar f1-backquote-map (make-sparse-keymap)
   "f1-backquote for self help function.")

@@ -167,7 +167,7 @@
     map)
   "f11 <=> C-f1/f12")
 
-;;esc-f12 => M-f1/f12
+;;f1-f12 => M-f1/f12
 (defvar zz/alt-fn-map
   (let ((map (make-sparse-keymap)))
     (define-key map "1" [M-f1])
@@ -185,6 +185,44 @@
     map)
   "f12 <=> M-f1/f12")
 
+;;f1-f5 => ctrl-x f1/f12
+(defvar zz/ctrl-x-fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" (kbd "C-x  <f1>"))
+    (define-key map "2" (kbd "C-x  <f2>"))
+    (define-key map "3" (kbd "C-x  <f3>"))
+    (define-key map "4" (kbd "C-x  <f4>"))
+    (define-key map "5" (kbd "C-x  <f5>"))
+    (define-key map "6" (kbd "C-x  <f6>"))
+    (define-key map "7" (kbd "C-x  <f7>"))
+    (define-key map "8" (kbd "C-x  <f8>"))
+    (define-key map "9" (kbd "C-x  <f9>"))
+    (define-key map "0" (kbd "C-x  <f10>"))
+    (define-key map "-" (kbd "C-x  <f11>"))
+    (define-key map "=" (kbd "C-x  <f12>"))
+    map)
+  "f12 <=> ctrl-x f1/f12")
+
+;;f1-f5 => ctrl-c f1/f12
+(defvar zz/ctrl-c-fn-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "1" (kbd "C-c  <f1>"))
+    (define-key map "2" (kbd "C-c  <f2>"))
+    (define-key map "3" (kbd "C-c  <f3>"))
+    (define-key map "4" (kbd "C-c  <f4>"))
+    (define-key map "5" (kbd "C-c  <f5>"))
+    (define-key map "6" (kbd "C-c  <f6>"))
+    (define-key map "7" (kbd "C-c  <f7>"))
+    (define-key map "8" (kbd "C-c  <f8>"))
+    (define-key map "9" (kbd "C-c  <f9>"))
+    (define-key map "0" (kbd "C-c  <f10>"))
+    (define-key map "-" (kbd "C-c  <f11>"))
+    (define-key map "=" (kbd "C-c  <f12>"))
+    map)
+  "f12 <=> ctrl-c f1/f12")
+
+(define-key help-map (kbd "<f5>") zz/ctrl-x-fn-map)
+(define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
 (define-key help-map (kbd "<f7>") zz/ctrl-map)
 (define-key help-map (kbd "<f8>") zz/alt-map)
 
@@ -411,24 +449,24 @@
   [(control tab)] (lookup-key zz/ctrl-map [(tab)])
 
   ;;tabbar switch group
-  (kbd "M-]")    (lookup-key zz/alt-map "]")
-  (kbd "M-[")    (lookup-key zz/alt-map "[")
+  (kbd "M-]")     (lookup-key zz/alt-map "]")
+  (kbd "M-[")     (lookup-key zz/alt-map "[")
 
-  (kbd "C-c h")  'helm-mini
+  (kbd "C-c h")   'helm-mini
 
   ;;undo/redo
-  (kbd "C--")    (lookup-key zz/ctrl-map "-")
-  (kbd "C-=")    (lookup-key zz/ctrl-map "=")
+  (kbd "C--")     (lookup-key zz/ctrl-map "-")
+  (kbd "C-=")     (lookup-key zz/ctrl-map "=")
 
   ;;winner restore
-  (kbd "C-,")    (lookup-key zz/ctrl-map ",")
-  (kbd "C-.")    (lookup-key zz/ctrl-map ".")
+  (kbd "C-,")     (lookup-key zz/ctrl-map ",")
+  (kbd "C-.")     (lookup-key zz/ctrl-map ".")
 
   ;;quick move other windows
-  [M-up]         (lookup-key zz/alt-map "k")
-  [M-down]       (lookup-key zz/alt-map "j")
-  [M-right]      (lookup-key zz/alt-map "l")
-  [M-left]       (lookup-key zz/alt-map "h")
+  [M-up]          (lookup-key zz/alt-map "k")
+  [M-down]        (lookup-key zz/alt-map "j")
+  [M-right]       (lookup-key zz/alt-map "l")
+  [M-left]        (lookup-key zz/alt-map "h")
 
   ;;window size change
   [S-up]         'enlarge-window

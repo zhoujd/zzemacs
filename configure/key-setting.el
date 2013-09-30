@@ -6,13 +6,19 @@
 ;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
 
 ;;;;emacs default setting
-;;C-x @ S         event-apply-shift-modifier
-;;C-x @ a         event-apply-alt-modifier
-;;C-x @ c         event-apply-control-modifier
-;;C-x @ h         event-apply-hyper-modifier
-;;C-x @ m         event-apply-meta-modifier
-;;C-x @ s         event-apply-super-modifier
-;;(define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
+;;C-x @ S        event-apply-shift-modifier
+;;C-x @ a        event-apply-alt-modifier
+;;C-x @ c        event-apply-control-modifier
+;;C-x @ h        event-apply-hyper-modifier
+;;C-x @ m        event-apply-meta-modifier
+;;C-x @ s        event-apply-super-modifier
+(apply-keys-to-map
+ key-translation-map
+ (list 
+  (kbd "C-c `") 'event-apply-shift-modifier
+  (kbd "C-c -") 'event-apply-control-modifier
+  (kbd "C-c =") 'event-apply-meta-modifier
+  ))
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
@@ -42,23 +48,6 @@
 ;;f1-quote key map for help using
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
-
-(when-ms-windows
- (setq w32-pass-rwindow-to-system nil)
- (setq w32-pass-lwindow-to-system nil)
- (setq w32-rwindow-modifier 'hyper)
- (setq w32-lwindow-modifier 'super))
-
-;;multi key setting
-(defun apply-keys-to-map (map key-pairs)
-  "apply multi key defines"
-  (let ((i 0))
-    (while (< i (length key-pairs))
-      (let ((key (nth i key-pairs))
-            (fn (nth (1+ i) key-pairs)))
-        (when fn
-          (define-key map key fn)))
-      (setq i (+ i 2)))))
 
 ;;f1-f7 => C-1/+
 (defvar zz/ctrl-map  (make-sparse-keymap))

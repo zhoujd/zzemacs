@@ -58,179 +58,190 @@
       (setq i (+ i 2)))))
 
 ;;f1-f7 => C-1/+
-(defvar zz/ctrl-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "`" 'imenu)
-    (define-key map "1" 'delete-window)
-    (define-key map "2" 'delete-frame)
-    (define-key map "3" 'tabbar-backward-group)
-    (define-key map "4" 'delete-frame)
-    (define-key map "5" 'gud-until)
-    (define-key map "6" 'gud-remove)
-    (define-key map "7" 'gud-finish)
-    (define-key map "8" 'gud-jump)
-    (define-key map "9" 'gud-pstar)
-    (define-key map "0" 'other-frame)
-    (define-key map "-" 'undo)
-    (define-key map "=" 'redo)
-    (define-key map "," 'winner-undo)
-    (define-key map "." 'winner-redo)
-    
-    (define-key map [(tab)] "\C-q\t")
-    map)
-  "f7 <=> control")
+(defvar zz/ctrl-map  (make-sparse-keymap))
+(define-key help-map (kbd "<f7>") zz/ctrl-map)
+
+(apply-keys-to-map
+ zz/ctrl-map
+ (list 
+  "`" 'imenu
+  "1" 'delete-window
+  "2" 'delete-frame
+  "3" 'tabbar-backward-group
+  "4" 'delete-frame
+  "5" 'gud-until
+  "6" 'gud-remove
+  "7" 'gud-finish
+  "8" 'gud-jump
+  "9" 'gud-pstar
+  "0" 'other-frame
+  "-" 'undo
+  "=" 'redo
+  "," 'winner-undo
+  "." 'winner-redo
+
+  [(tab)] "\C-q\t"
+  ))
  
 ;;f1-f8 => M-1/+
-(defvar zz/alt-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map  "1"  'delete-other-windows)
-    (define-key map  "2"  'delete-other-frames)
-    (define-key map  "3"  'tabbar-forward-group)
-    (define-key map  "4"  'kill-this-buffer)
-    (if-ms-windows
-     (define-key map "5"  'gud-cont)
-     (define-key map "5"  'gud-go))
-    
-    (define-key map  "6"  'gud-break)
-    (define-key map  "7"  'gud-next)
-    (define-key map  "8"  'gud-step)
-    (define-key map  "9"  'gud-print)
-    (define-key map  "0"  'other-window)
-
-    (define-key map  "#"  'query-replace-regexp)
-    (define-key map  "]"  'tabbar-forward-tab)
-    (define-key map  "["  'tabbar-backward-tab)
-    
-    (define-key map  "h"  'windmove-left)
-    (define-key map  "j"  'windmove-down)
-    (define-key map  "k"  'windmove-up)
-    (define-key map  "l"  'windmove-right)
-    map)
-  "f8 <=> alt")
-
-;;f1-f9 => f1/f12
-(defvar zz/fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" [f1])
-    (define-key map "2" [f2])
-    (define-key map "3" [f3])
-    (define-key map "4" (lookup-key zz/alt-map "4"))
-    (define-key map "5" [f5])
-    (define-key map "6" [f6])
-    (define-key map "7" [f7])
-    (define-key map "8" [f8])
-    (define-key map "9" [f9])
-    (define-key map "0" [f10])
-    (define-key map "-" [f11])
-    (define-key map "=" [f12])
-    map)
-  "f9 <=> f1/f12")
-
-;;f1-f10 => S-f1/f12
-(defvar zz/shift-fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" [S-f1])
-    (define-key map "2" [S-f2])
-    (define-key map "3" [S-f3])
-    (define-key map "4" [S-f4])
-    (define-key map "5" [S-f5])
-    (define-key map "6" [S-f6])
-    (define-key map "7" [S-f7])
-    (define-key map "8" [S-f8])
-    (define-key map "9" [S-f9])
-    (define-key map "0" [S-f10])
-    (define-key map "-" [S-f11])
-    (define-key map "=" [S-f12])
-
-    (define-key map "h" [S-left])
-    (define-key map "j" [S-down])
-    (define-key map "k" [S-up])
-    (define-key map "l" [S-right])   
-    map)
-  "f10 <=> S-f1/f12")
-
-;;f1-f11 => C-f1/f12
-(defvar zz/ctrl-fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" [C-f1])
-    (define-key map "2" [C-f2])
-    (define-key map "3" [C-f3])
-    (define-key map "4" [C-f4])
-    (define-key map "5" [C-f5])
-    (define-key map "6" [C-f6])
-    (define-key map "7" [C-f7])
-    (define-key map "8" [C-f8])
-    (define-key map "9" [C-f9])
-    (define-key map "0" [C-f10])
-    (define-key map "-" [C-f11])
-    (define-key map "=" [C-f12])
-    map)
-  "f11 <=> C-f1/f12")
-
-;;f1-f12 => M-f1/f12
-(defvar zz/alt-fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" [M-f1])
-    (define-key map "2" [M-f2])
-    (define-key map "3" [M-f3])
-    (define-key map "4" [M-f4])
-    (define-key map "5" [M-f5])
-    (define-key map "6" [M-f6])
-    (define-key map "7" [M-f7])
-    (define-key map "8" [M-f8])
-    (define-key map "9" [M-f9])
-    (define-key map "0" [M-f10])
-    (define-key map "-" [M-f11])
-    (define-key map "=" [M-f12])
-    map)
-  "f12 <=> M-f1/f12")
-
-;;f1-f5 => ctrl-x f1/f12
-(defvar zz/ctrl-x-fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" (kbd "C-x  <f1>"))
-    (define-key map "2" (kbd "C-x  <f2>"))
-    (define-key map "3" (kbd "C-x  <f3>"))
-    (define-key map "4" (kbd "C-x  <f4>"))
-    (define-key map "5" (kbd "C-x  <f5>"))
-    (define-key map "6" (kbd "C-x  <f6>"))
-    (define-key map "7" (kbd "C-x  <f7>"))
-    (define-key map "8" (kbd "C-x  <f8>"))
-    ;;(define-key map "9" (kbd "C-x  <f9>"))
-    (define-key map "9" 'switch-to-shell)
-    (define-key map "0" (kbd "C-x  <f10>"))
-    (define-key map "-" (kbd "C-x  <f11>"))
-    (define-key map "=" (kbd "C-x  <f12>"))
-    map)
-  "f12 <=> ctrl-x f1/f12")
-
-;;f1-f5 => ctrl-c f1/f12
-(defvar zz/ctrl-c-fn-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "1" (kbd "C-c  <f1>"))
-    (define-key map "2" (kbd "C-c  <f2>"))
-    (define-key map "3" (kbd "C-c  <f3>"))
-    (define-key map "4" (kbd "C-c  <f4>"))
-    (define-key map "5" (kbd "C-c  <f5>"))
-    (define-key map "6" (kbd "C-c  <f6>"))
-    (define-key map "7" (kbd "C-c  <f7>"))
-    (define-key map "8" (kbd "C-c  <f8>"))
-    (define-key map "9" (kbd "C-c  <f9>"))
-    (define-key map "0" (kbd "C-c  <f10>"))
-    (define-key map "-" (kbd "C-c  <f11>"))
-    (define-key map "=" (kbd "C-c  <f12>"))
-    map)
-  "f12 <=> ctrl-c f1/f12")
-
-(define-key help-map (kbd "<f5>") zz/ctrl-x-fn-map)
-(define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
-(define-key help-map (kbd "<f7>") zz/ctrl-map)
+(defvar zz/alt-map (make-sparse-keymap))
 (define-key help-map (kbd "<f8>") zz/alt-map)
 
+(apply-keys-to-map
+ zz/alt-map
+ (list
+  "1"  'delete-other-windows
+  "2"  'delete-other-frames
+  "3"  'tabbar-forward-group
+  "4"  'kill-this-buffer
+  "5"  (if-ms-windows 'gud-cont 'gud-go)
+  
+  "6"  'gud-break
+  "7"  'gud-next
+  "8"  'gud-step
+  "9"  'gud-print
+  "0"  'other-window
+  
+  "#"  'query-replace-regexp
+  "]"  'tabbar-forward-tab
+  "["  'tabbar-backward-tab
+  
+  "h"  'windmove-left
+  "j"  'windmove-down
+  "k"  'windmove-up
+  "l"  'windmove-right
+  ))
+
+;;f1-f9 => f1/f12
+(defvar zz/fn-map (make-sparse-keymap))
 (define-key help-map [f9]  zz/fn-map)
+
+(apply-keys-to-map
+ zz/fn-map
+ (list
+  "1" [f1]
+  "2" [f2]
+  "3" [f3]
+  "4" (lookup-key zz/alt-map "4")
+  "5" [f5]
+  "6" [f6]
+  "7" [f7]
+  "8" [f8]
+  "9" [f9]
+  "0" [f10]
+  "-" [f11]
+  "=" [f12]
+  ))
+
+;;f1-f10 => S-f1/f12
+(defvar zz/shift-fn-map (make-sparse-keymap))
 (define-key help-map [f10] zz/shift-fn-map)
+
+(apply-keys-to-map
+ zz/shift-fn-map
+ (list
+  "1" [S-f1]
+  "2" [S-f2]
+  "3" [S-f3]
+  "4" [S-f4]
+  "5" [S-f5]
+  "6" [S-f6]
+  "7" [S-f7]
+  "8" [S-f8]
+  "9" [S-f9]
+  "0" [S-f10]
+  "-" [S-f11]
+  "=" [S-f12]
+
+  "h" [S-left]
+  "j" [S-down]
+  "k" [S-up]
+  "l" [S-right]
+  ))
+
+;;f1-f11 => C-f1/f12
+(defvar zz/ctrl-fn-map (make-sparse-keymap))
 (define-key help-map [f11] zz/ctrl-fn-map)
+
+(apply-keys-to-map
+ zz/ctrl-fn-map
+ (list
+  "1" [C-f1]
+  "2" [C-f2]
+  "3" [C-f3]
+  "4" [C-f4]
+  "5" [C-f5]
+  "6" [C-f6]
+  "7" [C-f7]
+  "8" [C-f8]
+  "9" [C-f9]
+  "0" [C-f10]
+  "-" [C-f11]
+  "=" [C-f12]
+  ))
+
+;;f1-f12 => M-f1/f12
+(defvar zz/alt-fn-map (make-sparse-keymap))
 (define-key help-map [f12] zz/alt-fn-map)
+
+(apply-keys-to-map
+ zz/alt-fn-map
+ (list
+  "1" [M-f1]
+  "2" [M-f2]
+  "3" [M-f3]
+  "4" [M-f4]
+  "5" [M-f5]
+  "6" [M-f6]
+  "7" [M-f7]
+  "8" [M-f8]
+  "9" [M-f9]
+  "0" [M-f10]
+  "-" [M-f11]
+  "=" [M-f12]
+  ))
+
+;;f1-f5 => ctrl-x f1/f12
+(defvar zz/ctrl-x-fn-map (make-sparse-keymap))
+(define-key help-map (kbd "<f5>") zz/ctrl-x-fn-map)
+
+(apply-keys-to-map
+ zz/ctrl-x-fn-map
+ (list
+  "1" (kbd "C-x  <f1>")
+  "2" (kbd "C-x  <f2>")
+  "3" (kbd "C-x  <f3>")
+  "4" (kbd "C-x  <f4>")
+  "5" (kbd "C-x  <f5>")
+  "6" (kbd "C-x  <f6>")
+  "7" (kbd "C-x  <f7>")
+  "8" (kbd "C-x  <f8>")
+  "9" 'switch-to-shell
+  "0" (kbd "C-x  <f10>")
+  "-" (kbd "C-x  <f11>")
+  "=" (kbd "C-x  <f12>")
+  ))
+
+;;f1-f5 => ctrl-c f1/f12
+(defvar zz/ctrl-c-fn-map (make-sparse-keymap))
+(define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
+
+(apply-keys-to-map
+ zz/ctrl-c-fn-map
+ (list
+  "1" (kbd "C-c  <f1>")
+  "2" (kbd "C-c  <f2>")
+  "3" (kbd "C-c  <f3>")
+  "4" (kbd "C-c  <f4>")
+  "5" (kbd "C-c  <f5>")
+  "6" (kbd "C-c  <f6>")
+  "7" (kbd "C-c  <f7>")
+  "8" (kbd "C-c  <f8>")
+  "9" (kbd "C-c  <f9>")
+  "0" (kbd "C-c  <f10>")
+  "-" (kbd "C-c  <f11>")
+  "=" (kbd "C-c  <f12>")
+  ))
 
 (when-ms-windows
  (setq w32-pass-rwindow-to-system nil)

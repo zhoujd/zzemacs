@@ -1,9 +1,8 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;function key map setting
+;;;;function key map setting
 ;;;;emacs default setting
-;;;(define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
 ;;C-x @ S         event-apply-shift-modifier
 ;;C-x @ a         event-apply-alt-modifier
 ;;C-x @ c         event-apply-control-modifier
@@ -52,6 +51,15 @@
         (when fn
           (define-key map key fn)))
       (setq i (+ i 2)))))
+
+;;key-translation-map setting
+(apply-keys-to-map
+ key-translation-map
+ (list 
+  (kbd "C-c `") 'event-apply-shift-modifier
+  (kbd "C-c -") 'event-apply-control-modifier
+  (kbd "C-c =") 'event-apply-meta-modifier
+  ))
 
 ;;;global-map C-1/=
 (apply-keys-to-map
@@ -107,8 +115,13 @@
   [M-right]    'windmove-right
   ))
 
-(define-key f1-backquote-map (kbd "h") 'common-lisp-hyperspec)
-(define-key f1-backquote-map (kbd "i") 'zz-info-open-file)
+;;f1-backquote-map
+(apply-keys-to-map
+ f1-backquote-map
+ (list
+  (kbd "h") 'common-lisp-hyperspec
+  (kbd "i") 'zz-info-open-file
+  ))
 
 ;;execute start-process key
 (apply-keys-to-map

@@ -233,8 +233,8 @@
     'undo-kill-buffer                ;;[S-f4]
     'highlight-symbol-next           ;;[C-f4]
     'highlight-symbol-prev           ;;[M-f4]
-    nil                              ;;C-x f4
-    nil                              ;;C-c f4
+    'recentf-open-files              ;;C-x f4
+    'recentf-open-files-compl        ;;C-c f4
     )
 
 (define-fn-key "5"                   ;;==> f5
@@ -246,16 +246,24 @@
     nil                              ;;C-c f5
     )
 
-
 (define-fn-key "6"                   ;;==> f6
-    (if-ms-windows 'multi-shell-new  'get-term) ;;[f6]
+    (if-ms-windows
+     'multi-shell-new
+     'get-term)                      ;;[f6]
     (if-ms-windows
      'multi-shell-current-directory
      'multi-term-dedicated-toggle)   ;;[S-f6]
-    (if-ms-windows 'multi-shell-next 'multi-term-next) ;;[C-f6]
-    (if-ms-windows 'multi-shell-prev 'multi-term-prev) ;;[M-f6]    
-    (if-ms-windows 'switch-to-shell  'switch-to-term)  ;;C-x f6
-    (unless-ms-windows 'switch-term-and-text)          ;;C-c f6
+    (if-ms-windows
+     'multi-shell-next
+     'multi-term-next)               ;;[C-f6]
+    (if-ms-windows
+     'multi-shell-prev
+     'multi-term-prev)               ;;[M-f6]    
+    (if-ms-windows
+     'switch-to-shell
+     'switch-to-term)                ;;C-x f6
+    (unless-ms-windows
+     'switch-term-and-text)          ;;C-c f6
     )
 
 (define-fn-key "7"                   ;;==> f7

@@ -132,7 +132,9 @@
     )
 
 (define-fn-key "9"                   ;;==> f9
-    (lambda () (interactive) (start-shell "*shell*")) ;;[f9]
+    (lambda ()
+      (interactive)
+      (start-shell "*shell*"))       ;;[f9]
     'multi-shell-new                 ;;[S-f9]
     'switch-to-scratch               ;;[C-f9]
     'popup-term                      ;;[M-f9]
@@ -163,8 +165,8 @@
     'rgrep                           ;;[S-f12]
     'find-name-dired                 ;;[C-f12]
     'my-c-rgrep                      ;;[M-f12]
-    'my-unicad-switch                ;;(kbd "C-x <f12>")
-    'my-os-file-switch               ;;(kbd "C-c <f12>")
+    'my-unicad-switch                ;;C-x f12
+    'my-os-file-switch               ;;C-x f12
     )
 
 ;;apply fn-key setting

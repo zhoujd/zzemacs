@@ -3,12 +3,19 @@
 
 ;;;;function key map setting
 ;;;;emacs default setting
-;;C-x @ S         event-apply-shift-modifier
-;;C-x @ a         event-apply-alt-modifier
-;;C-x @ c         event-apply-control-modifier
-;;C-x @ h         event-apply-hyper-modifier
-;;C-x @ m         event-apply-meta-modifier
-;;C-x @ s         event-apply-super-modifier
+;;C-x @ S        event-apply-shift-modifier
+;;C-x @ a        event-apply-alt-modifier
+;;C-x @ c        event-apply-control-modifier
+;;C-x @ h        event-apply-hyper-modifier
+;;C-x @ m        event-apply-meta-modifier
+;;C-x @ s        event-apply-super-modifier
+(apply-keys-to-map
+ key-translation-map
+ (list 
+  (kbd "C-c `") 'event-apply-shift-modifier
+  (kbd "C-c -") 'event-apply-control-modifier
+  (kbd "C-c =") 'event-apply-meta-modifier
+  ))
 
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap)
@@ -40,26 +47,6 @@
 (defvar f1-backquote-map (make-sparse-keymap)
   "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
-
-;;multi key setting
-(defun apply-keys-to-map (map key-pairs)
-  "apply multi key defines"
-  (let ((i 0))
-    (while (< i (length key-pairs))
-      (let ((key (nth i key-pairs))
-            (fn (nth (1+ i) key-pairs)))
-        (when fn
-          (define-key map key fn)))
-      (setq i (+ i 2)))))
-
-;;key-translation-map setting
-(apply-keys-to-map
- key-translation-map
- (list 
-  (kbd "C-c `") 'event-apply-shift-modifier
-  (kbd "C-c -") 'event-apply-control-modifier
-  (kbd "C-c =") 'event-apply-meta-modifier
-  ))
 
 ;;;global-map C-1/=
 (apply-keys-to-map
@@ -300,7 +287,7 @@
   [S-left]        'shrink-window-horizontally
   
   ;;set apps do M+x
-  [apps]          'execute-extended-command
+  [apps]          (when-ms-windows 'execute-extended-command)
   ))
 
 (provide 'key-setting)

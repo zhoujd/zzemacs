@@ -15,27 +15,27 @@
 ;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
 
 ;;f1-f9 => f1/f12
-(defvar zz/fn-map (make-sparse-keymap))
+(defvar zz/fn-map (make-sparse-keymap) "f1-f9 => f1/f12")
 (define-key help-map [f9]  zz/fn-map)
 
 ;;f1-f10 => S-f1/f12
-(defvar zz/shift-fn-map (make-sparse-keymap))
+(defvar zz/shift-fn-map (make-sparse-keymap) "f1-f10 => S-f1/f12")
 (define-key help-map [f10] zz/shift-fn-map)
 
 ;;f1-f11 => C-f1/f12
-(defvar zz/ctrl-fn-map (make-sparse-keymap))
+(defvar zz/ctrl-fn-map (make-sparse-keymap) "f1-f11 => C-f1/f12")
 (define-key help-map [f11] zz/ctrl-fn-map)
 
 ;;f1-f12 => M-f1/f12
-(defvar zz/alt-fn-map (make-sparse-keymap))
+(defvar zz/alt-fn-map (make-sparse-keymap) "f1-f12 => M-f1/f12")
 (define-key help-map [f12] zz/alt-fn-map)
 
 ;;f1-f5 => ctrl-x f1/f12
-(defvar zz/ctrl-x-fn-map (make-sparse-keymap))
+(defvar zz/ctrl-x-fn-map (make-sparse-keymap) "f1-f5 => ctrl-x f1/f12")
 (define-key help-map (kbd "<f5>") zz/ctrl-x-fn-map)
 
 ;;f1-f5 => ctrl-c f1/f12
-(defvar zz/ctrl-c-fn-map (make-sparse-keymap))
+(defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f5 => ctrl-c f1/f12")
 (define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
 
 ;;group define fn key

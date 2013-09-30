@@ -151,13 +151,6 @@
   (when ctrl-x-fn (define-key zz/ctrl-x-fn-map fn-name ctrl-x-fn))
   (when ctrl-c-fn (define-key zz/ctrl-c-fn-map fn-name ctrl-c-fn)))
 
-(define-fn-key "1"  ;;==> f1
-    nil ;;[f1]
-    nil ;;[S-f1]
-    nil ;;[C-f1]
-    nil ;;[M-f1]
-    )
-
 ;;key for f1-backquote-map
 (apply-keys-to-map
  f1-backquote-map
@@ -323,81 +316,89 @@
 (apply-keys-to-map
  global-map
  (list
-  ;;for info
-  [S-f1]    'planner-create-task-from-buffer
-  [C-f1]    'session-save
-  [M-f1]    'session-restore
-  
-  [f2]      'bc-next
-  [S-f2]    'bc-previous
-  [C-f2]    'bc-set
-  [M-f2]    'bc-list
-  
-  [f3]      'my-last-buffer-go
-  [S-f3]    'list-bookmarks
-  [C-f3]    'bc-local-next
-  [M-f3]    'bc-local-previous
-  (kbd "C-x <f3>")  'my-occur
-  (kbd "C-c <f3>")  'my-woman-at-point
+  [f1]             (lookup-key zz/fn-map        "1")
+  [S-f1]           (lookup-key zz/shift-fn-map  "1")
+  [C-f1]           (lookup-key zz/ctrl-fn-map   "1")
+  [M-f1]           (lookup-key zz/alt-fn-map    "1")
+  (kbd "C-x <f1>") (lookup-key zz/ctrl-x-fn-map "1")
+  (kbd "C-c <f1>") (lookup-key zz/ctrl-c-fn-map "1")
 
-  
-  [S-f4]    'undo-kill-buffer
-  [C-f4]    'highlight-symbol-next
-  [M-f4]    'highlight-symbol-prev
-  (kbd "C-x <f4>")  'recentf-open-files
-  (kbd "C-c <f4>")  'recentf-open-files-compl
+  [f2]             (lookup-key zz/fn-map        "2")
+  [S-f2]           (lookup-key zz/shift-fn-map  "2")
+  [C-f2]           (lookup-key zz/ctrl-fn-map   "2")
+  [M-f2]           (lookup-key zz/alt-fn-map    "2")
+  (kbd "C-x <f2>") (lookup-key zz/ctrl-x-fn-map "2")
+  (kbd "C-c <f2>") (lookup-key zz/ctrl-c-fn-map "2")
 
-  
-  [f5]      'speedbar-get-focus
-  [S-f5]    'sr-speedbar-toggle
-  [C-f5]    'line-to-top-of-window
-  [M-f5]    'etags-stack-show
+  [f3]             (lookup-key zz/fn-map        "3")
+  [S-f3]           (lookup-key zz/shift-fn-map  "3")
+  [C-f3]           (lookup-key zz/ctrl-fn-map   "3")
+  [M-f3]           (lookup-key zz/alt-fn-map    "3")
+  (kbd "C-x <f3>") (lookup-key zz/ctrl-x-fn-map "3")
+  (kbd "C-c <f3>") (lookup-key zz/ctrl-c-fn-map "3")
 
-  [f6]      (if-ms-windows 'multi-shell-new  'get-term)
-  [S-f6]    (if-ms-windows
-             'multi-shell-current-directory
-             'multi-term-dedicated-toggle)
-  [C-f6]    (if-ms-windows 'multi-shell-next 'multi-term-next)
-  [M-f6]    (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-  (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
-  (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
-  
-  [f7]      'compile
-  [S-f7]    'switch-to-compilation
-  [C-f7]    'next-error
-  [M-f7]    'previous-error
-  
-  [f8]      'gdb
-  [S-f8]    'gud-kill
-  [C-f8]    'gdb-restore-windows
-  [M-f8]    'gdb-many-windows
-  (kbd "C-x <f8>")  'gdb-use-separate-io
-  (kbd "C-c <f8>")  'gud-tooltip-mode
-  
-  [f9]      (lambda () (interactive) (start-shell "*shell*"))
-  [S-f9]    'multi-shell-new
-  [C-f9]    'switch-to-scratch
-  [M-f9]    'popup-term
-  (kbd "C-x <f9>")  (lookup-key zz/ctrl-x-fn-map "9")
-  (kbd "C-c <f9>")  'eshell
-  
-  [S-f10]   'tool-bar-mode
-  [C-f10]   'my-toggle-maxframe
-  [M-f10]   'my-toggle-fullscreen
-  (kbd "C-x <f10>") 'scroll-bar-mode
-  (kbd "C-c <f10>") 'tabbar-mode
-  
-  [f11]     'linum-mode
-  [S-f11]   'fci-mode
-  [C-f11]   'hl-line-mode
-  [M-f11]   'blank-mode
-  
-  [f12]     'find-grep
-  [S-f12]   'rgrep
-  [C-f12]   'find-name-dired
-  [M-f12]   'my-c-rgrep
-  (kbd "C-x <f12>") 'my-unicad-switch
-  (kbd "C-c <f12>") 'my-os-file-switch
+  [f4]             (lookup-key zz/fn-map        "4")
+  [S-f4]           (lookup-key zz/shift-fn-map  "4")
+  [C-f4]           (lookup-key zz/ctrl-fn-map   "4")
+  [M-f4]           (lookup-key zz/alt-fn-map    "4")
+  (kbd "C-x <f4>") (lookup-key zz/ctrl-x-fn-map "4")
+  (kbd "C-c <f4>") (lookup-key zz/ctrl-c-fn-map "4")
+
+  [f5]             (lookup-key zz/fn-map        "5")
+  [S-f5]           (lookup-key zz/shift-fn-map  "5")
+  [C-f5]           (lookup-key zz/ctrl-fn-map   "5")
+  [M-f5]           (lookup-key zz/alt-fn-map    "5")
+  (kbd "C-x <f5>") (lookup-key zz/ctrl-x-fn-map "5")
+  (kbd "C-c <f5>") (lookup-key zz/ctrl-c-fn-map "5")
+
+  [f6]             (lookup-key zz/fn-map        "6")
+  [S-f6]           (lookup-key zz/shift-fn-map  "6")
+  [C-f6]           (lookup-key zz/ctrl-fn-map   "6")
+  [M-f6]           (lookup-key zz/alt-fn-map    "6")
+  (kbd "C-x <f6>") (lookup-key zz/ctrl-x-fn-map "6")
+  (kbd "C-c <f6>") (lookup-key zz/ctrl-c-fn-map "6")
+
+  [f7]             (lookup-key zz/fn-map        "7")
+  [S-f7]           (lookup-key zz/shift-fn-map  "7")
+  [C-f7]           (lookup-key zz/ctrl-fn-map   "7")
+  [M-f7]           (lookup-key zz/alt-fn-map    "7")
+  (kbd "C-x <f7>") (lookup-key zz/ctrl-x-fn-map "7")
+  (kbd "C-c <f7>") (lookup-key zz/ctrl-c-fn-map "7")
+
+  [f8]             (lookup-key zz/fn-map        "8")
+  [S-f8]           (lookup-key zz/shift-fn-map  "8")
+  [C-f8]           (lookup-key zz/ctrl-fn-map   "8")
+  [M-f8]           (lookup-key zz/alt-fn-map    "8")
+  (kbd "C-x <f8>") (lookup-key zz/ctrl-x-fn-map "8")
+  (kbd "C-c <f8>") (lookup-key zz/ctrl-c-fn-map "8")
+
+  [f9]             (lookup-key zz/fn-map        "9")
+  [S-f9]           (lookup-key zz/shift-fn-map  "9")
+  [C-f9]           (lookup-key zz/ctrl-fn-map   "9")
+  [M-f9]           (lookup-key zz/alt-fn-map    "9")
+  (kbd "C-x <f9>") (lookup-key zz/ctrl-x-fn-map "9")
+  (kbd "C-c <f9>") (lookup-key zz/ctrl-c-fn-map "9")
+
+  [f10]             (lookup-key zz/fn-map        "0")
+  [S-f10]           (lookup-key zz/shift-fn-map  "0")
+  [C-f10]           (lookup-key zz/ctrl-fn-map   "0")
+  [M-f10]           (lookup-key zz/alt-fn-map    "0")
+  (kbd "C-x <f10>") (lookup-key zz/ctrl-x-fn-map "0")
+  (kbd "C-c <f10>") (lookup-key zz/ctrl-c-fn-map "0")
+
+  [f11]             (lookup-key zz/fn-map        "-")
+  [S-f11]           (lookup-key zz/shift-fn-map  "-")
+  [C-f11]           (lookup-key zz/ctrl-fn-map   "-")
+  [M-f11]           (lookup-key zz/alt-fn-map    "-")
+  (kbd "C-x <f11>") (lookup-key zz/ctrl-x-fn-map "-")
+  (kbd "C-c <f11>") (lookup-key zz/ctrl-c-fn-map "-")
+
+  [f12]             (lookup-key zz/fn-map        "=")
+  [S-f12]           (lookup-key zz/shift-fn-map  "=")
+  [C-f12]           (lookup-key zz/ctrl-fn-map   "=")
+  [M-f12]           (lookup-key zz/alt-fn-map    "=")
+  (kbd "C-x <f12>") (lookup-key zz/ctrl-x-fn-map "=")
+  (kbd "C-c <f12>") (lookup-key zz/ctrl-c-fn-map "=")
   ))
 
 ;;number 0-1/-/=

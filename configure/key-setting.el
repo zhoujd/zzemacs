@@ -5,6 +5,15 @@
 ;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
 ;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
 
+;;;;emacs default setting
+;;C-x @ S         event-apply-shift-modifier
+;;C-x @ a         event-apply-alt-modifier
+;;C-x @ c         event-apply-control-modifier
+;;C-x @ h         event-apply-hyper-modifier
+;;C-x @ m         event-apply-meta-modifier
+;;C-x @ s         event-apply-super-modifier
+;;(define-key key-translation-map (kbd "C-c h") 'event-apply-hyper-modifier)
+
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4] f4-map)

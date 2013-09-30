@@ -38,7 +38,7 @@
 (define-key f4-map "e" f4-e-map)
 
 ;;f4-p key map 
-(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, can define in temp-setting.el.")
+(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 (define-key f4-map "p" f4-p-map)
 
 ;;f1-esc key map for help using

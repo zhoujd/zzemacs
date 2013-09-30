@@ -49,8 +49,8 @@
           csharp-setting
           php-setting
           muse-setting
+          fn-setting
           key-setting
-          key-fn-setting
           ))
 
 ;;develop setting for tags path etc.

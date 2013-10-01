@@ -75,7 +75,7 @@
     (kbd "C-c <f4>")  'recentf-open-files-compl
     )
 
-(define-fn-key "5"                   ;;==> f5
+(define-fn-key "5" 
     [f5]              'speedbar-get-focus
     [S-f5]            'sr-speedbar-toggle
     [C-f5]            'line-to-top-of-window

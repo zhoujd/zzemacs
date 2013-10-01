@@ -38,140 +38,113 @@
 (defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f5 => ctrl-c f1/f12")
 (define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
 
-;;group define fn key
-(defun define-fn-key (fn-name
-                      fn-sym        fn
-                      s-fn-sym      s-fn
-                      c-fn-sym      c-fn
-                      m-fn-sym      m-fn
-                      ctrl-x-fn-sym ctrl-x-fn
-                      ctrl-c-fn-sym ctrl-c-fn)
-  (when fn
-    (define-key global-map       fn-sym         fn)
-    (define-key zz/fn-map        fn-name        fn))
-  (when s-fn
-    (define-key global-map       s-fn-sym       s-fn)
-    (define-key zz/shift-fn-map  fn-name        s-fn))
-  (when c-fn
-    (define-key global-map       c-fn-sym       c-fn)
-    (define-key zz/ctrl-fn-map   fn-name        c-fn))
-  (when m-fn
-    (define-key global-map       m-fn-sym       m-fn)
-    (define-key zz/alt-fn-map    fn-name        m-fn))
-  (when ctrl-x-fn
-    (define-key global-map       ctrl-x-fn-sym  ctrl-x-fn)
-    (define-key zz/ctrl-x-fn-map fn-name        ctrl-x-fn))
-  (when ctrl-c-fn
-    (define-key global-map       ctrl-c-fn-sym  ctrl-c-fn)
-    (define-key zz/ctrl-c-fn-map fn-name        ctrl-c-fn)))
-
 ;;define fn key setting
-(define-fn-key "1"                   ;;==> f1
-    [f1]              nil                              ;;[f1]
-    [S-f1]            'planner-create-task-from-buffer ;;[S-f1]
-    [C-f1]            'session-save                    ;;[C-f1]
-    [M-f1]            'session-restore                 ;;[M-f1]
-    (kbd "C-x <f1>")  nil                              ;;C-x f1
-    (kbd "C-x <f1>")  nil                              ;;C-c f1
+(define-fn-key "1"
+    [f1]              nil
+    [S-f1]            'planner-create-task-from-buffer
+    [C-f1]            'session-save
+    [M-f1]            'session-restore
+    (kbd "C-x <f1>")  nil
+    (kbd "C-x <f1>")  nil
     )
 
-(define-fn-key "2"                   ;;==> f2
-    [f2]              'bc-next                         ;;[f2]
-    [S-f2]            'bc-previous                     ;;[S-f2]
-    [C-f2]            'bc-set                          ;;[C-f2]
-    [M-f2]            'bc-list                         ;;[M-f2]
-    (kbd "C-x <f2>")  nil                              ;;C-x f2
-    (kbd "C-c <f2>")  nil                              ;;C-c f2
+(define-fn-key "2"
+    [f2]              'bc-next
+    [S-f2]            'bc-previous
+    [C-f2]            'bc-set
+    [M-f2]            'bc-list
+    (kbd "C-x <f2>")  nil
+    (kbd "C-c <f2>")  nil
     )
 
-(define-fn-key "3"                   ;;==> f3
-    [f3]              'my-last-buffer-go               ;;[f3]
-    [S-f3]            'list-bookmarks                  ;;[S-f3]
-    [C-f3]            'bc-local-next                   ;;[C-f3]
-    [M-f3]            'bc-local-previous               ;;[M-f3]
-    (kbd "C-x <f3>")  'my-occur                        ;;C-x f3
-    (kbd "C-c <f3>")  'my-woman-at-point               ;;C-c f3
+(define-fn-key "3"
+    [f3]              'my-last-buffer-go
+    [S-f3]            'list-bookmarks
+    [C-f3]            'bc-local-next
+    [M-f3]            'bc-local-previous
+    (kbd "C-x <f3>")  'my-occur
+    (kbd "C-c <f3>")  'my-woman-at-point
     )
 
-(define-fn-key "4"                   ;;==> f4
-    [f4]              'kill-this-buffer                ;;[f4]
-    [S-f4]            'undo-kill-buffer                ;;[S-f4]
-    [C-f4]            'highlight-symbol-next           ;;[C-f4]
-    [M-f4]            'highlight-symbol-prev           ;;[M-f4]
-    (kbd "C-x <f4>")  'recentf-open-files              ;;C-x f4
-    (kbd "C-c <f4>")  'recentf-open-files-compl        ;;C-c f4
+(define-fn-key "4"
+    [f4]              'kill-this-buffer
+    [S-f4]            'undo-kill-buffer
+    [C-f4]            'highlight-symbol-next
+    [M-f4]            'highlight-symbol-prev
+    (kbd "C-x <f4>")  'recentf-open-files
+    (kbd "C-c <f4>")  'recentf-open-files-compl
     )
 
 (define-fn-key "5"                   ;;==> f5
-    [f5]              'speedbar-get-focus              ;;[f5]
-    [S-f5]            'sr-speedbar-toggle              ;;[S-f5]
-    [C-f5]            'line-to-top-of-window           ;;[C-f5]
-    [M-f5]            'etags-stack-show                ;;[M-f5]
-    (kbd "C-x <f5>")  nil                              ;;C-x f5
-    (kbd "C-c <f5>")  nil                              ;;C-c f5
+    [f5]              'speedbar-get-focus
+    [S-f5]            'sr-speedbar-toggle
+    [C-f5]            'line-to-top-of-window
+    [M-f5]            'etags-stack-show
+    (kbd "C-x <f5>")  nil
+    (kbd "C-c <f5>")  nil
     )
 
-(define-fn-key "6"                   ;;==> f6
-    [f6]              (if-ms-windows 'multi-shell-new 'get-term)                      ;;[f6]
-    [S-f6]            (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)   ;;[S-f6]
-    [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)               ;;[C-f6]
-    [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)               ;;[M-f6]    
-    (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)                ;;C-x f6
-    (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)          ;;C-c f6
+(define-fn-key "6"
+    [f6]              (if-ms-windows 'multi-shell-new 'get-term)
+    [S-f6]            (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)
+    [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
+    [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
+    (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
+    (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
     )
 
-(define-fn-key "7"                   ;;==> f7
-    [f7]              'compile                         ;;[f7]
-    [S-f7]            'switch-to-compilation           ;;[S-f7]
-    [C-f7]            'next-error                      ;;[C-f7]
-    [M-f7]            'previous-error                  ;;[M-f7]
-    (kbd "C-x <f7>")  nil                              ;;C-x f7
-    (kbd "C-c <f7>")  nil                              ;;C-c f7
+(define-fn-key "7"
+    [f7]              'compile
+    [S-f7]            'switch-to-compilation
+    [C-f7]            'next-error
+    [M-f7]            'previous-error
+    (kbd "C-x <f7>")  nil
+    (kbd "C-c <f7>")  nil
     )
 
-(define-fn-key "8"                   ;;==> f8
-    [f8]              'gdb                             ;;[f8]
-    [S-f8]            'gud-kill                        ;;[S-f8]
-    [C-f8]            'gdb-restore-windows             ;;[C-f8]
-    [M-f8]            'gdb-many-windows                ;;[M-f8]
-    (kbd "C-x <f8>")  'gdb-use-separate-io             ;;C-x f8
-    (kbd "C-c <f8>")  'gud-tooltip-mode                ;;C-c f8
+(define-fn-key "8"
+    [f8]              'gdb
+    [S-f8]            'gud-kill
+    [C-f8]            'gdb-restore-windows
+    [M-f8]            'gdb-many-windows
+    (kbd "C-x <f8>")  'gdb-use-separate-io
+    (kbd "C-c <f8>")  'gud-tooltip-mode
     )
 
-(define-fn-key "9"                   ;;==> f9
-    [f9]              (lambda () (interactive)  (start-shell "*shell*"))       ;;[f9]
-    [S-f9]            'multi-shell-new                 ;;[S-f9]
-    [C-f9]            'switch-to-scratch               ;;[C-f9]
-    [M-f9]            'popup-term                      ;;[M-f9]
-    (kbd "C-x <f9>")  'switch-to-shell                 ;;C-x f9
-    (kbd "C-c <f9>")  'eshell                          ;;C-c f9
+(define-fn-key "9"
+    [f9]              (lambda () (interactive)  (start-shell "*shell*"))
+    [S-f9]            'multi-shell-new
+    [C-f9]            'switch-to-scratch
+    [M-f9]            'popup-term
+    (kbd "C-x <f9>")  'switch-to-shell
+    (kbd "C-c <f9>")  'eshell
     )
 
-(define-fn-key "0"                   ;;==> f10
-    [f10]              nil                              ;;[f10]
-    [S-f10]            'tool-bar-mode                   ;;[S-f10]
-    [C-f10]            'my-toggle-maxframe              ;;[C-f10]
-    [M-f10]            'my-toggle-fullscreen            ;;[M-f10]
-    (kbd "C-x <f10>")  'scroll-bar-mode                 ;;C-x f10
-    (kbd "C-c <f10>")  'tabbar-mode                     ;;C-c f10
+(define-fn-key "0"
+    [f10]              nil
+    [S-f10]            'tool-bar-mode
+    [C-f10]            'my-toggle-maxframe
+    [M-f10]            'my-toggle-fullscreen
+    (kbd "C-x <f10>")  'scroll-bar-mode
+    (kbd "C-c <f10>")  'tabbar-mode
     )
 
-(define-fn-key "-"                   ;;==> f11
-    [f11]              'linum-mode                      ;;[f11]
-    [S-f11]            'fci-mode                        ;;[S-f11]
-    [C-f11]            'hl-line-mode                    ;;[C-f11]
-    [M-f11]            'blank-mode                      ;;[M-f11]
-    (kbd "C-x <f11>")  nil                              ;;C-x f11
-    (kbd "C-c <f11>")  nil                              ;;C-c f11
+(define-fn-key "-"
+    [f11]              'linum-mode
+    [S-f11]            'fci-mode
+    [C-f11]            'hl-line-mode
+    [M-f11]            'blank-mode
+    (kbd "C-x <f11>")  nil
+    (kbd "C-c <f11>")  nil
     )
 
-(define-fn-key "="                   ;;==> f12
-    [f12]              'find-grep                       ;;[f12]
-    [S-f12]            'rgrep                           ;;[S-f12]
-    [C-f12]            'find-name-dired                 ;;[C-f12]
-    [M-f12]            'my-c-rgrep                      ;;[M-f12]
-    (kbd "C-x <f12>")  'my-unicad-switch                ;;C-x f12
-    (kbd "C-c <f12>")  'my-os-file-switch               ;;C-x f12
+(define-fn-key "="
+    [f12]              'find-grep
+    [S-f12]            'rgrep
+    [C-f12]            'find-name-dired
+    [M-f12]            'my-c-rgrep
+    (kbd "C-x <f12>")  'my-unicad-switch
+    (kbd "C-c <f12>")  'my-os-file-switch
     )
 
 (provide 'fn-setting)

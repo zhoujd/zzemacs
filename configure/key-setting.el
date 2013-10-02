@@ -214,23 +214,6 @@
   (kbd "0") 'gdb-frame-gdb-buffer
   (kbd "-") 'gud-up
   (kbd "=") 'gud-down
-
-  ;;window size change
-  [up]      'enlarge-window
-  [down]    'shrink-window
-  [right]   'enlarge-window-horizontally
-  [left]    'shrink-window-horizontally  
-  ))
-
-;;esc-map
-(apply-keys-to-map
- esc-map
- (list
-  ;;quick move other windows
-  [up]      'windmove-up
-  [down]    'windmove-down
-  [right]   'windmove-right
-  [left]    'windmove-left
   ))
 
 (apply-keys-to-map
@@ -253,16 +236,16 @@
   (kbd "C-c h")   'helm-mini
 
   ;;quick move other windows
-  [M-up]          (lookup-key esc-map [up])
-  [M-down]        (lookup-key esc-map [down])
-  [M-right]       (lookup-key esc-map [right])
-  [M-left]        (lookup-key esc-map [left])
+  [M-up]          'windmove-up
+  [M-down]        'windmove-down
+  [M-right]       'windmove-right
+  [M-left]        'windmove-left
   
   ;;window size change
-  [S-up]          (lookup-key help-map [up])
-  [S-down]        (lookup-key help-map [down])
-  [S-right]       (lookup-key help-map [right])
-  [S-left]        (lookup-key help-map [left])
+  [S-up]          'enlarge-window
+  [S-down]        'shrink-window
+  [S-right]       'enlarge-window-horizontally
+  [S-left]        'shrink-window-horizontally
 
   ;;set apps do M+x
   [apps]          'execute-extended-command

@@ -50,11 +50,11 @@
 
 ;;f1-f7 => C-1/+
 (defvar zz/ctrl-map  (make-sparse-keymap))
-(define-key help-map (kbd "<f7>") zz/ctrl-map)
+(define-key help-map (kbd "<f5>") zz/ctrl-map)
 
 ;;f1-f8 => M-1/+
 (defvar zz/alt-map (make-sparse-keymap))
-(define-key help-map (kbd "<f8>") zz/alt-map)
+(define-key help-map (kbd "<f6>") zz/alt-map)
 
 (apply-keys-to-map
  zz/ctrl-map

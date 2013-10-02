@@ -2,8 +2,8 @@
 ;;;
 
 ;;;;function key setting on console
-;;;keymap:zz/ctrl-map          f1-f7  + 1/= <===> control + 1/=
-;;;keymap:zz/alt-map           f1-f8  + 1/= <===> alt     + 1/=
+;;;keymap:zz/ctrl-map          f1-f5  + 1/= <===> control + 1/=
+;;;keymap:zz/alt-map           f1-f6  + 1/= <===> alt     + 1/=
 
 ;;;;emacs default setting
 ;;C-x @ S        event-apply-shift-modifier

@@ -139,30 +139,30 @@
     )
 
 (define-fn-key (gethash "f10" fn-key-table)
-    [f10]              nil
-    [S-f10]            'tool-bar-mode
-    [C-f10]            'my-toggle-maxframe
-    [M-f10]            'my-toggle-fullscreen
-    (kbd "C-x <f10>")  'scroll-bar-mode
-    (kbd "C-c <f10>")  'tabbar-mode
+    [f10]             nil
+    [S-f10]           'tool-bar-mode
+    [C-f10]           'my-toggle-maxframe
+    [M-f10]           'my-toggle-fullscreen
+    (kbd "C-x <f10>") 'scroll-bar-mode
+    (kbd "C-c <f10>") 'tabbar-mode
     )
 
 (define-fn-key (gethash "f11" fn-key-table)
-    [f11]              'linum-mode
-    [S-f11]            'fci-mode
-    [C-f11]            'hl-line-mode
-    [M-f11]            'blank-mode
-    (kbd "C-x <f11>")  nil
-    (kbd "C-c <f11>")  nil
+    [f11]             'linum-mode
+    [S-f11]           'fci-mode
+    [C-f11]           'hl-line-mode
+    [M-f11]           'blank-mode
+    (kbd "C-x <f11>") nil
+    (kbd "C-c <f11>") nil
     )
 
 (define-fn-key (gethash "f12" fn-key-table)
-    [f12]              'find-grep
-    [S-f12]            'rgrep
-    [C-f12]            'find-name-dired
-    [M-f12]            'my-c-rgrep
-    (kbd "C-x <f12>")  'my-unicad-switch
-    (kbd "C-c <f12>")  'my-os-file-switch
+    [f12]             'find-grep
+    [S-f12]           'rgrep
+    [C-f12]           'find-name-dired
+    [M-f12]           'my-c-rgrep
+    (kbd "C-x <f12>") 'my-unicad-switch
+    (kbd "C-c <f12>") 'my-os-file-switch
     )
 
 (provide 'fn-setting)

@@ -38,8 +38,26 @@
 (defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f5 => ctrl-c f1/f12")
 (define-key help-map (kbd "<f6>") zz/ctrl-c-fn-map)
 
+;;fn-key-table
+(defvar fn-key-table
+  (let ((hash (make-hash-table :test 'equal)))
+    (puthash "f1"  "1" hash)
+    (puthash "f2"  "2" hash)
+    (puthash "f3"  "3" hash)
+    (puthash "f4"  "4" hash)
+    (puthash "f5"  "5" hash)
+    (puthash "f6"  "6" hash)
+    (puthash "f7"  "7" hash)
+    (puthash "f8"  "8" hash)
+    (puthash "f9"  "9" hash)
+    (puthash "f10" "0" hash)
+    (puthash "f11" "-" hash)
+    (puthash "f12" "=" hash)
+    hash)
+  "fn-key-table")
+
 ;;define fn key setting
-(define-fn-key "1"
+(define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
     [S-f1]            'planner-create-task-from-buffer
     [C-f1]            'session-save
@@ -48,7 +66,7 @@
     (kbd "C-x <f1>")  nil
     )
 
-(define-fn-key "2"
+(define-fn-key (gethash "f2" fn-key-table)
     [f2]              'bc-next
     [S-f2]            'bc-previous
     [C-f2]            'bc-set
@@ -57,7 +75,7 @@
     (kbd "C-c <f2>")  nil
     )
 
-(define-fn-key "3"
+(define-fn-key (gethash "f3" fn-key-table)
     [f3]              'my-last-buffer-go
     [S-f3]            'list-bookmarks
     [C-f3]            'bc-local-next
@@ -66,7 +84,7 @@
     (kbd "C-c <f3>")  'my-woman-at-point
     )
 
-(define-fn-key "4"
+(define-fn-key (gethash "f4" fn-key-table)
     [f4]              'kill-this-buffer
     [S-f4]            'undo-kill-buffer
     [C-f4]            'highlight-symbol-next
@@ -75,7 +93,7 @@
     (kbd "C-c <f4>")  'recentf-open-files-compl
     )
 
-(define-fn-key "5" 
+(define-fn-key (gethash "f5" fn-key-table)
     [f5]              'speedbar-get-focus
     [S-f5]            'sr-speedbar-toggle
     [C-f5]            'line-to-top-of-window
@@ -84,7 +102,7 @@
     (kbd "C-c <f5>")  nil
     )
 
-(define-fn-key "6"
+(define-fn-key (gethash "f6" fn-key-table)
     [f6]              (if-ms-windows 'multi-shell-new 'get-term)
     [S-f6]            (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)
     [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
@@ -93,7 +111,7 @@
     (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
     )
 
-(define-fn-key "7"
+(define-fn-key (gethash "f7" fn-key-table)
     [f7]              'compile
     [S-f7]            'switch-to-compilation
     [C-f7]            'next-error
@@ -102,7 +120,7 @@
     (kbd "C-c <f7>")  nil
     )
 
-(define-fn-key "8"
+(define-fn-key (gethash "f8" fn-key-table)
     [f8]              'gdb
     [S-f8]            'gud-kill
     [C-f8]            'gdb-restore-windows
@@ -111,7 +129,7 @@
     (kbd "C-c <f8>")  'gud-tooltip-mode
     )
 
-(define-fn-key "9"
+(define-fn-key (gethash "f9" fn-key-table)
     [f9]              (lambda () (interactive)  (start-shell "*shell*"))
     [S-f9]            'multi-shell-new
     [C-f9]            'switch-to-scratch
@@ -120,7 +138,7 @@
     (kbd "C-c <f9>")  'eshell
     )
 
-(define-fn-key "0"
+(define-fn-key (gethash "f10" fn-key-table)
     [f10]              nil
     [S-f10]            'tool-bar-mode
     [C-f10]            'my-toggle-maxframe
@@ -129,7 +147,7 @@
     (kbd "C-c <f10>")  'tabbar-mode
     )
 
-(define-fn-key "-"
+(define-fn-key (gethash "f11" fn-key-table)
     [f11]              'linum-mode
     [S-f11]            'fci-mode
     [C-f11]            'hl-line-mode
@@ -138,7 +156,7 @@
     (kbd "C-c <f11>")  nil
     )
 
-(define-fn-key "="
+(define-fn-key (gethash "f12" fn-key-table)
     [f12]              'find-grep
     [S-f12]            'rgrep
     [C-f12]            'find-name-dired

@@ -251,7 +251,7 @@
   [S-left]       'shrink-window-horizontally
 
   ;;set apps do M+x
-  [apps]         (when-ms-windows 'execute-extended-command)
+  [apps]         'execute-extended-command
   ))
 
 (provide 'key-setting)

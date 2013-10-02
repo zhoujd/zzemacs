@@ -244,34 +244,6 @@
           (define-key map key fn)))
       (setq i (+ i 2)))))
 
-;;group define fn key
-(defun define-fn-key (fn-name
-                      fn-sym        fn
-                      s-fn-sym      s-fn
-                      c-fn-sym      c-fn
-                      m-fn-sym      m-fn
-                      ctrl-x-fn-sym ctrl-x-fn
-                      ctrl-c-fn-sym ctrl-c-fn
-                      &optional doc)
-  (when (and fn-sym fn) 
-    (define-key global-map       fn-sym         fn)
-    (define-key zz/fn-map        fn-name        fn))
-  (when (and s-fn-sym s-fn)
-    (define-key global-map       s-fn-sym       s-fn)
-    (define-key zz/shift-fn-map  fn-name        s-fn))
-  (when (and c-fn-sym c-fn)
-    (define-key global-map       c-fn-sym       c-fn)
-    (define-key zz/ctrl-fn-map   fn-name        c-fn))
-  (when (and m-fn-sym m-fn)
-    (define-key global-map       m-fn-sym       m-fn)
-    (define-key zz/alt-fn-map    fn-name        m-fn))
-  (when (and ctrl-x-fn-sym ctrl-x-fn)
-    (define-key global-map       ctrl-x-fn-sym  ctrl-x-fn)
-    (define-key zz/ctrl-x-fn-map fn-name        ctrl-x-fn))
-  (when (and ctrl-c-fn-sym ctrl-c-fn)
-    (define-key global-map       ctrl-c-fn-sym  ctrl-c-fn)
-    (define-key zz/ctrl-c-fn-map fn-name        ctrl-c-fn)))
-
 
 (provide 'sample-setting)
 

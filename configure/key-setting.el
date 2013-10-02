@@ -251,6 +251,24 @@
   [apps]          'execute-extended-command
   ))
 
+(apply-keys-to-map
+ esc-map
+ (list
+  [up]    (lookup-key global-map [M-up])
+  [down]  (lookup-key global-map [M-down])
+  [left]  (lookup-key global-map [M-left])
+  [right] (lookup-key global-map [M-right])
+  ))
+
+(apply-keys-to-map
+ help-map
+ (list
+  [up]    (lookup-key global-map [S-up])
+  [down]  (lookup-key global-map [S-down])
+  [left]  (lookup-key global-map [S-left])
+  [right] (lookup-key global-map [S-right])
+  ))
+
 (provide 'key-setting)
 
 ;;; key-setting.el ends here

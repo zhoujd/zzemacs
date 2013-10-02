@@ -72,7 +72,7 @@
   "0" 'other-frame
   "-" 'undo
   "=" 'redo
-  ;;undo/redo
+  
   "," 'winner-undo
   "." 'winner-redo
 

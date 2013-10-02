@@ -95,6 +95,8 @@ Dmitriy Igrishin's patched version of comint.el."
              (setq explicit-sh-args '("--login" "-i"))
              (setq explicit-shell-file-name "bash")
              (setenv "SHELL" shell-file-name)
+             (if (boundp 'w32-quote-process-args)
+                 (setq w32-quote-process-args ?\"))
              ;;start new shell buffer
              (switch-to-shell buf-name))))
      (progn

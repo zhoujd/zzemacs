@@ -82,26 +82,21 @@
 (apply-keys-to-map
  zz/alt-map
  (list
-  "1"  'delete-other-windows
-  "2"  'delete-other-frames
-  "3"  'tabbar-forward-group
-  "4"  'kill-this-buffer
-  "5"  (if-ms-windows 'gud-cont 'gud-go)
+  "1" 'delete-other-windows
+  "2" 'delete-other-frames
+  "3" 'tabbar-forward-group
+  "4" 'kill-this-buffer
+  "5" (if-ms-windows 'gud-cont 'gud-go)
   
-  "6"  'gud-break
-  "7"  'gud-next
-  "8"  'gud-step
-  "9"  'gud-print
-  "0"  'other-window
+  "6" 'gud-break
+  "7" 'gud-next
+  "8" 'gud-step
+  "9" 'gud-print
+  "0" 'other-window
   
-  "#"  'query-replace-regexp
-  "]"  'tabbar-forward-tab
-  "["  'tabbar-backward-tab
-  
-  "h"  'windmove-left
-  "j"  'windmove-down
-  "k"  'windmove-up
-  "l"  'windmove-right
+  "#" 'query-replace-regexp
+  "]" 'tabbar-forward-tab
+  "[" 'tabbar-backward-tab
   ))
 
 ;;number 0-1/-/=
@@ -124,12 +119,6 @@
   ;;tabbar switch group
   (kbd "M-]")     (lookup-key zz/alt-map "]")
   (kbd "M-[")     (lookup-key zz/alt-map "[")
-
-   ;;quick move other windows
-  [M-up]          (lookup-key zz/alt-map "k")
-  [M-down]        (lookup-key zz/alt-map "j")
-  [M-right]       (lookup-key zz/alt-map "l")
-  [M-left]        (lookup-key zz/alt-map "h")
 
   ;;;ctrl number setting
   (kbd "C-`")     (lookup-key zz/ctrl-map "`")
@@ -246,14 +235,20 @@
 
   (kbd "C-c h")   'helm-mini
 
+  ;;quick move other windows
+  [M-up]          'windmove-up
+  [M-down]        'windmove-down
+  [M-right]       'windmove-right
+  [M-left]        'windmove-left
+  
   ;;window size change
-  [S-up]         'enlarge-window
-  [S-down]       'shrink-window
-  [S-right]      'enlarge-window-horizontally
-  [S-left]       'shrink-window-horizontally
+  [S-up]          'enlarge-window
+  [S-down]        'shrink-window
+  [S-right]       'enlarge-window-horizontally
+  [S-left]        'shrink-window-horizontally
 
   ;;set apps do M+x
-  [apps]         'execute-extended-command
+  [apps]          'execute-extended-command
   ))
 
 (provide 'key-setting)

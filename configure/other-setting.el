@@ -230,10 +230,12 @@ Emacs buffer are those starting with *."
 ;(add-hook 'shell-mode-hook 'kill-buffer-when-exit)
 
 ;;tramp setting
-(require 'tramp)
-(if-ms-windows       
- (setq tramp-default-method "scpx")
- (setq tramp-default-method "sshx"))
+(require 'tramp)      
+(setq tramp-default-method (if-ms-windows "scpx" "sshx"))
+(setq tramp-unified-filenames t)
+(setq tramp-auto-save-directory "~/var/tramp")
+(setq ange-ftp-generate-anonymous-password "zjd-405@163.com")
+(setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/
 ;(require 'smex)  

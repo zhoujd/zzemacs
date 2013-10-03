@@ -234,6 +234,8 @@ Emacs buffer are those starting with *."
 (setq tramp-default-method (if-ms-windows "scpx" "sshx"))
 (setq tramp-unified-filenames t)
 (setq tramp-auto-save-directory "~/var/tramp")
+
+;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zjd-405@163.com")
 (setq ange-ftp-default-user t)
 

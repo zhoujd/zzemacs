@@ -3,7 +3,7 @@
 
 ;;;;function key setting on console
 ;;;keymap:zz/ctrl-map          f1-f5  + 1/= <===> control + 1/=
-;;;keymap:zz/alt-map           f1-f6  + 1/= <===> alt     + 1/=
+;;;keymap:zz/meta-map          f1-f6  + 1/= <===> alt     + 1/=
 
 ;;;;emacs default setting
 ;;C-x @ S        event-apply-shift-modifier
@@ -48,13 +48,13 @@
 (defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 (define-key help-map (kbd "`") f1-backquote-map)
 
-;;f1-f7 => C-1/+
+;;f1-f5 => C-1/+
 (defvar zz/ctrl-map  (make-sparse-keymap))
 (define-key help-map (kbd "<f5>") zz/ctrl-map)
 
-;;f1-f8 => M-1/+
-(defvar zz/alt-map (make-sparse-keymap))
-(define-key help-map (kbd "<f6>") zz/alt-map)
+;;f1-f6 => M-1/+
+(defvar zz/meta-map (make-sparse-keymap))
+(define-key help-map (kbd "<f6>") zz/meta-map)
 
 (apply-keys-to-map
  zz/ctrl-map
@@ -80,7 +80,7 @@
   ))
  
 (apply-keys-to-map
- zz/alt-map
+ zz/meta-map
  (list
   "1" 'delete-other-windows
   "2" 'delete-other-frames
@@ -103,22 +103,22 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "M-1") (lookup-key zz/alt-map "1")
-  (kbd "M-2") (lookup-key zz/alt-map "2")
-  (kbd "M-3") (lookup-key zz/alt-map "3")
-  (kbd "M-4") (lookup-key zz/alt-map "4")
+  (kbd "M-1") (lookup-key zz/meta-map "1")
+  (kbd "M-2") (lookup-key zz/meta-map "2")
+  (kbd "M-3") (lookup-key zz/meta-map "3")
+  (kbd "M-4") (lookup-key zz/meta-map "4")
   ;;gud control setting
-  (kbd "M-5") (lookup-key zz/alt-map "5")
-  (kbd "M-6") (lookup-key zz/alt-map "6")
-  (kbd "M-7") (lookup-key zz/alt-map "7")
-  (kbd "M-8") (lookup-key zz/alt-map "8")
-  (kbd "M-9") (lookup-key zz/alt-map "9")
-  (kbd "M-0") (lookup-key zz/alt-map "0")
+  (kbd "M-5") (lookup-key zz/meta-map "5")
+  (kbd "M-6") (lookup-key zz/meta-map "6")
+  (kbd "M-7") (lookup-key zz/meta-map "7")
+  (kbd "M-8") (lookup-key zz/meta-map "8")
+  (kbd "M-9") (lookup-key zz/meta-map "9")
+  (kbd "M-0") (lookup-key zz/meta-map "0")
 
-  (kbd "M-#") (lookup-key zz/alt-map "#")
+  (kbd "M-#") (lookup-key zz/meta-map "#")
   ;;tabbar switch group
-  (kbd "M-]") (lookup-key zz/alt-map "]")
-  (kbd "M-[") (lookup-key zz/alt-map "[")
+  (kbd "M-]") (lookup-key zz/meta-map "]")
+  (kbd "M-[") (lookup-key zz/meta-map "[")
 
   ;;;ctrl number setting
   (kbd "C-`") (lookup-key zz/ctrl-map "`")

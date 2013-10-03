@@ -12,31 +12,33 @@
 ;;;keymap:zz/fn-map            f1-f9  + 1/= <===> f1/f12
 ;;;keymap:zz/shift-fn-map      f1-f10 + 1/= <===> shift   + f1/f12
 ;;;keymap:zz/ctrl-fn-map       f1-f11 + 1/= <===> control + f1/f12
-;;;keymap:zz/alt-fn-map        f1-f12 + 1/= <===> alt     + f1/f12
+;;;keymap:zz/meta-fn-map       f1-f12 + 1/= <===> alt     + f1/f12
 
 ;;f1-f7 => ctrl-x f1/f12
-(defvar zz/ctrl-x-fn-map (make-sparse-keymap) "f1-f5 => ctrl-x f1/f12")
-(define-key help-map [f7]  zz/ctrl-x-fn-map)
-
+(defvar zz/ctrl-x-fn-map (make-sparse-keymap) "f1-f7 => ctrl-x f1/f12")
 ;;f1-f8 => ctrl-c f1/f12
-(defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f5 => ctrl-c f1/f12")
-(define-key help-map [f8]  zz/ctrl-c-fn-map)
-
+(defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f8 => ctrl-c f1/f12")
 ;;f1-f9 => f1/f12
 (defvar zz/fn-map (make-sparse-keymap) "f1-f9 => f1/f12")
-(define-key help-map [f9]  zz/fn-map)
-
 ;;f1-f10 => S-f1/f12
 (defvar zz/shift-fn-map (make-sparse-keymap) "f1-f10 => S-f1/f12")
-(define-key help-map [f10] zz/shift-fn-map)
-
 ;;f1-f11 => C-f1/f12
 (defvar zz/ctrl-fn-map (make-sparse-keymap) "f1-f11 => C-f1/f12")
-(define-key help-map [f11] zz/ctrl-fn-map)
-
 ;;f1-f12 => M-f1/f12
-(defvar zz/alt-fn-map (make-sparse-keymap) "f1-f12 => M-f1/f12")
-(define-key help-map [f12] zz/alt-fn-map)
+(defvar zz/meta-fn-map (make-sparse-keymap) "f1-f12 => M-f1/f12")
+
+;;fn-key entry access
+(apply-keys-to-map
+ help-map
+ (list
+  [f7]  zz/ctrl-x-fn-map
+  [f8]  zz/ctrl-c-fn-map
+  
+  [f9]  zz/fn-map
+  [f10] zz/shift-fn-map
+  [f11] zz/ctrl-fn-map
+  [f12] zz/meta-fn-map 
+  ))
 
 ;;fn-key-table
 (defvar fn-key-table
@@ -71,7 +73,7 @@
     (define-key zz/ctrl-fn-map   fn-name        c-fn))
   (when (and m-fn-sym m-fn)
     (define-key global-map       m-fn-sym       m-fn)
-    (define-key zz/alt-fn-map    fn-name        m-fn))
+    (define-key zz/meta-fn-map   fn-name        m-fn))
   (when (and ctrl-x-fn-sym ctrl-x-fn)
     (define-key global-map       ctrl-x-fn-sym  ctrl-x-fn)
     (define-key zz/ctrl-x-fn-map fn-name        ctrl-x-fn))

@@ -1,7 +1,7 @@
 zzemacs
 =======
 
-zhoujd emacs configure
+emacs configure
 
 1. Install emacs configure with script
 

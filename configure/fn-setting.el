@@ -96,7 +96,7 @@
     [S-f2]            'bc-previous
     [C-f2]            'bc-set
     [M-f2]            'bc-list
-    (kbd "C-x <f2>")  nil
+    (kbd "C-x <f2>")  'register-list
     (kbd "C-c <f2>")  nil
     )
 

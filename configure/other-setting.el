@@ -66,7 +66,7 @@
 (autoload 'ascii-table "ascii-table" "ASCII TABLE" t)
 
 ;;display of line numbers with M-x linum-mode.
-(require 'linum)
+(require 'nlinum)
 
 ;;redo+ failed at emacs 24.3
 (if-emacs24-3
@@ -324,6 +324,10 @@ Emacs buffer are those starting with *."
 (when-emacs24-3
  (zz-load-path "site-lisp/smartparens")
  (require 'smartparens-config))
+
+;;register-list
+(require 'register-list)
+
 
 (provide 'other-setting)
 

@@ -52,6 +52,14 @@
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
 
+(require 'adjust-parens)
+(defun my-lisp-mode-hook ()
+  (local-set-key (kbd "TAB") 'lisp-indent-adjust-parens)
+  (local-set-key (kbd "<backtab>") 'lisp-dedent-adjust-parens))
+
+(add-hook 'lisp-mode-hook 'my-lisp-mode-hook)
+
+
 (provide 'lisp-setting)
 
 ;; lisp-setting.el end here

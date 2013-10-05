@@ -100,6 +100,7 @@
             (lambda()
               (if (file-exists-p  (concat server-directory-name "/server"))
                   (delete-file (concat server-directory-name "/server"))))))
+
 (when-ms-windows
  (defun my-use-gnusvr ()
    ;; start gnuserv on Windows 

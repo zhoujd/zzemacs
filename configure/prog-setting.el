@@ -92,30 +92,32 @@
   (add-hook hook (function newline-indents)))
 
 ;;;company-mode <f4+tab> to open complete menu
-(when-ms-windows 
- (zz-load-path "site-lisp/company-mode")
- (require 'company)
- (setq company-idle-delay 0.2)
- (setq company-minimum-prefix-length 1)
- (setq company-show-numbers t)
- (define-key company-active-map [return]    nil)
- (define-key company-active-map (kbd "RET") nil)
- (define-key company-active-map [tab]       'company-complete-selection)
- (define-key company-active-map (kbd "TAB") 'company-complete-selection)
- (dolist (hook (list
-                ;;'emacs-lisp-mode-hook
-                ;;'lisp-mode-hook
-                ;;'lisp-interaction-mode-hook
-                ;;'scheme-mode-hook
-                ;;'c-mode-hook
-                ;;'c++-mode-hook
-                ;;'java-mode-hook
-                ;;'perl-mode-hook
-                ;;'python-mode-hook
-                ;;'asm-mode-hook
-                'shell-mode-hook
-               ))
-  (add-hook hook 'company-mode)))
+(defvar use-company-mode nil)
+(when use-company-mode
+  (when-ms-windows 
+   (zz-load-path "site-lisp/company-mode")
+   (require 'company)
+   (setq company-idle-delay 0.2)
+   (setq company-minimum-prefix-length 1)
+   (setq company-show-numbers t)
+   (define-key company-active-map [return]    nil)
+   (define-key company-active-map (kbd "RET") nil)
+   (define-key company-active-map [tab]       'company-complete-selection)
+   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+   (dolist (hook (list
+                  ;;'emacs-lisp-mode-hook
+                  ;;'lisp-mode-hook
+                  ;;'lisp-interaction-mode-hook
+                  ;;'scheme-mode-hook
+                  ;;'c-mode-hook
+                  ;;'c++-mode-hook
+                  ;;'java-mode-hook
+                  ;;'perl-mode-hook
+                  ;;'python-mode-hook
+                  ;;'asm-mode-hook
+                  'shell-mode-hook
+                  ))
+     (add-hook hook 'company-mode))))
 
 ;;;cedet version flag t for inside
 (if-emacs24-3

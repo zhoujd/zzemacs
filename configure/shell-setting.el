@@ -111,6 +111,28 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
+;;local shell setting
+(defun get-local-shell ()
+  (interactive)
+  (cond
+    ;;((string-match "j[ap].*" (getenv "LANG"))
+    ;; (with-chinese-env (multi-shell-new)))
+    ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
+     (with-chinese-env (multi-shell-new)))
+    (t
+     (multi-shell-new))
+    ))
+
+(defun get-local-curr-shell ()
+  (interactive)
+  (cond
+    ;;((string-match "j[ap].*" (getenv "LANG"))
+    ;; (with-chinese-env (multi-shell-current-directory)))
+    ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
+     (with-chinese-env (multi-shell-current-directory)))
+    (t
+     (multi-shell-current-directory))
+    ))
 
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el

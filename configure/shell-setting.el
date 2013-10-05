@@ -84,23 +84,21 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun start-shell (buf-name)
   (interactive)
-  (let ((env-shell-file explicit-shell-file-name)
-        (env-shell (getenv "SHELL")))
-    (if-ms-windows
-     (progn
-       (with-utf-8-env
-           (with-start-shell
-             (setq shell-file-name "bash")
-             (setq shell-command-switch "-c")
-             (setq explicit-sh-args '("--login" "-i"))
-             (setq explicit-shell-file-name "bash")
-             (setenv "SHELL" shell-file-name)
-             (if (boundp 'w32-quote-process-args)
-                 (setq w32-quote-process-args ?\"))
-             ;;start new shell buffer
-             (switch-to-shell buf-name))))
-     (progn
-       (switch-to-shell buf-name)))))
+  (if-ms-windows
+   (progn
+     (with-utf-8-env
+         (with-start-shell
+           (setq shell-file-name "bash")
+           (setq shell-command-switch "-c")
+           (setq explicit-sh-args '("--login" "-i"))
+           (setq explicit-shell-file-name "bash")
+           (setenv "SHELL" shell-file-name)
+           (if (boundp 'w32-quote-process-args)
+               (setq w32-quote-process-args ?\"))
+           ;;start new shell buffer
+           (switch-to-shell buf-name))))
+   (progn
+     (switch-to-shell buf-name))))
 
 ;;popup term
 (if-ms-windows    

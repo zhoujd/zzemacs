@@ -96,7 +96,7 @@
     [S-f2]            'bc-previous
     [C-f2]            'bc-set
     [M-f2]            'bc-list
-    (kbd "C-x <f2>")  'register-list
+    (kbd "C-x <f2>")  nil
     (kbd "C-c <f2>")  nil
     )
 
@@ -105,8 +105,8 @@
     [S-f3]            'list-bookmarks
     [C-f3]            'bc-local-next
     [M-f3]            'bc-local-previous
-    (kbd "C-x <f3>")  'my-occur
-    (kbd "C-c <f3>")  'my-woman-at-point
+    (kbd "C-x <f3>")  'register-list
+    (kbd "C-c <f3>")  'nil
     )
 
 (define-fn-key (gethash "f4" fn-key-table)
@@ -182,8 +182,8 @@
     [S-f11]           'fci-mode
     [C-f11]           'hl-line-mode
     [M-f11]           'blank-mode
-    (kbd "C-x <f11>") nil
-    (kbd "C-c <f11>") nil
+    (kbd "C-x <f11>") 'my-unicad-switch
+    (kbd "C-c <f11>") 'my-os-file-switch
     )
 
 (define-fn-key (gethash "f12" fn-key-table)
@@ -191,8 +191,8 @@
     [S-f12]           'rgrep
     [C-f12]           'find-name-dired
     [M-f12]           'my-c-rgrep
-    (kbd "C-x <f12>") 'my-unicad-switch
-    (kbd "C-c <f12>") 'my-os-file-switch
+    (kbd "C-x <f12>") 'my-occur
+    (kbd "C-c <f12>") 'my-woman-at-point
     )
 
 (provide 'fn-setting)

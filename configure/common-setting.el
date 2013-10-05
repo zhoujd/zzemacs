@@ -42,12 +42,9 @@
 
 ;; -*- Language switch -*-
 (cond
-  ((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
-  ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my-set-language-chinese))
+  ;;((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
+  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my-set-language-chinese))
   (t (my-set-language-utf-8)))
-
-;;Bufer file coding
-(set-buffer-file-coding-system 'utf-8)
 
 ;;font setting
 (setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))

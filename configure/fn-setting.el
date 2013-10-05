@@ -128,10 +128,15 @@
     )
 
 (define-fn-key (gethash "f6" fn-key-table)
-    [f6]              (if-ms-windows 'multi-shell-new 'get-term)
-    [S-f6]            (if-ms-windows 'multi-shell-current-directory 'multi-term-dedicated-toggle)
+    [f6]              (if-ms-windows
+                       (lambda () (interactive) (with-chinese-env (multi-shell-new)))
+                       'get-term)
+    [S-f6]            (if-ms-windows
+                       (lambda () (interactive) (with-chinese-env (multi-shell-current-directory)))
+                       'multi-term-dedicated-toggle)
     [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
+    
     (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
     (kbd "C-c <f6>")  (unless-ms-windows 'switch-term-and-text)
     )

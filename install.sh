@@ -12,10 +12,11 @@ cat > ~/.emacs <<EOF
 EOF
 
 ##git setting
-git config user.name "zhoujd"
+git config user.name  "zhoujd"
 git config user.email "zjd-405@163.com"
 
 sudo apt-get install -y cscope
+sudo apt-get install -y texinfo
 
 ##install font
 FONT_HOME=/usr/share/fonts/truetype/

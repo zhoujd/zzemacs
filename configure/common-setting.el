@@ -146,8 +146,8 @@
     (setq default-frame-alist
           (append
            '((scroll-bar-width . 16)
-             (width . 140)
-             (height . 40))
+             (width . 120)
+             (height . 32))
            default-frame-alist)))
 
 ;;quick display key help

@@ -1,7 +1,18 @@
 #!/bin/sh
 
-echo install .emacs to HOME directory begin...
 ZZEMACS_ROOT=`pwd`
+
+echo install .emacs to HOME directory begin...
+
+##install package for emacs
+echo -n "Do you need install packages? (y/N): "
+read answer
+case "$answer" in
+    "Y" | "y" )
+        sudo apt-get install -y emacs
+        sudo apt-get install -y cscope
+        sudo apt-get install -y texinfo
+esac
 
 ##setup .emacs
 rm -f ~/.emacs
@@ -14,9 +25,6 @@ EOF
 ##git setting
 git config user.name  "zhoujd"
 git config user.email "zjd-405@163.com"
-
-sudo apt-get install -y cscope
-sudo apt-get install -y texinfo
 
 ##install font
 FONT_HOME=/usr/share/fonts/truetype/

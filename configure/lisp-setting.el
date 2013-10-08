@@ -54,8 +54,8 @@
 
 (require 'adjust-parens)
 (defun my-lisp-mode-hook ()
-  (local-set-key (kbd "TAB") 'lisp-indent-adjust-parens)
-  (local-set-key (kbd "<backtab>") 'lisp-dedent-adjust-parens))
+  (define-key help-map (kbd "TAB") 'lisp-indent-adjust-parens)
+  (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens))
 
 (add-hook 'lisp-mode-hook 'my-lisp-mode-hook)
 

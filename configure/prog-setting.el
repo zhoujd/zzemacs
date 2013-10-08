@@ -178,6 +178,7 @@
 ;; 1:list methold in current buffer
 ;; 2:switch buffer in h & cpp file
 (require 'eassist)
+(define-key eassist-mode-map (kbd "TAB") 'eassist-jump-to-method)
 (define-key eassist-mode-map (kbd "C-b") 'eassist-backspace-pressed)
 (define-key eassist-mode-map (kbd "C-q") 'eassist-escape)
 

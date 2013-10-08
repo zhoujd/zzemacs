@@ -32,7 +32,7 @@
                     "/usr/local/Gambit-C/bin/"
                     )))
 
-(mapcar 'zz-add-os-path my-env-path)
+(mapcar 'zz-add-os-path (reverse my-env-path))
 
 (provide 'env-setting)
 

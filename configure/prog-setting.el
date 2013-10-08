@@ -34,7 +34,7 @@
     ""
     ";; add to PATH"
     "(setq add-path-list '(\"~/study/script\"))"
-    "(mapcar 'zz-add-os-path add-path-list)"
+    "(mapcar 'zz-add-os-path (reverse add-path-list))"
     ""
     ";(setenv \"LD_LIBRARY_PATH\" (concat \"~/work/lib\""
     ";        path-separator (getenv \"LD_LIBRARY_PATH\")))"

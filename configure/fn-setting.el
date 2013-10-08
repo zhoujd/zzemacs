@@ -58,17 +58,6 @@
     hash)
   "fn-key-table")
 
-;;fn-set-key
-;(defun fn-set-key (key-map key command)
-;  "refer to lisp/subr.el local-set-key"
-;  (interactive "KSet key locally: \nCSet key %s locally to command: ")
-;  (let ((map key-map))
-;    (or map
-;    (use-local-map (setq map (make-sparse-keymap))))
-;    (or (vectorp key) (stringp key)
-;    (signal 'wrong-type-argument (list 'arrayp key)))
-;    (define-key map key command)))
-
 ;;group define fn key
 (defun define-fn-key
     (fn-name fn-sym fn s-fn-sym s-fn c-fn-sym c-fn m-fn-sym m-fn

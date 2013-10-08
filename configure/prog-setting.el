@@ -2,6 +2,12 @@
 
 (zz-load-path "site-lisp")
 
+;;win32 find grep set
+(when-ms-windows    
+ (progn
+   (setq find-program "\"find.exe\"")
+   (setq grep-program "\"grep.exe\"")))
+
 ;;generate temp-setting.el
 (defun my-create-file (fpath content)
   "Process the file at path FPATH ..."
@@ -51,12 +57,6 @@
     (my-create-file path my-temp-setting)
     (message "create %s successful." path)
     ))
-
-;;win32 find grep set
-(when-ms-windows    
- (progn
-   (setq find-program "\"find2.exe\"")
-   (setq grep-program "\"grep.exe\"")))
 
 ;; holding
 (require 'hideshow)

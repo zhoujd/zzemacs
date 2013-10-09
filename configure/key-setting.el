@@ -165,7 +165,7 @@
                         "vs-x64-prompt"
                         '("cmd" "/c" "start" "vcvarsall" "x64")))
   "3" (when-ms-windows (execute-set-key
-                        "git-outside-shell"
+                        "git-shell"
                         '("cmd" "/c" "start" "sh" "--login" "-i")))  
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))

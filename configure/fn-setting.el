@@ -106,7 +106,7 @@
     [C-f3]            'bc-local-next
     [M-f3]            'bc-local-previous
     (kbd "C-x <f3>")  'register-list
-    (kbd "C-c <f3>")  'nil
+    (kbd "C-c <f3>")  'repeat-complex-command
     )
 
 (define-fn-key (gethash "f4" fn-key-table)

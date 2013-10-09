@@ -26,7 +26,10 @@
 
 ;;interpret and use ansi color codes in shell output windows
 (when (fboundp 'ansi-color-for-comint-mode-on)
-  (ansi-color-for-comint-mode-on))
+  ;;escape sequence
+  (autoload 'ansi-color-for-comint-mode-on "ansi-color"
+  "Set `ansi-color-for-comint-mode' to t." t)
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 
 ;;automatically_close_completions_in_emacs_shell_comint_mode.txt
 (defun comint-close-completions ()
@@ -242,9 +245,10 @@ Dmitriy Igrishin's patched version of comint.el."
   (define-key comint-mode-map (kbd "C-c M-o") 'clear-input))
 (add-hook 'comint-mode-hook 'my-comint-hook)
 
-
 (add-hook 'comint-output-filter-functions
-          'comint-strip-ctrl-m)
+          'comint-watch-for-password-prompt nil t)
+(add-hook 'comint-output-filter-functions
+          'comint-strip-ctrl-m nil t)
 
 ;;readline complete
 (unless-ms-windows  

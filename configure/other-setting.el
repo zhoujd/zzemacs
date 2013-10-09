@@ -328,6 +328,8 @@ Emacs buffer are those starting with *."
 ;;register-list
 (require 'register-list)
 
+;;nxml-mode is a more powerful xml-mode
+(add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
 
 (provide 'other-setting)
 

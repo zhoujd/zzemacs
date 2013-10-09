@@ -441,6 +441,7 @@
 
 ;;when deleted a file goes to the OS's trash folder:
 ;(setq delete-by-moving-to-trash t)
+;(setq trash-directory "~/.Trash")
 
 (provide 'common-setting)
 

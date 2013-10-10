@@ -3,7 +3,7 @@
 ###https://help.github.com/articles/changing-author-info
 ###If you need to modify the author info in your repository's history.
 ###1. you can do so with this script.
-###$<$PWD>/git-author-info.sh
+###$<$PWD>/git-author-info.sh match_mail_address
 ###2. Force-push the new history up (be careful).
 ###$git push --force
 ###$git push -f

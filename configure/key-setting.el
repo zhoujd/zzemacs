@@ -19,6 +19,15 @@
   (kbd "C-c =") 'event-apply-meta-modifier
   ))
 
+;;Ctl-z map
+(defvar ctl-z-map (make-sparse-keymap) "ctl-z-map for self functions.")
+(global-set-key "\C-z" ctl-z-map)
+
+;;f4/esc-f4 key map 
+(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
+(define-key global-map [f4]  f4-map)
+(define-key help-map   "4"   f4-map)
+
 ;;f4/esc-f4 key map 
 (defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
 (define-key global-map [f4] f4-map)
@@ -55,6 +64,12 @@
 ;;f1-f6 => M-1/+
 (defvar zz/meta-map (make-sparse-keymap))
 (define-key help-map (kbd "<f6>") zz/meta-map)
+
+(apply-keys-to-map
+ ctl-z-map
+ (list
+  "\C-z" (lookup-key ctl-x-map "\C-z")
+  ))
 
 (apply-keys-to-map
  zz/ctrl-map

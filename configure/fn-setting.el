@@ -56,6 +56,8 @@
   "s"    zz/shift-fn-map
   "c"    zz/ctrl-fn-map
   "m"    zz/meta-fn-map
+
+  "4"    f4-map
   ))
 
 ;;fn-key-table

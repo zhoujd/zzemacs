@@ -15,8 +15,7 @@
 (apply-keys-to-map
  key-translation-map
  (list 
-  (kbd "C-c -") 'event-apply-control-modifier
-  (kbd "C-c =") 'event-apply-meta-modifier
+  (kbd "C-z `") 'event-apply-control-modifier
   ))
 
 ;;f4/esc-f4 key map 
@@ -186,9 +185,14 @@
   (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
   (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
   (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*"))
+
+  (kbd "9")     (lookup-key f4-map [f9])
+  (kbd "0")     (lookup-key f4-map [f10])
+  (kbd "-")     (lookup-key f4-map [f11])
+  (kbd "=")     (lookup-key f4-map [f12])
   
-  (kbd "=")     'er/expand-region
-  (kbd "-")     (if-emacs24-3 'smartparens-mode)
+  (kbd "C-=")     'er/expand-region
+  (kbd "C--")     (if-emacs24-3 'smartparens-mode)
   
   (kbd "C-1")   'my-utf-8
   (kbd "C-h")   'sourcepair-jump-to-headerfile

@@ -14,6 +14,10 @@
 ;;;keymap:zz/ctrl-fn-map       f1-f11 + 1/= <===> control + f1/f12
 ;;;keymap:zz/meta-fn-map       f1-f12 + 1/= <===> alt     + f1/f12
 
+;;Ctl-z map
+(defvar ctl-z-map (make-sparse-keymap) "ctl-z-map for self functions.")
+(global-set-key "\C-z" ctl-z-map)
+
 ;;f1-f7 => ctrl-x f1/f12
 (defvar zz/ctrl-x-fn-map (make-sparse-keymap) "f1-f7 => ctrl-x f1/f12")
 ;;f1-f8 => ctrl-c f1/f12
@@ -38,6 +42,20 @@
   [f10] zz/shift-fn-map
   [f11] zz/ctrl-fn-map
   [f12] zz/meta-fn-map 
+  ))
+
+(apply-keys-to-map
+ ctl-z-map
+ (list
+  "\C-z" (lookup-key ctl-x-map "\C-z")
+
+  "\C-x" zz/ctrl-x-fn-map
+  "\C-c" zz/ctrl-c-fn-map
+  
+  "f"    zz/fn-map
+  "s"    zz/shift-fn-map
+  "c"    zz/ctrl-fn-map
+  "m"    zz/meta-fn-map
   ))
 
 ;;fn-key-table

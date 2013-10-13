@@ -47,8 +47,8 @@
  (list
   (kbd "4")    f4-map
   
-  (kbd "`")    zz/ctrl-map
-  [escape]     zz/meta-map
+  (kbd "SPC")  zz/ctrl-map
+  (kbd "`")    zz/meta-map
   
   [f7]         zz/ctrl-x-fn-map
   [f8]         zz/ctrl-c-fn-map
@@ -63,8 +63,8 @@
  ctl-z-map
  (list
 
-  (kbd "`")    zz/ctrl-map
-  [escape]     zz/meta-map
+  (kbd "SPC")  zz/ctrl-map
+  (kbd "`")    zz/meta-map
   
   (kbd "\C-x") zz/ctrl-x-fn-map
   (kbd "\C-c") zz/ctrl-c-fn-map

@@ -17,7 +17,7 @@
 (apply-keys-to-map
  ctl-z-map
  (list
-  "\C-z" (lookup-key ctl-x-map "\C-z")
+  (kbd "\C-z")  (lookup-key ctl-x-map "\C-z")
   ))
 
 (apply-keys-to-map

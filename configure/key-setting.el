@@ -1,10 +1,6 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;;function key setting on console
-;;;keymap:zz/ctrl-map          f1-f5  + 1/= <===> control + 1/=
-;;;keymap:zz/meta-map          f1-f6  + 1/= <===> alt     + 1/=
-
 ;;;;emacs default setting
 ;;C-x @ S        event-apply-shift-modifier
 ;;C-x @ a        event-apply-alt-modifier
@@ -18,39 +14,11 @@
   (kbd "C-z `") 'event-apply-control-modifier
   ))
 
-;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
-(define-key global-map [f4]  f4-map)
-(define-key help-map   "4"   f4-map)
-
-;;f4/esc-f4 key map 
-(defvar f4-map (make-sparse-keymap) "f4 map for self functions.")
-(define-key global-map [f4] f4-map)
-(define-key help-map   "4"  f4-map)
-
-;;f4-quote key map for help using
-(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
-(define-key f4-map (kbd "`") f4-backquote-map)
-
-;;f4-e key map 
-(defvar f4-e-map (make-sparse-keymap) "f4-e for execute functions.")
-(define-key f4-map "e" f4-e-map)
-
-;;f4-p key map 
-(defvar f4-p-map (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
-(define-key f4-map "p" f4-p-map)
-
-;;f1-quote key map for help using
-(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
-(define-key help-map (kbd "`") f1-backquote-map)
-
-;;f1-f5 => C-1/+
-(defvar zz/ctrl-map  (make-sparse-keymap))
-(define-key help-map (kbd "<f5>") zz/ctrl-map)
-
-;;f1-f6 => M-1/+
-(defvar zz/meta-map (make-sparse-keymap))
-(define-key help-map (kbd "<f6>") zz/meta-map)
+(apply-keys-to-map
+ ctl-z-map
+ (list
+  "\C-z" (lookup-key ctl-x-map "\C-z")
+  ))
 
 (apply-keys-to-map
  zz/ctrl-map

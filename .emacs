@@ -51,6 +51,7 @@
           csharp-setting
           php-setting
           muse-setting
+          keymap-setting
           fn-setting
           key-setting
           ))

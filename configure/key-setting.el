@@ -11,8 +11,6 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "C-z ` c") 'event-apply-control-modifier
-  (kbd "C-z ` m") 'event-apply-meta-modifier     
   ))
 
 (apply-keys-to-map

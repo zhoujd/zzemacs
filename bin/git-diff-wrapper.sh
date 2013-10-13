@@ -24,3 +24,6 @@ case "$EMACS_FLAG" in
         ;;
 esac
 
+exit 0
+
+

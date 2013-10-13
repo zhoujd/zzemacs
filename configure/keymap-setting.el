@@ -17,7 +17,6 @@
 (defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
-(defvar f1-backquote-map (make-sparse-keymap) "f1-backquote for self help function.")
 
 ;;keymap setting
 (apply-keys-to-map
@@ -32,22 +31,26 @@
  help-map
  (list
   (kbd "4")  f4-map
-  (kbd "`")  f1-backquote-map
   
-  [f5]  zz/ctrl-map
-  [f6]  zz/meta-map  
-  [f7]  zz/ctrl-x-fn-map
-  [f8]  zz/ctrl-c-fn-map
+  (kbd "`")  zz/ctrl-map
+  [escape]   zz/meta-map
   
-  [f9]  zz/fn-map
-  [f10] zz/shift-fn-map
-  [f11] zz/ctrl-fn-map
-  [f12] zz/meta-fn-map 
+  [f7]       zz/ctrl-x-fn-map
+  [f8]       zz/ctrl-c-fn-map
+  
+  [f9]       zz/fn-map
+  [f10]      zz/shift-fn-map
+  [f11]      zz/ctrl-fn-map
+  [f12]      zz/meta-fn-map 
   ))
 
 (apply-keys-to-map
  ctl-z-map
  (list
+
+  (kbd "`")    zz/ctrl-map
+  [escape]     zz/meta-map
+  
   (kbd "\C-x") zz/ctrl-x-fn-map
   (kbd "\C-c") zz/ctrl-c-fn-map
   

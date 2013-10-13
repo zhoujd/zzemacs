@@ -1,6 +1,21 @@
 ;;;; keymap-setting.el --- key function config file
 ;;;
 
+;;;;some keymap define by emacs default
+;;;esc-map           --- <ESC>
+;;;help-map          --- C-h 
+;;;mode-specific-map --- C-c
+;;;ctl-x-map         --- C-x
+;;;mule-keymap       --- C-x <RET> 
+;;;ctl-x-4-map       --- C-x 4 
+;;;ctl-x-5-map       --- C-x 5 
+;;;2C-mode-map       --- C-x 6 
+;;;vc-prefix-map     --- C-x v
+;;;goto-map          --- M-g
+;;;search-map        --- M-s 
+;;;facemenu-keymap   --- M-o
+;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name 
+
 ;;;;function key setting on console
 ;;Ctl-z map
 (defvar ctl-z-map        (make-sparse-keymap) "ctl-z-map for self functions.")
@@ -30,18 +45,18 @@
 (apply-keys-to-map
  help-map
  (list
-  (kbd "4")  f4-map
+  (kbd "4")    f4-map
   
-  (kbd "`")  zz/ctrl-map
-  [escape]   zz/meta-map
+  (kbd "`")    zz/ctrl-map
+  [escape]     zz/meta-map
   
-  [f7]       zz/ctrl-x-fn-map
-  [f8]       zz/ctrl-c-fn-map
+  [f7]         zz/ctrl-x-fn-map
+  [f8]         zz/ctrl-c-fn-map
   
-  [f9]       zz/fn-map
-  [f10]      zz/shift-fn-map
-  [f11]      zz/ctrl-fn-map
-  [f12]      zz/meta-fn-map 
+  [f9]         zz/fn-map
+  [f10]        zz/shift-fn-map
+  [f11]        zz/ctrl-fn-map
+  [f12]        zz/meta-fn-map 
   ))
 
 (apply-keys-to-map
@@ -65,9 +80,9 @@
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "`") f4-backquote-map
-  (kbd "e") f4-e-map
-  (kbd "p") f4-p-map
+  (kbd "`")    f4-backquote-map
+  (kbd "e")    f4-e-map
+  (kbd "p")    f4-p-map
   ))
 
 

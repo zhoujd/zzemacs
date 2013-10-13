@@ -112,9 +112,10 @@
 
 ;;key for f1-backquote-map
 (apply-keys-to-map
- f1-backquote-map
+ zz/ctrl-map
  (list
-
+  (kbd "h")   'common-lisp-hyperspec
+  (kbd "i")   'zz-info-open-file
   ))
 
 ;;execute start-process key
@@ -165,9 +166,6 @@
                          default-directory "/" "\\")))
                  'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
-
-  (kbd "C-h")   'common-lisp-hyperspec
-  (kbd "C-i")   'zz-info-open-file
   ))
 
 ;;f1 1,2,3,4 for highlight-symbol

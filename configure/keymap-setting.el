@@ -4,14 +4,14 @@
 ;;;;function key setting on console
 ;;Ctl-z map
 (defvar ctl-z-map        (make-sparse-keymap) "ctl-z-map for self functions.")
-(defvar zz/ctrl-map      (make-sparse-keymap) "f1-f5 => C-1/+")
-(defvar zz/meta-map      (make-sparse-keymap) "f1-f6 => M-1/+")
-(defvar zz/ctrl-x-fn-map (make-sparse-keymap) "f1-f7 => ctrl-x f1/f12")
-(defvar zz/ctrl-c-fn-map (make-sparse-keymap) "f1-f8 => ctrl-c f1/f12")
-(defvar zz/fn-map        (make-sparse-keymap) "f1-f9 => f1/f12")
-(defvar zz/shift-fn-map  (make-sparse-keymap) "f1-f10 => S-f1/f12")
-(defvar zz/ctrl-fn-map   (make-sparse-keymap) "f1-f11 => C-f1/f12")
-(defvar zz/meta-fn-map   (make-sparse-keymap) "f1-f12 => M-f1/f12")
+(defvar zz/ctrl-map      (make-sparse-keymap) "C-1/+")
+(defvar zz/meta-map      (make-sparse-keymap) "M-1/+")
+(defvar zz/ctrl-x-fn-map (make-sparse-keymap) "ctrl-x f1/f12")
+(defvar zz/ctrl-c-fn-map (make-sparse-keymap) "ctrl-c f1/f12")
+(defvar zz/fn-map        (make-sparse-keymap) "f1/f12")
+(defvar zz/shift-fn-map  (make-sparse-keymap) "S-f1/f12")
+(defvar zz/ctrl-fn-map   (make-sparse-keymap) "C-f1/f12")
+(defvar zz/meta-fn-map   (make-sparse-keymap) "M-f1/f12")
 
 (defvar f4-map           (make-sparse-keymap) "f4 map for self functions.")
 (defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")

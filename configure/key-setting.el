@@ -151,8 +151,8 @@
   (kbd "-")     (lookup-key f4-map [f11])
   (kbd "=")     (lookup-key f4-map [f12])
   
-  (kbd "C-=")     'er/expand-region
-  (kbd "C--")     (if-emacs24-3 'smartparens-mode)
+  (kbd "C-=")   'er/expand-region
+  (kbd "C--")   (if-emacs24-3 'smartparens-mode)
   
   (kbd "C-1")   'my-utf-8
   (kbd "C-h")   'sourcepair-jump-to-headerfile

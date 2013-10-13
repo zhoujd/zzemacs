@@ -11,7 +11,6 @@
 (apply-keys-to-map
  key-translation-map
  (list 
-  (kbd "C-z `") 'event-apply-control-modifier
   ))
 
 (apply-keys-to-map

@@ -1,6 +1,47 @@
 ;;;; fn-setting.el --- key function config file
 ;;;
 
+;;fn-key-table
+(defvar fn-key-table
+  (let ((hash (make-hash-table :test 'equal)))
+    (puthash "f1"  "1" hash)
+    (puthash "f2"  "2" hash)
+    (puthash "f3"  "3" hash)
+    (puthash "f4"  "4" hash)
+    (puthash "f5"  "5" hash)
+    (puthash "f6"  "6" hash)
+    (puthash "f7"  "7" hash)
+    (puthash "f8"  "8" hash)
+    (puthash "f9"  "9" hash)
+    (puthash "f10" "0" hash)
+    (puthash "f11" "-" hash)
+    (puthash "f12" "=" hash)
+    hash)
+  "fn-key-table")
+
+;;group define fn key
+(defun define-fn-key
+    (fn-name fn-sym fn s-fn-sym s-fn c-fn-sym c-fn m-fn-sym m-fn
+     ctrl-x-fn-sym ctrl-x-fn ctrl-c-fn-sym ctrl-c-fn &optional doc)
+  (when (and fn-sym fn) 
+    (define-key global-map       fn-sym         fn)
+    (define-key zz/fn-map        fn-name        fn))
+  (when (and s-fn-sym s-fn)
+    (define-key global-map       s-fn-sym       s-fn)
+    (define-key zz/shift-fn-map  fn-name        s-fn))
+  (when (and c-fn-sym c-fn)
+    (define-key global-map       c-fn-sym       c-fn)
+    (define-key zz/ctrl-fn-map   fn-name        c-fn))
+  (when (and m-fn-sym m-fn)
+    (define-key global-map       m-fn-sym       m-fn)
+    (define-key zz/meta-fn-map   fn-name        m-fn))
+  (when (and ctrl-x-fn-sym ctrl-x-fn)
+    (define-key global-map       ctrl-x-fn-sym  ctrl-x-fn)
+    (define-key zz/ctrl-x-fn-map fn-name        ctrl-x-fn))
+  (when (and ctrl-c-fn-sym ctrl-c-fn)
+    (define-key global-map       ctrl-c-fn-sym  ctrl-c-fn)
+    (define-key zz/ctrl-c-fn-map fn-name        ctrl-c-fn)))
+
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil

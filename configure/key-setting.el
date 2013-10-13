@@ -10,7 +10,9 @@
 ;;C-x @ s        event-apply-super-modifier
 (apply-keys-to-map
  key-translation-map
- (list 
+ (list
+  (kbd "C-z ` c") 'event-apply-control-modifier
+  (kbd "C-z ` m") 'event-apply-meta-modifier     
   ))
 
 (apply-keys-to-map

@@ -15,6 +15,9 @@ case "$answer" in
         sudo apt-get install -y gitk
 esac
 
+echo "remove ~/.gitconfig and setting git configure ..."
+rm -f ~/.gitconfig
+
 ## setup git configure
 git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"

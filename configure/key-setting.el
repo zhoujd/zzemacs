@@ -10,7 +10,7 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "<apps> h") 'event-apply-hyper-modifier
+  (if-ms-windows (kbd "<apps> h") (kbd "<menu> h")) 'event-apply-hyper-modifier
   (kbd "C-z h")    'event-apply-hyper-modifier
   ))
 

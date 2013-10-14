@@ -33,17 +33,14 @@
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
-;;menu -> apps
-(unless-ms-windows
- (define-key key-translation-map [menu] [apps]))
-
 ;;keymap setting
 (apply-keys-to-map
  global-map
  (list
   (kbd "C-z")   ctl-z-map
-  [apps]        ctl-z-map
-  [f4]          f4-map  
+  [f4]          f4-map
+
+  (if-ms-windows [apps] [menu]) ctl-z-map
   ))
 
 ;;fn-key entry access

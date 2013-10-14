@@ -34,7 +34,8 @@
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
 ;;menu -> apps
-(define-key key-translation-map [menu] [apps])
+(unless-ms-windows
+ (define-key key-translation-map [apps] [menu]))
 
 ;;keymap setting
 (apply-keys-to-map

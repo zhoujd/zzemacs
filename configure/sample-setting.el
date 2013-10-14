@@ -241,7 +241,8 @@
     (while (< i (length key-pairs))
       (let ((key (nth i key-pairs))
             (fn (nth (1+ i) key-pairs)))
-        (define-key map key fn))
+        (when fn
+          (define-key map key fn)))
       (setq i (+ i 2)))))
 
 

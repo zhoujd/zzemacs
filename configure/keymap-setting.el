@@ -43,41 +43,41 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  [apps]       (lookup-key key-translation-map [menu])
-  "\C-z"       (lookup-key key-translation-map [menu])
+  [apps]        (lookup-key key-translation-map [menu])
+  "\C-z"        (lookup-key key-translation-map [menu])
   ))
 
 ;;keymap setting
 (apply-keys-to-map
  global-map
  (list
-  [f4]         f4-map  
+  [f4]          f4-map  
   ))
 
 ;;fn-key entry access
 (apply-keys-to-map
  help-map
  (list
-  (kbd "4")    f4-map
+  (kbd "4")     f4-map
   
-  (kbd "SPC")  zz/ctrl-map
-  (kbd "`")    zz/meta-map
+  (kbd "SPC")   zz/ctrl-map
+  (kbd "`")     zz/meta-map
   
-  [f7]         zz/ctrl-x-fn-map
-  [f8]         zz/ctrl-c-fn-map
+  [f7]          zz/ctrl-x-fn-map
+  [f8]          zz/ctrl-c-fn-map
   
-  [f9]         zz/fn-map
-  [f10]        zz/shift-fn-map
-  [f11]        zz/ctrl-fn-map
-  [f12]        zz/meta-fn-map 
+  [f9]          zz/fn-map
+  [f10]         zz/shift-fn-map
+  [f11]         zz/ctrl-fn-map
+  [f12]         zz/meta-fn-map 
   ))
 
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "`")    f4-backquote-map
-  (kbd "e")    f4-e-map
-  (kbd "p")    f4-p-map
+  (kbd "`")     f4-backquote-map
+  (kbd "e")     f4-e-map
+  (kbd "p")     f4-p-map
   ))
 
 (apply-keys-to-map

@@ -103,6 +103,9 @@
 (apply-keys-to-map
  global-map
  (list
+  (kbd "H-SPC") zz/ctrl-map
+  (kbd "H-`")   zz/meta-map
+
   (kbd "H-s")   zz/shift-fn-map
   (kbd "H-f")   zz/fn-map
   (kbd "H-c")   zz/ctrl-fn-map

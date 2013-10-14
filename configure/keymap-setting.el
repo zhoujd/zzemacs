@@ -17,8 +17,6 @@
 ;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name 
 
 ;;;;function key setting on console
-;;Ctl-z map
-(defvar ctl-z-map        (make-sparse-keymap) "ctl-z-map for self functions.")
 (defvar zz/ctrl-map      (make-sparse-keymap) "C-1/+")
 (defvar zz/meta-map      (make-sparse-keymap) "M-1/+")
 (defvar zz/ctrl-x-fn-map (make-sparse-keymap) "ctrl-x f1/f12")
@@ -45,14 +43,13 @@
  (list
   [menu]   'event-apply-hyper-modifier
   [apps]   (lookup-key key-translation-map [menu])
-  "\C-zh"  (lookup-key key-translation-map [menu])
+  "\C-z"   (lookup-key key-translation-map [menu])
   ))
 
 ;;keymap setting
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-z") ctl-z-map
   [f4]         f4-map  
   ))
 
@@ -75,24 +72,6 @@
   ))
 
 (apply-keys-to-map
- ctl-z-map
- (list
-
-  (kbd "SPC")  zz/ctrl-map
-  (kbd "`")    zz/meta-map
-  
-  (kbd "C-x") zz/ctrl-x-fn-map
-  (kbd "C-c") zz/ctrl-c-fn-map
-  
-  (kbd "f")    zz/fn-map
-  (kbd "s")    zz/shift-fn-map
-  (kbd "c")    zz/ctrl-fn-map
-  (kbd "m")    zz/meta-fn-map
-
-  (kbd "4")    f4-map
-  ))
-
-(apply-keys-to-map
  f4-map
  (list
   (kbd "`")    f4-backquote-map
@@ -112,6 +91,8 @@
   (kbd "H-m")   zz/meta-fn-map
   (kbd "C-H-x") zz/ctrl-x-fn-map
   (kbd "C-H-c") zz/ctrl-c-fn-map
+
+  (kbd "H-4")   f4-map
   ))
 
 

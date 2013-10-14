@@ -2,9 +2,9 @@
 ;;;
 
 (apply-keys-to-map
- ctl-z-map
+ global-map
  (list
-  (kbd "C-z")  (lookup-key ctl-x-map "\C-z")
+  (kbd "C-H-z")  (lookup-key ctl-x-map "\C-z")
   ))
 
 (apply-keys-to-map

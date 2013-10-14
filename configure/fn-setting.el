@@ -71,7 +71,7 @@
     )
 
 (define-fn-key (gethash "f4" fn-key-table)
-    [f4]              nil
+    [f4]              f4-map
     [S-f4]            'undo-kill-buffer
     [C-f4]            'highlight-symbol-next
     [M-f4]            'highlight-symbol-prev

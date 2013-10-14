@@ -43,15 +43,16 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  [menu] 'event-apply-hyper-modifier
-  [apps] (lookup-key key-translation-map [menu])
+  [menu]   'event-apply-hyper-modifier
+  [apps]   (lookup-key key-translation-map [menu])
+  "\C-zh"  (lookup-key key-translation-map [menu])
   ))
 
 ;;keymap setting
 (apply-keys-to-map
  global-map
  (list
-  (kbd "\C-z") ctl-z-map
+  (kbd "C-z") ctl-z-map
   [f4]         f4-map  
   ))
 
@@ -80,8 +81,8 @@
   (kbd "SPC")  zz/ctrl-map
   (kbd "`")    zz/meta-map
   
-  (kbd "\C-x") zz/ctrl-x-fn-map
-  (kbd "\C-c") zz/ctrl-c-fn-map
+  (kbd "C-x") zz/ctrl-x-fn-map
+  (kbd "C-c") zz/ctrl-c-fn-map
   
   (kbd "f")    zz/fn-map
   (kbd "s")    zz/shift-fn-map

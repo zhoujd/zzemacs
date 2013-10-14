@@ -109,7 +109,7 @@
   [(control tab)] (lookup-key zz/ctrl-map [(tab)])
   ))
 
-;;key for f1-backquote-map
+;;key for zz/ctrl-map
 (apply-keys-to-map
  zz/ctrl-map
  (list
@@ -145,11 +145,6 @@
   (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
   (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*"))
 
-  (kbd "9")     (lookup-key f4-map [f9])
-  (kbd "0")     (lookup-key f4-map [f10])
-  (kbd "-")     (lookup-key f4-map [f11])
-  (kbd "=")     (lookup-key f4-map [f12])
-  
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)
   
@@ -165,6 +160,16 @@
                          default-directory "/" "\\")))
                  'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
+  ))
+
+;;quick shell setting
+(apply-keys-to-map
+ f4-map
+ (list
+  (kbd "9")     (lookup-key f4-map [f9])
+  (kbd "0")     (lookup-key f4-map [f10])
+  (kbd "-")     (lookup-key f4-map [f11])
+  (kbd "=")     (lookup-key f4-map [f12])
   ))
 
 ;;f1 1,2,3,4 for highlight-symbol

@@ -1,22 +1,10 @@
 ;;;; key-setting.el --- key config file
 ;;;
 
-;;;;emacs default setting
-;;C-x @ S        event-apply-shift-modifier
-;;C-x @ a        event-apply-alt-modifier
-;;C-x @ c        event-apply-control-modifier
-;;C-x @ h        event-apply-hyper-modifier
-;;C-x @ m        event-apply-meta-modifier
-;;C-x @ s        event-apply-super-modifier
-(apply-keys-to-map
- key-translation-map
- (list
-  ))
-
 (apply-keys-to-map
  ctl-z-map
  (list
-  (kbd "\C-z")  (lookup-key ctl-x-map "\C-z")
+  (kbd "C-z")  (lookup-key ctl-x-map "\C-z")
   ))
 
 (apply-keys-to-map
@@ -224,7 +212,7 @@
   [S-left]        'shrink-window-horizontally
 
   ;;set apps do M+x
-  [apps]          'execute-extended-command
+  [H-apps]        'execute-extended-command
   ))
 
 (apply-keys-to-map

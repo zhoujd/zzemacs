@@ -33,6 +33,19 @@
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
+;;;;emacs default setting
+;;C-x @ S        event-apply-shift-modifier
+;;C-x @ a        event-apply-alt-modifier
+;;C-x @ c        event-apply-control-modifier
+;;C-x @ h        event-apply-hyper-modifier
+;;C-x @ m        event-apply-meta-modifier
+;;C-x @ s        event-apply-super-modifier
+(apply-keys-to-map
+ key-translation-map
+ (list
+  (kbd "<apps>") 'event-apply-hyper-modifier
+  ))
+
 ;;keymap setting
 (apply-keys-to-map
  global-map
@@ -83,6 +96,17 @@
   (kbd "`")    f4-backquote-map
   (kbd "e")    f4-e-map
   (kbd "p")    f4-p-map
+  ))
+
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "H-s")   zz/shift-fn-map
+  (kbd "H-f")   zz/fn-map
+  (kbd "H-c")   zz/ctrl-fn-map
+  (kbd "H-m")   zz/meta-fn-map
+  (kbd "C-H-x") zz/ctrl-x-fn-map
+  (kbd "C-H-c") zz/ctrl-c-fn-map
   ))
 
 

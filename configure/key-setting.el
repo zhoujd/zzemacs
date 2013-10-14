@@ -7,11 +7,16 @@
 ;;C-x @ h        event-apply-hyper-modifier
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
+(defvar zz/hyper-modifier (if-ms-windows
+                           (kbd "<apps> h")
+                           (kbd "<menu> h"))
+  " zz/hyper-modifier")
+
 (apply-keys-to-map
  key-translation-map
  (list
-  (if-ms-windows (kbd "<apps> h") (kbd "<menu> h")) 'event-apply-hyper-modifier
-  (kbd "C-z h")    'event-apply-hyper-modifier
+  zz/hyper-modifier 'event-apply-hyper-modifier
+  (kbd "C-z h")     'event-apply-hyper-modifier
   ))
 
 (apply-keys-to-map

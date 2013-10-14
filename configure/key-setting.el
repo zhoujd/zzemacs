@@ -23,7 +23,7 @@
  ctl-z-map
  (list
   (kbd "C-z")  (lookup-key ctl-x-map "\C-z")
-  [apps]       'execute-extended-command
+  zz/apps-key  'execute-extended-command
   ))
 
 (apply-keys-to-map

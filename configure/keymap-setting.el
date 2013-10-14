@@ -35,7 +35,7 @@
 
 ;;menu -> apps
 (unless-ms-windows
- (define-key key-translation-map [apps] [menu]))
+ (define-key key-translation-map [menu] [apps]))
 
 ;;keymap setting
 (apply-keys-to-map

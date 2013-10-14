@@ -38,12 +38,13 @@
 ;;C-x @ h        event-apply-hyper-modifier
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
+(define-key key-translation-map [menu] 'event-apply-hyper-modifier)
+
 (apply-keys-to-map
  key-translation-map
  (list
-  [menu]   'event-apply-hyper-modifier
-  [apps]   (lookup-key key-translation-map [menu])
-  "\C-z"   (lookup-key key-translation-map [menu])
+  [apps]       (lookup-key key-translation-map [menu])
+  "\C-z"       (lookup-key key-translation-map [menu])
   ))
 
 ;;keymap setting

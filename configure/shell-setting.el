@@ -207,8 +207,15 @@ Dmitriy Igrishin's patched version of comint.el."
       (progn
         (if-ms-windows
          (with-utf-8-env
-             (shell buf-name))
-         (shell buf-name))))
+             (with-start-shell
+               (setq shell-file-name "bash")
+               (setq shell-command-switch "-c")
+               (setq explicit-sh-args '("--login" "-i"))
+               (setq explicit-shell-file-name "bash")
+               (setenv "SHELL" shell-file-name)
+               ;;start new shell buffer
+               (shell buf-name))))
+         (shell buf-name)))
   (message "switch to %s" buf-name)
   (delete-other-windows))
 

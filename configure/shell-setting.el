@@ -205,8 +205,11 @@ Dmitriy Igrishin's patched version of comint.el."
       (progn 
         (switch-to-buffer buf-name))
       (progn
-        (shell buf-name)))
-  (message "switch to %s" buf-name)    
+        (if-ms-windows
+         (with-utf-8-env
+             (shell buf-name))
+         (shell buf-name))))
+  (message "switch to %s" buf-name)
   (delete-other-windows))
 
 ;; switch to named term

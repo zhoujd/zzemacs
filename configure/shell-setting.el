@@ -74,19 +74,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;start shell prompt
 (defun start-shell (buf-name)
   (interactive)
-  (if-ms-windows
-   (progn
-     (with-utf-8-env
-         (with-start-shell
-           (setq shell-file-name "bash")
-           (setq shell-command-switch "-c")
-           (setq explicit-sh-args '("--login" "-i"))
-           (setq explicit-shell-file-name "bash")
-           (setenv "SHELL" shell-file-name)
-           ;;start new shell buffer
-           (switch-to-shell buf-name))))
-   (progn
-     (switch-to-shell buf-name))))
+  (switch-to-shell buf-name))
 
 ;;popup term
 (if-ms-windows    

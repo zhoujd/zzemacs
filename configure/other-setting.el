@@ -68,10 +68,8 @@
 ;;display of line numbers with M-x linum-mode.
 (require 'nlinum)
 
-;;redo+ failed at emacs 24.3
-(if-emacs24-3
- (require 'redo)
- (require 'redo+))
+;;redo+ fixed for emacs > 24.3
+(require 'redo+)
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))

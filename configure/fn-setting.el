@@ -118,7 +118,7 @@
 
 (define-fn-key (gethash "f9" fn-key-table)
     [f9]              (lambda () (interactive)  (start-shell "*shell*"))
-    [S-f9]            'get-local-shell
+    [S-f9]            (if-ms-windows 'get-linux-shell  'get-local-shell)
     [C-f9]            'switch-to-scratch
     [M-f9]            'popup-term
     (kbd "C-x <f9>")  'switch-to-shell

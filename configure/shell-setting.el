@@ -167,7 +167,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (text-mode))
   
-;; switch to named shell
+;;switch to named shell
 (setq multi-shell-buffer-name "shell")
 (defun my-shell-list ()
   (setq my-shells ())
@@ -185,6 +185,15 @@ Dmitriy Igrishin's patched version of comint.el."
         (setq my-shells (cons  (buffer-name b) my-shells)))))
   (catch 'return
     (throw 'return my-shells)))
+
+;;mulit linux index
+(when-ms-windows
+ (defun get-linux-shell ()
+   (interactive)
+   (defvar multi-linux-index 0 "multi shell index")
+   (switch-to-shell
+    (format "*%s-%d*" multi-shell-buffer-name multi-linux-index))
+   (setq multi-linux-index (1+ multi-linux-index))))
 
 (defun switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"

@@ -188,14 +188,21 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;mulit linux index
 (when-ms-windows
- (defvar multi-linux-index 0 "multi shell index")
+ (defun get-linux-shell-num ()
+   (interactive)
+   (let ((num 0))
+     (dolist (b (buffer-list))
+       (when (string-match
+              (format "^\\\*%s-[0-9]+\\\*$" multi-shell-buffer-name)
+              (buffer-name b))
+         (setq num (1+ num))
+       ))
+     num))
  (defun get-linux-shell ()
    (interactive)
    (switch-to-shell
-    (format "*%s-%d*" multi-shell-buffer-name multi-linux-index))
-   (if (>= multi-linux-index 20)
-       (setq multi-linux-index 0)
-       (setq multi-linux-index (1+ multi-linux-index))))
+    (format "*%s-%d*" multi-shell-buffer-name
+            (1+ (get-linux-shell-num)))))
  )
 
 (defun switch-to-shell (buf-name)

@@ -167,6 +167,7 @@
                          default-directory "/" "\\")))
                  'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
+  (kbd "C-r")   'add-code-review-note
   ))
 
 ;;quick shell setting

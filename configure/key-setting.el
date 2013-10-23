@@ -168,6 +168,7 @@
                  'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   (kbd "C-r")   'add-code-review-note
+  (kbd "C-n")   'next-file-with-basename
   ))
 
 ;;quick shell setting

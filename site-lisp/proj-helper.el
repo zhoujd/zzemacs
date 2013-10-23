@@ -83,7 +83,7 @@
                         "\\..*" ""
                         buf-file-name))
              (files-with-basename (directory-files
-                                   current-dir f
+                                   current-dir t
                                    (concat "^" basename "\\."))))
         ;; If there's only 1 file with this basename, nothing to
         ;; do

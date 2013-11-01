@@ -7,16 +7,11 @@
 ;;C-x @ h        event-apply-hyper-modifier
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
-(defvar zz/hyper-modifier (if-ms-windows
-                           (kbd "<scroll>")
-                           (kbd "<Scroll_Lock>"))
-  " zz/hyper-modifier")
-
 (apply-keys-to-map
  key-translation-map
  (list
-  zz/hyper-modifier 'event-apply-hyper-modifier
   (kbd "C-z h")     'event-apply-hyper-modifier
+  (kbd "<pause> h") 'event-apply-hyper-modifier
   ))
 
 (apply-keys-to-map

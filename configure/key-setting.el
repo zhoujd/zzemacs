@@ -8,8 +8,8 @@
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
 (defvar zz/hyper-modifier (if-ms-windows
-                           (kbd "<apps> h")
-                           (kbd "<menu> h"))
+                           (kbd "<scroll>")
+                           (kbd "<Scroll_Lock>"))
   " zz/hyper-modifier")
 
 (apply-keys-to-map
@@ -23,7 +23,6 @@
  ctl-z-map
  (list
   (kbd "C-z")  (lookup-key ctl-x-map "\C-z")
-  zz/apps-key  'execute-extended-command
   ))
 
 (apply-keys-to-map
@@ -230,6 +229,8 @@
   [S-down]        'shrink-window
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
+
+  [apps]          (when-ms-windows 'execute-extended-command)
   ))
 
 (apply-keys-to-map

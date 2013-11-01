@@ -14,4 +14,7 @@ sudo apt-get install -y texinfo
 
 sudo apt-get install -y openssh-server
 
+##easy split windows for multi-term
+sudo apt-get install -y terminator
+
 echo install linux-tools end...

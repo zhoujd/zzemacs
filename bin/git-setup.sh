@@ -22,7 +22,8 @@ rm -f ~/.gitconfig
 git config --global user.name    "zhoujd"
 git config --global user.email   "zjd-405@163.com"
 git config --global color.ui     true
-
+git config --global push.default simple
+ 
 ### fatal: index-pack failed for win7
 #git config --global pack.windowMemory  10m
 #git config --global pack.packSizeLimit 20m

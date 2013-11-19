@@ -329,6 +329,10 @@ Emacs buffer are those starting with *."
 ;;nxml-mode is a more powerful xml-mode
 (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
 
+;;vim script and config file mode
+(require 'vimrc-mode)
+(add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode))
+
 (provide 'other-setting)
 
 ;;; other-setting.el ends here

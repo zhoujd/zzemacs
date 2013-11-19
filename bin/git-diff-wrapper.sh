@@ -8,6 +8,7 @@
 EMACS_FLAG="n"
 
 ## difftool selects
+## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else

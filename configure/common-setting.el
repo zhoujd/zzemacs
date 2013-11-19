@@ -440,8 +440,9 @@
 ;(setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
-;(setq delete-by-moving-to-trash t)
-;(setq trash-directory "~/.Trash")
+;;(setq trash-directory "~/.Trash")
+(when-emacs24-3
+ (setq delete-by-moving-to-trash t))
 
 (provide 'common-setting)
 

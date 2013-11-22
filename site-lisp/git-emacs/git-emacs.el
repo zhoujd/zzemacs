@@ -2615,7 +2615,7 @@ usual pre / post work: ask for save, ask for refresh."
    (lambda (p)
      ;; iterating visible buffers
      (let ((visible-buffers 
-            (mapcar '(lambda (window) (window-buffer window)) (window-list))))
+            (mapcar #'(lambda (window) (window-buffer window)) (window-list))))
        (loop for buffer in visible-buffers do
              (with-current-buffer buffer
                (when (and buffer-file-name (git--in-vc-mode?))

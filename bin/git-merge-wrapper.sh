@@ -11,6 +11,8 @@ EMACS_FLAG="n"
 
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
+## http://www.perforce.com/perforce/products/merge.html
+
 if [ "$OS" = "Windows_NT" ] ; then
     MERGE_TOOL="C:/BCompare3/BCompare.exe"
 else

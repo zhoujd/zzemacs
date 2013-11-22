@@ -21,7 +21,7 @@
 
 ;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook
-	  '(lambda ()
+	  (lambda ()
 	     ;; desktop-remove clears desktop-dirname
 	     (setq desktop-dirname-tmp desktop-dirname)
 	     (desktop-remove)
@@ -50,13 +50,13 @@
 
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
-	  '(lambda ()
+	  (lambda ()
 	     (if (saved-session)
              (if (y-or-n-p "Restore desktop? ")
                  (session-restore)))))
 
 ;;save desktop when exit
-;(add-hook 'kill-emacs-hook '(lambda () (session-save)))
+;(add-hook 'kill-emacs-hook (lambda () (session-save)))
 
 ;;Filecode Autoprocess
 ;;distct with mpg123

@@ -23,7 +23,7 @@
 
 ;;Auto-complete-mode config
 (add-hook 'scheme-mode-hook
-          '(lambda ()
+          (lambda ()
              (make-local-variable 'ac-sources)
              (setq ac-sources (append ac-sources '(ac-source-scheme)))))
 

@@ -33,17 +33,17 @@
   (make-local-variable  'dired-sort-map)
   (setq dired-sort-map (make-sparse-keymap))
   (define-key dired-mode-map "s" dired-sort-map)
-  (define-key dired-sort-map "s"                ;; s s 按照文件大小排序。
-              '(lambda () "sort by Size"
+  (define-key dired-sort-map "s"                ;; s s 
+              (lambda () "sort by Size"
                 (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
-  (define-key dired-sort-map "x"                ;; s x 按照文件扩展名排序。
-              '(lambda () "sort by eXtension"
+  (define-key dired-sort-map "x"                ;; s x 
+              (lambda () "sort by eXtension"
                  (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
-  (define-key dired-sort-map "t"                ;; s t 按照文件访问时间排序。
-              '(lambda () "sort by Time"
+  (define-key dired-sort-map "t"                ;; s t 
+              (lambda () "sort by Time"
                  (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
-  (define-key dired-sort-map "n"                ;; s n 按照文件名称的字母顺序排序。
-              '(lambda () "sort by Name"
+  (define-key dired-sort-map "n"                ;; s n 
+              (lambda () "sort by Name"
                  (interactive) (dired-sort-other (concat dired-listing-switches ""))))
 ))
 
@@ -61,7 +61,7 @@
 (add-hook 'dired-after-readin-hook 'sof/dired-sort)
 
 
-;;      过滤文件
+;;  filter files
 ;   |(add-hook 'dired-mode-hook (lambda ()
 ;   |  (interactive)
 ;   |  (define-key dired-mode-map (kbd "/")  'dired-omit-expunge)))     

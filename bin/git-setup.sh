@@ -51,6 +51,7 @@ chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode true
+git config --global mergetool.extmerge.keepBackup false
 
 echo ===========git config start ===============
 git config --list

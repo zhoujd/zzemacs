@@ -141,10 +141,10 @@
  (list  
   (kbd "<f4>")  'kill-this-buffer
   
-  (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*"))
-  (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
-  (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
-  (kbd "<f12>") (lambda () (interactive) (start-shell "*shell-f12*"))
+  (kbd "<f9>")  #'(lambda () (interactive) (start-shell "*shell-f9*"))
+  (kbd "<f10>") #'(lambda () (interactive) (start-shell "*shell-f10*"))
+  (kbd "<f11>") #'(lambda () (interactive) (start-shell "*shell-f11*"))
+  (kbd "<f12>") #'(lambda () (interactive) (start-shell "*shell-f12*"))
 
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)

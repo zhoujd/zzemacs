@@ -16,16 +16,16 @@
 ;;auto-complete setting
 (defvar ac-source-scheme
   '((candidates
-     . (lambda ()
-         (require 'scheme-complete)
-         (all-completions ac-target (car (scheme-current-env))))))
+     . #'(lambda ()
+           (require 'scheme-complete)
+           (all-completions ac-target (car (scheme-current-env))))))
   "Source for scheme keywords.")
 
 ;;Auto-complete-mode config
 (add-hook 'scheme-mode-hook
-          (lambda ()
-             (make-local-variable 'ac-sources)
-             (setq ac-sources (append ac-sources '(ac-source-scheme)))))
+          #'(lambda ()
+              (make-local-variable 'ac-sources)
+              (setq ac-sources (append ac-sources '(ac-source-scheme)))))
 
 ;;scheme complete
 (autoload 'scheme-smart-complete "scheme-complete" nil t)
@@ -36,11 +36,11 @@
 
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 (add-hook 'scheme-mode-hook
-          (lambda ()
-            (make-local-variable 'eldoc-documentation-function)
-            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
-            (eldoc-mode t)
-            (setq lisp-indent-function 'scheme-smart-indent-function)))
+          #'(lambda ()
+              (make-local-variable 'eldoc-documentation-function)
+              (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+              (eldoc-mode t)
+              (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;quack
 (require 'quack)

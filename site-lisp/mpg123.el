@@ -2189,7 +2189,7 @@ When called from function, optional argument COMMAND directly select the job."
       (if (buffer-name mpg123*initial-buffer) ;buffer-live-p check(mule2 OK)
 	  (switch-to-buffer mpg123*initial-buffer)))
     (setq mpg123*interrupt-p 'quit)
-    (mapcar '(lambda (b) (and (get-buffer b) (kill-buffer b))) buffers)))
+    (mapcar #'(lambda (b) (and (get-buffer b) (kill-buffer b))) buffers)))
 
 (defun mpg123-quit-yes ()
   "Force to quit"
@@ -2966,7 +2966,7 @@ the music will immediately move to that position."
 (if (and mpg123-process-coding-system (symbolp mpg123-process-coding-system))
     (let ((coding mpg123-process-coding-system)
 	  (cmdlist (mapcar
-		    '(lambda (a)
+		    #'(lambda (a)
 		       (mpg123:get-command-name (concat "dummy." (car a))))
 		    mpg123-type-alist)))
       (cond

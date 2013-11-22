@@ -201,7 +201,7 @@ variable `sourcepair-source-extensions'."
 
 
 (defun sourcepair-remove-private-suffixes (basename)
-  (car (delete 'nil (append (mapcar '(lambda (suffix) 
+  (car (delete 'nil (append (mapcar #'(lambda (suffix) 
 									   (if (string= (substring basename (- (length basename) (length suffix))) suffix)
 										   (substring basename 0 (- (length basename) (length suffix)))))
 									sourcepair-private-header-suffixes)
@@ -213,11 +213,11 @@ variable `sourcepair-source-extensions'."
 	
 	(if (member extension sourcepair-header-extensions)
 		(progn (setq basename (sourcepair-remove-private-suffixes basename))
-			   (cons sourcepair-source-path (mapcar '(lambda (arg) (concat basename arg)) sourcepair-source-extensions)))
+			   (cons sourcepair-source-path (mapcar #'(lambda (arg) (concat basename arg)) sourcepair-source-extensions)))
 	  (if (member extension sourcepair-source-extensions)
 		  (cons sourcepair-header-path 
 				(apply 'append 
-					   (mapcar '(lambda (suffix) (mapcar '(lambda (ext) (concat basename suffix ext)) sourcepair-header-extensions))
+					   (mapcar #'(lambda (suffix) (mapcar #'(lambda (ext) (concat basename suffix ext)) sourcepair-header-extensions))
 							   (append '("") sourcepair-private-header-suffixes))))))))
 
 (defun sourcepair-find-one-of (path choices recurse)

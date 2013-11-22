@@ -70,9 +70,9 @@
    
    (let ((include-dirs cedet-user-include-dirs))
      (setq include-dirs (append include-dirs cedet-sys-include-dirs))
-     (mapc (lambda (dir)
-             (semantic-add-system-include dir 'c++-mode)
-             (semantic-add-system-include dir 'c-mode))
+     (mapc #'(lambda (dir)
+               (semantic-add-system-include dir 'c++-mode)
+               (semantic-add-system-include dir 'c-mode))
            include-dirs))
    
    (setq semantic-c-dependency-system-include-path "/usr/include/")))
@@ -127,16 +127,16 @@
   "Keywords which are used to indicate this file is kernel code.")
 
 (add-hook 'c-mode-hook
-          (lambda ()
-            (let* ((filename (buffer-file-name))
-                   (is-kernel-code nil))
-              (if filename
-                  (dolist (keyword kernel-keywords)
-                    (if (string-match keyword filename)
-                        (setq is-kernel-code t))))
-              (if is-kernel-code
-                  (c-set-style "kernel-coding")
-                  (c-set-style "my-coding-style")))))
+          #'(lambda ()
+              (let* ((filename (buffer-file-name))
+                     (is-kernel-code nil))
+                (if filename
+                    (dolist (keyword kernel-keywords)
+                      (if (string-match keyword filename)
+                          (setq is-kernel-code t))))
+                (if is-kernel-code
+                    (c-set-style "kernel-coding")
+                    (c-set-style "my-coding-style")))))
 
 ;;; my c setting hook
 (defun my-c-mode-common-hook()

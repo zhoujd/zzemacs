@@ -28,9 +28,9 @@
   (load-file (concat zzemacs-path "configure/" file)))
 
 (zz-load-path "configure")
-(mapcar (lambda (setting)
-          (require setting)
-          (message "Load %s end ..." setting))
+(mapcar #'(lambda (setting)
+            (require setting)
+            (message "Load %s end ..." setting))
         '(
           macro-setting
           common-setting

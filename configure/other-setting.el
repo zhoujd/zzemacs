@@ -21,11 +21,11 @@
 
 ;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook
-	  (lambda ()
-	     ;; desktop-remove clears desktop-dirname
-	     (setq desktop-dirname-tmp desktop-dirname)
-	     (desktop-remove)
-	     (setq desktop-dirname desktop-dirname-tmp)))
+	  #'(lambda ()
+          ;; desktop-remove clears desktop-dirname
+          (setq desktop-dirname-tmp desktop-dirname)
+          (desktop-remove)
+          (setq desktop-dirname desktop-dirname-tmp)))
 
 (defun saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
@@ -50,13 +50,13 @@
 
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
-	  (lambda ()
-	     (if (saved-session)
-             (if (y-or-n-p "Restore desktop? ")
-                 (session-restore)))))
+	  #'(lambda ()
+          (if (saved-session)
+              (if (y-or-n-p "Restore desktop? ")
+                  (session-restore)))))
 
 ;;save desktop when exit
-;(add-hook 'kill-emacs-hook (lambda () (session-save)))
+;(add-hook 'kill-emacs-hook #'(lambda () (session-save)))
 
 ;;Filecode Autoprocess
 ;;distct with mpg123
@@ -220,8 +220,8 @@ Emacs buffer are those starting with *."
 ;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
 ;    (when current-process
 ;      (set-process-sentinel current-process
-;                            (lambda (watch-process change-state)
-;                              (when (string-match "//(finished//|exited//)" change-state)
+;                            #'(lambda (watch-process change-state)
+;                               (when (string-match "//(finished//|exited//)" change-state)
 ;                                (kill-buffer (process-buffer watch-process))))))))
 
 ;(add-hook 'gdb-mode-hook 'kill-buffer-when-exit)
@@ -267,12 +267,12 @@ Emacs buffer are those starting with *."
 (when-ms-windows  
   (require 'w32-browser)
   (eval-after-load "dired"
-    '(define-key dired-mode-map [C-f4] (lambda ()
-                                         (interactive)
-                                         (w32-browser
-                                          (dired-replace-in-string
-                                           "/" "\\"
-                                           (dired-get-filename)))))))
+    '(define-key dired-mode-map [C-f4] #'(lambda ()
+                                            (interactive)
+                                            (w32-browser
+                                            (dired-replace-in-string
+                                            "/" "\\"
+                                            (dired-get-filename)))))))
 
 ;;Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

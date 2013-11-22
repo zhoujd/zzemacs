@@ -97,9 +97,9 @@
     (server-start))
   
   (add-hook 'kill-emacs-hook
-            (lambda()
-              (if (file-exists-p  (concat server-directory-name "/server"))
-                  (delete-file (concat server-directory-name "/server"))))))
+            #'(lambda()
+                (if (file-exists-p  (concat server-directory-name "/server"))
+                    (delete-file (concat server-directory-name "/server"))))))
 
 (when-ms-windows
  (defun my-use-gnusvr ()
@@ -170,7 +170,7 @@
 (setq visible-bell t);
 ;;don`t flash the screen on console mode
 ;(setq ring-bell-function 'ignore)
-(setq ring-bell-function (lambda ()  t))
+(setq ring-bell-function #'(lambda ()  t))
 ;;use clipboard
 (setq x-select-enable-clipboard t)
 ;;mouse select
@@ -360,9 +360,9 @@
  '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
 
 (add-hook 'ido-minibuffer-setup-hook
-          (lambda ()
-            (define-key ido-completion-map (kbd "M-n") 'ido-next-match)
-            (define-key ido-completion-map (kbd "M-p") 'ido-prev-match)))
+          #'(lambda ()
+              (define-key ido-completion-map (kbd "M-n") 'ido-next-match)
+              (define-key ido-completion-map (kbd "M-p") 'ido-prev-match)))
 
 ;;only auto spit windows
 (setq split-height-threshold 0)
@@ -394,14 +394,14 @@
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
         (buffer-files-list
-         (delq nil (mapcar (lambda (buf)
-                             (when (buffer-file-name buf)
-                               (expand-file-name (buffer-file-name buf))))
+         (delq nil (mapcar #'(lambda (buf)
+                               (when (buffer-file-name buf)
+                                 (expand-file-name (buffer-file-name buf))))
                            (buffer-list)))))
     (mapc
-     (lambda (buf-file)
-       (setq recently-killed-list
-             (delete buf-file recently-killed-list)))
+     #'(lambda (buf-file)
+         (setq recently-killed-list
+               (delete buf-file recently-killed-list)))
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
@@ -409,8 +409,8 @@
    (interactive)
    (let* ((all-files recentf-list)
      (tocpl (mapcar (function 
-       (lambda (x) (cons (file-name-nondirectory x) x))) all-files))
-           (prompt (append '("File name: ") tocpl))
+       #'(lambda (x) (cons (file-name-nondirectory x) x))) all-files))
+          (prompt (append '("File name: ") tocpl))
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 

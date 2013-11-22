@@ -2301,7 +2301,7 @@ the task should be added to the list."
   (with-temp-buffer
     (unless (consp (car pages))
       (let ((list (planner-file-alist)))
-        (setq pages (mapcar '(lambda (page)
+        (setq pages (mapcar #'(lambda (page)
                                (cons page (cdr (assoc page list))))
                             pages))))
     (let (result)

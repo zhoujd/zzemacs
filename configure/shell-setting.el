@@ -277,9 +277,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;eshell setting
 (setq eshell-prompt-function
-      (lambda ()
-        (concat "" (user-login-name) "@" (system-name) " "
-                (eshell/pwd) " % ")))
+      #'(lambda ()
+          (concat "" (user-login-name) "@" (system-name) " "
+                  (eshell/pwd) " % ")))
 
 (provide 'shell-setting)
 

@@ -151,9 +151,9 @@
 
 ;; used in my ion C-F2 key binding. run before shutting down X!
 (defun delete-all-x-frames ()
-  (mapcar (lambda (frame)
-            (if (eq 'x (frame-live-p frame))
-                              (delete-frame frame)))
+  (mapcar #'(lambda (frame)
+              (if (eq 'x (frame-live-p frame))
+                  (delete-frame frame)))
           (frame-list)))
 
 (defun make-my-frames ()

@@ -36,9 +36,9 @@
 
 ;;marcro for start-process
 (defmacro execute-set-key (name args)
-  `(lambda ()
-    (interactive)
-    (apply 'start-process ,name nil ,args)))
+  `#'(lambda ()
+       (interactive)
+       (apply 'start-process ,name nil ,args)))
 
 (defmacro with-start-shell (&rest body)
   `(let ((env-shell      shell-file-name)

@@ -70,6 +70,7 @@
 
 ;;redo+ fixed for emacs > 24.3
 (require 'redo+)
+(global-set-key [M-S-backspace] 'redo)
 
 ;;tabbar mode
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))

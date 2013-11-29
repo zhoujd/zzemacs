@@ -481,7 +481,7 @@ the mru bookmark stack."
 ;;$ ssh-keygen -t dsa
 ;;$ ssh -T git@github.com
 (zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs-autoloads)
+(require 'git-emacs)
 (require 'git-show)
 
 ;;rgrep for c/c++

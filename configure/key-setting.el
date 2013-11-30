@@ -226,6 +226,8 @@
   [S-left]        'shrink-window-horizontally
 
   [apps]          (when-ms-windows 'execute-extended-command)
+  ;;To be able to M-x without meta
+  (kbd "C-x C-m") 'execute-extended-command
   ))
 
 (apply-keys-to-map

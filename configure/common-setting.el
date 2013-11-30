@@ -297,12 +297,15 @@
        ":"
        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
+;;Suppress GUI features
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq gnus-inhibit-startup-message t)
 
 (setq default-major-mode 'text-mode)
-;(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (setq truncate-partial-width-windows nil)
 

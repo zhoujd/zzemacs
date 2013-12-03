@@ -1,0 +1,36 @@
+Emacs Ctrl modifiers don't work in console
+http://stackoverflow.com/questions/13131367/emacs-ctrl-modifiers-dont-work-in-console
+
+Here is the algorithm, how to make modifier keys work in Emacs in terminal.
+
+1.Create a file funcskeys with content:
+
+control keycode 105 = F100
+string F100 = "\033[1;5D"
+control keycode 106 = F101
+string F101 = "\033[1;5C"
+control keycode 103 = F102
+string F102 = "\033[1;5E"
+altgr keycode 105 = F103
+string F103 = "\033[1;5F"
+At the end must be an empty line!
+
+2.Under root load the file:
+
+#loadkeys funcskeys
+
+3.Put this into the beginning of .emacs:
+
+(unless (display-graphic-p)
+  (progn
+    (define-key input-decode-map "\e[1;5C" [(control right)])
+    (define-key input-decode-map "\e[1;5D" [(control left)])
+    (define-key input-decode-map "\e[1;5E" [(control up)])
+    (define-key input-decode-map "\e[1;5F" [(meta left)])))
+End of algorythm
+
+After this hotkeys will work:
+
+(global-set-key (kbd "C-<right>") 'forward-word)
+(global-set-key (kbd "C-<left>")  'backward-word)
+

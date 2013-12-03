@@ -1,6 +1,6 @@
 ;; geiser-racket.el -- geiser support for Racket scheme
 
-;; Copyright (C) 2009, 2010, 2011, 2012 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011, 2012, 2013 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -65,6 +65,11 @@ This executable is used by `run-gracket', and, if
   :type '(repeat string)
   :group 'geiser-racket)
 
+(geiser-custom--defcustom geiser-racket-case-sensitive-p t
+  "Non-nil means keyword highlighting is case-sensitive."
+  :type 'boolean
+  :group 'geiser-racket)
+
 
 ;;; REPL support:
 
@@ -84,22 +89,14 @@ This function uses `geiser-racket-init-file' if it exists."
                         (expand-file-name geiser-racket-init-file)))
         (binary (geiser-racket--real-binary))
         (rackdir (expand-file-name "racket/" geiser-scheme-dir)))
-    `("-i" "-q"
-      "-S" ,rackdir
+    `("-i" "-q" "-S" ,rackdir
       ,@(apply 'append (mapcar (lambda (p) (list "-S" p))
                                geiser-racket-collects))
       ,@(and (listp binary) (cdr binary))
       ,@(and init-file (file-readable-p init-file) (list "-f" init-file))
       "-f" ,(expand-file-name "geiser/startup.rkt" rackdir))))
 
-(defconst geiser-racket--prompt-regexp "\\(mzscheme\\|racket\\)@[^ ]*?> ")
-
-(defun geiser-racket--startup (remote)
-  (if geiser-image-cache-dir
-      (geiser-eval--send/wait
-       `(:eval (image-cache ,geiser-image-cache-dir) geiser/user))
-    (setq geiser-image-cache-dir
-          (geiser-eval--send/result '(:eval (image-cache) geiser/user)))))
+(defconst geiser-racket--prompt-regexp "\\(mzscheme\\|racket\\)@[^ ]*> ")
 
 
 ;;; Remote REPLs
@@ -198,17 +195,19 @@ using start-geiser, a procedure in the geiser/server module."
 ;;; External help
 
 (defsubst geiser-racket--get-help (symbol module)
-  (geiser-eval--send/wait
-   `(:eval (get-help ',symbol '(:module ,module)) geiser/autodoc)))
+  (geiser-eval--send/wait `(:scm ,(format ",help %s %s" symbol module))))
 
 (defun geiser-racket--external-help (id module)
   (message "Looking up manual for '%s'..." id)
-  (let ((out (geiser-eval--retort-output
-              (geiser-racket--get-help id module))))
-    (when (and out (string-match " but provided by:\n +\\(.+\\)\n" out))
-      (geiser-racket--get-help id (match-string 1 out))))
-  (minibuffer-message "%s done" (current-message))
-  t)
+  (let* ((ret (geiser-racket--get-help id (format "%S" module)))
+         (out (geiser-eval--retort-output ret))
+         (ret (if (and out (string-match " but provided by:\n +\\(.+\\)\n" out))
+                  (geiser-racket--get-help id (match-string 1 out))
+                ret)))
+    (unless (string-match "^Sending to web browser.+"
+                          (geiser-eval--retort-output ret))
+      (minibuffer-message "%s not found" (current-message)))
+    t))
 
 
 ;;; Error display
@@ -219,7 +218,7 @@ using start-geiser, a procedure in the geiser/server module."
     "module: \"\\([^>\"\n]+\\)\""))
 
 (defconst geiser-racket--geiser-file-rx
-  (format "^%s/?racket/geiser" (regexp-quote geiser-scheme-dir)))
+  (format "^ *%s/?racket/geiser" (regexp-quote geiser-scheme-dir)))
 
 (defun geiser-racket--purge-trace ()
   (save-excursion
@@ -253,6 +252,7 @@ using start-geiser, a procedure in the geiser/server module."
 
 
 ;;; Keywords and syntax
+
 (defun geiser-racket--keywords ()
   (append '(("^#lang\\>" . 0)
             ("\\[\\(else\\)\\>" . 1))
@@ -261,30 +261,12 @@ using start-geiser, a procedure in the geiser/server module."
                . 1)))))
 
 (geiser-syntax--scheme-indent
- (splicing-let 1)
- (splicing-letrec 1)
- (splicing-let-values 1)
- (splicing-letrec-values 1)
- (splicing-let-syntax 1)
- (splicing-letrec-syntax 1)
- (splicing-let-syntaxes 1)
- (splicing-letrec-syntaxes 1)
- (splicing-letrec-syntaxes+values 1)
- (splicing-local 1)
+ (begin0 1)
+ (case-lambda: 0)
+ (class* defun)
+ (compound-unit/sig 0)
+ (define: defun)
  (for 1)
- (for/and 1)
- (for/first 1)
- (for/fold 2)
- (for/hash 1)
- (for/hasheq 1)
- (for/hasheqv 1)
- (for/last 1)
- (for/list 1)
- (for/lists 2)
- (for/or 1)
- (for/product 1)
- (for/sum 1)
- (for/vector 1)
  (for* 1)
  (for*/and 1)
  (for*/first 1)
@@ -297,8 +279,78 @@ using start-geiser, a procedure in the geiser/server module."
  (for*/lists 2)
  (for*/or 1)
  (for*/product 1)
+ (for*/set 1)
+ (for*/seteq 1)
+ (for*/seteqv 1)
  (for*/sum 1)
- (for*/vector 1))
+ (for*/vector 1)
+ (for/and 1)
+ (for/first 1)
+ (for/fold 2)
+ (for/hash 1)
+ (for/hasheq 1)
+ (for/hasheqv 1)
+ (for/last 1)
+ (for/list 1)
+ (for/lists 2)
+ (for/or 1)
+ (for/product 1)
+ (for/set 1)
+ (for/seteq 1)
+ (for/seteqv 1)
+ (for/sum 1)
+ (for/vector 1)
+ (instantiate 2)
+ (interface 1)
+ (lambda/kw 1)
+ (lambda: 1)
+ (let*-values: 1)
+ (let+ 1)
+ (let-values: 1)
+ (let/cc: 1)
+ (let: 1)
+ (letrec-values: 1)
+ (letrec: 1)
+ (local 1)
+ (match-let 1)
+ (match/values 1)
+ (mixin 2)
+ (module defun)
+ (module+ defun)
+ (parameterize-break 1)
+ (quasisyntax/loc 1)
+ (send* 1)
+ (splicing-let 1)
+ (splicing-let-syntax 1)
+ (splicing-let-syntaxes 1)
+ (splicing-let-values 1)
+ (splicing-letrec 1)
+ (splicing-letrec-syntax 1)
+ (splicing-letrec-syntaxes 1)
+ (splicing-letrec-syntaxes+values 1)
+ (splicing-letrec-values 1)
+ (splicing-local 1)
+ (struct 1)
+ (syntax-id-rules defun)
+ (syntax/loc 1)
+ (type-case defun)
+ (unit defun)
+ (unit/sig 2)
+ (with-handlers 1)
+ (with-handlers: 1))
+
+
+;;; Startup
+
+(defun geiser-racket--startup (remote)
+  (set (make-local-variable 'compilation-error-regexp-alist)
+       `(("^ *\\([^:(\t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):" 1 2 3)))
+  (compilation-setup t)
+  (if geiser-image-cache-dir
+      (geiser-eval--send/wait
+       `(:eval (image-cache ,geiser-image-cache-dir) geiser/user))
+    (setq geiser-image-cache-dir
+          (geiser-eval--send/result '(:eval (image-cache) geiser/user)))))
 
 
 
@@ -320,6 +372,7 @@ using start-geiser, a procedure in the geiser/server module."
   (external-help geiser-racket--external-help)
   (check-buffer geiser-racket--guess)
   (keywords geiser-racket--keywords)
+  (case-sensitive geiser-racket-case-sensitive-p)
   (binding-forms geiser-racket--binding-forms)
   (binding-forms* geiser-racket--binding-forms*))
 

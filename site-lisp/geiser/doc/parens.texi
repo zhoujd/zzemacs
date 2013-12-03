@@ -197,6 +197,12 @@ will add a new rule that says that any file inside my
 children) is to be assigned to Guile.  Since rules are first matched,
 first served, this new rule will take precedence over the default ones.
 
+@cindex autostart REPL
+@cindex start REPL, automatically
+A final tip: if you want Geiser to start automatically a REPL for you if
+it notices that there's no one active when it enters @i{geiser-mode},
+you can customize @code{geiser-mode-start-repl-p} to @code{t}.
+
 @subsubheading Switching between source files and the REPL
 @cindex switching to REPL
 @cindex switching to source
@@ -373,8 +379,11 @@ named @i{source}: pressing it you'll jump to the symbol's definition.
 The second button, dubbed @i{manual}, will open the Scheme
 implementation's manual page for the symbol at hand.  For Racket, that
 will open your web browser displaying the corresponding reference's page
-(using Emacs' @code{browser-url} command), while in Guile a lookup will
-be performed in the texinfo manual.
+(using the HTML browser in Racket's configuration, which you can edit in
+DrRacket's preferences dialog, or by setting
+@code{plt:framework-pref:external-browser} directly in
+@file{~/.racket/racket-prefs.rktd}), while in Guile a lookup will be
+performed in the texinfo manual.
 
 @cindex Guile info nodes
 For Guile, the manual lookup uses the info indexes in the standard
@@ -429,7 +438,9 @@ For all of you bearded old lispers still with me, here are some of the
 commands performing incremental evaluation in Geiser.
 
 @code{geiser-eval-last-sexp}, bound to @kbd{C-x C-e}, will eval the
-s-expression just before point.
+s-expression just before point.  If you use a prefix, as in @kbd{C-u C-x
+C-e}, besides evaluating it the expression is inserted in the the
+buffer.
 
 @code{geiser-eval-definition}, bound to @kbd{C-M-x}, finds the topmost
 definition containing point and sends it for evaluation.  The variant

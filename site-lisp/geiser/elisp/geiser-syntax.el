@@ -1,6 +1,6 @@
 ;;; geiser-syntax.el -- utilities for parsing scheme syntax
 
-;; Copyright (C) 2009, 2010, 2011, 2012 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011, 2012, 2013 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -28,60 +28,24 @@
                     pairs)))
 
 (geiser-syntax--scheme-indent
- (begin0 1)
- (c-declare 0)
- (c-lambda 2)
  (case-lambda 0)
- (case-lambda: 0)
  (catch defun)
  (class defun)
- (class* defun)
- (compound-unit/sig 0)
- (define: defun)
  (dynamic-wind 0)
- (instantiate 2)
- (interface 1)
- (lambda: 1)
- (lambda/kw 1)
  (let*-values 1)
- (let*-values: 1)
- (let+ 1)
- (let: 1)
- (letrec: 1)
  (letrec* 1)
  (letrec-values 1)
- (letrec-values: 1)
  (let-values 1)
- (let-values: 1)
- (let/cc: 1)
  (let/ec 1)
  (match defun)
- (mixin 2)
- (module defun)
  (opt-lambda 1)
  (parameterize 1)
- (parameterize-break 1)
  (parameterize* 1)
- (pmatch defun)
- (quasisyntax/loc 1)
  (receive 2)
- (send* 1)
- (sigaction 1)
  (syntax-case 2)
- (syntax-id-rules defun)
- (syntax/loc 1)
- (type-case defun)
- (unit defun)
- (unit/sig 2)
  (unless 1)
  (when 1)
  (while 1)
- (with-fluid* 1)
- (with-fluids 1)
- (with-fluids* 1)
- (with-handlers 1)
- (with-handlers: 1)
- (with-method 1)
  (with-error-to-port 1)
  (with-syntax 1))
 
@@ -97,10 +61,15 @@
   "A variable (or thunk returning a value) giving additional,
 implementation-specific entries for font-lock-keywords.")
 
+(geiser-impl--define-caller geiser-syntax--case-sensitive case-sensitive ()
+  "A flag saying whether keywords are case sensitive.")
+
 (defun geiser-syntax--add-kws ()
   (when (not (and (boundp 'quack-mode) quack-mode))
-    (let ((kw (geiser-syntax--impl-kws geiser-impl--implementation)))
-      (when kw (font-lock-add-keywords nil kw)))))
+    (let ((kw (geiser-syntax--impl-kws geiser-impl--implementation))
+          (cs (geiser-syntax--case-sensitive geiser-impl--implementation)))
+      (when kw (font-lock-add-keywords nil kw))
+      (setq font-lock-keywords-case-fold-search (not cs)))))
 
 
 ;;; A simple scheme reader
@@ -277,6 +246,9 @@ implementation-specific entries for font-lock-keywords.")
 (defsubst geiser-syntax--nesting-level ()
   (or (nth 0 (syntax-ppss)) 0))
 
+(defsubst geiser-syntax--in-string-p ()
+  (nth 3 (syntax-ppss)))
+
 (defsubst geiser-syntax--pair-length (p)
   (if (cdr (last p)) (1+ (safe-length p)) (length p)))
 
@@ -437,4 +409,3 @@ implementation-specific entries for font-lock-keywords.")
 
 
 (provide 'geiser-syntax)
-;;; geiser-syntax.el ends here

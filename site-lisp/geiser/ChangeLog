@@ -1,17 +1,824 @@
+commit c5097cf3a8dc60cab206d2af08223be9793116bf
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri May 3 20:15:00 2013 +0200
+
+    NEWS for 0.4
+
+ NEWS            |    4 ++--
+ doc/cheat.texi  |    3 +++
+ doc/geiser.texi |    2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+commit 95f0b314ea50737c2b0631932328233f130d8373
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 28 15:16:57 2013 +0200
+
+    Thanks where thanks are due
+
+ THANKS          |    7 +++++++
+ doc/thanks.texi |    6 ++++++
+ 2 files changed, 13 insertions(+)
+
+commit 87faab8c881210d0d782427f504c2ab7611c82d8
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 28 15:07:55 2013 +0200
+
+    Issue tracker links pointing to Github's
+    
+    Almost all contributions have come this way, and it's a hassle having
+    two of them.
+
+ doc/thanks.texi |    4 ++--
+ doc/web.texi    |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 69761d95c7142551efae87ebae1be8afcbe9d176
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 28 15:04:49 2013 +0200
+
+    Mailto link for the witty geiser-users address
+    
+    ... since i've got reports that it's sometimes annoying not to be able
+    to directly click and post.
+
+ doc/thanks.texi |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit bfa5d426c48a075d1386f4feb8d6833ba6ba1670
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 21 02:45:28 2013 +0200
+
+    Fix for Racket compilation error jumping in REPL
+    
+    The backtraces now display some leading whitespace, which the default
+    compilation-mode regexps was making part of the file name.
+
+ elisp/geiser-racket.el |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+
+commit 8c9313c3976cd8962edc2b5ee95b1168a3e21814
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 21 02:17:58 2013 +0200
+
+    Racket: fixing error backtrace cleansing
+    
+    i.e., removing again references to geiser's innards
+
+ elisp/geiser-racket.el |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 8b16e095fd38bc3ca0c51b8b97b449f6a8d80e1b
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Apr 17 18:14:31 2013 +0200
+
+    Racket: fix for jump to manual for symbols not in the namespace
+    
+    We had broken using the hint that `help` offers during our recent
+    adventures...
+
+ elisp/geiser-racket.el |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 496efc48adf247cd5d17beb436f71f38a89f9f1d
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 16:09:00 2013 +0200
+
+    Remainin reference to company's screencast gone.
+    
+    Fixes #3 for real
+
+ README |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+commit 311db249e9238358445e36cf8d4c4aff3d363945
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 16:05:22 2013 +0200
+
+    Company mode screencast seems gone for good
+    
+    And Dmitry is now maintaining it.  Links updated, issue #3 fixed.
+
+ doc/install.texi |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+commit cd2c241c71a13aedf700d98b5cb2552c29d8afee
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 12:53:53 2013 +0200
+
+    NEWS entry since Diogo confirmed things work again
+
+ NEWS |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 8c6eb94980cac77f22d8a972b08a0a2ed4d44b77
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 11:14:13 2013 +0200
+
+    Racket: correct detection of manual lookup failures
+    
+    Still a tad messy, because we are always forcing a retort-syntax error
+    and checking its ouput, but good enough for now.
+
+ elisp/geiser-racket.el |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit b32cc5ea37430c5d06ba2964ccdc430ce0faad80
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 11:13:02 2013 +0200
+
+    Racket: ensuring the first C-c C-d C-i works
+    
+    ... by the obvious device of waiting for the thread building the index
+    to finish.
+
+ scheme/racket/geiser/autodoc.rkt |   12 ++++++++++++
+ scheme/racket/geiser/user.rkt    |    4 ----
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+commit 82f909d80a55f0dcf8639b094351f5e61f3449e6
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 10:43:07 2013 +0200
+
+    Racket: fixing help when REPL is in a module
+    
+    The evaluation of the help form must happen in a good enough
+    namespace.
+
+ scheme/racket/geiser/autodoc.rkt |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+commit 5aec661ebb415b474b5bc01a8a295fc7c2639f8a
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 04:18:19 2013 +0200
+
+    Racket: pre-loading help also in remote REPLs
+
+ scheme/racket/geiser/user.rkt |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit c00f24907cf87589f4b28885507443d419385502
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Apr 15 04:08:08 2013 +0200
+
+    Racket: better help commands
+    
+    For some reason that i don't fully understand, evaluating a function
+    in the racket/base namespace first thing after loading errortrace
+    breaks the help macro (!).  This patches provides a workaround by
+    actually invoking help first thing when Geiser starts, with alibi that
+    it serves to preload the help index (in a separate thread).
+    
+    While i was at it, i improved the message printed in the minibuffer
+    when no help is found.
+
+ elisp/geiser-racket.el           |   20 ++++++++++----------
+ scheme/racket/geiser/autodoc.rkt |    5 ++---
+ scheme/racket/geiser/startup.rkt |    4 +---
+ scheme/racket/geiser/user.rkt    |   13 +++++++++++--
+ 4 files changed, 24 insertions(+), 18 deletions(-)
+
+commit 82165389e02b4ff29bade2a2b34903142e3bc73a
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 14 03:23:00 2013 +0200
+
+    More good NEWS
+
+ NEWS |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit 8966cbbdc5615051bf0def94d7b6f18e4b295de3
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Apr 14 03:15:52 2013 +0200
+
+    Disabling company calls while the REPL is working
+
+ elisp/geiser-company.el |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+commit 3b5397c8dad34f9dfe83c2c44eeece0de9097df3
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Apr 13 05:22:20 2013 +0200
+
+    A better solution to the funky filename problem
+    
+    So, the problem was that our regexp for a Racket prompt didn't take
+    into account that filenames could contain white spaces: "@[^ ]*> ".  A
+    simple solution was accepting them: "@[^>]+> " won't work because '>'
+    is also a valid character in filenames, so we went for "@.*> ".
+    
+    The drawback is that finding the beginning of the prompt (e.g. in C-a)
+    fails when you're writing things like:
+    
+       racket@foo bar.rkt> (> 2 3)
+    
+    because here comint believes that the prompt is "racket@foo bar.rkt> (> "
+    
+    And that could have side-effects elsewhere.  So what i've done is
+    simply changing the way white-space is (not) printed in the prompt,
+    substituting it by underscores.  That way, whe can go back to the
+    initial regexp, comint doesn't get confused, and users can easily
+    infer that "@foo_bar.rkt>" is actually referring to their
+    "foo bar.rkt" file.
+
+ elisp/geiser-racket.el        |    2 +-
+ scheme/racket/geiser/user.rkt |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit d494b97c34386470fa9b7ee7ddcc63c41b8c51ff
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Apr 13 00:43:45 2013 +0200
+
+    Another take at the fix (files with >, bleh)
+
+ elisp/geiser-racket.el |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 2124e366e3590e6d01931a9eca098e4a0c3d85ed
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Apr 13 00:22:48 2013 +0200
+
+    Good NEWS
+
+ NEWS |    2 ++
+ 1 file changed, 2 insertions(+)
+
+commit d59b4b1ffe2892d918ad9354c7a0b28f5f30de5f
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Apr 13 00:03:54 2013 +0200
+
+    Racket: accepting spaces within comint's prompt
+    
+    Since spaces are allowed inside filenames after all.
+
+ elisp/geiser-racket.el |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 65bc295b35beac42e410ae78a3077ce28f1e49a9
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Apr 12 01:05:34 2013 +0200
+
+    A bit of documentation for the previous patches
+
+ AUTHORS              |    9 +++++----
+ NEWS                 |    2 ++
+ doc/parens.texi      |    4 +++-
+ elisp/geiser-mode.el |    9 +++++++++
+ 4 files changed, 19 insertions(+), 5 deletions(-)
+
+commit 7a666d1e2da690ab45a2f40d388e47df711e4868
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Apr 12 00:57:23 2013 +0200
+
+    Simplifications to previous patch
+
+ elisp/geiser-debug.el |    9 +++++----
+ elisp/geiser-eval.el  |   22 +++++++---------------
+ elisp/geiser-mode.el  |   27 ++++++++++++---------------
+ 3 files changed, 24 insertions(+), 34 deletions(-)
+
+commit 2ebc1225b929d2a3c3b25fbd7596adb4d49915f0
+Author: Diogo F. S. Ramos <diogofsr@gmail.com>
+Date:   Thu Apr 11 18:56:30 2013 -0300
+
+    Evaluate last expression to buffer with a prefix
+    
+    Use a prefix before pressing C-x C-e to print the result of evaluating
+    the expression before mark to the current buffer.
+
+ elisp/geiser-debug.el |    6 +++---
+ elisp/geiser-eval.el  |   10 ++++++++++
+ elisp/geiser-mode.el  |   24 +++++++++++++++++-------
+ 3 files changed, 30 insertions(+), 10 deletions(-)
+
+commit 246175eadf22a2ab7121be68d37d01f320ddb44a
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Apr 12 00:04:26 2013 +0200
+
+    Hide auto-started REPL
+    
+    I'm not convinced that this is the right thing, and the effect is a
+    bit ugly (we use save-window-excursion), but maybe this is the correct
+    thing to do for users that want auto-start.
+
+ elisp/geiser-mode.el |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 80028aa5e49cf897e371bf030eea399d14771e24
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Apr 11 07:16:37 2013 +0200
+
+    Documentation for the latest changes
+
+ NEWS            |    5 +++++
+ doc/parens.texi |    6 ++++++
+ doc/repl.texi   |   12 ++++++++++++
+ 3 files changed, 23 insertions(+)
+
+commit 96f8693803a4f49770f3bd7a1b3dbad778522987
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Apr 11 07:16:17 2013 +0200
+
+    New flag to automatically start REPLs when geiser-mode is activated
+    
+    When no live REPL is found, of course.  The flag's imaginatively
+    called geiser-mode-start-repl-p.
+
+ elisp/geiser-mode.el |   12 +++++++++++-
+ elisp/geiser-repl.el |   14 +++++++++-----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
+
+commit d32d4e1a4480f236089fb27ce5f5c4968f1119e7
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Apr 10 16:06:47 2013 +0200
+
+    Fix for evaluations returning no result
+    
+    Such as (values), which produce a retort of the form ((result) ...),
+    which has nothing wrong in it!  Thanks to Diogo.
+
+ elisp/geiser-connection.el |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit c0c3723b1b5ee54e977a25a2f8a409a8071f1976
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Tue Apr 9 20:32:09 2013 +0200
+
+    New customizable geiser-repl-query-on-kill-p
+    
+    In case you don't care about killing live REPLs...
+
+ elisp/geiser-repl.el |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+commit 673c6c9fa481c3b50921f2d94afa3c5a73b1920e
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Tue Apr 2 18:45:20 2013 +0200
+
+    More Racket for/* forms indentation from Diogo
+
+ elisp/geiser-racket.el |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit c85ba34b47b25614eb58219d5fc97815df7f7301
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Mar 1 19:24:21 2013 +0100
+
+    Using implementation-specific keywords also in REPL
+    
+    And, while we're at it, honour the new case-sentive flag, as suggested
+    by Diogo.
+
+ elisp/geiser-repl.el |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 00912584fa4871acee500a094793a0cbef5de211
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Mar 1 04:33:21 2013 +0100
+
+    Indentation rule for match/values (Diogo F.S. Ramos)
+
+ elisp/geiser-racket.el |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit fb052f96692b233f21e989df1dd9c8b966d8c030
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Mar 1 04:27:02 2013 +0100
+
+    NEWS entry for the above, er, below
+
+ NEWS |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 4d06d7e13c2b1873b2de2c85333faa6b3d4b93dc
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Mar 1 04:24:21 2013 +0100
+
+    Configurable keyword case sensitivity
+    
+    By default, keywords are now not fontified in Scheme buffers unless
+    they have the correct (lower) case.  This behaviour can be altered by
+    new, per-implementation customization variables.
+    
+    Thanks to Diogo F. S. Ramos for pointing this out.
+
+ elisp/geiser-guile.el  |   16 ++++++++++++----
+ elisp/geiser-impl.el   |    5 +++--
+ elisp/geiser-racket.el |    6 ++++++
+ elisp/geiser-syntax.el |   11 ++++++++---
+ 4 files changed, 29 insertions(+), 9 deletions(-)
+
+commit 8569220b3aa3312e9de80c95a28a36e7adb750c4
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Feb 23 00:24:35 2013 +0100
+
+    Stop spreading misinformation about Racket's help browser
+    
+    Thanks to Vitalie Spinu
+
+ doc/parens.texi |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit 0e76e0d96b0ba2f5aa79aa2485e87daee675256c
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Feb 20 09:16:25 2013 +0100
+
+    Indentation for match-let
+
+ elisp/geiser-racket.el |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 01cfa0befac00b068f62744e6cdf90d7b2472230
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Feb 9 23:51:09 2013 +0100
+
+    Indentation for Racket's struct
+    
+    Thanks to Diogo F. S. Ramos.
+
+ elisp/geiser-racket.el |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 2e581e278a1864be9143e841ec1b5c403dce0c86
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Feb 7 03:20:43 2013 +0100
+
+    Accepting ~ in geiser-add-to-load-path
+
+ elisp/geiser-compile.el |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 7916065e7156db3f128c1e5fd27783b4a18baa2f
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Feb 3 02:44:19 2013 +0100
+
+    Little cleanups, and C-u variant for the lambda thing
+
+ elisp/geiser-edit.el |    8 --------
+ elisp/geiser-mode.el |   10 +++++++++-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 5e63968f431a40c0ea8dc7391ee95b869d9d9bff
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Feb 3 01:24:38 2013 +0100
+
+    NEWS and version housekeeping
+
+ NEWS            |   11 +++++++++++
+ configure.ac    |    2 +-
+ doc/macros.texi |    4 ++--
+ 3 files changed, 14 insertions(+), 3 deletions(-)
+
+commit 5c433339e648048e3efec422a2a974fe8e83134f
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Feb 3 01:05:24 2013 +0100
+
+    Thanks to Ray
+
+ AUTHORS |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit f2ca54c25fc6e8cc4a90ddbe2513e774b1b2b2f3
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Feb 3 01:02:26 2013 +0100
+
+    More robust lambda and keybinding to C-c \
+    
+    Since C-\ is a standard Emacs binding, and people know how to change
+    it anyway.  I've also put the command in the menu for Geiser mode, for
+    discoverability.  A pleasant surprise: greek lambdas are understood by
+    both Racket and Guile.
+
+ elisp/geiser-edit.el |    4 ++--
+ elisp/geiser-mode.el |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 43dd4894285c2b2aff6bcc17ac9b2bf8f3868702
+Author: Ray Racine <ray.racine@gmail.com>
+Date:   Sat Feb 2 13:05:44 2013 -0500
+
+    Insert Greek letter lambda.
+
+ elisp/geiser-edit.el |    8 ++++++++
+ elisp/geiser-mode.el |    1 +
+ 2 files changed, 9 insertions(+)
+
+commit 9cdd48af25b299c32adb7dd1ddd025a5bc6fd1cf
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Tue Jan 22 17:21:00 2013 +0100
+
+    Using comint-dynamic-complete-filename
+    
+    .. which seems to be available also in emacs 23.2 (although reports as
+    to whether it works are mixed), and has better behaviour anyways.
+
+ elisp/geiser-completion.el |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 9ded8b3b3b3cb0739c4650f55bb2190f16786bea
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Jan 19 18:54:07 2013 +0100
+
+    Download links fixed
+
+ doc/install.texi |    7 +++----
+ doc/macros.texi  |    8 +++-----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+
+commit 597d3ce0bef5185d9e969fed733226db6ee796bb
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Jan 19 18:53:35 2013 +0100
+
+    ELPA-specific README
+
+ Makefile.am |    4 ++--
+ README.elpa |   40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 2 deletions(-)
+ create mode 100644 README.elpa
+
+commit 79b938746d55e53ba73f186d746c3a0410256782
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Jan 19 15:26:11 2013 +0100
+
+    NEWS and AUTHORS updated
+
+ AUTHORS |    1 +
+ NEWS    |   18 +++++++++---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+commit 3eaa8bc8522ffd341d9036fc3e4be555dc9687c6
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Jan 19 15:10:00 2013 +0100
+
+    Preparations for 0.3
+
+ NEWS            |   14 +++++++++++---
+ configure.ac    |    4 ++--
+ doc/macros.texi |    4 ++--
+ 3 files changed, 15 insertions(+), 7 deletions(-)
+
+commit 7c2ca2bb6e59e312019613db85fd86e7918ee1dc
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Dec 14 16:25:18 2012 +0100
+
+    Racket: make sure stderr is flushed in REPL
+    
+    Thanks to Haiwei Zhou for catching this one!
+
+ scheme/racket/geiser/user.rkt |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit bfcdc1c92dcf25dfd06cdc03fbd685c7daf40bbe
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Fri Dec 14 00:18:46 2012 +0100
+
+    Racket: indentation for `local'.
+    
+    Hat tip Diogo F. S. Ramos.
+
+ elisp/geiser-racket.el |    1 +
+ 1 file changed, 1 insertion(+)
+
+commit 01bd372829e5309f24b3d14ca9a879ad1fd6f6c6
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Mon Dec 10 23:26:31 2012 +0100
+
+    Fix: more encompassing lookup for images in scheme output
+    
+    We were not taking into account windows paths, with their backslashes
+    and colons.
+
+ elisp/geiser-image.el |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit f6e0ac85012c2e46dff12e9ec0181c02b6074b8a
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Nov 11 16:58:07 2012 +0100
+
+    New command geiser-repl-clear-buffer
+    
+    Just renamed geiser-repl--clear-buffer (we don't use -- when users can
+    call the command with M-x normally) and added documentation.
+
+ NEWS                 |    3 ++-
+ README               |    1 +
+ doc/cheat.texi       |    3 +++
+ elisp/geiser-repl.el |   24 ++++++++++--------------
+ 4 files changed, 16 insertions(+), 15 deletions(-)
+
+commit a814cf43fa33f66cb2fca512084d7ac2b63ae62a
+Author: Jonas Rodrigues <jxonas@gmail.com>
+Date:   Fri Nov 9 18:20:32 2012 -0200
+
+    New function 'geiser-repl--clear-buffer'
+
+ elisp/geiser-repl.el |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+commit f5144a27494a1e83d658d400289ba104b050ffd3
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Oct 28 01:38:17 2012 +0200
+
+    Racket: fix for module evaluation/entering
+    
+    Our module loader is receiving load requests for module names
+    represented as lists that are not exactly a submodule, in the sense
+    that the path does not represent an actual file.
+    
+    This phenomenon happens for instance when specifying a reader in a
+    #lang tag.  E.g.
+    
+       #lang at-exp racket
+    
+    will cause the loader to be called with module name '(main reader) and
+    path <cols-path>/at-exp/main.rkt, where main.rkt does not exist.
+    Afterwards, we see a call to load at-exp/lang/reader/rkt, with name
+    reader, which is the real code.
+    
+    So, for now, i'm skipping all load requests with a list name,
+    forwarding them to racket's default loader.
+
+ scheme/racket/geiser/enter.rkt |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+commit 8bf3f70f6aba159461612be8577bd4193ee7c6e6
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Oct 27 22:58:38 2012 +0200
+
+    Filename completion also in scheme buffers
+    
+    By means of a new entry in completion-at-point-functions that uses
+    the handy comint-filename-completion.
+
+ NEWS                       |    7 ++++---
+ elisp/geiser-completion.el |   11 +++++++++--
+ elisp/geiser-repl.el       |    2 --
+ 3 files changed, 13 insertions(+), 7 deletions(-)
+
+commit de6fc09551730fe87f7f3d6f532bafd189c97236
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Oct 24 05:17:34 2012 +0200
+
+    Completing file names at the REPL, but only in string contexts
+
+ NEWS                   |    1 +
+ elisp/geiser-repl.el   |    4 +++-
+ elisp/geiser-syntax.el |    3 +++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+commit 5b77d598ee04f324cbaf4eaacfe71e534bb2ed34
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Oct 24 05:04:46 2012 +0200
+
+    Completing file names at the REPL
+    
+    When no other completion is available, that is.
+
+ elisp/geiser-repl.el |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+commit 08b4499a0c440279257b38d49003ea5a6c848a45
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Oct 24 04:17:19 2012 +0200
+
+    Little clean-ups to the indentation rules
+    
+    Splitting better the specially indented forms between our two
+    implementations, so that users of a single one don't get weird
+    indentations for froms without a special meaning in their scheme.
+    
+    Ideally, we should make these indentation rules buffer-local, so that
+    when a user is in a, say, Guile buffer, module+ has no special
+    indentation (as is the case now if that user also has activated
+    support for Racket).
+
+ NEWS                   |    3 ++
+ elisp/geiser-guile.el  |   14 ++++++++-
+ elisp/geiser-racket.el |   77 +++++++++++++++++++++++++++++++++---------------
+ elisp/geiser-syntax.el |   36 ----------------------
+ 4 files changed, 69 insertions(+), 61 deletions(-)
+
+commit fd71a43c2be7f86e7b68d2badca6030103f54f05
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Wed Oct 24 03:51:33 2012 +0200
+
+    Racket: indentation for module+ forms
+
+ elisp/geiser-racket.el |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit 5f357d12363d9b214bab82ba12447d657733a289
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Tue Oct 23 01:09:27 2012 +0200
+
+    New custom var `geiser-repl-save-debugging-history-p'
+    
+    This variable controls whether REPL command history should contain
+    inputs during the debugger sessions (for schemes with such a thing,
+    that is, for Guile).
+
+ elisp/geiser-repl.el |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit 5e1a4995ee1211f2a57d4fce4101b81be13d87db
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sat Oct 13 04:14:25 2012 +0200
+
+    Manual lookup shortcut (C-c C-d i) also in REPL buffers
+
+ doc/cheat.texi       |    3 +++
+ doc/repl.texi        |    4 +++-
+ elisp/geiser-repl.el |    3 +++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+commit b0684896df77372e8be1f4bcf6d6b7a1cb142b47
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 04:19:50 2012 +0200
+
+    Finishing removal of the "foo ends here" footers
+    
+    I must admit this is yet another excuse to check geiserbot over at
+    freenode.
+
+ scheme/guile/geiser/completion.scm |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+commit d00c933074acc68774373e90301807e16e650c17
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 04:17:35 2012 +0200
+
+    Whitespace
+
+ elisp/geiser-autodoc.el |    3 +--
+ elisp/geiser-base.el    |    3 +--
+ elisp/geiser-company.el |    3 +--
+ elisp/geiser-compile.el |    3 +--
+ elisp/geiser-custom.el  |    3 +--
+ elisp/geiser-debug.el   |    1 -
+ elisp/geiser-doc.el     |    3 +--
+ elisp/geiser-edit.el    |    1 -
+ elisp/geiser-eval.el    |    3 +--
+ elisp/geiser-impl.el    |    4 +---
+ elisp/geiser-log.el     |    3 +--
+ elisp/geiser-menu.el    |    4 +---
+ elisp/geiser-mode.el    |    3 +--
+ elisp/geiser-popup.el   |    3 +--
+ elisp/geiser-reload.el  |    1 -
+ elisp/geiser-syntax.el  |    1 -
+ elisp/geiser-table.el   |    1 -
+ elisp/geiser-xref.el    |    3 +--
+ 18 files changed, 13 insertions(+), 33 deletions(-)
+
+commit cbcfbe26411d0ffecd4e9627428d29113c398d7a
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 04:12:00 2012 +0200
+
+    Dummy entry in NEWS for 0.2.3
+
+ NEWS |    3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 3092e3a32ed0fc77949f048ea0a4da2c8c26416f
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 04:01:35 2012 +0200
+
+    Please, bear with me
+
+commit 055ac24eab065aa0b314be89815ba0bbf9525782
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 03:57:32 2012 +0200
+
+    And this is another empty commit to check geiserbot
+
+commit 299daf0dd388b568de34a11d55ede98f540bcc8d
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Thu Oct 11 03:44:19 2012 +0200
+
+    This is an empty commit to check geiserbot
+
+commit 0e802791514eeb3e6185259939829ab5e7df5d96
+Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
+Date:   Sun Sep 30 05:21:50 2012 +0200
+
+    Version bump -- next cycle begins!
+
+ configure.ac    |    2 +-
+ doc/macros.texi |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
 commit aba6733e848c47cb4f8e5d749add65be51d5d784
 Author: Jose Antonio Ortega Ruiz <jao@gnu.org>
 Date:   Sun Sep 30 04:42:27 2012 +0200
 
     Documentation updates
 
- INSTALL          |  339 +++++++----------------------------------------------------
+ INSTALL          |  339 +++++++-----------------------------------------------
  NEWS             |    5 +-
- README           |   50 +++------
+ README           |   50 ++------
  THANKS           |    3 +
  doc/geiser.texi  |    3 +-
- doc/install.texi |   72 +++++++++++--
+ doc/install.texi |   72 ++++++++++--
  doc/macros.texi  |    4 +-
- doc/parens.texi  |   12 +--
+ doc/parens.texi  |   12 +-
  doc/repl.texi    |    2 +-
  doc/thanks.texi  |    3 +
  10 files changed, 136 insertions(+), 357 deletions(-)
@@ -227,12 +1034,12 @@ Date:   Sun Sep 2 20:19:36 2012 +0200
 
     racket: displaying images also during evaluations
 
- elisp/geiser-debug.el           |   36 ++++++++++++++++++++++++++--------
- elisp/geiser-image.el           |   46 ++++++++++++++++++++++++--------------------
+ elisp/geiser-debug.el           |   36 +++++++++++++++++++++++-------
+ elisp/geiser-image.el           |   46 +++++++++++++++++++++------------------
  elisp/geiser-repl.el            |    4 +++-
- scheme/racket/geiser/eval.rkt   |    8 ++++----
- scheme/racket/geiser/images.rkt |   46 ++++++++++++++++++++++++++++++++++++++++++++
- scheme/racket/geiser/user.rkt   |   35 +++------------------------------
+ scheme/racket/geiser/eval.rkt   |    8 +++----
+ scheme/racket/geiser/images.rkt |   46 +++++++++++++++++++++++++++++++++++++++
+ scheme/racket/geiser/user.rkt   |   35 +++--------------------------
  6 files changed, 109 insertions(+), 66 deletions(-)
  create mode 100644 scheme/racket/geiser/images.rkt
 
@@ -276,10 +1083,10 @@ Date:   Sun Sep 2 02:34:47 2012 +0200
     Image display functionality refactored to its own module
 
  elisp/Makefile.am      |    2 +-
- elisp/geiser-image.el  |  102 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-racket.el |   13 +++----
+ elisp/geiser-image.el  |  102 ++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-racket.el |   13 ++----
  elisp/geiser-reload.el |    3 +-
- elisp/geiser-repl.el   |   69 ++----------------------------------
+ elisp/geiser-repl.el   |   69 +-------------------------------
  elisp/geiser.el        |    3 +-
  6 files changed, 113 insertions(+), 79 deletions(-)
  create mode 100644 elisp/geiser-image.el
@@ -290,7 +1097,7 @@ Date:   Sat Sep 1 05:42:46 2012 +0200
 
     Little cleanups
 
- scheme/racket/geiser/enter.rkt |  112 +++++++++++++++++++++++----------------------
+ scheme/racket/geiser/enter.rkt |  112 +++++++++++++++++++++-------------------
  1 file changed, 58 insertions(+), 54 deletions(-)
 
 commit bc21d274994eb40366d1c372fd1185483815b7ef
@@ -355,7 +1162,7 @@ Date:   Wed Aug 15 21:48:32 2012 -0600
     This also reduces memory requirements; emacs no longer reads image
     content into memory.
 
- elisp/geiser-repl.el |   78 ++++++++++++++++++++++++++++++-------------------------
+ elisp/geiser-repl.el |   78 ++++++++++++++++++++++++++++----------------------
  1 file changed, 43 insertions(+), 35 deletions(-)
 
 commit 84e662dff7a17532c1a4d953e9123a288f575cf2
@@ -1095,11 +1902,11 @@ Date:   Thu Feb 3 22:33:45 2011 +0100
     shouldn't be difficult).
 
  NEWS                               |    7 +++-
- README                             |   74 +++++++++++++++++++++--------------------
- elisp/geiser-compile.el            |   10 +++++-
+ README                             |   74 ++++++++++++++++++------------------
+ elisp/geiser-compile.el            |   10 ++++-
  elisp/geiser-mode.el               |    3 +-
  elisp/geiser-repl.el               |    1 +
- scheme/guile/geiser/evaluation.scm |   11 ++++--
+ scheme/guile/geiser/evaluation.scm |   11 +++++-
  6 files changed, 65 insertions(+), 41 deletions(-)
 
 commit 1eb968ccfdf86ae6d206540f84856d56e2045277
@@ -1125,7 +1932,7 @@ Date:   Tue Jan 25 02:28:32 2011 +0100
     are nicer in that respect: there we can offer both at once. In Guile,
     one at least has (thanks to this patch, too) M-`.
 
- elisp/geiser-company.el |   93 +++++++++++++++++++++++++++-------------------------
+ elisp/geiser-company.el |   93 +++++++++++++++++++++++++----------------------
  1 file changed, 49 insertions(+), 44 deletions(-)
 
 commit 89b89ec5a4bedf654517720010add2578dbffc16
@@ -1455,10 +2262,10 @@ Date:   Sat Jan 8 13:26:03 2011 +0100
     Thanks to MH, who did all the heavy lifting.
 
  doc/cheat.texi   |    2 +-
- doc/install.texi |   40 +++++++--------
+ doc/install.texi |   40 ++++++-------
  doc/intro.texi   |   16 +++---
- doc/parens.texi  |  164 +++++++++++++++++++++++++++++------------------------------
- doc/repl.texi    |  132 +++++++++++++++++++++++------------------------
+ doc/parens.texi  |  164 +++++++++++++++++++++++++++---------------------------
+ doc/repl.texi    |  132 +++++++++++++++++++++----------------------
  doc/thanks.texi  |    2 +-
  doc/top.texi     |    8 +--
  7 files changed, 182 insertions(+), 182 deletions(-)
@@ -1469,7 +2276,7 @@ Date:   Fri Jan 7 19:43:12 2011 +0100
 
     Docs: cheat sheet corrections
 
- doc/cheat.texi |  111 +++++++++++++++++++++++++++++++------------------------------
+ doc/cheat.texi |  111 ++++++++++++++++++++++++++++----------------------------
  1 file changed, 56 insertions(+), 55 deletions(-)
 
 commit 425e29e070c0860aec004296e050b92cb9250b89
@@ -1685,7 +2492,7 @@ Date:   Tue Dec 28 03:18:00 2010 +0100
 
     First stab at asynchronous autodoc retrieval
 
- elisp/geiser-autodoc.el |   53 ++++++++++++++++++++++++++--------------------------
+ elisp/geiser-autodoc.el |   53 +++++++++++++++++++++++------------------------
  elisp/geiser-company.el |    2 +-
  elisp/geiser-eval.el    |    6 ++++++
  3 files changed, 33 insertions(+), 28 deletions(-)
@@ -1778,7 +2585,7 @@ Date:   Mon Dec 20 01:21:34 2010 +0100
 
  NEWS             |    4 ++++
  doc/Makefile.am  |    1 -
- doc/install.texi |   55 ++++++++++++++++++++++++++++++++++++-------------------
+ doc/install.texi |   55 +++++++++++++++++++++++++++++++++++-------------------
  doc/macros.texi  |    2 ++
  4 files changed, 42 insertions(+), 20 deletions(-)
 
@@ -1940,8 +2747,8 @@ Date:   Mon Nov 29 01:42:37 2010 +0100
     refactoring, specially if we add support for let-values.
 
  elisp/geiser-completion.el |    6 ++--
- elisp/geiser-racket.el     |   20 ++++++------
- elisp/geiser-syntax.el     |   83 +++++++++++++++++++++++++++++++++----------------
+ elisp/geiser-racket.el     |   20 ++++++-----
+ elisp/geiser-syntax.el     |   83 ++++++++++++++++++++++++++++++--------------
  3 files changed, 70 insertions(+), 39 deletions(-)
 
 commit d70e9de59cfeae4fa8e76a48dbfe80e9d25e0d7c
@@ -2134,10 +2941,10 @@ Date:   Fri Nov 26 02:29:25 2010 +0100
     display its definition name and original module, besides the name of
     the module re-exporting it.
 
- elisp/geiser-doc.el              |    6 ++---
+ elisp/geiser-doc.el              |    6 ++--
  elisp/geiser-racket.el           |    2 +-
- scheme/racket/geiser/autodoc.rkt |   58 +++++++++++++++++++++++++++++++++++--------
- scheme/racket/geiser/modules.rkt |    7 ++++++
+ scheme/racket/geiser/autodoc.rkt |   58 +++++++++++++++++++++++++++++++-------
+ scheme/racket/geiser/modules.rkt |    7 +++++
  4 files changed, 59 insertions(+), 14 deletions(-)
 
 commit 59e53577aff12df02f437b95f46dc2951157eb10
@@ -2206,7 +3013,7 @@ Date:   Thu Nov 25 04:28:02 2010 +0100
     goodies such as  partial completion. Jolly.
 
  elisp/geiser-company.el    |    2 +-
- elisp/geiser-completion.el |  186 ++++++++++++-------------------------------------
+ elisp/geiser-completion.el |  186 +++++++++++---------------------------------
  2 files changed, 45 insertions(+), 143 deletions(-)
 
 commit acffa001cd9effa4a74261ac9b72e736b9b61937
@@ -2298,18 +3105,18 @@ Date:   Tue Nov 23 01:58:33 2010 +0100
  doc/cheat.texi                     |    3 +
  doc/img/geiser-mode.png            |  Bin 62445 -> 37636 bytes
  doc/img/repl-mod.png               |  Bin 29938 -> 30503 bytes
- doc/parens.texi                    |   33 +++++---
- doc/repl.texi                      |   40 +++++-----
+ doc/parens.texi                    |   33 +++++--
+ doc/repl.texi                      |   40 ++++-----
  elisp/geiser-completion.el         |   11 +--
- elisp/geiser-doc.el                |  168 ++++++++++++++++++++++++-----------------
+ elisp/geiser-doc.el                |  168 +++++++++++++++++++++---------------
  elisp/geiser-eval.el               |   20 +++--
  elisp/geiser-mode.el               |    2 +
  elisp/geiser-racket.el             |    2 +-
  scheme/guile/geiser/evaluation.scm |    2 -
- scheme/racket/geiser/autodoc.rkt   |   75 ++++++++++++------
+ scheme/racket/geiser/autodoc.rkt   |   75 +++++++++++-----
  scheme/racket/geiser/locations.rkt |   11 +--
  scheme/racket/geiser/main.rkt      |    2 +
- scheme/racket/geiser/modules.rkt   |   21 +++++-
+ scheme/racket/geiser/modules.rkt   |   21 ++++-
  15 files changed, 243 insertions(+), 147 deletions(-)
 
 commit a53249b83cdc0711f23b1b8860cd3582977230c6
@@ -2386,12 +3193,12 @@ Date:   Sun Nov 21 16:12:41 2010 +0100
 
  elisp/geiser-racket.el               |    7 ++--
  scheme/Makefile.am                   |    2 +-
- scheme/racket/geiser.rkt             |   23 -------------
- scheme/racket/geiser/autodoc.rkt     |    5 +--
- scheme/racket/geiser/completions.rkt |    2 --
- scheme/racket/geiser/modules.rkt     |   71 ++++++++++++++++++++++++++++++---------
- scheme/racket/geiser/startup.rkt     |   23 +++++++++++++
- scheme/racket/geiser/user.rkt        |    4 +--
+ scheme/racket/geiser.rkt             |   23 -----------
+ scheme/racket/geiser/autodoc.rkt     |    5 ++-
+ scheme/racket/geiser/completions.rkt |    2 -
+ scheme/racket/geiser/modules.rkt     |   71 ++++++++++++++++++++++++++--------
+ scheme/racket/geiser/startup.rkt     |   23 +++++++++++
+ scheme/racket/geiser/user.rkt        |    4 +-
  8 files changed, 88 insertions(+), 49 deletions(-)
  delete mode 100644 scheme/racket/geiser.rkt
  create mode 100644 scheme/racket/geiser/startup.rkt
@@ -2493,14 +3300,14 @@ Date:   Sun Nov 21 01:56:02 2010 +0100
     in Guile, using procedure properties.
 
  doc/img/repl-mod.png             |  Bin 17604 -> 29938 bytes
- elisp/geiser-doc.el              |   32 +++++++++++++--------
- scheme/guile/geiser/doc.scm      |   62 +++++++++++++++++++++++++++++++---------
- scheme/guile/geiser/modules.scm  |   34 +---------------------
- scheme/guile/geiser/utils.scm    |    8 ++++++
- scheme/racket/geiser/autodoc.rkt |   66 +++++++++++++++++++++++++++++++++++--------
- scheme/racket/geiser/eval.rkt    |   12 ++------
- scheme/racket/geiser/main.rkt    |   16 ++++++++---
- scheme/racket/geiser/modules.rkt |   35 ++---------------------
+ elisp/geiser-doc.el              |   32 +++++++++++-------
+ scheme/guile/geiser/doc.scm      |   62 +++++++++++++++++++++++++++--------
+ scheme/guile/geiser/modules.scm  |   34 +-------------------
+ scheme/guile/geiser/utils.scm    |    8 +++++
+ scheme/racket/geiser/autodoc.rkt |   66 +++++++++++++++++++++++++++++++-------
+ scheme/racket/geiser/eval.rkt    |   12 ++-----
+ scheme/racket/geiser/main.rkt    |   16 ++++++---
+ scheme/racket/geiser/modules.rkt |   35 ++------------------
  9 files changed, 149 insertions(+), 116 deletions(-)
 
 commit 481f0ea2e5577ad5bb1a718b8023af92202e7423
@@ -2551,7 +3358,7 @@ Date:   Sun Nov 14 23:18:40 2010 +0100
 
     Better geiser-implementation-help (for Geiser hackers)
 
- elisp/geiser-impl.el |   78 ++++++++++++++++++++++++++++---------------------------
+ elisp/geiser-impl.el |   78 ++++++++++++++++++++++++++------------------------
  1 file changed, 40 insertions(+), 38 deletions(-)
 
 commit 61cb503bbb8d1ff42bc2656ce9c0b93d11d84ad6
@@ -2630,7 +3437,7 @@ Date:   Sun Nov 14 20:16:46 2010 +0100
     Let's not wait for active connections to clear their queue when we're
     shutting down the REPL.
 
- elisp/geiser-connection.el |   48 +++++++++++++++++++-----------------------------
+ elisp/geiser-connection.el |   48 ++++++++++++++++++--------------------------
  elisp/geiser-repl.el       |    2 +-
  2 files changed, 20 insertions(+), 30 deletions(-)
 
@@ -2684,11 +3491,11 @@ Date:   Sat Nov 13 02:07:19 2010 +0100
     implementations.
 
  elisp/Makefile.am             |    1 -
- elisp/geiser-guile.el         |   17 ++----
- elisp/geiser-inf.el           |   89 --------------------------------
+ elisp/geiser-guile.el         |   17 +-----
+ elisp/geiser-inf.el           |   89 ----------------------------
  elisp/geiser-racket.el        |    4 --
- elisp/geiser-repl.el          |  129 ++++++++++++++++++++++++++--------------------
- scheme/racket/geiser/user.rkt |    6 +--
+ elisp/geiser-repl.el          |  129 +++++++++++++++++++++++------------------
+ scheme/racket/geiser/user.rkt |    6 +-
  6 files changed, 77 insertions(+), 169 deletions(-)
  delete mode 100644 elisp/geiser-inf.el
 
@@ -2731,10 +3538,10 @@ Date:   Fri Nov 12 22:55:40 2010 +0100
     lame excuse: nothing prevents you from starting a REPL server from
     emacs if you want). We'll see.
 
- elisp/geiser-connection.el         |   49 ++++++++++++++++++++++++++---------------
- elisp/geiser-guile.el              |   20 ++++++++++-------
- elisp/geiser-racket.el             |   14 ++++++------
- elisp/geiser-repl.el               |   29 ++++++++++++------------
+ elisp/geiser-connection.el         |   49 +++++++++++++++++++++++-------------
+ elisp/geiser-guile.el              |   20 +++++++++------
+ elisp/geiser-racket.el             |   14 +++++------
+ elisp/geiser-repl.el               |   29 ++++++++++-----------
  scheme/guile/geiser/evaluation.scm |    1 -
  scheme/racket/geiser/eval.rkt      |    1 -
  6 files changed, 65 insertions(+), 49 deletions(-)
@@ -2775,10 +3582,10 @@ Date:   Fri Nov 12 01:33:09 2010 +0100
     metacommand taking a variable number of arguments. Argh: this has
     taken me a few hours -- i'm getting old.
 
- elisp/geiser-guile.el              |   37 +++++++++++++++++++++++--------------
+ elisp/geiser-guile.el              |   37 ++++++++++++++++++++++--------------
  elisp/geiser-racket.el             |    1 -
  elisp/geiser-repl.el               |    6 +++---
- scheme/guile/geiser/emacs.scm      |   23 +++++++++++++++++------
+ scheme/guile/geiser/emacs.scm      |   23 ++++++++++++++++------
  scheme/guile/geiser/evaluation.scm |   18 ++++--------------
  5 files changed, 47 insertions(+), 38 deletions(-)
 
@@ -2820,12 +3627,12 @@ Date:   Thu Nov 11 16:27:01 2010 +0100
 
     Racket reconnected
 
- bin/geiser-racket.sh            |    6 ++---
- elisp/geiser-inf.el             |   24 +++++++++++-------
- elisp/geiser-repl.el            |   50 ++++++++++++++++++++++++++-----------
+ bin/geiser-racket.sh            |    6 ++--
+ elisp/geiser-inf.el             |   24 ++++++++++------
+ elisp/geiser-repl.el            |   50 +++++++++++++++++++++++----------
  scheme/racket/geiser.rkt        |    4 +--
- scheme/racket/geiser/server.rkt |   12 ++-------
- scheme/racket/geiser/user.rkt   |   59 ++++++++++++++++++++++++++++++++++----------
+ scheme/racket/geiser/server.rkt |   12 ++------
+ scheme/racket/geiser/user.rkt   |   59 ++++++++++++++++++++++++++++++---------
  6 files changed, 102 insertions(+), 53 deletions(-)
 
 commit d773c05503659047f35878bd745568ce04078148
@@ -2849,13 +3656,13 @@ Date:   Thu Nov 11 03:01:33 2010 +0100
  doc/cheat.texi                |    3 -
  doc/repl.texi                 |   13 +-
  elisp/Makefile.am             |    1 +
- elisp/geiser-connection.el    |  274 +++++++++++++------------------------
+ elisp/geiser-connection.el    |  274 ++++++++++++---------------------
  elisp/geiser-eval.el          |   10 +-
- elisp/geiser-inf.el           |   83 ++++++++++++
+ elisp/geiser-inf.el           |   83 ++++++++++
  elisp/geiser-log.el           |    1 -
  elisp/geiser-racket.el        |    1 -
  elisp/geiser-reload.el        |    1 +
- elisp/geiser-repl.el          |  338 +++++++++++++++++++++-------------------------
+ elisp/geiser-repl.el          |  338 +++++++++++++++++++----------------------
  scheme/racket/geiser/user.rkt |    8 +-
  11 files changed, 347 insertions(+), 386 deletions(-)
  create mode 100644 elisp/geiser-inf.el
@@ -2894,13 +3701,13 @@ Date:   Tue Nov 9 21:35:50 2010 +0100
 
  .gitignore                      |    1 +
  Makefile.am                     |    2 +-
- bin/Makefile.am                 |   15 +++++++++++
- bin/geiser-racket.sh            |   19 ++++++++++++++
+ bin/Makefile.am                 |   15 ++++++++++
+ bin/geiser-racket.sh            |   19 +++++++++++++
  configure.ac                    |    1 +
- doc/repl.texi                   |   60 ++++++++++++++++++++++++++++++--------------
- elisp/geiser-connection.el      |   57 ++++++++++++++++++-----------------------
- elisp/geiser-racket.el          |   12 +++++++++
- scheme/racket/geiser/server.rkt |   24 ++++++++++++++++++
+ doc/repl.texi                   |   60 ++++++++++++++++++++++++++-------------
+ elisp/geiser-connection.el      |   57 ++++++++++++++++---------------------
+ elisp/geiser-racket.el          |   12 ++++++++
+ scheme/racket/geiser/server.rkt |   24 ++++++++++++++++
  9 files changed, 138 insertions(+), 53 deletions(-)
  create mode 100644 bin/Makefile.am
  create mode 100755 bin/geiser-racket.sh
@@ -3012,8 +3819,8 @@ Date:   Mon Nov 8 03:38:44 2010 +0100
 
     Connection plumbing: ability to specify EOT token added
 
- elisp/geiser-connection.el |   91 ++++++++++++++++++++++++++-----------------------
- elisp/geiser-eval.el       |    6 ----
+ elisp/geiser-connection.el |   91 ++++++++++++++++++++++++--------------------
+ elisp/geiser-eval.el       |    6 ---
  2 files changed, 49 insertions(+), 48 deletions(-)
 
 commit 3e1ed908aa73875bda5842d6d9ce4c8b2d76bfb4
@@ -3049,7 +3856,7 @@ Date:   Sun Nov 7 17:31:09 2010 +0100
 
     Pumbling cleanups
 
- elisp/geiser-connection.el |  118 +++++++++++++++++++++++++------------------------
+ elisp/geiser-connection.el |  118 ++++++++++++++++++++++----------------------
  elisp/geiser-racket.el     |    4 +-
  elisp/geiser-repl.el       |    3 +-
  3 files changed, 64 insertions(+), 61 deletions(-)
@@ -3121,13 +3928,13 @@ Date:   Sat Nov 6 14:22:53 2010 +0100
     Manual nits
 
  doc/Makefile.am  |    2 +-
- doc/fun.texi     |  488 -----------------------------------------------------------
+ doc/fun.texi     |  488 ------------------------------------------------------
  doc/geiser.css   |    1 +
  doc/geiser.texi  |    2 +-
  doc/install.texi |    2 +-
  doc/intro.texi   |   12 +-
  doc/macros.texi  |    4 -
- doc/parens.texi  |  488 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/parens.texi  |  488 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
  doc/repl.texi    |   42 ++---
  doc/web.texi     |    2 +-
  10 files changed, 520 insertions(+), 523 deletions(-)
@@ -3321,7 +4128,7 @@ Date:   Sun Oct 31 15:08:50 2010 +0100
 
     Simple tables (not yet used)
 
- elisp/geiser-table.el |  137 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-table.el |  137 +++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 137 insertions(+)
  create mode 100644 elisp/geiser-table.el
 
@@ -3446,9 +4253,9 @@ Date:   Sat Oct 30 22:46:12 2010 +0200
 
     Guile: using meta-commands to talk with Guile
 
- elisp/geiser-guile.el              |   31 ++++++++++++++++----------
- scheme/guile/geiser/emacs.scm      |   48 ++++++++++++++++++-----------------------
- scheme/guile/geiser/evaluation.scm |   17 +++++++++------
+ elisp/geiser-guile.el              |   31 ++++++++++++++---------
+ scheme/guile/geiser/emacs.scm      |   48 ++++++++++++++++--------------------
+ scheme/guile/geiser/evaluation.scm |   17 ++++++++-----
  3 files changed, 52 insertions(+), 44 deletions(-)
 
 commit 8e0535dff68717c4073d0933e304a7ad8c803870
@@ -3532,7 +4339,7 @@ Date:   Fri Oct 29 22:51:19 2010 +0200
     Racket: ,enter meta-command instead of namespace clobbering
 
  elisp/geiser-racket.el        |    6 ++---
- scheme/racket/geiser/user.rkt |   55 ++++++++++++++++++++--------------------------
+ scheme/racket/geiser/user.rkt |   55 ++++++++++++++++++-----------------------
  2 files changed, 27 insertions(+), 34 deletions(-)
 
 commit c6add83b9dd772070e71a6ac2f61fdd948f8b52f
@@ -3603,7 +4410,7 @@ Date:   Sat Oct 16 03:36:49 2010 +0200
 
  README          |    5 +-
  doc/Makefile.am |    2 +-
- doc/cheat.texi  |  178 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/cheat.texi  |  178 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
  doc/fun.texi    |    2 +-
  doc/geiser.texi |   12 +++-
  doc/index.texi  |    2 +-
@@ -3646,9 +4453,9 @@ Date:   Fri Oct 15 19:31:03 2010 +0200
 
     Documentation for smart-tab mode
 
- README       |  185 +++++++++++++++++++++++++++++++++++++++++++++++++++
- README.org   |  229 ---------------------------------------------------------------
- doc/fun.texi |    8 +++
+ README       |  185 +++++++++++++++++++++++++++++++++++++++++++++++
+ README.org   |  229 ----------------------------------------------------------
+ doc/fun.texi |    8 ++
  3 files changed, 193 insertions(+), 229 deletions(-)
  create mode 100644 README
  delete mode 100644 README.org
@@ -3668,8 +4475,8 @@ Date:   Fri Oct 15 17:05:49 2010 +0200
 
     README -> README.org
 
- README     |  182 -----------------------------------------------------------------
- README.org |  182 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README     |  182 ------------------------------------------------------------
+ README.org |  182 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 182 insertions(+), 182 deletions(-)
  delete mode 100644 README
  create mode 100644 README.org
@@ -3781,8 +4588,8 @@ Date:   Mon Oct 11 02:23:26 2010 +0200
     New user command geiser-connect, which will try to connect to a remote
     server and use it in the REPL.
 
- elisp/geiser-repl.el |   70 ++++++++++++++++++++++++++++++++++++++++++++-----------
- elisp/geiser.el      |   11 +++++----
+ elisp/geiser-repl.el |   70 ++++++++++++++++++++++++++++++++++++++++----------
+ elisp/geiser.el      |   11 ++++----
  2 files changed, 63 insertions(+), 18 deletions(-)
 
 commit 6cca3627152fa6f4cd3c38c908db820fdc7eac98
@@ -3803,7 +4610,7 @@ Date:   Wed Oct 6 01:57:18 2010 +0200
 
     Fixes for scanning of locals during completion
 
- elisp/geiser-syntax.el |   70 ++++++++++++++++++++++++++++++-----------------------
+ elisp/geiser-syntax.el |   70 +++++++++++++++++++++++++++---------------------
  1 file changed, 40 insertions(+), 30 deletions(-)
 
 commit 8170fdab0cf35cf12d1dc091b6232ac4d22fe1a5
@@ -3813,9 +4620,9 @@ Date:   Wed Oct 6 00:53:07 2010 +0200
     Use cl only at compile time
 
  elisp/geiser-autodoc.el    |    2 +-
- elisp/geiser-base.el       |   16 +++++---------
- elisp/geiser-completion.el |    9 +++-----
- elisp/geiser-syntax.el     |   57 +++++++++++++++++++++++++++----------------------
+ elisp/geiser-base.el       |   16 ++++---------
+ elisp/geiser-completion.el |    9 +++----
+ elisp/geiser-syntax.el     |   57 ++++++++++++++++++++++++--------------------
  4 files changed, 40 insertions(+), 44 deletions(-)
 
 commit 2b0ff9f520839d7389ddb9e2354c709a1ce401d4
@@ -3847,10 +4654,10 @@ Date:   Sun Sep 12 01:59:47 2010 +0200
 
     More documentation
 
- doc/fun.texi                 |   72 +++++++++++++++++++++++++++++++++++------------
+ doc/fun.texi                 |   72 +++++++++++++++++++++++++++++++-----------
  doc/img/eval-error.png       |  Bin 27374 -> 27433 bytes
  doc/img/guile-eval-error.png |  Bin 0 -> 22733 bytes
- doc/repl.texi                |   21 +++++++-------
+ doc/repl.texi                |   21 ++++++------
  4 files changed, 65 insertions(+), 28 deletions(-)
  create mode 100644 doc/img/guile-eval-error.png
 
@@ -3910,9 +4717,9 @@ Date:   Tue Sep 7 05:58:22 2010 +0200
 
     Guile: configurable warning level
 
- elisp/geiser-guile.el              |   34 +++++++++++++++++++++++++++++++++-
- scheme/guile/geiser/emacs.scm      |   16 +++++++++++-----
- scheme/guile/geiser/evaluation.scm |   40 +++++++++++++++++++++++++++++++---------
+ elisp/geiser-guile.el              |   34 +++++++++++++++++++++++++++++-
+ scheme/guile/geiser/emacs.scm      |   16 ++++++++++-----
+ scheme/guile/geiser/evaluation.scm |   40 ++++++++++++++++++++++++++++--------
  3 files changed, 75 insertions(+), 15 deletions(-)
 
 commit 9ecfebdfd5d3361c643c2b16b9fb7771122b0e82
@@ -3949,7 +4756,7 @@ Date:   Tue Sep 7 00:22:52 2010 +0200
 
     Guile: evaluation warnings
 
- scheme/guile/geiser/evaluation.scm |   49 ++++++++++++++++++++++++++---------------
+ scheme/guile/geiser/evaluation.scm |   49 +++++++++++++++++++++++-------------
  1 file changed, 31 insertions(+), 18 deletions(-)
 
 commit 911a1fc178d9399a62b3742bffb992a41a7a197a
@@ -4118,7 +4925,7 @@ Date:   Thu Sep 2 06:15:33 2010 +0200
 
     Dead code elimination
 
- elisp/geiser-guile.el |   78 +++++++++++++++---------------------------------------
+ elisp/geiser-guile.el |   78 +++++++++++++------------------------------------
  1 file changed, 21 insertions(+), 57 deletions(-)
 
 commit 6fb4f86d76fe7138a549f32d794abc3b742bcecb
@@ -4277,12 +5084,12 @@ Date:   Tue Aug 24 06:59:19 2010 +0200
 
     More documentation.
 
- doc/fun.texi     |  140 +++++++++++++++++++++++++++++++++++++----------------------
- doc/geiser.texi  |   35 +++++++++++++--
+ doc/fun.texi     |  140 ++++++++++++++++++++++++++++++++++--------------------
+ doc/geiser.texi  |   35 ++++++++++++--
  doc/install.texi |    6 +--
- doc/intro.texi   |   30 ++++++-------
+ doc/intro.texi   |   30 ++++++------
  doc/macros.texi  |    3 ++
- doc/repl.texi    |   75 ++++++++++++++++----------------
+ doc/repl.texi    |   75 ++++++++++++++---------------
  6 files changed, 178 insertions(+), 111 deletions(-)
 
 commit 7711c737109013110a706346903fd9c0a3e25660
@@ -4349,7 +5156,7 @@ Date:   Wed Aug 11 22:41:14 2010 +0200
 
     More docs.
 
- doc/fun.texi                |   50 ++++++++++++++++++++++++++++++++++++++----------
+ doc/fun.texi                |   50 ++++++++++++++++++++++++++++++++++---------
  doc/img/docstring.png       |  Bin 0 -> 16390 bytes
  doc/repl.texi               |    1 +
  scheme/guile/geiser/doc.scm |    2 +-
@@ -4439,11 +5246,11 @@ Date:   Fri Aug 6 19:15:35 2010 +0200
 
     Keybinding changes documented.
 
- doc/fun.texi          |   52 +++++++++++++++++++++++++++-------------------------
+ doc/fun.texi          |   52 +++++++++++++++++++++++++------------------------
  doc/img/repl-menu.png |  Bin 28491 -> 29590 bytes
- doc/repl.texi         |   27 ++++++++++++++-------------
+ doc/repl.texi         |   27 ++++++++++++-------------
  elisp/geiser-mode.el  |    1 -
- elisp/geiser-repl.el  |   19 +++++++++----------
+ elisp/geiser-repl.el  |   19 +++++++++---------
  5 files changed, 50 insertions(+), 49 deletions(-)
 
 commit 3572a10cc7e9328f491ca20d95e05ae0e377e218
@@ -4530,7 +5337,7 @@ Date:   Sun Jul 25 22:35:41 2010 +0200
 
     Tweaks to scheme implementation selection, and docs for it.
 
- doc/fun.texi           |  105 +++++++++++++++++++++++++++++++++++++++++++++++++++--
+ doc/fun.texi           |  105 ++++++++++++++++++++++++++++++++++++++++++++++--
  doc/repl.texi          |    1 +
  elisp/geiser-guile.el  |    2 +
  elisp/geiser-impl.el   |   14 +++----
@@ -4543,7 +5350,7 @@ Date:   Sun Jul 25 16:19:00 2010 +0200
 
     Manual: first section on Scheme buffers.
 
- doc/fun.texi            |   88 +++++++++++++++++++++++++++++++++++++++++++++++++---
+ doc/fun.texi            |   88 ++++++++++++++++++++++++++++++++++++++++++++---
  doc/img/geiser-mode.png |  Bin 0 -> 38574 bytes
  doc/install.texi        |    1 +
  3 files changed, 85 insertions(+), 4 deletions(-)
@@ -4706,10 +5513,10 @@ Date:   Tue Jun 29 14:51:46 2010 +0200
 
     Docs: REPL tutorial completed
 
- doc/geiser.css       |    6 ++++-
+ doc/geiser.css       |    6 +++-
  doc/geiser.texi      |    4 +++
  doc/img/repl-mod.png |  Bin 0 -> 15190 bytes
- doc/repl.texi        |   81 ++++++++++++++++++++++++++++++++++++++++++++-----------
+ doc/repl.texi        |   81 ++++++++++++++++++++++++++++++++++++++++----------
  4 files changed, 75 insertions(+), 16 deletions(-)
  create mode 100644 doc/img/repl-mod.png
 
@@ -4723,7 +5530,7 @@ Date:   Mon Jun 28 02:34:11 2010 +0200
  doc/img/repl-autodoc.png   |  Bin 0 -> 54293 bytes
  doc/img/repl-menu.png      |  Bin 147379 -> 145164 bytes
  doc/intro.texi             |    1 +
- doc/repl.texi              |  138 ++++++++++++++++++++++++++++++++++++++++---------
+ doc/repl.texi              |  138 ++++++++++++++++++++++++++++++++++++--------
  5 files changed, 114 insertions(+), 25 deletions(-)
  create mode 100644 doc/img/mod-completion.png
  create mode 100644 doc/img/repl-autodoc.png
@@ -4764,17 +5571,17 @@ Date:   Sun Jun 27 01:43:32 2010 +0200
     A new tutorial bit
 
  doc/Makefile.am       |    1 +
- doc/geiser.css        |   17 +++++++++--
+ doc/geiser.css        |   17 ++++++++--
  doc/geiser.texi       |   16 ++++++++--
  doc/img/repl-menu.png |  Bin 0 -> 147379 bytes
  doc/img/repls.png     |  Bin 0 -> 154876 bytes
  doc/index.texi        |    2 +-
  doc/install.texi      |    2 +-
  doc/intro.texi        |    2 +-
- doc/macros.texi       |   12 ++++++++
- doc/repl.texi         |   85 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/macros.texi       |   12 +++++++
+ doc/repl.texi         |   85 +++++++++++++++++++++++++++++++++++++++++++++++++
  doc/top.texi          |    9 ------
- doc/tutorial.texi     |   12 --------
+ doc/tutorial.texi     |   12 -------
  doc/web.texi          |    9 ++++--
  13 files changed, 136 insertions(+), 31 deletions(-)
  create mode 100644 doc/img/repl-menu.png
@@ -4813,9 +5620,9 @@ Date:   Wed Jun 23 22:54:13 2010 +0200
 
     REPL: change current module command and better bindings.
 
- elisp/geiser-completion.el |    3 ++-
- elisp/geiser-mode.el       |    3 ++-
- elisp/geiser-repl.el       |   69 ++++++++++++++++++++++++++-----------------------
+ elisp/geiser-completion.el |    3 +-
+ elisp/geiser-mode.el       |    3 +-
+ elisp/geiser-repl.el       |   69 ++++++++++++++++++++++++--------------------
  3 files changed, 41 insertions(+), 34 deletions(-)
 
 commit 2b47a45e126d8fb4457512d6aee0e829a0c6b07f
@@ -4889,7 +5696,7 @@ Date:   Mon Jun 21 00:02:34 2010 +0200
     Mentioning Quack in the docs.
 
  doc/geiser.texi  |    7 +++++--
- doc/install.texi |   58 ++++++++++++++++++++++++++++++++--------------------------
+ doc/install.texi |   58 ++++++++++++++++++++++++++++++------------------------
  2 files changed, 37 insertions(+), 28 deletions(-)
 
 commit 25a39cf39fa1b29636111d03ba35cd4862fcba8d
@@ -4898,12 +5705,12 @@ Date:   Sun Jun 20 21:52:52 2010 +0200
 
     Scripts for generating Geiser's website.
 
- doc/geiser.css   |   65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- doc/geiser.texi  |   46 ++++++++++++++++++++++++++++++----------
- doc/install.texi |   67 +++++++++++++++++++++++------------------------------------
- doc/intro.texi   |   24 +--------------------
- doc/make-site.sh |   15 +++++++++++++
- doc/site.conf    |   53 ++++++++++++++++++++++++++++++++++++++++++++++
+ doc/geiser.css   |   65 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/geiser.texi  |   46 ++++++++++++++++++++++++++++---------
+ doc/install.texi |   67 +++++++++++++++++++++---------------------------------
+ doc/intro.texi   |   24 +------------------
+ doc/make-site.sh |   15 ++++++++++++
+ doc/site.conf    |   53 ++++++++++++++++++++++++++++++++++++++++++
  6 files changed, 195 insertions(+), 75 deletions(-)
  create mode 100644 doc/geiser.css
  create mode 100755 doc/make-site.sh
@@ -4916,7 +5723,7 @@ Date:   Sun Jun 20 04:35:58 2010 +0200
     Tweaks to the manual.
 
  .gitignore       |    1 +
- doc/fdl.texi     |  519 -----------------------------------------------------------
+ doc/fdl.texi     |  519 ------------------------------------------------------
  doc/geiser.texi  |   14 +-
  doc/index.texi   |    2 +-
  doc/install.texi |    2 +-
@@ -4931,9 +5738,9 @@ Date:   Sun Jun 20 03:27:25 2010 +0200
     Manual: installation section.
 
  doc/geiser.texi  |    3 +-
- doc/install.texi |  108 +++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ doc/install.texi |  108 +++++++++++++++++++++++++++++++++++++++++++++++++-----
  doc/intro.texi   |    2 +-
- doc/quick.texi   |    2 ++
+ doc/quick.texi   |    2 +
  4 files changed, 103 insertions(+), 12 deletions(-)
 
 commit 7cfa18914d1ccb85aca33f659c931be0e8a8c894
@@ -4944,11 +5751,11 @@ Date:   Sat Jun 19 23:35:21 2010 +0200
 
  .gitignore       |   12 ++
  README           |    2 +-
- doc/fdl.texi     |  519 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- doc/geiser.texi  |   94 +++++++++++
+ doc/fdl.texi     |  519 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/geiser.texi  |   94 ++++++++++
  doc/index.texi   |   14 ++
  doc/install.texi |   50 ++++++
- doc/intro.texi   |  111 +++++++++++++
+ doc/intro.texi   |  111 ++++++++++++
  doc/quick.texi   |    8 +
  8 files changed, 809 insertions(+), 1 deletion(-)
  create mode 100644 doc/fdl.texi
@@ -5049,7 +5856,7 @@ Date:   Mon Jun 14 23:54:51 2010 +0200
 
  elisp/geiser-doc.el  |    4 +--
  elisp/geiser-menu.el |    6 ++--
- elisp/geiser-mode.el |   93 +++++++++++++++++++++++++++++++------------------------
+ elisp/geiser-mode.el |   93 ++++++++++++++++++++++++++++----------------------
  3 files changed, 57 insertions(+), 46 deletions(-)
 
 commit 3114e4208dd63bde3f978cae581503a70217db63
@@ -5079,7 +5886,7 @@ Date:   Mon Jun 14 20:29:14 2010 +0200
     Refactoring.
 
  elisp/geiser-impl.el |    3 ++
- elisp/geiser-menu.el |  120 +++++++++++++++++++++++++------------------------------
+ elisp/geiser-menu.el |  120 +++++++++++++++++++++++---------------------------
  2 files changed, 58 insertions(+), 65 deletions(-)
 
 commit 8cbee770fd943323297de29f6ae11541a2b63a0b
@@ -5099,9 +5906,9 @@ Date:   Mon Jun 14 04:17:54 2010 +0200
 
     Better menus.
 
- elisp/geiser-doc.el  |   10 ++---
- elisp/geiser-menu.el |  127 ++++++++++++++++++++++++-------------------------------
- elisp/geiser-repl.el |   21 ++++-----
+ elisp/geiser-doc.el  |   10 ++--
+ elisp/geiser-menu.el |  127 ++++++++++++++++++++++----------------------------
+ elisp/geiser-repl.el |   21 +++++----
  3 files changed, 72 insertions(+), 86 deletions(-)
 
 commit 61a0065711cde95ed7a20f183e871b4628a415b4
@@ -5119,7 +5926,7 @@ Date:   Mon Jun 14 01:01:09 2010 +0200
 
     REPL menu.
 
- elisp/geiser-repl.el |   56 +++++++++++++++++++++++++++++--------------------------
+ elisp/geiser-repl.el |   56 +++++++++++++++++++++++++++-----------------------
  1 file changed, 30 insertions(+), 26 deletions(-)
 
 commit caae0709112c75d7cac72b5e2249b01cbea3d46c
@@ -5147,7 +5954,7 @@ Date:   Mon Jun 14 00:33:41 2010 +0200
     Generic support for menus.
 
  elisp/geiser-impl.el   |    2 +
- elisp/geiser-menu.el   |  157 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-menu.el   |  157 ++++++++++++++++++++++++++++++++++++++++++++++++
  elisp/geiser-reload.el |    1 +
  3 files changed, 160 insertions(+)
  create mode 100644 elisp/geiser-menu.el
@@ -5195,10 +6002,10 @@ Date:   Sat Jun 12 00:03:28 2010 +0200
 
     New buttons (source, forward/backward) in document browser.
 
- elisp/geiser-doc.el    |  101 ++++++++++++++++++++++++++++++++++++++++++-----------
- elisp/geiser-edit.el   |    5 +--
- elisp/geiser-reload.el |    4 +--
- elisp/geiser-syntax.el |   32 +++++++++--------
+ elisp/geiser-doc.el    |  101 ++++++++++++++++++++++++++++++++++++++----------
+ elisp/geiser-edit.el   |    5 ++-
+ elisp/geiser-reload.el |    4 +-
+ elisp/geiser-syntax.el |   32 ++++++++-------
  4 files changed, 102 insertions(+), 40 deletions(-)
 
 commit 4428e92f1ea97ac1443740c97e0ad8db6d0259fa
@@ -5247,8 +6054,8 @@ Date:   Thu Jun 10 03:27:22 2010 +0200
        - We contemplate the possibility that a module is accessed using
          different paths.
 
- scheme/racket/geiser/enter.rkt   |   48 ++++++++++++++++++++++++++++++++++++++-----
- scheme/racket/geiser/modules.rkt |   47 +++++++++++++++++++++---------------------
+ scheme/racket/geiser/enter.rkt   |   48 ++++++++++++++++++++++++++++++++++----
+ scheme/racket/geiser/modules.rkt |   47 ++++++++++++++++++-------------------
  2 files changed, 66 insertions(+), 29 deletions(-)
 
 commit 61cb8d659399a942fa74947749b3a23a88bda04f
@@ -5257,7 +6064,7 @@ Date:   Wed Jun 9 00:41:22 2010 +0200
 
     Racket: improvements in non-loaded module location.
 
- scheme/racket/geiser/modules.rkt |   42 +++++++++++++++++++++++++++++-------------
+ scheme/racket/geiser/modules.rkt |   42 ++++++++++++++++++++++++++------------
  1 file changed, 29 insertions(+), 13 deletions(-)
 
 commit e9b0f1aaa810c15dbdffc4147f2956851c4f1782
@@ -5266,12 +6073,12 @@ Date:   Tue Jun 8 02:11:55 2010 +0200
 
     Racket: square cosmetics.
 
- scheme/racket/geiser/autodoc.rkt   |  154 ++++++++++++++++++++---------------------
+ scheme/racket/geiser/autodoc.rkt   |  154 ++++++++++++++++++------------------
  scheme/racket/geiser/enter.rkt     |    4 +-
- scheme/racket/geiser/eval.rkt      |   16 ++---
+ scheme/racket/geiser/eval.rkt      |   16 ++--
  scheme/racket/geiser/locations.rkt |   10 +--
- scheme/racket/geiser/modules.rkt   |   68 +++++++++---------
- scheme/racket/geiser/utils.rkt     |    8 +--
+ scheme/racket/geiser/modules.rkt   |   68 ++++++++--------
+ scheme/racket/geiser/utils.rkt     |    8 +-
  6 files changed, 130 insertions(+), 130 deletions(-)
 
 commit d402ed3f41790abb9861af9dbe47166295cd66b1
@@ -5335,7 +6142,7 @@ Date:   Mon Jun 7 02:21:06 2010 +0200
 
     Guile: dead elisp code elimination.
 
- elisp/geiser-guile.el        |   44 +-------------------------------------------
+ elisp/geiser-guile.el        |   44 +-----------------------------------------
  scheme/guile/geiser/xref.scm |    2 +-
  2 files changed, 2 insertions(+), 44 deletions(-)
 
@@ -5575,29 +6382,29 @@ Date:   Mon May 24 00:03:30 2010 +0200
     Racket: PLT implementation renamed to Racket.
 
  elisp/geiser-impl.el                 |    2 +-
- elisp/geiser-plt.el                  |  208 --------------------------------------
- elisp/geiser-racket.el               |  209 +++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-plt.el                  |  208 ---------------------------------
+ elisp/geiser-racket.el               |  209 ++++++++++++++++++++++++++++++++++
  elisp/geiser.el                      |   10 +-
  scheme/Makefile.am                   |   20 ++--
- scheme/plt/geiser.rkt                |   22 -----
- scheme/plt/geiser/autodoc.rkt        |  189 -----------------------------------
- scheme/plt/geiser/completions.rkt    |   31 ------
- scheme/plt/geiser/enter.rkt          |  103 -------------------
- scheme/plt/geiser/eval.rkt           |   81 ---------------
- scheme/plt/geiser/locations.rkt      |   54 ----------
- scheme/plt/geiser/main.rkt           |   47 ---------
- scheme/plt/geiser/modules.rkt        |  150 ----------------------------
- scheme/plt/geiser/user.rkt           |   57 -----------
+ scheme/plt/geiser.rkt                |   22 ----
+ scheme/plt/geiser/autodoc.rkt        |  189 ------------------------------
+ scheme/plt/geiser/completions.rkt    |   31 -----
+ scheme/plt/geiser/enter.rkt          |  103 -----------------
+ scheme/plt/geiser/eval.rkt           |   81 -------------
+ scheme/plt/geiser/locations.rkt      |   54 ---------
+ scheme/plt/geiser/main.rkt           |   47 --------
+ scheme/plt/geiser/modules.rkt        |  150 ------------------------
+ scheme/plt/geiser/user.rkt           |   57 ----------
  scheme/plt/geiser/utils.rkt          |   27 -----
- scheme/racket/geiser.rkt             |   22 +++++
- scheme/racket/geiser/autodoc.rkt     |  189 +++++++++++++++++++++++++++++++++++
- scheme/racket/geiser/completions.rkt |   31 ++++++
- scheme/racket/geiser/enter.rkt       |  103 +++++++++++++++++++
- scheme/racket/geiser/eval.rkt        |   81 +++++++++++++++
- scheme/racket/geiser/locations.rkt   |   54 ++++++++++
- scheme/racket/geiser/main.rkt        |   47 +++++++++
- scheme/racket/geiser/modules.rkt     |  150 ++++++++++++++++++++++++++++
- scheme/racket/geiser/user.rkt        |   56 +++++++++++
+ scheme/racket/geiser.rkt             |   22 ++++
+ scheme/racket/geiser/autodoc.rkt     |  189 ++++++++++++++++++++++++++++++
+ scheme/racket/geiser/completions.rkt |   31 +++++
+ scheme/racket/geiser/enter.rkt       |  103 +++++++++++++++++
+ scheme/racket/geiser/eval.rkt        |   81 +++++++++++++
+ scheme/racket/geiser/locations.rkt   |   54 +++++++++
+ scheme/racket/geiser/main.rkt        |   47 ++++++++
+ scheme/racket/geiser/modules.rkt     |  150 ++++++++++++++++++++++++
+ scheme/racket/geiser/user.rkt        |   56 +++++++++
  scheme/racket/geiser/utils.rkt       |   27 +++++
  25 files changed, 985 insertions(+), 985 deletions(-)
  delete mode 100644 elisp/geiser-plt.el
@@ -5661,22 +6468,22 @@ Date:   Sun May 23 23:10:52 2010 +0200
  elisp/geiser.el                   |    4 +-
  scheme/plt/geiser.rkt             |   22 +++++
  scheme/plt/geiser.ss              |   22 -----
- scheme/plt/geiser/autodoc.rkt     |  189 ++++++++++++++++++++++++++++++++++++++++++
- scheme/plt/geiser/autodoc.ss      |  189 ------------------------------------------
- scheme/plt/geiser/completions.rkt |   31 +++++++
- scheme/plt/geiser/completions.ss  |   31 -------
- scheme/plt/geiser/enter.rkt       |  103 +++++++++++++++++++++++
- scheme/plt/geiser/enter.ss        |  103 -----------------------
- scheme/plt/geiser/eval.rkt        |   81 ++++++++++++++++++
- scheme/plt/geiser/eval.ss         |   81 ------------------
- scheme/plt/geiser/locations.rkt   |   54 ++++++++++++
- scheme/plt/geiser/locations.ss    |   54 ------------
- scheme/plt/geiser/main.rkt        |   49 +++++++++++
- scheme/plt/geiser/main.ss         |   49 -----------
- scheme/plt/geiser/modules.rkt     |  147 ++++++++++++++++++++++++++++++++
- scheme/plt/geiser/modules.ss      |  147 --------------------------------
- scheme/plt/geiser/user.rkt        |   57 +++++++++++++
- scheme/plt/geiser/user.ss         |   57 -------------
+ scheme/plt/geiser/autodoc.rkt     |  189 +++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/autodoc.ss      |  189 -------------------------------------
+ scheme/plt/geiser/completions.rkt |   31 ++++++
+ scheme/plt/geiser/completions.ss  |   31 ------
+ scheme/plt/geiser/enter.rkt       |  103 ++++++++++++++++++++
+ scheme/plt/geiser/enter.ss        |  103 --------------------
+ scheme/plt/geiser/eval.rkt        |   81 ++++++++++++++++
+ scheme/plt/geiser/eval.ss         |   81 ----------------
+ scheme/plt/geiser/locations.rkt   |   54 +++++++++++
+ scheme/plt/geiser/locations.ss    |   54 -----------
+ scheme/plt/geiser/main.rkt        |   49 ++++++++++
+ scheme/plt/geiser/main.ss         |   49 ----------
+ scheme/plt/geiser/modules.rkt     |  147 +++++++++++++++++++++++++++++
+ scheme/plt/geiser/modules.ss      |  147 -----------------------------
+ scheme/plt/geiser/user.rkt        |   57 +++++++++++
+ scheme/plt/geiser/user.ss         |   57 -----------
  scheme/plt/geiser/utils.rkt       |   27 ++++++
  scheme/plt/geiser/utils.ss        |   27 ------
  22 files changed, 774 insertions(+), 767 deletions(-)
@@ -5752,10 +6559,10 @@ Date:   Thu Apr 1 02:19:32 2010 +0200
     the edge, just stick with tag 0.0.9 until 0.0.10 is out.
 
  scheme/plt/geiser.ss         |    3 +-
- scheme/plt/geiser/enter.ss   |  103 +++++++++++++++++++++++++++++++++++++++++++++++
- scheme/plt/geiser/main.ss    |    9 +----
- scheme/plt/geiser/modules.ss |   21 +++++-----
- scheme/plt/geiser/user.ss    |   57 ++++++++++++++++++++++++++
+ scheme/plt/geiser/enter.ss   |  103 ++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/main.ss    |    9 +---
+ scheme/plt/geiser/modules.ss |   21 ++++-----
+ scheme/plt/geiser/user.ss    |   57 +++++++++++++++++++++++
  5 files changed, 173 insertions(+), 20 deletions(-)
  create mode 100644 scheme/plt/geiser/enter.ss
  create mode 100644 scheme/plt/geiser/user.ss
@@ -5767,10 +6574,10 @@ Date:   Wed Mar 31 21:40:20 2010 +0200
     PLT: geiser is now a regular module.
 
  elisp/geiser-plt.el          |    7 +++---
- scheme/plt/geiser.ss         |   52 +++++++--------------------------------------
+ scheme/plt/geiser.ss         |   52 +++++++---------------------------------
  scheme/plt/geiser/autodoc.ss |    4 ++--
- scheme/plt/geiser/eval.ss    |    6 +++---
- scheme/plt/geiser/main.ss    |   54 +++++++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/eval.ss    |    6 ++---
+ scheme/plt/geiser/main.ss    |   54 ++++++++++++++++++++++++++++++++++++++++++
  5 files changed, 70 insertions(+), 53 deletions(-)
  create mode 100644 scheme/plt/geiser/main.ss
 
@@ -6010,7 +6817,7 @@ Date:   Sat Feb 27 22:57:53 2010 +0100
     - Automatic indentation of multi-line sexps
     - Syntax highlighting of scheme keywords
 
- elisp/geiser-repl.el |   51 ++++++++++++++++++++++++++++++++++++++++-----------
+ elisp/geiser-repl.el |   51 +++++++++++++++++++++++++++++++++++++++-----------
  1 file changed, 40 insertions(+), 11 deletions(-)
 
 commit 070b159aa6db39cd220e76b25d6ad58b2a0e3362
@@ -6078,11 +6885,11 @@ Date:   Thu Jan 28 14:53:33 2010 +0100
 
     Generic support for debugging prompts in the REPL
 
- elisp/geiser-autodoc.el    |   10 ++++--
- elisp/geiser-connection.el |   92 ++++++++++++++++++++++++++++++++++++++-----------
- elisp/geiser-debug.el      |   27 ++++++++-------
- elisp/geiser-impl.el       |    5 +--
- elisp/geiser-repl.el       |   14 ++++++--
+ elisp/geiser-autodoc.el    |   10 +++--
+ elisp/geiser-connection.el |   92 ++++++++++++++++++++++++++++++++++----------
+ elisp/geiser-debug.el      |   27 ++++++-------
+ elisp/geiser-impl.el       |    5 ++-
+ elisp/geiser-repl.el       |   14 +++++--
  5 files changed, 106 insertions(+), 42 deletions(-)
 
 commit dd0ef53303074c1217363d363c1cccc6fcad6dc7
@@ -6219,7 +7026,7 @@ Date:   Fri Nov 13 01:18:34 2009 +0100
 
     Guile: Support for multiple arities in autodoc.
 
- scheme/guile/geiser/doc.scm |   60 ++++++++++++++++++++++++++----------------------
+ scheme/guile/geiser/doc.scm |   60 ++++++++++++++++++++++++-------------------
  1 file changed, 33 insertions(+), 27 deletions(-)
 
 commit 6e0b3e61eb8aec477ba7b668778e831934682a90
@@ -6360,7 +7167,7 @@ Date:   Sun Sep 27 00:32:28 2009 +0200
 
     PLT: Ignoring errors during argument name scanning for autodoc.
 
- scheme/plt/geiser/autodoc.ss |   45 +++++++++++++++++++++++----------------------
+ scheme/plt/geiser/autodoc.ss |   45 +++++++++++++++++++++---------------------
  1 file changed, 23 insertions(+), 22 deletions(-)
 
 commit 3b849eb2312f5ecc0ecb5a20fe574f8f69d4deb4
@@ -6396,10 +7203,10 @@ Date:   Sat Sep 26 21:44:21 2009 +0200
 
     Multiple arity display, used by PLT backend (case-lambda).
 
- elisp/geiser-autodoc.el      |   60 ++++++++++++++++++++++++++---------------------
+ elisp/geiser-autodoc.el      |   60 +++++++++++++++++++++++-------------------
  elisp/geiser-doc.el          |    2 +-
- scheme/guile/geiser/doc.scm  |   10 ++++----
- scheme/plt/geiser/autodoc.ss |   57 ++++++++++++++++++++++++++------------------
+ scheme/guile/geiser/doc.scm  |   10 +++----
+ scheme/plt/geiser/autodoc.ss |   57 +++++++++++++++++++++++----------------
  4 files changed, 73 insertions(+), 56 deletions(-)
 
 commit f67ef229256de7406666dd5ffe14c229bf0b2045
@@ -6529,14 +7336,14 @@ Date:   Tue Sep 22 22:43:28 2009 +0200
  elisp/geiser-completion.el |   18 ++-
  elisp/geiser-custom.el     |    6 +-
  elisp/geiser-debug.el      |    9 +-
- elisp/geiser-doc.el        |   17 ++-
- elisp/geiser-eval.el       |   25 ++--
- elisp/geiser-guile.el      |   25 ++--
- elisp/geiser-impl.el       |  367 ++++++++++++++++++++++++-------------------------
+ elisp/geiser-doc.el        |   17 +-
+ elisp/geiser-eval.el       |   25 +--
+ elisp/geiser-guile.el      |   25 +--
+ elisp/geiser-impl.el       |  367 +++++++++++++++++++++-----------------------
  elisp/geiser-mode.el       |    5 +-
  elisp/geiser-plt.el        |   15 ++
  elisp/geiser-reload.el     |    3 -
- elisp/geiser-repl.el       |   33 +++--
+ elisp/geiser-repl.el       |   33 +++-
  elisp/geiser.el            |    2 +-
  12 files changed, 291 insertions(+), 234 deletions(-)
 
@@ -6696,7 +7503,7 @@ Date:   Fri Sep 11 01:15:56 2009 +0200
 
     BSD relicensing: COPYING.
 
- COPYING |  697 +++-----------------------------------------------------------------
+ COPYING |  697 +++------------------------------------------------------------
  1 file changed, 23 insertions(+), 674 deletions(-)
 
 commit 4de073bacd80820803d129fd7f04e2c210f20442
@@ -6730,7 +7537,7 @@ Date:   Mon Sep 7 00:17:12 2009 +0200
 
     Scheme reader improvements: #<>, #||# and other bits.
 
- elisp/geiser-syntax.el |   62 +++++++++++++++++++++++++++++++++++++----------------
+ elisp/geiser-syntax.el |   62 ++++++++++++++++++++++++++++++++++--------------
  1 file changed, 44 insertions(+), 18 deletions(-)
 
 commit 8d534314354d6858ec72f483b3e37cc50daaf8d8
@@ -6739,7 +7546,7 @@ Date:   Sun Aug 30 23:53:19 2009 +0200
 
     Improved local names detection (both implementation- and functional-wise).
 
- elisp/geiser-syntax.el |   66 ++++++++++++++++++++++++++---------------------------
+ elisp/geiser-syntax.el |   66 ++++++++++++++++++++++++------------------------
  1 file changed, 33 insertions(+), 33 deletions(-)
 
 commit e63eed7c83ba3d1e3a3b29aaca7b336d4a635a39
@@ -6749,7 +7556,7 @@ Date:   Sun Aug 30 11:52:15 2009 +0200
     Tagging keywords as such in the scheme reader, for later spotting of
     active argument in autodoc.
 
- elisp/geiser-syntax.el |   59 +++++++++++++++++++++++++++++------------------------
+ elisp/geiser-syntax.el |   59 ++++++++++++++++++++++++++----------------------
  1 file changed, 32 insertions(+), 27 deletions(-)
 
 commit 2c6f07d95935668a82bbd549901da6d0949fbbe7
@@ -6761,8 +7568,8 @@ Date:   Sun Aug 30 11:19:09 2009 +0200
     Currently put to (let's hope, good) use for context parsing in autodoc
     and locals discovery (internal defines are recognised now).
 
- elisp/geiser-autodoc.el |    9 ++-
- elisp/geiser-syntax.el  |  209 +++++++++++++++++++++++++++++++---------------------
+ elisp/geiser-autodoc.el |    9 +-
+ elisp/geiser-syntax.el  |  209 ++++++++++++++++++++++++++++-------------------
  2 files changed, 128 insertions(+), 90 deletions(-)
 
 commit 4308f5bf8babe700df73b384e91c2964ef431e5c
@@ -6844,12 +7651,12 @@ Date:   Tue Aug 25 01:58:55 2009 +0200
  README                     |   11 +++++
  elisp/Makefile.am          |    1 +
  elisp/geiser-autodoc.el    |    6 ++-
- elisp/geiser-company.el    |  111 +++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-company.el    |  111 ++++++++++++++++++++++++++++++++++++++++++++
  elisp/geiser-completion.el |    8 ++--
- elisp/geiser-edit.el       |   11 +++--
- elisp/geiser-mode.el       |    7 ++++
+ elisp/geiser-edit.el       |   11 ++---
+ elisp/geiser-mode.el       |    7 +++
  elisp/geiser-reload.el     |    1 +
- elisp/geiser-repl.el       |    7 ++++
+ elisp/geiser-repl.el       |    7 +++
  9 files changed, 153 insertions(+), 10 deletions(-)
  create mode 100644 elisp/geiser-company.el
 
@@ -6942,8 +7749,8 @@ Date:   Sun Aug 23 05:18:39 2009 +0200
     Standardese filling.
 
  AUTHORS |    4 +
- INSTALL |  316 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- README  |   57 ++++++++++---
+ INSTALL |  316 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README  |   57 +++++++++---
  3 files changed, 364 insertions(+), 13 deletions(-)
 
 commit ace9896b831c1d1b458ca2504837009d8fadc600
@@ -6962,14 +7769,14 @@ Date:   Sun Aug 23 02:59:09 2009 +0200
 
     Fixes for all byte-compilation warnings.
 
- elisp/geiser-autodoc.el    |    4 ++--
- elisp/geiser-base.el       |   20 ++---------------
+ elisp/geiser-autodoc.el    |    4 +--
+ elisp/geiser-base.el       |   20 ++-------------
  elisp/geiser-completion.el |    6 ++---
  elisp/geiser-doc.el        |    2 +-
- elisp/geiser-edit.el       |    5 ++++-
- elisp/geiser-eval.el       |   38 ++++++++++++++++----------------
+ elisp/geiser-edit.el       |    5 +++-
+ elisp/geiser-eval.el       |   38 ++++++++++++++---------------
  elisp/geiser-guile.el      |    3 +++
- elisp/geiser-impl.el       |   58 +++++++++++++++++++++++++------------------------
+ elisp/geiser-impl.el       |   58 +++++++++++++++++++++++---------------------
  elisp/geiser-log.el        |    2 ++
  9 files changed, 66 insertions(+), 72 deletions(-)
 
@@ -6979,15 +7786,15 @@ Date:   Sun Aug 23 02:58:13 2009 +0200
 
     Autotoolification.
 
- .gitignore                 |   11 ++++++
+ .gitignore                 |   11 +++++
  Makefile.am                |    1 +
- configure.ac               |   33 +++++++++++++++++
- elisp/Makefile.am          |   31 ++++++++++++++++
+ configure.ac               |   33 +++++++++++++++
+ elisp/Makefile.am          |   31 ++++++++++++++
  elisp/geiser-install.el.in |    5 +++
- elisp/geiser-reload.el     |   96 +++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-version.el.in |   12 +++++++
- elisp/geiser.el            |   77 +++++----------------------------------
- scheme/Makefile.am         |   16 +++++++++
+ elisp/geiser-reload.el     |   96 ++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-version.el.in |   12 ++++++
+ elisp/geiser.el            |   77 ++++-------------------------------
+ scheme/Makefile.am         |   16 ++++++++
  9 files changed, 213 insertions(+), 69 deletions(-)
  create mode 100644 AUTHORS
  create mode 100644 INSTALL
@@ -7047,9 +7854,9 @@ Date:   Tue Aug 18 06:16:57 2009 +0200
     sloppy code, but also duplication and data transfers.
 
  elisp/geiser-completion.el         |    5 +-
- elisp/geiser-syntax.el             |  101 +++++++++++++++++++++--------------------
- scheme/guile/geiser/completion.scm |   25 ++--------
- scheme/plt/geiser/completions.ss   |   27 ++---------
+ elisp/geiser-syntax.el             |  101 +++++++++++++++++++-----------------
+ scheme/guile/geiser/completion.scm |   25 ++-------
+ scheme/plt/geiser/completions.ss   |   27 ++--------
  4 files changed, 62 insertions(+), 96 deletions(-)
 
 commit 203c989e07b43afb34f2c795cbda8126e9c0d327
@@ -7069,11 +7876,11 @@ Date:   Mon Aug 17 16:23:45 2009 +0200
     
     Autodoc buglets and support for displaying module variables too.
 
- elisp/geiser-autodoc.el      |   54 +++++++++++++++++++++++------------------------
- elisp/geiser-doc.el          |    5 ++++-
- elisp/geiser-syntax.el       |   20 ++++++++++--------
- scheme/guile/geiser/doc.scm  |   16 ++++++++------
- scheme/plt/geiser/autodoc.ss |    6 ++----
+ elisp/geiser-autodoc.el      |   54 +++++++++++++++++++++---------------------
+ elisp/geiser-doc.el          |    5 +++-
+ elisp/geiser-syntax.el       |   20 +++++++++-------
+ scheme/guile/geiser/doc.scm  |   16 ++++++++-----
+ scheme/plt/geiser/autodoc.ss |    6 ++---
  5 files changed, 54 insertions(+), 47 deletions(-)
 
 commit 283e6f040449bb4f740991956007332c48308b38
@@ -7084,10 +7891,10 @@ Date:   Mon Aug 17 04:18:02 2009 +0200
     
     Not that it was difficult: it's replacing an ugly kludge.
 
- elisp/geiser-autodoc.el      |  148 ++++++++++++++++++++++++-----------------------
- elisp/geiser-syntax.el       |   27 +++++++++
- scheme/guile/geiser/doc.scm  |   85 +++++++--------------------
- scheme/plt/geiser/autodoc.ss |   97 +++++++++----------------------
+ elisp/geiser-autodoc.el      |  148 +++++++++++++++++++++---------------------
+ elisp/geiser-syntax.el       |   27 ++++++++
+ scheme/guile/geiser/doc.scm  |   85 ++++++------------------
+ scheme/plt/geiser/autodoc.ss |   97 ++++++++-------------------
  4 files changed, 149 insertions(+), 208 deletions(-)
 
 commit 9d64bcb33f7ac1b3a06220842d04ce3c0534948e
@@ -7145,11 +7952,11 @@ Date:   Thu Jul 2 05:29:04 2009 +0200
     comes with a pony too.
 
  elisp/geiser-connection.el         |    1 -
- elisp/geiser-debug.el              |   10 +++++---
- elisp/geiser-eval.el               |    9 +++++++-
- elisp/geiser-syntax.el             |   10 --------
- scheme/guile/geiser/evaluation.scm |   51 +++++++++++++++++++----------------------
- scheme/plt/geiser/eval.ss          |    8 +++++--
+ elisp/geiser-debug.el              |   10 ++++---
+ elisp/geiser-eval.el               |    9 ++++++-
+ elisp/geiser-syntax.el             |   10 -------
+ scheme/guile/geiser/evaluation.scm |   51 +++++++++++++++++-------------------
+ scheme/plt/geiser/eval.ss          |    8 ++++--
  6 files changed, 45 insertions(+), 44 deletions(-)
 
 commit ba38e61e768a5e2b6ccdebc09262e3186a8cf15b
@@ -7444,10 +8251,10 @@ Date:   Sat Jun 13 03:50:23 2009 +0200
     Guile: rewriting stack trace captures - not yet complete.
 
  elisp/geiser-connection.el         |    3 +-
- elisp/geiser-debug.el              |   16 +++-----
+ elisp/geiser-debug.el              |   16 +++----
  elisp/geiser-guile.el              |    3 +-
- elisp/geiser-syntax.el             |   38 +++++++++++--------
- scheme/guile/geiser/evaluation.scm |   84 +++++++++++------------------------------
+ elisp/geiser-syntax.el             |   38 +++++++++-------
+ scheme/guile/geiser/evaluation.scm |   84 +++++++++---------------------------
  5 files changed, 54 insertions(+), 90 deletions(-)
 
 commit 56598777f2c0a50ca78065d284f2d9c8a9c4fb98
@@ -7457,8 +8264,8 @@ Date:   Wed Jun 10 21:08:34 2009 +0200
     Share scheme-indent-function tweaks across implementations.
 
  elisp/geiser-base.el   |    5 -----
- elisp/geiser-plt.el    |   44 --------------------------------------------
- elisp/geiser-syntax.el |   51 ++++++++++++++++++++++++++++++++++++++++++++++-----
+ elisp/geiser-plt.el    |   44 -----------------------------------------
+ elisp/geiser-syntax.el |   51 +++++++++++++++++++++++++++++++++++++++++++-----
  3 files changed, 46 insertions(+), 54 deletions(-)
 
 commit 26929de58ec387bcdac0010067c310dbc6ff0d2a
@@ -7639,7 +8446,7 @@ Date:   Sat May 16 00:12:07 2009 +0200
     Automatic setup when loading geiser.el (explicit call to geiser-setup
     no longer needed). README updates.
 
- README          |  124 ++++++++++++++++++++++++++++++------------------------------
+ README          |  124 +++++++++++++++++++++++++++----------------------------
  elisp/geiser.el |    5 +++
  2 files changed, 66 insertions(+), 63 deletions(-)
 
@@ -7702,7 +8509,7 @@ Date:   Fri May 15 00:47:05 2009 +0200
 
  README               |    2 +-
  elisp/geiser-plt.el  |    2 +-
- scheme/plt/geiser.ss |   56 +++++++++++++++++++++++++++----------------------------
+ scheme/plt/geiser.ss |   56 +++++++++++++++++++++++++-------------------------
  3 files changed, 30 insertions(+), 30 deletions(-)
 
 commit 783ab50f4cba76b45fe1cacac66a153331aafb13
@@ -7724,7 +8531,7 @@ Date:   Thu May 14 00:03:01 2009 +0200
 
     Dead code.
 
- elisp/geiser-larceny.el |  118 ----------------------------------------------------
+ elisp/geiser-larceny.el |  118 -----------------------------------------------
  1 file changed, 118 deletions(-)
  delete mode 100644 elisp/geiser-larceny.el
 
@@ -7871,10 +8678,10 @@ Date:   Wed May 6 03:11:27 2009 +0200
     PLT: M-. is also able to locate modules. Refactorings.
 
  scheme/plt/geiser/autodoc.ss   |    2 +-
- scheme/plt/geiser/eval.ss      |   38 +++-----------------
- scheme/plt/geiser/locations.ss |   17 +++++++--
- scheme/plt/geiser/modules.ss   |   87 +++++++++++++++++++++++++++++++++++++++++++++
- scheme/plt/geiser/utils.ss     |   24 +------------
+ scheme/plt/geiser/eval.ss      |   38 ++----------------
+ scheme/plt/geiser/locations.ss |   17 ++++++--
+ scheme/plt/geiser/modules.ss   |   87 ++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/utils.ss     |   24 +----------
  5 files changed, 107 insertions(+), 61 deletions(-)
  create mode 100644 scheme/plt/geiser/modules.ss
 
@@ -7902,7 +8709,7 @@ Date:   Mon May 4 20:49:46 2009 +0200
 
     PLT: argument position and syntax and variable recognition in autodoc.
 
- scheme/plt/geiser/autodoc.ss |  120 ++++++++++++++++++++++++++++++++---------------
+ scheme/plt/geiser/autodoc.ss |  120 +++++++++++++++++++++++++++++-------------
  scheme/plt/geiser/utils.ss   |    4 +-
  2 files changed, 85 insertions(+), 39 deletions(-)
 
@@ -7923,10 +8730,10 @@ Date:   Mon May 4 01:05:33 2009 +0200
 
  elisp/geiser-plt.el            |    1 +
  scheme/plt/geiser.ss           |    4 +-
- scheme/plt/geiser/autodoc.ss   |  160 +++++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/autodoc.ss   |  160 ++++++++++++++++++++++++++++++++++++++++
  scheme/plt/geiser/eval.ss      |    4 +-
  scheme/plt/geiser/locations.ss |    7 +-
- scheme/plt/geiser/utils.ss     |   43 +++++++-----
+ scheme/plt/geiser/utils.ss     |   43 +++++++----
  6 files changed, 198 insertions(+), 21 deletions(-)
  create mode 100644 scheme/plt/geiser/autodoc.ss
 
@@ -7946,9 +8753,9 @@ Date:   Sun May 3 03:19:43 2009 +0200
 
     Hopefully harmless refactoring.
 
- scheme/plt/geiser/eval.ss      |   22 +++++---------------
- scheme/plt/geiser/locations.ss |   13 +++++++++---
- scheme/plt/geiser/utils.ss     |   49 +++++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/eval.ss      |   22 ++++--------------
+ scheme/plt/geiser/locations.ss |   13 ++++++++---
+ scheme/plt/geiser/utils.ss     |   49 ++++++++++++++++++++++++++++++++++++++++
  3 files changed, 64 insertions(+), 20 deletions(-)
  create mode 100644 scheme/plt/geiser/utils.ss
 
@@ -8061,7 +8868,7 @@ Date:   Thu Apr 30 00:03:22 2009 +0200
     PLT: Help fix.
 
  elisp/geiser-base.el |    5 ++++
- elisp/geiser-plt.el  |   80 +++++++++++++++++++++++++++----------------------------
+ elisp/geiser-plt.el  |   80 +++++++++++++++++++++++++-------------------------
  scheme/plt/geiser.ss |    1 +
  3 files changed, 46 insertions(+), 40 deletions(-)
 
@@ -8095,7 +8902,7 @@ Date:   Sun Apr 26 21:14:49 2009 +0200
     PLT: source locations.
 
  scheme/plt/geiser.ss           |    5 ++++-
- scheme/plt/geiser/locations.ss |   41 +++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser/locations.ss |   41 ++++++++++++++++++++++++++++++++++++++++
  2 files changed, 45 insertions(+), 1 deletion(-)
  create mode 100644 scheme/plt/geiser/locations.ss
 
@@ -8105,8 +8912,8 @@ Date:   Sun Apr 26 19:24:04 2009 +0200
 
     PLT: completion support.
 
- scheme/plt/geiser.ss             |    5 +++-
- scheme/plt/geiser/completions.ss |   62 +++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser.ss             |    5 ++-
+ scheme/plt/geiser/completions.ss |   62 ++++++++++++++++++++++++++++++++++++++
  2 files changed, 66 insertions(+), 1 deletion(-)
  create mode 100644 scheme/plt/geiser/completions.ss
 
@@ -8135,8 +8942,8 @@ Date:   Sun Apr 26 15:08:16 2009 +0200
 
     PLT: evaluation functions moved to their own module.
 
- scheme/plt/geiser.ss      |   39 ++++--------------------------
- scheme/plt/geiser/eval.ss |   65 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ scheme/plt/geiser.ss      |   39 +++------------------------
+ scheme/plt/geiser/eval.ss |   65 +++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 69 insertions(+), 35 deletions(-)
  create mode 100644 scheme/plt/geiser/eval.ss
 
@@ -8155,10 +8962,10 @@ Date:   Sun Apr 26 13:50:35 2009 +0200
 
     PLT support: basic startup and evaluation working.
 
- elisp/geiser-eval.el |   24 +++++----
- elisp/geiser-plt.el  |  162 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-eval.el |   24 +++++---
+ elisp/geiser-plt.el  |  162 ++++++++++++++++++++++++++++++++++++++++++++++++++
  elisp/geiser.el      |    2 +-
- scheme/plt/geiser.ss |   86 +++++++++++++++++++++++++++++
+ scheme/plt/geiser.ss |   86 +++++++++++++++++++++++++++
  4 files changed, 264 insertions(+), 10 deletions(-)
  create mode 100644 elisp/geiser-plt.el
  create mode 100644 scheme/plt/geiser.ss
@@ -8292,9 +9099,9 @@ Date:   Wed Mar 18 23:59:12 2009 +0100
  README                        |    2 ++
  elisp/geiser-eval.el          |    2 +-
  elisp/geiser-mode.el          |    2 ++
- elisp/geiser-xref.el          |   57 ++++++++++++++++++++++++++++++----------------
- scheme/guile/geiser/emacs.scm |    4 +++-
- scheme/guile/geiser/xref.scm  |   34 ++++++++++++++++++++-------
+ elisp/geiser-xref.el          |   57 +++++++++++++++++++++++++++--------------
+ scheme/guile/geiser/emacs.scm |    4 ++-
+ scheme/guile/geiser/xref.scm  |   34 ++++++++++++++++++------
  6 files changed, 72 insertions(+), 29 deletions(-)
 
 commit 89e9c57a0766bf9a1610c6239bb4c55db14d54e6
@@ -8355,7 +9162,7 @@ Date:   Mon Mar 16 01:39:55 2009 +0100
 
     Elisp-side larceny.
 
- elisp/geiser-larceny.el |  105 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-larceny.el |  105 +++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 105 insertions(+)
  create mode 100644 elisp/geiser-larceny.el
 
@@ -8449,7 +9256,7 @@ Date:   Wed Mar 11 04:06:57 2009 +0100
  elisp/geiser-guile.el |   11 ++-
  elisp/geiser-impl.el  |    6 +-
  elisp/geiser-mode.el  |    2 +-
- elisp/geiser-repl.el  |  221 +++++++++++++++++++++++++++++++++++-------------------
+ elisp/geiser-repl.el  |  221 +++++++++++++++++++++++++++++++------------------
  elisp/geiser.el       |   24 ++++--
  5 files changed, 173 insertions(+), 91 deletions(-)
 
@@ -8474,16 +9281,16 @@ Date:   Mon Mar 9 23:52:04 2009 +0100
       * Guile provides its own implementation (geiser-guile)
       * The reload system is aware of the new kids on the block
 
- elisp/geiser-completion.el  |   12 ++--
- elisp/geiser-doc.el         |   69 +++++++++++--------
+ elisp/geiser-completion.el  |   12 +--
+ elisp/geiser-doc.el         |   69 ++++++++++-------
  elisp/geiser-edit.el        |    2 +-
- elisp/geiser-eval.el        |   39 ++++++-----
- elisp/geiser-guile.el       |  105 +++++++++++++++++++++++++++++
- elisp/geiser-impl.el        |  176 ++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-mode.el        |   12 +++-
+ elisp/geiser-eval.el        |   39 ++++++----
+ elisp/geiser-guile.el       |  105 ++++++++++++++++++++++++++
+ elisp/geiser-impl.el        |  176 +++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-mode.el        |   12 ++-
  elisp/geiser-popup.el       |   14 ++++
  elisp/geiser-repl.el        |    7 +-
- elisp/geiser.el             |   15 ++---
+ elisp/geiser.el             |   15 ++--
  scheme/guile/geiser/doc.scm |    3 +-
  11 files changed, 391 insertions(+), 63 deletions(-)
  create mode 100644 elisp/geiser-guile.el
@@ -8555,10 +9362,10 @@ Date:   Fri Mar 6 00:47:05 2009 +0100
     New command to display generic methods (C-cC-dg) implemented.
 
  README                       |    3 +-
- elisp/geiser-base.el         |    6 +++
- elisp/geiser-edit.el         |   14 ++---
+ elisp/geiser-base.el         |    6 ++
+ elisp/geiser-edit.el         |   14 +++--
  elisp/geiser-mode.el         |    1 +
- elisp/geiser-xref.el         |  132 +++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-xref.el         |  132 ++++++++++++++++++++++++++++++++++++++++++
  elisp/geiser.el              |    1 +
  scheme/guile/geiser/xref.scm |    3 +-
  7 files changed, 152 insertions(+), 8 deletions(-)
@@ -8613,9 +9420,9 @@ Date:   Wed Mar 4 02:07:41 2009 +0100
 
  README                |    2 ++
  elisp/geiser-debug.el |    1 -
- elisp/geiser-mode.el  |   11 ++++++++++
- elisp/geiser-repl.el  |   18 +++++++++++++--
- elisp/geiser.el       |   64 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-mode.el  |   11 +++++++++
+ elisp/geiser-repl.el  |   18 ++++++++++++--
+ elisp/geiser.el       |   64 +++++++++++++++++++++++++++++++++++++++++++++++++
  5 files changed, 93 insertions(+), 3 deletions(-)
 
 commit a4b7db53db0d05b8a39c263715a296d64b4f64f4
@@ -8697,13 +9504,13 @@ Date:   Mon Mar 2 03:13:59 2009 +0100
     Breakdown of schemeland into neat submodules.
 
  scheme/guile/geiser/completion.scm    |   56 +++++++
- scheme/guile/geiser/doc.scm           |  183 +++++++++++++++++++++++
- scheme/guile/geiser/emacs.scm         |  128 ++--------------
- scheme/guile/geiser/evaluation.scm    |  144 ++++++++++++++++++
- scheme/guile/geiser/introspection.scm |  298 --------------------------------------
- scheme/guile/geiser/modules.scm       |  102 +++++++++++++
- scheme/guile/geiser/utils.scm         |   53 +++++++
- scheme/guile/geiser/xref.scm          |   37 +++++
+ scheme/guile/geiser/doc.scm           |  183 ++++++++++++++++++++
+ scheme/guile/geiser/emacs.scm         |  128 ++------------
+ scheme/guile/geiser/evaluation.scm    |  144 ++++++++++++++++
+ scheme/guile/geiser/introspection.scm |  298 ---------------------------------
+ scheme/guile/geiser/modules.scm       |  102 +++++++++++
+ scheme/guile/geiser/utils.scm         |   53 ++++++
+ scheme/guile/geiser/xref.scm          |   37 ++++
  8 files changed, 587 insertions(+), 414 deletions(-)
  create mode 100644 scheme/guile/geiser/completion.scm
  create mode 100644 scheme/guile/geiser/doc.scm
@@ -8747,7 +9554,7 @@ Date:   Mon Mar 2 00:29:55 2009 +0100
 
     Autodoc support for GOOPS methods.
 
- scheme/guile/geiser/introspection.scm |   91 +++++++++++++++++++++++---------------
+ scheme/guile/geiser/introspection.scm |   91 ++++++++++++++++++++-------------
  1 file changed, 56 insertions(+), 35 deletions(-)
 
 commit 28e79842fd87689187834a2c4186b5e2ac294fe6
@@ -8756,10 +9563,10 @@ Date:   Sun Mar 1 20:40:22 2009 +0100
 
     Macro-expand commands.
 
- README                        |   55 +++++++++++++++++++++++++---------------------
- elisp/geiser-debug.el         |   13 +++++++++++
- elisp/geiser-mode.el          |   27 +++++++++++++++++++++--
- scheme/guile/geiser/emacs.scm |    5 ++++-
+ README                        |   55 ++++++++++++++++++++++-------------------
+ elisp/geiser-debug.el         |   13 ++++++++++
+ elisp/geiser-mode.el          |   27 ++++++++++++++++++--
+ scheme/guile/geiser/emacs.scm |    5 +++-
  4 files changed, 72 insertions(+), 28 deletions(-)
 
 commit c5d4a2b6670a9f3ce8b357ef5f4cab72eb211102
@@ -8858,9 +9665,9 @@ Date:   Sat Feb 28 17:16:20 2009 +0100
     Refactoring: local bindings discovery moved to schemeland.
 
  elisp/geiser-autodoc.el               |    2 +-
- elisp/geiser-completion.el            |    8 +++++-
- elisp/geiser-syntax.el                |   53 ++++++++++++--------------------------
- scheme/guile/geiser/introspection.scm |   31 +++++++++++++++++++---
+ elisp/geiser-completion.el            |    8 ++++-
+ elisp/geiser-syntax.el                |   53 ++++++++++-----------------------
+ scheme/guile/geiser/introspection.scm |   31 ++++++++++++++++---
  4 files changed, 51 insertions(+), 43 deletions(-)
 
 commit 77253da86ac2d005a0802426c7ebe08bf8dca9ce
@@ -8917,7 +9724,7 @@ Date:   Sat Feb 28 00:42:42 2009 +0100
 
     Put new procedure-arguments into (geiser introspection) until it goes upstream.
 
- scheme/guile/geiser/introspection.scm |   38 +++++++++++++++++++++++++++++++++++++-
+ scheme/guile/geiser/introspection.scm |   38 ++++++++++++++++++++++++++++++++-
  1 file changed, 37 insertions(+), 1 deletion(-)
 
 commit 20811cf28fd0496acbd2d3fe9050d8c9892470a7
@@ -8935,10 +9742,10 @@ Date:   Fri Feb 27 23:29:09 2009 +0100
 
     Autodoc system revamped.
 
- elisp/geiser-autodoc.el               |   87 ++++++++++++++--------------
- elisp/geiser-syntax.el                |   90 +++++++++++------------------
+ elisp/geiser-autodoc.el               |   87 ++++++++++++------------
+ elisp/geiser-syntax.el                |   90 +++++++++----------------
  scheme/guile/geiser/emacs.scm         |    2 +-
- scheme/guile/geiser/introspection.scm |  118 +++++++++++++++++++-------------------
+ scheme/guile/geiser/introspection.scm |  118 ++++++++++++++++-----------------
  4 files changed, 136 insertions(+), 161 deletions(-)
 
 commit 8337756109d12349b220ba422f148555a2d031c2
@@ -9034,12 +9841,12 @@ Date:   Tue Feb 24 02:18:28 2009 +0100
 
     Partial support for stack trace display.
 
- elisp/geiser-autodoc.el               |   57 +++++++++++-----------
- elisp/geiser-compile.el               |   34 ++------------
- elisp/geiser-debug.el                 |   96 ++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-autodoc.el               |   57 ++++++++++----------
+ elisp/geiser-compile.el               |   34 ++----------
+ elisp/geiser-debug.el                 |   96 +++++++++++++++++++++++++++++++++
  elisp/geiser-eval.el                  |    1 +
- elisp/geiser-mode.el                  |   17 +------
- scheme/guile/geiser/emacs.scm         |   40 ++++++++++++++--
+ elisp/geiser-mode.el                  |   17 +-----
+ scheme/guile/geiser/emacs.scm         |   40 ++++++++++++--
  scheme/guile/geiser/introspection.scm |   15 +++---
  7 files changed, 175 insertions(+), 85 deletions(-)
  create mode 100644 elisp/geiser-debug.el
@@ -9080,7 +9887,7 @@ Date:   Sat Feb 21 00:59:57 2009 +0100
 
     Refactoring of the eval/compile procedures.
 
- scheme/guile/geiser/emacs.scm |   46 ++++++++++++++++++++--------------------------
+ scheme/guile/geiser/emacs.scm |   46 ++++++++++++++++++-----------------------
  1 file changed, 20 insertions(+), 26 deletions(-)
 
 commit 4437f8d08a03e83e425742565f532cc0f5e768c8
@@ -9090,7 +9897,7 @@ Date:   Sat Feb 21 00:01:27 2009 +0100
     Offer also local bindings as possible completions in M-TAB.
 
  elisp/geiser-completion.el |    3 ++-
- elisp/geiser-syntax.el     |   48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ elisp/geiser-syntax.el     |   48 +++++++++++++++++++++++++++++++++++++++++++-
  2 files changed, 49 insertions(+), 2 deletions(-)
 
 commit 5d6dd6f7e7c9f8abddfc59acf3f3318f594afb22
@@ -9119,8 +9926,8 @@ Date:   Wed Feb 18 12:59:41 2009 +0100
 
  README                        |    2 +-
  elisp/geiser-eval.el          |    4 +-
- scheme/guile/geiser/emacs.scm |   82 +++++++++++++++++++++++++++++++++----
- scheme/guile/geiser/eval.scm  |  102 ----------------------------------------------
+ scheme/guile/geiser/emacs.scm |   82 ++++++++++++++++++++++++++++++---
+ scheme/guile/geiser/eval.scm  |  102 -----------------------------------------
  4 files changed, 78 insertions(+), 112 deletions(-)
  delete mode 100644 scheme/guile/geiser/eval.scm
 
@@ -9131,7 +9938,7 @@ Date:   Tue Feb 17 21:56:23 2009 +0100
     Document browser improvements: history and links.
 
  README              |   15 ++++
- elisp/geiser-doc.el |  209 +++++++++++++++++++++++++++++++++++++++++++++++++-------
+ elisp/geiser-doc.el |  209 +++++++++++++++++++++++++++++++++++++++++++++------
  2 files changed, 200 insertions(+), 24 deletions(-)
 
 commit 9f744aa5e4e032cfe413673fa7e875ab16ce8600
@@ -9149,9 +9956,9 @@ Date:   Tue Feb 17 01:31:26 2009 +0100
 
     Better symbol documentation.
 
- elisp/geiser-doc.el                   |   11 +++++---
+ elisp/geiser-doc.el                   |   11 ++++---
  scheme/guile/geiser/emacs.scm         |    2 +-
- scheme/guile/geiser/introspection.scm |   54 +++++++++++++++++++-------------------
+ scheme/guile/geiser/introspection.scm |   54 ++++++++++++++++-----------------
  3 files changed, 35 insertions(+), 32 deletions(-)
 
 commit 6e89d965f1b0a8329ddc012feb36fd43c591acbf
@@ -9160,15 +9967,15 @@ Date:   Tue Feb 17 00:44:11 2009 +0100
 
     Separate commands for evaluation and compilation.
 
- elisp/geiser-autodoc.el      |    7 +++--
+ elisp/geiser-autodoc.el      |    7 ++--
  elisp/geiser-compile.el      |    2 +-
  elisp/geiser-completion.el   |    6 ++--
  elisp/geiser-doc.el          |    4 +--
  elisp/geiser-edit.el         |    6 ++--
- elisp/geiser-eval.el         |   28 +++++++++++------
- elisp/geiser-mode.el         |   77 +++++++++++++++++++++++++++++------------------
+ elisp/geiser-eval.el         |   28 +++++++++------
+ elisp/geiser-mode.el         |   77 ++++++++++++++++++++++++++----------------
  elisp/geiser-syntax.el       |    4 ++-
- scheme/guile/geiser/eval.scm |   33 +++++++++++++++++---
+ scheme/guile/geiser/eval.scm |   33 +++++++++++++++---
  9 files changed, 111 insertions(+), 56 deletions(-)
 
 commit 41d54012368ca33461fe3e8668c2b0e3052af3b8
@@ -9177,14 +9984,14 @@ Date:   Mon Feb 16 22:21:28 2009 +0100
 
     New command to open module file.
 
- README                                |   39 +++++++++++++++++++-------------------
- elisp/geiser-edit.el                  |   16 +++++++++++-----
+ README                                |   39 +++++++++++++++++----------------
+ elisp/geiser-edit.el                  |   16 +++++++++-----
  elisp/geiser-eval.el                  |    3 ++-
  elisp/geiser-mode.el                  |    3 ++-
  elisp/geiser-syntax.el                |    5 ++---
  scheme/guile/geiser/emacs.scm         |    3 ++-
- scheme/guile/geiser/eval.scm          |    6 ++++--
- scheme/guile/geiser/introspection.scm |   11 ++++++-----
+ scheme/guile/geiser/eval.scm          |    6 +++--
+ scheme/guile/geiser/introspection.scm |   11 +++++-----
  8 files changed, 49 insertions(+), 37 deletions(-)
 
 commit fbc65dfc767da1dc3b28262eae041e9d303752c2
@@ -9195,10 +10002,10 @@ Date:   Mon Feb 16 00:46:31 2009 +0100
 
  README                        |    8 ++++---
  elisp/geiser-autodoc.el       |    2 +-
- elisp/geiser-completion.el    |   15 ++++++-------
- elisp/geiser-custom.el        |   11 +++++-----
- elisp/geiser-doc.el           |   52 ++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-mode.el          |    9 ++++++--
+ elisp/geiser-completion.el    |   15 ++++++------
+ elisp/geiser-custom.el        |   11 +++++----
+ elisp/geiser-doc.el           |   52 +++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-mode.el          |    9 +++++--
  elisp/geiser-repl.el          |    1 +
  scheme/guile/geiser/emacs.scm |    3 ++-
  8 files changed, 82 insertions(+), 19 deletions(-)
@@ -9250,10 +10057,10 @@ Date:   Sun Feb 15 17:35:17 2009 +0100
     Initial support for module name completion.
 
  README                                |    2 +
- elisp/geiser-completion.el            |   90 ++++++++++++++++++--------------------
+ elisp/geiser-completion.el            |   90 +++++++++++++++------------------
  elisp/geiser-repl.el                  |    2 +
  scheme/guile/geiser/emacs.scm         |    3 +-
- scheme/guile/geiser/introspection.scm |   69 +++++++++++++++++++++++++++--
+ scheme/guile/geiser/introspection.scm |   69 +++++++++++++++++++++++--
  5 files changed, 113 insertions(+), 53 deletions(-)
 
 commit f753d35c186ad448e70e84afbc91fb37db2fbb57
@@ -9272,7 +10079,7 @@ Date:   Sun Feb 15 01:22:29 2009 +0100
 
     Better docstring.
 
- scheme/guile/geiser/introspection.scm |   69 ++++++++++++++++++++++++++------------
+ scheme/guile/geiser/introspection.scm |   69 ++++++++++++++++++++++-----------
  1 file changed, 47 insertions(+), 22 deletions(-)
 
 commit 71114ab18c51729b54b05ab08316fd1eb4faf56f
@@ -9291,12 +10098,12 @@ Date:   Sat Feb 14 22:15:09 2009 +0100
     Autodoc: try symbol at point first. Some cleanups.
 
  elisp/geiser-autodoc.el               |    9 ++----
- elisp/geiser-base.el                  |    7 -----
- elisp/geiser-custom.el                |   57 ++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-base.el                  |    7 ----
+ elisp/geiser-custom.el                |   57 +++++++++++++++++++++++++++++++++
  elisp/geiser-edit.el                  |    3 +-
  elisp/geiser-mode.el                  |    1 +
- elisp/geiser-repl.el                  |   13 +++++----
- elisp/geiser-syntax.el                |    8 +++---
+ elisp/geiser-repl.el                  |   13 +++++---
+ elisp/geiser-syntax.el                |    8 ++---
  scheme/guile/geiser/introspection.scm |    4 ++-
  8 files changed, 78 insertions(+), 24 deletions(-)
  create mode 100644 elisp/geiser-custom.el
@@ -9308,7 +10115,7 @@ Date:   Sat Feb 14 20:52:27 2009 +0100
     New command to get docstrings (C-cC-d).
 
  elisp/geiser-completion.el            |    4 ++-
- elisp/geiser-doc.el                   |   63 ++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-doc.el                   |   63 +++++++++++++++++++++++++++++++++
  elisp/geiser-mode.el                  |    2 ++
  elisp/geiser-repl.el                  |    1 +
  scheme/guile/geiser/emacs.scm         |    3 +-
@@ -9345,7 +10152,7 @@ Date:   Fri Feb 13 01:11:10 2009 +0100
 
     Inconsequential refactorings.
 
- scheme/guile/geiser/introspection.scm |   43 +++++++++++++-------------------------
+ scheme/guile/geiser/introspection.scm |   43 +++++++++++----------------------
  1 file changed, 14 insertions(+), 29 deletions(-)
 
 commit 1369b62d71e06735a3e4d2b8349cfffe6de12a6c
@@ -9354,9 +10161,9 @@ Date:   Fri Feb 13 00:54:26 2009 +0100
 
     Faster, asynchronous autodoc.
 
- elisp/geiser-autodoc.el               |   38 ++++++++++++++++++++++++--------------
+ elisp/geiser-autodoc.el               |   38 +++++++++++++++++++++------------
  scheme/guile/geiser/emacs.scm         |    2 +-
- scheme/guile/geiser/introspection.scm |   10 ++++++++--
+ scheme/guile/geiser/introspection.scm |   10 +++++++--
  3 files changed, 33 insertions(+), 17 deletions(-)
 
 commit 432e405274205c91784456449f344044c8d62e48
@@ -9365,8 +10172,8 @@ Date:   Thu Feb 12 23:33:58 2009 +0100
 
     Better arg lists.
 
- elisp/geiser-edit.el                  |    7 +++++--
- scheme/guile/geiser/introspection.scm |   38 +++++++++++++++++++++++++-------------
+ elisp/geiser-edit.el                  |    7 ++++--
+ scheme/guile/geiser/introspection.scm |   38 ++++++++++++++++++++++-----------
  2 files changed, 30 insertions(+), 15 deletions(-)
 
 commit 09c532a18d33ab2e0a3dcb3a38e746992e3381aa
@@ -9396,13 +10203,13 @@ Date:   Thu Feb 12 22:07:29 2009 +0100
 
  .gitignore                            |    1 +
  elisp/geiser-compile.el               |    3 +-
- elisp/geiser-edit.el                  |  116 ++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-edit.el                  |  116 +++++++++++++++++++++++++++++++++
  elisp/geiser-mode.el                  |    3 +
  elisp/geiser-repl.el                  |    6 +-
  elisp/geiser-syntax.el                |    2 -
  scheme/guile/geiser/emacs.scm         |    1 +
  scheme/guile/geiser/eval.scm          |    4 +-
- scheme/guile/geiser/introspection.scm |   38 +++++++++++--
+ scheme/guile/geiser/introspection.scm |   38 +++++++++--
  9 files changed, 162 insertions(+), 12 deletions(-)
  create mode 100644 elisp/geiser-edit.el
 
@@ -9436,11 +10243,11 @@ Date:   Wed Feb 11 10:47:12 2009 +0100
 
     Load file commands.
 
- elisp/geiser-compile.el       |   80 +++++++++++++++++++++++++++++++---------------
+ elisp/geiser-compile.el       |   80 ++++++++++++++++++++++++++++-------------
  elisp/geiser-mode.el          |   12 ++++---
  elisp/geiser-repl.el          |    1 +
  scheme/guile/geiser/emacs.scm |    6 ++--
- scheme/guile/geiser/eval.scm  |   11 ++++---
+ scheme/guile/geiser/eval.scm  |   11 +++---
  5 files changed, 75 insertions(+), 35 deletions(-)
 
 commit 2b2355b6134f5068dfff424f8fda32ae0236a516
@@ -9469,10 +10276,10 @@ Date:   Wed Feb 11 01:32:14 2009 +0100
     Compile file.
 
  elisp/geiser-base.el         |    3 ++
- elisp/geiser-compile.el      |   77 +++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-compile.el      |   77 ++++++++++++++++++++++++++++++++++++++++++
  elisp/geiser-mode.el         |    3 +-
  elisp/geiser-repl.el         |    5 +--
- scheme/guile/geiser/eval.scm |   11 +++++--
+ scheme/guile/geiser/eval.scm |   11 ++++--
  5 files changed, 94 insertions(+), 5 deletions(-)
  create mode 100644 elisp/geiser-compile.el
 
@@ -9484,12 +10291,12 @@ Date:   Tue Feb 10 23:33:21 2009 +0100
 
  elisp/geiser-eval.el                  |    5 ++-
  elisp/geiser-repl.el                  |    2 +-
- scheme/geiser/emacs.scm               |   32 ---------------
- scheme/geiser/eval.scm                |   65 -------------------------------
- scheme/geiser/introspection.scm       |   79 --------------------------------------
- scheme/guile/geiser/emacs.scm         |   37 ++++++++++++++++++
- scheme/guile/geiser/eval.scm          |   69 +++++++++++++++++++++++++++++++++
- scheme/guile/geiser/introspection.scm |   79 ++++++++++++++++++++++++++++++++++++++
+ scheme/geiser/emacs.scm               |   32 -------------
+ scheme/geiser/eval.scm                |   65 ---------------------------
+ scheme/geiser/introspection.scm       |   79 ---------------------------------
+ scheme/guile/geiser/emacs.scm         |   37 +++++++++++++++
+ scheme/guile/geiser/eval.scm          |   69 ++++++++++++++++++++++++++++
+ scheme/guile/geiser/introspection.scm |   79 +++++++++++++++++++++++++++++++++
  8 files changed, 190 insertions(+), 178 deletions(-)
  delete mode 100644 scheme/geiser/emacs.scm
  delete mode 100644 scheme/geiser/eval.scm
@@ -9562,7 +10369,7 @@ Date:   Mon Feb 9 23:33:24 2009 +0100
 
     TAB-completion for symbols in Scheme and REPL buffers.
 
- elisp/geiser-completion.el      |  225 ++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-completion.el      |  225 +++++++++++++++++++++++++++++++++++++++
  elisp/geiser-mode.el            |    2 +
  elisp/geiser-repl.el            |    3 +-
  scheme/geiser/emacs.scm         |    2 +-
@@ -9624,14 +10431,14 @@ Date:   Mon Feb 9 01:29:26 2009 +0100
 
     Basic region/definition/sexp evaluation and autodoc mode working.
 
- elisp/geiser-autodoc.el         |  132 +++++++++++++++++++++++++++++++++++++
- elisp/geiser-eval.el            |   27 ++++----
- elisp/geiser-mode.el            |  155 ++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-syntax.el          |   96 +++++++++++++++++++++++++++
+ elisp/geiser-autodoc.el         |  132 +++++++++++++++++++++++++++++++++
+ elisp/geiser-eval.el            |   27 ++++---
+ elisp/geiser-mode.el            |  155 +++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-syntax.el          |   96 ++++++++++++++++++++++++
  elisp/geiser.el                 |    7 +-
- scheme/geiser/emacs.scm         |   32 +++++++++
- scheme/geiser/eval.scm          |   16 +++--
- scheme/geiser/introspection.scm |   65 +++++++++++++++++++
+ scheme/geiser/emacs.scm         |   32 ++++++++
+ scheme/geiser/eval.scm          |   16 ++--
+ scheme/geiser/introspection.scm |   65 ++++++++++++++++
  8 files changed, 509 insertions(+), 21 deletions(-)
  create mode 100644 elisp/geiser-autodoc.el
  create mode 100644 elisp/geiser-mode.el
@@ -9675,10 +10482,10 @@ Date:   Sun Feb 8 01:09:07 2009 +0100
 
     Basic Guile/Emacs connection and evaluation working.
 
- elisp/geiser-connection.el |  245 +++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-eval.el       |  112 ++++++++++++++++++++++
- elisp/geiser-repl.el       |  113 +++++++++++++++++++++++
- scheme/geiser/eval.scm     |   42 +++++++++
+ elisp/geiser-connection.el |  245 ++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-eval.el       |  112 ++++++++++++++++++++
+ elisp/geiser-repl.el       |  113 ++++++++++++++++++++
+ scheme/geiser/eval.scm     |   42 ++++++++
  4 files changed, 512 insertions(+)
  create mode 100644 elisp/geiser-connection.el
  create mode 100644 elisp/geiser-eval.el
@@ -9690,10 +10497,10 @@ Date:   Sat Feb 7 16:08:42 2009 +0100
 
     Elisp utilities (mostly imported from FUEL).
 
- elisp/geiser-base.el  |   99 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-log.el   |   96 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-popup.el |   88 ++++++++++++++++++++++++++++++++++++++++++++++++
- elisp/geiser-repl.el  |   40 ++++++++++++++++++++++
+ elisp/geiser-base.el  |   99 +++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-log.el   |   96 +++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-popup.el |   88 +++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser-repl.el  |   40 ++++++++++++++++++++
  4 files changed, 323 insertions(+)
  create mode 100644 elisp/geiser-base.el
  create mode 100644 elisp/geiser-log.el
@@ -9706,7 +10513,7 @@ Date:   Thu Feb 5 23:50:13 2009 +0100
 
     Emacs startup file
 
- elisp/geiser.el |   56 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ elisp/geiser.el |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 56 insertions(+)
  create mode 100644 elisp/geiser.el
 
@@ -9716,7 +10523,7 @@ Date:   Thu Feb 5 23:49:11 2009 +0100
 
     License file
 
- COPYING |  674 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ COPYING |  674 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 674 insertions(+)
  create mode 100644 COPYING
 

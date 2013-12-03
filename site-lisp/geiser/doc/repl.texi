@@ -249,7 +249,9 @@ buffer will contain implementation-specific information about the
 identifier (e.g., its docstring for Guile, or its contract, if any, for
 Racket), and a handy button to open the corresponding manual entry for
 the symbol, which will open an HTML page (for Racket) or the texinfo
-manual (for Guile).
+manual (for Guile). If you'd rather go directly to the manual, try
+@kbd{C-c C-d i}, which invokes @code{geiser-doc-look-up-manual} as the
+handy button does.
 
 @cindex module exports
 @anchor{repl-mod} Geiser can also produce for you a list, classified by
@@ -418,6 +420,18 @@ When using @code{connect-to-guile}, @code{connect-to-racket} or
 defaulting to ``localhost'' and 37146.  You can change those defaults
 customizing @code{geiser-repl-default-host} and
 @code{geiser-repl-default-port}, respectively.
+
+@subsubheading Killing REPLs
+
+@cindex ask on kill, don't
+If you don't want Emacs to ask for confirmation when you're about to
+kill a live REPL buffer (as will happen, for instance, if you're exiting
+Emacs before closing all your REPLs), you can set the flag
+@code{geiser-repl-query-on-kill-p} to @code{nil}.  On a related note,
+the customizable variable @code{geiser-repl-query-on-exit-p} controls
+whether Geiser should ask for confirmation when you exit the REPL
+explicitly (via, say, @kbd{C-c C-q}, as opposed to killing the buffer),
+and is set to @code{nil} by default.
 
 @c Local Variables:
 @c mode: texinfo

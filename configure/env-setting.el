@@ -6,8 +6,9 @@
  (setq my-env-path (list
                     (concat zzemacs-path "bin")
                     "C:/zznix/bin"
-                    "C:/emacs-23.4/bin"
+                    (format "%s/bin" (getenv "EMACS_DIR"))
                     "C:/Git/bin"
+					"C:/Git/libexec/git-core"
                     "C:/Vim/vim73"
                     "C:/BCompare3"
                     "C:/Program Files (x86)/CMake 2.8/bin"

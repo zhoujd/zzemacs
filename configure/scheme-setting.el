@@ -31,7 +31,7 @@
 (autoload 'scheme-smart-complete "scheme-complete" nil t)
 (eval-after-load 'scheme
   '(progn
-    ;;(define-key scheme-mode-map "\t"   'scheme-complete-or-indent)
+    (define-key scheme-mode-map "\t"   'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t" 'scheme-smart-complete)))
 
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)

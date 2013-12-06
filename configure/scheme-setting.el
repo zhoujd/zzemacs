@@ -28,13 +28,12 @@
               (setq ac-sources (append ac-sources '(ac-source-scheme)))))
 
 ;;scheme complete
-(autoload 'scheme-smart-complete "scheme-complete" nil t)
+(require 'scheme-complete)
 (eval-after-load 'scheme
   '(progn
     (define-key scheme-mode-map "\t"   'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t" 'scheme-smart-complete)))
 
-(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 (add-hook 'scheme-mode-hook
           #'(lambda ()
               (make-local-variable 'eldoc-documentation-function)

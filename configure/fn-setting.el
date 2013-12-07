@@ -49,7 +49,7 @@
     [C-f1]            'session-save
     [M-f1]            'session-restore
     (kbd "C-x <f1>")  nil
-    (kbd "C-x <f1>")  nil
+    (kbd "C-c <f1>")  nil
     )
 
 (define-fn-key (gethash "f2" fn-key-table)

@@ -19,7 +19,9 @@
  (list
   zz/hyper-modifier 'event-apply-hyper-modifier
   (kbd "C-z h")     'event-apply-hyper-modifier
+  (kbd "C-z a")     'event-apply-alt-modifier
   (kbd "<pause> h") 'event-apply-hyper-modifier
+  (kbd "<pause> a") 'event-apply-alt-modifier
   ))
 
 (apply-keys-to-map

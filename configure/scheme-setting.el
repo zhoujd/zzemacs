@@ -45,6 +45,7 @@
 (require 'quack)
 (setq quack-remap-find-file-bindings-p nil)
 (setq quack-global-menu-p nil)
+(setq quack-remember-new-programs-p nil)
 
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")

@@ -31,8 +31,9 @@
 (require 'scheme-complete)
 (eval-after-load 'scheme
   '(progn
-    (define-key scheme-mode-map "\t"   'scheme-complete-or-indent)
-    (define-key scheme-mode-map "\e\t" 'scheme-smart-complete)))
+    (define-key scheme-mode-map "\C-c=" 'geiser-mode)
+    (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
+    (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
 
 (add-hook 'scheme-mode-hook
           #'(lambda ()

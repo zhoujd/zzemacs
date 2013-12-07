@@ -7,9 +7,17 @@
 ;;C-x @ h        event-apply-hyper-modifier
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
+(defvar zz/hyper-modifier
+  (if-ms-windows (kbd "<apps>") (kbd "<menu>"))
+  "zz/hyper-modifier")
+(defvar zz/apps-key
+  (if-ms-windows (kbd "H-<apps>") (kbd "H-<menu>"))
+  "zz/apps-key")
+
 (apply-keys-to-map
  key-translation-map
  (list
+  zz/hyper-modifier 'event-apply-hyper-modifier
   (kbd "C-z h")     'event-apply-hyper-modifier
   (kbd "<pause> h") 'event-apply-hyper-modifier
   ))
@@ -225,8 +233,8 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  [apps]          (when-ms-windows 'execute-extended-command)
   ;;To be able to M-x without meta
+  zz/apps-key     'execute-extended-command
   (kbd "C-x C-m") 'execute-extended-command
   ))
 

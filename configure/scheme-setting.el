@@ -41,12 +41,6 @@
               (eldoc-mode t)
               (setq lisp-indent-function 'scheme-smart-indent-function)))
 
-;;quack
-(require 'quack)
-(setq quack-remap-find-file-bindings-p nil)
-(setq quack-global-menu-p nil)
-(setq quack-remember-new-programs-p nil)
-
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")
 (require 'geiser)
@@ -61,6 +55,11 @@
 (setq scheme-program-name "gsi -:d-")
 (require 'gambit)
 
+;;quack
+(require 'quack)
+(setq quack-remap-find-file-bindings-p nil)
+(setq quack-global-menu-p nil)
+(setq quack-remember-new-programs-p nil)
 
 (provide 'scheme-setting)
 

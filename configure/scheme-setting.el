@@ -35,12 +35,16 @@
     (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
 
+;;IUScheme Setup
 (require 'iuscheme)
 (add-hook 'inferior-scheme-mode-hook
           #'(lambda ()
               (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
               (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
               ))
+
+;;Balanced Setup
+(require 'balanced)
 
 (add-hook 'scheme-mode-hook
           #'(lambda ()

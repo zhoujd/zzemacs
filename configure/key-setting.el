@@ -244,7 +244,10 @@
   [S-left]        'shrink-window-horizontally
 
   ;;zz/apps-key for M-x
-  zz/apps-key     'execute-extended-command
+  zz/apps-key         'smex
+  (kbd "M-x")         'smex
+  (kbd "M-X")         'smex-major-mode-commands
+  (kbd "C-c C-c M-x") 'execute-extended-command
   ))
 
 (apply-keys-to-map

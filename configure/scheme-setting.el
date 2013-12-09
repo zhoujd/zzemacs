@@ -35,6 +35,12 @@
     (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
 
+(add-hook 'inferior-scheme-mode-hook
+          #'(lambda ()
+              (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
+              (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
+              ))
+
 (add-hook 'scheme-mode-hook
           #'(lambda ()
               (make-local-variable 'eldoc-documentation-function)

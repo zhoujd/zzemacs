@@ -83,6 +83,7 @@
            'emacs-lisp-mode-hook
            'lisp-interaction-mode-hook
            'scheme-mode-hook
+           'inferior-scheme-mode-hook
            'c-mode-hook
            'c++-mode-hook
            'java-mode-hook

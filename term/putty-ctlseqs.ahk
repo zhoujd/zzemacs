@@ -5,7 +5,7 @@
 ;;http://git.savannah.gnu.org/cgit/emacs.git/tree/lisp/term/xterm.el?h=emacs-23
 ;;if emacs can't create keymap correctly from you TERM 
 ;;you can force to load it
-;; (if (and (not (display-graphics-p))
+;; (if (and (not (display-graphic-p))
 ;;          (load-library "term/xterm"))
 ;;   (terminal-init-xterm))
 

@@ -24,6 +24,13 @@
   (kbd "<pause> a") 'event-apply-alt-modifier
   ))
 
+;;all of these sequences are translated from term/xterm.el .
+;;if emacs can't create keymap correctly from you TERM 
+;;you can force to load it
+(if (and (not (display-graphic-p))
+         (load-library "term/xterm"))
+    (terminal-init-xterm))
+
 (apply-keys-to-map
  ctl-z-map
  (list

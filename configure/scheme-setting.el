@@ -57,10 +57,10 @@
 (require 'gambit)
 
 ;;quack
-(require 'quack)
 (setq quack-remap-find-file-bindings-p nil)
 (setq quack-global-menu-p nil)
 (setq quack-remember-new-programs-p nil)
+(require 'quack)
 
 (provide 'scheme-setting)
 

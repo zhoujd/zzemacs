@@ -239,11 +239,11 @@ Emacs buffer are those starting with *."
 (setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/
-;(require 'smex)  
-;(smex-initialize)
-;(global-set-key (kbd "M-x") 'smex)  
-;(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
-;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(require 'smex)  
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)  
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;mulit-occur
 ;; isearch 时按 M-o，列出当前 buffer 的匹配结果;  

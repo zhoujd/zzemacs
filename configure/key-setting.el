@@ -235,9 +235,8 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;To be able to M-x without meta
+  ;;zz/apps-key for M-x
   zz/apps-key     'execute-extended-command
-  (kbd "C-x C-m") 'execute-extended-command
   ))
 
 (apply-keys-to-map

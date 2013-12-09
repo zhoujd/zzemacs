@@ -33,6 +33,17 @@
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
+;;multi key setting
+(defun apply-keys-to-map (map key-pairs)
+  "apply multi key defines"
+  (let ((i 0))
+    (while (< i (length key-pairs))
+      (let ((key (nth i key-pairs))
+            (fn (nth (1+ i) key-pairs)))
+        (when fn
+          (define-key map key fn)))
+      (setq i (+ i 2)))))
+
 ;;keymap setting
 (apply-keys-to-map
  global-map

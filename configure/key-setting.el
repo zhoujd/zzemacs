@@ -11,7 +11,7 @@
   (if-ms-windows (kbd "<apps>") (kbd "<menu>"))
   "zz/hyper-modifier")
 (defvar zz/apps-key
-  (if-ms-windows (kbd "H-<apps>") (kbd "H-<menu>"))
+  (if-ms-windows [(hyper apps)] [(hyper menu)])
   "zz/apps-key")
 
 (apply-keys-to-map
@@ -24,6 +24,14 @@
   (kbd "<pause> a") 'event-apply-alt-modifier
   ))
 
+;;all of these sequences are translated from term/xterm.el .
+;;if emacs can't create keymap correctly from you TERM 
+;;you can force to load it
+(unless-ms-windows
+ (if (and (not (display-graphic-p))
+          (load-library "term/xterm"))
+     (terminal-init-xterm)))
+ 
 (apply-keys-to-map
  ctl-z-map
  (list
@@ -235,9 +243,11 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;To be able to M-x without meta
-  zz/apps-key     'execute-extended-command
-  (kbd "C-x C-m") 'execute-extended-command
+  ;;zz/apps-key for M-x
+  zz/apps-key     'smex
+  (kbd "M-x")     'smex
+  (kbd "M-X")     'smex-major-mode-commands
+  (kbd "C-x M-x") 'execute-extended-command
   ))
 
 (apply-keys-to-map

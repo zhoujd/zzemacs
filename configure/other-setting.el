@@ -82,7 +82,8 @@
 (setq tabbar-mwheel-mode nil)
 
 ;;Excluded buffers in tabbar
-(setq tabbar-excluded-buffers '("*Messages*" "*Completions*" "*ESS*" "*Pymacs*" "*WoMan-Log*"))
+(setq tabbar-excluded-buffers '("*Ido Completions*" "*Messages*" "*Completions*"
+                                "*ESS*" "*Pymacs*" "*WoMan-Log*"))
 
 (defun tabbar-buffer-list ()
   "Return the list of buffers to show in tabs.
@@ -239,11 +240,8 @@ Emacs buffer are those starting with *."
 (setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/
-;(require 'smex)  
-;(smex-initialize)
-;(global-set-key (kbd "M-x") 'smex)  
-;(global-set-key (kbd "M-X") 'smex-major-mode-commands)  
-;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(require 'smex)  
+(smex-initialize)
 
 ;;mulit-occur
 ;; isearch 时按 M-o，列出当前 buffer 的匹配结果;  

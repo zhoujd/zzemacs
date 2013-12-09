@@ -35,6 +35,18 @@
     (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
 
+;;IUScheme Setup
+(require 'iuscheme)
+(add-hook 'inferior-scheme-mode-hook
+          #'(lambda ()
+              (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
+              (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
+              ))
+
+;;Balanced Setup
+;(require 'balanced)
+;(add-hook 'scheme-mode-hook 'balanced-on)
+
 (add-hook 'scheme-mode-hook
           #'(lambda ()
               (make-local-variable 'eldoc-documentation-function)
@@ -57,11 +69,11 @@
 (require 'gambit)
 
 ;;quack
-(require 'quack)
 (setq quack-remap-find-file-bindings-p nil)
 (setq quack-global-menu-p nil)
 (setq quack-remember-new-programs-p nil)
 (setq quack-default-program "gsi -:d-")
+(require 'quack)
 
 (provide 'scheme-setting)
 

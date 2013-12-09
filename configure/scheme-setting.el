@@ -44,10 +44,11 @@
               ))
 
 ;;Balanced Setup
-(require 'balanced)
+;(require 'balanced)
+;(add-hook 'scheme-mode-hook 'balanced-on)
+
 (add-hook 'scheme-mode-hook
           #'(lambda ()
-              (balanced-on)
               (make-local-variable 'eldoc-documentation-function)
               (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
               (eldoc-mode t)

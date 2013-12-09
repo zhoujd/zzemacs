@@ -35,6 +35,7 @@
     (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
     (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
 
+(require 'iuscheme)
 (add-hook 'inferior-scheme-mode-hook
           #'(lambda ()
               (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)

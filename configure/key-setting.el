@@ -11,7 +11,7 @@
   (if-ms-windows (kbd "<apps>") (kbd "<menu>"))
   "zz/hyper-modifier")
 (defvar zz/apps-key
-  (if-ms-windows (kbd "H-<apps>") (kbd "H-<menu>"))
+  (if-ms-windows [(hyper apps)] [(hyper menu)])
   "zz/apps-key")
 
 (apply-keys-to-map
@@ -244,10 +244,10 @@
   [S-left]        'shrink-window-horizontally
 
   ;;zz/apps-key for M-x
-  zz/apps-key         'smex
-  (kbd "M-x")         'smex
-  (kbd "M-X")         'smex-major-mode-commands
-  (kbd "C-c C-c M-x") 'execute-extended-command
+  zz/apps-key     'smex
+  (kbd "M-x")     'smex
+  (kbd "M-X")     'smex-major-mode-commands
+  (kbd "C-x M-x") 'execute-extended-command
   ))
 
 (apply-keys-to-map

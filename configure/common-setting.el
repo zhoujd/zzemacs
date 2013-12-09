@@ -351,6 +351,7 @@
 (setq save-abbrevs nil)
 
 ;;ido mode
+(require 'ido-complete-space-or-hyphen)
 (setq ido-save-directory-list-file nil)
 (setq ido-use-virtual-buffers nil)
 (ido-mode t)

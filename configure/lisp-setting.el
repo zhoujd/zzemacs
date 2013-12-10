@@ -22,6 +22,7 @@
     (list (cons "\\.eclrc$"  'lisp-mode))  ;;ecl configure file
     auto-mode-alist))
 
+(fset 'run-lisp 'slime)
 (setq slime-lisp-implementations
       '(
         (ecl   ("ecl"))

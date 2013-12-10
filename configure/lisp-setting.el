@@ -22,7 +22,6 @@
     (list (cons "\\.eclrc$"  'lisp-mode))  ;;ecl configure file
     auto-mode-alist))
 
-(fset 'run-lisp 'slime)
 (setq slime-lisp-implementations
       '(
         (ecl   ("ecl"))
@@ -41,6 +40,7 @@
 (require 'slime)
 (slime-setup '(slime-fancy))
 (slime-setup '(slime-repl))
+(fset 'run-lisp 'slime)
 
 ;;set slime coding
 (setq slime-net-coding-system 'utf-8-unix)

@@ -3,6 +3,7 @@
 echo hg setup start ...
 
 ##http://mercurial.selenic.com/
+##http://hginit.com/
 ##setup packages
 echo -n "Do you need install packages? (y/N): "
 read answer
@@ -15,6 +16,7 @@ echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
 [ui]
 username = zhoujd<zjd-405@163.com>
+verbose = True
 
 [extensions]
 extdiff =

@@ -1,3 +1,4 @@
+#!/bin/sh
 ####http support push
 ##first goto hg project directory
 ##$hg serve -p 80

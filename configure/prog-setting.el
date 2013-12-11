@@ -484,6 +484,9 @@ the mru bookmark stack."
 (require 'git-emacs)
 (require 'git-show)
 
+;;Mercurial Support
+(require 'mercurial)
+
 ;;rgrep for c/c++
 (setq my-c-file-regex "*.[hc]")
 (defun my-c-rgrep (term &optional dir)

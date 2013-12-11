@@ -2,7 +2,8 @@
 
 echo hg setup start ...
 
-## setup packages
+##http://mercurial.selenic.com/
+##setup packages
 echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in

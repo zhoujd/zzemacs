@@ -15,8 +15,17 @@ echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
 [ui]
 username = zhoujd<zjd-405@163.com>
-merge = beyondcompare3
-diff = bcompare
+
+[extensions]
+extdiff =
+
+[extdiff]
+cmd.bcomp = bcompare
+opts.bcomp = /ro
+
+[tortoisehg]
+vdiff = bcomp
+
 [web] 
 push_ssl = false
 EOF

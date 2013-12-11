@@ -12,7 +12,10 @@ esac
 
 echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
-
+[ui]
+username = zhoujd<zjd-405@163.com>
+[web] 
+push_ssl = false
 EOF
 
 echo hg setup end ...

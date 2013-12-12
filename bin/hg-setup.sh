@@ -2,8 +2,11 @@
 
 echo hg setup start ...
 
+###Mercurial Books
 ##http://mercurial.selenic.com/
-##http://hginit.com/
+##http://hginit.com/ (Hg Init: a Mercurial tutorial)
+##http://hgbook.red-bean.com/ (Mercurial: The Definitive Guide)
+
 ##setup packages
 echo -n "Do you need install packages? (y/N): "
 read answer

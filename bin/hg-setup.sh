@@ -25,7 +25,7 @@ verbose = True
 extdiff =
 
 [extdiff]
-cmd.bcomp = bcompare
+cmd.bcomp = bcomp
 opts.bcomp = /ro
 
 [tortoisehg]

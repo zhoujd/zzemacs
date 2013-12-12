@@ -22,7 +22,7 @@ username = zhoujd<zjd-405@163.com>
 verbose = True
 
 [extensions]
-extdiff =
+hgext.extdiff =
 
 [extdiff]
 cmd.bcomp = bcomp

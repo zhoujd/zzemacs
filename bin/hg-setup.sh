@@ -28,9 +28,6 @@ extdiff =
 cmd.bcomp = bcomp
 opts.bcomp = /ro
 
-[tortoisehg]
-vdiff = bcomp
-
 [web] 
 push_ssl = false
 allow_push = *

@@ -30,6 +30,7 @@ vdiff = bcomp
 
 [web] 
 push_ssl = false
+allow_push = *
 EOF
 
 echo hg setup end ...

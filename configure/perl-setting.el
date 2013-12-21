@@ -39,6 +39,7 @@
 (add-hook  'cperl-mode-hook
            #'(lambda ()
                (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
+                 (setq plcmp-use-keymap nil)
                  (require 'perl-completion nil t)
                  (auto-complete-mode )
                  (perl-completion-mode )

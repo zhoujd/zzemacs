@@ -18,7 +18,7 @@
   (setq cperl-lazy-help-time 2)
   (cperl-lazy-install)
   (add-to-list 'cperl-style-alist
-               '("PDE"
+               '("MYPDE"
                  (cperl-auto-newline                         . nil)
                  (cperl-brace-offset                         . 0)
                  (cperl-close-paren-offset                   . -4)
@@ -31,7 +31,7 @@
                  (cperl-label-offset                         . -4)
                  (cperl-merge-trailing-else                  . t)
                  (cperl-tab-always-indent                    . t)))
-  (cperl-set-style "PDE"))
+  (cperl-set-style "MYPDE"))
 
 (add-hook 'cperl-mode-hook 'pde-perl-mode-hook)
 
@@ -39,15 +39,14 @@
 (add-hook  'cperl-mode-hook
            #'(lambda ()
                (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
-                 (setq plcmp-use-keymap nil)
                  (require 'perl-completion nil t)
-                 (auto-complete-mode )
-                 (perl-completion-mode )
-                 (hs-minor-mode )
+                 (auto-complete-mode t)
+                 (perl-completion-mode t)
+                 (hs-minor-mode t)
                  (make-variable-buffer-local 'ac-sources)
                  (setq ac-sources
                        '(
-                         ;ac-source-perl-completion
+                         ;;ac-source-perl-completion
                          ac-source-yasnippet
                          ac-source-abbrev
                          ac-source-words-in-buffer

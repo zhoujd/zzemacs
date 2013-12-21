@@ -101,7 +101,7 @@
   (autoload 'comint-dynamic-complete "comint" "Complete for file name" t)
   (autoload 're-builder "re-builder-x" "Construct a regexp interactively." t)
   (setq comint-completion-addsuffix '("/" . ""))
-  ;;(setq tags-table-list '("./TAGS" "../TAGS" "../../TAGS"))  ;;Mark by zhoujd 20111021
+  (setq tags-table-list '("./TAGS" "../TAGS" "../../TAGS"))
   (setq hippie-expand-try-functions-list
         '(try-expand-line
           try-expand-dabbrev

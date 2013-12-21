@@ -7,6 +7,8 @@
                     (concat zzemacs-path "bin")
                     "C:/zznix/bin"
                     (format "%s/bin" (getenv "EMACS_DIR"))
+                    "C:/strawberry/perl/bin"
+                    "C:/strawberry/c/bin"
                     "C:/Git/bin"
 					"C:/Git/libexec/git-core"
                     "C:/Vim/vim73"

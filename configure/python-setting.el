@@ -6,7 +6,7 @@
                              interpreter-mode-alist))
 ;;path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
 (setq py-python-command "python")
-(autoload 'python-mode "python-mode" "Python editing mode." t)
+(zz-load-file "site-lisp/python-mode.el")
 
 ;;set indent offset
 (setq python-indent-offset 4)

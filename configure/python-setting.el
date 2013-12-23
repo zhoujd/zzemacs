@@ -1,5 +1,8 @@
 ;;;python programme setting
 
+;;set indent offset
+(setq python-indent-offset 4)
+
 ;;python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist(cons '("python" . python-mode)
@@ -7,9 +10,6 @@
 ;;path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
 (setq py-python-command "python")
 (zz-load-file "site-lisp/python-mode.el")
-
-;;set indent offset
-(setq python-indent-offset 4)
 
 (require 'pymacs)
 (autoload 'pymacs-apply "pymacs") 

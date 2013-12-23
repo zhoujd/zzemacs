@@ -29,12 +29,24 @@
 (setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
 
+
+;; pdb setup, note the python version
+(when-ms-windows
+ (setq pdb-path 'c:/python27/Lib/pdb.py
+       gud-pdb-command-name (symbol-name pdb-path))
+ (defadvice pdb (before gud-query-cmdline activate)
+   "Provide a better default command line when called interactively."
+   (interactive
+    (list (gud-query-cmdline pdb-path
+                             (file-name-nondirectory buffer-file-name)))))
+ )
+ 
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/
 ;;https://github.com/rocky/pydb.git
-(zz-load-path "site-lisp/pydb")
-(require 'pydb)
-(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
+;(zz-load-path "site-lisp/pydb")
+;(require 'pydb)
+;(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
 
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))

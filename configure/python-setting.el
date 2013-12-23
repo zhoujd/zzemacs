@@ -1,4 +1,5 @@
 ;;;python programme setting
+;;https://wiki.python.org/moin/EmacsEditor
 
 ;;python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))

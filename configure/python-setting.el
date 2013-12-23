@@ -44,9 +44,9 @@
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/
 ;;https://github.com/rocky/pydb.git
-;(zz-load-path "site-lisp/pydb")
-;(require 'pydb)
-;(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
+(zz-load-path "site-lisp/pydb")
+(require 'pydb)
+(autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
 
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))

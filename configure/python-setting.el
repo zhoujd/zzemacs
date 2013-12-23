@@ -29,8 +29,8 @@
 (setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
 
-
-;; pdb setup, note the python version
+;;pdb setup, note the python version
+;;run pdb.py (like this): python -i -m pdb <file-name.py>
 (when-ms-windows
  (setq pdb-path 'c:/python27/Lib/pdb.py
        gud-pdb-command-name (symbol-name pdb-path))

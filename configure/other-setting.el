@@ -82,7 +82,7 @@
 (setq tabbar-mwheel-mode nil)
 
 ;;Excluded buffers in tabbar
-(setq tabbar-excluded-buffers '("*Ido Completions*" "*Messages*" "*Completions*"
+(setq tabbar-excluded-buffers '("*Ido Completions*" "*Completions*"
                                 "*ESS*" "*Pymacs*" "*WoMan-Log*"))
 
 (defun tabbar-buffer-list ()

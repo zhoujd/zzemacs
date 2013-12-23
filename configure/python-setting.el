@@ -5,6 +5,8 @@
 (setq interpreter-mode-alist(cons '("python" . python-mode)
                              interpreter-mode-alist))
 ;;path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
+
+;;https://launchpad.net/python-mode/
 (setq py-python-command "python")
 (zz-load-file "site-lisp/python-mode.el")
 

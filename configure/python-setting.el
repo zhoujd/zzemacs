@@ -26,6 +26,7 @@
 ;;http://archive.ipython.org/release/
 ;;git clone https://github.com/ipython/ipython.git
 ;;pyreadline https://pypi.python.org/pypi/pyreadline/2.0
+;;ipython http://archive.ipython.org/release/1.0.0/
 (unless-ms-windows  
  (setq ipython-command "/usr/bin/ipython"))
 (setq-default py-python-command-args '("--colors=Linux"))

@@ -43,6 +43,7 @@
  
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/
+;;http://bashdb.sourceforge.net/pydb/
 ;;https://github.com/rocky/pydb.git
 (zz-load-path "site-lisp/pydb")
 (require 'pydb)

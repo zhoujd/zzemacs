@@ -1,8 +1,5 @@
 ;;;python programme setting
 
-;;set indent offset
-(setq python-indent-offset 4)
-
 ;;python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist(cons '("python" . python-mode)

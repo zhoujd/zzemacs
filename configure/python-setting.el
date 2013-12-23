@@ -41,9 +41,8 @@
    "Provide a better default command line when called interactively."
    (interactive
     (list (gud-query-cmdline pdb-path
-                             (file-name-nondirectory buffer-file-name)))))
- )
- 
+                             (file-name-nondirectory buffer-file-name))))))
+
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/
 ;;http://bashdb.sourceforge.net/pydb/

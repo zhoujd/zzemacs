@@ -24,6 +24,7 @@
 (require 'pycomplete)
 
 ;;sudo apt-get install ipython
+;;http://archive.ipython.org/release/
 ;;git clone https://github.com/ipython/ipython.git
 ;;pyreadline https://pypi.python.org/pypi/pyreadline/2.0
 (unless-ms-windows  

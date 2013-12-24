@@ -1,6 +1,8 @@
 ;;;python programme setting
 ;;https://wiki.python.org/moin/EmacsEditor
 
+(zz-load-path "site-lisp/python-mode")
+
 ;;python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
 (setq interpreter-mode-alist(cons '("python" . python-mode)
@@ -9,7 +11,7 @@
 
 ;;https://launchpad.net/python-mode/
 (setq py-python-command "python")
-(zz-load-file "site-lisp/python-mode.el")
+(zz-load-file "site-lisp/python-mode/python-mode.el")
 
 (require 'pymacs)
 (autoload 'pymacs-apply "pymacs") 
@@ -55,6 +57,9 @@
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
+
+;;ac for python-mode
+(require 'auto-complete-pycomplete)
 
 (provide 'python-setting)
 

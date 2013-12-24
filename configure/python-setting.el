@@ -38,6 +38,9 @@
  (setq ipython-command "/usr/bin/ipython"))
 (setq-default py-python-command-args '("--colors=Linux"))
 (require 'ipython)
+(add-hook 'py-shell-hook
+          (lambda ()
+            (define-key py-shell-map (kbd "C-c M-o") 'clear-input)))
 
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python -i -m pdb <file-name.py>

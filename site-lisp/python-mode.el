@@ -871,7 +871,9 @@ Optional LIM is ignored."
 This menu will get created automatically if you have the `easymenu'
 package.  Note that the latest X/Emacs releases contain this package.")
 
-(and (py-safe (require 'easymenu) t)
+;;;Marked by zhoujd 20131224
+;;(and (py-safe (require 'easymenu) t)
+(progn (py-safe (require 'easymenu) t)
      (easy-menu-define
       py-menu py-mode-map "Python Mode menu"
       '("Python"

@@ -60,6 +60,9 @@
 
 ;;ac for python-mode
 (require 'auto-complete-pycomplete)
+;;highlight indent
+(require 'highlight-indentation)
+
 
 (provide 'python-setting)
 

@@ -11,7 +11,7 @@
 
 ;;https://launchpad.net/python-mode/
 (setq py-python-command "python")
-(zz-load-file "site-lisp/python-mode/python-mode.el")
+(require 'python-mode)
 
 (require 'pymacs)
 (autoload 'pymacs-apply "pymacs") 

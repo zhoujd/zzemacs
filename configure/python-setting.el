@@ -5,8 +5,8 @@
 
 ;;python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist(cons '("python" . python-mode)
-                             interpreter-mode-alist))
+(setq interpreter-mode-alist (cons '("python" . python-mode)
+                                   interpreter-mode-alist))
 ;;path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
 
 ;;https://launchpad.net/python-mode/
@@ -23,7 +23,11 @@
 (pymacs-load "ropemacs" "rope-") 
 (setq ropemacs-enable-autoimport t)
 
+;;ac for python-mode
 (require 'pycomplete)
+(require 'auto-complete-pycomplete)
+;;highlight indent
+(require 'highlight-indentation)
 
 ;;sudo apt-get install ipython
 ;;http://archive.ipython.org/release/
@@ -57,11 +61,6 @@
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
-
-;;ac for python-mode
-(require 'auto-complete-pycomplete)
-;;highlight indent
-(require 'highlight-indentation)
 
 
 (provide 'python-setting)

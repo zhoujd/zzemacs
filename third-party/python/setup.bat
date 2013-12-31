@@ -1,5 +1,7 @@
 @echo off
 
+set ORIGIN_PATH=%PATH%
+set PATH="C:\python27";%ORIGIN_PATH%
 set CURRENT_ROOT="C:\zznix\home\zhoujd\zzemacs\third-party\python"
 set PYTHON_LIB_ROOT="C:\Python27\Lib\site-packages"
 
@@ -28,5 +30,8 @@ copy %CURRENT_ROOT%\pycomplete.py %PYTHON_LIB_ROOT% > nul
 echo for python develop end   ...
 set CURRENT_ROOT=
 set PYTHON_LIB_ROOT=
+set PATH=%ORIGIN_PATH%
+set ORIGIN_PATH=
+
 pause
 @echo on

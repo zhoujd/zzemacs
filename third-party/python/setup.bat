@@ -1,5 +1,9 @@
 @echo off
 
+rem http://www.python.org/
+rem http://www.ipython.org/
+rem http://archive.ipython.org/release/
+
 set ORIGIN_PATH=%PATH%
 set PATH="C:\python27";%ORIGIN_PATH%
 set CURRENT_ROOT="C:\zznix\home\zhoujd\zzemacs\third-party\python"

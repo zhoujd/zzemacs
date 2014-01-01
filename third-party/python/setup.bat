@@ -3,6 +3,7 @@
 rem http://www.python.org/
 rem http://www.ipython.org/
 rem http://archive.ipython.org/release/
+rem https://pypi.python.org/pypi/pyreadline
 
 set ORIGIN_PATH=%PATH%
 set PATH="C:\python27";%ORIGIN_PATH%

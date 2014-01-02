@@ -1,6 +1,12 @@
 #!/bin/sh
 
+##http://www.python.org/
+##http://www.ipython.org/
+##http://archive.ipython.org/release/
+##https://pypi.python.org/pypi/pyreadline
+
 CURRENT_ROOT=`pwd`
+PYTHON_LIB_ROOT="/usr/local/lib/python2.7/dist-packages/"
 
 echo for python develop start ...
 
@@ -21,7 +27,7 @@ cd $CURRENT_ROOT/ropemacs/
 sudo python setup.py install
 cd $CURRENT_ROOT
 
-sudo cp -f $CURRENT_ROOT/pycomplete.py /usr/local/lib/python2.7/dist-packages/
-rm -f $CURRENT_ROOT/../../site-lisp/pymacs.elc
+sudo cp -f $CURRENT_ROOT/pycomplete.py $PYTHON_LIB_ROOT
+rm -f $CURRENT_ROOT/../../site-lisp/python-mode/pymacs.elc
 
 echo for python develop end   ...

@@ -1,8 +1,4 @@
-扩展工具：
- Snippet: 可定义模板；
- AutoComplete：自动完成工具，可以弹出列表框以供选择；
- Rope and Ropemacs: 重构工具，如 extract method, goto difinition, show documents  等等
- pycomplete：智能提示工具，如，输入time.cl 按TAB，会列出time模块全部以cl开头的函数。调用函数时，可以通过mini buffer提示函数的参数类型。
+Extend tools for python:
  
 1. Install YASnippet
  

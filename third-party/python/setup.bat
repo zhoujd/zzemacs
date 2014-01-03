@@ -29,6 +29,10 @@ cd %CURRENT_ROOT%\ropemacs
 python setup.py install
 cd %CURRENT_ROOT%
 
+cd %CURRENT_ROOT%\pyreadline
+python setup.py install
+cd %CURRENT_ROOT%
+
 echo install pycomplete.py to python lib
 copy %CURRENT_ROOT%\pycomplete.py %PYTHON_LIB_ROOT% > nul
 

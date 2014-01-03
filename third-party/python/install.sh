@@ -27,6 +27,10 @@ cd $CURRENT_ROOT/ropemacs/
 sudo python setup.py install
 cd $CURRENT_ROOT
 
+cd $CURRENT_ROOT/pyreadline/
+sudo python setup.py install
+cd $CURRENT_ROOT
+
 sudo cp -f $CURRENT_ROOT/pycomplete.py $PYTHON_LIB_ROOT
 rm -f $CURRENT_ROOT/../../site-lisp/python-mode/pymacs.elc
 

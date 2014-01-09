@@ -33,6 +33,12 @@ git config --global push.default simple
 ### error: RPC failed; result=18, HTTP code = 0
 #git config --global http.postBuffer 524288000
 
+if [ "$OS" = "Windows_NT" ] ; then
+    git config --global pack.windowMemory  10m
+    git config --global pack.packSizeLimit 20m
+    git config --global http.postBuffer    524288000
+fi
+
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode
 

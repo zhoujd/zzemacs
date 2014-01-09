@@ -477,9 +477,9 @@ the mru bookmark stack."
 ;;gitisos ssh-keygen
 ;;$ssh-keygen -t dsa
 ;;$ssh -T git@github.com
-;(zz-load-path "site-lisp/git-emacs")
-;(require 'git-emacs)
-;(require 'git-show)
+(zz-load-path "site-lisp/git-emacs")
+(require 'git-emacs)
+(require 'git-show)
 
 ;;Mercurial Support
 (require 'mercurial)

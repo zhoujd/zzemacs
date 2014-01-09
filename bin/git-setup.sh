@@ -4,8 +4,8 @@ GIT_SETUP_HOME=`pwd`
 
 echo git diff setup start ...
 
+## setup packages
 if [ "$OS" != "Windows_NT" ] ; then
-    ## setup packages
     echo -n "Do you need install packages? (y/N): "
     read answer
     case "$answer" in
@@ -17,6 +17,7 @@ if [ "$OS" != "Windows_NT" ] ; then
     esac
 fi
 
+## clear ~/.gitconfig
 echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
@@ -34,12 +35,6 @@ git config --global push.default simple
 ### http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
 ### error: RPC failed; result=18, HTTP code = 0
 #git config --global http.postBuffer 524288000
-
-if [ "$OS" = "Windows_NT" ] ; then
-    git config --global pack.windowMemory  10m
-    git config --global pack.packSizeLimit 20m
-    git config --global http.postBuffer    524288000
-fi
 
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode

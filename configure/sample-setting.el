@@ -112,14 +112,13 @@
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun edit-with-gvim()
+(defun open-with-gvim()
   "Edit current buffer file with gvim"
   (interactive)
   (start-process  "gvim"
                   nil
                   "gvim"
                   (display-buffer-name)))
-
 
 (defun open-with-terminal()
   "Open terminal to current dired"

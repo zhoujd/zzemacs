@@ -186,13 +186,12 @@ jp/m-magazine/backnumber/hukuda.html")
 (luna-define-method shimbun-get-headers ((shimbun shimbun-kantei)
 					 &optional range)
   (let* ((group (shimbun-current-group-internal shimbun))
-	 (blogp (string-match "\\`blog-" group))
 	 (enp (string-match "\\`m-magazine-en" group))
 	 (cnp (string-match "\\`m-magazine-cn" group))
 	 (krp (string-match "\\`m-magazine-kr" group))
 	 (regexp
 	  (cond
-	   (blogp
+	   ((string-equal group "blog-en")
 	    (eval-when-compile
 	      (concat "<a[\t\n ]+href=\""
 		      ;; 1. url
@@ -202,10 +201,29 @@ jp/m-magazine/backnumber/hukuda.html")
 		      "/"
 		      ;; 3. month
 		      "\\([01]?[0-9]\\)"
-		      "/\\(?:20\\)?[1-9][0-9][01][0-9]"
+		      "/\\(?:\\(?:\\(?:20\\)?[1-9][0-9]\\)?[0-3][0-9]\\)?"
 		      ;; 4. day of month
-		      "\\([0-3][0-9]\\)"
-		      ;; 5. revision e.g., 20110822-2.html
+		      "\\([0-3][0-9]\\)[a-z]*"
+		      ;; 5. revision
+		      "[_-]?\\([0-9]+\\)?"
+		      "\\.html\\)"
+		      "\"[^>]*>[\t\n ]*"
+		      ;; 6. subject
+		      "\\(\\(?:\\(?:[^<]*</?[biu]>\\)+[^<]*\\)\\|[^<]+\\)")))
+	   ((string-equal group "blog-ja")
+	    (eval-when-compile
+	      (concat "<a[\t\n ]+href=\""
+		      ;; 1. url
+		      "\\(https?://[^/]*kantei\\.go\\.jp/\\(?:[^/]+/\\)*"
+		      ;; 2. year
+		      "\\(20[1-9][0-9]\\)"
+		      "/"
+		      ;; 3. month
+		      "\\([01]?[0-9]\\)"
+		      "/"
+		      ;; 4. day of month
+		      "\\([0-3][0-9]\\)[a-z]*"
+		      ;; 5. revision
 		      "[_-]?\\([0-9]+\\)?"
 		      "\\.html\\)"
 		      "\"[^>]*>[\t\n ]*"

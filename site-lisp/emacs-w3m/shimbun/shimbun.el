@@ -1,6 +1,6 @@
 ;;; shimbun.el --- interfacing with web newspapers -*- coding: iso-2022-7bit; -*-
 
-;; Copyright (C) 2001-2012 Yuuichi Teranishi <teranisi@gohome.org>
+;; Copyright (C) 2001-2014 Yuuichi Teranishi <teranisi@gohome.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;         Akihiro Arisawa    <ari@mbf.sphere.ne.jp>,
@@ -72,6 +72,13 @@
 
 (eval-when-compile (require 'cl))
 (eval-when-compile (require 'static))
+
+;; Make edebug work for the static-* macros in Emacs 24.4+.
+(def-edebug-spec static-cond (&rest (&rest def-form)))
+(def-edebug-spec static-defconst (&define name def-body [&optional def-body]))
+(def-edebug-spec static-if (&rest def-form))
+(def-edebug-spec static-unless (&rest def-form))
+(def-edebug-spec static-when (&rest def-form))
 
 (require 'mcharset)
 (require 'eword-encode)
@@ -238,6 +245,7 @@ Default is the value of `w3m-default-save-directory'."
 (defalias 'shimbun-end-of-tag 'w3m-end-of-tag)
 (defalias 'shimbun-expand-url 'w3m-expand-url)
 (defalias 'shimbun-find-coding-system 'w3m-find-coding-system)
+(defalias 'shimbun-flet 'w3m-flet)
 (defalias 'shimbun-interactive-p 'w3m-interactive-p)
 (defalias 'shimbun-replace-in-string 'w3m-replace-in-string)
 (defalias 'shimbun-url-encode-string 'w3m-url-encode-string)
@@ -1236,14 +1244,14 @@ integer n:    Retrieve n pages of header indices.")
       (concat "<div align=\"left\">\n--&nbsp;<br>\n$B$3$N5-;v$NCx:n8"$O!"(B"
 	      (shimbun-server-name shimbun)
 	      "$B<R$K5"B0$7$^$9!#(B<br>\n$B86J*$O(B <a href=\""
-	      (shimbun-article-base-url shimbun header) "\">"
+	      (shimbun-article-base-url shimbun header) "\">&lt;"
 	      (shimbun-article-base-url shimbun header)
-	      "</a> $B$G8x3+$5$l$F$$$^$9!#(B\n</div>\n")
+	      "&gt;</a> $B$G8x3+$5$l$F$$$^$9!#(B\n</div>\n")
     (concat "-- \n$B$3$N5-;v$NCx:n8"$O!"(B"
 	    (shimbun-server-name shimbun)
-	    "$B<R$K5"B0$7$^$9!#(B\n$B86J*$O(B "
+	    "$B<R$K5"B0$7$^$9!#(B\n$B86J*$O(B <"
 	    (shimbun-article-base-url shimbun header)
-	    " $B$G8x3+$5$l$F$$$^$9!#(B\n")))
+	    "> $B$G8x3+$5$l$F$$$^$9!#(B\n")))
 
 ;;; Misc Functions
 (defun shimbun-header-insert-and-buffer-string (shimbun header
@@ -1601,7 +1609,7 @@ it considers the buffer has already been narrowed to an article."
 	(error))
       (goto-char start)
       (while (re-search-forward
-	      "[^$B!!!"!#!$!%!2!<!=!>!A$(D"7$B!F!G!H!I!J!K!N!O!P!Q!R!S!a!l!m!o(B]+"
+	      "[^$B!!!"!#!$!%!2!<!=!>!A!A!F!G!H!I!J!K!N!O!P!Q!R!S!a!l!m!o(B]+"
 	      nil t)
 	(japanese-hankaku-region (match-beginning 0) (match-end 0) t))
       (goto-char start)
@@ -1692,7 +1700,7 @@ it considers the buffer has already been narrowed to an article."
 		   (and (member (match-string 1) '("$B8aA0(B" "$B8a8e(B"))
 			(eq (char-before) ?$B;~(B))
 		   (memq (char-before (match-end 1))
-			 '(?$B!!(B ?$B!\(B ?$B!](B ?$B!^(B ?$B!_(B ?$B!`(B ?$B!a(B ?$B!b(B ?$B!e(B ?$B!f(B ?$B"b(B
+			 '(?$B!!(B ?$B!\(B ?$B!](B ?$B!^(B ?$B!_(B ?$B!`(B ?$B!a(B ?$B!b(B ?$B!e(B ?$B!f(B ?$B-p(B
 			       ?$B"c(B ?$B"d(B))
 		   (and (memq (char-before (match-end 1)) '(?$BBh(B ?$BLs(B))
 			(memq ?j
@@ -1739,12 +1747,12 @@ it considers the buffer has already been narrowed to an article."
       (let ((regexp
 	     (if (eq w3m-output-coding-system 'utf-8)
 		 (eval-when-compile
-		   (let ((chars "$A!2!4!6!8!:!<!>#"#($B!"!#!$!%!&!+!,!1!3!4!5!6!7(B\
+		   (let ((chars "$A!2!4!6!8!:!<!>$B|~$A#($B!"!#!$!%!&!+!,!1!3!4!5!6!7(B\
 $B!A!J!K!L!M!N!O!P!Q!R!S!T!U!V!W!X!Y!Z![(B"))
 		     (concat "\\(?:[ $B!!(B]\\|&nbsp;\\)\\([" chars "$A!f$B!9!n(B]\\)"
 			     "\\|\\([" chars "]\\)\\(?:[ $B!!(B]\\|&nbsp;\\)")))
 	       (eval-when-compile
-		 (let ((chars "$A!.!0!2!4!6!8!:!<!>!c!d!e!l#"#($B!"!#!$!%!&!+!,!/(B\
+		 (let ((chars "$A!.!0!2!4!6!8!:!<!>!c!d!e!l$B|~$A#($B!"!#!$!%!&!+!,!/(B\
 $B!1!3!4!5!6!7!A!B!D!E!F!G!H!I!J!K!L!M!N!O!P!Q!R!S!T!U!V!W!X!Y!Z![!k!l!m!x(B"))
 		   (concat "\\(?:[ $B!!(B]\\|&nbsp;\\)\\([" chars "$A!f$B!9!n(B]\\)"
 			   "\\|\\([" chars "]\\)\\(?:[ $B!!(B]\\|&nbsp;\\)"))))))
@@ -1814,8 +1822,8 @@ faster."
 	   (not (eq (symbol-function 'libxml-parse-xml-region) 'ignore)))
       (save-excursion
 	(goto-char (point-min))
-	(let ((xml (libxml-parse-xml-region
-		    (1- (search-forward "<" nil t)) (point-max)))
+	(let ((xml (when (search-forward "<" nil t)
+		     (libxml-parse-xml-region (match-beginning 0) (point-max))))
 	      start stylestring stylesheet)
 	  (if xml
 	      (progn

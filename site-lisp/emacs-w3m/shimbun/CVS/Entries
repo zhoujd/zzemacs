@@ -1,5 +1,5 @@
 /.cvsignore/1.2/Tue Feb  4 12:00:43 2003//
-/ChangeLog/1.282/Tue Feb 28 10:41:41 2012//
+/ChangeLog/1.306/Tue Jan  7 01:22:44 2014//
 /mew-shimbun.el/1.58/Wed Jan 13 00:59:30 2010//
 /nnshimbun.el/1.74/Wed Feb 15 23:15:55 2012//
 /sb-2ch.el/1.17/Tue Jul  5 23:52:29 2005//
@@ -8,13 +8,14 @@
 /sb-arch-bluegate.el/1.6/Wed Oct 17 11:15:58 2007//
 /sb-asahi-html.el/1.22/Wed Oct 17 11:15:58 2007//
 /sb-asahi-mytown.el/1.13/Wed Oct 17 11:15:58 2007//
-/sb-asahi.el/1.178/Mon Nov 21 09:47:29 2011//
+/sb-asahi.el/1.183/Tue Dec 17 23:49:32 2013//
 /sb-atmarkit.el/1.19/Thu Nov  4 04:32:04 2010//
 /sb-atom-hash.el/1.10/Fri Apr 22 02:10:56 2011//
 /sb-atom.el/1.11/Fri Apr 22 02:10:56 2011//
 /sb-bbc.el/1.16/Fri Nov  2 11:11:24 2007//
 /sb-bbdb-ml.el/1.12/Wed Oct 17 11:15:58 2007//
 /sb-cgi-board.el/1.9/Thu Sep 17 23:39:40 2009//
+/sb-chise.el/1.3/Thu Jul 19 03:38:18 2012//
 /sb-cnet-jp.el/1.30/Thu Nov  4 04:32:04 2010//
 /sb-cnet.el/1.28/Thu Nov  4 04:32:04 2010//
 /sb-cnn-jp.el/1.16/Fri Mar 28 05:24:31 2008//
@@ -45,12 +46,12 @@
 /sb-ibm-dev.el/1.30/Thu Nov  4 04:32:04 2010//
 /sb-impress.el/1.40/Fri Sep 18 08:41:26 2009//
 /sb-infoshop.el/1.5/Mon Nov  5 02:12:41 2007//
-/sb-itmedia.el/1.49/Tue Oct 11 02:02:14 2011//
+/sb-itmedia.el/1.50/Tue Jun 18 01:00:26 2013//
 /sb-japantimes.el/1.10/Wed Oct 17 11:15:58 2007//
 /sb-javaconf.el/1.10/Wed Oct 17 11:15:58 2007//
 /sb-jpilot.el/1.9/Wed Oct 17 11:15:58 2007//
 /sb-jpo.el/1.16/Wed Oct 17 11:15:58 2007//
-/sb-kantei.el/1.61/Thu Jan 26 04:02:21 2012//
+/sb-kantei.el/1.64/Thu Apr 12 07:45:16 2012//
 /sb-kde.el/1.8/Wed Oct 17 11:15:58 2007//
 /sb-laut-de.el/1.7/Thu Nov  4 04:32:04 2010//
 /sb-linuxce-jp.el/1.7/Wed Oct 17 11:15:58 2007//
@@ -59,8 +60,8 @@
 /sb-m17n.el/1.9/Mon May 11 01:17:59 2009//
 /sb-macosx-jp.el/1.3/Wed Oct 17 11:15:58 2007//
 /sb-mailarc.el/1.5/Tue Jul  5 23:52:29 2005//
-/sb-mailman.el/1.16/Thu Mar 27 11:44:01 2008//
-/sb-mainichi.el/1.67/Mon Oct 10 23:15:47 2011//
+/sb-mailman.el/1.17/Tue May  1 06:10:07 2012//
+/sb-mainichi.el/1.72/Tue Jun 18 02:07:16 2013//
 /sb-makanai.el/1.20/Wed Oct 17 11:15:58 2007//
 /sb-marc-aims.el/1.8/Wed Oct 17 11:15:58 2007//
 /sb-meadow.el/1.15/Wed Oct 17 11:15:58 2007//
@@ -90,9 +91,9 @@
 /sb-rediff.el/1.10/Thu Nov  4 04:32:04 2010//
 /sb-rss-blogs.el/1.4/Thu Mar  4 03:14:49 2010//
 /sb-rss-hash.el/1.7/Fri Apr 22 02:10:56 2011//
-/sb-rss.el/1.52/Fri Apr 22 02:10:56 2011//
+/sb-rss.el/1.53/Wed May  8 23:55:13 2013//
 /sb-ruby.el/1.18/Wed May 20 23:13:31 2009//
-/sb-sankei.el/1.53/Mon Oct  3 08:16:59 2011//
+/sb-sankei.el/1.54/Fri Jun 28 08:34:17 2013//
 /sb-savannah.el/1.13/Wed Oct 17 11:15:58 2007//
 /sb-scipy.el/1.3/Wed Oct 17 11:15:58 2007//
 /sb-security-memo.el/1.8/Wed Oct 17 11:15:58 2007//
@@ -124,12 +125,12 @@
 /sb-wired-jp.el/1.12/Wed Oct 17 11:15:58 2007//
 /sb-x51.el/1.23/Thu Nov  4 04:32:04 2010//
 /sb-xemacs.el/1.19/Wed Oct 17 11:15:58 2007//
-/sb-yahoo-auctions.el/1.15/Fri Oct 14 00:16:00 2011//
+/sb-yahoo-auctions.el/1.16/Tue Jun 18 00:32:34 2013//
 /sb-yahoo-sports.el/1.6/Wed Oct 17 11:15:58 2007//
 /sb-yahoo.el/1.41/Fri Nov 12 04:37:29 2010//
 /sb-yomiuri-html.el/1.15/Wed Oct 17 11:15:58 2007//
 /sb-yomiuri.el/1.60/Fri Jan 11 07:43:25 2008//
 /sb-zdnet-jp.el/1.9/Wed Oct 17 11:15:58 2007//
 /sb-zeit-de.el/1.17/Thu Nov  4 04:32:04 2010//
-/shimbun.el/1.219/Tue Feb 28 10:41:42 2012//
+/shimbun.el/1.223/Tue Jan  7 01:22:44 2014//
 D

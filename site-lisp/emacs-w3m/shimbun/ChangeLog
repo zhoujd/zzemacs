@@ -1,3 +1,100 @@
+2014-01-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* shimbun.el: Fix edebug spec for the static-* macros.
+
+2013-12-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-asahi.el (shimbun-asahi-group-table): Update regexp matching
+	articles in rss group.
+
+2013-12-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-asahi.el (shimbun-asahi-article-contents): Don't infloop.
+
+2013-12-02  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-asahi.el (shimbun-asahi-article-contents):
+	Work for editorial and tenjin groups again.
+
+2013-11-07  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	Work for editorial and tenjin groups again.
+
+	* sb-asahi.el (shimbun-asahi-group-table): Update urls and regexps.
+	(shimbun-asahi-article-contents): New function.
+	(shimbun-asahi-get-headers): Save articles' contents in NOV file.
+	(shimbun-asahi-get-headers-for-today): Abolish.
+	(shimbun-article, shimbun-asahi-article): New method.
+	(shimbun-asahi-prepare-article): Do nothing for those groups.
+
+2013-10-25  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-asahi.el (shimbun-asahi-content-start, shimbun-asahi-content-end):
+	Update.
+	(shimbun-asahi-clear-contents): Remove useless ads and links.
+
+2013-06-28  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* shimbun.el (shimbun-footer): Enclose url with <> to ensure that Gnus
+	buttonizes it correctly even if it is folded into two or more lines.
+
+	* sb-sankei.el (shimbun-sankei-clear-contents): Remove trailing
+	successive orphaned open tags.
+
+2013-06-18  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-itmedia.el (shimbun-get-headers): Update regexp for kodera group.
+
+	* sb-yahoo-auctions.el: Add coding cookie.
+
+	* sb-mainichi.el (shimbun-mainichi-multi-next-url):
+	Support the other type of navigator.
+
+2013-06-17  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-mainichi.el (shimbun-mainichi-get-headers): Update regexp.
+
+2013-05-08  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* shimbun.el (shimbun-xml-parse-buffer): Don't try to parse corrupt xml.
+
+	* sb-rss.el (shimbun-rss-get-headers): Don't conceal an error if
+	debug-on-error or debug-on-quit is non-nil.
+
+2012-07-19  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* shimbun.el (shimbun-flet): Alias to w3m-flet.
+
+	* sb-chise.el (shimbun-headers): Use it.
+
+2012-07-18  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-chise.el (shimbun-headers): Don't use flet.
+
+2012-05-01  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-chise.el: New file.
+
+	* sb-mailman.el (shimbun-mailman-make-contents): Don't decode entities;
+	restore mail addresses; append comma to day of week in Date header;
+	remove useless links around mail addresses.
+	(shimbun-mailman-ja-make-contents): Don't decode entities;
+	remove useless links around mail addresses.
+
+2012-04-16  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-mainichi.el (shimbun-mainichi-ignored-subject): New.
+	(shimbun-mainichi-get-headers, shimbun-mainichi-multi-next-url):
+	Update regexps.
+
+2012-04-12  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-kantei.el (shimbun-get-headers): Work for blog-en.
+
+2012-04-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* sb-kantei.el (shimbun-get-headers): Update regexp used for blog-ja.
+
 2012-02-15  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	Remove marks feature, following Ma Gnus.

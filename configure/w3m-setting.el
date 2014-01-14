@@ -1,5 +1,6 @@
 ;;;; w3m-setting.el --- w3m setting file
-;;;; git clone https://github.com/doitian/emacs-w3m.git
+;;;http://emacs-w3m.namazu.org/index-en.html
+;;;git clone https://github.com/doitian/emacs-w3m.git
 
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)

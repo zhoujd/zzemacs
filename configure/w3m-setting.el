@@ -1,6 +1,8 @@
 ;;;; w3m-setting.el --- w3m setting file
 ;;;http://emacs-w3m.namazu.org/index-en.html
-;;;git clone https://github.com/doitian/emacs-w3m.git
+;;;% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login
+;;;CVS password: # No password is set.  Just hit Enter/Return key.
+;;;% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m
 
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)

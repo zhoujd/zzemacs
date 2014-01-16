@@ -1,4 +1,9 @@
+#+TITLE: Emacs Console Key setting
+#+AUTHOR: zhoujd
+#+EMAIL: zjd-403@163.com
+
 Emacs Ctrl modifiers don't work in console
+
 [[http://stackoverflow.com/questions/13131367/emacs-ctrl-modifiers-dont-work-in-console]]
 
 Here is the algorithm, how to make modifier keys work in Emacs in terminal.

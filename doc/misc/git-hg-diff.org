@@ -1,3 +1,7 @@
+#+TITLE: Git VS Mercurial by command
+#+AUTHOR: zhoujd
+#+EMAIL: zjd-403@163.com
+
 * Git and Mercurial command difference in side by side
 
 | Git                                          | Mercurial                                                                              |

@@ -1,3 +1,7 @@
+#+TITLE: 64 bit program guide
+#+AUTHOR: zhoujd
+#+EMAIL: zjd-403@163.com
+
 * Linux and windows main type length by bytes
 
 | type                      | 32-bit |            64-bit |

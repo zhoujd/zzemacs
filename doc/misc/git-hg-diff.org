@@ -1,0 +1,28 @@
+* Git and Mercurial command difference in side by side
+
+| Git                                          | Mercurial                                                                              |
+|----------------------------------------------+----------------------------------------------------------------------------------------|
+| git pull                                     | hg pull -u                                                                             |
+| git fetch                                    | hg pull                                                                                |
+| git reset --hard                             | hg up -C                                                                               |
+| git revert <commit>                          | hg backout <cset>                                                                      |
+| git add <new_file>                           | hg add <new_file> (Only equivalent when <new_file> is not tracked.)                    |
+| git add <file>                               | Not necessary in Mercurial                                                             |
+| git add -i                                   | hg record                                                                              |
+| git commit -a                                | hg commit                                                                              |
+| git commit --amend                           | hg commit --amend                                                                      |
+| git blame                                    | hg blame or hg annotate                                                                |
+| git blame -C                                 | (closest equivalent): hg grep --all                                                    |
+| git bisect                                   | hg bisect                                                                              |
+| git rebase --interactive                     | hg histedit <base cset> (Require the HisteditExtension.)                               |
+| git statsh                                   | hg shelve (Require the ShelveExtension or the AtticExtension.)                         |
+| git merge                                    | hg merge                                                                               |
+| git cherry-pick <commit>                     | hg graft <cset>                                                                        |
+| git rebase <upstream>                        | hg rebase -d <cset> (Require the RebaseExtension.)                                     |
+| git format-patch <commits> and git send-mail | hg email -r <csets> (Require the PatchbombExtension.)                                  |
+| git am <mbox>                                | hg mimport -m <mbox> (Require the MboxExtension and MqExtension. Import patchs to mq.) |
+| git checkout HEAD                            | hg update                                                                              |
+| git log -n                                   | hg log --limit n                                                                       |
+| git push                                     | hg push                                                                                |
+|                                              |                                                                                        |
+

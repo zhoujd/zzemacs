@@ -24,5 +24,4 @@
 | git checkout HEAD                            | hg update                                                                              |
 | git log -n                                   | hg log --limit n                                                                       |
 | git push                                     | hg push                                                                                |
-|                                              |                                                                                        |
 

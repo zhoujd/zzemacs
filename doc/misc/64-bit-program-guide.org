@@ -1,0 +1,21 @@
+* Linux and windows main type length by bytes
+
+| type                      | 32-bit |            64-bit |
+|---------------------------+--------+-------------------|
+| short                     |      2 |                 2 |
+| int                       |      4 |                 4 |
+| long                      |      4 | Linux:8 Windows:4 |
+| size_t                    |      4 |                 8 |
+| void *(and other pointer) |      4 |                 8 |
+| time_t                    |      8 |                 8 |
+| float                     |      4 |                 4 |
+| double                    |      8 |                 8 |
+
+* No use long type.
+* No convert int to pointer, anti-convert is also not permitted. 
+  following code is error: 
+  int i = (int)ptr;
+  void *ptr = (void *)s32Tmp;
+
+
+

@@ -321,15 +321,6 @@ Emacs buffer are those starting with *."
 (require 'vimrc-mode)
 (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode))
 
-;;for github wiki
-;;http://http://johnmacfarlane.net/pandoc/
-(zz-load-path "site-lisp/markdown-mode")
-(autoload 'markdown-mode "markdown-mode"
-          "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
 
 (provide 'other-setting)
 

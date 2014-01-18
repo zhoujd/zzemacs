@@ -51,6 +51,7 @@
           java-setting
           csharp-setting
           php-setting
+          doc-setting
           muse-setting
           keymap-setting
           fn-setting

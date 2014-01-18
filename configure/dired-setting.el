@@ -1,26 +1,23 @@
 ;;;; dired-setting.el --- dired config file
 ;;;
 
+;;for dired-x tools
 (require 'dired-x)
 
-;;dired setting
-(setq dired-recursive-deletes t)
-(setq dired-recursive-copies t)
-(defadvice dired-find-file (around dired-find-file-single-buffer activate)
-  "Replace current buffer if file is a directory."
-  (interactive)
-  (let ((orig (current-buffer))
-        (filename (dired-get-file-for-visit)))
-    ad-do-it
-    (when (and (file-directory-p filename)
-               (not (eq (current-buffer) orig)))
-      (kill-buffer orig))))
-(defadvice dired-up-directory (around dired-up-directory-single-buffer activate)
-  "Replace current buffer if file is a directory."
-  (interactive)
-  (let ((orig (current-buffer)))
-    ad-do-it
-    (kill-buffer orig)))
+;;allow dired to be able to delete or copy a whole dir.
+(setq dired-recursive-copies (quote always)) ;;"always" means no asking
+(setq dired-recursive-deletes (quote top)) ;;"top" means ask once
+
+;;Now, go to dired, then call split-window-vertically,
+;;then go to another dired dir. Now, when you press C to copy,
+;;the other dir in the split pane will be default destination.
+;;Same for R (rename; move).
+(setq dired-dwim-target t)
+
+;;The same buffer for viewing directory, instead of spawning many
+;;In dired, you can press 'a' instead of 'Enter' to open the dir
+;;Disabled commands
+(put 'dired-find-alternate-file 'disabled nil)
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (when-ms-windows  

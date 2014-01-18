@@ -244,8 +244,8 @@ Emacs buffer are those starting with *."
 (smex-initialize)
 
 ;;mulit-occur
-;; isearch 时按 M-o，列出当前 buffer 的匹配结果;  
-;; M-O(大写o) 列出所有 buffer 里的匹配结果 
+;;isearch press M-o will list match in current buffer
+;;M-O(not zero) will list match in all buffers
 ;(require 'color-moccur)
 ;(require 'moccur-edit)
 
@@ -261,17 +261,6 @@ Emacs buffer are those starting with *."
 ;  (delete-other-windows))
 
 (require 'breadcrumb)
-
-;;http://www.emacswiki.org/emacs/w32-browser.el
-(when-ms-windows  
-  (require 'w32-browser)
-  (eval-after-load "dired"
-    '(define-key dired-mode-map [C-f4] #'(lambda ()
-                                            (interactive)
-                                            (w32-browser
-                                            (dired-replace-in-string
-                                            "/" "\\"
-                                            (dired-get-filename)))))))
 
 ;;Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

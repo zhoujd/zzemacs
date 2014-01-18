@@ -1,6 +1,6 @@
 ;;;; Document setting
 
-;;for github wiki
+;;markdown setting
 ;;http://http://johnmacfarlane.net/pandoc/
 (zz-load-path "site-lisp/markdown-mode")
 (autoload 'markdown-mode "markdown-mode"

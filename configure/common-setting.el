@@ -451,6 +451,18 @@
 ;;uing iswitchb-mode
 (require 'iswitchb)
 (iswitchb-mode t)
+(setq iswitchb-buffer-ignore
+      '("^ "
+        "^\*Buffer"
+        "^\*Completions\*"
+        "^\*Quail Completions\*"
+        "^TAGS"
+        ))
+
+;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+(setq uniquify-after-kill-buffer-p t)
 
 (provide 'common-setting)
 

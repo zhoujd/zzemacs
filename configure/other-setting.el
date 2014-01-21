@@ -119,12 +119,6 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
-(require 'uniquify)
-(custom-set-variables
- '(uniquify-buffer-name-style 'reverse)
- '(uniquify-after-kill-buffer-p t))
-
 ;(defun kill-buffer-when-exit ()
 ;  "Close assotiated buffer when a process exited"
 ;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))

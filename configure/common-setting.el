@@ -466,7 +466,8 @@
             (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
 	    '(("<right>" . iswitchb-next-match)
 	      ("<left>"  . iswitchb-prev-match)
-          )))
+	      ("<up>"    . ignore             )
+	      ("<down>"  . ignore             ))))
 
 (add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
 

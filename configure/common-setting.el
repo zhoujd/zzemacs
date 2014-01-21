@@ -471,6 +471,20 @@
 
 (add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
 
+;;update when kill buffer in iswitchb
+(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
+  "*Regenerate the list of matching buffer names after a kill.
+    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
+    set to non-nil."
+  (setq iswitchb-buflist iswitchb-matches)
+  (iswitchb-rescan))
+
+(defun iswitchb-rescan ()
+  "*Regenerate the list of matching buffer names."
+  (interactive)
+  (iswitchb-make-buflist iswitchb-default)
+  (setq iswitchb-rescan t))
+
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)

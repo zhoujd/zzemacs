@@ -127,11 +127,11 @@
 
 (define-fn-key (gethash "f10" fn-key-table)
     [f10]             nil
-    [S-f10]           'tool-bar-mode
+    [S-f10]           'menu-bar-mode
     [C-f10]           'my-toggle-maxframe
     [M-f10]           'my-toggle-fullscreen
     (kbd "C-x <f10>") 'scroll-bar-mode
-    (kbd "C-c <f10>") 'tabbar-mode
+    (kbd "C-c <f10>") 'tool-bar-mode
     )
 
 (define-fn-key (gethash "f11" fn-key-table)

@@ -212,7 +212,7 @@
       (quote (("Default"
                ("Dired" (mode . dired-mode))
                ("Emacs" (or
-                          (name . "\\*.*\\*")
+                          (name . "^\\*.*\\*$")
                           (name . "^ ")))))))
 
 (add-hook 'ibuffer-mode-hook

@@ -76,10 +76,19 @@
 ;(if window-system (require 'tabbar-ruler) (require 'tabbar))
 ;(require 'tabbar-rose)
 (require 'tabbar)
+;don't show help information
+(setq tabbar-scroll-left-help-function nil)   
+(setq tabbar-scroll-right-help-function nil)
+(setq tabbar-help-on-tab-function nil)
+(setq tabbar-home-help-function nil)
+;don't show tabbar button
+(setq tabbar-buffer-home-button (quote (("") "")))
+(setq tabbar-scroll-left-button (quote (("") "")))
+(setq tabbar-scroll-right-button (quote (("") "")))
+(setq tabbar-mwheel-mode nil)
 
 ;;turn on the tabbar
 (tabbar-mode t)
-(setq tabbar-mwheel-mode nil)
 
 ;;Excluded buffers in tabbar
 (setq tabbar-excluded-buffers '("*Ido Completions*" "*Completions*"

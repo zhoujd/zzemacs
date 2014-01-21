@@ -243,11 +243,12 @@ the mru bookmark stack."
     (speedbar-set-timer 1)
     (make-local-hook 'kill-buffer-hook)
     (add-hook 'kill-buffer-hook
-              #'(lambda () (when (eq (current-buffer) speedbar-buffer)
-                             (setq speedbar-frame nil
-                                   dframe-attached-frame nil
-                                   speedbar-buffer nil)
-                             (speedbar-set-timer nil)))))
+              (lambda ()
+                (when (eq (current-buffer) speedbar-buffer)
+                  (setq speedbar-frame nil
+                        dframe-attached-frame nil
+                        speedbar-buffer nil)
+                  (speedbar-set-timer nil)))))
   (set-window-buffer (selected-window)
                      (get-buffer his-speedbar-buffer-name)))
 
@@ -313,10 +314,10 @@ the mru bookmark stack."
   (let ((table (yas/get-snippet-tables major-mode)))
     (if table
       (let (candidates (list))
-            (mapcar #'(lambda (mode)
-                        (maphash #'(lambda (key value)
-                                     (push key candidates))
-                                 (yas/snippet-table-hash mode)))
+            (mapcar (lambda (mode)
+                      (maphash (lambda (key value)
+                                 (push key candidates))
+                               (yas/snippet-table-hash mode)))
                     table)
             (all-completions ac-prefix candidates)))))
 
@@ -432,8 +433,8 @@ the mru bookmark stack."
 
 ;; truncate lines for long tables
 (add-hook 'sql-interactive-mode-hook
-          #'(lambda ()
-              (setq truncate-lines t)))
+          (lambda ()
+            (setq truncate-lines t)))
 
 (setq auto-mode-alist
       (append

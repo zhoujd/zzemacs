@@ -28,8 +28,8 @@
       ))
 
 (add-hook 'dired-load-hook
-          #'(lambda ()
-              (setq dired-bind-vm t)))
+          (lambda ()
+            (setq dired-bind-vm t)))
 
 
 (provide 'vm-setting)

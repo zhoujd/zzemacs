@@ -37,22 +37,22 @@
 
 ;;;perl completing
 (add-hook  'cperl-mode-hook
-           #'(lambda ()
-               (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
-                 (require 'perl-completion nil t)
-                 (auto-complete-mode t)
-                 (perl-completion-mode t)
-                 (hs-minor-mode t)
-                 (make-variable-buffer-local 'ac-sources)
-                 (setq ac-sources
-                       '(
-                         ;;ac-source-perl-completion
-                         ac-source-yasnippet
-                         ac-source-abbrev
-                         ac-source-words-in-buffer
-                         ac-source-files-in-current-dir
-                         ac-source-filename
-                         )))))
+           (lambda ()
+             (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
+               (require 'perl-completion nil t)
+               (auto-complete-mode t)
+               (perl-completion-mode t)
+               (hs-minor-mode t)
+               (make-variable-buffer-local 'ac-sources)
+               (setq ac-sources
+                     '(
+                       ;;ac-source-perl-completion
+                       ac-source-yasnippet
+                       ac-source-abbrev
+                       ac-source-words-in-buffer
+                       ac-source-files-in-current-dir
+                       ac-source-filename
+                       )))))
 
 (provide 'perl-setting)
 

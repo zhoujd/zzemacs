@@ -16,16 +16,16 @@
 ;;auto-complete setting
 (defvar ac-source-scheme
   '((candidates
-     . #'(lambda ()
-           (require 'scheme-complete)
-           (all-completions ac-target (car (scheme-current-env))))))
+     . (lambda ()
+         (require 'scheme-complete)
+         (all-completions ac-target (car (scheme-current-env))))))
   "Source for scheme keywords.")
 
 ;;Auto-complete-mode config
 (add-hook 'scheme-mode-hook
-          #'(lambda ()
-              (make-local-variable 'ac-sources)
-              (setq ac-sources (append ac-sources '(ac-source-scheme)))))
+          (lambda ()
+            (make-local-variable 'ac-sources)
+            (setq ac-sources (append ac-sources '(ac-source-scheme)))))
 
 ;;scheme complete
 (require 'scheme-complete)
@@ -38,21 +38,21 @@
 ;;IUScheme Setup
 (require 'iuscheme)
 (add-hook 'inferior-scheme-mode-hook
-          #'(lambda ()
-              (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
-              (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
-              ))
+          (lambda ()
+            (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
+            (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
+            ))
 
 ;;Balanced Setup
 ;(require 'balanced)
 ;(add-hook 'scheme-mode-hook 'balanced-on)
 
 (add-hook 'scheme-mode-hook
-          #'(lambda ()
-              (make-local-variable 'eldoc-documentation-function)
-              (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
-              (eldoc-mode t)
-              (setq lisp-indent-function 'scheme-smart-indent-function)))
+          (lambda ()
+            (make-local-variable 'eldoc-documentation-function)
+            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+            (eldoc-mode t)
+            (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;geiser for scheme
 (zz-load-path "site-lisp/geiser/elisp")

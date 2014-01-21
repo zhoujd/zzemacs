@@ -27,14 +27,14 @@
 Exclude buffers whose name starts with a space or *, when they are not
 visiting a file.  The current buffer is always included."
   (delq nil
-        (mapcar #'(lambda (b)
-                    (cond
-                      ;; Always include the current buffer.
-                      ((eq (current-buffer) b) b)
-                      ((buffer-file-name b) b)
-                      ((member (buffer-name b) tabbar-excluded-buffers) nil)
-                      ((char-equal ?\  (aref (buffer-name b) 0)) nil)
-                      ((buffer-live-p b) b)))
+        (mapcar (lambda (b)
+                  (cond
+                    ;; Always include the current buffer.
+                    ((eq (current-buffer) b) b)
+                    ((buffer-file-name b) b)
+                    ((member (buffer-name b) tabbar-excluded-buffers) nil)
+                    ((char-equal ?\  (aref (buffer-name b) 0)) nil)
+                    ((buffer-live-p b) b)))
                 (buffer-list))))
 
 (setq tabbar-buffer-list-function 'tabbar-buffer-list)

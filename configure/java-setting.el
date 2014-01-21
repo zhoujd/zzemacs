@@ -17,10 +17,10 @@
 (require 'android-mode)
 (setq android-mode-sdk-dir "~/work/android/android")
 (add-hook 'gud-mode-hook
-          #'(lambda ()
-              (add-to-list 'gud-jdb-classpath
-                           "~/work/android-sdk-linux_86/platforms/android-7/android.jar")
-              ))
+          (lambda ()
+            (add-to-list 'gud-jdb-classpath
+                         "~/work/android-sdk-linux_86/platforms/android-7/android.jar")
+            ))
 
 (provide 'java-setting)
 

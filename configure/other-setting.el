@@ -21,11 +21,11 @@
 
 ;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook
-	  #'(lambda ()
-          ;; desktop-remove clears desktop-dirname
-          (setq desktop-dirname-tmp desktop-dirname)
-          (desktop-remove)
-          (setq desktop-dirname desktop-dirname-tmp)))
+	  (lambda ()
+        ;; desktop-remove clears desktop-dirname
+        (setq desktop-dirname-tmp desktop-dirname)
+        (desktop-remove)
+        (setq desktop-dirname desktop-dirname-tmp)))
 
 (defun saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
@@ -50,13 +50,13 @@
 
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
-	  #'(lambda ()
-          (if (saved-session)
-              (if (y-or-n-p "Restore desktop? ")
-                  (session-restore)))))
+          (lambda ()
+            (if (saved-session)
+                (if (y-or-n-p "Restore desktop? ")
+                    (session-restore)))))
 
 ;;save desktop when exit
-;(add-hook 'kill-emacs-hook #'(lambda () (session-save)))
+;(add-hook 'kill-emacs-hook (lambda () (session-save)))
 
 ;;Filecode Autoprocess
 ;;distct with mpg123
@@ -124,7 +124,7 @@
 ;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
 ;    (when current-process
 ;      (set-process-sentinel current-process
-;                            #'(lambda (watch-process change-state)
+;                            (lambda (watch-process change-state)
 ;                               (when (string-match "//(finished//|exited//)" change-state)
 ;                                (kill-buffer (process-buffer watch-process))))))))
 

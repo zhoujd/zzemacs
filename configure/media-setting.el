@@ -7,7 +7,7 @@
 (require 'mpg123)
 (setq mpg123-lang 0)
 (setq mpg123-default-dir "e:/emp3")
-(add-hook 'mpg123-hook #'(lambda () (local-unset-key (kbd "<down-mouse-1>"))))
+(add-hook 'mpg123-hook (lambda () (local-unset-key (kbd "<down-mouse-1>"))))
 
 (require 'mpg123-remote)
 (setq mpg123-show-help t)

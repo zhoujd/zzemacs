@@ -4,8 +4,8 @@
 ;;Common Lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")
 (add-hook 'lisp-mode-hook
-          #'(lambda ()
-              (setq lisp-indent-function 'common-lisp-indent-function)))
+          (lambda ()
+            (setq lisp-indent-function 'common-lisp-indent-function)))
 
 ;;Emacs proper cl-flet indentation
 (when-emacs24-3
@@ -65,9 +65,9 @@
 ;;adjust parens
 ;(require 'adjust-parens)
 ;(add-hook 'lisp-mode-hook
-;          #'(lambda ()
-;              (define-key help-map (kbd "TAB") 'lisp-indent-adjust-parens)
-;              (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens)))
+;          (lambda ()
+;            (define-key help-map (kbd "TAB") 'lisp-indent-adjust-parens)
+;            (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens)))
 
 ;;slime with auto-complete
 (require 'ac-slime)

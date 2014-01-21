@@ -151,7 +151,7 @@
 ;(require 'color-moccur)
 ;(require 'moccur-edit)
 
-;;bookmark
+;;bookmark setting
 ;(require 'bm)
 ;(setq bm-marker 'bm-marker-left)
 ;(setq bm-highlight-style 'bm-highlight-only-fringe)
@@ -162,9 +162,52 @@
 ;  (bm-show-all)
 ;  (delete-other-windows))
 
+;;bookmark in file setting
 (require 'breadcrumb)
 
-;;Ibuffer setting
+;;uing iswitchb-mode
+(require 'iswitchb)
+(iswitchb-mode t)
+(setq iswitchb-buffer-ignore
+      '("^ "
+        "^\*Buffer"
+        "^\*Completions\*"
+        "^\*Quail Completions\*"
+        "^TAGS"
+        ))
+
+;;Using the arrow keys to select a buffer
+(defun iswitchb-local-keys ()
+  (mapc (lambda (K) 
+	      (let* ((key (car K)) (fun (cdr K)))
+            (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
+	    '(("<right>" . iswitchb-next-match)
+	      ("<left>"  . iswitchb-prev-match)
+	      ("<up>"    . ignore             )
+	      ("<down>"  . ignore             ))))
+
+(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
+
+;;update when kill buffer in iswitchb
+(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
+  "*Regenerate the list of matching buffer names after a kill.
+    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
+    set to non-nil."
+  (setq iswitchb-buflist iswitchb-matches)
+  (iswitchb-rescan))
+
+(defun iswitchb-rescan ()
+  "*Regenerate the list of matching buffer names."
+  (interactive)
+  (iswitchb-make-buflist iswitchb-default)
+  (setq iswitchb-rescan t))
+
+;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-after-kill-buffer-p t)
+
+;;ibuffer setting
 (setq ibuffer-saved-filter-groups
       (quote (("Default"
                ("Dired" (mode . dired-mode))
@@ -176,7 +219,7 @@
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups "Default")))
 
-;;Switching to ibuffer puts the cursor on the most recent buffer
+;;switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()
            "Open ibuffer with cursor pointed to most recent buffer name"
            (let ((recent-buffer-name (buffer-name)))
@@ -184,13 +227,14 @@
              (ibuffer-jump-to-buffer recent-buffer-name)))
 (ad-activate 'ibuffer)
 
+;;alias operate setting
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)
 (fset 'cp 'copy-file)
 (fset 'mkdir 'make-directory)
 (fset 'rmdir 'delete-directory)
 
-;;Disabled commands
+;;disabled commands
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)

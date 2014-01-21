@@ -459,6 +459,17 @@
         "^TAGS"
         ))
 
+;;Using the arrow keys to select a buffer
+(defun iswitchb-local-keys ()
+  (mapc (lambda (K) 
+	      (let* ((key (car K)) (fun (cdr K)))
+            (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
+	    '(("<right>" . iswitchb-next-match)
+	      ("<left>"  . iswitchb-prev-match)
+          )))
+
+(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
+
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)

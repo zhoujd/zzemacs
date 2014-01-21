@@ -166,15 +166,15 @@
 
 ;;Ibuffer setting
 (setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("dired" (mode . dired-mode))
-               ("emacs" (or
+      (quote (("Default"
+               ("Dired" (mode . dired-mode))
+               ("Emacs" (or
                           (name . "\\*.*\\*")
                           (name . "^ ")))))))
 
 (add-hook 'ibuffer-mode-hook
           (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
+            (ibuffer-switch-to-saved-filter-groups "Default")))
 
 ;;Switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

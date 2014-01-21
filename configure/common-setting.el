@@ -448,6 +448,10 @@
 (when-emacs24-3
  (setq delete-by-moving-to-trash t))
 
+;;uing iswitchb-mode
+(require 'iswitchb)
+(iswitchb-mode t)
+
 (provide 'common-setting)
 
 ;;; common-setting.el ends here

@@ -19,6 +19,11 @@
 ;;Disabled commands
 (put 'dired-find-alternate-file 'disabled nil)
 
+;;If you want Enter ↵ and ^ (parent dir) to use the same buffer
+;;put the following in your emacs init file:
+;(define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file)
+;(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))
+
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (when-ms-windows  
   (require 'w32-browser)

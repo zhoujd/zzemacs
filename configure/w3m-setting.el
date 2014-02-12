@@ -24,12 +24,16 @@
 ;;(setq w3m-browse-url (concat "~/bin/w3m.exe" ""))
 ;;(setq w3m-find-file (concat "~/bin/w3m.exe" ""))
 
-(setq browse-url-browser-function 'w3m-browse-url)
+;;;browser selecting
+(setq browse-url-browser-function
+      (list (cons (concat zzemacs-path "doc/hyperspec/") 'w3m-browse-url)
+            (cons "." 'browse-url-default-browser)))
+
 ;;(setq w3m-local-find-file-function nil)
 
-;;; Allow browsing of local files:
+;;;allow browsing of local files:
 (setq w3m-dirlist-cgi-program "~/site-lisp/emacs-w3m/dirlist.cgi")
-;;; causes the return key to submit a form
+;;;causes the return key to submit a form
 (setq w3m-use-form t)
 (setq w3m-use-mule-ucs t)
 (setq w3m-use-toolbar t)  
@@ -71,4 +75,4 @@
 
 (provide 'w3m-setting)
 
-;;; w3m-setting.el ends here
+;;;; w3m-setting.el ends here

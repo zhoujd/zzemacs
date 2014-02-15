@@ -4,6 +4,7 @@
 
 ;;;$find -type f -name Makefile | xargs grep DIRVER_NAME
 ;;;$find -type f -name Makefile -exec grep -n DIRVER_NAME {} NUL;
+;;;$find . -iregex .*\.el$ | xargs etags
 ;;win32 find grep set
 (when-ms-windows    
  (progn

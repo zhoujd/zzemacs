@@ -5,6 +5,7 @@
 
 ;;helm - anything
 (zz-load-path "site-lisp/helm")
+(require 'helm-files)
 (require 'helm-config)
 
 ;;session + desktop

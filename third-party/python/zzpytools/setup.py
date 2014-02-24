@@ -1,6 +1,6 @@
 #### This is py tools setup script for zhoujd
 
-from setuptools import setup, find_packages
+from distutils.core import setup
 
 setup(
     name = "zzpytools",
@@ -9,7 +9,7 @@ setup(
     author = "zjd-405@163.com",
     url = "https://github.com/zhoujd",
     license = "LGPL",
-    packages = find_packages(),
+    packages = ['pycomplete'],
     scripts = [],
     )
 

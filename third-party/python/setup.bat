@@ -5,10 +5,7 @@ rem http://www.ipython.org/
 rem http://archive.ipython.org/release/
 rem https://pypi.python.org/pypi/pyreadline
 
-set ORIGIN_PATH=%PATH%
-set PATH="C:\python27";%ORIGIN_PATH%
-set CURRENT_ROOT="C:\zznix\home\zhoujd\zzemacs\third-party\python"
-set PYTHON_LIB_ROOT="C:\Python27\Lib\site-packages"
+set CURRENT_ROOT=%CD%
 
 echo for python develop start ...
 
@@ -33,14 +30,12 @@ cd %CURRENT_ROOT%\pyreadline
 python setup.py install
 cd %CURRENT_ROOT%
 
-echo install pycomplete.py to python lib
-copy %CURRENT_ROOT%\pycomplete.py %PYTHON_LIB_ROOT% > nul
+cd %CURRENT_ROOT%\zzpytools
+python setup.py install
+cd %CURRENT_ROOT%
 
 echo for python develop end   ...
 set CURRENT_ROOT=
-set PYTHON_LIB_ROOT=
-set PATH=%ORIGIN_PATH%
-set ORIGIN_PATH=
 
 pause
 @echo on

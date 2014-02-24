@@ -6,7 +6,6 @@
 ##https://pypi.python.org/pypi/pyreadline
 
 CURRENT_ROOT=`pwd`
-PYTHON_LIB_ROOT="/usr/local/lib/python2.7/dist-packages/"
 
 echo for python develop start ...
 
@@ -31,7 +30,8 @@ cd $CURRENT_ROOT/pyreadline/
 sudo python setup.py install
 cd $CURRENT_ROOT
 
-sudo cp -f $CURRENT_ROOT/pycomplete.py $PYTHON_LIB_ROOT
-rm -f $CURRENT_ROOT/../../site-lisp/python-mode/pymacs.elc
+cd $CURRENT_ROOT/zzpytools/
+sudo python setup.py install
+cd $CURRENT_ROOT
 
 echo for python develop end   ...

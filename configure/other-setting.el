@@ -169,6 +169,7 @@
 
 ;;uing iswitchb-mode
 (require 'isb-filter)
+(iswitchb-mode t)
 
 ;;Using the arrow keys to select a buffer
 (defun iswitchb-local-keys ()

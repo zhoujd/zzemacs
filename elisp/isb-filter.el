@@ -35,7 +35,7 @@
   (require 'cl))
 
 (require 'iswitchb)
-(iswitchb-mode t)
+
 (setq iswitchb-buffer-ignore
       '("^ "
         "^\*Buffer"

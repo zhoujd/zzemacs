@@ -183,7 +183,10 @@
     (dolist (name iswitchb-matches)
             (when (with-current-buffer name (derived-mode-p 'dired-mode))
               (setq isb-dired-list (cons name isb-dired-list))))
-    (reverse isb-dired-list)))
+    (if isb-dired-list
+        (setq isb-dired-list (reverse isb-dired-list))
+        (setq isb-dired-list iswitchb-matches))
+    isb-dired-list))
 
 (defun iswitchb-show-dired ()
    (interactive)

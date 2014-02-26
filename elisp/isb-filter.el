@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2014 Free Software Foundation, Inc.
 ;;
-;; Author:  <jiandong.zhou@IT-1301001853>
-;; Maintainer:  <jiandong.zhou@IT-1301001853>
+;; Author:  <zjd-405@163.com>
+;; Maintainer:  <zjd-405@163.com>
 ;; Created: 26 Feb 2014
 ;; Version: 0.01
 ;; Keywords
@@ -33,7 +33,6 @@
 
 (eval-when-compile
   (require 'cl))
-
 
 (require 'iswitchb)
 (iswitchb-mode t)

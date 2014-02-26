@@ -178,19 +178,24 @@
         "^TAGS"
         ))
 
-(defun iswitchb-filter-cond (name)
+(defun iswitchb-filter-cond (name type)
   (let* ((isb-filter-dired (with-current-buffer
                             name (derived-mode-p 'dired-mode)))
          (isb-filter-emacs (or (string-match "^\\*.*\\*$" name)
                                (string-match "^ " name)))
          (isb-filter-common (and (not isb-filter-dired)
-                                 (not isb-filter-emacs))))
-    isb-filter-dired))
+                                 (not isb-filter-emacs)))
+         (isb-filter-select nil))
+    (case type
+      ((isb-dired)  (setq isb-filter-select isb-filter-dired))
+      ((isb-emacs)  (setq isb-filter-select isb-filter-emacs))
+      ((isb-common) (setq isb-filter-select isb-filter-common)))
+    isb-filter-select))
 
-(defun iswitchb-filter-buffer ()
+(defun iswitchb-filter-buffer (type)
   (let ((isb-filter-list '()))
     (dolist (name iswitchb-matches)
-            (when (iswitchb-filter-cond name)
+            (when (iswitchb-filter-cond name type)
               (setq isb-filter-list (cons name isb-filter-list))))
     (if isb-filter-list
         (setq isb-filter-list (reverse isb-filter-list))
@@ -199,7 +204,19 @@
 
 (defun iswitchb-show-dired ()
    (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer))
+   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-dired))
+   (setq iswitchb-rescan t)
+   (delete-minibuffer-contents))
+
+(defun iswitchb-show-common ()
+   (interactive)
+   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-common))
+   (setq iswitchb-rescan t)
+   (delete-minibuffer-contents))
+
+(defun iswitchb-show-emacs ()
+   (interactive)
+   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-emacs))
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 
@@ -211,7 +228,8 @@
 	    '(("<right>" . iswitchb-next-match)
 	      ("<left>"  . iswitchb-prev-match)
 	      ("<up>"    . iswitchb-show-dired)
-	      ("<down>"  . ignore)
+	      ("<down>"  . iswitchb-show-common)
+          ("\C-o"    . iswitchb-show-emacs)
           )))
 
 (add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)

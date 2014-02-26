@@ -178,6 +178,19 @@
         "^TAGS"
         ))
 
+(defun iswitchb-dired-buff ()
+  (let ((isb-dired-list '()))
+    (dolist (name iswitchb-matches)
+            (when (with-current-buffer name (derived-mode-p 'dired-mode))
+              (setq isb-dired-list (cons name isb-dired-list))))
+    (reverse isb-dired-list)))
+
+(defun iswitchb-show-dired ()
+   (interactive)
+   (setq iswitchb-buflist (iswitchb-dired-buff))
+   (setq iswitchb-rescan t)
+   (delete-minibuffer-contents))
+
 ;;Using the arrow keys to select a buffer
 (defun iswitchb-local-keys ()
   (mapc (lambda (K) 
@@ -185,7 +198,7 @@
             (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
 	    '(("<right>" . iswitchb-next-match)
 	      ("<left>"  . iswitchb-prev-match)
-	      ("<up>"    . ignore)
+	      ("<up>"    . iswitchb-show-dired)
 	      ("<down>"  . ignore)
           )))
 

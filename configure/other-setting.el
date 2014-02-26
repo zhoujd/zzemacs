@@ -181,6 +181,8 @@
 	      ("<up>"    . iswitchb-show-dired)
 	      ("<down>"  . iswitchb-show-common)
           ("\C-o"    . iswitchb-show-emacs)
+          ("\C-p"    . iswitchb-show-dired)
+          ("\C-v"    . iswitchb-show-common)
           )))
 
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.

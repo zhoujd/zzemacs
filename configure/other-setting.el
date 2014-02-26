@@ -178,19 +178,28 @@
         "^TAGS"
         ))
 
-(defun iswitchb-dired-buff ()
-  (let ((isb-dired-list '()))
+(defun iswitchb-filter-cond (name)
+  (let* ((isb-filter-dired (with-current-buffer
+                            name (derived-mode-p 'dired-mode)))
+         (isb-filter-emacs (or (string-match "^\\*.*\\*$" name)
+                               (string-match "^ " name)))
+         (isb-filter-common (and (not isb-filter-dired)
+                                 (not isb-filter-emacs))))
+    isb-filter-dired))
+
+(defun iswitchb-filter-buffer ()
+  (let ((isb-filter-list '()))
     (dolist (name iswitchb-matches)
-            (when (with-current-buffer name (derived-mode-p 'dired-mode))
-              (setq isb-dired-list (cons name isb-dired-list))))
-    (if isb-dired-list
-        (setq isb-dired-list (reverse isb-dired-list))
-        (setq isb-dired-list iswitchb-matches))
-    isb-dired-list))
+            (when (iswitchb-filter-cond name)
+              (setq isb-filter-list (cons name isb-filter-list))))
+    (if isb-filter-list
+        (setq isb-filter-list (reverse isb-filter-list))
+        (setq isb-filter-list iswitchb-matches))
+    isb-filter-list))
 
 (defun iswitchb-show-dired ()
    (interactive)
-   (setq iswitchb-buflist (iswitchb-dired-buff))
+   (setq iswitchb-buflist (iswitchb-filter-buffer))
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 

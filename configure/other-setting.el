@@ -212,7 +212,7 @@
 
 ;;ibuffer setting
 (setq ibuffer-saved-filter-groups
-      (quote (("Default"
+      (quote (("default"
                ("Dired" (mode . dired-mode))
                ("Emacs" (or
                           (name . "^\\*.*\\*$")
@@ -220,7 +220,7 @@
 
 (add-hook 'ibuffer-mode-hook
           (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "Default")))
+            (ibuffer-switch-to-saved-filter-groups "default")))
 
 ;;switching to ibuffer puts the cursor on the most recent buffer
 (defadvice ibuffer (around ibuffer-point-to-most-recent) ()

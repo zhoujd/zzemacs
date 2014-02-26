@@ -2,6 +2,7 @@
 ;;;
 
 (zz-load-path "site-lisp")
+(zz-load-path "elisp")
 
 ;;helm - anything
 (zz-load-path "site-lisp/helm")
@@ -167,58 +168,7 @@
 (require 'breadcrumb)
 
 ;;uing iswitchb-mode
-(require 'iswitchb)
-(iswitchb-mode t)
-(setq iswitchb-buffer-ignore
-      '("^ "
-        "^\*Buffer"
-        "^\*Completions\*"
-        "^\*Ido Completions\*"
-        "^\*Quail Completions\*"
-        "^TAGS"
-        ))
-
-(defun iswitchb-filter-cond (name type)
-  (let* ((isb-filter-dired (with-current-buffer
-                            name (derived-mode-p 'dired-mode)))
-         (isb-filter-emacs (or (string-match "^\\*.*\\*$" name)
-                               (string-match "^ " name)))
-         (isb-filter-common (and (not isb-filter-dired)
-                                 (not isb-filter-emacs)))
-         (isb-filter-select nil))
-    (case type
-      ((isb-dired)  (setq isb-filter-select isb-filter-dired))
-      ((isb-emacs)  (setq isb-filter-select isb-filter-emacs))
-      ((isb-common) (setq isb-filter-select isb-filter-common)))
-    isb-filter-select))
-
-(defun iswitchb-filter-buffer (type)
-  (let ((isb-filter-list '()))
-    (dolist (name iswitchb-matches)
-            (when (iswitchb-filter-cond name type)
-              (setq isb-filter-list (cons name isb-filter-list))))
-    (if isb-filter-list
-        (setq isb-filter-list (reverse isb-filter-list))
-        (setq isb-filter-list iswitchb-matches))
-    isb-filter-list))
-
-(defun iswitchb-show-dired ()
-   (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-dired))
-   (setq iswitchb-rescan t)
-   (delete-minibuffer-contents))
-
-(defun iswitchb-show-common ()
-   (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-common))
-   (setq iswitchb-rescan t)
-   (delete-minibuffer-contents))
-
-(defun iswitchb-show-emacs ()
-   (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-emacs))
-   (setq iswitchb-rescan t)
-   (delete-minibuffer-contents))
+(require 'isb-filter)
 
 ;;Using the arrow keys to select a buffer
 (defun iswitchb-local-keys ()
@@ -231,22 +181,6 @@
 	      ("<down>"  . iswitchb-show-common)
           ("\C-o"    . iswitchb-show-emacs)
           )))
-
-(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
-
-;;update when kill buffer in iswitchb
-(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
-  "*Regenerate the list of matching buffer names after a kill.
-    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
-    set to non-nil."
-  (setq iswitchb-buflist iswitchb-matches)
-  (iswitchb-rescan))
-
-(defun iswitchb-rescan ()
-  "*Regenerate the list of matching buffer names."
-  (interactive)
-  (iswitchb-make-buflist iswitchb-default)
-  (setq iswitchb-rescan t))
 
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)

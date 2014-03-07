@@ -192,6 +192,7 @@
 (setq uniquify-after-kill-buffer-p t)
 
 ;;ibuffer setting
+(setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Dired" (mode . dired-mode))

@@ -73,6 +73,7 @@
 ;;redo+ fixed for emacs > 24.3
 (require 'redo+)
 (global-set-key [M-S-backspace] 'redo)
+(global-set-key (kbd "C-?") 'redo)
 
 ;; space tab show
 ;(require 'jaspace)

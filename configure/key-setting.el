@@ -14,10 +14,10 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "C-z h")     'event-apply-hyper-modifier
-  (kbd "C-z a")     'event-apply-alt-modifier
-  (kbd "<pause> h") 'event-apply-hyper-modifier
-  (kbd "<pause> a") 'event-apply-alt-modifier
+  (kbd "C-z h") 'event-apply-hyper-modifier
+  (kbd "C-z a") 'event-apply-alt-modifier
+  (kbd "M-[ h") 'event-apply-hyper-modifier
+  (kbd "M-[ a") 'event-apply-alt-modifier
   ))
 
 ;;all of these sequences are translated from term/xterm.el .
@@ -40,7 +40,7 @@
   "`" 'imenu
   "1" 'delete-window
   "2" 'delete-frame
-  "3" 'tabbar-backward-group
+  "3" 'ibuffer
   "4" 'delete-frame
   "5" 'gud-until
   "6" 'gud-remove
@@ -61,7 +61,7 @@
  (list
   "1" 'delete-other-windows
   "2" 'delete-other-frames
-  "3" 'tabbar-forward-group
+  "3" 'iswitchb-buffer
   "4" 'kill-this-buffer
   "5" (if-ms-windows 'gud-cont 'gud-go)
   
@@ -72,8 +72,6 @@
   "0" 'other-window
   
   "#" 'query-replace-regexp
-  "]" 'tabbar-forward-tab
-  "[" 'tabbar-backward-tab
   ))
 
 ;;number 0-1/-/=

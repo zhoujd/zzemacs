@@ -49,7 +49,8 @@
  global-map
  (list
   (kbd "C-z")   ctl-z-map
-  [pause]       ctl-z-map
+  (kbd "M-[")   ctl-z-map
+  (kbd "M-]")   f4-map
   [f4]          f4-map
   ))
 

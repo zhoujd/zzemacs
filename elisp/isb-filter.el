@@ -75,6 +75,25 @@
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 
+;;filter group switch
+(setq isb-filter-group '(isb-show-common isb-show-dired isb-show-emacs))
+(setq isb-filter-index 0)
+
+(defun isb-filter-prev ()
+  (interactive)
+  (if (= isb-filter-index 0)
+      (setq isb-filter-index (- (length isb-filter-group) 1))
+      (setq isb-filter-index (- isb-filter-index 1)))
+  (apply (nth isb-filter-index isb-filter-group) '()))
+
+(defun isb-filter-next ()
+  (interactive)
+  (if (= isb-filter-index (- (length isb-filter-group) 1))
+      (setq isb-filter-index 0)
+      (setq isb-filter-index (+ isb-filter-index 1)))
+  (apply (nth isb-filter-index isb-filter-group) '()))
+
+;;reset buffer default
 (defun isb-rescan ()
   "*Regenerate the list of matching buffer names."
   (interactive)

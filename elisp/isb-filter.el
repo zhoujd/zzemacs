@@ -31,21 +31,9 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 (require 'iswitchb)
 
-(setq iswitchb-buffer-ignore
-      '("^ "
-        "^\*Buffer"
-        "^\*Completions\*"
-        "^\*Ido Completions\*"
-        "^\*Quail Completions\*"
-        "^TAGS"
-        ))
-
-(defun iswitchb-filter-cond (name type)
+(defun isb-filter-cond (name type)
   (let* ((isb-filter-dired (with-current-buffer
                             name (derived-mode-p 'dired-mode)))
          (isb-filter-emacs (or (string-match "^\\*.*\\*$" name)
@@ -59,45 +47,35 @@
       ((isb-common) (setq isb-filter-select isb-filter-common)))
     isb-filter-select))
 
-(defun iswitchb-filter-buffer (type)
+(defun isb-filter-buffer (type)
   (let ((isb-filter-list '()))
-    (dolist (name iswitchb-matches)
-            (when (iswitchb-filter-cond name type)
+    (dolist (name (iswitchb-make-buflist nil))
+            (when (isb-filter-cond name type)
               (setq isb-filter-list (cons name isb-filter-list))))
     (if isb-filter-list
         (setq isb-filter-list (reverse isb-filter-list))
         (setq isb-filter-list iswitchb-matches))
     isb-filter-list))
 
-(defun iswitchb-show-dired ()
+(defun isb-show-dired ()
    (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-dired))
+   (setq iswitchb-buflist (isb-filter-buffer 'isb-dired))
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 
-(defun iswitchb-show-common ()
+(defun isb-show-common ()
    (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-common))
+   (setq iswitchb-buflist (isb-filter-buffer 'isb-common))
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 
-(defun iswitchb-show-emacs ()
+(defun isb-show-emacs ()
    (interactive)
-   (setq iswitchb-buflist (iswitchb-filter-buffer 'isb-emacs))
+   (setq iswitchb-buflist (isb-filter-buffer 'isb-emacs))
    (setq iswitchb-rescan t)
    (delete-minibuffer-contents))
 
-(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
-
-;;update when kill buffer in iswitchb
-(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
-  "*Regenerate the list of matching buffer names after a kill.
-    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
-    set to non-nil."
-  (setq iswitchb-buflist iswitchb-matches)
-  (iswitchb-rescan))
-
-(defun iswitchb-rescan ()
+(defun isb-rescan ()
   "*Regenerate the list of matching buffer names."
   (interactive)
   (iswitchb-make-buflist iswitchb-default)

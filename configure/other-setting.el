@@ -172,7 +172,16 @@
 (require 'isb-filter)
 (iswitchb-mode t)
 
-;;Using the arrow keys to select a buffer
+(setq iswitchb-buffer-ignore
+      '("^ "
+        "^\*Buffer"
+        "^\*Completions\*"
+        "^\*Ido Completions\*"
+        "^\*Quail Completions\*"
+        "^TAGS"
+        ))
+
+;;using the arrow keys to select a buffer
 (defun iswitchb-local-keys ()
   (mapc (lambda (K) 
 	      (let* ((key (car K)) (fun (cdr K)))
@@ -181,11 +190,21 @@
 	      ("<left>"  . iswitchb-prev-match)
 	      ("<up>"    . ignore)
 	      ("<down>"  . ignore)
-          ("\C-o"    . iswitchb-show-emacs)
-          ("\C-p"    . iswitchb-show-dired)
-          ("\C-v"    . iswitchb-show-common)
-          ("\C-u"    . iswitchb-rescan)
+          ("\C-o"    . isb-show-emacs)
+          ("\C-p"    . isb-show-dired)
+          ("\C-v"    . isb-show-common)
+          ("\C-u"    . isb-rescan)
           )))
+
+(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
+
+;;update when kill buffer in iswitchb
+(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
+  "*Regenerate the list of matching buffer names after a kill.
+    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
+    set to non-nil."
+  (setq iswitchb-buflist iswitchb-matches)
+  (isb-rescan))
 
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)

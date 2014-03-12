@@ -91,9 +91,6 @@
   (kbd "M-0") (lookup-key zz/meta-map "0")
 
   (kbd "M-#") (lookup-key zz/meta-map "#")
-  ;;tabbar switch group
-  (kbd "M-]") (lookup-key zz/meta-map "]")
-  (kbd "M-[") (lookup-key zz/meta-map "[")
 
   ;;;ctrl number setting
   (kbd "C-`") (lookup-key zz/ctrl-map "`")

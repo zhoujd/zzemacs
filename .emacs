@@ -29,34 +29,34 @@
   (load-file (concat zzemacs-path "configure/" file)))
 
 (zz-load-path "configure")
-(mapcar (lambda (setting)
-            (require setting)
-            (message "Load %s end ..." setting))
-        '(
-          macro-setting
-          common-setting
-          env-setting
-          dired-setting
-          prog-setting
-          other-setting
-          shell-setting
-          sample-setting
-          media-setting
-          w3m-setting
-          c-setting
-          lisp-setting
-          scheme-setting
-          perl-setting
-          python-setting
-          java-setting
-          csharp-setting
-          php-setting
-          doc-setting
-          muse-setting
-          keymap-setting
-          fn-setting
-          key-setting
-          ))
+(mapc (lambda (setting)
+        (require setting)
+        (message "Load %s end ..." setting))
+      '(
+        macro-setting
+        common-setting
+        env-setting
+        dired-setting
+        prog-setting
+        other-setting
+        shell-setting
+        sample-setting
+        media-setting
+        w3m-setting
+        c-setting
+        lisp-setting
+        scheme-setting
+        perl-setting
+        python-setting
+        java-setting
+        csharp-setting
+        php-setting
+        doc-setting
+        muse-setting
+        keymap-setting
+        fn-setting
+        key-setting
+        ))
 
 ;;develop setting for tags path etc.
 (defvar zz-dev-set-file "temp-setting.el")

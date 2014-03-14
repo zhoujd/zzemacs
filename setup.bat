@@ -8,7 +8,9 @@ if exist %MYCFG_PATH% del %MYCFG_PATH%
 echo ;;;This is _emacs for %USERNAME% on %COMPUTERNAME%>> %MYCFG_PATH%
 echo (setenv "HOME" %MYHOME%)>> %MYCFG_PATH%
 echo (setq default-directory "~")>> %MYCFG_PATH%
-echo (load-file "~/zzemacs/.emacs")>> %MYCFG_PATH%
+echo (if (file-exists-p "~/zzemacs/.emacs")>> %MYCFG_PATH%
+echo     (load-file "~/zzemacs/.emacs")>> %MYCFG_PATH%
+echo     (message "zzemacs has not install"))>> %MYCFG_PATH%
 
 set MYHOME=
 set MYCFG_PATH=

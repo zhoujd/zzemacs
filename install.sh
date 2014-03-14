@@ -19,7 +19,9 @@ rm -f ~/.emacs
 cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}/")
-(load-file (concat zzemacs-path ".emacs"))
+(if (file-exists-p (concat zzemacs-path ".emacs"))
+    (load-file (concat zzemacs-path ".emacs"))
+    (message "zzemacs has not install"))
 EOF
 
 ##git setting

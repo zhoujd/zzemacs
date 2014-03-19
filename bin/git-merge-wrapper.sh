@@ -12,11 +12,13 @@ EMACS_FLAG="n"
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 ## http://www.perforce.com/perforce/products/merge.html
+## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
     MERGE_TOOL="C:/BCompare3/BCompare.exe"
 else
-    MERGE_TOOL="bcompare" ##"meld"
+    #MERGE_TOOL="bcompare" ##"meld"
+    MERGE_TOOL="/home/media/meld/bin/meld"
 fi
 
 ## run merge tools

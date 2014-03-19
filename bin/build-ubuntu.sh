@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Build emacs begin ..."
+echo "Build emacs for ubuntu begin ..."
 
 echo -n "Do you need install packages? (y/N): "
 read answer
@@ -17,4 +17,4 @@ esac
 make
 sudo make install
 
-echo "Build emacs end ..."
+echo "Build emacs for ubuntu end ..."

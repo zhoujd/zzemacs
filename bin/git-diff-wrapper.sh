@@ -16,7 +16,8 @@ if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else
     #DIFF_TOOL="bcompare" ##"meld"
-    DIFF_TOOL="/home/media/meld/bin/meld"
+    #DIFF_TOOL="/home/media/share/meld/bin/meld"
+    DIFF_TOOL="/home/media/share/p4v/bin/p4merge"
 fi
 
 ## run diff tools

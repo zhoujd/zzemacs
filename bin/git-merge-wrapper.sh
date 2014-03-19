@@ -18,8 +18,8 @@ if [ "$OS" = "Windows_NT" ] ; then
     MERGE_TOOL="C:/BCompare3/BCompare.exe"
 else
     #MERGE_TOOL="bcompare" ##"meld"
-    #MERGE_TOOL="/home/media/share/meld/bin/meld"
-    MERGE_TOOL="/home/media/share/p4v/bin/p4merge"
+    #MERGE_TOOL="$HOME/zztools/meld/bin/meld"
+    MERGE_TOOL="$HOME/zztools/p4v/bin/p4merge"
 fi
 
 ## run merge tools

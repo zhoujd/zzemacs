@@ -9,9 +9,27 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        sudo apt-get install -y emacs
-        sudo apt-get install -y cscope
-        sudo apt-get install -y texinfo
+        # dectect OS version
+        LINUX_DISTRO=`lsb_release -si`
+        if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
+            LINUX_DISTRO="SuSE"
+        else if [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+            LINUX_DISTRO="Ubuntu"
+            
+            sudo apt-get install -y emacs
+            sudo apt-get install -y cscope
+            sudo apt-get install -y texinfo
+            
+            ##install font
+            FONT_HOME=/usr/share/fonts/truetype/
+            sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
+            sudo cp -f ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
+        else
+            echo "You are about to install on a non supported linux distribution.\n"
+        fi
+        
+        echo "Install on $LINUX_DISTRO ..."
+        ;;
 esac
 
 ##setup .emacs
@@ -27,11 +45,6 @@ EOF
 ##git setting
 git config user.name  "zhoujd"
 git config user.email "zjd-405@163.com"
-
-##install font
-FONT_HOME=/usr/share/fonts/truetype/
-sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
-sudo cp -f ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
 
 ##install pymacs
 cd ${ZZEMACS_ROOT}/third-party/python

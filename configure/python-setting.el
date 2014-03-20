@@ -53,6 +53,7 @@
     (list (gud-query-cmdline pdb-path
                              (file-name-nondirectory buffer-file-name))))))
 
+;;pdb setup on linux
 (unless-ms-windows
  (setq gud-pdb-command-name "python -i -m pdb"))
 

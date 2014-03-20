@@ -53,6 +53,9 @@
     (list (gud-query-cmdline pdb-path
                              (file-name-nondirectory buffer-file-name))))))
 
+(unless-ms-windows
+ (setq gud-pdb-command-name "python -i -m pdb"))
+
 ;;sudo apt-get install pydb
 ;;http://sourceforge.net/projects/bashdb/
 ;;http://bashdb.sourceforge.net/pydb/

@@ -5,12 +5,13 @@ ZZEMACS_ROOT=`pwd`
 echo install .emacs to HOME directory begin...
 
 
-function Install_package() {
+function Install_package
+{
     # dectect OS version
     LINUX_DISTRO=`lsb_release -si`
     if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
         LINUX_DISTRO="SuSE"
-    else if [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         LINUX_DISTRO="Ubuntu"
         
         sudo apt-get install -y emacs
@@ -25,7 +26,7 @@ function Install_package() {
         echo "You are about to install on a non supported linux distribution."
     fi
         
-    echo "Install on $LINUX_DISTRO ..."
+	echo "Install on $LINUX_DISTRO ..."
 }
 
 
@@ -37,8 +38,6 @@ case "$answer" in
         Install_package
         ;;
 esac
-
-exit 0
 
 ##setup .emacs
 rm -f ~/.emacs

@@ -93,6 +93,7 @@
        (list "\\.html$" "firefox")
        (list "\\.mp3$"  "vlc")
        (list "\\.pdf$"  "evince")
+       (list "\\.pptx$" "soffice")
        (list "\\.ppt$"  "soffice")
        (list "\\.docx$" "soffice")
        (list "\\.doc$"  "soffice")

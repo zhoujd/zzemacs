@@ -46,10 +46,18 @@
 (setq slime-net-coding-system 'utf-8-unix)
 ;;my slime-mode setting
 (defun my-slime-mode-hook ()
-    (setq tab-width 4 indent-tabs-mode nil)
-    ;;(define-key slime-mode-map [(tab)] 'slime-complete-symbol)
-    (define-key slime-mode-map [(tab)] 'slime-indent-and-complete-symbol))
+  (setq tab-width 4 indent-tabs-mode nil)
+  ;;(define-key slime-mode-map [(tab)] 'slime-complete-symbol)
+  (define-key slime-mode-map (kbd "C-c 0") 'slime-selector)
+  (define-key slime-mode-map [(tab)] 'slime-indent-and-complete-symbol))
+
 (add-hook 'slime-mode-hook 'my-slime-mode-hook)
+
+;;my slime-repl-mode setting
+(defun my-slime-repl-mode-hook ()
+  (define-key slime-repl-mode-map (kbd "C-c 0") 'slime-selector))
+
+(add-hook 'slime-repl-mode-hook 'my-slime-repl-mode-hook)
 
 ;;hpperspec.el
 (require 'hyperspec)

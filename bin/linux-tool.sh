@@ -3,13 +3,13 @@
 echo "install linux-tools begin..."
 
 ##package for ubuntu
-function Install_package_suse
+Install_package_suse()
 {
     ##TODO
 }
 
 ##package for ubuntu
-function Install_package_ubuntu
+Install_package_ubuntu()
 {
     #sudo apt-get install -y cairo-dock cairo-dock-plug-ins
 

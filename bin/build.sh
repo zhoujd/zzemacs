@@ -2,7 +2,7 @@
 
 echo "Build emacs begin ..."
 
-function Install_package
+Install_package()
 {
     # dectect OS version
     LINUX_DISTRO=`lsb_release -si`

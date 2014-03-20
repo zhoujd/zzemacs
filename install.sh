@@ -2,8 +2,7 @@
 
 ZZEMACS_ROOT=`pwd`
 
-echo install .emacs to HOME directory begin...
-
+echo "install .emacs to HOME directory begin..."
 
 function Install_package
 {
@@ -73,5 +72,5 @@ make
 sudo make install
 cd ${ZZEMACS_ROOT}
 
-echo install .emacs to HOME directory end...
+echo "install .emacs to HOME directory end..."
 

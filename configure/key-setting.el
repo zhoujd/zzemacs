@@ -138,22 +138,18 @@
                         '("cmd" "/c" "start" "vcvarsall" "x64")))
   "3" (when-ms-windows (execute-set-key
                         "git-shell"
-                        '("cmd" "/c" "start" "sh" "--login" "-i")))  
+                        '("cmd" "/c" "start" "sh" "--login" "-i")))
+  "t" 'open-with-terminal
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
+  ;;;for linux quick run
+  "`" (if-not-ms-windows (execute-set-key "gmrun" '("gmrun")))
   "m" (if-not-ms-windows (execute-set-key
-                          "gnome-system-monitor"
-                          '("gnome-system-monitor")))
+                          "gnome-system-monitor" '("gnome-system-monitor")))
   "s" (if-not-ms-windows (execute-set-key
-                          "gnome-control-center"
-                          '("gnome-control-center")))
-  "e" (if-not-ms-windows (execute-set-key
-                          "evince"
-                          '("evince")))
-  "t" 'open-with-terminal
-  "n" (if-not-ms-windows (execute-set-key
-                          "nautilus"
-                          '("nautilus" "--no-desktop")))
+                          "gnome-control-center" '("gnome-control-center")))
+  "e" (if-not-ms-windows (execute-set-key "evince" '("evince")))
+  "n" (if-not-ms-windows (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
   ))
 
 ;;switch to shells

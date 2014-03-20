@@ -93,7 +93,10 @@
        (list "\\.html$" "firefox")
        (list "\\.mp3$"  "vlc")
        (list "\\.pdf$"  "evince")
-       )) 
+       (list "\\.ppt$"  "soffice")
+       (list "\\.docx$" "soffice")
+       (list "\\.doc$"  "soffice")
+       ))
 
 (provide 'dired-setting)
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "hg setup start ..."
 
@@ -7,7 +7,7 @@ echo "hg setup start ..."
 ##http://hginit.com/ (Hg Init: a Mercurial tutorial)
 ##http://hgbook.red-bean.com/ (Mercurial: The Definitive Guide)
 
-function Install_package
+Install_package()
 {
     # dectect OS version
     LINUX_DISTRO=`lsb_release -si`

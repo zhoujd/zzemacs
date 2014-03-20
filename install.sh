@@ -62,7 +62,7 @@ cd ${ZZEMACS_ROOT}/site-lisp/pde
 perl ./Build.PL
 perl ./Build test
 perl ./Build
-perl ./Build install
+sudo perl ./Build install
 cd ${ZZEMACS_ROOT}
 
 ##install EPL

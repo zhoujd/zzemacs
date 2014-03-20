@@ -38,6 +38,14 @@ cd ${ZZEMACS_ROOT}/third-party/python
 ./install.sh
 cd ${ZZEMACS_ROOT}
 
+##install pde
+cd ${ZZEMACS_ROOT}/site-lisp/pde
+perl ./Build.PL
+perl ./Build test
+perl ./Build
+perl ./Build install
+cd ${ZZEMACS_ROOT}
+
 ##install EPL
 cd ${ZZEMACS_ROOT}/third-party/perl/EPL
 perl Makefile.PL

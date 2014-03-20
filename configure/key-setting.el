@@ -141,8 +141,19 @@
                         '("cmd" "/c" "start" "sh" "--login" "-i")))  
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
+  "m" (if-not-ms-windows (execute-set-key
+                          "gnome-system-monitor"
+                          '("gnome-system-monitor")))
+  "s" (if-not-ms-windows (execute-set-key
+                          "gnome-control-center"
+                          '("gnome-control-center")))
+  "e" (if-not-ms-windows (execute-set-key
+                          "evince"
+                          '("evince")))
   "t" 'open-with-terminal
-  "d" 'open-with-nautilus
+  "n" (if-not-ms-windows (execute-set-key
+                          "nautilus"
+                          '("nautilus" "--no-desktop")))
   ))
 
 ;;switch to shells

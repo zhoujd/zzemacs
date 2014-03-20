@@ -141,6 +141,8 @@
                         '("cmd" "/c" "start" "sh" "--login" "-i")))  
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
+  "t" 'open-with-terminal
+  "d" 'open-with-nautilus
   ))
 
 ;;switch to shells

@@ -15,7 +15,7 @@ EMACS_FLAG="n"
 if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else
-    #DIFF_TOOL="bcompare"
+    #DIFF_TOOL="$HOME/zztools/bcompare/bin/bcompare"
     #DIFF_TOOL="$HOME/zztools/meld/bin/meld"
     DIFF_TOOL="$HOME/zztools/p4v/bin/p4merge"
 fi
@@ -31,5 +31,3 @@ case "$EMACS_FLAG" in
 esac
 
 exit 0
-
-

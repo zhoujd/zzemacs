@@ -32,6 +32,9 @@
                     (concat zzemacs-path "bin")
                     "/usr/racket/bin"
                     "/usr/local/Gambit-C/bin/"
+                    (format "%s/zztools/bcompare/bin" (getenv "HOME"))
+                    (format "%s/zztools/meld/bin" (getenv "HOME"))
+                    (format "%s/zztools/p4v/bin" (getenv "HOME"))
                     )))
 
 (mapcar 'zz-add-os-path (reverse my-env-path))

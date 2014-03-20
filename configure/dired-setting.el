@@ -92,8 +92,8 @@
        (list "\\.htm$"  "firefox")
        (list "\\.html$" "firefox")
        (list "\\.mp3$"  "vlc")
-       )
-      ) 
+       (list "\\.pdf$"  "evince")
+       )) 
 
 (provide 'dired-setting)
 

@@ -1,0 +1,18 @@
+Signal        Stop	Print	Stack	Pass	Description
+SIGHUP        Yes 	Yes 	No   	No  	Hangup
+Signal        Stop	Print	Stack	Pass	Description
+SIGHUP        Yes 	Yes 	No   	No  	Hangup
+Signal        Stop	Print	Stack	Pass	Description
+SIGINT        Yes 	Yes 	No   	No  	Interrupt
+Signal        Stop	Print	Stack	Pass	Description
+SIGINT        No  	No  	Yes  	No  	Interrupt
+Signal        Stop	Print	Stack	Pass	Description
+SIGINT        No  	Yes 	Yes  	No  	Interrupt
+Signal        Stop	Print	Stack	Pass	Description
+SIGINT        No  	No  	No   	No  	Interrupt
+Signal        Stop	Print	Stack	Pass	Description
+SIGKILL       No  	No  	No   	Yes 	Killed
+Signal        Stop	Print	Stack	Pass	Description
+SIGSTOP       No  	No  	No   	Yes 	Stopped (signal)
+Signal        Stop	Print	Stack	Pass	Description
+SIGINT        No  	No  	No   	No  	Interrupt

@@ -1,0 +1,43 @@
+Note invalid combinations "stop pass", "noprint stack" is buggy.
+break line thread-name buggy
+investigate quit exception passing through in ipython.
+Add to ddd recent features, e.g. assembly, threads, display expressions
+
+Write Bdb documentation. 
+
+Remote debugging
+add for threading:
+   step [count] Thread-name
+   next [count] Thread-name
+
+Mock objects for thread id's/names. Then more tests on thread code.
+
+reinstate "thread" command? 
+
+Add watchpoints. (Mentioned in pdbimprovements)
+
+The main pydb.py file size has been reduced but it is still bit
+large. If we can break out into more files that might be nice.
+
+Some more regression tests should to be written. They've been
+invaluable so far and maintain quality. Especially for the large
+changes.
+
+Redo post_mortem, pm, set_step to funnel through parse_options rather
+than taking the optional cmdfile and opts parameters.
+
+gdb return command relies on the existence of a return statement in
+the code.
+
+Add online debugger concept help and in LaTeX? 
+
+Add in patches of various Bdb's such as the one in Eric.
+
+Better history completion. Better history completion interaction inside
+ipython and with or without Emacs.
+
+Eric or Idle integration.
+
+Use inspect module get_stack rather than bdb's?
+
+$Id: TODO,v 1.21 2007/01/13 12:14:29 rockyb Exp $

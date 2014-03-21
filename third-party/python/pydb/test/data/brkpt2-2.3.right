@@ -1,0 +1,81 @@
++###############################################################
++### Clear nonexist break; 
++###############################################################
++clear
+*** No breakpoint at gcd.py:10.
++###############################################################
++### Multiple breakpoints on a line and clearing all
++###############################################################
++break 28
+Breakpoint 1 set in file gcd.py, line 28.
++break gcd.py:28
+Breakpoint 2 set in file gcd.py, line 28.
++info break
+Num Type          Disp Enb    Where
+1   breakpoint    keep y   at gcd.py:28
+2   breakpoint    keep y   at gcd.py:28
++clear 28
+Deleted breakpoints 1 2
++###############################################################
++### Clear by current line number
++###############################################################
++break 28
+Breakpoint 3 set in file gcd.py, line 28.
++continue
++clear
+Deleted breakpoint 3
++info break
+No breakpoints.
++###############################################################
++### Test Delete: invalid/valid number.
++###############################################################
++delete 1
+*** Breakpoint (1) already deleted
++break 11
+Breakpoint 4 set in file gcd.py, line 11.
++info break
+Num Type          Disp Enb    Where
+4   breakpoint    keep y   at gcd.py:11
++delete 4
+Deleted breakpoint 4
++tbreak 31
+Breakpoint 5 set in file gcd.py, line 31.
++continue
+Deleted breakpoint 5
++info break
+No breakpoints.
++###############################################################
++### Test Continue with a line number
++###############################################################
++c 35
+Breakpoint 6 set in file gcd.py, line 35.
+Deleted breakpoint 6
++info break
+No breakpoints.
++where 2
+-> 0 gcd(a=3, b=5) called from file 'gcd.py' at line 35
+## 1 in file 'gcd.py' at line 41
++###############################################################
++### Test frame command
++###############################################################
++frame 
+(gcd.py:35):  gcd
+35     return gcd(b-a, a)
++frame abs(-1*2)
+(<string>:1): 
++frame -3
+(gcd.py:41): 
+41     print "The GCD of %d and %d is %d" % (a, b, gcd(a, b))
++frame -2
+(<string>:1): 
++frame 0
+(gcd.py:35):  gcd
+35     return gcd(b-a, a)
++###############################################################
++### Test ignore
++###############################################################
++ignore 0 1
+*** Expecting integer value to be at least 1, got: 0.
++ignore 4 -1
++## FIXME: need a real ignore test, not just invalid cases
++quit

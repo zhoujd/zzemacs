@@ -74,7 +74,6 @@
   (set-buffer-modified-p nil))
 (add-hook 'dired-after-readin-hook 'sof/dired-sort)
 
-
 ;;filter files
 ;(add-hook 'dired-mode-hook
 ;          (lambda ()
@@ -97,6 +96,8 @@
        (list "\\.ppt$"  "soffice")
        (list "\\.docx$" "soffice")
        (list "\\.doc$"  "soffice")
+       (list "\\.xlsx$" "soffice")
+       (list "\\.xls$"  "soffice")
        ))
 
 (provide 'dired-setting)

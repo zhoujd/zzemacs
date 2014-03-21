@@ -58,7 +58,7 @@
  (setq gud-pdb-command-name "python -i -m pdb"))
 
 ;;sudo apt-get install pydb
-;;http://sourceforge.net/projects/bashdb/
+;;http://sourceforge.net/projects/bashdb/files/pydb/
 ;;http://bashdb.sourceforge.net/pydb/
 ;;https://github.com/rocky/pydb.git
 (zz-load-path "site-lisp/pydb")

@@ -10,6 +10,9 @@ Install_package()
     LINUX_DISTRO=`lsb_release -si`
     if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
         LINUX_DISTRO="SuSE"
+
+        sudo zypper install -y cscope
+        sudo zypper install -y texinfo
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         LINUX_DISTRO="Ubuntu"
         

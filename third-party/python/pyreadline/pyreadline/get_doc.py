@@ -1,8 +1,6 @@
-from __future__ import print_function, unicode_literals, absolute_import
-import sys, textwrap
-from .py3k_compat import callable
+import sys,textwrap
 
-rlmain = sys.modules["readline"]
+rlmain = sys.modules[u"pyreadline.rlmain"]
 rl = rlmain.rl
 
 def get_doc(rl):
@@ -15,6 +13,6 @@ def get_rest(rl):
     out = []
     for funcname, doc in q:
         out.append(funcname)
-        out.append("\n".join(textwrap.wrap(doc, 80, initial_indent="   ")))
-        out.append("")
+        out.append(u"\n".join(textwrap.wrap(doc, 80, initial_indent=u"   ")))
+        out.append(u"")
     return out     

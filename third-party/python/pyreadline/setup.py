@@ -9,16 +9,15 @@
 #*****************************************************************************
 
 import os
-import sys
 import glob
-from distutils.core import setup
 
 # BEFORE importing distutils, remove MANIFEST. distutils doesn't properly
 # update it when the contents of directories change.
 if os.path.exists('MANIFEST'): os.remove('MANIFEST')
 #
 
-exec(compile(open('pyreadline/release.py').read(), 'pyreadline/release.py', 'exec'))
+from distutils.core import setup
+execfile('pyreadline/release.py')
 
 try:
     import sphinx
@@ -50,6 +49,6 @@ setup(name=name,
       packages         = packages,
       package_data     = {'pyreadline':['configuration/*']},
       data_files       = [],
-      cmdclass = cmd_class
+      cmdclass = cmd_class,
       )
 

@@ -5,19 +5,18 @@
 #  Distributed under the terms of the BSD License.  The full license is in
 #  the file COPYING, distributed as part of this software.
 #*****************************************************************************
-from __future__ import print_function, unicode_literals, absolute_import
 
 import socket, logging, logging.handlers
 from pyreadline.unicode_helper import ensure_str
 
-host = "localhost"
+host = u"localhost"
 port = logging.handlers.DEFAULT_TCP_LOGGING_PORT
 
 
-pyreadline_logger = logging.getLogger('PYREADLINE')
+pyreadline_logger = logging.getLogger(u'PYREADLINE')
 pyreadline_logger.setLevel(logging.DEBUG)
 pyreadline_logger.propagate = False
-formatter = logging.Formatter(str('%(message)s'))
+formatter = logging.Formatter('%(message)s')
 file_handler = None
 
 class NULLHandler(logging.Handler):
@@ -65,7 +64,7 @@ def stop_file_log():
         file_handler = None
 
 def stop_logging():
-    log("STOPING LOG")
+    log(u"STOPING LOG")
     stop_file_log()
     stop_socket_log()
 

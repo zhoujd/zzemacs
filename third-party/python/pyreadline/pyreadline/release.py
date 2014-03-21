@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function, unicode_literals, absolute_import
-"""Release data for the pyreadline project.
+u"""Release data for the pyreadline project.
 
 $Id$"""
 
 #*****************************************************************************
-#       Copyright (C) 2006  Jorgen Stenarson. <jorgen.stenarson@kroywen.se>
+#       Copyright (C) 2006  Jorgen Stenarson. <jorgen.stenarson@bostream.nu>
 #
 #
 #  Distributed under the terms of the BSD License.  The full license is in
@@ -14,26 +13,33 @@ $Id$"""
 
 # Name of the package for release purposes.  This is the name which labels
 # the tarballs and RPMs made by distutils, so it's best to lowercase it.
-name = 'pyreadline'
+name = u'pyreadline'
 
 # For versions with substrings (like 0.6.16.svn), use an extra . to separate
 # the new substring.  We have to avoid using either dashes or underscores,
 # because bdist_rpm does not accept dashes (an RPM) convention, and
 # bdist_deb does not accept underscores (a Debian convention).
 
-branch = ''
+branch = u''
 
-version = '2.0'
+version = u'1.7.1'
 
-description = "A python implmementation of GNU readline."
+revision = u'$Revision$'
+
+description = u"A python implmementation of GNU readline."
 
 long_description = \
-"""
+u"""
 The pyreadline package is a python implementation of GNU readline functionality
 it is based on the ctypes based UNC readline package by Gary Bishop. 
 It is not complete. It has been tested for use with windows 2000 and windows xp.
 
-Version 2.0 runs on Python 2.6, 2.7, and 3.2 using the same code.
+Version 1.7.1 includes fixes for 64-bit windows, thanks to Christoph Gohlke for
+helping out.
+
+Version 1.7 will be the last release with compatibility with 2.4 and 2.5. The next
+major release will target 2.6, 2.7 and 3.x. The 1.7 series will only receive bugfixes
+from now on.
 
 Features:
  *  keyboard text selection and copy/paste
@@ -49,30 +55,34 @@ Features:
  The latest development version is always available at the IPython subversion
  repository_.
 
-.. _repository: https://github.com/pyreadline/pyreadline.git
+.. _repository:
  """
 
-license = 'BSD'
+license = u'BSD'
 
-authors = {'Jorgen' : ('Jorgen Stenarson','jorgen.stenarson@kroywen.se'),
-           'Gary':    ('Gary Bishop', ''),         
-           'Jack':    ('Jack Trainor', ''),         
+authors = {u'Jorgen' : (u'Jorgen Stenarson',u'jorgen.stenarson@bostream.nu'),
+           u'Gary':    (u'Gary Bishop', ''),         
+           u'Jack':    (u'Jack Trainor', ''),         
            }
 
-url = 'http://http://ipython.org/pyreadline.html'
-download_url = 'https://pypi.python.org/pypi/pyreadline/'
-platforms = ['Windows XP/2000/NT',
-             'Windows 95/98/ME']
+url = u'http://ipython.scipy.org/moin/PyReadline/Intro'
 
-keywords = ['readline',
-            'pyreadline']
+download_url = u'https://launchpad.net/pyreadline/+download'
 
-classifiers = ['Development Status :: 5 - Production/Stable',
-               'Environment :: Console',
-               'Operating System :: Microsoft :: Windows',
-               'License :: OSI Approved :: BSD License',
-               'Programming Language :: Python :: 2.6',
-               'Programming Language :: Python :: 2.7',
-               'Programming Language :: Python :: 3.2',
-               'Programming Language :: Python :: 3.3',
+platforms = [u'Windows XP/2000/NT',
+             u'Windows 95/98/ME']
+
+keywords = [u'readline',
+            u'pyreadline']
+
+classifiers = [u'Development Status :: 5 - Production/Stable',
+               u'Environment :: Console',
+               u'Operating System :: Microsoft :: Windows',
+               u'License :: OSI Approved :: BSD License',
+               u'Programming Language :: Python :: 2.4',
+               u'Programming Language :: Python :: 2.5',
+               u'Programming Language :: Python :: 2.6',
+               u'Programming Language :: Python :: 2.7',
                ]
+               
+               

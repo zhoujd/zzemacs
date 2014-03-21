@@ -2,7 +2,6 @@
 #this file is needed in site-packages to emulate readline
 #necessary for rlcompleter since it relies on the existance
 #of a readline module
-from __future__ import print_function, unicode_literals, absolute_import
 from pyreadline.rlmain import Readline
 
 __all__ = [ 'parse_and_bind',
@@ -40,7 +39,7 @@ if rl.disable_readline:
         globals()[funk] = dummy
 else:
     def GetOutputFile():
-        '''Return the console object used by readline so that it can be used for printing in color.'''
+        u'''Return the console object used by readline so that it can be used for printing in color.'''
         return rl.console
     __all__.append("GetOutputFile")
 

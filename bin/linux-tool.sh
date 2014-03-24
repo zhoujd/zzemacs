@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+LINUX_TOOL_ROOT=`pwd`
+source $LINUX_TOOL_ROOT/sample.sh
+
 echo "install linux-tools begin..."
 
 ##package for ubuntu
@@ -32,10 +35,10 @@ Install_package_ubuntu()
 LINUX_DISTRO=`lsb_release -si`
 if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
     LINUX_DISTRO="SuSE"
-    Install_package_suse
+    try_command Install_package_suse
 elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
     LINUX_DISTRO="Ubuntu"
-    Install_package_ubuntu
+    try_command Install_package_ubuntu
 else
     echo "You are about to install on a non supported linux distribution."
 fi

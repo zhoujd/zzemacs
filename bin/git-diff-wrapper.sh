@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ### parameter desc
 ## $1 => $LOCAL

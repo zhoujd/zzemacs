@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ## difftool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php

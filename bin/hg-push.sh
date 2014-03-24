@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 ####http support push
 ##first goto hg project directory
 ##$hg serve -p 80

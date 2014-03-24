@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ##http://www.python.org/
 ##http://www.ipython.org/

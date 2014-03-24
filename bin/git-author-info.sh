@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ###https://help.github.com/articles/changing-author-info
 ###If you need to modify the author info in your repository's history.

@@ -8,16 +8,10 @@ echo "install .emacs to HOME directory begin..."
 Install_package()
 {
     # dectect OS version
-    LINUX_DISTRO=`lsb_release -si`
-    if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
-        LINUX_DISTRO="SuSE"
-
+    if [ "$LINUX_DISTRO" == "SUSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
-        
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
-        LINUX_DISTRO="Ubuntu"
-        
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo

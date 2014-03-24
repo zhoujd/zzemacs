@@ -32,7 +32,7 @@ Install_package_ubuntu()
 }
 
 # dectect OS version
-if [ "$LINUX_DISTRO" == "SUSE" ]; then
+if [ "$LINUX_DISTRO" == "SuSE" ]; then
     try_command Install_package_suse
 elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
     try_command Install_package_ubuntu

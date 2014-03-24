@@ -6,12 +6,9 @@ source $GIT_TOOL_ROOT/sample.sh
 Install_package()
 {
     # dectect OS version
-    LINUX_DISTRO=`lsb_release -si`
-    if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
-        LINUX_DISTRO="SuSE"
+    if [ "$LINUX_DISTRO" == "SuSE" ]; then
         sudo zypper install git gitk
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
-        LINUX_DISTRO="Ubuntu"
         sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
         sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core

@@ -13,7 +13,7 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SUSE" ]; then
+    if [ "$LINUX_DISTRO" == "SuSE" ]; then
         echo "Install on suse"
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         sudo apt-get install -y mercurial

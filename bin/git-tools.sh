@@ -15,9 +15,7 @@ Install_package()
         sudo apt-get install -y gitk
     else
         echo "You are about to install on a non supported linux distribution."
-    fi
-        
-	echo -e $ECHO_PREFIX_INFO "Install on $LINUX_DISTRO ..."
+    fi        
 }
 
 ## setup packages

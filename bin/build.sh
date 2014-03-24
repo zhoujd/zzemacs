@@ -19,8 +19,6 @@ Install_package()
     else
         echo "You are about to install on a non supported linux distribution."
     fi
-
-    echo "Install on $LINUX_DISTRO ..."
 }
 
 echo -n "Do you need install packages? (y/N): "

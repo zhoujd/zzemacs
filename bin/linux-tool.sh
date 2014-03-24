@@ -40,5 +40,4 @@ else
     echo "You are about to install on a non supported linux distribution."
 fi
 
-echo "Install on $LINUX_DISTRO ..."
 echo "install linux-tools end..."

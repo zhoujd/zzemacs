@@ -13,10 +13,11 @@ Install_package()
 
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
+        
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         LINUX_DISTRO="Ubuntu"
         
-        sudo apt-get install -y emacs
+        sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
         

@@ -233,6 +233,16 @@
          (buffer-substring (region-beginning) (region-end))
        (read-string "Google: "))))))
 
+(defun baidu ()
+  "baidu the selected region if any, display a query prompt otherwise."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.baidu.com/s?wd="
+    (url-hexify-string (if mark-active
+         (buffer-substring (region-beginning) (region-end))
+       (read-string "Baidu: "))))))
+
 ;;delete the current file
 (defun delete-this-file ()
   "Delete the current file, and kill the buffer."

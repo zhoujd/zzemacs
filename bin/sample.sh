@@ -15,4 +15,15 @@ function try_command {
     return $status
 }
 
+## Dectect OS version
+try_command lsb_release -si > /dev/null
+export LINUX_DISTRO=`lsb_release -si`
+if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
+    LINUX_DISTRO="SuSE"
+elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    LINUX_DISTRO="Ubuntu"
+else
+    echo -e $ECHO_PREFIX_ERROR "You are about to install on a non supported linux distribution."
+fi
+
 

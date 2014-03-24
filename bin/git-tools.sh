@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
+GIT_TOOL_ROOT=`pwd`
+source $GIT_TOOL_ROOT/sample.sh
+
 Install_package()
 {
     # dectect OS version
     LINUX_DISTRO=`lsb_release -si`
     if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
         LINUX_DISTRO="SuSE"
-        sudo zypper install git gitk
+        try_command sudo zypper install git gitk
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         LINUX_DISTRO="Ubuntu"
-        sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
-        sudo apt-get install -y python-meld3
-        sudo apt-get install -y git-core
-        sudo apt-get install -y gitk
+        try_command sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
+        try_command sudo apt-get install -y python-meld3
+        try_command sudo apt-get install -y git-core
+        try_command sudo apt-get install -y gitk
     else
         echo "You are about to install on a non supported linux distribution."
     fi

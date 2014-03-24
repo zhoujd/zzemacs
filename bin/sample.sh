@@ -15,7 +15,4 @@ function try_command {
     return $status
 }
 
-try_command lsb_release -si > /dev/null
-
-echo -e $ECHO_PREFIX_INFO "Run sample finished.\n"
 

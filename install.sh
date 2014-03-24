@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ZZEMACS_ROOT=`pwd`
+source $ZZEMACS_ROOT/bin/sample.sh
 
 echo "install .emacs to HOME directory begin..."
 
@@ -38,13 +39,13 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        Install_package
+        try_command Install_package
         ;;
 esac
 
 ##setup .emacs
-rm -f ~/.emacs
-cat > ~/.emacs <<EOF
+try_command rm -f ~/.emacs
+try_command cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}/")
 (if (file-exists-p (concat zzemacs-path ".emacs"))
@@ -52,29 +53,35 @@ cat > ~/.emacs <<EOF
     (message "zzemacs has not install"))
 EOF
 
-##git setting
-git config user.name  "zhoujd"
-git config user.email "zjd-405@163.com"
+##Install thirdparty
+Install_thirdparty()
+{
+    ##git setting
+    git config user.name  "zhoujd"
+    git config user.email "zjd-405@163.com"
 
-##install pymacs
-cd ${ZZEMACS_ROOT}/third-party/python
-./install.sh
-cd ${ZZEMACS_ROOT}
+    ##install pymacs
+    cd ${ZZEMACS_ROOT}/third-party/python
+    ./install.sh
+    cd ${ZZEMACS_ROOT}
 
-##install pde
-cd ${ZZEMACS_ROOT}/site-lisp/pde
-perl ./Build.PL
-perl ./Build test
-perl ./Build
-sudo perl ./Build install
-cd ${ZZEMACS_ROOT}
+    ##install pde
+    cd ${ZZEMACS_ROOT}/site-lisp/pde
+    perl ./Build.PL
+    perl ./Build test
+    perl ./Build
+    sudo perl ./Build install
+    cd ${ZZEMACS_ROOT}
 
-##install EPL
-cd ${ZZEMACS_ROOT}/third-party/perl/EPL
-perl Makefile.PL
-make
-sudo make install
-cd ${ZZEMACS_ROOT}
+    ##install EPL
+    cd ${ZZEMACS_ROOT}/third-party/perl/EPL
+    perl Makefile.PL
+    make
+    sudo make install
+    cd ${ZZEMACS_ROOT}
+}
+
+try_command Install_thirdparty
 
 echo "install .emacs to HOME directory end..."
 

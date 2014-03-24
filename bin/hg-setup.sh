@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+HG_SETUP_ROOT=`pwd`
+source $HG_SETUP_ROOT/sample.sh
+
 echo "hg setup start ..."
 
 ###Mercurial Books
@@ -10,8 +13,7 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    LINUX_DISTRO=`lsb_release -si`
-    if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
+    if [ "$LINUX_DISTRO" == "SUSE" ]; then
         echo "Install on suse"
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         sudo apt-get install -y mercurial
@@ -25,7 +27,7 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        Install_package
+        try_command Install_package
         ;;
 esac
 

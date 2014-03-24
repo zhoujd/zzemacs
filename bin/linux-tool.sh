@@ -32,12 +32,9 @@ Install_package_ubuntu()
 }
 
 # dectect OS version
-LINUX_DISTRO=`lsb_release -si`
-if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
-    LINUX_DISTRO="SuSE"
+if [ "$LINUX_DISTRO" == "SUSE" ]; then
     try_command Install_package_suse
 elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
-    LINUX_DISTRO="Ubuntu"
     try_command Install_package_ubuntu
 else
     echo "You are about to install on a non supported linux distribution."

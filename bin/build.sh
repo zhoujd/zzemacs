@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
+BUILD_ROOT=`pwd`
+source $BUILD_ROOT/sample.sh
+
 echo "Build emacs begin ..."
 
 Install_package()
 {
     # dectect OS version
-    LINUX_DISTRO=`lsb_release -si`
-    if [ "$LINUX_DISTRO" == "SUSE LINUX" ]; then
-        LINUX_DISTRO="SuSE"
+    if [ "$LINUX_DISTRO" == "SUSE" ]; then
         sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
     elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
-        LINUX_DISTRO="Ubuntu"
         sudo apt-get build-dep emacs23
         sudo apt-get install -y build-essential
         sudo apt-get install -y libxpm-dev libpng12-dev libjpeg-dev libtiff4-dev libgif-dev
@@ -27,7 +27,7 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        Install_package
+        try_command Install_package
         ;;
 esac
 

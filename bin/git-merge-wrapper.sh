@@ -8,6 +8,7 @@
 
 ## use emacs as diff tool
 EMACS_FLAG="n"
+EMACS="runemacs"
 
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
@@ -25,7 +26,7 @@ fi
 ## run merge tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        emacs --eval "(ediff-merge-files-with-ancestor \"$1\" \"$2\" \"$3\" nil \"$4\")"
+        $EMACS --eval "(ediff-merge-files-with-ancestor \"$1\" \"$2\" \"$3\" nil \"$4\")"
         ;;
     * )
         $MERGE_TOOL $*

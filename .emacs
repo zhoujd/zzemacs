@@ -38,6 +38,7 @@
         env-setting
         dired-setting
         prog-setting
+        ediff-setting
         other-setting
         shell-setting
         sample-setting

@@ -238,7 +238,7 @@
   (interactive)
   (browse-url
    (concat
-    "http://www.baidu.com/s?wd="
+    "http://www.baidu.com/s?ie=utf-8&wd="
     (url-hexify-string (if mark-active
          (buffer-substring (region-beginning) (region-end))
        (read-string "Baidu: "))))))

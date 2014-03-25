@@ -49,6 +49,7 @@
 
 ;; Clean up when ediff quit
 (defun local-ediff-clean-up ()
+  (mapc 'kill-buffer '("*Ediff Control Panel*" "*Ediff Registry*" "*ediff-diff*" "*ediff-errors*"))
   (delete-frame))
 
 (add-hook 'ediff-quit-hook 'local-ediff-clean-up)

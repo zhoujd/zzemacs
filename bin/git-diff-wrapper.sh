@@ -5,7 +5,7 @@
 ## $2 => $REMOTE
 
 ## use emacs as diff tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
 EMACS="runemacs"  ##"emacs"
 
 ## difftool selects

@@ -28,3 +28,13 @@ elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
 else
     echo -e $ECHO_PREFIX_ERROR "You are about to install on a non supported linux distribution."
 fi
+
+## Detect system arch.
+export SYSARCH=64
+ULONG_MASK=`getconf ULONG_MAX`
+if [ $ULONG_MASK == 18446744073709551615 ]; then
+    SYSARCH=64
+else
+    SYSARCH=32
+fi
+

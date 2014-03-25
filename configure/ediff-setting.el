@@ -32,7 +32,6 @@
 
 (add-hook 'ediff-before-setup-hook 'local-ediff-before-setup-hook)
 (add-hook 'ediff-quit-hook 'local-ediff-quit-hook 'append)
-;;(add-hook 'ediff-quit-hook 'delete-frame) ;;Add for auto delete frame
 (add-hook 'ediff-suspend-hook 'local-ediff-suspend-hook 'append)
 
 ;; Useful for ediff merge from emacsclient.
@@ -48,6 +47,11 @@
 
 (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 
+;; Clean up when ediff quit
+(defun local-ediff-clean-up ()
+  (delete-frame))
+
+(add-hook 'ediff-quit-hook 'local-ediff-clean-up)
 
 (provide 'ediff-setting)
 

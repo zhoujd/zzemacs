@@ -24,7 +24,7 @@ fi
 ## run diff tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        $EMACS --eval "(ediff-files \"$1\" \"$2\")"
+        $EMACS --eval "(progn (setq ediff-remote-file \"$1\") (ediff-files \"$1\" \"$2\"))"
         ;;
     * )
         $DIFF_TOOL $*

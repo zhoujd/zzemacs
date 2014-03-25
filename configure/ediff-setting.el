@@ -48,8 +48,10 @@
 (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 
 ;; Clean up when ediff quit
+(defvar ediff-remote-file "")
 (defun local-ediff-clean-up ()
-  (mapc 'kill-buffer '("*Ediff Control Panel*" "*Ediff Registry*" "*ediff-diff*" "*ediff-errors*"))
+  (mapc 'kill-buffer (list "*Ediff Control Panel*" "*Ediff Registry*" "*ediff-diff*" "*ediff-errors*"
+                           (car (reverse (split-string ediff-remote-file "/")))))
   (delete-frame))
 
 (add-hook 'ediff-quit-hook 'local-ediff-clean-up)

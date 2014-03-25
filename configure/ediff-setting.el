@@ -50,7 +50,11 @@
 ;; Clean up when ediff quit
 (defvar ediff-remote-file "" "remember remote file name")
 (defun local-ediff-clean-up ()
-  (mapc 'kill-buffer (list "*Ediff Control Panel*" "*Ediff Registry*" "*ediff-diff*" "*ediff-errors*"
+  (mapc 'kill-buffer (list "*Ediff Control Panel*"
+                           "*Ediff Registry*"
+                           "*ediff-diff*"
+                           "*ediff-fine-diff*"
+                           "*ediff-errors*"
                            (car (reverse (split-string ediff-remote-file "/")))))
   (setq ediff-remote-file "")
   (delete-frame))

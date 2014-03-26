@@ -50,8 +50,7 @@
 (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 
 ;; Clean up when ediff quit
-(defvar ediff-remote-file "" "remember remote file name")
-
+(defvar ediff-temp-file "" "remember temp file name")
 (defun local-ediff-clean-up ()
   (mapc (lambda (name)
           (when (get-buffer name)
@@ -62,8 +61,8 @@
          "*ediff-diff*"
          "*ediff-fine-diff*"
          "*ediff-errors*"
-         (car (reverse (split-string ediff-remote-file "/")))))
-  (setq ediff-remote-file "")
+         (car (reverse (split-string ediff-temp-file "/")))))
+  (setq ediff-temp-file "")
   (delete-frame))
 
 (add-hook 'ediff-quit-hook 'local-ediff-clean-up)

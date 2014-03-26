@@ -55,7 +55,8 @@
     (kill-buffer name)))
 
 (defun local-ediff-clean-up ()
-  (mapc 'safe-kill-buffer (list "*Ediff Control Panel*"
+  (mapc 'safe-kill-buffer (list
+                           "*Ediff Control Panel*"
                            "*Ediff Registry*"
                            "*ediff-diff*"
                            "*ediff-fine-diff*"

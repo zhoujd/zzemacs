@@ -11,7 +11,7 @@
 
 (setq git-mergetool-emacsclient-ediff-active nil)
 
-
+;; Set ediff style
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
@@ -30,9 +30,10 @@
   (set-frame-configuration local-ediff-saved-frame-configuration)
   (set-window-configuration local-ediff-saved-window-configuration))
 
+;; Setup hook for ediff
 (add-hook 'ediff-before-setup-hook 'local-ediff-before-setup-hook)
-(add-hook 'ediff-quit-hook 'local-ediff-quit-hook 'append)
-(add-hook 'ediff-suspend-hook 'local-ediff-suspend-hook 'append)
+(add-hook 'ediff-quit-hook         'local-ediff-quit-hook 'append)
+(add-hook 'ediff-suspend-hook      'local-ediff-suspend-hook 'append)
 
 ;; Useful for ediff merge from emacsclient.
 (defun git-mergetool-emacsclient-ediff (local remote base merged)
@@ -50,18 +51,17 @@
 ;; Clean up when ediff quit
 (defvar ediff-remote-file "" "remember remote file name")
 
-(defun safe-kill-buffer (name)
-  (when (get-buffer name)
-    (kill-buffer name)))
-
 (defun local-ediff-clean-up ()
-  (mapc 'safe-kill-buffer (list
-                           "*Ediff Control Panel*"
-                           "*Ediff Registry*"
-                           "*ediff-diff*"
-                           "*ediff-fine-diff*"
-                           "*ediff-errors*"
-                           (car (reverse (split-string ediff-remote-file "/")))))
+  (mapc (lambda (name)
+          (when (get-buffer name)
+            (kill-buffer name)))
+        (list
+         "*Ediff Control Panel*"
+         "*Ediff Registry*"
+         "*ediff-diff*"
+         "*ediff-fine-diff*"
+         "*ediff-errors*"
+         (car (reverse (split-string ediff-remote-file "/")))))
   (setq ediff-remote-file "")
   (delete-frame))
 

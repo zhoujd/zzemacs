@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 ## difftool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 ## http://www.perforce.com/perforce/products/merge.html
 
-if test "$OS" = "Windows_NT" ; then
+if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else
     DIFF_TOOL="bcompare" ##"meld"

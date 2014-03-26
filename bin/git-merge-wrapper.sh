@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 ### parameter desc
 ## $1 => $BASE
@@ -15,7 +15,7 @@ EMACS="runemacs"
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
 
-if test "$OS" = "Windows_NT" ; then
+if [ "$OS" = "Windows_NT" ] ; then
     MERGE_TOOL="C:/BCompare3/BCompare.exe"
 else
     #MERGE_TOOL="$HOME/zztools/bcompare/bin/bcompare"

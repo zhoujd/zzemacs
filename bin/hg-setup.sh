@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 HG_SETUP_ROOT=`pwd`
 source $HG_SETUP_ROOT/sample.sh
@@ -13,9 +13,9 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    if test "$LINUX_DISTRO" == "SuSE" ; then
+    if [ "$LINUX_DISTRO" == "SuSE" ]; then
         echo "Install on suse"
-    elif test "$LINUX_DISTRO" == "Ubuntu" ; then
+    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
         sudo apt-get install -y mercurial
     else
         echo "You are about to install on a non supported linux distribution."

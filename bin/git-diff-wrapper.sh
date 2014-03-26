@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 ### parameter desc
 ## $1 => $LOCAL
@@ -13,7 +13,7 @@ EMACS="runemacs"  ##"emacs"
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
 
-if test "$OS" = "Windows_NT" ; then
+if [ "$OS" = "Windows_NT" ] ; then
     DIFF_TOOL="C:/BCompare3/BCompare.exe"
 else
     #DIFF_TOOL="$HOME/zztools/bcompare/bin/bcompare"

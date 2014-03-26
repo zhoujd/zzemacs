@@ -27,9 +27,9 @@ fi
 case "$EMACS_FLAG" in
     "Y" | "y" )
         $EMACS --eval "(progn
-                        (setq emerge-temp-local-file  \"$2\"  \
-                              emerge-temp-base-file   \"$3\"  \
-                              emerge-temp-remote-file \"$1\") \
+                        (setq emerge-temp-local-file  \"$2\"
+                              emerge-temp-base-file   \"$3\"
+                              emerge-temp-remote-file \"$1\")
                         (ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\"))"
         ;;
     * )

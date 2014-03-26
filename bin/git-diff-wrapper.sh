@@ -5,7 +5,7 @@
 ## $2 => $REMOTE
 
 ## use emacs as diff tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
 EMACS="runemacs"  ##"emacs"
 
 ## difftool selects
@@ -25,7 +25,7 @@ fi
 case "$EMACS_FLAG" in
     "Y" | "y" )
         $EMACS --eval "(progn
-                        (setq ediff-temp-file \"$1\") \
+                        (setq ediff-temp-file \"$1\")
                         (ediff-files \"$1\" \"$2\"))"
         ;;
     * )

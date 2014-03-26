@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ###https://help.github.com/articles/changing-author-info
 ###If you need to modify the author info in your repository's history.
@@ -20,13 +20,11 @@ am=\"\$GIT_AUTHOR_EMAIL\"
 cn=\"\$GIT_COMMITTER_NAME\"
 cm=\"\$GIT_COMMITTER_EMAIL\"
  
-if [ \"\$GIT_COMMITTER_EMAIL\" = \"$match_email\" ]
-then
+if test \"\$GIT_COMMITTER_EMAIL\" = \"$match_email\" ; then
     an=\"$new_name\"
     am=\"$new_email\"
 fi
-if [ \"\$GIT_AUTHOR_EMAIL\" = \"$match_email\" ]
-then
+if test \"\$GIT_AUTHOR_EMAIL\" = \"$match_email\" ; then
     an=\"$new_name\"
     am=\"$new_email\"
 fi

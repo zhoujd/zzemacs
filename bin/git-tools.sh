@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 GIT_TOOL_ROOT=`pwd`
 source $GIT_TOOL_ROOT/sample.sh
@@ -6,9 +6,9 @@ source $GIT_TOOL_ROOT/sample.sh
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SuSE" ]; then
+    if test "$LINUX_DISTRO" == "SuSE" ; then
         sudo zypper install git gitk
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif test "$LINUX_DISTRO" == "Ubuntu" ; then
         sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
         sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core

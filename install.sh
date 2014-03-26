@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ZZEMACS_ROOT=`pwd`
 source $ZZEMACS_ROOT/bin/sample.sh
@@ -8,10 +8,10 @@ echo "install .emacs to HOME directory begin..."
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SUSE" ]; then
+    if test "$LINUX_DISTRO" == "SUSE"; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif test "$LINUX_DISTRO" == "Ubuntu"; then
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo

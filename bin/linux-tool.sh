@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 LINUX_TOOL_ROOT=`pwd`
 source $LINUX_TOOL_ROOT/sample.sh
@@ -32,9 +32,9 @@ Install_package_ubuntu()
 }
 
 # dectect OS version
-if [ "$LINUX_DISTRO" == "SuSE" ]; then
+if test "$LINUX_DISTRO" == "SuSE" ; then
     try_command Install_package_suse
-elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+elif test "$LINUX_DISTRO" == "Ubuntu" ; then
     try_command Install_package_ubuntu
 else
     echo "You are about to install on a non supported linux distribution."

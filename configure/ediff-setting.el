@@ -44,7 +44,8 @@
   (recursive-edit))
 
 (defun git-mergetool-emacsclient-ediff-after-quit-hook ()
-  (exit-recursive-edit))
+  (if git-mergetool-emacsclient-ediff-active
+      (exit-recursive-edit)))
 
 (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 

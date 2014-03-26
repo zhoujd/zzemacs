@@ -50,6 +50,9 @@
 (add-hook 'ediff-after-quit-hooks 'git-mergetool-emacsclient-ediff-after-quit-hook 'append)
 
 ;; Clean up when ediff quit
+;;(ediff-cleanup-mess)
+;;(if ediff-3way-comparison-job ediff-buffer-A/B/C ediff-buffer-A/B)
+
 (defvar ediff-temp-file "" "remember temp file name")
 (defvar emerge-temp-local-file "")
 (defvar emerge-temp-base-file "")

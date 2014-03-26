@@ -51,6 +51,10 @@
 
 ;; Clean up when ediff quit
 (defvar ediff-temp-file "" "remember temp file name")
+(defvar emerge-temp-local-file "")
+(defvar emerge-temp-base-file "")
+(defvar emerge-temp-remote-file "")
+
 (defun local-ediff-clean-up ()
   (mapc (lambda (name)
           (when (get-buffer name)
@@ -61,8 +65,14 @@
          "*ediff-diff*"
          "*ediff-fine-diff*"
          "*ediff-errors*"
-         (car (reverse (split-string ediff-temp-file "/")))))
+         (car (reverse (split-string ediff-temp-file "/")))
+         (car (reverse (split-string emerge-temp-base-file "/")))
+         (car (reverse (split-string emerge-temp-local-file "/")))
+         (car (reverse (split-string emerge-temp-remote-file "/")))))
   (setq ediff-temp-file "")
+  (setq emerge-temp-base-file "")
+  (setq emerge-temp-local-file "")
+  (setq emerge-temp-remote-file "")
   (delete-frame))
 
 (add-hook 'ediff-quit-hook 'local-ediff-clean-up)

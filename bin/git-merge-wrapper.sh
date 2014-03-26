@@ -7,7 +7,7 @@
 ## $4 => $MERGED
 
 ## use emacs as diff tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
 EMACS="runemacs"
 
 ## mergetool selects
@@ -26,7 +26,7 @@ fi
 ## run merge tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        $EMACS --eval "(ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\")"
+        $EMACS --eval "(progn (setq emerge-temp-local-file \"$2\" emerge-temp-base-file \"$3\" emerge-temp-remote-file \"$1\") (ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\"))"
         ;;
     * )
         $MERGE_TOOL $*

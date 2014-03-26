@@ -26,7 +26,7 @@ fi
 ## run merge tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        $EMACS --eval "(ediff-merge-files-with-ancestor \"$1\" \"$2\" \"$3\" nil \"$4\")"
+        $EMACS --eval "(ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\")"
         ;;
     * )
         $MERGE_TOOL $*

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Set Bash color
+# Set echo color
 export ECHO_PREFIX_INFO="\033[1;32;40mINFO...\033[0;0m"
 export ECHO_PREFIX_ERROR="\033[1;31;40mError...\033[0;0m"
 

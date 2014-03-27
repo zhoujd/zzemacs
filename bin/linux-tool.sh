@@ -9,6 +9,7 @@ echo "install linux-tools begin..."
 Install_package_suse()
 {
     ##TODO
+    true
 }
 
 ##package for ubuntu

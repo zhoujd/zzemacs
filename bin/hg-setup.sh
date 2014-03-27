@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-HG_SETUP_ROOT=`pwd`
-source $HG_SETUP_ROOT/sample.sh
+source sample.sh
 
 echo "hg setup start ..."
 

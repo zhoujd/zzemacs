@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-LINUX_TOOL_ROOT=`pwd`
-source $LINUX_TOOL_ROOT/sample.sh
+source sample.sh
 
 echo "install linux-tools begin..."
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-BUILD_ROOT=$HOME/zzemacs/bin
-source $BUILD_ROOT/sample.sh
+source sample.sh
 
 echo "Build emacs begin ..."
 

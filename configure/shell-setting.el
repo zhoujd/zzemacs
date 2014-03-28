@@ -7,6 +7,7 @@
 
 ;;;For shell ls color on folder
 ;;export LS_COLORS='di=1'
+;;alias ls='ls --color=auto'
 
 ;;shell settting
 (custom-set-variables

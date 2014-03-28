@@ -97,7 +97,7 @@
     (server-start))
   
   (add-hook 'kill-emacs-hook
-            (lambda()
+            (lambda ()
               (if (file-exists-p  (concat server-directory-name "/server"))
                   (delete-file (concat server-directory-name "/server"))))))
 

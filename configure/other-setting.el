@@ -136,7 +136,7 @@
 
 ;;tramp setting
 (require 'tramp)      
-(setq tramp-default-method (if-ms-windows "scpx" "sshx"))
+(setq tramp-default-method (if-ms-windows "scp" "ssh"))
 (setq tramp-unified-filenames t)
 (setq tramp-auto-save-directory "~/var/tramp")
 

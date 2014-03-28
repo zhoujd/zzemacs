@@ -1,15 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-source sample.sh
+##Import vars and functions
+. sample.sh
 
 echo "Build emacs begin ..."
 
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SuSE" ]; then
+    if [ "$LINUX_DISTRO" = "SuSE" ]; then
         sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get build-dep -y emacs23
         sudo apt-get install -y build-essential
         sudo apt-get install -y libxpm-dev libpng12-dev libjpeg-dev libtiff4-dev libgif-dev

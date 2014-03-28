@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 ##http://www.python.org/
 ##http://www.ipython.org/
@@ -7,7 +7,7 @@
 
 CURRENT_ROOT=`pwd`
 
-echo for python develop start ...
+echo "for python develop start ..."
 
 cd $CURRENT_ROOT/pymacs
 sudo python pppp -C ppppconfig.py pppp.rst.in pymacs.el.in pymacs.rst.in Pymacs.py.in contrib tests
@@ -38,4 +38,4 @@ cd $CURRENT_ROOT/zzpytools
 sudo python setup.py install
 cd $CURRENT_ROOT
 
-echo for python develop end   ...
+echo "for python develop end ..."

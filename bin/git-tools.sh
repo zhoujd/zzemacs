@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-GIT_TOOL_ROOT=`pwd`
-source $GIT_TOOL_ROOT/sample.sh
+source sample.sh
 
+## Install package for git
 Install_package()
 {
     # dectect OS version

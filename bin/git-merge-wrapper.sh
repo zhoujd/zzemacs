@@ -17,10 +17,16 @@ EMACS="runemacs"
 
 if [ "$OS" = "Windows_NT" ] ; then
     MERGE_TOOL="C:/BCompare3/BCompare.exe"
+    ARGS="$*"
 else
     #MERGE_TOOL="$HOME/zztools/bcompare/bin/bcompare"
+    #ARGS="$*"
+    
     #MERGE_TOOL="$HOME/zztools/meld/bin/meld"
+    #ARGS="$2 $4 $3"
+
     MERGE_TOOL="$HOME/zztools/p4v/bin/p4merge"
+    ARGS="$*"
 fi
 
 ## run merge tools
@@ -33,7 +39,7 @@ case "$EMACS_FLAG" in
                         (ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\"))"
         ;;
     * )
-        $MERGE_TOOL $*
+        $MERGE_TOOL $ARGS
         ;;
 esac
 

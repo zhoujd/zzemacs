@@ -1,14 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-source sample.sh
+##Import vars and functions
+. sample.sh
 
 ## Install package for git
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SuSE" ]; then
+    if [ "$LINUX_DISTRO" = "SuSE" ]; then
         sudo zypper install git gitk
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
         sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core

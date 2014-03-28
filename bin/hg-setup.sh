@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-source sample.sh
+##Import vars and functions
+. sample.sh
 
 echo "hg setup start ..."
 
@@ -12,9 +13,9 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SuSE" ]; then
+    if [ "$LINUX_DISTRO" = "SuSE" ]; then
         echo "Install on suse"
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y mercurial
     else
         echo "You are about to install on a non supported linux distribution."

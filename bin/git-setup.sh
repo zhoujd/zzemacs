@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 GIT_SETUP_HOME=`pwd`
 

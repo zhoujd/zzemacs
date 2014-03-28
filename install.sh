@@ -1,17 +1,19 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 ZZEMACS_ROOT=`pwd`
-source $ZZEMACS_ROOT/bin/sample.sh
 
-echo "install .emacs to HOME directory begin..."
+##Import vars and functions
+. $ZZEMACS_ROOT/bin/sample.sh
+
+echo $ECHO_PREFIX_INFO "install .emacs to HOME directory begin..."
 
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" == "SUSE" ]; then
+    if [ "$LINUX_DISTRO" = "SUSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
-    elif [ "$LINUX_DISTRO" == "Ubuntu" ]; then
+    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
@@ -75,5 +77,5 @@ Install_thirdparty()
 
 try_command Install_thirdparty
 
-echo "install .emacs to HOME directory end..."
+echo $ECHO_PREFIX_INFO "install .emacs to HOME directory end..."
 

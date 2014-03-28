@@ -1,5 +1,6 @@
 #!/bin/sh
 
+##Import vars and functions
 . sample.sh
 
 echo "Build emacs begin ..."

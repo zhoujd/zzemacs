@@ -5,7 +5,7 @@ ZZEMACS_ROOT=`pwd`
 ##Import vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
 
-echo $ECHO_PREFIX_INFO "install .emacs to HOME directory begin..."
+echo "install .emacs to HOME directory begin..."
 
 Install_package()
 {
@@ -77,5 +77,5 @@ Install_thirdparty()
 
 try_command Install_thirdparty
 
-echo $ECHO_PREFIX_INFO "install .emacs to HOME directory end..."
+echo "install .emacs to HOME directory end..."
 

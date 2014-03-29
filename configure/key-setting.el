@@ -35,88 +35,91 @@
   ))
 
 (apply-keys-to-map
- zz/ctrl-map
+ global-map
  (list 
-  "`" 'imenu
-  "1" 'delete-window
-  "2" 'delete-frame
-  "3" 'ibuffer
-  "4" 'delete-frame
-  "5" 'gud-until
-  "6" 'gud-remove
-  "7" 'gud-finish
-  "8" 'gud-jump
-  "9" 'gud-pstar
-  "0" 'other-frame
-  "-" 'redo
-  "=" 'er/expand-region
-  
-  "," 'winner-undo
-  "." 'winner-redo
+  (kbd "C-`") 'imenu
+  (kbd "C-1") 'delete-window
+  (kbd "C-2") 'delete-frame
+  (kbd "C-3") 'ibuffer
+  (kbd "C-4") 'delete-frame
+  (kbd "C-5") 'gud-until
+  (kbd "C-6") 'gud-remove
+  (kbd "C-7") 'gud-finish
+  (kbd "C-8") 'gud-jump
+  (kbd "C-9") 'gud-pstar
+  (kbd "C-0") 'other-frame
+  (kbd "C--") 'redo
+  (kbd "C-=") 'er/expand-region
 
-  [(tab)] "\C-q\t"
+  (kbd "C-,") 'winner-undo
+  (kbd "C-.") 'winner-redo
+
+  [(control tab)] "\C-q\t"
   ))
  
 (apply-keys-to-map
- zz/meta-map
+ global-map
  (list
-  "1" 'delete-other-windows
-  "2" 'delete-other-frames
-  "3" 'iswitchb-buffer
-  "4" 'kill-this-buffer
-  "5" (if-ms-windows 'gud-cont 'gud-go)
-  
-  "6" 'gud-break
-  "7" 'gud-next
-  "8" 'gud-step
-  "9" 'gud-print
-  "0" 'other-window
-  
-  "#" 'query-replace-regexp
+  (kbd "M-1") 'delete-other-windows
+  (kbd "M-2") 'delete-other-frames
+  (kbd "M-3") 'iswitchb-buffer
+  (kbd "M-4") 'kill-this-buffer
+  (kbd "M-5") (if-ms-windows 'gud-cont 'gud-go)
+  (kbd "M-6") 'gud-break
+  (kbd "M-7") 'gud-next
+  (kbd "M-8") 'gud-step
+  (kbd "M-9") 'gud-print
+  (kbd "M-0") 'other-window
+  (kbd "M-#") 'query-replace-regexp
   ))
 
 ;;number 0-1/-/=
 (apply-keys-to-map
- global-map
+ zz/meta-map
  (list
-  (kbd "M-1") (lookup-key zz/meta-map "1")
-  (kbd "M-2") (lookup-key zz/meta-map "2")
-  (kbd "M-3") (lookup-key zz/meta-map "3")
-  (kbd "M-4") (lookup-key zz/meta-map "4")
+  (kbd "1") (lookup-key global-map "M-1")
+  (kbd "2") (lookup-key global-map "M-2")
+  (kbd "3") (lookup-key global-map "M-3")
+  (kbd "4") (lookup-key global-map "M-4")
   ;;gud control setting
-  (kbd "M-5") (lookup-key zz/meta-map "5")
-  (kbd "M-6") (lookup-key zz/meta-map "6")
-  (kbd "M-7") (lookup-key zz/meta-map "7")
-  (kbd "M-8") (lookup-key zz/meta-map "8")
-  (kbd "M-9") (lookup-key zz/meta-map "9")
-  (kbd "M-0") (lookup-key zz/meta-map "0")
-
-  (kbd "M-#") (lookup-key zz/meta-map "#")
-
-  ;;;ctrl number setting
-  (kbd "C-`") (lookup-key zz/ctrl-map "`")
-  (kbd "C-1") (lookup-key zz/ctrl-map "1")
-  (kbd "C-2") (lookup-key zz/ctrl-map "2")
-  (kbd "C-3") (lookup-key zz/ctrl-map "3")
-  (kbd "C-4") (lookup-key zz/ctrl-map "4")
-  ;;gud control setting
-  (kbd "C-5") (lookup-key zz/ctrl-map "5")
-  (kbd "C-6") (lookup-key zz/ctrl-map "6")
-  (kbd "C-7") (lookup-key zz/ctrl-map "7")
-  (kbd "C-8") (lookup-key zz/ctrl-map "8")
-  (kbd "C-9") (lookup-key zz/ctrl-map "9")
-  (kbd "C-0") (lookup-key zz/ctrl-map "0")
+  (kbd "5") (lookup-key global-map "M-5")
+  (kbd "6") (lookup-key global-map "M-6")
+  (kbd "7") (lookup-key global-map "M-7")
+  (kbd "8") (lookup-key global-map "M-8")
+  (kbd "9") (lookup-key global-map "M-9")
+  (kbd "0") (lookup-key global-map "M-0")
+  (kbd "-") (lookup-key global-map "M--")
+  (kbd "=") (lookup-key global-map "M-+")
   
+  (kbd "#") (lookup-key global-map "M-#")
+  ))
+
+(apply-keys-to-map
+ zz/ctrl-map
+ (list  
+  ;;;ctrl number setting
+  (kbd "`") (lookup-key global-map "C-`")
+  (kbd "1") (lookup-key global-map "C-1")
+  (kbd "2") (lookup-key global-map "C-2")
+  (kbd "3") (lookup-key global-map "C-3")
+  (kbd "4") (lookup-key global-map "C-4")
+  ;;gud control setting
+  (kbd "5") (lookup-key global-map "C-5")
+  (kbd "6") (lookup-key global-map "C-6")
+  (kbd "7") (lookup-key global-map "C-7")
+  (kbd "8") (lookup-key global-map "C-8")
+  (kbd "9") (lookup-key global-map "C-9")
+  (kbd "0") (lookup-key global-map "C-0")
   ;;undo/redo
-  (kbd "C--") (lookup-key zz/ctrl-map "-")
-  (kbd "C-=") (lookup-key zz/ctrl-map "=")
+  (kbd "-") (lookup-key global-map "C--")
+  (kbd "=") (lookup-key global-map "C-=")
 
   ;;winner restore
-  (kbd "C-,") (lookup-key zz/ctrl-map ",")
-  (kbd "C-.") (lookup-key zz/ctrl-map ".")
+  (kbd "")  (lookup-key global-map "C-,")
+  (kbd "")  (lookup-key global-map "C-.")
 
   ;;Control tab quotes a tab => "\C-q\t"
-  [(control tab)] (lookup-key zz/ctrl-map [(tab)])
+  [(tab)]   (lookup-key global-map [(control tab)])
   ))
 
 ;;key for zz/ctrl-map

@@ -77,46 +77,46 @@
 (apply-keys-to-map
  zz/meta-map
  (list
-  (kbd "1") (lookup-key global-map "M-1")
-  (kbd "2") (lookup-key global-map "M-2")
-  (kbd "3") (lookup-key global-map "M-3")
-  (kbd "4") (lookup-key global-map "M-4")
+  (kbd "1") (lookup-key global-map (kbd "M-1"))
+  (kbd "2") (lookup-key global-map (kbd "M-2"))
+  (kbd "3") (lookup-key global-map (kbd "M-3"))
+  (kbd "4") (lookup-key global-map (kbd "M-4"))
   ;;gud control setting
-  (kbd "5") (lookup-key global-map "M-5")
-  (kbd "6") (lookup-key global-map "M-6")
-  (kbd "7") (lookup-key global-map "M-7")
-  (kbd "8") (lookup-key global-map "M-8")
-  (kbd "9") (lookup-key global-map "M-9")
-  (kbd "0") (lookup-key global-map "M-0")
-  (kbd "-") (lookup-key global-map "M--")
-  (kbd "=") (lookup-key global-map "M-+")
+  (kbd "5") (lookup-key global-map (kbd "M-5"))
+  (kbd "6") (lookup-key global-map (kbd "M-6"))
+  (kbd "7") (lookup-key global-map (kbd "M-7"))
+  (kbd "8") (lookup-key global-map (kbd "M-8"))
+  (kbd "9") (lookup-key global-map (kbd "M-9"))
+  (kbd "0") (lookup-key global-map (kbd "M-0"))
+  (kbd "-") (lookup-key global-map (kbd "M--"))
+  (kbd "=") (lookup-key global-map (kbd "M-+"))
   
-  (kbd "#") (lookup-key global-map "M-#")
+  (kbd "#") (lookup-key global-map (kbd "M-#"))
   ))
 
 (apply-keys-to-map
  zz/ctrl-map
  (list  
   ;;;ctrl number setting
-  (kbd "`") (lookup-key global-map "C-`")
-  (kbd "1") (lookup-key global-map "C-1")
-  (kbd "2") (lookup-key global-map "C-2")
-  (kbd "3") (lookup-key global-map "C-3")
-  (kbd "4") (lookup-key global-map "C-4")
+  (kbd "`") (lookup-key global-map (kbd "C-`"))
+  (kbd "1") (lookup-key global-map (kbd "C-1"))
+  (kbd "2") (lookup-key global-map (kbd "C-2"))
+  (kbd "3") (lookup-key global-map (kbd "C-3"))
+  (kbd "4") (lookup-key global-map (kbd "C-4"))
   ;;gud control setting
-  (kbd "5") (lookup-key global-map "C-5")
-  (kbd "6") (lookup-key global-map "C-6")
-  (kbd "7") (lookup-key global-map "C-7")
-  (kbd "8") (lookup-key global-map "C-8")
-  (kbd "9") (lookup-key global-map "C-9")
-  (kbd "0") (lookup-key global-map "C-0")
+  (kbd "5") (lookup-key global-map (kbd "C-5"))
+  (kbd "6") (lookup-key global-map (kbd "C-6"))
+  (kbd "7") (lookup-key global-map (kbd "C-7"))
+  (kbd "8") (lookup-key global-map (kbd "C-8"))
+  (kbd "9") (lookup-key global-map (kbd "C-9"))
+  (kbd "0") (lookup-key global-map (kbd "C-0"))
   ;;undo/redo
-  (kbd "-") (lookup-key global-map "C--")
-  (kbd "=") (lookup-key global-map "C-=")
+  (kbd "-") (lookup-key global-map (kbd "C--"))
+  (kbd "=") (lookup-key global-map (kbd "C-="))
 
   ;;winner restore
-  (kbd "")  (lookup-key global-map "C-,")
-  (kbd "")  (lookup-key global-map "C-.")
+  (kbd "")  (lookup-key global-map (kbd "C-,"))
+  (kbd "")  (lookup-key global-map (kbd "C-."))
 
   ;;Control tab quotes a tab => "\C-q\t"
   [(tab)]   (lookup-key global-map [(control tab)])

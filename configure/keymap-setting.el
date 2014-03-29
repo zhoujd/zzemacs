@@ -58,35 +58,42 @@
 (apply-keys-to-map
  help-map
  (list
-  (kbd "4")     f4-map
-  
+  ;;self ctrl/meta
   (kbd "SPC")   zz/ctrl-map
   (kbd "`")     zz/meta-map
-  
+
+  ;;self ctl-x/ctl-c
   [f7]          zz/ctrl-x-fn-map
   [f8]          zz/ctrl-c-fn-map
-  
+
+  ;;self fn relative
   [f9]          zz/fn-map
   [f10]         zz/shift-fn-map
   [f11]         zz/ctrl-fn-map
-  [f12]         zz/meta-fn-map 
+  [f12]         zz/meta-fn-map
+
+  ;;self extend
+  (kbd "4")     f4-map
   ))
 
 (apply-keys-to-map
  ctl-z-map
  (list
-
+  ;;self ctrl/meta
   (kbd "SPC")   zz/ctrl-map
   (kbd "`")     zz/meta-map
-  
+
+  ;;self ctl-x/ctl-c
   (kbd "C-x")   zz/ctrl-x-fn-map
   (kbd "C-c")   zz/ctrl-c-fn-map
-  
+
+  ;;self fn relative
   (kbd "f")     zz/fn-map
   (kbd "s")     zz/shift-fn-map
   (kbd "c")     zz/ctrl-fn-map
   (kbd "m")     zz/meta-fn-map
 
+  ;;self extend
   (kbd "4")     f4-map
   ))
 

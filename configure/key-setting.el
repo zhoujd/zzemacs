@@ -182,6 +182,16 @@
   (kbd "i") 'zz-info-open-file
   ))
 
+(apply-keys-to-map
+ zz/shift-fn-map
+ (list
+  ;;window size change
+  [up]      (lookup-key global-map [S-up])
+  [down]    (lookup-key global-map [S-down])
+  [left]    (lookup-key global-map [S-left])
+  [right]   (lookup-key global-map [S-right])  
+  ))
+
 ;;execute start-process key
 (apply-keys-to-map
  f4-e-map
@@ -265,7 +275,8 @@
   (kbd "0") 'gdb-frame-gdb-buffer
   (kbd "-") 'gud-up
   (kbd "=") 'gud-down
-
+  
+  ;;window size change
   [up]      (lookup-key global-map [S-up])
   [down]    (lookup-key global-map [S-down])
   [left]    (lookup-key global-map [S-left])

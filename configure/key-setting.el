@@ -79,6 +79,54 @@
   (kbd "M-#") 'query-replace-regexp
   ))
 
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-x C-b") 'ibuffer
+  (kbd "C-x C-j") 'dired-jump
+  (kbd "C-c w")   'compare-windows
+
+  (kbd "%")       'match-paren
+
+  [backspace]     'delete-backward-char
+  [delete]        'delete-char
+
+  [C-wheel-up]    (when-ms-windows 'text-scale-increase)
+  [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
+  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
+  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
+
+  (kbd "C-c h")   'helm-mini
+
+  ;;quick move other windows
+  [M-up]          'windmove-up
+  [M-down]        'windmove-down
+  [M-right]       'windmove-right
+  [M-left]        'windmove-left
+  
+  ;;window size change
+  [S-up]          'enlarge-window
+  [S-down]        'shrink-window
+  [S-right]       'enlarge-window-horizontally
+  [S-left]        'shrink-window-horizontally
+
+  ;;zz/apps-key for M-x
+  zz/apps-key     'smex
+  (kbd "M-x")     'smex
+  (kbd "M-X")     'smex-major-mode-commands
+  (kbd "C-x M-x") 'execute-extended-command
+  ))
+
+(apply-keys-to-map
+ esc-map
+ (list
+  ;;quick move other windows
+  [up]    (lookup-key global-map [M-up])
+  [down]  (lookup-key global-map [M-down])
+  [left]  (lookup-key global-map [M-left])
+  [right] (lookup-key global-map [M-right])
+  ))
+
 ;;number 0-1/-/=
 (apply-keys-to-map
  zz/meta-map
@@ -98,6 +146,12 @@
 
   ;;find-replace
   (kbd "#") (lookup-key global-map (kbd "M-#"))
+
+  ;;quick move other windows
+  [up]      (lookup-key global-map [M-up])
+  [down]    (lookup-key global-map [M-down])
+  [left]    (lookup-key global-map [M-left])
+  [right]   (lookup-key global-map [M-right])
   ))
 
 (apply-keys-to-map
@@ -211,62 +265,11 @@
   (kbd "0") 'gdb-frame-gdb-buffer
   (kbd "-") 'gud-up
   (kbd "=") 'gud-down
-  ))
 
-(apply-keys-to-map
- global-map
- (list
-  (kbd "C-x C-b") 'ibuffer
-  (kbd "C-x C-j") 'dired-jump
-  (kbd "C-c w")   'compare-windows
-
-  (kbd "%")       'match-paren
-
-  [backspace]     'delete-backward-char
-  [delete]        'delete-char
-
-  [C-wheel-up]    (when-ms-windows 'text-scale-increase)
-  [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
-  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
-  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
-
-  (kbd "C-c h")   'helm-mini
-
-  ;;quick move other windows
-  [M-up]          'windmove-up
-  [M-down]        'windmove-down
-  [M-right]       'windmove-right
-  [M-left]        'windmove-left
-  
-  ;;window size change
-  [S-up]          'enlarge-window
-  [S-down]        'shrink-window
-  [S-right]       'enlarge-window-horizontally
-  [S-left]        'shrink-window-horizontally
-
-  ;;zz/apps-key for M-x
-  zz/apps-key     'smex
-  (kbd "M-x")     'smex
-  (kbd "M-X")     'smex-major-mode-commands
-  (kbd "C-x M-x") 'execute-extended-command
-  ))
-
-(apply-keys-to-map
- esc-map
- (list
-  [up]    (lookup-key global-map [M-up])
-  [down]  (lookup-key global-map [M-down])
-  [left]  (lookup-key global-map [M-left])
-  [right] (lookup-key global-map [M-right])
-  ))
-
-(apply-keys-to-map
- help-map
- (list
-  [up]    (lookup-key global-map [S-up])
-  [down]  (lookup-key global-map [S-down])
-  [left]  (lookup-key global-map [S-left])
-  [right] (lookup-key global-map [S-right])
+  [up]      (lookup-key global-map [S-up])
+  [down]    (lookup-key global-map [S-down])
+  [left]    (lookup-key global-map [S-left])
+  [right]   (lookup-key global-map [S-right])  
   ))
 
 (provide 'key-setting)

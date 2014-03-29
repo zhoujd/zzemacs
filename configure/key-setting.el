@@ -48,6 +48,7 @@
   "8" 'gud-jump
   "9" 'gud-pstar
   "0" 'other-frame
+  "-" 'redo
   "=" 'er/expand-region
   
   "," 'winner-undo

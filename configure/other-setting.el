@@ -70,7 +70,7 @@
 ;;display of line numbers with M-x linum-mode.
 (require 'nlinum)
 
-;;redo+ fixed for emacs > 24.3
+;;redo+
 (require 'redo+)
 (global-set-key [M-S-backspace] 'redo)
 (global-set-key (kbd "C-?") 'redo)

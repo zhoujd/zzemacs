@@ -216,6 +216,7 @@
                           "gnome-control-center" '("gnome-control-center")))
   "e" (if-not-ms-windows (execute-set-key "evince" '("evince")))
   "n" (if-not-ms-windows (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
+  "r" (if-not-ms-windows (execute-set-key "remmina" '("remmina")))
   ))
 
 ;;switch to shells

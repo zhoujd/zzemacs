@@ -30,9 +30,7 @@ cd %CURRENT_ROOT%\pyreadline
 python setup.py install
 cd %CURRENT_ROOT%
 
-cd %CURRENT_ROOT%\pydb
-python setup.py install
-cd %CURRENT_ROOT%
+rem not support pydb use pdb instead
 
 cd %CURRENT_ROOT%\zzpytools
 python setup.py install

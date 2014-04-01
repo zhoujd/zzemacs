@@ -5,7 +5,6 @@
   
         $ curl -O http://beta.quicklisp.org/quicklisp.lisp
 
-    
         * (load "quicklisp")
         * (setq quicklisp-quickstart:*proxy-url* "http://host:port")
         * (quicklisp-quickstart:install)
@@ -14,14 +13,13 @@
         * (ql:add-to-init-file)
     
 * Buildapp - Create executables with SBCL
-
   Buildapp is an application for SBCL that configures and saves an executable Common Lisp image.
   It is similar to cl-launch and hu.dwim.build.
   Buildapp is available under a BSD-style license.
-
-    [BuildApp]<http://www.xach.com/lisp/buildapp/>
-    
-    [Download shortcut]<http://www.xach.com/lisp/buildapp.tgz>
+  
+  [BuildApp]<http://www.xach.com/lisp/buildapp/>
+  
+  [Download shortcut]<http://www.xach.com/lisp/buildapp.tgz>
 
         $ buildapp \
             --eval '(defun main (argv) (declare (ignore argv)) (write-line "Hello, world"))' \

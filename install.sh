@@ -17,6 +17,7 @@ Install_package()
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
+        sudo apt-get install -y markdown
         
         ##install font
         FONT_HOME=/usr/share/fonts/truetype/

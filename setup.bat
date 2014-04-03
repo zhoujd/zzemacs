@@ -1,7 +1,9 @@
 @echo off
 echo setup to %OS% start ...
+
 set MYCFG_PATH="%APPDATA%\.emacs"
 set MYHOME="C:/zznix/home/zhoujd"
+set CURRENT_DIR=%CD%
 
 if exist %MYCFG_PATH% del %MYCFG_PATH%
 
@@ -12,8 +14,16 @@ echo (if (file-exists-p "~/zzemacs/.emacs")>> %MYCFG_PATH%
 echo     (load-file "~/zzemacs/.emacs")>> %MYCFG_PATH%
 echo     (message "zzemacs has not install"))>> %MYCFG_PATH%
 
+echo setup python environment.
+cd third-party\python
+setup.bat
+cd %CURRENT_DIR%
+
 set MYHOME=
 set MYCFG_PATH=
-echo setup to %OS% end
+set CURRENT_DIR=
+
+echo setup to %OS% end ...
 pause
+
 @echo on

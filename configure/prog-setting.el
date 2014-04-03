@@ -123,7 +123,10 @@
      (add-hook hook 'company-mode))))
 
 ;;;cedet version flag t for inside
-(setq use-cedet-inside-flag t)
+(defvar use-cedet-inside-flag (if (< emacs-major-version 24)
+                                nil
+                                t)
+  "cedet using flag, t for use buildin, nil for office")
 (if use-cedet-inside-flag
     (progn
       ;;auto complete

@@ -23,6 +23,11 @@ Install_package()
         FONT_HOME=/usr/share/fonts/truetype/
         sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
         sudo cp -f ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
+    elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+        sudo yum install -y gmrun
+        sudo yum install -y cscope
+        sudo yum install -y texinfo
+                
     else
         echo "You are about to install on a non supported linux distribution."
     fi

@@ -57,8 +57,9 @@ EOF
 Install_thirdparty()
 {
     ##git setting
-    git config user.name  "zhoujd"
-    git config user.email "zjd-405@163.com"
+    cd ${ZZEMACS_ROOT}/bin
+    ./git-setup.sh
+    cd ${ZZEMACS_ROOT}
 
     ##install pymacs
     cd ${ZZEMACS_ROOT}/third-party/python

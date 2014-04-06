@@ -14,7 +14,8 @@ EMACS="runemacs"  ##"emacs"
 ## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
-    DIFF_TOOL="C:/BCompare3/BCompare.exe"
+    #DIFF_TOOL="C:/BCompare3/BCompare.exe"
+    DIFF_TOOL="$HOME/zztools/perforce/p4merge"
 else
     #DIFF_TOOL="$HOME/zztools/bcompare/bin/bcompare"
     #DIFF_TOOL="$HOME/zztools/meld/bin/meld"

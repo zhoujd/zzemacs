@@ -26,7 +26,7 @@
 
 ;;;browser selecting
 (setq browse-url-browser-function
-      (list (cons (concat zzemacs-path "doc/hyperspec/") 'w3m-browse-url)
+      (list (cons (concat zzemacs-path "doc/HyperSpec/") 'w3m-browse-url)
             (cons "." 'browse-url-default-browser)))
 
 ;;(setq w3m-local-find-file-function nil)

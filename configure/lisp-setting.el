@@ -61,6 +61,7 @@
 
 ;;hpperspec.el
 (require 'hyperspec)
+(setq common-lisp-hyperspec-root (concat zzemacs-path "doc/hyperspec/"))
 
 ;;eldoc
 (defun turn-on-eldoc-mode () (eldoc-mode t))

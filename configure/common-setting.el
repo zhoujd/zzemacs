@@ -99,7 +99,9 @@
   (add-hook 'kill-emacs-hook
             (lambda ()
               (if (file-exists-p  (concat server-directory-name "/server"))
-                  (delete-file (concat server-directory-name "/server"))))))
+                  (delete-file (concat server-directory-name "/server")))))
+
+  (message "start emacs server..."))
 
 (when-ms-windows
  (defun my-use-gnusvr ()

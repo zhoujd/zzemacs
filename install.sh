@@ -18,6 +18,7 @@ Install_package()
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
+        sudo apt-get install -y w3m
         
         ##install font
         FONT_HOME=/usr/share/fonts/truetype/
@@ -57,8 +58,9 @@ EOF
 Install_thirdparty()
 {
     ##git setting
-    git config user.name  "zhoujd"
-    git config user.email "zjd-405@163.com"
+    cd ${ZZEMACS_ROOT}/bin
+    ./git-setup.sh
+    cd ${ZZEMACS_ROOT}
 
     ##install pymacs
     cd ${ZZEMACS_ROOT}/third-party/python

@@ -38,8 +38,11 @@
   (make-directory temporary-file-directory))
 
 (require 'slime)
-(slime-setup '(slime-fancy))
-(slime-setup '(slime-repl))
+(slime-setup '(
+               slime-fancy
+               slime-repl
+               slime-asdf
+               ))
 (fset 'run-lisp 'slime)
 
 ;;set slime coding
@@ -61,6 +64,7 @@
 
 ;;hpperspec.el
 (require 'hyperspec)
+(setq common-lisp-hyperspec-root (concat zzemacs-path "doc/hyperspec/"))
 
 ;;eldoc
 (defun turn-on-eldoc-mode () (eldoc-mode t))

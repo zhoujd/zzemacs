@@ -7,12 +7,13 @@
                     (concat zzemacs-path "bin")
                     "C:/zznix/bin"
                     (format "%s/bin" (getenv "EMACS_DIR"))
+                    (format "%s/zztools/bcompare" (getenv "HOME"))
+                    (format "%s/zztools/perforce" (getenv "HOME"))
                     "C:/strawberry/perl/bin"
                     "C:/strawberry/c/bin"
                     "C:/Git/bin"
-					"C:/Git/libexec/git-core"
+                    "C:/Git/libexec/git-core"
                     "C:/Vim/vim73"
-                    "C:/BCompare3"
                     "C:/Program Files (x86)/CMake 2.8/bin"
                     "C:/Program Files (x86)/Mozilla Firefox"
                     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/bin"

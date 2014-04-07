@@ -31,8 +31,10 @@
 (unless-ms-windows
  (setq my-env-path (list
                     (concat zzemacs-path "bin")
-                    "/usr/racket/bin"
-                    "/usr/local/Gambit-C/bin/"
+                    "/sbin"
+                    "/usr/sbin"
+                    "/usr/local/racket/bin"
+                    "/usr/local/Gambit-C/bin"
                     (format "%s/zztools/bcompare/bin" (getenv "HOME"))
                     (format "%s/zztools/meld/bin" (getenv "HOME"))
                     (format "%s/zztools/p4v/bin" (getenv "HOME"))

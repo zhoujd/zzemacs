@@ -7,7 +7,8 @@
  '(byte-compile-warnings nil)
  )
 
-(defvar zzemacs-path "~/zzemacs/" "zzemacs`s path")
+(defvar zzemacs-path (format "%s/zzemacs/" (getenv "HOME"))
+  "zzemacs`s path")
 
 (defun zz-add-os-path (path)
   (interactive "DDirectory: ")

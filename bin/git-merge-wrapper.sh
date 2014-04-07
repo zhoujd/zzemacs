@@ -16,7 +16,7 @@ EMACS="runemacs"
 ## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
-    #MERGE_TOOL="C:/BCompare3/BCompare.exe"
+    #MERGE_TOOL="$HOME/zztools/bcompare/bcompare"
     #ARGS="$*"
 
     MERGE_TOOL="$HOME/zztools/perforce/p4merge"

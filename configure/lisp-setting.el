@@ -41,7 +41,6 @@
 (slime-setup '(
                slime-fancy
                slime-repl
-               slime-asdf
                ))
 (fset 'run-lisp 'slime)
 

@@ -24,9 +24,9 @@
 
 (setq slime-lisp-implementations
       '(
+        (clisp ("clisp"))
         (ecl   ("ecl"))
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
-        (clisp ("clisp"))
         ))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system

@@ -56,6 +56,8 @@
   
   [ECL]<http://sourceforge.net/projects/ecls/?source=directory>
 
+  [My StumpWM Config]<http://www.mygooglest.com/fni/stumpwm.html>
+
 * Design Patterns in Dynamic Languanges
 
   <http://norvig.com/design-patterns/>

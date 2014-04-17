@@ -1,4 +1,4 @@
-zemacs - emacs for zachary zhou
+zzemacs - emacs for zachary zhou
 =======
 
 * Install emacs configure with script

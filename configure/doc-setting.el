@@ -11,7 +11,11 @@
 
 (defun markdown-custom ()
   "markdown-mode-hook"
-  (setq markdown-command (format "perl %s/bin/markdown | perl %s/bin/smartypants" zzemacs-path zzemacs-path)))
+  (setq markdown-command
+        (concat "markdown | "
+                "perl " zzemacs-path "bin/markdown.pl | "
+                "perl " zzemacs-path "bin/smartypants.pl")))
+
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 
 ;;org-mode setting

@@ -9,6 +9,11 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+(defun markdown-custom ()
+  "markdown-mode-hook"
+  (setq markdown-command (format "perl %s/bin/markdown | perl %s/bin/smartypants" zzemacs-path zzemacs-path)))
+(add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
+
 ;;org-mode setting
 (setq org-export-html-postamble nil)
 (setq org-publish-project-alist

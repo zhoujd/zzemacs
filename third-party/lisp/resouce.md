@@ -48,12 +48,15 @@
         git clone https://github.com/feeley/gambit.git 
         git clone http://git.code.sf.net/p/ecls/ecl ecls-ecl
         git clone http://git.code.sf.net/p/ecls/ecl-doc ecls-ecl-doc
+        git clone https://github.com/stumpwm/stumpwm
 
 * Some lisp url
 
   [Gambit-C]<http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/prebuilt/>
   
   [ECL]<http://sourceforge.net/projects/ecls/?source=directory>
+
+  [My StumpWM Config]<http://www.mygooglest.com/fni/stumpwm.html>
 
 * Design Patterns in Dynamic Languanges
 

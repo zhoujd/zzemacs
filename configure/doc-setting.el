@@ -12,7 +12,7 @@
 (defun markdown-custom ()
   "markdown-mode-hook"
   (setq markdown-command (format
-                          "markdown | perl %s/bin/markdown.pl | perl %s/bin/smartypants.pl"
+                          "perl %s/bin/markdown.pl | perl %s/bin/smartypants.pl"
                           zzemacs-path
                           zzemacs-path)))
 

@@ -11,7 +11,15 @@
         * (ql:system-apropos "vecto")
         * (ql:quickload "vecto")
         * (ql:add-to-init-file)
-    
+
+        ;;; The following lines added by ql:add-to-init-file:
+        #-quicklisp
+        (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                               (user-homedir-pathname))))
+        (when (probe-file quicklisp-init)
+        (load quicklisp-init)))
+
+
 * Buildapp - Create executables with SBCL
   Buildapp is an application for SBCL that configures and saves an executable Common Lisp image.
   It is similar to cl-launch and hu.dwim.build.

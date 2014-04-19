@@ -49,6 +49,7 @@
 (setq slime-net-coding-system 'utf-8-unix)
 ;;my slime-mode setting
 (defun my-slime-mode-hook ()
+  (require 'slime-helper)
   (setq tab-width 4 indent-tabs-mode nil)
   ;;(define-key slime-mode-map [(tab)] 'slime-complete-symbol)
   (define-key slime-mode-map (kbd "C-c 0") 'slime-selector)

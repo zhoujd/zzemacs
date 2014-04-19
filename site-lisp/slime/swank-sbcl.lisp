@@ -607,9 +607,6 @@ compiler state."
        (warning                   #'handle-notification-condition))
     (funcall function)))
 
-
-(defvar *trap-load-time-warnings* t)
-
 (defun compiler-policy (qualities)
   "Return compiler policy qualities present in the QUALITIES alist.
 QUALITIES is an alist with (quality . value)"
@@ -633,7 +630,7 @@ QUALITIES is an alist with (quality . value)"
        (unwind-protect (progn ,@body)
          (setf (compiler-policy) ,current-policy)))))
 
-(defimplementation swank-compile-file (input-file output-file 
+(defimplementation swank-compile-file (input-file output-file
                                        load-p external-format
                                        &key policy)
   (multiple-value-bind (output-file warnings-p failure-p)
@@ -645,7 +642,7 @@ QUALITIES is an alist with (quality . value)"
             (or failure-p
                 (when load-p
                   ;; Cache the latest source file for definition-finding.
-                  (source-cache-get input-file 
+                  (source-cache-get input-file
                                     (file-write-date input-file))
                   (not (load output-file)))))))
 
@@ -670,36 +667,38 @@ QUALITIES is an alist with (quality . value)"
   "Return a temporary file name to compile strings into."
   (tempnam nil nil))
 
+(defvar *trap-load-time-warnings* t)
+
 (defimplementation swank-compile-string (string &key buffer position filename
                                          policy)
   (let ((*buffer-name* buffer)
         (*buffer-offset* position)
         (*buffer-substring* string)
         (*buffer-tmpfile* (temp-file-name)))
-    (flet ((load-it (filename)
-             (when filename (load filename)))
-           (compile-it (cont)
-             (with-compilation-hooks ()
-               (with-compilation-unit
-                   (:source-plist (list :emacs-buffer buffer
-                                        :emacs-filename filename
-                                        :emacs-string string
-                                        :emacs-position position)
-                    :source-namestring filename
-                    :allow-other-keys t)
-                 (multiple-value-bind (output-file warningsp failurep)
-                     (compile-file *buffer-tmpfile* :external-format :utf-8)
-                   (declare (ignore warningsp))
-                   (unless failurep
-                     (funcall cont output-file)))))))
+    (labels ((load-it (filename)
+               (cond (*trap-load-time-warnings*
+                      (with-compilation-hooks () (load filename)))
+                     (t (load filename))))
+             (cf ()
+               (with-compiler-policy policy
+                 (with-compilation-unit
+                     (:source-plist (list :emacs-buffer buffer
+                                          :emacs-filename filename
+                                          :emacs-string string
+                                          :emacs-position position)
+                      :source-namestring filename
+                      :allow-other-keys t)
+                   (compile-file *buffer-tmpfile* :external-format :utf-8)))))
       (with-open-file (s *buffer-tmpfile* :direction :output :if-exists :error
                          :external-format :utf-8)
         (write-string string s))
       (unwind-protect
-           (with-compiler-policy policy
-            (if *trap-load-time-warnings*
-                (compile-it #'load-it)
-                (load-it (compile-it #'identity))))
+           (multiple-value-bind (output-file warningsp failurep)
+               (with-compilation-hooks () (cf))
+             (declare (ignore warningsp))
+             (when output-file
+               (load-it output-file))
+             (not failurep))
         (ignore-errors
           (delete-file *buffer-tmpfile*)
           (delete-file (compile-file-pathname *buffer-tmpfile*)))))))
@@ -1425,9 +1424,9 @@ stack."
 
 ;;;;; reference-conditions
 
-(defimplementation format-sldb-condition (condition)
+(defimplementation print-condition (condition stream)
   (let ((sb-int:*print-condition-references* nil))
-    (princ-to-string condition)))
+    (princ condition stream)))
 
 
 ;;;; Profiling
@@ -1883,3 +1882,54 @@ stack."
                              (zerop (sb-posix:wexitstatus status))))))))))))
 
 (pushnew 'deinit-log-output sb-ext:*save-hooks*)
+
+
+;;;; wrap interface implementation
+
+(defun sbcl-version>= (&rest subversions)
+  #+#.(swank-backend:with-symbol 'assert-version->= 'sb-ext)
+  (values (ignore-errors (apply #'sb-ext:assert-version->= subversions) t))
+  #-#.(swank-backend:with-symbol 'assert-version->= 'sb-ext)
+  nil)
+
+(defimplementation wrap (spec indicator &key before after replace)
+  (when (wrapped-p spec indicator)
+    (warn "~a already wrapped with indicator ~a, unwrapping first"
+          spec indicator)
+    (sb-int:unencapsulate spec indicator))
+  (sb-int:encapsulate spec indicator
+                      #-#.(swank-backend:with-symbol 'arg-list 'sb-int)
+                      (lambda (function &rest args)
+                        (sbcl-wrap spec before after replace function args))
+                      #+#.(swank-backend:with-symbol 'arg-list 'sb-int)
+                      (if (sbcl-version>= 1 1 16)
+                          (lambda ()
+                            (sbcl-wrap spec before after replace
+                                       (symbol-value 'sb-int:basic-definition)
+                                       (symbol-value 'sb-int:arg-list)))
+                          `(sbcl-wrap ',spec ,before ,after ,replace
+                                      (symbol-value 'sb-int:basic-definition)
+                                      (symbol-value 'sb-int:arg-list)))))
+
+(defimplementation unwrap (spec indicator)
+  (sb-int:unencapsulate spec indicator))
+
+(defimplementation wrapped-p (spec indicator)
+  (sb-int:encapsulated-p spec indicator))
+
+(defun sbcl-wrap (spec before after replace function args)
+  (let (retlist completed)
+    (unwind-protect
+         (progn
+           (when before
+             (funcall before args))
+           (setq retlist (multiple-value-list (if replace
+                                                  (funcall replace
+                                                           args)
+                                                  (apply function args))))
+           (setq completed t)
+           (values-list retlist))
+      (when after
+        (funcall after (if completed retlist :exited-non-locally))))))
+
+(in-package :swank-backend)

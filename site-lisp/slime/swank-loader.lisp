@@ -223,12 +223,12 @@ If LOAD is true, load the fasl file."
     swank-c-p-c swank-arglists swank-fuzzy
     swank-fancy-inspector
     swank-presentations swank-presentation-streams
-    #+(or asdf sbcl ecl) swank-asdf
+    #+(or asdf2 asdf3 sbcl ecl) swank-asdf
     swank-package-fu
     swank-hyperdoc
     #+sbcl swank-sbcl-exts
     swank-mrepl
-    )
+    swank-trace-dialog)
   "List of names for contrib modules.")
 
 (defun append-dir (absolute name)

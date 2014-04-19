@@ -1,3 +1,4 @@
+(require 'slime)
 
 (define-slime-contrib slime-parse
   "Utility contrib containg functions to parse forms in a buffer."
@@ -114,91 +115,8 @@ that the character is not escaped."
           )))
 
 ;;;; Test cases
-
-(defun slime-check-buffer-form (result-form)
-  (slime-test-expect 
-   (format "Buffer form correct in `%s' (at %d)" (buffer-string) (point))
-   result-form
-   (slime-parse-form-upto-point 10)))
-
-(def-slime-test form-up-to-point.1
-    (buffer-sexpr result-form &optional skip-trailing-test-p)
-    ""
-    '(("(char= #\\(*HERE*"               ("char=" "#\\(" swank::%cursor-marker%))
-      ("(char= #\\( *HERE*"              ("char=" "#\\(" "" swank::%cursor-marker%))
-      ("(char= #\\) *HERE*"              ("char=" "#\\)" "" swank::%cursor-marker%))
-      ("(char= #\\*HERE*"                ("char=" "#\\" swank::%cursor-marker%) t)
-      ("(defun*HERE*"                    ("defun" swank::%cursor-marker%))
-      ("(defun foo*HERE*"                ("defun" "foo" swank::%cursor-marker%))
-      ("(defun foo (x y)*HERE*"          ("defun" "foo" ("x" "y") swank::%cursor-marker%))
-      ("(defun foo (x y*HERE*"           ("defun" "foo" ("x" "y" swank::%cursor-marker%)))
-      ("(apply 'foo*HERE*"               ("apply" "'foo" swank::%cursor-marker%))
-      ("(apply #'foo*HERE*"              ("apply" "#'foo" swank::%cursor-marker%))
-      ("(declare ((vector bit *HERE*"    ("declare" (("vector" "bit" "" swank::%cursor-marker%))))
-      ("(with-open-file (*HERE*"         ("with-open-file" ("" swank::%cursor-marker%)))
-      ("(((*HERE*"                       ((("" swank::%cursor-marker%))))
-      ("(defun #| foo #| *HERE*"         ("defun" "" swank::%cursor-marker%))
-      ("(defun #-(and) (bar) f*HERE*"    ("defun" "f" swank::%cursor-marker%))
-      ("(remove-if #'(lambda (x)*HERE*"  ("remove-if" ("lambda" ("x") swank::%cursor-marker%)))
-      ("`(remove-if ,(lambda (x)*HERE*"  ("remove-if" ("lambda" ("x") swank::%cursor-marker%)))
-      ("`(remove-if ,@(lambda (x)*HERE*" ("remove-if" ("lambda" ("x") swank::%cursor-marker%))))
-  (slime-check-top-level)
-  (with-temp-buffer
-    (lisp-mode)
-    (insert buffer-sexpr)
-    (search-backward "*HERE*")
-    (delete-region (match-beginning 0) (match-end 0))
-    (slime-check-buffer-form result-form)
-    (unless skip-trailing-test-p
-      (insert ")") (backward-char)
-      (slime-check-buffer-form result-form))
-    ))
-
-(defun slime-trace-query (spec)
-  "Ask the user which function to trace; SPEC is the default.
-The result is a string."
-  (cond ((null spec)
-         (slime-read-from-minibuffer "(Un)trace: "))
-        ((stringp spec)
-         (slime-read-from-minibuffer "(Un)trace: " spec))
-        ((symbolp spec)    ; `slime-extract-context' can return symbols.
-         (slime-read-from-minibuffer "(Un)trace: " (prin1-to-string spec)))
-        (t
-         (destructure-case spec
-           ((setf n)
-            (slime-read-from-minibuffer "(Un)trace: " (prin1-to-string spec)))
-           ((:defun n)
-            (slime-read-from-minibuffer "(Un)trace: " (prin1-to-string n)))
-           ((:defgeneric n)
-            (let* ((name (prin1-to-string n))
-                   (answer (slime-read-from-minibuffer "(Un)trace: " name)))
-              (cond ((and (string= name answer)
-                          (y-or-n-p (concat "(Un)trace also all " 
-                                            "methods implementing " 
-                                            name "? ")))
-                     (prin1-to-string `(:defgeneric ,n)))
-                    (t
-                     answer))))
-           ((:defmethod &rest _)
-            (slime-read-from-minibuffer "(Un)trace: " (prin1-to-string spec)))
-           ((:call caller callee)
-            (let* ((callerstr (prin1-to-string caller))
-                   (calleestr (prin1-to-string callee))
-                   (answer (slime-read-from-minibuffer "(Un)trace: " 
-                                                       calleestr)))
-              (cond ((and (string= calleestr answer)
-                          (y-or-n-p (concat "(Un)trace only when " calleestr
-                                            " is called by " callerstr "? ")))
-                     (prin1-to-string `(:call ,caller ,callee)))
-                    (t
-                     answer))))
-           (((:labels :flet) &rest _)
-            (slime-read-from-minibuffer "(Un)trace local function: "
-                                        (prin1-to-string spec)))
-           (t (error "Don't know how to trace the spec %S" spec))))))
-
 (defun slime-extract-context ()
-  "Parse the context for the symbol at point.  
+  "Parse the context for the symbol at point.
 Nil is returned if there's no symbol at point.  Otherwise we detect
 the following cases (the . shows the point position):
 
@@ -225,12 +143,12 @@ For other contexts we return the symbol at point."
   (let ((name (slime-symbol-at-point)))
     (if name
         (let ((symbol (read name)))
-          (or (progn ;;ignore-errors 
+          (or (progn ;;ignore-errors
                 (slime-parse-context symbol))
               symbol)))))
 
 (defun slime-parse-context (name)
-  (save-excursion 
+  (save-excursion
     (cond ((slime-in-expression-p '(defun *))          `(:defun ,name))
           ((slime-in-expression-p '(defmacro *))       `(:defmacro ,name))
           ((slime-in-expression-p '(defgeneric *))     `(:defgeneric ,name))
@@ -247,7 +165,7 @@ For other contexts we return the symbol at point."
                    finally (setq arglist e))
              `(:defmethod ,name ,@qualifiers
                           ,(slime-arglist-specializers arglist))))
-          ((and (symbolp name) 
+          ((and (symbolp name)
                 (slime-in-expression-p `(,name)))
            ;; looks like a regular call
            (let ((toplevel (ignore-errors (slime-parse-toplevel-form))))
@@ -280,7 +198,7 @@ For other contexts we return the symbol at point."
            `(:defstruct ,(if (consp name)
                              (car name)
                              name)))
-          (t 
+          (t
            name))))
 
 
@@ -296,9 +214,9 @@ The pattern can have the form:
   (save-excursion
     (let ((path (reverse (slime-pattern-path pattern))))
       (loop for p in path
-            always (ignore-errors 
+            always (ignore-errors
                      (etypecase p
-                       (symbol (slime-beginning-of-list) 
+                       (symbol (slime-beginning-of-list)
                                (eq (read (current-buffer)) p))
                        (number (backward-up-list p)
                                t)))))))
@@ -333,7 +251,7 @@ Point is placed before the first expression in the list."
       (down-list 1)
       (forward-sexp 1)
       (slime-parse-context (read (current-buffer))))))
-		 
+
 (defun slime-arglist-specializers (arglist)
   (cond ((or (null arglist)
 	     (member (first arglist) '(&optional &key &rest &aux)))
@@ -342,7 +260,7 @@ Point is placed before the first expression in the list."
 	 (cons (second (first arglist))
 	       (slime-arglist-specializers (rest arglist))))
 	(t
-	 (cons 't 
+	 (cons 't
 	       (slime-arglist-specializers (rest arglist))))))
 
 (defun slime-definition-at-point (&optional only-functional)

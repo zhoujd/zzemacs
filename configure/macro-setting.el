@@ -52,6 +52,17 @@
      (setenv "SHELL" env-shell)
      ))
 
+
+;;(defkeys-map global-map
+;;  ((kbd "M-1") "hello")
+;;  ((kbd "M-2") "zhoujd"))
+(defmacro defkeys-map (map &rest keys)
+  (let ((ks (mapcar
+             #'(lambda (k)
+                 (cons 'define-key (cons map k)))
+             keys))) 
+    `(progn ,@ks)))
+
 (provide 'macro-setting)
 
 ;;; macro-setting.el ends here

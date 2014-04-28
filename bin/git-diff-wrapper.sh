@@ -14,12 +14,16 @@ EMACS="runemacs"  ##"emacs"
 ## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
-    #DIFF_TOOL="c:/zztools/bcompare/bcompare"
-    DIFF_TOOL="c:/zztools/perforce/p4merge"
+    ZZTOOLS_ROOT="c:/zznix/home/zhoujd/zztools"
+
+    #DIFF_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
+    DIFF_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
 else
-    #DIFF_TOOL="$HOME/zztools/bcompare/bin/bcompare"
-    #DIFF_TOOL="$HOME/zztools/meld/bin/meld"
-    DIFF_TOOL="$HOME/zztools/p4v/bin/p4merge"
+    ZZTOOLS_ROOT="$HOME/zztools"
+
+    #DIFF_TOOL="$ZZTOOLS_ROOT/bcompare/bin/bcompare"
+    #DIFF_TOOL="$ZZTOOLS_ROOT/meld/bin/meld"
+    DIFF_TOOL="$ZZTOOLS_ROOT/p4v/bin/p4merge"
 fi
 
 ## run diff tools

@@ -16,19 +16,23 @@ EMACS="runemacs"
 ## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
-    #MERGE_TOOL="c:/zztools/bcompare/bcompare"
+    ZZTOOLS_ROOT="c:/zznix/home/zhoujd/zztools"
+
+    #MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
     #ARGS="$*"
 
-    MERGE_TOOL="c:/zztools/perforce/p4merge"
+    MERGE_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
     ARGS="$*"
 else
-    #MERGE_TOOL="$HOME/zztools/bcompare/bin/bcompare"
+    ZZTOOLS_ROOT="$HOME/zztools"
+
+    #MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bin/bcompare"
     #ARGS="$*"
-    
-    #MERGE_TOOL="$HOME/zztools/meld/bin/meld"
+
+    #MERGE_TOOL="$ZZTOOLS_ROOT/meld/bin/meld"
     #ARGS="$2 $4 $3"
 
-    MERGE_TOOL="$HOME/zztools/p4v/bin/p4merge"
+    MERGE_TOOL="$ZZTOOLS_ROOT/p4v/bin/p4merge"
     ARGS="$*"
 fi
 

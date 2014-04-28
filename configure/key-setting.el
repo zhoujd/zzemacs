@@ -212,7 +212,7 @@
   "`" (if-not-ms-windows (execute-set-key "gmrun" '("gmrun")))
   "m" (if-not-ms-windows (execute-set-key
                           "gnome-system-monitor" '("gnome-system-monitor")))
-  "s" (if-not-ms-windows (execute-set-key
+  "c" (if-not-ms-windows (execute-set-key
                           "gnome-control-center" '("gnome-control-center")))
   "e" (if-not-ms-windows (execute-set-key "evince" '("evince")))
   "n" (if-not-ms-windows (execute-set-key "nautilus" '("nautilus" "--no-desktop")))

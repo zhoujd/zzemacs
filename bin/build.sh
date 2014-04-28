@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ##Import vars and functions
-. sample.sh
+. $HOME/zzemacs/bin/sample.sh
 
 echo "Build emacs begin ..."
 

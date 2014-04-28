@@ -1,3 +1,6 @@
+(eval-and-compile
+  (require 'slime))
+
 (define-slime-contrib slime-asdf
   "ASDF support."
   (:authors "Daniel Barlow       <dan@telent.net>"
@@ -160,7 +163,7 @@ buffer's working directory"
                   ((buffers-forward  (mapcar #'find-file-noselect files))
                    (buffers-backward (reverse buffers-forward)))
                 #'(lambda (current-buffer wrap)
-                    ;; Contrarily to the the docstring of
+                    ;; Contrarily to the docstring of
                     ;; `multi-isearch-next-buffer-function', the first
                     ;; arg is not necessarily a buffer. Report sent
                     ;; upstream. (2009-11-17)
@@ -269,7 +272,7 @@ depending on it."
   (:handler (lambda ()
               (interactive)
               (slime-oos (slime-read-system-name) 'test-op :force t)))
-  (:one-liner "Compile (as needed) and force test an ASDF system."))
+  (:one-liner "Recompile and test an ASDF system."))
 
 (defslime-repl-shortcut slime-repl-test-system ("test-system")
   (:handler (lambda ()
@@ -288,7 +291,7 @@ depending on it."
   (:handler (lambda ()
               (interactive)
               (slime-oos (slime-read-system-name) 'compile-op :force t)))
-  (:one-liner "Recompile (but not load) an ASDF system."))
+  (:one-liner "Recompile (but not completely load) an ASDF system."))
 
 (defslime-repl-shortcut slime-repl-open-system ("open-system")
   (:handler 'slime-open-system)

@@ -1,3 +1,4 @@
+(require 'slime)
 
 (define-slime-contrib slime-enclosing-context
   "Utilities on top of slime-parse."
@@ -10,7 +11,7 @@
   '((let &bindings &body)))
 
 (defvar slime-function-binding-ops-alist
-  '((flet &bindings &body) 
+  '((flet &bindings &body)
     (labels &bindings &body)
     (macrolet &bindings &body)))
 
@@ -44,17 +45,17 @@ points where their bindings are established as second value."
       (loop for (op . nil) in ops
 	    for index in indices
 	    for point in points
-	    do (when (and (slime-binding-op-p op) 
+	    do (when (and (slime-binding-op-p op)
 			  ;; Are the bindings of OP in scope?
 			  (>= index (slime-binding-op-body-pos op)))
-		 (goto-char point) 
+		 (goto-char point)
 		 (forward-sexp (slime-binding-op-bindings-pos op))
 		 (down-list)
 		 (ignore-errors
-		   (loop 
-		    (down-list) 
+		   (loop
+		    (down-list)
 		    (push (slime-symbol-at-point) binding-names)
-		    (push (save-excursion (backward-up-list) (point)) 
+		    (push (save-excursion (backward-up-list) (point))
 			  binding-start-points)
 		    (up-list)))))
       (values (nreverse binding-names) (nreverse binding-start-points)))))
@@ -69,7 +70,7 @@ points where their bindings are established as second value."
       (loop for (op . nil) in ops
 	    for index in indices
 	    for point in points
-	    do (when (and (slime-binding-op-p op :function) 
+	    do (when (and (slime-binding-op-p op :function)
 			  ;; Are the bindings of OP in scope?
 			  (>= index (slime-binding-op-body-pos op)))
 		 (goto-char point)
@@ -77,19 +78,19 @@ points where their bindings are established as second value."
 		 (down-list)
                  ;; If we're at the end of the bindings, an error will
                  ;; be signalled by the `down-list' below.
-		 (ignore-errors 
+		 (ignore-errors
 		   (loop
-		    (down-list) 
-		    (destructuring-bind (name arglist) 
+		    (down-list)
+		    (destructuring-bind (name arglist)
                         (slime-parse-sexp-at-point 2)
 		      (assert (slime-has-symbol-syntax-p name)) (assert arglist)
 		      (push name names)
 		      (push arglist arglists)
-		      (push (save-excursion (backward-up-list) (point)) 
+		      (push (save-excursion (backward-up-list) (point))
 			    start-points))
 		    (up-list)))))
       (values (nreverse names)
-	      (nreverse arglists) 
+	      (nreverse arglists)
 	      (nreverse start-points)))))
 
 
@@ -100,48 +101,5 @@ points where their bindings are established as second value."
   ;; Kludgy!
   (let ((slime-function-binding-ops-alist '((macrolet &bindings &body))))
     (slime-find-bound-functions ops indices points)))
-
-;;; Tests
-
-(def-slime-test enclosing-context.1
-    (buffer-sexpr wished-bound-names wished-bound-functions)
-    "Check that finding local definitions work."
-    '(("(flet ((,nil ()))
-	 (let ((bar 13)
-	       (,foo 42))
-	   *HERE*))"
-       ;; We used to return ,foo here, but we do not anymore.  We
-       ;; still return ,nil for the `slime-enclosing-bound-functions',
-       ;; though. The first one is used for local M-., whereas the
-       ;; latter is used for local autodoc. It does not seem too
-       ;; important for local M-. to work on such names. \(The reason
-       ;; that it does not work anymore, is that
-       ;; `slime-symbol-at-point' now does TRT and does not return a
-       ;; leading comma anymore.\)
-       ("bar" nil nil)
-       ((",nil" "()")))
-      ("(flet ((foo ()))
-         (quux)
-         (bar *HERE*))"
-       ("foo")
-       (("foo" "()"))))
-  (slime-check-top-level)
-  (with-temp-buffer
-    (let ((tmpbuf (current-buffer)))
-      (lisp-mode)
-      (insert buffer-sexpr)
-      (search-backward "*HERE*")
-      (multiple-value-bind (bound-names points) 
-	  (slime-enclosing-bound-names)
-	(slime-check "Check enclosing bound names"
-	  (loop for name in wished-bound-names
-		always (member name bound-names))))
-      (multiple-value-bind (fn-names fn-arglists points) 
-	  (slime-enclosing-bound-functions)
-	(slime-check "Check enclosing bound functions"
-	  (loop for (name arglist) in wished-bound-functions
-		always (and (member name fn-names)
-			    (member arglist fn-arglists)))))
-      )))
 
 (provide 'slime-enclosing-context)

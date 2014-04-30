@@ -13,3 +13,7 @@ Git error and solutions
    git remote set-url origin https://yourusername@github.com/user/repo.git
 
    
+2. Failed connect to github.com:443; No error
+
+   git config --global http.proxy <proxy-server-address:port>
+

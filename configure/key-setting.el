@@ -82,6 +82,7 @@
 (apply-keys-to-map
  global-map
  (list
+  (kbd "C-c s")   'slime-selector
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-x C-j") 'dired-jump
   (kbd "C-c w")   'compare-windows

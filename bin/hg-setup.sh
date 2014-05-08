@@ -2,6 +2,9 @@
 
 echo "hg setup start ..."
 
+##http://mercurial.selenic.com/wiki/GitConcepts
+##http://mercurial.selenic.com/wiki/Workflows
+
 echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
 [ui]

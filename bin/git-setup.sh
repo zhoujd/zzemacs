@@ -25,7 +25,7 @@ fi
 ### win7 git server (gitblit)
 ### http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
 ### error: RPC failed; result=18, HTTP code = 0
-#git config --global http.postBuffer 524288000
+git config --global http.postBuffer 524288000
 
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode

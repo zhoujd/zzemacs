@@ -27,12 +27,18 @@ bcomp.gui = True
 
 [extensions]
 hgext.extdiff =
+hgext.fetch =
 bookmarks =
 mq =
+purge =
+color =
 
 [extdiff]
 cmd.bcomp = bcomp
 cmd.p4diff = p4merge
+
+[bookmarks]
+track.current = True
 
 [web] 
 push_ssl = false

@@ -4,3 +4,4 @@ configure/temp-setting.el
 
 syntax: regexp
 .elc
+.pyc

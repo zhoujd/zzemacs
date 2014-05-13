@@ -20,7 +20,7 @@ p4.priority = 1
 p4.premerge = True
 p4.gui = True
 
-bcomp.executable = bcomp
+bcomp.executable = bcompare
 bcomp.args = \$local \$other \$base \$output
 bcomp.priority = 1
 bcomp.premerge = True
@@ -38,7 +38,7 @@ graphlog =
 progress =
 
 [extdiff]
-cmd.bcomp = bcomp
+cmd.bcomp = bcompare
 cmd.p4diff = p4merge
 
 [bookmarks]

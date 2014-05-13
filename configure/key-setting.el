@@ -206,7 +206,6 @@
   "3" (when-ms-windows (execute-set-key
                         "git-shell"
                         '("cmd" "/c" "start" "sh" "--login" "-i")))
-  "s" (if-not-ms-windows 'slime-connect-stumpwm)
   "t" 'open-with-terminal
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
@@ -248,6 +247,7 @@
                  'open-with-nautilus)  
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   (kbd "C-r")   'add-code-review-note
+  (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   ))
 
 ;;quick shell setting

@@ -32,7 +32,7 @@ cd %CURRENT_ROOT%
 
 rem not support pydb use pdb instead
 
-cd %CURRENT_ROOT%\zzpytools
+cd %CURRENT_ROOT%\pycomplete
 python setup.py install
 cd %CURRENT_ROOT%
 

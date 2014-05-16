@@ -1,8 +1,12 @@
 #!/bin/sh
 
-GIT_SETUP_HOME=`pwd`
-
 echo git diff setup start ...
+
+if [ "$OS" = "Windows_NT" ] ; then
+    GIT_SETUP_HOME=`pwd -W`
+else
+    GIT_SETUP_HOME=`pwd`
+fi
 
 ## clear ~/.gitconfig
 echo "remove ~/.gitconfig and setting git configure ..."
@@ -47,9 +51,10 @@ git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
-echo ===========git config start ===============
-git config --list
-echo ===========git config end =================
+
+if [ "$OS" = "Windows_NT" ] ; then
+   cp ~/.gitconfig $USERPROFILE
+fi
 
 
 echo git diff setup end ...

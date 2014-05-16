@@ -55,7 +55,6 @@
         php-setting
         haskell-setting
         doc-setting
-        muse-setting
         keymap-setting
         fn-setting
         key-setting

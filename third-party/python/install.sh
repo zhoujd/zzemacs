@@ -42,8 +42,8 @@ make
 sudo make install
 cd $CURRENT_ROOT
 
-echo "==>7 install zzpytools"
-cd $CURRENT_ROOT/zzpytools
+echo "==>7 install pycomplete"
+cd $CURRENT_ROOT/pycomplete
 sudo python setup.py install
 cd $CURRENT_ROOT
 

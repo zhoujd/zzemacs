@@ -2,6 +2,7 @@
 
 echo "hg setup start ..."
 
+##http://mercurial.selenic.com/wiki/TipsAndTricks
 ##http://mercurial.selenic.com/wiki/UsingExtensions
 ##http://mercurial.selenic.com/wiki/GitConcepts
 ##http://mercurial.selenic.com/wiki/Workflows
@@ -44,7 +45,8 @@ progress =
 rebase =
 
 [extdiff]
-cmd.extdiff = $HG_SETUP_HOME/hg-diff-wrapper.py
+cmd.df = $HG_SETUP_HOME/hg-diff-wrapper.py
+opts.df =
 
 [bookmarks]
 track.current = True
@@ -52,6 +54,10 @@ track.current = True
 [web] 
 push_ssl = false
 allow_push = *
+
+[tortoisehg]
+ui.language = en
+vdiff = df
 EOF
 
 if [ "$OS" = "Windows_NT" ] ; then

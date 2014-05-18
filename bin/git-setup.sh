@@ -13,9 +13,24 @@ echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
 ## setup git configure
-git config --global user.name      "zhoujd"
-git config --global user.email     "zjd-405@163.com"
-git config --global color.ui       true
+git config --global user.name   "zhoujd"
+git config --global user.email  "zjd-405@163.com"
+git config --global color.ui    "true"
+
+## alias
+git config --global alias.st    "status"
+git config --global alias.ci    "commit"
+git config --global alias.br    "branch"
+git config --global alias.co    "checkout"
+git config --global alias.df    "diff"
+git config --global alias.dc    "diff --cached"
+git config --global alias.lg    "log -p"
+git config --global alias.lol   "log --graph --decorate --pretty=oneline --abbrev-commit"
+git config --global alias.lola  "log --graph --decorate --pretty=oneline --abbrev-commit --all"
+git config --global alias.ls    "ls-files"
+
+# Show files ignored by git:
+git config --global alias.ign   "ls-files -o -i --exclude-standard"
 
 ## set http proxy
 if [ ! $http_proxy = "" ]; then

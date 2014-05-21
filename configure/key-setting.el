@@ -235,9 +235,7 @@
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)
   
   (kbd "C-1")   'my-utf-8
-  (kbd "C-h")   'sourcepair-jump-to-headerfile
-  (kbd "C-l")   'command-history
-
+  (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
                  (execute-set-key
                   "explorer"
@@ -245,9 +243,11 @@
                         (my-trans-path-sep
                          default-directory "/" "\\")))
                  'open-with-nautilus)  
-  (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
+  (kbd "C-h")   'sourcepair-jump-to-headerfile
+  (kbd "C-l")   'command-history
   (kbd "C-r")   'add-code-review-note
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
+  (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   ))
 
 ;;quick shell setting

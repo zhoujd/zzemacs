@@ -45,7 +45,7 @@
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
-    [S-f1]            'planner-create-task-from-buffer
+    [S-f1]            'magit-status
     [C-f1]            'session-save
     [M-f1]            'session-restore
     (kbd "C-x <f1>")  nil

@@ -59,8 +59,8 @@
  help-map
  (list
   ;;self ctrl/meta
-  (kbd "SPC")   zz/ctrl-map
-  (kbd "`")     zz/meta-map
+  (kbd "[")     zz/ctrl-map
+  (kbd "]")     zz/meta-map
 
   ;;self ctl-x/ctl-c
   [f7]          zz/ctrl-x-fn-map
@@ -80,8 +80,8 @@
  ctl-z-map
  (list
   ;;self ctrl/meta
-  (kbd "SPC")   zz/ctrl-map
-  (kbd "`")     zz/meta-map
+  (kbd "[")     zz/ctrl-map
+  (kbd "]")     zz/meta-map
 
   ;;self ctl-x/ctl-c
   (kbd "C-x")   zz/ctrl-x-fn-map
@@ -100,6 +100,10 @@
 (apply-keys-to-map
  f4-map
  (list
+  ;;self ctrl/meta
+  (kbd "[")     zz/ctrl-map
+  (kbd "]")     zz/meta-map
+
   (kbd "`")     f4-backquote-map
   (kbd "e")     f4-e-map
   (kbd "p")     f4-p-map

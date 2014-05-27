@@ -249,7 +249,7 @@
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
 
-  (kbd "M-g")   'magit-status
+  (kbd "M-m")   'magit-status
   ))
 
 ;;quick shell setting

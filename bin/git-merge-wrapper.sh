@@ -16,7 +16,7 @@ EMACS="runemacs"
 ## http://meldmerge.org/
 
 if [ "$OS" = "Windows_NT" ] ; then
-    ZZTOOLS_ROOT="c:/zznix/home/zhoujd/zztools"
+    ZZTOOLS_ROOT="$ZZNIX_HOME/home/zhoujd/zztools"
 
     MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
     ARGS="$*"

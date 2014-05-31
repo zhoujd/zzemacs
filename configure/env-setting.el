@@ -6,7 +6,7 @@
   (if-ms-windows
    (progn
     (list
-     "C:/zznix/bin"
+     (format "%s/bin" (getenv "ZZNIX_HOME"))
      "C:/Git/bin"
      "C:/Git/libexec/git-core"
      (format "%s/bin" zzemacs-path)

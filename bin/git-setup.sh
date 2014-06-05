@@ -65,8 +65,8 @@ git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
 
-if [ "$OS" = "Windows_NT" ] ; then
-   cp ~/.gitconfig $USERPROFILE
+if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
+    cp -f ~/.gitconfig $USERPROFILE
 fi
 
 

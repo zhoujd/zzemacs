@@ -67,7 +67,7 @@ vdiff = df
 EOF
 
 if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
-    cp ~/.hgrc $USERPROFILE
+    cp -f ~/.hgrc $USERPROFILE
 fi
 
 echo "hg setup end ..."

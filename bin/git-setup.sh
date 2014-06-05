@@ -12,6 +12,16 @@ fi
 echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
+## add title
+cat > ~/.gitconfig <<EOF
+#
+# This is the config file, and
+# a '#' or ';' character indicates
+# a comment
+#
+
+EOF
+
 ## setup git configure
 git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"

@@ -3,7 +3,7 @@
 ##Import vars and functions
 . sample.sh
 
-echo "install linux-tools begin..."
+echo "install linux-tool begin..."
 
 ##package for ubuntu
 Install_package_suse()
@@ -15,14 +15,6 @@ Install_package_suse()
 ##package for ubuntu
 Install_package_ubuntu()
 {
-    #sudo apt-get install -y cairo-dock cairo-dock-plug-ins
-
-    ##develop package
-    #sudo apt-get install -y gnome-core-devel
-    #sudo apt-get install -y acetoneiso
-
-    sudo apt-get install -y libx11-dev
-    sudo apt-get install -y xorg-dev
     sudo apt-get install -y texlive
     sudo apt-get install -y texinfo
 
@@ -32,13 +24,22 @@ Install_package_ubuntu()
     sudo apt-get install -y terminator
 }
 
+##package for ubuntu
+Install_package_centos()
+{
+    ##TODO
+    true
+}
+
 # dectect OS version
 if [ "$LINUX_DISTRO" = "SuSE" ]; then
     try_command Install_package_suse
 elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
     try_command Install_package_ubuntu
+elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+    try_command Install_package_centos
 else
     echo "You are about to install on a non supported linux distribution."
 fi
 
-echo "install linux-tools end..."
+echo "install linux-tool end..."

@@ -32,4 +32,4 @@ def hg_merge(a, b, c, d):
 
     return " ".join(merge_select)
 
-os.system(hg_merge(sys.argv[1], sys.argv[2], sys.argv[3] sys.argv[4]))
+os.system(hg_merge(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]))

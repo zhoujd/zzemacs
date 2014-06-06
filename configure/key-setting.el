@@ -235,6 +235,7 @@
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)
   
   (kbd "C-1")   'my-utf-8
+  (kbd "C-3")   'ssh-x-font
   (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
                  (execute-set-key
@@ -249,6 +250,7 @@
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
 
+  (kbd "M-3")   'local-x-font
   (kbd "M-m")   'magit-status
   ))
 

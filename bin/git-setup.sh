@@ -12,6 +12,16 @@ fi
 echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
+## add title
+cat > ~/.gitconfig <<EOF
+#
+# This is the config file, and
+# a '#' or ';' character indicates
+# a comment
+#
+
+EOF
+
 ## setup git configure
 git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"
@@ -65,8 +75,8 @@ git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
 
-if [ "$OS" = "Windows_NT" ] ; then
-   cp ~/.gitconfig $USERPROFILE
+if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
+    cp -f ~/.gitconfig $USERPROFILE
 fi
 
 

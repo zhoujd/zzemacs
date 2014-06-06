@@ -2,6 +2,11 @@
 
 echo "hg setup start ..."
 
+###Two books
+##http://bucunzai.net/hginit/
+##http://hgbook.red-bean.com/read/
+
+###useful urls
 ##http://mercurial.selenic.com/wiki/TipsAndTricks
 ##http://mercurial.selenic.com/wiki/UsingExtensions
 ##http://mercurial.selenic.com/wiki/GitConcepts
@@ -54,14 +59,15 @@ track.current = True
 [web] 
 push_ssl = false
 allow_push = *
+cacerts = $HG_SETUP_HOME/hg-cacert.pem
 
 [tortoisehg]
 ui.language = en
 vdiff = df
 EOF
 
-if [ "$OS" = "Windows_NT" ] ; then
-   cp ~/.hgrc $USERPROFILE
+if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
+    cp -f ~/.hgrc $USERPROFILE
 fi
 
 echo "hg setup end ..."

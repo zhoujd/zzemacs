@@ -4,6 +4,7 @@ echo git diff setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
     GIT_SETUP_HOME=`pwd -W`
+    SHELL=$(cd $ZZNIX_HOME ; pwd -W)/bin/sh
 else
     GIT_SETUP_HOME=`pwd`
 fi
@@ -75,8 +76,10 @@ git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
 
-if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
-    cp -f ~/.gitconfig $USERPROFILE
+if [ "$OS" = "Windows_NT" ] ; then
+    if [ ! $(cd "$HOME" ; pwd -W) = $(cd $USERPROFILE ; pwd -W) ] ; then
+        cp -f ~/.gitconfig $USERPROFILE
+    fi
 fi
 
 

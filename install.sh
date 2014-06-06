@@ -13,36 +13,24 @@ Install_package()
     if [ "$LINUX_DISTRO" = "SUSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
-
     elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
         sudo apt-get install -y w3m
-
     elif [ "$LINUX_DISTRO" = "CentOS" ]; then
         sudo yum install -y gmrun
         sudo yum install -y cscope
         sudo yum install -y texinfo
-                
     else
         echo "You are about to install on a non supported linux distribution."
     fi
 }
 
-
-##install package for emacs
-echo -n "Do you need install packages? (y/N): "
-read answer
-case "$answer" in
-    "Y" | "y" )
-        try_command Install_package
-        ;;
-esac
-
 ##setup .emacs
-try_command rm -f ~/.emacs
+Install_dot_emacs()
+{
 try_command cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
@@ -50,9 +38,11 @@ try_command cat > ~/.emacs <<EOF
     (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
+}
 
 ##setup font setting
-try_command rm -f ~/.fonts.conf
+Install_fonts_conf()
+{
 try_command cat > ~/.fonts.conf <<EOF
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
@@ -62,6 +52,7 @@ try_command cat > ~/.fonts.conf <<EOF
   <dir>${ZZEMACS_ROOT}/font</dir>
 </fontconfig>
 EOF
+}
 
 ##Install thirdparty
 Install_thirdparty()
@@ -92,7 +83,32 @@ Install_thirdparty()
     cd ${ZZEMACS_ROOT}
 }
 
-try_command Install_thirdparty
+main()
+{
+    ##install package for emacs
+    echo -n "Do you need install packages? (y/N): "
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            try_command Install_package
+            ;;
+    esac
+
+    ##install configure file
+    echo "install configure file and fonts"
+    try_command Install_dot_emacs
+    try_command Install_fonts_conf
+
+    ##install third-party
+    echo -n "Do you need install third-party packages? (y/N): "
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            try_command Install_thirdparty
+            ;;
+    esac
+}
+
+main
 
 echo "install .emacs to HOME directory end..."
-

@@ -1,7 +1,9 @@
 #!/bin/sh
 
+LINUX_TOOL_ROOT=`pwd`
+
 ##Import vars and functions
-. sample.sh
+. $LINUX_TOOL_ROOT/sample.sh
 
 echo "install linux-tool begin..."
 

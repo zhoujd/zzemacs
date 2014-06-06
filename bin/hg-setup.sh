@@ -66,8 +66,10 @@ ui.language = en
 vdiff = df
 EOF
 
-if [ "$OS" = "Windows_NT" -a ! $(cd "$HOME" ; pwd) = $(cd $USERPROFILE ; pwd) ] ; then
-    cp -f ~/.hgrc $USERPROFILE
+if [ "$OS" = "Windows_NT" ] ; then
+    if [ ! $(cd "$HOME" ; pwd -W) = $(cd $USERPROFILE ; pwd -W) ] ; then
+        cp -f ~/.hgrc $USERPROFILE
+    fi
 fi
 
 echo "hg setup end ..."

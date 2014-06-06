@@ -29,6 +29,7 @@
 
 ;;Mercurial Support
 (require 'mercurial)
+(require 'mq)
 
 ;;magit setting
 (zz-load-path "site-lisp/magit")

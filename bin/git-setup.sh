@@ -1,5 +1,7 @@
 #!/bin/sh
 
+### http://gitbook.liuhui998.com/index.html
+
 echo git diff setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then

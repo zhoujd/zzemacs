@@ -50,8 +50,10 @@ progress =
 rebase =
 
 [extdiff]
-cmd.df = $HG_SETUP_HOME/hg-diff-wrapper.py
-opts.df =
+df = $HG_SETUP_HOME/hg-diff-wrapper.py
+
+[diff-tools]
+df.diffargs = \$parent \$child
 
 [bookmarks]
 track.current = True

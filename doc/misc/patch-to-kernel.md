@@ -5,6 +5,7 @@ Patch to kernel
 
         bash> cd /usr/src/linux-X.Y.Z/
         bash> bzip2 -dc ../X.Y.Z-mm2.bz2 | patch -p1
+        bash> gzip -cd ../patch-3.x.gz | patch -p1
 
 2. Code View:
 
@@ -40,4 +41,10 @@ Patch to kernel
         bash> make –C /path/to/kernel-sources/ M=`pwd` modules
 
         bash> insmod ./mymodule.ko
+
+4. Linux kernel cross reference
+
+    <http://lxr.oss.org.cn/>
+
+    <http://oss.org.cn/ossdocs/gnu_linux/kernel-api/>
 

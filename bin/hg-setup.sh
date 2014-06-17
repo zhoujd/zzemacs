@@ -37,6 +37,7 @@ extmerge.args = \$base \$local \$other \$output
 extmerge.priority = 1
 extmerge.premerge = True
 extmerge.gui = True
+extmerge.binary = True
 
 [extensions]
 hgext.extdiff =

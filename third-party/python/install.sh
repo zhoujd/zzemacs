@@ -11,7 +11,7 @@ echo "for python develop start ..."
 
 echo "==>1 install pymacs"
 cd $CURRENT_ROOT/pymacs
-python pppp -C ppppconfig.py pppp.rst.in pymacs.el.in pymacs.rst.in Pymacs.py.in contrib tests
+sudo python pppp -C ppppconfig.py pppp.rst.in pymacs.el.in pymacs.rst.in Pymacs.py.in contrib tests
 sudo python setup.py install
 cd $CURRENT_ROOT
 

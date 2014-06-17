@@ -99,6 +99,9 @@ main()
     try_command Install_dot_emacs
     try_command Install_fonts_conf
 
+    ##create ~/.emacs.d folder
+    mkdir -p ~/.emacs.d
+
     ##install third-party
     echo -n "Do you need install third-party packages? (y/N): "
     read answer

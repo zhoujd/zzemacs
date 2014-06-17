@@ -10,19 +10,23 @@ echo "install .emacs to HOME directory begin..."
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" = "SUSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
-    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
+    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
         sudo apt-get install -y w3m
-    elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+    elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum install -y gmrun
         sudo yum install -y cscope
         sudo yum install -y texinfo
+    elif [ "$OS_DISTRO" = "FreeBSD" ]; then
+        sudo pkg_add -r w3m
+        sudo pkg_add -r cscope
+        sudo pkg_add -r gmrun
     else
         echo "You are about to install on a non supported linux distribution."
     fi

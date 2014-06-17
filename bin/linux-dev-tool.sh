@@ -38,11 +38,11 @@ Install_package_centos()
 
 
 # dectect OS version
-if [ "$LINUX_DISTRO" = "SuSE" ]; then
+if [ "$OS_DISTRO" = "SuSE" ]; then
     try_command Install_package_suse
-elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
+elif [ "$OS_DISTRO" = "Ubuntu" ]; then
     try_command Install_package_ubuntu
-elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+elif [ "$OS_DISTRO" = "CentOS" ]; then
     try_command Install_package_centos
 else
     echo "You are about to install on a non supported linux distribution."

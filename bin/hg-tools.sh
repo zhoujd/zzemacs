@@ -13,12 +13,12 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    if [ "$LINUX_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SuSE" ]; then
         echo "Install on suse"
-    elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
+    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y mercurial
         sudo apt-get install -y python-docutils
-    elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+    elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum install -y mercurial
         sudo yum install -y python-devel
         sudo yum install -y python-docutils

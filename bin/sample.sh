@@ -42,8 +42,10 @@ try_command uname -s > /dev/null
 export ZZ_OS_NAME=`uname -s`
 if [ "Linux" = "$ZZ_OS_NAME" ]; then
     try_command Linux_sample
-else
+elif [ "FreeBSD" = "$ZZ_OS_NAME" ]; then
     try_command FreeBSD_sample
+else
+    echo "Run on $ZZ_OS_NAME ..."
 fi
 
 ## Detect system arch.

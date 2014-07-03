@@ -21,6 +21,12 @@ fi
 
 echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
+#
+# This is the config file, and
+# a '#' or ';' character indicates
+# a comment
+#
+
 [ui]
 username = zhoujd<zjd-405@163.com>
 verbose = True
@@ -49,6 +55,7 @@ pager =
 graphlog =
 progress =
 rebase =
+color =
 
 [extdiff]
 df = $HG_SETUP_HOME/hg-diff-wrapper.py
@@ -69,10 +76,21 @@ ui.language = en
 vdiff = df
 EOF
 
+add_cfg_tail()
+{
+cat >> ~/.hgrc <<EOF
+
+[color]
+mode = off
+EOF
+}
+
 if [ "$OS" = "Windows_NT" ] ; then
     if [ ! $(cd "$HOME" ; pwd -W) = $(cd $USERPROFILE ; pwd -W) ] ; then
         cp -f ~/.hgrc $USERPROFILE
     fi
+	# Add tail configure
+	add_cfg_tail
 fi
 
 echo "hg setup end ..."

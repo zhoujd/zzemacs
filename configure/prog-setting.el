@@ -350,7 +350,7 @@ the mru bookmark stack."
 (defun create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (async-shell-command (gen-ctags-cmd dir-name)))
+  (run-command-sort (gen-ctags-cmd dir-name)))
 
 ;;make etags
 (setq my-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
@@ -375,7 +375,7 @@ the mru bookmark stack."
 (defun create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (async-shell-command (gen-etags-cmd dir-name)))
+  (run-command-sort (gen-etags-cmd dir-name)))
 
 ;;make cscope
 ; #!/bin/bash  
@@ -391,7 +391,7 @@ the mru bookmark stack."
 (defun create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (async-shell-command (gen-cscope-cmd dir-name)))
+  (run-command-sort (gen-cscope-cmd dir-name)))
 
 ;;creast etags/cscope for multi project
 (defvar proj-list (list zzemacs-path) "project directory list")

@@ -63,6 +63,12 @@
              keys))) 
     `(progn ,@ks)))
 
+
+(defmacro run-command-sort (cmd)
+  `(if (fboundp 'async-shell-command)
+       (async-shell-command ,cmd)
+       (shell-command ,cmd)))
+
 (provide 'macro-setting)
 
 ;;; macro-setting.el ends here

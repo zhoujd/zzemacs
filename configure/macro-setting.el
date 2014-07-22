@@ -63,11 +63,11 @@
              keys))) 
     `(progn ,@ks)))
 
-
+;;run command macro
 (defmacro run-command-sort (cmd)
-  `(if (fboundp 'async-shell-command)
-       (async-shell-command ,cmd)
-       (shell-command ,cmd)))
+  `(cond ((fboundp 'async-shell-command) (async-shell-command ,cmd))
+         ((fboundp 'shell-command) (shell-command ,cmd))
+         (t (message "no shell command function can be run"))))
 
 (provide 'macro-setting)
 

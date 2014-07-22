@@ -7,6 +7,7 @@ configure/temp-setting.el
 site-lisp/haskell-mode/haskell-mode.tmp.texi
 site-lisp/haskell-mode/dir/
 third-party/python/pydb/emacs/elc-stamp
+third-party/python/pymacs/build/
 
 syntax: regexp
 

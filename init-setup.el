@@ -19,7 +19,7 @@
     (kill-buffer tmp-buf-name)))
 
 (defun zz-setup-dotemacs-nt ()
-  (defvar zz-winnt-home-path "c:/develop/znix/home/zhoujd")
+  (defvar zz-winnt-home-path "c:/zznix/home/zhoujd")
   (defvar zz-home-path (getenv "APPDATA"))
   (defvar zz-dotemacs-content (list
                                (format ";;;this is .emacs for zhoujd, generate by install.el.")

@@ -5,7 +5,11 @@
 ;;$emacs --script init-setup.el
 
 (message "zzemacs setup script start ...")
-(message "zzemacs run on %s" system-type)
+(message "system-type:%s system-name:%s" system-type system-name)
+
+;;print argument is setting
+(when argv
+  (message "input argument are %s" argv))
 
 (defun zz-create-file (fpath content)
   "Process the file at path FPATH ..."

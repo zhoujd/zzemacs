@@ -1,5 +1,24 @@
 ## .bashrc setting for self
 
+# alias setting
+alias la='ls -Al'        # show hide files
+alias lx='ls -lXB'       # sort by extend
+alias lk='ls -lSr'       # sort by size
+alias lc='ls -lcr'       # sort by time
+alias lu='ls -lur'       # sort by access time
+alias lr='ls -lR'        # recurse ls
+alias lt='ls -ltr'       # sort by date
+alias lm='ls -al | more' # pipeline to more
+alias tree='tree -Csu'   # another better way for 'ls'
+alias which='type -all'
+alias ..='cd ..'
+alias path='echo -e ${PATH//:/\\n}'
+alias du='du -kh'
+alias df='df -kTh'
+alias h='history'
+alias j='jobs -l'
+alias r='rlogin'
+
 # shell directory bookmark setting
 SHELLBM_FILE=~/.sdirs
 

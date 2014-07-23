@@ -33,7 +33,10 @@
                                (format ";;;this is .emacs for zhoujd, generate by install.el.")
                                (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
                                (format "(setq default-directory \"~\")")
-                               (format "(load-file \"~/zzemacs/.emacs\")")
+                               (format "(defvar zzemacs-path (concat default-directory \"/zzemacs/\"))")
+                               (format "(if (file-exists-p (concat zzemacs-path \".emacs\"))")
+                               (format "    (load-file (concat zzemacs-path \".emacs\"))")
+                               (format "    (message \"zzemacs has not install\"))")
                                )))
     (message "setup .emacs to %s on %s" zz-home-path system-type)
     (zz-create-file zz-dotemacs-path zz-dotemacs-content)))
@@ -61,9 +64,9 @@
   "setup font to system font path"
   (if (eq system-type 'windows-nt)
       (let ((sys-font-path (concat (getenv "SystemRoot") "/Fonts")))
-         (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
-         (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
-         (message "setup font to %s on %s" sys-font-path system-type))
+         ;;(copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
+         ;;(copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
+         (message "please copy font to %s on %s by your self" sys-font-path system-type))
       (let ((fonts-conf-path "~/.fonts.conf")
             (fonts-conf-content (list
                                  (format "<?xml version=\"1.0\"?>")
@@ -79,7 +82,7 @@
 
 (defun zz-setup-third-party ()
   "setup third partys"
-  (let ((third-setup-name (format "%s/third-party/setup.el" zz-home-path)))
+  (let ((third-setup-name (format "%s/third-party/setup.el" (concat default-directory "zzemacs"))))
     (if (file-exists-p third-setup-name)
         (load third-setup-name)
         (message "setup third party %s does not exist" third-setup-name))))

@@ -208,7 +208,7 @@
                         '("cmd" "/c" "start" "sh" "--login" "-i")))
   "4" (when-ms-windows (execute-set-key
                         "console"
-                        (list "console2" "-t" "Git" "-d" default-directory)))
+                        (list "console2" "-t" "Git" "-d" ".")))
   "t" 'open-with-terminal
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))

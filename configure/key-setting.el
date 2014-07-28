@@ -21,13 +21,13 @@
   ))
 
 ;;all of these sequences are translated from term/xterm.el .
-;;if emacs can't create keymap correctly from you TERM 
+;;if emacs can't create keymap correctly from you TERM
 ;;you can force to load it
 (unless-ms-windows
  (if (and (not (display-graphic-p))
           (load-library "term/xterm"))
      (terminal-init-xterm)))
- 
+
 (apply-keys-to-map
  ctl-z-map
  (list
@@ -59,7 +59,7 @@
   ;;Control tab quotes a tab => "\C-q\t"
   [(control tab)] "\C-q\t"
   ))
- 
+
 (apply-keys-to-map
  global-map
  (list
@@ -74,7 +74,7 @@
   (kbd "M-8") 'gud-step
   (kbd "M-9") 'gud-print
   (kbd "M-0") 'other-window
-  
+
   ;;find-replace
   (kbd "M-#") 'query-replace-regexp
   ))
@@ -104,7 +104,7 @@
   [M-down]        'windmove-down
   [M-right]       'windmove-right
   [M-left]        'windmove-left
-  
+
   ;;window size change
   [S-up]          'enlarge-window
   [S-down]        'shrink-window
@@ -190,7 +190,7 @@
   [up]      (lookup-key global-map [S-up])
   [down]    (lookup-key global-map [S-down])
   [left]    (lookup-key global-map [S-left])
-  [right]   (lookup-key global-map [S-right])  
+  [right]   (lookup-key global-map [S-right])
   ))
 
 ;;execute start-process key
@@ -226,9 +226,9 @@
 ;;switch to shells
 (apply-keys-to-map
  f4-map
- (list  
+ (list
   (kbd "<f4>")  'kill-this-buffer
-  
+
   (kbd "<f9>")  (lambda () (interactive) (start-shell "*shell-f9*"))
   (kbd "<f10>") (lambda () (interactive) (start-shell "*shell-f10*"))
   (kbd "<f11>") (lambda () (interactive) (start-shell "*shell-f11*"))
@@ -236,17 +236,13 @@
 
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)
-  
+
   (kbd "C-1")   'my-utf-8
   (kbd "C-3")   'ssh-x-font
   (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
-                 (execute-set-key
-                  "explorer"
-                  (list "explorer"
-                        (my-trans-path-sep
-                         default-directory "/" "\\")))
-                 'open-with-nautilus)  
+                 (execute-set-key "explorer" (list "explorer" "."))
+                 'open-with-nautilus)
   (kbd "C-h")   'sourcepair-jump-to-headerfile
   (kbd "C-l")   'command-history
   (kbd "C-r")   'add-code-review-note
@@ -275,7 +271,7 @@
   (kbd "2") 'highlight-symbol-remove-all
   (kbd "3") 'highlight-symbol-query-replace
   ;;"4" -> f4-map
-  
+
   ;;gdb frame show setting
   (kbd "5") 'gdb-frame-stack-buffer
   (kbd "6") 'gdb-frame-breakpoints-buffer
@@ -285,12 +281,12 @@
   (kbd "0") 'gdb-frame-gdb-buffer
   (kbd "-") 'gud-up
   (kbd "=") 'gud-down
-  
+
   ;;window size change
   [up]      (lookup-key global-map [S-up])
   [down]    (lookup-key global-map [S-down])
   [left]    (lookup-key global-map [S-left])
-  [right]   (lookup-key global-map [S-right])  
+  [right]   (lookup-key global-map [S-right])
   ))
 
 (provide 'key-setting)

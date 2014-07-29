@@ -1,0 +1,9 @@
+#!/bin/sh
+
+emacs -nw --quick                                   \
+      --eval ";;setting start here                  \
+              (setq make-backup-files nil)          \
+              (setq-default make-backup-files nil)  \ 
+              (setq auto-save-default nil)          \
+              ;;setting end here"                   \
+      "$@"

@@ -7,7 +7,7 @@ SETUP_ROOT=`pwd`
 
 echo "Setup self .bashrc start ..."
 
-BASHRC_PATH=~/.bashrc
+BASHRC_PATH=$HOME/.bashrc
 SELF_BASHRC_PATH=$(cd $SETUP_ROOT/../misc && pwd)
 SELF_BIN_PATH=$(cd $SETUP_ROOT/../bin && pwd)
 

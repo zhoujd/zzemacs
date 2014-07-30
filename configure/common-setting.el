@@ -179,7 +179,7 @@
 ;;keep cursor on tail of line
 ;(setq track-eol t)
 ;;keep slience
-(setq visible-bell t);
+(setq visible-bell t)
 ;;don`t flash the screen on console mode
 ;(setq ring-bell-function 'ignore)
 (setq ring-bell-function (lambda ()  t))

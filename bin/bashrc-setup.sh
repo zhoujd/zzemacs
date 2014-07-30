@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 SETUP_ROOT=`pwd`
 
 ##Import vars and functions
@@ -17,12 +16,12 @@ Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
 # add zzemacs/bin to PATH for zachary zhou
-if [ -d $SELF_BIN_PATH ] ; then
-    export PATH=$SELF_BIN_PATH:\$PATH
+if [ -d ${SELF_BIN_PATH} ] ; then
+    export PATH=${SELF_BIN_PATH}:\$PATH
 fi
 
 # source self .bashrc setting for zachary zhou
-if [ -f $SELF_BASHRC_PATH/.bashrc ] ; then
+if [ -f ${SELF_BASHRC_PATH}/.bashrc ] ; then
     . ${SELF_BASHRC_PATH}/.bashrc
 fi
 EOF

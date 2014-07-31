@@ -169,7 +169,7 @@
 (require 'breadcrumb)
 
 ;;uing iswitchb-mode
-(require 'isb-filter)
+(require 'iswitchb-filter)
 (iswitchb-mode t)
 
 (setq iswitchb-buffer-ignore

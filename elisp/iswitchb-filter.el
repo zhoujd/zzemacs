@@ -1,33 +1,8 @@
-;;; isb-filter.el --- add filter to iswitchb mode
-
-;; Copyright (C) 2014 Free Software Foundation, Inc.
-;;
-;; Author:  <zjd-405@163.com>
-;; Maintainer:  <zjd-405@163.com>
-;; Created: 26 Feb 2014
-;; Version: 0.01
-;; Keywords
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+;;; iswitchb-filter.el --- add filter to iswitchb mode
 ;;; Commentary:
 
-;; 
-
 ;; Put this file into your load-path and the following into your ~/.emacs:
-;;   (require 'isb-filter)
+;;   (require 'iswitchb-filter)
 
 ;;; Code:
 
@@ -101,5 +76,6 @@
   (setq iswitchb-rescan t))
 
 
-(provide 'isb-filter)
-;;; isb-filter.el ends here
+(provide 'iswitchb-filter)
+
+;;; iswitchb-filter.el ends here

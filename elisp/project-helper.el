@@ -1,4 +1,4 @@
-;;;; proj-helper.el --- help utils common file
+;;;; project-helper.el --- help utils common file
 ;;http://www.tuicool.com/articles/QFZfq2
 
 ;;inc-num-region
@@ -187,6 +187,6 @@ buffer read-only, so I suggest setting kill-read-only-ok to t."
 (setq-default kill-read-only-ok t)
 (global-set-key "\C-c\C-k" 'copy-line)
 
-(provide 'proj-helper)
+(provide 'project-helper)
 
-;;; proj-helper.el ends here
+;;; project-helper.el ends here

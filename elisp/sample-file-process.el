@@ -13,7 +13,7 @@
 (defun myProcessFile (fpath)
   "Process the file at path FPATH ..."
   (let ((temp-buf nil)
-        (temp-buf-name "myTemp"))
+        (temp-buf-name " myTemp"))
     ;; create temp buffer without undo record or font lock. (more efficient)
     ;; first space in temp buff name is necessary
     (setq temp-buf (set-buffer (get-buffer-create temp-buf-name)))
@@ -23,7 +23,7 @@
     ;; (goto-char 0) ; move to begining of file's content (in case it was open)
     ;; ... do something here
     (whitespace-cleanup)
-    
+
     (write-file fpath) ;; write back to the file
     (kill-buffer temp-buf)
     ))

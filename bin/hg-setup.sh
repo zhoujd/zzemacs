@@ -33,6 +33,7 @@ verbose = True
 merge = extmerge
 
 [alias]
+nlog = log --limit
 llog = log --limit 10
 mq = hg -R \$(hg root)/.hg/patches \$*
 hgrep = hg manifest | grep \$*

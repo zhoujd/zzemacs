@@ -5,7 +5,7 @@ Git error and solutions
 
    Edit .git/config file under your repo directory
    Find url= entry under section [remote "origin"]
-   Change it from url=https://github.com/rootux/ms-Dropdown.git to https://USERNAME@github.com/rootux/ms-Dropdown.git
+   Change it from url=https://github.com/zhoujd/zzemacs.git to https://USERNAME@github.com/zhoujd/zzemacs.git
    where USERNAME is your github user name
 
    or

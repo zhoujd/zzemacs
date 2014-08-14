@@ -69,7 +69,7 @@ df.diffargs = \$parent \$child
 track.current = True
 
 [web] 
-push_ssl = false
+push_ssl = False
 allow_push = *
 cacerts = $HG_SETUP_HOME/hg-cacert.pem
 

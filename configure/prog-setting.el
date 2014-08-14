@@ -27,8 +27,10 @@
   '(
     ";;;; temp-setting.el --- program temp file"
     ";; set project direcitory list"
-    "(setq proj-list '(\"~/zzsawfish/\""
-    "                  \"~/zzemacs/\"))"
+    "(setq proj-list '("
+    "                  \"/usr/include\""
+    "                  \"/opt/intel/mediasdk/include\""
+    "                  ))"
     ""
     ";; call below function to create etags"
     ";(create-proj-etags)"

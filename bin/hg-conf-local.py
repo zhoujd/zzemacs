@@ -13,7 +13,9 @@ if __name__ == "__main__":
     config.read(hg_rc_path)
 
     # ui.username
-    username = raw_input("please input ui.username (Enter for skip):")
+    name = raw_input("please input name (Enter for skip):")
+    email = raw_input("please input email (Enter for skip):")
+    username = name + "<" + email + ">"
     if username != "" :
         if not config.has_section('ui') :
             config.add_section('ui')

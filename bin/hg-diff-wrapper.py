@@ -32,4 +32,9 @@ def hg_diff(a, b):
 
     return " ".join(diff_select)
 
-os.system(hg_diff(sys.argv[1], sys.argv[2]))
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print "Using example: %s <diff-A> <diff-B>" % sys.argv[0]
+        sys.exit(1)
+
+    os.system(hg_diff(sys.argv[1], sys.argv[2]))

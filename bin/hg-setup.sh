@@ -9,6 +9,7 @@ echo "hg setup start ..."
 ###useful urls
 ##http://mercurial.selenic.com/wiki/TipsAndTricks
 ##http://mercurial.selenic.com/wiki/UsingExtensions
+##http://mercurial.selenic.com/wiki/CACertificates
 ##http://mercurial.selenic.com/wiki/GitConcepts
 ##http://mercurial.selenic.com/wiki/Workflows
 ##http://stackoverflow.com/questions/2428870/hosting-mercurial-hg-via-visualsvn-server
@@ -71,6 +72,9 @@ track.current = True
 push_ssl = false
 allow_push = *
 cacerts = $HG_SETUP_HOME/hg-cacert.pem
+
+[hostfingerprints]
+bitbucket.org = 45:ad:ae:1a:cf:0e:73:47:06:07:e0:88:f5:cc:10:e5:fa:1c:f7:99
 
 [tortoisehg]
 ui.language = en

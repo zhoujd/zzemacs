@@ -15,7 +15,6 @@ setup(
     url              = "https://github.com/zhoujd",
     license          = "LGPL",
     py_modules       = ['pycomplete'],
-	requires         = ['pymacs'],
+    requires         = ['pymacs'],
     scripts          = [],
     )
-

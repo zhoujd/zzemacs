@@ -3,7 +3,7 @@ Grub2 more
 
 1. recover boot sector
 
-    sudo grub2-install /dev/sda
+        sudo grub2-install /dev/sda
 
 2. grub2 for freebsd
 

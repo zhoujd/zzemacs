@@ -12,8 +12,15 @@ if [ ! "$email" = "" ] ; then
     git config user.email $email
 fi
 
-echo -n "please input http.proxy  (Enter for skip): "
+echo -n "please input http.proxy (Enter for skip): "
 read http_proxy
 if [ ! "$http_proxy" = "" ] ; then
     git config http.proxy $http_proxy
 fi
+
+echo -n "please input core.autocrlf (true/auto/input/Enter for skip): "
+read autocrlf
+if [ ! "$autocrlf" = "" ] ; then
+    git config core.autocrlf $autocrlf
+fi
+

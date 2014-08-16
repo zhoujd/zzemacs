@@ -3,6 +3,6 @@
 EMACS="emacs"
 
 $EMACS -q --no-site-file \
-          --eval "(setq ediff-quit-hook 'kill-emacs)" \
-          --eval "(ediff-files \"$1\" \"$2\"))" \
+		  --eval "(load-file \"~/zzemacs/elisp/ediff-sample.el\")" \
+          --eval "(ediff-sample-files \"$1\" \"$2\")" \
 

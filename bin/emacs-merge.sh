@@ -1,12 +1,13 @@
 #!/bin/sh
 
-EMACS="emacs"  ##"emacs"
+### parameter desc
+## $1 => $BASE
+## $2 => $LOCAL
+## $3 => $REMOTE
+## $4 => $MERGED
+
+EMACS="emacs"
 
 $EMACS -q --no-site-file \
-          --eval \
-          "(progn
-			(setq emerge-temp-local-file  \"$2\"
-				  emerge-temp-base-file   \"$3\"
-				  emerge-temp-remote-file \"$1\")
-			(ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\"))"
-
+		  --eval "(load-file \"~/zzemacs/elisp/ediff-sample.el\")" \
+          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" nil \"$4\")" \

@@ -10,4 +10,4 @@ EMACS="emacs"
 
 $EMACS -q --no-site-file \
 		  --eval "(load-file \"~/zzemacs/elisp/ediff-sample.el\")" \
-          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" nil \"$4\")" \
+          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \

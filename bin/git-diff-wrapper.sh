@@ -6,7 +6,6 @@
 
 ## use emacs as diff tool
 EMACS_FLAG="n"
-EMACS="runemacs"  ##"emacs"
 
 ## difftool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
@@ -29,9 +28,7 @@ fi
 ## run diff tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        $EMACS --eval "(progn
-                        (setq ediff-temp-file \"$1\")
-                        (ediff-files \"$1\" \"$2\"))"
+        emacs-diff.sh $* 
         ;;
     * )
         $DIFF_TOOL $*

@@ -16,11 +16,19 @@
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
+(defun ediff-sample-diff (diff-a diff-b)
+  (interactive)
+  (if (or (file-directory-p diff-a)
+          (file-directory-p diff-b))
+      (ediff-sample-dirs diff-a diff-b)
+      (ediff-sample-files diff-a diff-b)))
+
 (defun ediff-sample-files (file-a file-b)
   (setq ediff-quit-hook 'save-buffers-kill-emacs)
   (ediff-files file-a file-b))
 
 (defun ediff-sample-dirs (dir-a dir-b)
+  (setq ediff-quit-session-group-hook 'save-buffers-kill-emacs)
   (ediff-directories dir-a dir-b ""))
 
 (defun ediff-merge-files (local remote base target)

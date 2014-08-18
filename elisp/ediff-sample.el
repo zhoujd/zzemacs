@@ -17,11 +17,14 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 
 (defun ediff-sample-files (file-a file-b)
-  (setq ediff-quit-hook 'kill-emacs)
+  (setq ediff-quit-hook 'save-buffers-kill-emacs)
   (ediff-files file-a file-b))
 
+(defun ediff-sample-dirs (dir-a dir-b)
+  (ediff-directories dir-a dir-b ""))
+
 (defun ediff-merge-files (local remote base target)
-  (setq ediff-quit-hook 'kill-emacs)
+  (setq ediff-quit-hook 'save-buffers-kill-emacs)
   (ediff-merge-files-with-ancestor remote base local nil target))
 
 (provide 'ediff-sample)

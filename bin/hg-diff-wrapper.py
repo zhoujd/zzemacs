@@ -24,9 +24,10 @@ def hg_diff(a, b):
             [zztools_home + "/p4v/bin/p4merge", a, b], 
             [zztools_home + "/bcompare/bin/bcompare", a, b],
             [zztools_home + "/meld/bin/meld", a, b],
+            ["sh emacs-diff.sh", a, b],
         ]
 
-        diff_select = diff_tool[2]
+        diff_select = diff_tool[3]
     else:
         merge_tool = ["echo unsupport platform"]
 

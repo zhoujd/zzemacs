@@ -7,7 +7,6 @@ import os
 import sys
 import platform
 
-
 def hg_diff(a, b):
     diff_select = []
     sysstr = platform.system()

@@ -7,7 +7,6 @@ import os
 import sys
 import platform
 
-
 def hg_merge(a, b, c, d):
     merge_select = []
     sysstr = platform.system()

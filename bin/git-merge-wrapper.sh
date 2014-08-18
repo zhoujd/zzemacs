@@ -23,7 +23,11 @@ else
     MERGE_TOOL_2="$HOME/zztools/meld/bin/meld $2 $4 $3"
     MERGE_TOOL_3="$HOME/zztools/p4v/bin/p4merge $*"
 
-    MERGE_SELECT=$MERGE_TOOL_3
+    if [ "Linux" = "`uname -s`" ]; then
+        MERGE_SELECT=$MERGE_TOOL_3
+    else
+        MERGE_SELECT=$MERGE_TOOL_0
+    fi    
 fi
 
 ## run merge tools

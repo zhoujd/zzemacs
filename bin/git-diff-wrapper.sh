@@ -21,7 +21,11 @@ else
     DIFF_TOOL_2="$HOME/zztools/meld/bin/meld $*"
     DIFF_TOOL_3="$HOME/zztools/p4v/bin/p4merge $*"
 
-    DIFF_SELECT=$DIFF_TOOL_2
+    if [ "Linux" = "`uname -s`" ]; then
+        DIFF_SELECT=$DIFF_TOOL_2
+    else
+        DIFF_SELECT=$DIFF_TOOL_0
+    fi    
 fi
 
 ## run diff tools

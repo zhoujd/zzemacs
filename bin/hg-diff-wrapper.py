@@ -7,29 +7,34 @@ import os
 import sys
 import platform
 
+## using emacs flag [yY]
+emacs_flag="y"
+
 def hg_diff(a, b):
     diff_select = []
-    sysstr = platform.system()
-    if sysstr == "Windows":
-        zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
-        diff_tool = [
-            [zztools_home + "/perforce/p4merge", a, b], 
-            [zztools_home + "/bcompare/bcompare", a, b],
-        ]
-
-        diff_select = diff_tool[1]
-    elif sysstr == "Linux":
-        zztools_home = os.environ.get('HOME') + "/zztools"
-        diff_tool = [
-            [zztools_home + "/p4v/bin/p4merge", a, b], 
-            [zztools_home + "/bcompare/bin/bcompare", a, b],
-            [zztools_home + "/meld/bin/meld", a, b],
-            ["sh emacs-diff.sh", a, b],
-        ]
-
-        diff_select = diff_tool[3]
+    if emacs_flag == "y" or emacs_flag == "Y":
+        diff_select = ["sh emacs-diff.sh", a, b]
     else:
-        merge_tool = ["echo unsupport platform"]
+        sysstr = platform.system()
+        if sysstr == "Windows":
+            zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
+            diff_tool = [
+                [zztools_home + "/perforce/p4merge", a, b], 
+                [zztools_home + "/bcompare/bcompare", a, b],
+            ]
+            
+            diff_select = diff_tool[1]
+        elif sysstr == "Linux":
+            zztools_home = os.environ.get('HOME') + "/zztools"
+            diff_tool = [
+                [zztools_home + "/p4v/bin/p4merge", a, b], 
+                [zztools_home + "/bcompare/bin/bcompare", a, b],
+                [zztools_home + "/meld/bin/meld", a, b],
+            ]
+
+            diff_select = diff_tool[2]
+        else:
+            diff_select = ["echo unsupport platform"]
 
     return " ".join(diff_select)
 

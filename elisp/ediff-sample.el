@@ -8,6 +8,15 @@
 (if (fboundp 'scroll-bar-mode)   (scroll-bar-mode -1))
 (if (fboundp 'tooltip-mode)      (tooltip-mode -1))
 
+;; Set default-frame-alist
+(if window-system
+    (setq default-frame-alist
+          (append
+           '((scroll-bar-width . 16)
+             (width . 140)
+             (height . 36))
+           default-frame-alist)))
+
 ;; Color setting
 (set-face-background 'default "black")
 (set-face-foreground 'default "white")

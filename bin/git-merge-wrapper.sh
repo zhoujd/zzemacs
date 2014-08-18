@@ -6,10 +6,6 @@
 ## $3 => $REMOTE
 ## $4 => $MERGED
 
-## use emacs as diff tool
-EMACS_FLAG="n"
-SHELL_NAME="sh"
-
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 ## http://www.perforce.com/perforce/products/merge.html
@@ -23,6 +19,9 @@ if [ "$OS" = "Windows_NT" ] ; then
 
     #MERGE_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
     #ARGS="$*"
+
+    #MERGE_TOOL="sh emacs-merge.sh"
+    #ARGS="$*"
 else
     ZZTOOLS_ROOT="$HOME/zztools"
 
@@ -34,16 +33,11 @@ else
 
     MERGE_TOOL="$ZZTOOLS_ROOT/p4v/bin/p4merge"
     ARGS="$*"
+
+    #MERGE_TOOL="sh emacs-merge.sh"
+    #ARGS="$*"
 fi
 
 ## run merge tools
-case "$EMACS_FLAG" in
-    "Y" | "y" )
-        $SHELL_NAME emacs-merge.sh $* 
-        ;;
-    * )
-        $MERGE_TOOL $ARGS
-        ;;
-esac
+$MERGE_TOOL $ARGS
 
-exit 0

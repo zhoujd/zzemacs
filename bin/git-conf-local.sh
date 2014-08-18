@@ -19,7 +19,7 @@ if [ ! "$http_proxy" = "" ] ; then
 fi
 
 echo "Hint core.autocrlf (auto: for window, input: for linux)"
-echo -n "Please input core.autocrlf (Enter for skip): "
+echo -n "Please input core.autocrlf for win7 (Enter for skip): "
 read autocrlf
 if [ ! "$autocrlf" = "" ] ; then
     git config core.autocrlf $autocrlf

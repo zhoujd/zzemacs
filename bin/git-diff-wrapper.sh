@@ -5,7 +5,8 @@
 ## $2 => $REMOTE
 
 ## use emacs as diff tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
+SHELL_NAME="sh"
 
 ## difftool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
@@ -28,7 +29,7 @@ fi
 ## run diff tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        emacs-diff.sh $* 
+        $SHELL_NAME emacs-diff.sh $* 
         ;;
     * )
         $DIFF_TOOL $*

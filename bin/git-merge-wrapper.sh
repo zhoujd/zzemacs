@@ -8,6 +8,7 @@
 
 ## use emacs as diff tool
 EMACS_FLAG="n"
+SHELL_NAME="sh"
 
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
@@ -38,7 +39,7 @@ fi
 ## run merge tools
 case "$EMACS_FLAG" in
     "Y" | "y" )
-        emacs-merge.sh $* 
+        $SHELL_NAME emacs-merge.sh $* 
         ;;
     * )
         $MERGE_TOOL $ARGS

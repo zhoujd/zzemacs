@@ -1,6 +1,16 @@
 ;;; ediff sample file for git/hg diff-merge
 ;;;
 
+;; UI setting
+(if (fboundp 'menu-bar-mode)     (menu-bar-mode -1))
+(if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
+(if (fboundp 'tool-bar-mode)     (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode)   (scroll-bar-mode -1))
+(if (fboundp 'tooltip-mode)      (tooltip-mode -1))
+
+;; Color setting
+(set-face-background 'default "black")
+(set-face-foreground 'default "white")
 
 ;; Set ediff style
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

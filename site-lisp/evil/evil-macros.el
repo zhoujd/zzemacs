@@ -1,8 +1,43 @@
-;;;; Macros
+;;; evil-macros.el --- Macros
+
+;; Author: Vegard Øye <vegard_oye at hotmail.com>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0.9
+
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'evil-common)
 (require 'evil-states)
 (require 'evil-repeat)
+
+;;; Code:
+
+(declare-function evil-ex-p "evil-ex")
+
+;; set some error codes
+(put 'beginning-of-line 'error-conditions '(beginning-of-line error))
+(put 'beginning-of-line 'error-message "Beginning of line")
+(put 'end-of-line 'error-conditions '(end-of-line error))
+(put 'end-of-line 'error-message "End of line")
 
 (defun evil-motion-range (motion &optional count type)
   "Execute a motion and return the buffer positions.
@@ -35,9 +70,14 @@ The return value is a list (BEG END TYPE)."
                         (funcall repeat-type 'post)))
                 (error (prog1 nil
                          (evil-repeat-abort)
-                         (setq evil-this-type 'exclusive
-                               evil-write-echo-area t)
-                         (message (error-message-string err)))))
+                         ;; some operators depend on succeeding
+                         ;; motions, in particular for
+                         ;; `evil-forward-char' (e.g., used by
+                         ;; `evil-substitute'), therefore we let
+                         ;; end-of-line and end-of-buffer pass
+                         (if (not (memq (car err) '(end-of-line end-of-buffer)))
+                             (signal (car err) (cdr err))
+                           (message (error-message-string err))))))
               (cond
                ;; the motion returned a range
                ((evil-range-p range))
@@ -103,14 +143,14 @@ The return value is a list (BEG END TYPE)."
        ;; refresh echo area in Eldoc mode
        (when ',motion
          (eval-after-load 'eldoc
-           '(eldoc-add-command ',motion)))
+           '(and (fboundp 'eldoc-add-command)
+                 (eldoc-add-command ',motion))))
        (evil-define-command ,motion (,@args)
          ,@(when doc `(,doc))          ; avoid nil before `interactive'
          ,@keys
          :keep-visual t
          (interactive ,@interactive)
-         (evil-with-adjust-cursor
-           ,@body)))))
+         ,@body))))
 
 (defmacro evil-define-union-move (name args &rest moves)
   "Create a movement function named NAME.
@@ -147,7 +187,7 @@ not be performed.
 
 (defmacro evil-narrow-to-line (&rest body)
   "Narrow BODY to the current line.
-BODY will signal the errors \"Beginning of line\" or \"End of line\"
+BODY will signal the errors 'beginning-of-line or 'end-of-line
 upon reaching the beginning or end of the current line.
 
 \(fn [[KEY VAL]...] BODY...)"
@@ -172,11 +212,11 @@ upon reaching the beginning or end of the current line.
            (beginning-of-buffer
             (if (= beg min)
                 (signal (car err) (cdr err))
-              (error "Beginning of line")))
+              (signal 'beginning-of-line nil)))
            (end-of-buffer
             (if (= end max)
                 (signal (car err) (cdr err))
-              (error "End of line"))))))))
+              (signal 'end-of-line nil))))))))
 
 ;; we don't want line boundaries to trigger the debugger
 ;; when `debug-on-error' is t
@@ -199,9 +239,11 @@ upon reaching the beginning or end of the current line.
      ;; at the last character of the last line
      (t
       (forward-char)
-      (if (eobp) t
+      (cond
+       ((eobp))
+       ((eolp)
         (forward-char)
-        (eobp))))))
+        (eobp)))))))
 
 (defun evil-move-beginning (count forward &optional backward)
   "Move to the beginning of the COUNT next object.
@@ -319,6 +361,7 @@ if COUNT is positive, and to the left of it if negative.
   (let* ((args (delq '&optional args))
          (count (or (pop args) 'count))
          (args (when args `(&optional ,@args)))
+         (interactive '((interactive "<c><v>")))
          arg doc key keys)
     ;; collect docstring
     (when (stringp (car-safe body))
@@ -329,18 +372,23 @@ if COUNT is positive, and to the left of it if negative.
       (setq key (pop body)
             arg (pop body)
             keys (plist-put keys key arg)))
+    ;; interactive
+    (when (eq (car-safe (car-safe body)) 'interactive)
+      (setq interactive (list (pop body))))
     ;; macro expansion
     `(evil-define-motion ,object (,count ,@args)
        ,@(when doc `(,doc))
        ,@keys
+       ,@interactive
        (setq ,count (or ,count 1))
        (when (/= ,count 0)
          (let ((type (evil-type ',object evil-visual-char))
-               (extend (evil-get-command-property
-                        ',object :extend-selection
-                        ',(plist-get keys :extend-selection)))
+               (extend (and (evil-visual-state-p)
+                            (evil-get-command-property
+                             ',object :extend-selection
+                             ',(plist-get keys :extend-selection))))
                (dir evil-visual-direction)
-               mark point range region selection temp)
+               mark point range selection)
            (cond
             ;; Visual state: extend the current selection
             ((and (evil-visual-state-p)
@@ -349,74 +397,17 @@ if COUNT is positive, and to the left of it if negative.
              ;; go to the left (negative COUNT); if at the end,
              ;; go to the right (positive COUNT)
              (setq dir evil-visual-direction
-                   ,count (* ,count dir)
-                   region (evil-range (mark t) (point))
-                   selection (evil-visual-range))
-             (when extend
-               (setq range (evil-range (point) (point) type)))
-             ;; select the object under point
-             (let ((,count dir))
-               (setq temp (progn ,@body))
-               (unless (evil-range-p temp)
-                 ;; At the end of the buffer?
-                 ;; Try the other direction.
-                 (setq ,count (- dir)
-                       temp (progn ,@body))))
-             (when (and (evil-range-p temp)
-                        (not (evil-subrange-p temp selection))
-                        (or (not extend)
-                            (if (< dir 0)
-                                (>= (evil-range-end temp)
-                                    (evil-range-end selection))
-                              (<= (evil-range-beginning temp)
-                                  (evil-range-beginning selection)))))
-               ;; found an unselected object under point:
-               ;; decrease COUNT by one and save the result
-               (setq ,count (if (< ,count 0) (1+ ,count) (1- ,count)))
-               (if extend
-                   (setq range (evil-range-union temp range))
-                 (setq range temp)
-                 (evil-set-type range (evil-type range type))))
-             ;; now look for remaining objects
-             (when (/= ,count 0)
-               ;; expand the Visual selection so point is outside it
-               (evil-visual-make-selection (mark t) (point) type)
-               (evil-visual-expand-region)
-               (setq selection (evil-visual-range))
-               (if (< dir 0)
-                   (evil-goto-min (evil-range-beginning range)
-                                  (evil-range-beginning selection))
-                 (evil-goto-max (evil-range-end range)
-                                (evil-range-end selection)))
-               (setq temp (progn ,@body))
-               (when (evil-range-p temp)
-                 ;; if the previous attempts failed, then enlarge
-                 ;; the selection by one character as a last resort
-                 (when (evil-subrange-p temp selection)
-                   (if (< dir 0)
-                       (backward-char)
-                     (forward-char))
-                   (setq temp (progn ,@body)))
-                 (if extend
-                     (setq range (evil-range-union temp range))
-                   (setq range temp))
-                 (evil-set-type range (evil-type range type)))
-               (evil-visual-contract-region))
+                   ,count (* ,count dir))
+             (setq range (progn ,@body))
              (when (evil-range-p range)
-               ;; Find the union of the range and the selection.
-               ;; Actually, this uses point and mark rather than the
-               ;; selection boundaries to prevent the object from
-               ;; unnecessarily overwriting the mark's position;
-               ;; if the selection is larger than the object,
-               ;; only point needs to move.
+               (setq range (evil-expand-range range))
+               (evil-set-type range (evil-type range type))
                (setq range (evil-contract-range range))
-               (when extend
-                 (setq range (evil-range-union range region)))
                ;; the beginning is mark and the end is point
                ;; unless the selection goes the other way
                (setq mark  (evil-range-beginning range)
                      point (evil-range-end range)
-                     type  (evil-type range type))
+                     type  (evil-type range))
                (when (< dir 0)
                  (evil-swap mark point))
                ;; select the union
@@ -522,28 +513,23 @@ if COUNT is positive, and to the left of it if negative.
 ;; this is used in the `interactive' specification of an operator command
 (defun evil-operator-range (&optional return-type)
   "Read a motion from the keyboard and return its buffer positions.
-The return value is a list (BEG END) or (BEG END TYPE),
-depending on RETURN-TYPE. Instead of reading from the keyboard,
-a predefined motion may be specified with MOTION. Likewise,
-a predefined type may be specified with TYPE."
+The return value is a list (BEG END), or (BEG END TYPE) if
+RETURN-TYPE is non-nil."
   (let ((motion (or evil-operator-range-motion
-                    (when (and (fboundp 'evil-ex-p) (evil-ex-p))
-                      #'evil-line)))
+                    (when (evil-ex-p) 'evil-line)))
         (type evil-operator-range-type)
         (range (evil-range (point) (point)))
         command count modifier)
     (evil-save-echo-area
       (cond
-       ;; Visual selection
-       ((evil-visual-state-p)
-        (setq range (evil-visual-range)))
        ;; Ex mode
-       ((and (fboundp 'evil-ex-p)
-             (evil-ex-p)
-             evil-ex-range)
+       ((and (evil-ex-p) evil-ex-range)
         (setq range evil-ex-range))
+       ;; Visual selection
+       ((and (not (evil-ex-p)) (evil-visual-state-p))
+        (setq range (evil-visual-range)))
        ;; active region
-       ((region-active-p)
+       ((and (not (evil-ex-p)) (region-active-p))
         (setq range (evil-range (region-beginning)
                                 (region-end)
                                 (or evil-this-type 'exclusive))))
@@ -584,7 +570,8 @@ a predefined type may be specified with TYPE."
                   (* (prefix-numeric-value count)
                      (prefix-numeric-value current-prefix-arg)))))
           (when motion
-            (let ((evil-state 'operator))
+            (let ((evil-state 'operator)
+                  mark-active)
               ;; calculate motion range
               (setq range (evil-motion-range
                            motion
@@ -597,6 +584,7 @@ a predefined type may be specified with TYPE."
                 evil-this-type type))))
       (when (evil-range-p range)
         (unless (or (null type) (eq (evil-type range) type))
+          (evil-contract-range range)
           (evil-set-type range type)
           (evil-expand-range range))
         (evil-set-range-properties range nil)
@@ -626,7 +614,7 @@ It is followed by a list of keywords and functions:
                  and returns a human-readable string, for example,
                  \"2 lines\".
 
-Further keywords and functions may be specified. These are assumed to
+If further keywords and functions are specified, they are assumed to
 be transformations on buffer positions, like :expand and :contract.
 
 \(fn TYPE DOC [[KEY FUNC]...])"

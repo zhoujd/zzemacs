@@ -4,7 +4,6 @@
 ;;http://emacswiki.org/emacs/Evil
 (zz-load-path "site-lisp/evil")
 (require 'evil)
-(evil-mode t)
 
 ;;key setting
 (define-key evil-normal-state-map "  " 'ace-jump-mode)

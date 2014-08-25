@@ -35,9 +35,6 @@ git config --global core.autocrlf false
 git config --global core.safecrlf true
 git config --global core.filemode false
 
-## push default
-git config --global push.default simple
-
 ## alias
 git config --global alias.st    "status"
 git config --global alias.ci    "commit"

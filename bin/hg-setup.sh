@@ -61,7 +61,7 @@ color =
 hgk = 
 
 [hgk]
-path = wish $HG_SETUP_HOME/hgk
+path = wish $HG_SETUP_HOME/hgk.tcl
 
 [extdiff]
 df = $HG_SETUP_HOME/hg-diff-wrapper.py

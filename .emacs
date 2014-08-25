@@ -56,7 +56,6 @@
         php-setting
         haskell-setting
         doc-setting
-        evil-setting
         keymap-setting
         fn-setting
         key-setting

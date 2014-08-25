@@ -28,3 +28,8 @@ Linux something
 	sudo kvm –localtime –cdrom /dev/cdrom -m 512 -boot d win2.img
 	sudo kvm –localtime –m 512 –hda windows.img –cdrom winxp.iso –boot d –clock –rtc –no-acpi
 
+4. cdreord for ISO
+	sudo apt-get install cdrecord
+	cdrecord --scanbus
+	cdrecord dev=0,0,0 <file.iso>
+

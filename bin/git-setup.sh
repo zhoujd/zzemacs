@@ -30,6 +30,11 @@ git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"
 git config --global color.ui    "true"
 
+## cr && lf
+git config --global core.autocrlf false
+git config --global core.safecrlf true
+git config --global core.filemode false
+
 ## alias
 git config --global alias.st    "status"
 git config --global alias.ci    "commit"

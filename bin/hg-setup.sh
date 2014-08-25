@@ -58,6 +58,10 @@ graphlog =
 progress =
 rebase =
 color =
+hgk = 
+
+[hgk]
+path = wish $HG_SETUP_HOME/hgk
 
 [extdiff]
 df = $HG_SETUP_HOME/hg-diff-wrapper.py

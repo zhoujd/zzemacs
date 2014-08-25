@@ -25,6 +25,6 @@ Linux something
 	/sbin/lsmod | grep kvm
 	#yum provides "*/qemu-kvm"
 	sudo qemu-img create –f qcow windows.img 8G
-	sudo kvm –localtime –cdrom /dev/cdrom -m 512 -boot d win2.img
-	sudo kvm –localtime –m 512 –hda windows.img –cdrom winxp.iso –boot d –clock –rtc –no-acpi
+	sudo kvm -localtime -cdrom /dev/cdrom -m 512 -boot d win2.img
+	sudo kvm -localtime -m 512 -hda windows.img -cdrom winxp.iso -boot d -clock -rtc -no-acpi
 

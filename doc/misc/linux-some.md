@@ -28,3 +28,40 @@ Linux something
 	sudo kvm -localtime -cdrom /dev/cdrom -m 512 -boot d win2.img
 	sudo kvm -localtime -m 512 -hda windows.img -cdrom winxp.iso -boot d -clock -rtc -no-acpi
 
+4. Multi GCC
+
+	gcc -v
+	ls /usr/bin/gcc*
+	sudo apt-get install gcc-4.5 gcc-4.5-multilib g++-4.5 g++-4.5-multilib
+
+	sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.4 50
+	sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.5 40
+	sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.4 50
+	sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.5 40
+
+	sudo update-alternatives --config gcc
+	sudo update-alternatives --remove gcc /usr/bin/gcc-4.5
+
+5. CentOS rpm
+	sudo yum update kernel-2.6.32-431.17.1.el6
+	sudo yum install kernel-devel
+	mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+	echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+	sudo yum install rpm-build redhat-rpm-config asciidoc hmaccalc perl-ExtUtils-Embed xmlto
+	sudo yum install audit-libs-devel binutils-devel elfutils-devel elfutils-libelf-devel
+	sudo yum install newt-devel python-devel zlib-devel
+	sudo yum install bison patchutils gcc ncurses-devel
+	rpm -i http://vault.centos.org/6.5/updates/Source/SPackages/kernel-2.6.32-431.17.1.el6.src.rpm 2>&1 | grep -v mock
+	cd ~/rpmbuild/SPECS
+	rpmbuild [-bp|-ba|-bc] --target=$(uname -m) kernel.spec
+
+	cp /boot/config-`uname -r` .config
+	make oldconfig
+	make menuconfig
+	make prepare
+	make modules_prepare
+	make M=drivers/gpu/drm
+
+6. Centos LIB dir when compile
+	./configure --prefix=/usr  --libdir=/usr/lib64
+

@@ -58,6 +58,17 @@ cat > ~/.fonts.conf <<EOF
 EOF
 }
 
+Install_emacs_run()
+{
+LANCHER=~/run_emacs
+cat > ${LANCHER} <<EOF
+#!/bin/sh
+
+emacs --load ${ZZEMACS_ROOT}/.emacs
+EOF
+chmod +x ${LANCHER}
+}
+
 ##Install thirdparty
 Install_thirdparty()
 {
@@ -108,6 +119,8 @@ main()
     
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
+
+    try_command Install_emacs_run
 
     ##install third-party
     confirm_execute "Do you wanna install third-party packages? (y/N): " try_command Install_thirdparty

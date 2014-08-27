@@ -36,7 +36,7 @@ Install_package()
 Install_dot_emacs()
 {
 cat > ~/.emacs <<EOF
-;;;this is .emacs for zhoujd.
+;;;This is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
 (if (file-exists-p (concat zzemacs-path "/.emacs"))
     (load-file (concat zzemacs-path "/.emacs"))
@@ -60,11 +60,15 @@ EOF
 
 Install_emacs_run()
 {
-LANCHER=~/run_emacs
+LANCHER=~/run-emacs
+
 cat > ${LANCHER} <<EOF
 #!/bin/sh
 
-emacs --load ${ZZEMACS_ROOT}/.emacs
+emacs --no-site-file -q \\
+      --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \\
+      --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")" \\
+      --eval "(message \"run emacs finished.\")"
 EOF
 chmod +x ${LANCHER}
 }

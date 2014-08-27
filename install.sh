@@ -126,7 +126,7 @@ main()
     else
         try_command Install_fonts_conf
     fi
-    
+
     try_command Install_emacs_run
     try_command Install_other
 

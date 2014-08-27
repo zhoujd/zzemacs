@@ -9,9 +9,19 @@ Linux something
 	
 	<http://lxr.oss.org.cn/source/>
 
+	<http://lxr.free-electrons.com/>
+
+3. FreeBSD & Linux cross refernce
+
+	<http://fxr.watson.org/>
+
+	<http://svnweb.freebsd.org/>
+
 3. android cross reference
 
 	<http://androidxref.com/>
+
+	<http://code.metager.de/source/xref/android/>
 
 4. QEMU
 

@@ -7,7 +7,9 @@ import os
 import sys
 import platform
 
-def hg_merge(a, b, c, d):
+emacs_flag="y"
+
+def merge_extern(a, b, c, d):
     merge_select = []
     sysstr = platform.system()
     if sysstr == "Windows":
@@ -32,11 +34,18 @@ def hg_merge(a, b, c, d):
     else:
         merge_select = ["sh emacs-merge.sh", a, b, c, d]
 
-    return " ".join(merge_select)
+    os.system(" ".join(merge_select))
+
+def merge_emacs(a, b, c, d):
+    merge_select = ["sh emacs-merge.sh", a, b, c, d]
+    os.system(" ".join(merge_select))
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
         print "Using example: %s <base> <local> <other> <output>" % sys.argv[0]
         sys.exit(1)
 
-    os.system(hg_merge(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]))
+    if emacs_flag == "y" or emacs_flag == "Y":
+        merge_emacs(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    else:
+        merge_extern(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

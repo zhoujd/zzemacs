@@ -90,18 +90,18 @@ Install_thirdparty()
 main()
 {
     ##install package for emacs
-    confirm_execute "Do you need install packages? (y/N): " try_command Install_package
+    confirm_execute "Do you wanna install packages? (y/N): " try_command Install_package
 
     ##install configure file
     echo "install configure file and fonts"
     if [ -f ~/.emacs ] ; then
-        confirm_execute "Do you want overwrite .emacs? [y/N]" try_command Install_dot_emacs
+        confirm_execute "Do you wanna overwrite .emacs? [y/N]" try_command Install_dot_emacs
     else
         try_command Install_dot_emacs
     fi
 
     if [ -f ~/.fonts.conf ] ; then
-        confirm_execute "Do you want overwrite .fonts.conf? [y/N]" try_command Install_fonts_conf
+        confirm_execute "Do you wanna overwrite .fonts.conf? [y/N]" try_command Install_fonts_conf
     else
         try_command Install_fonts_conf
     fi
@@ -110,7 +110,7 @@ main()
     mkdir -p ~/.emacs.d
 
     ##install third-party
-    confirm_execute "Do you need install third-party packages? (y/N): " try_command Install_thirdparty
+    confirm_execute "Do you wanna install third-party packages? (y/N): " try_command Install_thirdparty
 
 }
 

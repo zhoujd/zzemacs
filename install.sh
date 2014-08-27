@@ -68,9 +68,15 @@ cat > ${LANCHER} <<EOF
 emacs --no-site-file -q \\
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \\
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")" \\
-      --eval "(message \"run emacs finished.\")"
+      --eval "(message \"start emacs finished.\")"
 EOF
 chmod +x ${LANCHER}
+}
+
+Install_other()
+{
+    ##create ~/.emacs.d folder
+    mkdir -p ~/.emacs.d
 }
 
 ##Install thirdparty
@@ -121,10 +127,8 @@ main()
         try_command Install_fonts_conf
     fi
     
-    ##create ~/.emacs.d folder
-    mkdir -p ~/.emacs.d
-
     try_command Install_emacs_run
+    try_command Install_other
 
     ##install third-party
     confirm_execute "Do you wanna install third-party packages? (y/N): " try_command Install_thirdparty

@@ -12,6 +12,17 @@ try_command()
     return $status
 }
 
+confirm_execute()
+{
+    echo -n $1
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            $2 $3 $4 $5 $6 $7 $8 $9
+            ;;
+    esac
+}
+
 Linux_sample ()
 {
     ## Dectect OS version

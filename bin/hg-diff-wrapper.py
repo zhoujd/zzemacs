@@ -7,35 +7,43 @@ import os
 import sys
 import platform
 
-def hg_diff(a, b):
+emacs_flag="y"
+
+def diff_extern(a, b):
     diff_select = []
     sysstr = platform.system()
     if sysstr == "Windows":
         zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
         diff_tool = [
-            ["sh emacs-diff.sh", a, b],
             [zztools_home + "/perforce/p4merge", a, b], 
             [zztools_home + "/bcompare/bcompare", a, b],
         ]
             
-        diff_select = diff_tool[2]
+        diff_select = diff_tool[1]
     elif sysstr == "Linux":
         zztools_home = os.environ.get('HOME') + "/zztools"
         diff_tool = [
-            ["sh emacs-diff.sh", a, b],
             [zztools_home + "/p4v/bin/p4merge", a, b], 
             [zztools_home + "/bcompare/bin/bcompare", a, b],
             [zztools_home + "/meld/bin/meld", a, b],
         ]
 
-        diff_select = diff_tool[3]
+        diff_select = diff_tool[2]
     else:
         diff_select = ["sh emacs-diff.sh", a, b]
-    return " ".join(diff_select)
+        
+    os.system(" ".join(diff_select))
 
+def diff_emacs(a, b):
+    diff_select = ["sh emacs-diff.sh", a, b]
+    os.system(" ".join(diff_select))
+    
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Using example: %s <diff-A> <diff-B>" % sys.argv[0]
         sys.exit(1)
 
-    os.system(hg_diff(sys.argv[1], sys.argv[2]))
+    if emacs_flag == "y" or emacs_flag == "Y":
+       diff_emacs(sys.argv[1], sys.argv[2])
+    else:
+       diff_extern(sys.argv[1], sys.argv[2])

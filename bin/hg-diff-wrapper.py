@@ -15,15 +15,15 @@ def diff_extern(a, b):
     if sysstr == "Windows":
         zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
         diff_tool = [
-            [zztools_home + "/perforce/p4merge", a, b], 
+            [zztools_home + "/perforce/p4merge", a, b],
             [zztools_home + "/bcompare/bcompare", a, b],
         ]
-            
+
         diff_select = diff_tool[1]
     elif sysstr == "Linux":
         zztools_home = os.environ.get('HOME') + "/zztools"
         diff_tool = [
-            [zztools_home + "/p4v/bin/p4merge", a, b], 
+            [zztools_home + "/p4v/bin/p4merge", a, b],
             [zztools_home + "/bcompare/bin/bcompare", a, b],
             [zztools_home + "/meld/bin/meld", a, b],
         ]
@@ -31,13 +31,13 @@ def diff_extern(a, b):
         diff_select = diff_tool[2]
     else:
         diff_select = ["sh emacs-diff.sh", a, b]
-        
+
     os.system(" ".join(diff_select))
 
 def diff_emacs(a, b):
     diff_select = ["sh emacs-diff.sh", a, b]
     os.system(" ".join(diff_select))
-    
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "Using example: %s <diff-A> <diff-B>" % sys.argv[0]

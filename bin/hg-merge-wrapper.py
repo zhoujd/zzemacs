@@ -16,7 +16,7 @@ def merge_extern(a, b, c, d):
         zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
         merge_tool = [
             ["sh emacs-merge.sh", a, b, c, d],
-            [zztools_home + "/perforce/p4merge", a, b, c, d], 
+            [zztools_home + "/perforce/p4merge", a, b, c, d],
             [zztools_home + "/bcompare/bcompare", a, b, c, d],
         ]
 
@@ -25,7 +25,7 @@ def merge_extern(a, b, c, d):
         zztools_home = os.environ.get('HOME') + "/zztools"
         merge_tool = [
             ["sh emacs-merge.sh", a, b, c, d],
-            [zztools_home + "/p4v/bin/p4merge", a, b, c, d], 
+            [zztools_home + "/p4v/bin/p4merge", a, b, c, d],
             [zztools_home + "/bcompare/bin/bcompare", a, b, c, d],
             [zztools_home + "/meld/bin/meld", a, b, d],
         ]

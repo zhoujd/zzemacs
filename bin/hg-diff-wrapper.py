@@ -35,17 +35,22 @@ def diff_extern(a, b):
     os.system(" ".join(diff_select))
 
 def diff_emacs(a, b):
-    a = a.replace("\\", "/")
-    b = b.replace("\\", "/")
+    zzemacs_path=""
+    sysstr = platform.system()
+    if sysstr == "Windows":
+        a = a.replace("\\", "/")
+        b = b.replace("\\", "/")
+        zzemacs_path = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zzemacs"
+    else:
+        zzemacs_path = os.environ.get('HOME') + "/zzemacs"
 
     elisp_string="\
 (progn \
- (load-file \\\"c:/zznix/home/zhoujd/zzemacs/elisp/ediff-sample.el\\\") \
+ (load-file \\\"%s/elisp/ediff-sample.el\\\") \
  (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
- )" % (a, b)
+ )" % (zzemacs_path, a, b)
 
     cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
-    print cmd
     os.system(cmd)
 
 if __name__ == "__main__":

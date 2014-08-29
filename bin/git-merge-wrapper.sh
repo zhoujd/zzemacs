@@ -34,8 +34,14 @@ merge_extern()
 
 merge_emacs()
 {
+	if [ "$OS" = "Windows_NT" ] ; then
+		ZZEMACS_PATH="$ZZNIX_HOME/home/zhoujd/zzemacs"
+	else
+		ZZEMACS_PATH="$HOME/zzemacs"
+	fi
+
     emacs --no-site-file -q \
-		  --eval "(load-file \"~/zzemacs/elisp/ediff-sample.el\")" \
+		  --eval "(load-file \"$ZZEMACS_PATH/elisp/ediff-sample.el\")" \
           --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
           --eval "(message \"emacs merge finished.\")"
 }

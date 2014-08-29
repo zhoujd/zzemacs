@@ -44,6 +44,20 @@
   (setq ediff-quit-hook 'save-buffers-kill-emacs)
   (ediff-merge-files-with-ancestor remote base local nil target))
 
+
+;;quick move other windows
+(global-set-key [M-up]          'windmove-up)
+(global-set-key [M-down]        'windmove-down)
+(global-set-key [M-right]       'windmove-right)
+(global-set-key [M-left]        'windmove-left)
+
+;;window size change
+(global-set-key [S-up]          'enlarge-window)
+(global-set-key [S-down]        'shrink-window)
+(global-set-key [S-right]       'enlarge-window-horizontally)
+(global-set-key [S-left]        'shrink-window-horizontally)
+
+
 (provide 'ediff-sample)
 
 ;;; ediff-sample.el ends here

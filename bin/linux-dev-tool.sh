@@ -10,7 +10,7 @@ echo "install linux-dev-tool begin..."
 ##package for ubuntu
 Install_package_suse()
 {
-    sudo zypper install -y gcc gcc-c++ automake git gitk
+    sudo zypper install -y gcc gcc-c++ automake git gitk diffstat
 	sudo zypper install -y ncurses-devel ncurses zlib-devel
 	sudo zypper install -y tk tk-devel
 	sudo zypper install -y flex cmake bison libtool perl-Archive-Zip
@@ -21,17 +21,18 @@ Install_package_suse()
 ##package for ubuntu
 Install_package_ubuntu()
 {
-    sudo apt-get install libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev --yes
-	sudo apt-get install xorg-dev autoconf libtool yasm --yes
-	sudo apt-get install x11proto-dri2-dev --yes
-	sudo apt-get install xutils-dev --yes
-	sudo apt-get install g++ --yes
+    sudo apt-get install -y libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev
+	sudo apt-get install -y xorg-dev autoconf libtool yasm
+	sudo apt-get install -y x11proto-dri2-dev
+	sudo apt-get install -y xutils-dev
+	sudo apt-get install -y g++
+    sudo apt-get install -y git gitk diffstat
 }
 
 ##package for centos
 Install_package_centos()
 {
-    sudo yum install -y git gcc
+    sudo yum install -y git gcc diffstat
     sudo yum install -y cmake gcc-c++ autoconf automake libtool libdrm-devel
     sudo yum install -y libX11-devel libpciaccess-devel xorg-x11-server-devel
 }

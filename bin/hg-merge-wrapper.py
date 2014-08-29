@@ -15,30 +15,45 @@ def merge_extern(a, b, c, d):
     if sysstr == "Windows":
         zztools_home = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zztools"
         merge_tool = [
-            ["sh emacs-merge.sh", a, b, c, d],
             [zztools_home + "/perforce/p4merge", a, b, c, d],
             [zztools_home + "/bcompare/bcompare", a, b, c, d],
         ]
 
-        merge_select = merge_tool[2]
+        merge_select = merge_tool[1]
     elif sysstr == "Linux":
         zztools_home = os.environ.get('HOME') + "/zztools"
         merge_tool = [
-            ["sh emacs-merge.sh", a, b, c, d],
             [zztools_home + "/p4v/bin/p4merge", a, b, c, d],
             [zztools_home + "/bcompare/bin/bcompare", a, b, c, d],
             [zztools_home + "/meld/bin/meld", a, b, d],
         ]
 
-        merge_select = merge_tool[3]
+        merge_select = merge_tool[2]
     else:
-        merge_select = ["sh emacs-merge.sh", a, b, c, d]
+        return merge_emacs(a, b, c, d)
 
     os.system(" ".join(merge_select))
 
 def merge_emacs(a, b, c, d):
-    merge_select = ["sh emacs-merge.sh", a, b, c, d]
-    os.system(" ".join(merge_select))
+    zzemacs_path=""
+    sysstr = platform.system()
+    if sysstr == "Windows":
+        a = a.replace("\\", "/")
+        b = b.replace("\\", "/")
+        c = c.replace("\\", "/")
+        d = d.replace("\\", "/")
+        zzemacs_path = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zzemacs"
+    else:
+        zzemacs_path = os.environ.get('HOME') + "/zzemacs"
+
+    elisp_string="\
+(progn \
+ (load-file \\\"%s/elisp/ediff-sample.el\\\") \
+ (ediff-merge-files \\\"%s\\\" \\\"%s\\\" \\\"%s\\\" \\\"%s\\\") \
+ )" % (zzemacs_path, a, b, c, d)
+
+    cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
+    os.system(cmd)
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:

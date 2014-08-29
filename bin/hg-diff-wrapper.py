@@ -30,7 +30,7 @@ def diff_extern(a, b):
 
         diff_select = diff_tool[2]
     else:
-        diff_emacs(a, b)
+        return diff_emacs(a, b)
 
     os.system(" ".join(diff_select))
 

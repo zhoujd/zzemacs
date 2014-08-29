@@ -35,8 +35,18 @@ def diff_extern(a, b):
     os.system(" ".join(diff_select))
 
 def diff_emacs(a, b):
-    diff_select = ["sh emacs-diff.sh", a, b]
-    os.system(" ".join(diff_select))
+    a = a.replace("\\", "/")
+    b = b.replace("\\", "/")
+
+    elisp_string="\
+(progn \
+ (load-file \\\"c:/zznix/home/zhoujd/zzemacs/elisp/ediff-sample.el\\\") \
+ (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
+ )" % (a, b)
+
+    cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
+    print cmd
+    os.system(cmd)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

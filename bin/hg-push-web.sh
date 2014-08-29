@@ -6,8 +6,17 @@
 ##$hg clone http://127.0.0.1 hg-proj
 ##$hg push
 
-echo "[web]" >>.hg/hgrc
-echo "allow_read = *" >>.hg/hgrc
-echo "allow_push = *" >>.hg/hgrc
-echo "push_ssl   = false" >>.hg/hgrc
+HG_ROOT=`hg root`
 
+# hg repo folder check
+if [ ! -s "$HG_ROOT" ] ; then
+    echo "`basename $0` should be run under hg repo"
+    exit 1
+fi
+
+echo "[web]" >>$HG_ROOT/.hg/hgrc
+echo "allow_read = *" >>$HG_ROOT/.hg/hgrc
+echo "allow_push = *" >>$HG_ROOT/.hg/hgrc
+echo "push_ssl   = false" >>$HG_ROOT/.hg/hgrc
+
+echo "HG repo ready to accept command: hg push"

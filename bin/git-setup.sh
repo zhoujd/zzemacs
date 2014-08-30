@@ -49,6 +49,7 @@ git config --global alias.lol   "log --graph --decorate --pretty=oneline --abbre
 git config --global alias.lola  "log --graph --decorate --pretty=oneline --abbrev-commit --all"
 git config --global alias.ls    "ls-files"
 git config --global alias.ign   "ls-files -o -i --exclude-standard"
+git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(blue)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 
 ## set http proxy
 if [ ! $http_proxy = "" ]; then

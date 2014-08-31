@@ -46,15 +46,12 @@
         sample-setting
         media-setting
         w3m-setting
+        evil-setting
         c-setting
         lisp-setting
         scheme-setting
         perl-setting
         python-setting
-        java-setting
-        csharp-setting
-        php-setting
-        haskell-setting
         doc-setting
         keymap-setting
         fn-setting

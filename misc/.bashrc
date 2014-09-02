@@ -17,10 +17,10 @@ alias du='du -kh'
 alias df='df -kTh'
 alias h='history'
 alias j='jobs -l'
-alias r='rlogin'
 alias et='emacsclient -t'
 alias ec='emacsclient -c'
-alias E="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
+alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
+alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 
 # shell directory bookmark setting
 SHELLBM_FILE=~/.sdirs

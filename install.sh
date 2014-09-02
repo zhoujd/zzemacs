@@ -60,7 +60,7 @@ EOF
 
 Install_emacs_run()
 {
-LANCHER=~/run-emacs
+LANCHER=~/emacs1
 
 cat > ${LANCHER} <<EOF
 #!/bin/sh

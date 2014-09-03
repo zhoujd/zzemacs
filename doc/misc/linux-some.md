@@ -80,3 +80,6 @@ Linux something
     Ubuntu: vim /etc/default/grub
             GRUB_CMDLINE_LINUX_DEFAULT="quiet splash text"
             sudo update-grub
+
+8. Q/A web for Linux/FreeBSD/Unix like
+    http://stackexchange.com/

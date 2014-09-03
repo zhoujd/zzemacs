@@ -45,4 +45,3 @@ source $SHELLBM_FILE
 
 # ls colors setting
 export LS_COLORS='di=1'
-export TERM=xterm-256color

@@ -5,7 +5,7 @@ import sys
 import ConfigParser
 
 if __name__ == "__main__":
-    hg_root=os.popen("hg root").readlines()[0].rstrip('\n')
+    hg_root=os.popen("hg root").readlines()[0].rstrip()
     hg_rc_path = hg_root + os.sep + ".hg" + os.sep + "hgrc"
     print "current hgrc: " + hg_rc_path
 
@@ -13,8 +13,8 @@ if __name__ == "__main__":
     config.read(hg_rc_path)
 
     # ui.username
-    name = raw_input("please input name (Enter for skip):").rstrip('\n')
-    email = raw_input("please input email (Enter for skip):").rstrip('\n')
+    name = raw_input("please input name (Enter for skip):").rstrip()
+    email = raw_input("please input email (Enter for skip):").rstrip()
     if name != "" and email != "":
         username = name + "<" + email + ">"
         if not config.has_section('ui') :
@@ -22,14 +22,17 @@ if __name__ == "__main__":
         config.set('ui', 'username', username)
 
     # http_proxy.host
-    proxy_host = raw_input("please input http_proxy.host (Enter for skip):").rstrip('\n')
+    proxy_host = raw_input("please input http_proxy.host (Enter for skip/none for unset):").rstrip()
     if proxy_host != "" :
         if not config.has_section('http_proxy') :
             config.add_section('http_proxy')
-        config.set('http_proxy', 'host', proxy_host)
+        if proxy_host == "none":
+            config.set('http_proxy', 'host', "")
+        else:
+            config.set('http_proxy', 'host', proxy_host)
 
     # paths.default
-    path_url = raw_input("please input paths.default (Enter for skip):").rstrip('\n')
+    path_url = raw_input("please input paths.default (Enter for skip):").rstrip()
     if path_url != "" :
         if not config.has_section('paths') :
             config.add_section('paths')

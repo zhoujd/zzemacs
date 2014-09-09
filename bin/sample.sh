@@ -72,4 +72,11 @@ fi
 
 
 ## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
-#DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+script_full_path()
+{
+    if [ "$OS" = "Windows_NT" ] ; then
+        cd $(dirname "${BASH_SOURCE[0]}") && pwd -W
+    else
+        cd $(dirname "${BASH_SOURCE[0]}") && pwd
+    fi
+}

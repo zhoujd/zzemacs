@@ -5,10 +5,10 @@
 echo git diff setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
-    GIT_SETUP_HOME=`pwd -W`
-    SHELL=$(cd $ZZNIX_HOME ; pwd -W)/bin/sh
+    GIT_SETUP_HOME=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -W)
+    SHELL=$(cd $ZZNIX_HOME && pwd -W)/bin/sh
 else
-    GIT_SETUP_HOME=`pwd`
+    GIT_SETUP_HOME=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 fi
 
 ## clear ~/.gitconfig

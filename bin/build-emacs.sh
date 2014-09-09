@@ -5,11 +5,8 @@ if [ "$OS" = "Windows_NT" ] ; then
     exit 0
 fi
 
-##Variable define 
-BUILD_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-
 ##Import vars and functions
-. $BUILD_ROOT/sample.sh
+. ~/zzemacs/bin/sample.sh
 
 echo "Build emacs begin ..."
 

@@ -15,9 +15,9 @@ echo "hg setup start ..."
 ##http://stackoverflow.com/questions/2428870/hosting-mercurial-hg-via-visualsvn-server
 
 if [ "$OS" = "Windows_NT" ] ; then
-    HG_SETUP_HOME=$(cd $(dirname "${BASH_SOURCE}") && pwd -W)
+    HG_SETUP_HOME=`pwd -W`
 else
-    HG_SETUP_HOME=$(cd $(dirname "${BASH_SOURCE}") && pwd)
+    HG_SETUP_HOME=`pwd`
 fi
 
 EXTMERGE=hg-merge-wrapper.py

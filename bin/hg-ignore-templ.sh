@@ -1,10 +1,16 @@
 #!/bin/sh
 
-CURRENT_ROOT=`pwd`
-
 echo "create .hgignore template start ..."
 
-cat > $CURRENT_ROOT/.hgignore <<EOF
+HG_ROOT=`hg root`
+
+# hg repo folder check
+if [ ! -s "$HG_ROOT" ] ; then
+    echo "`basename $0` should be run under hg repo"
+    exit 1
+fi
+
+cat > $HG_ROOT/.hgignore <<EOF
 ## filter with glob
 syntax: glob
 .git/

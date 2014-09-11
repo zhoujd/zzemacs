@@ -11,7 +11,7 @@
 (when-emacs24-3
  (eval-after-load "cl-indent"
    '(progn
-     (put 'cl-flet 'common-lisp-indent-function 
+     (put 'cl-flet 'common-lisp-indent-function
       (get 'flet 'common-lisp-indent-function))
      )))
 
@@ -108,6 +108,20 @@
 (defun slime-connect-stumpwm ()
   (interactive)
   (slime-connect "127.0.0.1" 4405))
+
+;;require paredit
+(require 'paredit)
+(dolist (hook
+          (list
+           'emacs-lisp-mode-hook
+           'eval-expression-minibuffer-setup-hook
+           'ielm-mode-hook
+           'lisp-mode-hook
+           'lisp-interaction-mode-hook
+           'scheme-mode-hook
+           ))
+        (add-hook hook 'enable-paredit-mode))
+
 
 (provide 'lisp-setting)
 

@@ -74,6 +74,7 @@
 (require 'redo+)
 (global-set-key [M-S-backspace] 'redo)
 (global-set-key (kbd "C-?") 'redo)
+(add-to-list 'warning-suppress-types '(undo discard-info))
 
 ;; space tab show
 ;(require 'jaspace)

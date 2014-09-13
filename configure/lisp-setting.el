@@ -1,6 +1,8 @@
 ;;Lisp programme setting
 
 (zz-load-path "site-lisp/slime")
+(zz-load-path "site-lisp/slime/contrib")
+
 ;;Common Lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")
 (add-hook 'lisp-mode-hook
@@ -121,6 +123,26 @@
            'scheme-mode-hook
            ))
         (add-hook hook 'enable-paredit-mode))
+
+;;Advanced highlighting of matching parentheses
+(require 'mic-paren)
+(paren-activate)
+(setf paren-priarity 'close)
+
+;;Provide a face for parens in lisp modes
+(require 'parenface)
+
+;;Bridge process filter
+(require 'bridge)
+(autoload 'install-bridge "bridge" "Install a process bridge." t)
+(setq bridge-hook 
+      '(lambda ()
+         ;; Example options
+         (setq bridge-source-insert nil) ;Don't insert in source buffer
+         (setq bridge-destination-insert nil) ;Don't insert in dest buffer
+         ;; Handle copy-it messages yourself
+         (setq bridge-handlers
+               '(("copy-it" . my-copy-handler)))))
 
 
 (provide 'lisp-setting)

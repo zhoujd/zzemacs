@@ -8,9 +8,10 @@
 
 ;;; Administrivia
 
-(in-package :swank-backend)
+(defpackage swank-ecl
+  (:use cl swank-backend))
 
-
+(in-package swank-ecl)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun ecl-version ()
@@ -43,7 +44,6 @@
 ;;; Swank-mop
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (import-from :gray *gray-stream-symbols* :swank-backend)
   (import-swank-mop-symbols
    :clos
    (and (< (ecl-version) 121201)
@@ -53,6 +53,9 @@
           :specializer-direct-methods
           ,@(unless (fboundp 'clos:compute-applicable-methods-using-classes)
               '(:compute-applicable-methods-using-classes))))))
+
+(defimplementation gray-package-name ()
+  "GRAY")
 
 
 ;;;; TCP Server

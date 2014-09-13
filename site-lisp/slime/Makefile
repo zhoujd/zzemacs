@@ -9,8 +9,8 @@ LISP=sbcl
 
 LOAD_PATH=-L .
 
-ELFILES := slime.el slime-autoloads.el slime-tests.el
-ELCFILES := $(patsubst %.el,%.elc,$(ELFILES))
+ELFILES := slime.el slime-autoloads.el slime-tests.el $(wildcard lib/*.el)
+ELCFILES := $(ELFILES:.el=.elc)
 
 default: compile contrib-compile
 
@@ -36,24 +36,46 @@ SELECTOR  -- selector for ERT tests ($(SELECTOR))\n"
 
 # Compilation
 #
-slime.elc: slime.el ChangeLog
+slime.elc: slime.el ChangeLog lib/hyperspec.elc
 
 %.elc: %.el
 	$(EMACS) -Q $(LOAD_PATH) --batch -f batch-byte-compile $<
 
 compile: $(ELCFILES)
-	$(EMACS) -Q --batch --eval "(batch-byte-recompile-directory 0)" ./lib
 
 # Automated tests
 #
-SELECTOR=(quote t)
+SELECTOR=t
 
 check: compile
-	${EMACS} -Q --batch $(LOAD_PATH)				\
+	$(EMACS) -Q --batch $(LOAD_PATH)				\
 		--eval "(require 'slime-tests)"				\
 		--eval "(slime-setup)"					\
 		--eval "(setq inferior-lisp-program \"$(LISP)\")"	\
-		--eval "(slime-batch-test $(SELECTOR))"
+		--eval '(slime-batch-test (quote $(SELECTOR)))'
+
+# run tests interactively
+#
+# FIXME: Not terribly useful until bugs in ert-run-tests-interactively
+# are fixed.
+test: compile
+	$(EMACS) -Q -nw $(LOAD_PATH)					\
+		--eval "(require 'slime-tests)"				\
+		--eval "(slime-setup)"					\
+		--eval "(setq inferior-lisp-program \"$(LISP)\")"	\
+		--eval '(slime-batch-test (quote $(SELECTOR)))'
+
+compile-swank:
+	echo '(load "swank-loader.lisp")' '(swank-loader:init :setup nil)' \
+	| $(LISP)
+
+run-swank:
+	{ echo \
+	'(load "swank-loader.lisp")' \
+	'(swank-loader:init)' \
+	'(swank:create-server)' \
+	&& cat; } \
+	| $(LISP)
 
 elpa-slime:
 	echo "Not implemented yet: elpa-slime target" && exit 255
@@ -62,14 +84,18 @@ elpa: elpa-slime contrib-elpa
 
 # Cleanup
 #
+FASLREGEX = .*\.\(fasl\|ufasl\|sse2f\|lx32fsl\|abcl\|fas\|lib\|trace\)$$
+
 clean-fasls:
-	find . -iname '*.fasl' -exec rm {} \;
+	find . -regex '$(FASLREGEX)' -exec rm -v {} \;
+	[ -d ~/.slime/fasl ] && rm -rf ~/.slime/fasl
+
 clean: clean-fasls
 	find . -iname '*.elc' -exec rm {} \;
 
 
 # Contrib stuff. Should probably also go to contrib/
-# 
+#
 MAKECONTRIB=$(MAKE) -C contrib EMACS="$(EMACS)" LISP="$(LISP)"
 contrib-check-% check-%:
 	$(MAKECONTRIB) $(@:contrib-%=%)

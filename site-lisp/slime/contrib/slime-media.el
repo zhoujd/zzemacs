@@ -11,13 +11,14 @@
    (add-hook 'slime-event-hooks 'slime-dispatch-media-event)))
 
 (defun slime-dispatch-media-event (event)
-  (destructure-case event
+  (slime-dcase event
     ((:write-image image string)
      (let ((image (find-image image)))
        (slime-media-insert-image image string))
      t)
     ((:popup-buffer bufname string mode)
-     (slime-with-popup-buffer (bufname :mode mode :connection t :package t)
+     (slime-with-popup-buffer (bufname :connection t :package t)
+       (when mode (funcall mode))
        (princ string)
        (goto-char (point-min)))
      t)

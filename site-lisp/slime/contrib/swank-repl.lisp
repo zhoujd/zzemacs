@@ -1,8 +1,77 @@
 ;;; swank-repl.lisp --- Server side part of the Lisp listener.
 ;;
 ;; License: public domain
+(in-package swank)
 
-(in-package :swank)
+(defpackage swank-repl
+  (:use cl swank-backend)
+  (:export *send-repl-results-function*)
+  (:import-from
+   swank
+
+   *default-worker-thread-bindings*
+
+   *loopback-interface*
+
+   add-hook
+   *connection-closed-hook*
+
+   eval-region
+   with-buffer-syntax
+
+   connection
+   connection.socket-io
+   connection.repl-results
+   connection.user-input
+   connection.user-output
+   connection.user-io
+   connection.trace-output
+   connection.dedicated-output
+   connection.env
+
+   multithreaded-connection
+   mconn.active-threads
+   mconn.repl-thread
+   mconn.auto-flush-thread
+   use-threads-p
+
+   *emacs-connection*
+   default-connection
+   with-connection
+
+   send-to-emacs
+   *communication-style*
+   handle-requests
+   wait-for-event
+   make-tag
+   thread-for-evaluation
+
+   authenticate-client
+   encode-message
+
+   auto-flush-loop
+   clear-user-input
+
+   current-thread-id
+   cat
+   with-struct*
+   with-retry-restart
+   with-bindings
+
+   package-string-for-prompt
+   find-external-format-or-lose
+
+   defslimefun
+
+   ;; FIXME: those should be exported from swank-repl only, but how to
+   ;; do that whithout breaking init files?
+   *use-dedicated-output-stream*
+   *dedicated-output-stream-port*
+   *globally-redirect-io*
+
+   ))
+
+(in-package swank-repl)
 
 (defvar *use-dedicated-output-stream* nil
   "When T swank will attempt to create a second connection to Emacs
@@ -133,9 +202,10 @@ This is an optimized way for Lisp to deliver output to Emacs."
               (*query-io*        . ,(@ user-io))
               (*terminal-io*     . ,(@ user-io))))
       (maybe-redirect-global-io conn)
+      (add-hook *connection-closed-hook* 'update-redirection-after-close)
       (typecase conn
 	(multithreaded-connection
-	 (setf (mconn.repl-thread conn) 
+	 (setf (mconn.repl-thread conn)
 	       (spawn-repl-thread conn "repl-thread"))))
       (list (package-name *package*)
             (package-string-for-prompt *package*)))))
@@ -165,6 +235,22 @@ This is an optimized way for Lisp to deliver output to Emacs."
 
 (defvar *listener-eval-function* 'repl-eval)
 
+(defvar *listener-saved-value* nil)
+
+(defslimefun listener-save-value (slimefun &rest args)
+  "Apply SLIMEFUN to ARGS and save the value.
+The saved value should be visible to all threads and retrieved via
+LISTENER-GET-VALUE."
+  (setq *listener-saved-value* (apply slimefun args))
+  t)
+
+(defslimefun listener-get-value ()
+  "Get the last value saved by LISTENER-SAVE-VALUE.
+The value should be produced as if it were requested through
+LISTENER-EVAL directly, so that spacial variables *, etc are set."
+  (listener-eval (let ((*package* (find-package :keyword)))
+                   (write-to-string '*listener-saved-value*))))
+
 (defslimefun listener-eval (string &key (window-width nil window-width-p))
   (if window-width-p
       (let ((*print-right-margin* window-width))
@@ -172,15 +258,11 @@ This is an optimized way for Lisp to deliver output to Emacs."
       (funcall *listener-eval-function* string)))
 
 (defslimefun clear-repl-variables ()
-  (let ((variables '(*** ** * /// // / +++ ++ +
-                     *last-repl-form*
-                     *last-repl-values*)))
+  (let ((variables '(*** ** * /// // / +++ ++ +)))
     (loop for variable in variables
        do (setf (symbol-value variable) nil))))
 
 (defvar *send-repl-results-function* 'send-repl-results-to-emacs)
-(defvar *last-repl-form* nil)
-(defvar *last-repl-values* nil)
 
 (defun repl-eval (string)
   (clear-user-input)
@@ -188,12 +270,10 @@ This is an optimized way for Lisp to deliver output to Emacs."
     (with-retry-restart (:msg "Retry SLIME REPL evaluation request.")
       (track-package
        (lambda ()
-         (setq *** **  ** *  * (car *last-repl-values*)
-                   /// //  // /  / *last-repl-values*
-                   +++ ++  ++ +  + *last-repl-form*)
          (multiple-value-bind (values last-form) (eval-region string)
-           (setq *last-repl-form* last-form
-                 *last-repl-values* values)
+           (setq *** **  ** *  * (car values)
+                 /// //  // /  / values
+                 +++ ++  ++ +  + last-form)
            (funcall *send-repl-results-function* values))))))
   nil)
 
@@ -365,7 +445,5 @@ NIL if streams are not globally redirected.")
         ;; No more connections, revert to the real streams.
         (progn (revert-global-io-redirection)
                (setq *global-stdio-connection* nil)))))
-
-(add-hook *connection-closed-hook* 'update-redirection-after-close)
 
 (provide :swank-repl)

@@ -1,4 +1,8 @@
 (require 'slime)
+(require 'bridge)
+(require 'cl-lib)
+(eval-when-compile
+  (require 'cl))
 
 (define-slime-contrib slime-presentations
   "Imitate LispM presentations."
@@ -12,10 +16,11 @@
              (lambda ()
                ;; Respect the syntax text properties of presentation.
                (set (make-local-variable 'parse-sexp-lookup-properties) t)
-               (slime-add-local-hook 'after-change-functions
-                                     'slime-after-change-function)))
+               (add-hook 'after-change-functions
+                         'slime-after-change-function 'append t)))
    (add-hook 'slime-event-hooks 'slime-dispatch-presentation-event)
    (setq slime-write-string-function 'slime-presentation-write)
+   (add-hook 'slime-connected-hook 'slime-presentations-on-connected)
    (add-hook 'slime-repl-return-hooks 'slime-presentation-on-return-pressed)
    (add-hook 'slime-repl-current-input-hooks 'slime-presentation-current-input)
    (add-hook 'slime-open-stream-hooks 'slime-presentation-on-stream-open)
@@ -97,7 +102,7 @@ TARGET can be nil (regular process output) or :repl-result."
              (id (car (read-from-string match))))
         (slime-mark-presentation-end id))))
 
-(defstruct slime-presentation text id)
+(cl-defstruct slime-presentation text id)
 
 (defvar slime-presentation-syntax-table
   (let ((table (copy-syntax-table lisp-mode-syntax-table)))
@@ -146,6 +151,8 @@ RESULT-P decides whether a face for a return value or output text is used."
       ;; In these cases the mouse-face text properties need to take over ---
       ;; but they do not give nested highlighting.
       (slime-ensure-presentation-overlay start end presentation))))
+
+(defvar slime-presentation-map (make-sparse-keymap))
 
 (defun slime-ensure-presentation-overlay (start end presentation)
   (unless (cl-find presentation (overlays-at start)
@@ -437,16 +444,27 @@ Also return the start position, end position, and buffer of the presentation."
       (when presentation
         (slime-M-.-presentation presentation start end (current-buffer) where)))))
 
-
 (defun slime-copy-presentation-to-repl (presentation start end buffer)
-  (with-current-buffer buffer
-    (slime-repl-send-string
-     (format "%s"
-             `(cl:nth-value
-               0
-               (swank:lookup-presented-object
-                ',(slime-presentation-id presentation)))))
-    (slime-repl)))
+  (let ((text (with-current-buffer buffer
+                ;; we use the buffer-substring rather than the
+                ;; presentation text to capture any overlays
+                (buffer-substring start end)))
+        (id (slime-presentation-id presentation)))
+    (unless (integerp id)
+      (setq id (slime-eval `(swank:lookup-and-save-presented-object-or-lose ',id))))
+    (unless (eql major-mode 'slime-repl-mode)
+      (slime-switch-to-output-buffer))
+    (cl-flet ((do-insertion ()
+                (unless (looking-back "\\s-" (- (point) 1))
+                  (insert " "))
+                (slime-insert-presentation text id)
+                (unless (or (eolp) (looking-at "\\s-"))
+                  (insert " "))))
+      (if (>= (point) slime-repl-prompt-start-mark)
+          (do-insertion)
+        (save-excursion
+          (goto-char (point-max))
+          (do-insertion))))))
 
 (defun slime-copy-presentation-at-mouse-to-repl (event)
   (interactive "e")
@@ -575,8 +593,6 @@ A negative argument means move backward instead."
 	(multiple-value-bind (presentation start end)
 	    (slime-presentation-around-or-before-point-or-error p)
 	  (goto-char start)))))))
-
-(defvar slime-presentation-map (make-sparse-keymap))
 
 (define-key  slime-presentation-map [mouse-2] 'slime-copy-or-inspect-presentation-at-mouse)
 (define-key  slime-presentation-map [mouse-3] 'slime-presentation-menu)
@@ -757,7 +773,7 @@ output; otherwise the new input is appended."
 ;;; hook functions (hard to isolate stuff)
 
 (defun slime-dispatch-presentation-event (event)
-  (destructure-case event
+  (slime-dcase event
     ((:presentation-start id &optional target)
      (slime-mark-presentation-start id target)
      t)
@@ -806,11 +822,12 @@ buffer. Presentations of old results are expanded into code."
     (slime-repl-recenter-if-needed)
     t))
 
+(defun slime-presentation-bridge-insert (process output)
+  (slime-output-filter process (or output "")))
+
 (defun slime-presentation-on-stream-open (stream)
-  (require 'bridge)
-  (defun bridge-insert (process output)
-    (slime-output-filter process (or output "")))
   (install-bridge)
+  (setq bridge-insert-function #'slime-presentation-bridge-insert)
   (setq bridge-destination-insert nil)
   (setq bridge-source-insert nil)
   (setq bridge-handlers
@@ -834,7 +851,7 @@ even on Common Lisp implementations without weak hash tables."
 (defun slime-presentation-inspector-insert-ispec (ispec)
   (if (stringp ispec)
       (insert ispec)
-    (destructure-case ispec
+    (slime-dcase ispec
       ((:value string id)
        (slime-propertize-region
            (list 'slime-part-number id
@@ -851,7 +868,10 @@ even on Common Lisp implementations without weak hash tables."
 
 (defun slime-presentation-sldb-insert-frame-variable-value (value frame index)
   (slime-insert-presentation
-   (in-sldb-face local-value value)
+   (sldb-in-face local-value value)
    `(:frame-var ,slime-current-thread ,(car frame) ,index) t))
+
+(defun slime-presentations-on-connected ()
+  (slime-eval-async `(swank:init-presentations)))
 
 (provide 'slime-presentations)

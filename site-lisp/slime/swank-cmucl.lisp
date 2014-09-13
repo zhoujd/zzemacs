@@ -6,7 +6,13 @@
 ;;;
 ;;; This is the CMUCL implementation of the `swank-backend' package.
 
-(in-package :swank-backend)
+(defpackage swank-cmucl
+  (:use cl swank-backend swank-source-path-parser swank-source-file-cache))
+
+(in-package swank-cmucl)
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (require 'gray-streams))
 
 (import-swank-mop-symbols :pcl '(:slot-definition-documentation))
 
@@ -22,7 +28,7 @@
 ;;; promptly delete them from here. It is enough to be compatible with
 ;;; the latest release.
 
-(in-package :lisp)
+(in-package lisp)
 
 ;;; `READ-SEQUENCE' with large sequences has problems in 18e. This new
 ;;; definition works better.
@@ -64,7 +70,7 @@
 
   )
 
-(in-package :swank-backend)
+(in-package swank-cmucl)
 
 ;;; UTF8
 
@@ -282,124 +288,9 @@ specific functions.")
 
 
 ;;;; Stream handling
-;;; XXX: How come we don't use Gray streams in CMUCL too? -luke (15/May/2004)
 
-(defimplementation make-output-stream (write-string)
-  (make-slime-output-stream write-string))
-
-(defimplementation make-input-stream (read-string)
-  (make-slime-input-stream read-string))
-
-(defstruct (slime-output-stream
-             (:include lisp::lisp-stream
-                       (lisp::misc #'sos/misc)
-                       (lisp::out #'sos/write-char)
-                       (lisp::sout #'sos/write-string))
-             (:conc-name sos.)
-             (:print-function %print-slime-output-stream)
-             (:constructor make-slime-output-stream (output-fn)))
-  (output-fn nil :type function)
-  (buffer (make-string 4000) :type string)
-  (index 0 :type kernel:index)
-  (column 0 :type kernel:index))
-
-(defun %print-slime-output-stream (s stream d)
-  (declare (ignore d))
-  (print-unreadable-object (s stream :type t :identity t)))
-
-(defun sos/write-char (stream char)
-  (let ((pending-output nil))
-    (system:without-interrupts 
-      (let ((buffer (sos.buffer stream))
-            (index (sos.index stream)))
-        (setf (schar buffer index) char)
-        (setf (sos.index stream) (1+ index))
-        (incf (sos.column stream))
-        (when (char= #\newline char)
-          (setf (sos.column stream) 0)
-          #+(or)(setq pending-output (sos/reset-buffer stream))
-          )
-        (when (= index (1- (length buffer)))
-          (setq pending-output (sos/reset-buffer stream)))))
-    (when pending-output
-      (funcall (sos.output-fn stream) pending-output)))
-  char)
-
-(defun sos/write-string (stream string start end)
-  (loop for i from start below end 
-        do (sos/write-char stream (aref string i))))
-
-(defun sos/flush (stream)
-  (let ((string (sos/reset-buffer stream)))
-    (when string
-      (funcall (sos.output-fn stream) string))
-    nil))
-
-(defun sos/reset-buffer (stream)
-  (system:without-interrupts 
-    (let ((end (sos.index stream)))
-      (unless (zerop end)
-        (prog1 (subseq (sos.buffer stream) 0 end)
-          (setf (sos.index stream) 0))))))
-
-(defun sos/misc (stream operation &optional arg1 arg2)
-  (declare (ignore arg1 arg2))
-  (case operation
-    ((:force-output :finish-output) (sos/flush stream))
-    (:charpos (sos.column stream))
-    (:line-length 75)
-    (:file-position nil)
-    (:element-type 'base-char)
-    (:get-command nil)
-    (:close nil)
-    (t (format *terminal-io* "~&~Astream: ~S~%" stream operation))))
-
-(defstruct (slime-input-stream
-             (:include string-stream
-                       (lisp::in #'sis/in)
-                       (lisp::misc #'sis/misc))
-             (:conc-name sis.)
-             (:print-function %print-slime-output-stream)
-             (:constructor make-slime-input-stream (input-fn)))
-  (input-fn nil :type function)
-  (buffer   ""  :type string)
-  (index    0   :type kernel:index))
-
-(defun sis/in (stream eof-errorp eof-value)
-  (let ((index (sis.index stream))
-	(buffer (sis.buffer stream)))
-    (when (= index (length buffer))
-      (let ((string (funcall (sis.input-fn stream))))
-        (cond ((zerop (length string))
-               (return-from sis/in
-                 (if eof-errorp
-                     (error 'end-of-file :stream stream)
-                     eof-value)))
-              (t
-               (setf buffer string)
-               (setf (sis.buffer stream) buffer)
-               (setf index 0)))))
-    (prog1 (aref buffer index)
-      (setf (sis.index stream) (1+ index)))))
-
-(defun sis/misc (stream operation &optional arg1 arg2)
-  (declare (ignore arg2))
-  (ecase operation
-    (:file-position nil)
-    (:file-length nil)
-    (:unread (setf (aref (sis.buffer stream) 
-			 (decf (sis.index stream)))
-		   arg1))
-    (:clear-input 
-     (setf (sis.index stream) 0
-			(sis.buffer stream) ""))
-    (:listen (< (sis.index stream) (length (sis.buffer stream))))
-    (:charpos nil)
-    (:line-length nil)
-    (:get-command nil)
-    (:element-type 'base-char)
-    (:close nil)
-    (:interactive-p t)))
+(defimplementation gray-package-name ()
+  "EXT")
 
 
 ;;;; Compilation Commands
@@ -759,12 +650,6 @@ This is a workaround for a CMUCL bug: XREF records are cumulative."
   "When true don't handle errors while looking for definitions.
 This is useful when debugging the definition-finding code.")
 
-(defvar *source-snippet-size* 256
-  "Maximum number of characters in a snippet of source code.
-Snippets at the beginning of definitions are used to tell Emacs what
-the definitions looks like, so that it can accurately find them by
-text search.")
-
 (defmacro safe-definition-finding (&body body)
   "Execute BODY and return the source-location it returns.
 If an error occurs and `*debug-definition-finding*' is false, then
@@ -1115,25 +1000,36 @@ NAME can any valid function name (e.g, (setf car))."
       (let ((class (kernel::find-class name nil)))
         (etypecase class
           (null '())
-          (kernel::structure-class 
+          (kernel::structure-class
            (list (list `(defstruct ,name) (dd-location (find-dd name)))))
           #+(or)
           (conditions::condition-class
-           (list (list `(define-condition ,name) 
+           (list (list `(define-condition ,name)
                        (condition-class-location class))))
           (kernel::standard-class
-           (list (list `(defclass ,name) 
-                       (class-location (find-class name)))))
-          ((or kernel::built-in-class 
+           (list (list `(defclass ,name)
+                       (pcl-class-location (find-class name)))))
+          ((or kernel::built-in-class
                conditions::condition-class
                kernel:funcallable-structure-class)
-           (list (list `(kernel::define-type-class ,name)
-                       `(:error 
-                         ,(format nil "No source info for ~A" name)))))))))
+           (list (list `(class ,name) (class-location class))))))))
 
-(defun class-location (class)
+(defun pcl-class-location (class)
   "Return the `defclass' location for CLASS."
   (definition-source-location class (pcl:class-name class)))
+
+;; FIXME: eval used for backward compatibility.
+(defun class-location (class)
+  (declare (type kernel::class class))
+  (let ((name (kernel:%class-name class)))
+    (multiple-value-bind (loc found?)
+        (let ((x (ignore-errors
+                   (multiple-value-list
+                    (eval `(ext:info :source-location :class ',name))))))
+          (values-list x))
+      (cond (found? (resolve-source-location loc))
+            (`(:error
+               ,(format nil "No location recorded for class: ~S" name)))))))
 
 (defun find-dd (name)
   "Find the defstruct-definition by the name of its structure-class."

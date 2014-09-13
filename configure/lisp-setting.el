@@ -32,6 +32,11 @@
         (ecl   ("ecl"))
         ))
 
+;;slime start entry
+(defslime-start sbcl  "sbcl --noinform")
+(defslime-start clisp "clisp")
+(defslime-start ecl   "ecl")
+
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 ;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system
 
@@ -104,7 +109,6 @@
 ;; file with "sawfishrc" or "jl" (John Lisp) suffix
 (add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
-
 
 ;;connect stumpwm slime swank
 (defun slime-connect-stumpwm ()

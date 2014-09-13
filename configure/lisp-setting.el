@@ -1,7 +1,6 @@
 ;;Lisp programme setting
 
 (zz-load-path "site-lisp/slime")
-(zz-load-path "site-lisp/slime/contrib")
 
 ;;Common Lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")

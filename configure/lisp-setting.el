@@ -24,6 +24,7 @@
     (list (cons "\\.stumpwmrc$" 'lisp-mode))  ;;stumpwm configure file
     auto-mode-alist))
 
+;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 (setq slime-lisp-implementations
       '(
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
@@ -32,12 +33,10 @@
         ))
 
 ;;slime start entry
-(defslime-start sbcl  "sbcl --noinform")
-(defslime-start clisp "clisp")
-(defslime-start ecl   "ecl")
-
-;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
-;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system
+(unless-ms-windows
+ (defslime-start sbcl  "sbcl --noinform")
+ (defslime-start clisp "clisp")
+ (defslime-start ecl   "ecl"))
 
 ;;reset slime temp directory
 (setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))

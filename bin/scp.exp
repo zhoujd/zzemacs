@@ -1,5 +1,7 @@
 #!/usr/bin/expect -f
 
+##http://en.wikipedia.org/wiki/Expect
+
 ##sudo apt-get install expect
 ##sudo yum install expect
 

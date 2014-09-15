@@ -3,6 +3,11 @@
 ##sudo apt-get install expect
 ##sudo yum install expect
 
+if {$argc < 2} {
+    puts stderr "Usage: $argv0 <passwd> <from> <to>"
+    exit 1
+}
+
 set timeout 0
 set passwd [lindex $argv 0]
 set from   [lindex $argv 1]

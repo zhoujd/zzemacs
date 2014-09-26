@@ -83,3 +83,7 @@ Linux something
 
 8. Q/A web for Linux/FreeBSD/Unix like
     http://stackexchange.com/
+
+9. CD/DVD image burning
+    cdrecord -scanbus ==> you well get dev=*,*,*
+    cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso

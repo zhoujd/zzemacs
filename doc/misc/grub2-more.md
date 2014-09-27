@@ -13,9 +13,17 @@ Grub2 more
             chainloader +1
         }
 
+        
+
         ==>>
         /etc/grub.d/40_custom***
         rm /boot/grub2/grub.cfg
         sudo grub2-mkconfig > /boot/grub2/grub.cfg
         sudo update-grub
+
+3. grub configfile
+
+        title SLES 11 SP3 (/dev/sda9)
+	    root (hd0,8)
+	    configfile /boot/grub/menu.lst
 

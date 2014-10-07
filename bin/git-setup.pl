@@ -60,5 +60,6 @@ my $contents = <<EOF;
 EOF
 
 print "$contents\n";
+print "$^O\n";
 
-print "git diff setup end ...\n"
+print "git diff setup end ...\n";

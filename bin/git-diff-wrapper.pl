@@ -27,7 +27,7 @@ sub diff_emacs {
                      --eval \"(ediff-sample-diff \"$diff_a\" \"$diff_b\")\" \
                      --eval \"(message \"emacs diff finished.\")\"";
 
-
+    print $cmd."\n";
 }
 
 sub main {

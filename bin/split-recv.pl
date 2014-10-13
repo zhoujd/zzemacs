@@ -11,6 +11,8 @@ $| = 1;
 sub usage {
     print "First remote: split -b 200M <filename>\n";
     print "Second loccal: $0 -f remote-folder -n num\n";
+
+    exit 1;
 }
 
 my @file_trunks = qw |

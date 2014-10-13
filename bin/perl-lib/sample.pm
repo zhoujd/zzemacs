@@ -16,3 +16,4 @@ sub is_windows {
     }
 }
 
+1;

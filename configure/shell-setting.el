@@ -233,8 +233,8 @@ Dmitriy Igrishin's patched version of comint.el."
                 (shell buf-name))))
              (shell buf-name))
          (shell buf-name))))
-  (message "switch to %s" buf-name)
-  (delete-other-windows))
+  ;;(delete-other-windows)
+  (message "switch to %s" buf-name))
 
 ;; switch to named term
 (setq multi-term-buffer-name "term")

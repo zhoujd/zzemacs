@@ -4,7 +4,7 @@
 #
 # Joe Moss (joseph.v.moss@intel.com) - 9/27/2014
 
-mkdir ./tmp
+mkdir -p ./tmp
 DIR="./tmp" || exit 1
 cd $DIR
 

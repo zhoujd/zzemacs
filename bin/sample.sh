@@ -12,6 +12,17 @@ try_command()
     return $status
 }
 
+confirm_execute()
+{
+    echo -n $1
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            $2 $3 $4 $5 $6 $7 $8 $9
+            ;;
+    esac
+}
+
 Linux_sample ()
 {
     ## Dectect OS version
@@ -61,4 +72,8 @@ fi
 
 
 ## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
-#DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+## only for bash
+#script_full_path()
+#{
+#    cd $(dirname "${BASH_SOURCE}") && pwd
+#}

@@ -73,6 +73,11 @@
 (defmacro start-quick-shell (name)
   `(lambda () (interactive) (start-shell ,name)))
 
+;;start slime
+(defmacro defslime-start (name lisp)
+ `(defun ,name ()
+     (interactive)
+     (slime ,lisp)))
 
 (provide 'macro-setting)
 

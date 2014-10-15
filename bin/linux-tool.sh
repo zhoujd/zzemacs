@@ -24,6 +24,9 @@ Install_package_ubuntu()
 
     ##easy split windows for multi-term
     sudo apt-get install -y terminator
+
+    ##for gnome
+    sudo apt-get install -y gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
 }
 
 ##package for ubuntu

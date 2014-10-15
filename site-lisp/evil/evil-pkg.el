@@ -1,5 +1,6 @@
 (define-package
   "evil"
-  "0.0.0"
+  "1.0.9"
   "Extensible Vi layer for Emacs."
-  '((undo-tree "0.3.0")))
+  '((undo-tree "0.6.3")
+    (goto-chg "1.6")))

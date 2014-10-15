@@ -20,6 +20,9 @@ SELF_BIN_PATH=$(cd $SETUP_ROOT/../bin && pwd)
 Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
+# add for LS_COLORS
+alias ls='ls --color=auto'
+
 # add zzemacs/bin to PATH for zachary zhou
 if [ -d ${SELF_BIN_PATH} ] ; then
     export PATH=${SELF_BIN_PATH}:\$PATH

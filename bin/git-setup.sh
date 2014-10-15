@@ -6,7 +6,7 @@ echo git diff setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
     GIT_SETUP_HOME=`pwd -W`
-    SHELL=$(cd $ZZNIX_HOME ; pwd -W)/bin/sh
+    SHELL=$(cd $ZZNIX_HOME && pwd -W)/bin/sh
 else
     GIT_SETUP_HOME=`pwd`
 fi
@@ -30,6 +30,11 @@ git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"
 git config --global color.ui    "true"
 
+## cr && lf
+git config --global core.autocrlf false
+git config --global core.safecrlf true
+git config --global core.filemode false
+
 ## alias
 git config --global alias.st    "status"
 git config --global alias.ci    "commit"
@@ -44,6 +49,7 @@ git config --global alias.lol   "log --graph --decorate --pretty=oneline --abbre
 git config --global alias.lola  "log --graph --decorate --pretty=oneline --abbrev-commit --all"
 git config --global alias.ls    "ls-files"
 git config --global alias.ign   "ls-files -o -i --exclude-standard"
+git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(blue)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 
 ## set http proxy
 if [ ! $http_proxy = "" ]; then

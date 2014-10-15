@@ -5,8 +5,12 @@
 # Change following lines
 
 APP_BIN=hg
+SRCNAME="HG repo"
 
-SRCNAME="package source"
+if [ ! -s "$(hg root)" ] ; then
+    echo "`basename $0` should be run under hg repo"
+    exit 1
+fi
 
 STATE=$1
 if [ ! $2 = "" ]; then

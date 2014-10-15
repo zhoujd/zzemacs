@@ -1,6 +1,7 @@
 ;;Lisp programme setting
 
 (zz-load-path "site-lisp/slime")
+
 ;;Common Lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")
 (add-hook 'lisp-mode-hook
@@ -11,7 +12,7 @@
 (when-emacs24-3
  (eval-after-load "cl-indent"
    '(progn
-     (put 'cl-flet 'common-lisp-indent-function 
+     (put 'cl-flet 'common-lisp-indent-function
       (get 'flet 'common-lisp-indent-function))
      )))
 
@@ -23,6 +24,7 @@
     (list (cons "\\.stumpwmrc$" 'lisp-mode))  ;;stumpwm configure file
     auto-mode-alist))
 
+;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 (setq slime-lisp-implementations
       '(
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
@@ -30,8 +32,11 @@
         (ecl   ("ecl"))
         ))
 
-;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
-;;(setq inferior-lisp-program "sbcl.exe --noinform") ; your Lisp system
+;;slime start entry
+(unless-ms-windows
+ (defslime-start sbcl  "sbcl --noinform")
+ (defslime-start clisp "clisp")
+ (defslime-start ecl   "ecl"))
 
 ;;reset slime temp directory
 (setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))
@@ -103,11 +108,44 @@
 (add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
-
 ;;connect stumpwm slime swank
 (defun slime-connect-stumpwm ()
   (interactive)
   (slime-connect "127.0.0.1" 4405))
+
+;;require paredit
+(require 'paredit)
+(dolist (hook
+          (list
+           'emacs-lisp-mode-hook
+           'eval-expression-minibuffer-setup-hook
+           'ielm-mode-hook
+           'lisp-mode-hook
+           'lisp-interaction-mode-hook
+           'scheme-mode-hook
+           ))
+        (add-hook hook 'enable-paredit-mode))
+
+;;Advanced highlighting of matching parentheses
+(require 'mic-paren)
+(paren-activate)
+(setf paren-priarity 'close)
+
+;;Provide a face for parens in lisp modes
+(require 'parenface)
+
+;;Bridge process filter
+(require 'bridge)
+(autoload 'install-bridge "bridge" "Install a process bridge." t)
+(setq bridge-hook 
+      '(lambda ()
+         ;; Example options
+         (setq bridge-source-insert nil) ;Don't insert in source buffer
+         (setq bridge-destination-insert nil) ;Don't insert in dest buffer
+         ;; Handle copy-it messages yourself
+         (setq bridge-handlers
+               '(("copy-it" . my-copy-handler)))))
+
 
 (provide 'lisp-setting)
 

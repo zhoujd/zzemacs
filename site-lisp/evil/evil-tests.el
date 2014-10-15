@@ -1,5 +1,32 @@
 ;; evil-tests.el --- unit tests for Evil -*- coding: utf-8 -*-
 
+;; Author: Vegard Øye <vegard_oye at hotmail.com>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0.9
+
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
 ;; This file is for developers. It runs some tests on Evil.
 ;; To load it, run the Makefile target "make test" or add
 ;; the following lines to .emacs:
@@ -37,6 +64,8 @@
 (require 'elp)
 (require 'ert)
 (require 'evil)
+
+;;; Code:
 
 (defvar evil-tests-run nil
   "*Run Evil tests.")
@@ -108,8 +137,7 @@ with `M-x evil-tests-run'"))
 The following optional keywords specify the buffer's properties:
 
 :state STATE            The initial state, defaults to `normal'.
-:visual TYPE            The Visual type, defaults to
-                        `evil-visual-char'.
+:visual SELECTION       The Visual selection, defaults to `char'.
 :point-start STRING     String for matching beginning of point,
                         defaults to \"[\".
 :point-end STRING       String for matching end of point,
@@ -169,6 +197,7 @@ then the test fails unless an error of type SYMBOL is raised.
                ;; necessary for keyboard macros to work
                (switch-to-buffer-other-window (current-buffer))
                (buffer-enable-undo)
+               (undo-tree-mode 1)
                ;; parse remaining forms
                ,@(mapcar
                   #'(lambda (form)
@@ -514,8 +543,7 @@ the end of the execution of BODY."
 (defun evil-test-state-keymaps (state)
   "Verify that STATE's keymaps are pushed to the top"
   (let ((actual (evil-state-keymaps state))
-        (expected `((evil-esc-mode . ,evil-esc-map)
-                    (,(evil-state-property state :local)
+        (expected `((,(evil-state-property state :local)
                      . , (evil-state-property state :local-keymap t))
                     (,(evil-state-property state :mode)
                      . ,(evil-state-property state :keymap t)))))
@@ -523,8 +551,7 @@ the end of the execution of BODY."
     (cond
      ((eq state 'operator)
       (setq expected
-            `((evil-esc-mode . ,evil-esc-map)
-              (evil-operator-shortcut-mode
+            `((evil-operator-shortcut-mode
                . ,evil-operator-shortcut-map)
               (evil-operator-state-local-minor-mode
                . ,evil-operator-state-local-map)
@@ -543,10 +570,7 @@ the end of the execution of BODY."
       (should (equal actual expected))
       (dolist (map actual)
         (setq map (cdr-safe map))
-        (should (keymapp map))
-        ;; Emacs state disables `evil-esc-map'
-        (unless (and (eq state 'emacs) (eq map evil-esc-map))
-          (should (memq map (current-active-maps))))))))
+        (should (keymapp map))))))
 
 (ert-deftest evil-test-exit-normal-state ()
   "Enter Normal state and then disable all states"
@@ -588,6 +612,23 @@ the end of the execution of BODY."
     (evil-local-mode -1)
     (evil-test-local-mode-disabled)
     (evil-test-change-state 'normal)))
+
+(ert-deftest evil-test-execute-in-normal-state ()
+  "Test `evil-execute-in-normal-state'."
+  :tags '(evil)
+  (ert-info ("Execute normal state command in insert state")
+    (evil-test-buffer
+      "[a]bcdef\n"
+      ("I")
+      (should (evil-insert-state-p))
+      ("\C-ox")
+      (ert-info ("Should return to insert state")
+        (should (evil-insert-state-p)))
+      "[b]cdef\n"
+      ("\C-oA")
+      (ert-info ("Should return to insert state after insert state command")
+        (should (evil-insert-state-p)))
+      ("bcdef[]\n"))))
 
 (defun evil-test-suppress-keymap (state)
   "Verify that `self-insert-command' is suppressed in STATE"
@@ -1074,6 +1115,32 @@ If nil, KEYS is used."
       ("w.")
       ";; (This) (buffer[)] is for notes you don't want to save")))
 
+(ert-deftest evil-test-repeat-register ()
+  "Test repeating a register command."
+  :tags '(evil repeat)
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4\n"
+    ("\"addyy\"aP")
+    "[l]ine 1\nline 2\nline 3\nline 4\n"
+    (".")
+    "[l]ine 1\nline 1\nline 2\nline 3\nline 4\n"))
+
+(ert-deftest evil-test-repeat-numeric-register ()
+  "Test repeating a command with a numeric register."
+  :tags '(evil repeat)
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4\nline 5\n"
+    ("dd...")
+    "[l]ine 5\n"
+    ("\"1P")
+    "[l]ine 4\nline 5\n"
+    (".")
+    "[l]ine 3\nline 4\nline 5\n"
+    (".")
+    "[l]ine 2\nline 3\nline 4\nline 5\n"
+    (".")
+    "[l]ine 1\nline 2\nline 3\nline 4\nline 5\n"))
+
 (ert-deftest evil-test-cmd-replace-char ()
   "Calling `evil-replace-char' should replace characters"
   :tags '(evil repeat)
@@ -1082,7 +1149,21 @@ If nil, KEYS is used."
     ("r5")
     "[5]; This buffer is for notes you don't want to save"
     ("3rX")
-    "XX[X]This buffer is for notes you don't want to save"))
+    "XX[X]This buffer is for notes you don't want to save")
+  (ert-info ("Replace digraph")
+    (evil-test-buffer
+      "[;]; This buffer is for notes you don't want to save"
+      ("re'")
+      "[é]; This buffer is for notes you don't want to save"
+      ("3rc*")
+      "ξξ[ξ]This buffer is for notes you don't want to save"))
+  (ert-info ("Replacing \\n should insert only one newline")
+    (evil-test-buffer
+      "(setq var xxx [y]yy zzz)\n"
+      (emacs-lisp-mode)
+      (setq indent-tabs-mode nil)
+      ("2r\n")
+      "(setq var xxx \n      [y] zzz)\n")))
 
 (ert-deftest evil-test-insert-with-count ()
   "Test `evil-insert' with repeat count"
@@ -1124,6 +1205,17 @@ If nil, KEYS is used."
       ("11.")
       "ABCABCABCABCABCABCABCABCABCABABCABCABCABCABCABCABCABCABCABCAB[C]C;; \
 This buffer is for notes")))
+
+(ert-deftest evil-test-repeat-error ()
+  "Test whether repeat returns to normal state in case of an error."
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4"
+    ("ixxx" [down] [down] [home] "yyy" [escape])
+    "xxxline 1\nline 2\nyy[y]line 3\nline 4"
+    (should-error (execute-kbd-macro "j^."))
+    (should (evil-normal-state-p))
+    ("^")
+    "xxxline 1\nline 2\nyyyline 3\n[x]xxline 4"))
 
 (ert-deftest evil-test-insert-vcount ()
   "Test `evil-insert' with vertical repeating"
@@ -1645,6 +1737,43 @@ New Tex[t]
 ;; then enter the text QQQthat file's own buffer.
 ")))
 
+(ert-deftest evil-visual-block-append ()
+  "Test appending in visual block."
+  :tags '(evil visual insert)
+  (ert-info ("Simple append")
+    (evil-test-buffer
+      "l[i]ne 1\nline 2\nline 3\n"
+      ((kbd "C-v") "jjllAXXX" [escape])
+      "lineXX[X] 1\nlineXXX 2\nlineXXX 3\n"))
+  (ert-info ("Append after empty lines")
+    (evil-test-buffer
+      "line 1l[i]ne 1\nline 2\nline 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jjllAXXX" [escape])
+      "line 1lineXX[X] 1\nline 2    XXX\nline 3lineXXX 3\n"))
+  (ert-info ("Append after empty first line")
+    (evil-test-buffer
+      "l[i]ne 1line 1\nline 2\nline 3line 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jj3feAXXX" [escape])
+      "line 1line 1    XX[X]\nline 2          XXX\nline 3line 3lineXXX 3\n"))
+  (ert-info ("Append after end of lines")
+    (evil-test-buffer
+      "line 1l[i]ne 1line 1\nline 2\nline 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jj$AXXX" [escape])
+      "line 1line 1line 1XX[X]\nline 2XXX\nline 3line 3XXX\n")))
+
+(ert-deftest evil-test-repeat-digraph ()
+  "Test repeat of insertion of a digraph."
+  :tags '(evil digraph repeat)
+  (evil-test-buffer
+    "Line with ['] several apostrophes ', yeah."
+    ("s" (kbd "C-k") "'9" [escape])
+    "Line with [’] several apostrophes ', yeah."
+    ("f'.")
+    "Line with ’ several apostrophes [’], yeah."))
+
 ;;; Operators
 
 (ert-deftest evil-test-keypress-parser ()
@@ -1676,7 +1805,12 @@ New Tex[t]
     (ert-info ("Treat 0 as a motion")
       (should (equal
                (evil-keypress-parser '(?0))
-               '(evil-digit-argument-or-evil-beginning-of-line nil))))))
+               '(evil-digit-argument-or-evil-beginning-of-line nil))))
+    (ert-info ("Handle keyboard macros")
+      (evil-test-buffer
+        (define-key evil-motion-state-local-map (kbd "W") (kbd "w"))
+        (should (equal (evil-keypress-parser '(?W))
+                       '(evil-forward-word-begin nil)))))))
 
 (ert-deftest evil-test-invert-char ()
   "Test `evil-invert-char'"
@@ -1920,6 +2054,11 @@ New Tex[t]
 ;; then enter the text in that file's own buffer."
       ("2dd")
       "[;]; This buffer is for notes you don't want to save."))
+  (ert-info ("Delete last empty line")
+    (evil-test-buffer
+      "line 1\nline 2\n\n[]"
+      ("dd")
+      "line 1\nline 2\n[]"))
   (ert-info ("Delete rectangle")
     (evil-test-buffer
       "[;]; This buffer is for notes you don't want to save.
@@ -1952,7 +2091,17 @@ and for Lisp evaluation."
 ;; and for Lisp evaluatio[n]>."
       ("D")
       ";; This buffer is for[ ]
-;; and for Lisp evalua")))
+;; and for Lisp evalua"))
+  (ert-info ("Yank full block with block selection")
+    (evil-test-buffer
+      :visual block
+      "line1 l<ine1 line1 line1\nline2 line2\nline3 lin>e3 line3\n"
+      ("D")
+      "line1 [l]\nline2 l\nline3 l\n"
+      ("0P")
+      "ine1 line1 line1line1 l
+ine2            line2 l
+ine3 line3      line3 l\n")))
 
 (ert-deftest evil-test-delete-folded ()
   "Test `evil-delete' on folded lines."
@@ -1971,6 +2120,26 @@ and for Lisp evaluation."
       (hs-minor-mode 1)
       ("zm2j3dd")
       "line1\n\n[\n]last line\n")))
+
+(ert-deftest evil-test-delete-backward-word ()
+  "Test `evil-delete-backward-word' in insert state."
+  :tags '(evil)
+  (let ((evil-backspace-join-lines t))
+    (evil-test-buffer
+      "abc def\n   ghi j[k]l\n"
+      ("i" (kbd "C-w"))
+      "abc def\n   ghi [k]l\n"
+      ((kbd "C-w"))
+      "abc def\n   [k]l\n"
+      ((kbd "C-w"))
+      "abc def\n[k]l\n"
+      ((kbd "C-w"))
+      "abc def[k]l\n"))
+  (let (evil-backspace-join-lines)
+    (evil-test-buffer
+      "abc def\n[k]l\n"
+      (should-error (execute-kbd-macro (concat "i" (kbd "C-w"))))
+      "abc def\n[k]l\n")))
 
 (ert-deftest evil-test-change ()
   "Test `evil-change'"
@@ -2034,7 +2203,12 @@ ABCthen enter the text in that file's own buffer.")))
     (evil-test-buffer
       "[;] This buffer is for notes."
       ("cwABC" [escape])
-      "AB[C] This buffer is for notes.")))
+      "AB[C] This buffer is for notes."))
+  (ert-info ("Whitespace")
+    (evil-test-buffer
+      "This[ ]is a test\n"
+      ("cwABC" [escape])
+      "ThisAB[C]is a test\n")))
 
 (ert-deftest evil-test-join ()
   "Test `evil-join'"
@@ -2072,6 +2246,36 @@ Below some empty line"
       "Above some line
 AB[C]
 Below some empty line")))
+
+(ert-deftest evil-test-shift ()
+  "Test `evil-shift-right' and `evil-shift-left'."
+  :tags '(evil operator)
+  (let ((evil-shift-width 4)
+        indent-tabs-mode)
+    (ert-info ("Shift linewise")
+      (evil-test-buffer
+        "[l]ine 1\nline 2\nline 3\n"
+        ("Vj>")
+        "[ ]   line 1\n    line 2\nline 3\n"))
+    (ert-info ("Shift char selection on whole line")
+      (evil-test-buffer
+        "[l]ine 1\nline 2\nline 3\n"
+        ("v$>")
+        "[ ]   line 1\nline 2\nline 3\n"))
+    (ert-info ("Shift visual with count")
+      (evil-test-buffer
+        "[l]ine 1\nline 2\nline 3\n"
+        ("Vj3>")
+        "[ ]           line 1\n            line 2\nline 3\n"
+        ("Vj2<")
+        "[ ]   line 1\n    line 2\nline 3\n"))
+    (ert-info ("Shift in insert state")
+      (evil-test-buffer
+        "line 1\nl[i]ne 2\nline 3\n"
+        ("i\C-t\C-t")
+        "line 1\n        l[i]ne 2\nline 3\n"
+        ("\C-d")
+        "line 1\n    l[i]ne 2\nline 3\n"))))
 
 ;;; Paste
 
@@ -2131,17 +2335,17 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
   (ert-info ("Paste lines at end-of-buffer")
     (evil-test-buffer
       ";; [T]his buffer is for notes you don't want to save,
-;; and for Lisp evaluation.\n"
+;; and for Lisp evaluation."
       ("2yyG$")
       ";; This buffer is for notes you don't want to save,
-;; and for Lisp evaluation[.]\n"
+;; and for Lisp evaluation[.]"
       ("2P")
       ";; This buffer is for notes you don't want to save,
 \[;]; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
 ;; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
-;; and for Lisp evaluation.\n"))
+;; and for Lisp evaluation."))
   (ert-info ("Paste block")
     (evil-test-buffer
       "[;]; This buffer is for notes you don't want to save.
@@ -2258,10 +2462,10 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
   (ert-info ("Paste lines at end-of-buffer")
     (evil-test-buffer
       ";; [T]his buffer is for notes you don't want to save,
-;; and for Lisp evaluation.\n"
+;; and for Lisp evaluation."
       ("2yyG$")
       ";; This buffer is for notes you don't want to save,
-;; and for Lisp evaluation[.]\n"
+;; and for Lisp evaluation[.]"
       ("2p")
       ";; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
@@ -2515,21 +2719,114 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
     ";; This buffer is for notes you don't want to save.
 \[;]; This buffer is for notes you don't want to save."))
 
+(ert-deftest evil-test-visual-paste-pop ()
+  "Test `evil-paste-pop' after visual paste."
+  :tags '(evil paste)
+  (ert-info ("Visual-char paste, char paste")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^jw")
+      "word1a word1b word1c\nword2a [w]ord2b\nword3a word3b word3c word3d\n"
+      ("viwp")
+      "word1a word1b word1c\nword2a word1[b]\nword3a word3b word3c word3d\n"))
+  (ert-info ("Visual-char paste, char paste, line pop")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^jw")
+      "word1a word1b word1c\nword2a [w]ord2b\nword3a word3b word3c word3d\n"
+      ("viwp\C-p")
+      "word1a word1b word1c\nword2a \n[w]ord1a word1b word1c\n\nword3a word3b word3c word3d\n"))
+  (ert-info ("Visual-char paste, char paste, line pop, char pop")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^jw")
+      "word1a word1b word1c\nword2a [w]ord2b\nword3a word3b word3c word3d\n"
+      ("viwp\C-p\C-p")
+      "word1a word1b word1c\nword2a word1[a]\nword3a word3b word3c word3d\n"))
+  (ert-info ("Visual-line paste, char paste")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^j")
+      "word1a word1b word1c\n[w]ord2a word2b\nword3a word3b word3c word3d\n"
+      ("Vp")
+      "word1a word1b word1c\nword1[b]word3a word3b word3c word3d\n"))
+  (ert-info ("Visual-line paste, char paste, line pop")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^j")
+      "word1a word1b word1c\n[w]ord2a word2b\nword3a word3b word3c word3d\n"
+      ("Vp\C-p")
+      "word1a word1b word1c\n[w]ord1a word1b word1c\nword3a word3b word3c word3d\n"))
+  (ert-info ("Visual-line paste, char paste, line pop, char pop")
+    (evil-test-buffer
+      "[w]ord1a word1b word1c\nword2a word2b\nword3a word3b word3c word3d\n"
+      ("yiwyywyiw^j")
+      "word1a word1b word1c\n[w]ord2a word2b\nword3a word3b word3c word3d\n"
+      ("Vp\C-p\C-p")
+      "word1a word1b word1c\nword1[a]word3a word3b word3c word3d\n")))
+
 (ert-deftest evil-test-register ()
   "Test yanking and pasting to and from register."
   :tags '(evil yank paste)
+  (ert-info ("simple lower case register")
+    (evil-test-buffer
+      "[f]oo\n"
+      ("\"ayw\"aP")
+      "fo[o]foo\n"
+      ("\"ayy\"aP")
+      "[f]oofoo\nfoofoo\n"))
+  (ert-info ("upper case register")
+    (evil-test-buffer
+      "[f]oo\n"
+      ("\"ayw\"Ayw\"aP")
+      "foofo[o]foo\n"
+      ("\"ayy\"Ayy\"aP")
+      "[f]oofoofoo\nfoofoofoo\nfoofoofoo\n"))
+  (ert-info ("upper case register and lines")
+    (evil-test-buffer
+      "[l]ine 1\nline 2\nline 3\nline 4\n"
+      ("\"a2Yjj\"A2Y\"aP")
+      "line 1\nline 2\n[l]ine 1\nline 2\nline 3\nline 4\nline 3\nline 4\n"
+      ("8G\"ap")
+      "line 1\nline 2\nline 1\nline 2\nline 3\nline 4\nline 3\nline 4\n[l]ine 1\nline 2\nline 3\nline 4\n"))
+  (ert-info ("yank with count")
+    (evil-test-buffer
+      "[l]ine 1\nline 2\nline 3\n"
+      ("\"a2yw\"aP")
+      "line [1]line 1\nline 2\nline 3\n"
+      ("\"a2yy\"aP")
+      "[l]ine 1line 1\nline 2\nline 1line 1\nline 2\nline 3\n"))
+  (dolist (module '(evil-search isearch))
+    (evil-select-search-module 'evil-search-module module)
+    (ert-info ((format "special register / (module: %s)" module))
+      (evil-test-buffer
+        "[f]oo bar\n"
+        ("/bar" [return] "0i\C-r/")
+        "bar[f]oo bar\n")))
+  (ert-info ("special register :")
+    (evil-test-buffer
+      "[f]oo bar\n"
+      (":noh\ni\C-r:"))))
+
+(ert-deftest evil-test-last-insert-register ()
+  "Test last insertion register."
   (evil-test-buffer
-    "[f]oo\n"
-    ("\"aywP")
-    "fo[o]foo\n"
-    ("\"ayyP")
-    "[f]oofoo\nfoofoo\n")
+    "[l]ine 1\n"
+    ("GiABC" [escape])
+    "line 1\nAB[C]"
+    ("gg\".P")
+    "AB[C]line 1\nABC"))
+
+(ert-deftest evil-test-zero-register ()
+  "\"0 contains the last text that was yanked without specificying a register."
   (evil-test-buffer
-    "[f]oo\n"
-    ("\"ayw\"Ayw\"aP")
-    "foofo[o]foo\n"
-    ("\"ayy\"Ayy\"aP")
-    "[f]oofoofoo\nfoofoofoo\nfoofoofoo\n"))
+    "[l]ine 1\nline 2\n"
+    ("yy\"0p")
+    "line 1\n[l]ine 1\nline 2\n"
+    ("j\"ayy\"0p")
+    "line 1\nline 1\nline 2\n[l]ine 1\n" ; yanked line 2 to "a, so "0 is still line 1
+    ("kdd\"0p")
+    "line 1\nline 1\nline 1\n[l]ine 1\n"))
 
 (ert-deftest evil-test-align ()
   "Test `evil-align-left', `evil-align-right' and `evil-align-center'."
@@ -2962,7 +3259,20 @@ Below some empty line"
       ("100w")
       ";; This buffer is for notes[.]"
       (should-error (execute-kbd-macro "w"))
-      (should-error (execute-kbd-macro "10w")))))
+      (should-error (execute-kbd-macro "10w"))))
+  (ert-info ("Before last character in buffer")
+    (evil-test-buffer
+      "fo[o]."
+      ("w")
+      "foo[.]")
+    (evil-test-buffer
+      "fo[o] "
+      ("w")
+      "foo[ ]")
+    (evil-test-buffer
+      "[ ]e"
+      ("w")
+      " [e]")))
 
 (ert-deftest evil-test-forward-word-end ()
   "Test `evil-forward-word-end'"
@@ -3087,6 +3397,1462 @@ Below some empty line"))
       (should-error (execute-kbd-macro "ge"))
       (should-error (execute-kbd-macro "10ge")))))
 
+(ert-deftest evil-test-forward-word-begin-cjk ()
+  "Test `evil-forward-word-begin' on CJK words"
+  :tags '(evil motion cjk)
+  (ert-info ("Latin / numeric")
+    (evil-test-buffer
+      "[a]bcd1234"
+      ("w")
+      "abcd123[4]"))
+  (ert-info ("Latin / Kanji")
+    (evil-test-buffer
+      "[a]bcd漢字"
+      ("w")
+      "abcd[漢]字"))
+  (ert-info ("Latin / Hiragana")
+    (evil-test-buffer
+      "[a]bcdひらがな"
+      ("w")
+      "abcd[ひ]らがな"))
+  (ert-info ("Latin / Katakana")
+    (evil-test-buffer
+      "[a]bcdカタカナ"
+      ("w")
+      "abcd[カ]タカナ"))
+  (ert-info ("Latin / half-width Katakana")
+    (evil-test-buffer
+      "[a]bcdｶﾀｶﾅ"
+      ("w")
+      "abcdｶﾀｶ[ﾅ]"))
+  (ert-info ("Latin / full-width alphabet")
+    (evil-test-buffer
+      "[a]bcdＡＢＣ"
+      ("w")
+      "abcdＡＢ[Ｃ]"))
+  (ert-info ("Latin / full-width numeric")
+    (evil-test-buffer
+      "[a]bcd１２３"
+      ("w")
+      "abcd１２[３]"))
+  (ert-info ("Latin / Hangul")
+    (evil-test-buffer
+      "[a]bcd한글"
+      ("w")
+      "abcd[한]글"))
+  (ert-info ("numeric / Latin")
+    (evil-test-buffer
+      "[1]234abcd"
+      ("w")
+      "1234abc[d]"))
+  (ert-info ("numeric / Kanji")
+    (evil-test-buffer
+      "[1]234漢字"
+      ("w")
+      "1234[漢]字"))
+  (ert-info ("numeric / Hiragana")
+    (evil-test-buffer
+      "[1]234ひらがな"
+      ("w")
+      "1234[ひ]らがな"))
+  (ert-info ("numeric / Katakana")
+    (evil-test-buffer
+      "[1]234カタカナ"
+      ("w")
+      "1234[カ]タカナ"))
+  (ert-info ("numeric / half-width Katakana")
+    (evil-test-buffer
+      "[1]234ｶﾀｶﾅ"
+      ("w")
+      "1234ｶﾀｶ[ﾅ]"))
+  (ert-info ("numeric / full-width alphabet")
+    (evil-test-buffer
+      "[1]234ＡＢＣ"
+      ("w")
+      "1234ＡＢ[Ｃ]"))
+  (ert-info ("numeric / full-width numeric")
+    (evil-test-buffer
+      "[1]234１２３"
+      ("w")
+      "1234１２[３]"))
+  (ert-info ("numeric / Hangul")
+    (evil-test-buffer
+      "[1]234한글"
+      ("w")
+      "1234[한]글"))
+  (ert-info ("Kanji / Latin")
+    (evil-test-buffer
+      "[漢]字abcd"
+      ("w")
+      "漢字[a]bcd"))
+  (ert-info ("Kanji / numeric")
+    (evil-test-buffer
+      "[漢]字1234"
+      ("w")
+      "漢字[1]234"))
+  (ert-info ("Kanji / Hiragana")
+    (evil-test-buffer
+      "[漢]字ひらがな"
+      ("w")
+      "漢字[ひ]らがな"))
+  (ert-info ("Kanji / Katakana")
+    (evil-test-buffer
+      "[漢]字カタカナ"
+      ("w")
+      "漢字[カ]タカナ"))
+  (ert-info ("Kanji / half-width Katakana")
+    (evil-test-buffer
+      "[漢]字ｶﾀｶﾅ"
+      ("w")
+      "漢字[ｶ]ﾀｶﾅ"))
+  (ert-info ("Kanji / full-width alphabet")
+    (evil-test-buffer
+      "[漢]字ＡＢＣ"
+      ("w")
+      "漢字[Ａ]ＢＣ"))
+  (ert-info ("Kanji / full-width numeric")
+    (evil-test-buffer
+      "[漢]字１２３"
+      ("w")
+      "漢字[１]２３"))
+  (ert-info ("Kanji / Hangul")
+    (evil-test-buffer
+      "[漢]字한글"
+      ("w")
+      "漢字[한]글"))
+  (ert-info ("Hiragana / Latin")
+    (evil-test-buffer
+      "[ひ]らがなabcd"
+      ("w")
+      "ひらがな[a]bcd"))
+  (ert-info ("Hiragana / numeric")
+    (evil-test-buffer
+      "[ひ]らがな1234"
+      ("w")
+      "ひらがな[1]234"))
+  (ert-info ("Hiragana / Kanji")
+    (evil-test-buffer
+      "[ひ]らがな漢字"
+      ("w")
+      "ひらがな[漢]字"))
+  (ert-info ("Hiragana / Katakana")
+    (evil-test-buffer
+      "[ひ]らがなカタカナ"
+      ("w")
+      "ひらがな[カ]タカナ"))
+  (ert-info ("Hiragana / half-width Katakana")
+    (evil-test-buffer
+      "[ひ]らがなｶﾀｶﾅ"
+      ("w")
+      "ひらがな[ｶ]ﾀｶﾅ"))
+  (ert-info ("Hiragana / full-width alphabet")
+    (evil-test-buffer
+      "[ひ]らがなＡＢＣ"
+      ("w")
+      "ひらがな[Ａ]ＢＣ"))
+  (ert-info ("Hiragana / full-width numeric")
+    (evil-test-buffer
+      "[ひ]らがな１２３"
+      ("w")
+      "ひらがな[１]２３"))
+  (ert-info ("Hiragana / Hangul")
+    (evil-test-buffer
+      "[ひ]らがな한글"
+      ("w")
+      "ひらがな[한]글"))
+  (ert-info ("Katakana / Latin")
+    (evil-test-buffer
+      "[カ]タカナabcd"
+      ("w")
+      "カタカナ[a]bcd"))
+  (ert-info ("Katakana / numeric")
+    (evil-test-buffer
+      "[カ]タカナ1234"
+      ("w")
+      "カタカナ[1]234"))
+  (ert-info ("Katakana / Kanji")
+    (evil-test-buffer
+      "[カ]タカナ漢字"
+      ("w")
+      "カタカナ[漢]字"))
+  (ert-info ("Katakana / Hiragana")
+    (evil-test-buffer
+      "[カ]タカナひらがな"
+      ("w")
+      "カタカナ[ひ]らがな"))
+  (ert-info ("Katakana / half-width Katakana")
+    (evil-test-buffer
+      "[カ]タカナｶﾀｶﾅ"
+      ("w")
+      "カタカナ[ｶ]ﾀｶﾅ"))
+  (ert-info ("Katakana / full-width alphabet")
+    (evil-test-buffer
+      "[カ]タカナＡＢＣ"
+      ("w")
+      "カタカナ[Ａ]ＢＣ"))
+  (ert-info ("Katakana / full-width numeric")
+    (evil-test-buffer
+      "[カ]タカナ１２３"
+      ("w")
+      "カタカナ[１]２３"))
+  (ert-info ("Katakana / Hangul")
+    (evil-test-buffer
+      "[カ]タカナ한글"
+      ("w")
+      "カタカナ[한]글"))
+  (ert-info ("half-width Katakana / Latin")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅabcd"
+      ("w")
+      "ｶﾀｶﾅabc[d]"))
+  (ert-info ("half-width Katakana / numeric")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ1234"
+      ("w")
+      "ｶﾀｶﾅ123[4]"))
+  (ert-info ("half-width Katakana / Kanji")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ漢字"
+      ("w")
+      "ｶﾀｶﾅ[漢]字"))
+  (ert-info ("half-width Katakana / Hiragana")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅひらがな"
+      ("w")
+      "ｶﾀｶﾅ[ひ]らがな"))
+  (ert-info ("half-width Katakana / Katakana")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅカタカナ"
+      ("w")
+      "ｶﾀｶﾅ[カ]タカナ"))
+  (ert-info ("half-width Katakana / full-width alphabet")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅＡＢＣ"
+      ("w")
+      "ｶﾀｶﾅＡＢ[Ｃ]"))
+  (ert-info ("half-width Katakana / full-width numeric")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ１２３"
+      ("w")
+      "ｶﾀｶﾅ１２[３]"))
+  (ert-info ("half-width Katakana / Hangul")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ한글"
+      ("w")
+      "ｶﾀｶﾅ[한]글"))
+  (ert-info ("full-width alphabet / Latin")
+    (evil-test-buffer
+      "[Ａ]ＢＣabcd"
+      ("w")
+      "ＡＢＣabc[d]"))
+  (ert-info ("full-width alphabet / numeric")
+    (evil-test-buffer
+      "[Ａ]ＢＣ1234"
+      ("w")
+      "ＡＢＣ123[4]"))
+  (ert-info ("full-width alphabet / Kanji")
+    (evil-test-buffer
+      "[Ａ]ＢＣ漢字"
+      ("w")
+      "ＡＢＣ[漢]字"))
+  (ert-info ("full-width alphabet / Hiragana")
+    (evil-test-buffer
+      "[Ａ]ＢＣひらがな"
+      ("w")
+      "ＡＢＣ[ひ]らがな"))
+  (ert-info ("full-width alphabet / Katakana")
+    (evil-test-buffer
+      "[Ａ]ＢＣカタカナ"
+      ("w")
+      "ＡＢＣ[カ]タカナ"))
+  (ert-info ("full-width alphabet / half-width Katakana")
+    (evil-test-buffer
+      "[Ａ]ＢＣｶﾀｶﾅ"
+      ("w")
+      "ＡＢＣｶﾀｶ[ﾅ]"))
+  (ert-info ("full-width alphabet / full-width numeric")
+    (evil-test-buffer
+      "[Ａ]ＢＣ１２３"
+      ("w")
+      "ＡＢＣ１２[３]"))
+  (ert-info ("full-width alphabet / Hangul")
+    (evil-test-buffer
+      "[Ａ]ＢＣ한글"
+      ("w")
+      "ＡＢＣ[한]글"))
+  (ert-info ("full-width numeric / Latin")
+    (evil-test-buffer
+      "[１]２３abcd"
+      ("w")
+      "１２３abc[d]"))
+  (ert-info ("full-width numeric / numeric")
+    (evil-test-buffer
+      "[１]２３1234"
+      ("w")
+      "１２３123[4]"))
+  (ert-info ("full-width numeric / Kanji")
+    (evil-test-buffer
+      "[１]２３漢字"
+      ("w")
+      "１２３[漢]字"))
+  (ert-info ("full-width numeric / Hiragana")
+    (evil-test-buffer
+      "[１]２３ひらがな"
+      ("w")
+      "１２３[ひ]らがな"))
+  (ert-info ("full-width numeric / Katakana")
+    (evil-test-buffer
+      "[１]２３カタカナ"
+      ("w")
+      "１２３[カ]タカナ"))
+  (ert-info ("full-width numeric / half-width Katakana")
+    (evil-test-buffer
+      "[１]２３ｶﾀｶﾅ"
+      ("w")
+      "１２３ｶﾀｶ[ﾅ]"))
+  (ert-info ("full-width numeric / full-width alphabet")
+    (evil-test-buffer
+      "[１]２３ＡＢＣ"
+      ("w")
+      "１２３ＡＢ[Ｃ]"))
+  (ert-info ("full-width numeric / Hangul")
+    (evil-test-buffer
+      "[１]２３한글"
+      ("w")
+      "１２３[한]글"))
+  (ert-info ("Hangul / Latin")
+    (evil-test-buffer
+      "[한]글abcd"
+      ("w")
+      "한글[a]bcd"))
+  (ert-info ("Hangul / numeric")
+    (evil-test-buffer
+      "[한]글1234"
+      ("w")
+      "한글[1]234"))
+  (ert-info ("Hangul / Kanji")
+    (evil-test-buffer
+      "[한]글漢字"
+      ("w")
+      "한글[漢]字"))
+  (ert-info ("Hangul / Hiragana")
+    (evil-test-buffer
+      "[한]글ひらがな"
+      ("w")
+      "한글[ひ]らがな"))
+  (ert-info ("Hangul / Katakana")
+    (evil-test-buffer
+      "[한]글カタカナ"
+      ("w")
+      "한글[カ]タカナ"))
+  (ert-info ("Hangul / half-width Katakana")
+    (evil-test-buffer
+      "[한]글ｶﾀｶﾅ"
+      ("w")
+      "한글[ｶ]ﾀｶﾅ"))
+  (ert-info ("Hangul / full-width alphabet")
+    (evil-test-buffer
+      "[한]글ＡＢＣ"
+      ("w")
+      "한글[Ａ]ＢＣ"))
+  (ert-info ("Hangul / full-width numeric")
+    (evil-test-buffer
+      "[한]글１２３"
+      ("w")
+      "한글[１]２３")))
+
+(ert-deftest evil-test-forward-word-end-cjk ()
+  "Test `evil-forward-word-end' on CJK words"
+  :tags '(evil motion cjk)
+  (ert-info ("Latin / numeric")
+    (evil-test-buffer
+      "[a]bcd1234"
+      ("e")
+      "abcd123[4]"))
+  (ert-info ("Latin / Kanji")
+    (evil-test-buffer
+      "[a]bcd漢字"
+      ("e")
+      "abc[d]漢字"))
+  (ert-info ("Latin / Hiragana")
+    (evil-test-buffer
+      "[a]bcdひらがな"
+      ("e")
+      "abc[d]ひらがな"))
+  (ert-info ("Latin / Katakana")
+    (evil-test-buffer
+      "[a]bcdカタカナ"
+      ("e")
+      "abc[d]カタカナ"))
+  (ert-info ("Latin / half-width Katakana")
+    (evil-test-buffer
+      "[a]bcdｶﾀｶﾅ"
+      ("e")
+      "abcdｶﾀｶ[ﾅ]"))
+  (ert-info ("Latin / full-width alphabet")
+    (evil-test-buffer
+      "[a]bcdＡＢＣ"
+      ("e")
+      "abcdＡＢ[Ｃ]"))
+  (ert-info ("Latin / full-width numeric")
+    (evil-test-buffer
+      "[a]bcd１２３"
+      ("e")
+      "abcd１２[３]"))
+  (ert-info ("Latin / Hangul")
+    (evil-test-buffer
+      "[a]bcd한글"
+      ("e")
+      "abc[d]한글"))
+  (ert-info ("numeric / Latin")
+    (evil-test-buffer
+      "[1]234abcd"
+      ("e")
+      "1234abc[d]"))
+  (ert-info ("numeric / Kanji")
+    (evil-test-buffer
+      "[1]234漢字"
+      ("e")
+      "123[4]漢字"))
+  (ert-info ("numeric / Hiragana")
+    (evil-test-buffer
+      "[1]234ひらがな"
+      ("e")
+      "123[4]ひらがな"))
+  (ert-info ("numeric / Katakana")
+    (evil-test-buffer
+      "[1]234カタカナ"
+      ("e")
+      "123[4]カタカナ"))
+  (ert-info ("numeric / half-width Katakana")
+    (evil-test-buffer
+      "[1]234ｶﾀｶﾅ"
+      ("e")
+      "1234ｶﾀｶ[ﾅ]"))
+  (ert-info ("numeric / full-width alphabet")
+    (evil-test-buffer
+      "[1]234ＡＢＣ"
+      ("e")
+      "1234ＡＢ[Ｃ]"))
+  (ert-info ("numeric / full-width numeric")
+    (evil-test-buffer
+      "[1]234１２３"
+      ("e")
+      "1234１２[３]"))
+  (ert-info ("numeric / Hangul")
+    (evil-test-buffer
+      "[1]234한글"
+      ("e")
+      "123[4]한글"))
+  (ert-info ("Kanji / Latin")
+    (evil-test-buffer
+      "[漢]字abcd"
+      ("e")
+      "漢[字]abcd"))
+  (ert-info ("Kanji / numeric")
+    (evil-test-buffer
+      "[漢]字1234"
+      ("e")
+      "漢[字]1234"))
+  (ert-info ("Kanji / Hiragana")
+    (evil-test-buffer
+      "[漢]字ひらがな"
+      ("e")
+      "漢[字]ひらがな"))
+  (ert-info ("Kanji / Katakana")
+    (evil-test-buffer
+      "[漢]字カタカナ"
+      ("e")
+      "漢[字]カタカナ"))
+  (ert-info ("Kanji / half-width Katakana")
+    (evil-test-buffer
+      "[漢]字ｶﾀｶﾅ"
+      ("e")
+      "漢[字]ｶﾀｶﾅ"))
+  (ert-info ("Kanji / full-width alphabet")
+    (evil-test-buffer
+      "[漢]字ＡＢＣ"
+      ("e")
+      "漢[字]ＡＢＣ"))
+  (ert-info ("Kanji / full-width numeric")
+    (evil-test-buffer
+      "[漢]字１２３"
+      ("e")
+      "漢[字]１２３"))
+  (ert-info ("Kanji / Hangul")
+    (evil-test-buffer
+      "[漢]字한글"
+      ("e")
+      "漢[字]한글"))
+  (ert-info ("Hiragana / Latin")
+    (evil-test-buffer
+      "[ひ]らがなabcd"
+      ("e")
+      "ひらが[な]abcd"))
+  (ert-info ("Hiragana / numeric")
+    (evil-test-buffer
+      "[ひ]らがな1234"
+      ("e")
+      "ひらが[な]1234"))
+  (ert-info ("Hiragana / Kanji")
+    (evil-test-buffer
+      "[ひ]らがな漢字"
+      ("e")
+      "ひらが[な]漢字"))
+  (ert-info ("Hiragana / Katakana")
+    (evil-test-buffer
+      "[ひ]らがなカタカナ"
+      ("e")
+      "ひらが[な]カタカナ"))
+  (ert-info ("Hiragana / half-width Katakana")
+    (evil-test-buffer
+      "[ひ]らがなｶﾀｶﾅ"
+      ("e")
+      "ひらが[な]ｶﾀｶﾅ"))
+  (ert-info ("Hiragana / full-width alphabet")
+    (evil-test-buffer
+      "[ひ]らがなＡＢＣ"
+      ("e")
+      "ひらが[な]ＡＢＣ"))
+  (ert-info ("Hiragana / full-width numeric")
+    (evil-test-buffer
+      "[ひ]らがな１２３"
+      ("e")
+      "ひらが[な]１２３"))
+  (ert-info ("Hiragana / Hangul")
+    (evil-test-buffer
+      "[ひ]らがな한글"
+      ("e")
+      "ひらが[な]한글"))
+  (ert-info ("Katakana / Latin")
+    (evil-test-buffer
+      "[カ]タカナabcd"
+      ("e")
+      "カタカ[ナ]abcd"))
+  (ert-info ("Katakana / numeric")
+    (evil-test-buffer
+      "[カ]タカナ1234"
+      ("e")
+      "カタカ[ナ]1234"))
+  (ert-info ("Katakana / Kanji")
+    (evil-test-buffer
+      "[カ]タカナ漢字"
+      ("e")
+      "カタカ[ナ]漢字"))
+  (ert-info ("Katakana / Hiragana")
+    (evil-test-buffer
+      "[カ]タカナひらがな"
+      ("e")
+      "カタカ[ナ]ひらがな"))
+  (ert-info ("Katakana / half-width Katakana")
+    (evil-test-buffer
+      "[カ]タカナｶﾀｶﾅ"
+      ("e")
+      "カタカ[ナ]ｶﾀｶﾅ"))
+  (ert-info ("Katakana / full-width alphabet")
+    (evil-test-buffer
+      "[カ]タカナＡＢＣ"
+      ("e")
+      "カタカ[ナ]ＡＢＣ"))
+  (ert-info ("Katakana / full-width numeric")
+    (evil-test-buffer
+      "[カ]タカナ１２３"
+      ("e")
+      "カタカ[ナ]１２３"))
+  (ert-info ("Katakana / Hangul")
+    (evil-test-buffer
+      "[カ]タカナ한글"
+      ("e")
+      "カタカ[ナ]한글"))
+  (ert-info ("half-width Katakana / Latin")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅabcd"
+      ("e")
+      "ｶﾀｶﾅabc[d]"))
+  (ert-info ("half-width Katakana / numeric")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ1234"
+      ("e")
+      "ｶﾀｶﾅ123[4]"))
+  (ert-info ("half-width Katakana / Kanji")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ漢字"
+      ("e")
+      "ｶﾀｶ[ﾅ]漢字"))
+  (ert-info ("half-width Katakana / Hiragana")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅひらがな"
+      ("e")
+      "ｶﾀｶ[ﾅ]ひらがな"))
+  (ert-info ("half-width Katakana / Katakana")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅカタカナ"
+      ("e")
+      "ｶﾀｶ[ﾅ]カタカナ"))
+  (ert-info ("half-width Katakana / full-width alphabet")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅＡＢＣ"
+      ("e")
+      "ｶﾀｶﾅＡＢ[Ｃ]"))
+  (ert-info ("half-width Katakana / full-width numeric")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ１２３"
+      ("e")
+      "ｶﾀｶﾅ１２[３]"))
+  (ert-info ("half-width Katakana / Hangul")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ한글"
+      ("e")
+      "ｶﾀｶ[ﾅ]한글"))
+  (ert-info ("full-width alphabet / Latin")
+    (evil-test-buffer
+      "[Ａ]ＢＣabcd"
+      ("e")
+      "ＡＢＣabc[d]"))
+  (ert-info ("full-width alphabet / numeric")
+    (evil-test-buffer
+      "[Ａ]ＢＣ1234"
+      ("e")
+      "ＡＢＣ123[4]"))
+  (ert-info ("full-width alphabet / Kanji")
+    (evil-test-buffer
+      "[Ａ]ＢＣ漢字"
+      ("e")
+      "ＡＢ[Ｃ]漢字"))
+  (ert-info ("full-width alphabet / Hiragana")
+    (evil-test-buffer
+      "[Ａ]ＢＣひらがな"
+      ("e")
+      "ＡＢ[Ｃ]ひらがな"))
+  (ert-info ("full-width alphabet / Katakana")
+    (evil-test-buffer
+      "[Ａ]ＢＣカタカナ"
+      ("e")
+      "ＡＢ[Ｃ]カタカナ"))
+  (ert-info ("full-width alphabet / half-width Katakana")
+    (evil-test-buffer
+      "[Ａ]ＢＣｶﾀｶﾅ"
+      ("e")
+      "ＡＢＣｶﾀｶ[ﾅ]"))
+  (ert-info ("full-width alphabet / full-width numeric")
+    (evil-test-buffer
+      "[Ａ]ＢＣ１２３"
+      ("e")
+      "ＡＢＣ１２[３]"))
+  (ert-info ("full-width alphabet / Hangul")
+    (evil-test-buffer
+      "[Ａ]ＢＣ한글"
+      ("e")
+      "ＡＢ[Ｃ]한글"))
+  (ert-info ("full-width numeric / Latin")
+    (evil-test-buffer
+      "[１]２３abcd"
+      ("e")
+      "１２３abc[d]"))
+  (ert-info ("full-width numeric / numeric")
+    (evil-test-buffer
+      "[１]２３1234"
+      ("e")
+      "１２３123[4]"))
+  (ert-info ("full-width numeric / Kanji")
+    (evil-test-buffer
+      "[１]２３漢字"
+      ("e")
+      "１２[３]漢字"))
+  (ert-info ("full-width numeric / Hiragana")
+    (evil-test-buffer
+      "[１]２３ひらがな"
+      ("e")
+      "１２[３]ひらがな"))
+  (ert-info ("full-width numeric / Katakana")
+    (evil-test-buffer
+      "[１]２３カタカナ"
+      ("e")
+      "１２[３]カタカナ"))
+  (ert-info ("full-width numeric / half-width Katakana")
+    (evil-test-buffer
+      "[１]２３ｶﾀｶﾅ"
+      ("e")
+      "１２３ｶﾀｶ[ﾅ]"))
+  (ert-info ("full-width numeric / full-width alphabet")
+    (evil-test-buffer
+      "[１]２３ＡＢＣ"
+      ("e")
+      "１２３ＡＢ[Ｃ]"))
+  (ert-info ("full-width numeric / Hangul")
+    (evil-test-buffer
+      "[１]２３한글"
+      ("e")
+      "１２[３]한글"))
+  (ert-info ("Hangul / Latin")
+    (evil-test-buffer
+      "[한]글abcd"
+      ("e")
+      "한[글]abcd"))
+  (ert-info ("Hangul / numeric")
+    (evil-test-buffer
+      "[한]글1234"
+      ("e")
+      "한[글]1234"))
+  (ert-info ("Hangul / Kanji")
+    (evil-test-buffer
+      "[한]글漢字"
+      ("e")
+      "한[글]漢字"))
+  (ert-info ("Hangul / Hiragana")
+    (evil-test-buffer
+      "[한]글ひらがな"
+      ("e")
+      "한[글]ひらがな"))
+  (ert-info ("Hangul / Katakana")
+    (evil-test-buffer
+      "[한]글カタカナ"
+      ("e")
+      "한[글]カタカナ"))
+  (ert-info ("Hangul / half-width Katakana")
+    (evil-test-buffer
+      "[한]글ｶﾀｶﾅ"
+      ("e")
+      "한[글]ｶﾀｶﾅ"))
+  (ert-info ("Hangul / full-width alphabet")
+    (evil-test-buffer
+      "[한]글ＡＢＣ"
+      ("e")
+      "한[글]ＡＢＣ"))
+  (ert-info ("Hangul / full-width numeric")
+    (evil-test-buffer
+      "[한]글１２３"
+      ("e")
+      "한[글]１２３")))
+
+(ert-deftest evil-test-backword-word-begin-cjk ()
+  "Test `evil-backward-word-begin' on CJK words"
+  :tags '(evil motion cjk)
+  (ert-info ("Latin / numeric")
+    (evil-test-buffer
+      "abcd123[4]"
+      ("b")
+      "[a]bcd1234"))
+  (ert-info ("Latin / Kanji")
+    (evil-test-buffer
+      "abcd漢[字]"
+      ("b")
+      "abcd[漢]字"))
+  (ert-info ("Latin / Hiragana")
+    (evil-test-buffer
+      "abcdひらが[な]"
+      ("b")
+      "abcd[ひ]らがな"))
+  (ert-info ("Latin / Katakana")
+    (evil-test-buffer
+      "abcdカタカ[ナ]"
+      ("b")
+      "abcd[カ]タカナ"))
+  (ert-info ("Latin / half-width Katakana")
+    (evil-test-buffer
+      "abcdｶﾀｶ[ﾅ]"
+      ("b")
+      "[a]bcdｶﾀｶﾅ"))
+  (ert-info ("Latin / full-width alphabet")
+    (evil-test-buffer
+      "abcdＡＢ[Ｃ]"
+      ("b")
+      "[a]bcdＡＢＣ"))
+  (ert-info ("Latin / full-width numeric")
+    (evil-test-buffer
+      "abcd１２[３]"
+      ("b")
+      "[a]bcd１２３"))
+  (ert-info ("Latin / Hangul")
+    (evil-test-buffer
+      "abcd한[글]"
+      ("b")
+      "abcd[한]글"))
+  (ert-info ("numeric / Latin")
+    (evil-test-buffer
+      "1234abc[d]"
+      ("b")
+      "[1]234abcd"))
+  (ert-info ("numeric / Kanji")
+    (evil-test-buffer
+      "1234漢[字]"
+      ("b")
+      "1234[漢]字"))
+  (ert-info ("numeric / Hiragana")
+    (evil-test-buffer
+      "1234ひらが[な]"
+      ("b")
+      "1234[ひ]らがな"))
+  (ert-info ("numeric / Katakana")
+    (evil-test-buffer
+      "1234カタカ[ナ]"
+      ("b")
+      "1234[カ]タカナ"))
+  (ert-info ("numeric / half-width Katakana")
+    (evil-test-buffer
+      "1234ｶﾀｶ[ﾅ]"
+      ("b")
+      "[1]234ｶﾀｶﾅ"))
+  (ert-info ("numeric / full-width alphabet")
+    (evil-test-buffer
+      "1234ＡＢ[Ｃ]"
+      ("b")
+      "[1]234ＡＢＣ"))
+  (ert-info ("numeric / full-width numeric")
+    (evil-test-buffer
+      "1234１２[３]"
+      ("b")
+      "[1]234１２３"))
+  (ert-info ("numeric / Hangul")
+    (evil-test-buffer
+      "1234한[글]"
+      ("b")
+      "1234[한]글"))
+  (ert-info ("Kanji / Latin")
+    (evil-test-buffer
+      "漢字abc[d]"
+      ("b")
+      "漢字[a]bcd"))
+  (ert-info ("Kanji / numeric")
+    (evil-test-buffer
+      "漢字123[4]"
+      ("b")
+      "漢字[1]234"))
+  (ert-info ("Kanji / Hiragana")
+    (evil-test-buffer
+      "漢字ひらが[な]"
+      ("b")
+      "漢字[ひ]らがな"))
+  (ert-info ("Kanji / Katakana")
+    (evil-test-buffer
+      "漢字カタカ[ナ]"
+      ("b")
+      "漢字[カ]タカナ"))
+  (ert-info ("Kanji / half-width Katakana")
+    (evil-test-buffer
+      "漢字ｶﾀｶ[ﾅ]"
+      ("b")
+      "漢字[ｶ]ﾀｶﾅ"))
+  (ert-info ("Kanji / full-width alphabet")
+    (evil-test-buffer
+      "漢字ＡＢ[Ｃ]"
+      ("b")
+      "漢字[Ａ]ＢＣ"))
+  (ert-info ("Kanji / full-width numeric")
+    (evil-test-buffer
+      "漢字１２[３]"
+      ("b")
+      "漢字[１]２３"))
+  (ert-info ("Kanji / Hangul")
+    (evil-test-buffer
+      "漢字한[글]"
+      ("b")
+      "漢字[한]글"))
+  (ert-info ("Hiragana / Latin")
+    (evil-test-buffer
+      "ひらがなabc[d]"
+      ("b")
+      "ひらがな[a]bcd"))
+  (ert-info ("Hiragana / numeric")
+    (evil-test-buffer
+      "ひらがな123[4]"
+      ("b")
+      "ひらがな[1]234"))
+  (ert-info ("Hiragana / Kanji")
+    (evil-test-buffer
+      "ひらがな漢[字]"
+      ("b")
+      "ひらがな[漢]字"))
+  (ert-info ("Hiragana / Katakana")
+    (evil-test-buffer
+      "ひらがなカタカ[ナ]"
+      ("b")
+      "ひらがな[カ]タカナ"))
+  (ert-info ("Hiragana / half-width Katakana")
+    (evil-test-buffer
+      "ひらがなｶﾀｶ[ﾅ]"
+      ("b")
+      "ひらがな[ｶ]ﾀｶﾅ"))
+  (ert-info ("Hiragana / full-width alphabet")
+    (evil-test-buffer
+      "ひらがなＡＢ[Ｃ]"
+      ("b")
+      "ひらがな[Ａ]ＢＣ"))
+  (ert-info ("Hiragana / full-width numeric")
+    (evil-test-buffer
+      "ひらがな１２[３]"
+      ("b")
+      "ひらがな[１]２３"))
+  (ert-info ("Hiragana / Hangul")
+    (evil-test-buffer
+      "ひらがな한[글]"
+      ("b")
+      "ひらがな[한]글"))
+  (ert-info ("Katakana / Latin")
+    (evil-test-buffer
+      "カタカナabc[d]"
+      ("b")
+      "カタカナ[a]bcd"))
+  (ert-info ("Katakana / numeric")
+    (evil-test-buffer
+      "カタカナ123[4]"
+      ("b")
+      "カタカナ[1]234"))
+  (ert-info ("Katakana / Kanji")
+    (evil-test-buffer
+      "カタカナ漢[字]"
+      ("b")
+      "カタカナ[漢]字"))
+  (ert-info ("Katakana / Hiragana")
+    (evil-test-buffer
+      "カタカナひらが[な]"
+      ("b")
+      "カタカナ[ひ]らがな"))
+  (ert-info ("Katakana / half-width Katakana")
+    (evil-test-buffer
+      "カタカナｶﾀｶ[ﾅ]"
+      ("b")
+      "カタカナ[ｶ]ﾀｶﾅ"))
+  (ert-info ("Katakana / full-width alphabet")
+    (evil-test-buffer
+      "カタカナＡＢ[Ｃ]"
+      ("b")
+      "カタカナ[Ａ]ＢＣ"))
+  (ert-info ("Katakana / full-width numeric")
+    (evil-test-buffer
+      "カタカナ１２[３]"
+      ("b")
+      "カタカナ[１]２３"))
+  (ert-info ("Katakana / Hangul")
+    (evil-test-buffer
+      "カタカナ한[글]"
+      ("b")
+      "カタカナ[한]글"))
+  (ert-info ("half-width Katakana / Latin")
+    (evil-test-buffer
+      "ｶﾀｶﾅabc[d]"
+      ("b")
+      "[ｶ]ﾀｶﾅabcd"))
+  (ert-info ("half-width Katakana / numeric")
+    (evil-test-buffer
+      "ｶﾀｶﾅ123[4]"
+      ("b")
+      "[ｶ]ﾀｶﾅ1234"))
+  (ert-info ("half-width Katakana / Kanji")
+    (evil-test-buffer
+      "ｶﾀｶﾅ漢[字]"
+      ("b")
+      "ｶﾀｶﾅ[漢]字"))
+  (ert-info ("half-width Katakana / Hiragana")
+    (evil-test-buffer
+      "ｶﾀｶﾅひらが[な]"
+      ("b")
+      "ｶﾀｶﾅ[ひ]らがな"))
+  (ert-info ("half-width Katakana / Katakana")
+    (evil-test-buffer
+      "ｶﾀｶﾅカタカ[ナ]"
+      ("b")
+      "ｶﾀｶﾅ[カ]タカナ"))
+  (ert-info ("half-width Katakana / full-width alphabet")
+    (evil-test-buffer
+      "ｶﾀｶﾅＡＢ[Ｃ]"
+      ("b")
+      "[ｶ]ﾀｶﾅＡＢＣ"))
+  (ert-info ("half-width Katakana / full-width numeric")
+    (evil-test-buffer
+      "ｶﾀｶﾅ１２[３]"
+      ("b")
+      "[ｶ]ﾀｶﾅ１２３"))
+  (ert-info ("half-width Katakana / Hangul")
+    (evil-test-buffer
+      "ｶﾀｶﾅ한[글]"
+      ("b")
+      "ｶﾀｶﾅ[한]글"))
+  (ert-info ("full-width alphabet / Latin")
+    (evil-test-buffer
+      "ＡＢＣabc[d]"
+      ("b")
+      "[Ａ]ＢＣabcd"))
+  (ert-info ("full-width alphabet / numeric")
+    (evil-test-buffer
+      "ＡＢＣ123[4]"
+      ("b")
+      "[Ａ]ＢＣ1234"))
+  (ert-info ("full-width alphabet / Kanji")
+    (evil-test-buffer
+      "ＡＢＣ漢[字]"
+      ("b")
+      "ＡＢＣ[漢]字"))
+  (ert-info ("full-width alphabet / Hiragana")
+    (evil-test-buffer
+      "ＡＢＣひらが[な]"
+      ("b")
+      "ＡＢＣ[ひ]らがな"))
+  (ert-info ("full-width alphabet / Katakana")
+    (evil-test-buffer
+      "ＡＢＣカタカ[ナ]"
+      ("b")
+      "ＡＢＣ[カ]タカナ"))
+  (ert-info ("full-width alphabet / half-width Katakana")
+    (evil-test-buffer
+      "ＡＢＣｶﾀｶ[ﾅ]"
+      ("b")
+      "[Ａ]ＢＣｶﾀｶﾅ"))
+  (ert-info ("full-width alphabet / full-width numeric")
+    (evil-test-buffer
+      "ＡＢＣ１２[３]"
+      ("b")
+      "[Ａ]ＢＣ１２３"))
+  (ert-info ("full-width alphabet / Hangul")
+    (evil-test-buffer
+      "ＡＢＣ한[글]"
+      ("b")
+      "ＡＢＣ[한]글"))
+  (ert-info ("full-width numeric / Latin")
+    (evil-test-buffer
+      "１２３abc[d]"
+      ("b")
+      "[１]２３abcd"))
+  (ert-info ("full-width numeric / numeric")
+    (evil-test-buffer
+      "１２３123[4]"
+      ("b")
+      "[１]２３1234"))
+  (ert-info ("full-width numeric / Kanji")
+    (evil-test-buffer
+      "１２３漢[字]"
+      ("b")
+      "１２３[漢]字"))
+  (ert-info ("full-width numeric / Hiragana")
+    (evil-test-buffer
+      "１２３ひらが[な]"
+      ("b")
+      "１２３[ひ]らがな"))
+  (ert-info ("full-width numeric / Katakana")
+    (evil-test-buffer
+      "１２３カタカ[ナ]"
+      ("b")
+      "１２３[カ]タカナ"))
+  (ert-info ("full-width numeric / half-width Katakana")
+    (evil-test-buffer
+      "１２３ｶﾀｶ[ﾅ]"
+      ("b")
+      "[１]２３ｶﾀｶﾅ"))
+  (ert-info ("full-width numeric / full-width alphabet")
+    (evil-test-buffer
+      "１２３ＡＢ[Ｃ]"
+      ("b")
+      "[１]２３ＡＢＣ"))
+  (ert-info ("full-width numeric / Hangul")
+    (evil-test-buffer
+      "１２３한[글]"
+      ("b")
+      "１２３[한]글"))
+  (ert-info ("Hangul / Latin")
+    (evil-test-buffer
+      "한글abc[d]"
+      ("b")
+      "한글[a]bcd"))
+  (ert-info ("Hangul / numeric")
+    (evil-test-buffer
+      "한글123[4]"
+      ("b")
+      "한글[1]234"))
+  (ert-info ("Hangul / Kanji")
+    (evil-test-buffer
+      "한글漢[字]"
+      ("b")
+      "한글[漢]字"))
+  (ert-info ("Hangul / Hiragana")
+    (evil-test-buffer
+      "한글ひらが[な]"
+      ("b")
+      "한글[ひ]らがな"))
+  (ert-info ("Hangul / Katakana")
+    (evil-test-buffer
+      "한글カタカ[ナ]"
+      ("b")
+      "한글[カ]タカナ"))
+  (ert-info ("Hangul / half-width Katakana")
+    (evil-test-buffer
+      "한글ｶﾀｶ[ﾅ]"
+      ("b")
+      "한글[ｶ]ﾀｶﾅ"))
+  (ert-info ("Hangul / full-width alphabet")
+    (evil-test-buffer
+      "한글ＡＢ[Ｃ]"
+      ("b")
+      "한글[Ａ]ＢＣ"))
+  (ert-info ("Hangul / full-width numeric")
+    (evil-test-buffer
+      "한글１２[３]"
+      ("b")
+      "한글[１]２３")))
+
+(ert-deftest evil-test-backword-word-end-cjk ()
+  "Test `evil-backward-word-end' on CJK words"
+  :tags '(evil motion cjk)
+  (ert-info ("Latin / numeric")
+    (evil-test-buffer
+      "abcd123[4]"
+      ("ge")
+      "[a]bcd1234"))
+  (ert-info ("Latin / Kanji")
+    (evil-test-buffer
+      "abcd漢[字]"
+      ("ge")
+      "abc[d]漢字"))
+  (ert-info ("Latin / Hiragana")
+    (evil-test-buffer
+      "abcdひらが[な]"
+      ("ge")
+      "abc[d]ひらがな"))
+  (ert-info ("Latin / Katakana")
+    (evil-test-buffer
+      "abcdカタカ[ナ]"
+      ("ge")
+      "abc[d]カタカナ"))
+  (ert-info ("Latin / half-width Katakana")
+    (evil-test-buffer
+      "abcdｶﾀｶ[ﾅ]"
+      ("ge")
+      "[a]bcdｶﾀｶﾅ"))
+  (ert-info ("Latin / full-width alphabet")
+    (evil-test-buffer
+      "abcdＡＢ[Ｃ]"
+      ("ge")
+      "[a]bcdＡＢＣ"))
+  (ert-info ("Latin / full-width numeric")
+    (evil-test-buffer
+      "abcd１２[３]"
+      ("ge")
+      "[a]bcd１２３"))
+  (ert-info ("Latin / Hangul")
+    (evil-test-buffer
+      "abcd한[글]"
+      ("ge")
+      "abc[d]한글"))
+  (ert-info ("numeric / Latin")
+    (evil-test-buffer
+      "1234abc[d]"
+      ("ge")
+      "[1]234abcd"))
+  (ert-info ("numeric / Kanji")
+    (evil-test-buffer
+      "1234漢[字]"
+      ("ge")
+      "123[4]漢字"))
+  (ert-info ("numeric / Hiragana")
+    (evil-test-buffer
+      "1234ひらが[な]"
+      ("ge")
+      "123[4]ひらがな"))
+  (ert-info ("numeric / Katakana")
+    (evil-test-buffer
+      "1234カタカ[ナ]"
+      ("ge")
+      "123[4]カタカナ"))
+  (ert-info ("numeric / half-width Katakana")
+    (evil-test-buffer
+      "1234ｶﾀｶ[ﾅ]"
+      ("ge")
+      "[1]234ｶﾀｶﾅ"))
+  (ert-info ("numeric / full-width alphabet")
+    (evil-test-buffer
+      "1234ＡＢ[Ｃ]"
+      ("ge")
+      "[1]234ＡＢＣ"))
+  (ert-info ("numeric / full-width numeric")
+    (evil-test-buffer
+      "1234１２[３]"
+      ("ge")
+      "[1]234１２３"))
+  (ert-info ("numeric / Hangul")
+    (evil-test-buffer
+      "1234한[글]"
+      ("ge")
+      "123[4]한글"))
+  (ert-info ("Kanji / Latin")
+    (evil-test-buffer
+      "漢字abc[d]"
+      ("ge")
+      "漢[字]abcd"))
+  (ert-info ("Kanji / numeric")
+    (evil-test-buffer
+      "漢字123[4]"
+      ("ge")
+      "漢[字]1234"))
+  (ert-info ("Kanji / Hiragana")
+    (evil-test-buffer
+      "漢字ひらが[な]"
+      ("ge")
+      "漢[字]ひらがな"))
+  (ert-info ("Kanji / Katakana")
+    (evil-test-buffer
+      "漢字カタカ[ナ]"
+      ("ge")
+      "漢[字]カタカナ"))
+  (ert-info ("Kanji / half-width Katakana")
+    (evil-test-buffer
+      "漢字ｶﾀｶ[ﾅ]"
+      ("ge")
+      "漢[字]ｶﾀｶﾅ"))
+  (ert-info ("Kanji / full-width alphabet")
+    (evil-test-buffer
+      "漢字ＡＢ[Ｃ]"
+      ("ge")
+      "漢[字]ＡＢＣ"))
+  (ert-info ("Kanji / full-width numeric")
+    (evil-test-buffer
+      "漢字１２[３]"
+      ("ge")
+      "漢[字]１２３"))
+  (ert-info ("Kanji / Hangul")
+    (evil-test-buffer
+      "漢字한[글]"
+      ("ge")
+      "漢[字]한글"))
+  (ert-info ("Hiragana / Latin")
+    (evil-test-buffer
+      "ひらがなabc[d]"
+      ("ge")
+      "ひらが[な]abcd"))
+  (ert-info ("Hiragana / numeric")
+    (evil-test-buffer
+      "ひらがな123[4]"
+      ("ge")
+      "ひらが[な]1234"))
+  (ert-info ("Hiragana / Kanji")
+    (evil-test-buffer
+      "ひらがな漢[字]"
+      ("ge")
+      "ひらが[な]漢字"))
+  (ert-info ("Hiragana / Katakana")
+    (evil-test-buffer
+      "ひらがなカタカ[ナ]"
+      ("ge")
+      "ひらが[な]カタカナ"))
+  (ert-info ("Hiragana / half-width Katakana")
+    (evil-test-buffer
+      "ひらがなｶﾀｶ[ﾅ]"
+      ("ge")
+      "ひらが[な]ｶﾀｶﾅ"))
+  (ert-info ("Hiragana / full-width alphabet")
+    (evil-test-buffer
+      "ひらがなＡＢ[Ｃ]"
+      ("ge")
+      "ひらが[な]ＡＢＣ"))
+  (ert-info ("Hiragana / full-width numeric")
+    (evil-test-buffer
+      "ひらがな１２[３]"
+      ("ge")
+      "ひらが[な]１２３"))
+  (ert-info ("Hiragana / Hangul")
+    (evil-test-buffer
+      "ひらがな한[글]"
+      ("ge")
+      "ひらが[な]한글"))
+  (ert-info ("Katakana / Latin")
+    (evil-test-buffer
+      "カタカナabc[d]"
+      ("ge")
+      "カタカ[ナ]abcd"))
+  (ert-info ("Katakana / numeric")
+    (evil-test-buffer
+      "カタカナ123[4]"
+      ("ge")
+      "カタカ[ナ]1234"))
+  (ert-info ("Katakana / Kanji")
+    (evil-test-buffer
+      "カタカナ漢[字]"
+      ("ge")
+      "カタカ[ナ]漢字"))
+  (ert-info ("Katakana / Hiragana")
+    (evil-test-buffer
+      "カタカナひらが[な]"
+      ("ge")
+      "カタカ[ナ]ひらがな"))
+  (ert-info ("Katakana / half-width Katakana")
+    (evil-test-buffer
+      "カタカナｶﾀｶ[ﾅ]"
+      ("ge")
+      "カタカ[ナ]ｶﾀｶﾅ"))
+  (ert-info ("Katakana / full-width alphabet")
+    (evil-test-buffer
+      "カタカナＡＢ[Ｃ]"
+      ("ge")
+      "カタカ[ナ]ＡＢＣ"))
+  (ert-info ("Katakana / full-width numeric")
+    (evil-test-buffer
+      "カタカナ１２[３]"
+      ("ge")
+      "カタカ[ナ]１２３"))
+  (ert-info ("Katakana / Hangul")
+    (evil-test-buffer
+      "カタカナ한[글]"
+      ("ge")
+      "カタカ[ナ]한글"))
+  (ert-info ("half-width Katakana / Latin")
+    (evil-test-buffer
+      "ｶﾀｶﾅabc[d]"
+      ("ge")
+      "[ｶ]ﾀｶﾅabcd"))
+  (ert-info ("half-width Katakana / numeric")
+    (evil-test-buffer
+      "ｶﾀｶﾅ123[4]"
+      ("ge")
+      "[ｶ]ﾀｶﾅ1234"))
+  (ert-info ("half-width Katakana / Kanji")
+    (evil-test-buffer
+      "ｶﾀｶﾅ漢[字]"
+      ("ge")
+      "ｶﾀｶ[ﾅ]漢字"))
+  (ert-info ("half-width Katakana / Hiragana")
+    (evil-test-buffer
+      "ｶﾀｶﾅひらが[な]"
+      ("ge")
+      "ｶﾀｶ[ﾅ]ひらがな"))
+  (ert-info ("half-width Katakana / Katakana")
+    (evil-test-buffer
+      "ｶﾀｶﾅカタカ[ナ]"
+      ("ge")
+      "ｶﾀｶ[ﾅ]カタカナ"))
+  (ert-info ("half-width Katakana / full-width alphabet")
+    (evil-test-buffer
+      "ｶﾀｶﾅＡＢ[Ｃ]"
+      ("ge")
+      "[ｶ]ﾀｶﾅＡＢＣ"))
+  (ert-info ("half-width Katakana / full-width numeric")
+    (evil-test-buffer
+      "ｶﾀｶﾅ１２[３]"
+      ("ge")
+      "[ｶ]ﾀｶﾅ１２３"))
+  (ert-info ("half-width Katakana / Hangul")
+    (evil-test-buffer
+      "ｶﾀｶﾅ한[글]"
+      ("ge")
+      "ｶﾀｶ[ﾅ]한글"))
+  (ert-info ("full-width alphabet / Latin")
+    (evil-test-buffer
+      "ＡＢＣabc[d]"
+      ("ge")
+      "[Ａ]ＢＣabcd"))
+  (ert-info ("full-width alphabet / numeric")
+    (evil-test-buffer
+      "ＡＢＣ123[4]"
+      ("ge")
+      "[Ａ]ＢＣ1234"))
+  (ert-info ("full-width alphabet / Kanji")
+    (evil-test-buffer
+      "ＡＢＣ漢[字]"
+      ("ge")
+      "ＡＢ[Ｃ]漢字"))
+  (ert-info ("full-width alphabet / Hiragana")
+    (evil-test-buffer
+      "ＡＢＣひらが[な]"
+      ("ge")
+      "ＡＢ[Ｃ]ひらがな"))
+  (ert-info ("full-width alphabet / Katakana")
+    (evil-test-buffer
+      "ＡＢＣカタカ[ナ]"
+      ("ge")
+      "ＡＢ[Ｃ]カタカナ"))
+  (ert-info ("full-width alphabet / half-width Katakana")
+    (evil-test-buffer
+      "ＡＢＣｶﾀｶ[ﾅ]"
+      ("ge")
+      "[Ａ]ＢＣｶﾀｶﾅ"))
+  (ert-info ("full-width alphabet / full-width numeric")
+    (evil-test-buffer
+      "ＡＢＣ１２[３]"
+      ("ge")
+      "[Ａ]ＢＣ１２３"))
+  (ert-info ("full-width alphabet / Hangul")
+    (evil-test-buffer
+      "ＡＢＣ한[글]"
+      ("ge")
+      "ＡＢ[Ｃ]한글"))
+  (ert-info ("full-width numeric / Latin")
+    (evil-test-buffer
+      "１２３abc[d]"
+      ("ge")
+      "[１]２３abcd"))
+  (ert-info ("full-width numeric / numeric")
+    (evil-test-buffer
+      "１２３123[4]"
+      ("ge")
+      "[１]２３1234"))
+  (ert-info ("full-width numeric / Kanji")
+    (evil-test-buffer
+      "１２３漢[字]"
+      ("ge")
+      "１２[３]漢字"))
+  (ert-info ("full-width numeric / Hiragana")
+    (evil-test-buffer
+      "１２３ひらが[な]"
+      ("ge")
+      "１２[３]ひらがな"))
+  (ert-info ("full-width numeric / Katakana")
+    (evil-test-buffer
+      "１２３カタカ[ナ]"
+      ("ge")
+      "１２[３]カタカナ"))
+  (ert-info ("full-width numeric / half-width Katakana")
+    (evil-test-buffer
+      "１２３ｶﾀｶ[ﾅ]"
+      ("ge")
+      "[１]２３ｶﾀｶﾅ"))
+  (ert-info ("full-width numeric / full-width alphabet")
+    (evil-test-buffer
+      "１２３ＡＢ[Ｃ]"
+      ("ge")
+      "[１]２３ＡＢＣ"))
+  (ert-info ("full-width numeric / Hangul")
+    (evil-test-buffer
+      "１２３한[글]"
+      ("ge")
+      "１２[３]한글"))
+  (ert-info ("Hangul / Latin")
+    (evil-test-buffer
+      "한글abc[d]"
+      ("ge")
+      "한[글]abcd"))
+  (ert-info ("Hangul / numeric")
+    (evil-test-buffer
+      "한글123[4]"
+      ("ge")
+      "한[글]1234"))
+  (ert-info ("Hangul / Kanji")
+    (evil-test-buffer
+      "한글漢[字]"
+      ("ge")
+      "한[글]漢字"))
+  (ert-info ("Hangul / Hiragana")
+    (evil-test-buffer
+      "한글ひらが[な]"
+      ("ge")
+      "한[글]ひらがな"))
+  (ert-info ("Hangul / Katakana")
+    (evil-test-buffer
+      "한글カタカ[ナ]"
+      ("ge")
+      "한[글]カタカナ"))
+  (ert-info ("Hangul / half-width Katakana")
+    (evil-test-buffer
+      "한글ｶﾀｶ[ﾅ]"
+      ("ge")
+      "한[글]ｶﾀｶﾅ"))
+  (ert-info ("Hangul / full-width alphabet")
+    (evil-test-buffer
+      "한글ＡＢ[Ｃ]"
+      ("ge")
+      "한[글]ＡＢＣ"))
+  (ert-info ("Hangul / full-width numeric")
+    (evil-test-buffer
+      "한글１２[３]"
+      ("ge")
+      "한[글]１２３")))
+
 (ert-deftest evil-test-move-paragraph ()
   "Test `evil-move-paragraph'"
   :tags '(evil motion)
@@ -3195,7 +4961,7 @@ Below some empty lin[e]"))
     (evil-test-buffer
       "[B]elow some empty line\n\n"
       ("100}")
-      "Below some empty line\n[\n]"
+      "Below some empty line\n\n[]"
       (should-error (execute-kbd-macro "}"))
       (should-error (execute-kbd-macro "42}")))))
 
@@ -3468,6 +5234,24 @@ Below some empty line."))
       "[;]; This buffer is for notes."
       ("2te,")
       ";; This buffe[r] is for notes."))
+  (ert-info ("Repeat should skip adjacent character")
+    (let ((evil-repeat-find-to-skip-next t))
+      (evil-test-buffer
+        "[a]aaxaaaxaaaxaaa"
+        ("tx;")
+        "aaaxaa[a]xaaaxaaa"
+        (";")
+        "aaaxaaaxaa[a]xaaa"
+        (",")
+        "aaaxaaax[a]aaxaaa"
+        (",")
+        "aaax[a]aaxaaaxaaa")))
+  (ert-info ("Repeat should NOT skip adjacent character")
+    (let ((evil-repeat-find-to-skip-next nil))
+      (evil-test-buffer
+        "[a]aaxaaaxaaaxaaa"
+        ("tx;")
+        "aa[a]xaaaxaaaxaaa")))
   (ert-info ("No match")
     (evil-test-buffer
       "[;]; This buffer is for notes."
@@ -3504,6 +5288,24 @@ Below some empty line."))
       ";; This buffer is for notes[.]"
       ("2Te,")
       ";; This buffer is for no[t]es."))
+  (ert-info ("Repeat should skip adjacent character")
+    (let ((evil-repeat-find-to-skip-next t))
+      (evil-test-buffer
+        "aaaxaaaxaaaxaa[a]"
+        ("Tx;")
+        "aaaxaaax[a]aaxaaa"
+        (";")
+        "aaax[a]aaxaaaxaaa"
+        (",")
+        "aaaxaa[a]xaaaxaaa"
+        (",")
+        "aaaxaaaxaa[a]xaaa")))
+  (ert-info ("Repeat should NOT skip adjacent character")
+    (let ((evil-repeat-find-to-skip-next nil))
+      (evil-test-buffer
+        "aaaxaaaxaaaxaa[a]"
+        ("Tx;")
+        "aaaxaaaxaaax[a]aa")))
   (ert-info ("No match")
     (evil-test-buffer
       ";; This buffer is for notes[.]"
@@ -3552,7 +5354,17 @@ Below some empty line."))
   (ert-info ("On line without parenthesis")
     (evil-test-buffer
       "[#]include <stdio.h>"
-      (should-error (execute-kbd-macro "%")))))
+      (should-error (execute-kbd-macro "%"))))
+  (ert-info ("Before unmatched opening parenthesies")
+    (evil-test-buffer
+      "x[x]xx ( yyyyy () zzzz"
+      (should-error (execute-kbd-macro "%"))
+      "x[x]xx ( yyyyy () zzzz"))
+  (ert-info ("Before unmatched closing parenthesies")
+    (evil-test-buffer
+      "x[x]xx ) yyyyy () zzzz"
+      (should-error (execute-kbd-macro "%"))
+      "x[x]xx ) yyyyy () zzzz")))
 
 (ert-deftest evil-test-unmatched-paren ()
   "Test `evil-previous-open-paren' and `evil-next-close-paren'"
@@ -3585,10 +5397,15 @@ Below some empty line."))
 (ert-deftest evil-test-text-object ()
   "Test `evil-define-text-object'"
   :tags '(evil text-object)
-  (let ((object (evil-define-text-object nil (count)
-                  (if (< count 0)
-                      (list (- (point) 3) (point))
-                    (list (point) (+ (point) 3))))))
+  (let ((object (evil-define-text-object nil (count &optional beg end type)
+                  (let ((sel (and beg end (evil-range beg end))))
+                    (when (and sel (> count 0)) (forward-char 1))
+                    (let ((range (if (< count 0)
+                                     (list (- (point) 3) (point))
+                                   (list (point) (+ (point) 3)))))
+                      (if sel
+                          (evil-range-union range sel)
+                        range))))))
     (ert-info ("Select three characters after point")
       (evil-test-buffer
         :state operator
@@ -3627,6 +5444,14 @@ Below some empty line."))
     (evil-test-buffer
       ";; [T]his buffer is for notes."
       ("vaw")
+      ";; <This[ ]>buffer is for notes.")
+    (evil-test-buffer
+      ";; Thi[s] buffer is for notes."
+      ("viw")
+      ";; <Thi[s]> buffer is for notes.")
+    (evil-test-buffer
+      ";; Thi[s] buffer is for notes."
+      ("vaw")
       ";; <This[ ]>buffer is for notes."))
   (ert-info ("Select two words")
     (ert-info ("Include whitespace on this side")
@@ -3647,6 +5472,587 @@ Below some empty line."))
         ";; This<[ ]buffer> is for notes."
         ("aw")
         ";;<[ ]This buffer> is for notes."))))
+
+(ert-deftest evil-test-word-objects-cjk ()
+  "Test `evil-inner-word' and `evil-a-word' on CJK words"
+  :tags '(evil text-object cjk)
+  (ert-info ("Select a word")
+    (evil-test-buffer
+      "[a]bcd1234"
+      ("viw")
+      "<abcd123[4]>")
+    (evil-test-buffer
+      "[a]bcd1234"
+      ("vaw")
+      "<abcd123[4]>")
+    (evil-test-buffer
+      "[a]bcd漢字"
+      ("viw")
+      "<abc[d]>漢字")
+    (evil-test-buffer
+      "[a]bcd漢字"
+      ("vaw")
+      "<abc[d]>漢字")
+    (evil-test-buffer
+      "[a]bcdひらがな"
+      ("viw")
+      "<abc[d]>ひらがな")
+    (evil-test-buffer
+      "[a]bcdひらがな"
+      ("vaw")
+      "<abc[d]>ひらがな")
+    (evil-test-buffer
+      "[a]bcdカタカナ"
+      ("viw")
+      "<abc[d]>カタカナ")
+    (evil-test-buffer
+      "[a]bcdカタカナ"
+      ("vaw")
+      "<abc[d]>カタカナ")
+    (evil-test-buffer
+      "[a]bcdｶﾀｶﾅ"
+      ("viw")
+      "<abcdｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[a]bcdｶﾀｶﾅ"
+      ("vaw")
+      "<abcdｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[a]bcdＡＢＣ"
+      ("viw")
+      "<abcdＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[a]bcdＡＢＣ"
+      ("vaw")
+      "<abcdＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[a]bcd１２３"
+      ("viw")
+      "<abcd１２[３]>")
+    (evil-test-buffer
+      "[a]bcd１２３"
+      ("vaw")
+      "<abcd１２[３]>")
+    (evil-test-buffer
+      "[a]bcd한글"
+      ("viw")
+      "<abc[d]>한글")
+    (evil-test-buffer
+      "[a]bcd한글"
+      ("vaw")
+      "<abc[d]>한글")
+    (evil-test-buffer
+      "[1]234abcd"
+      ("viw")
+      "<1234abc[d]>")
+    (evil-test-buffer
+      "[1]234abcd"
+      ("vaw")
+      "<1234abc[d]>")
+    (evil-test-buffer
+      "[1]234漢字"
+      ("viw")
+      "<123[4]>漢字")
+    (evil-test-buffer
+      "[1]234漢字"
+      ("vaw")
+      "<123[4]>漢字")
+    (evil-test-buffer
+      "[1]234ひらがな"
+      ("viw")
+      "<123[4]>ひらがな")
+    (evil-test-buffer
+      "[1]234ひらがな"
+      ("vaw")
+      "<123[4]>ひらがな")
+    (evil-test-buffer
+      "[1]234カタカナ"
+      ("viw")
+      "<123[4]>カタカナ")
+    (evil-test-buffer
+      "[1]234カタカナ"
+      ("vaw")
+      "<123[4]>カタカナ")
+    (evil-test-buffer
+      "[1]234ｶﾀｶﾅ"
+      ("viw")
+      "<1234ｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[1]234ｶﾀｶﾅ"
+      ("vaw")
+      "<1234ｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[1]234ＡＢＣ"
+      ("viw")
+      "<1234ＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[1]234ＡＢＣ"
+      ("vaw")
+      "<1234ＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[1]234１２３"
+      ("viw")
+      "<1234１２[３]>")
+    (evil-test-buffer
+      "[1]234１２３"
+      ("vaw")
+      "<1234１２[３]>")
+    (evil-test-buffer
+      "[1]234한글"
+      ("viw")
+      "<123[4]>한글")
+    (evil-test-buffer
+      "[1]234한글"
+      ("vaw")
+      "<123[4]>한글")
+    (evil-test-buffer
+      "[漢]字abcd"
+      ("viw")
+      "<漢[字]>abcd")
+    (evil-test-buffer
+      "[漢]字abcd"
+      ("vaw")
+      "<漢[字]>abcd")
+    (evil-test-buffer
+      "[漢]字1234"
+      ("viw")
+      "<漢[字]>1234")
+    (evil-test-buffer
+      "[漢]字1234"
+      ("vaw")
+      "<漢[字]>1234")
+    (evil-test-buffer
+      "[漢]字ひらがな"
+      ("viw")
+      "<漢[字]>ひらがな")
+    (evil-test-buffer
+      "[漢]字ひらがな"
+      ("vaw")
+      "<漢[字]>ひらがな")
+    (evil-test-buffer
+      "[漢]字カタカナ"
+      ("viw")
+      "<漢[字]>カタカナ")
+    (evil-test-buffer
+      "[漢]字カタカナ"
+      ("vaw")
+      "<漢[字]>カタカナ")
+    (evil-test-buffer
+      "[漢]字ｶﾀｶﾅ"
+      ("viw")
+      "<漢[字]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[漢]字ｶﾀｶﾅ"
+      ("vaw")
+      "<漢[字]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[漢]字ＡＢＣ"
+      ("viw")
+      "<漢[字]>ＡＢＣ")
+    (evil-test-buffer
+      "[漢]字ＡＢＣ"
+      ("vaw")
+      "<漢[字]>ＡＢＣ")
+    (evil-test-buffer
+      "[漢]字１２３"
+      ("viw")
+      "<漢[字]>１２３")
+    (evil-test-buffer
+      "[漢]字１２３"
+      ("vaw")
+      "<漢[字]>１２３")
+    (evil-test-buffer
+      "[漢]字한글"
+      ("viw")
+      "<漢[字]>한글")
+    (evil-test-buffer
+      "[漢]字한글"
+      ("vaw")
+      "<漢[字]>한글")
+    (evil-test-buffer
+      "[ひ]らがなabcd"
+      ("viw")
+      "<ひらが[な]>abcd")
+    (evil-test-buffer
+      "[ひ]らがなabcd"
+      ("vaw")
+      "<ひらが[な]>abcd")
+    (evil-test-buffer
+      "[ひ]らがな1234"
+      ("viw")
+      "<ひらが[な]>1234")
+    (evil-test-buffer
+      "[ひ]らがな1234"
+      ("vaw")
+      "<ひらが[な]>1234")
+    (evil-test-buffer
+      "[ひ]らがな漢字"
+      ("viw")
+      "<ひらが[な]>漢字")
+    (evil-test-buffer
+      "[ひ]らがな漢字"
+      ("vaw")
+      "<ひらが[な]>漢字")
+    (evil-test-buffer
+      "[ひ]らがなカタカナ"
+      ("viw")
+      "<ひらが[な]>カタカナ")
+    (evil-test-buffer
+      "[ひ]らがなカタカナ"
+      ("vaw")
+      "<ひらが[な]>カタカナ")
+    (evil-test-buffer
+      "[ひ]らがなｶﾀｶﾅ"
+      ("viw")
+      "<ひらが[な]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[ひ]らがなｶﾀｶﾅ"
+      ("vaw")
+      "<ひらが[な]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[ひ]らがなＡＢＣ"
+      ("viw")
+      "<ひらが[な]>ＡＢＣ")
+    (evil-test-buffer
+      "[ひ]らがなＡＢＣ"
+      ("vaw")
+      "<ひらが[な]>ＡＢＣ")
+    (evil-test-buffer
+      "[ひ]らがな１２３"
+      ("viw")
+      "<ひらが[な]>１２３")
+    (evil-test-buffer
+      "[ひ]らがな１２３"
+      ("vaw")
+      "<ひらが[な]>１２３")
+    (evil-test-buffer
+      "[ひ]らがな한글"
+      ("viw")
+      "<ひらが[な]>한글")
+    (evil-test-buffer
+      "[ひ]らがな한글"
+      ("vaw")
+      "<ひらが[な]>한글")
+    (evil-test-buffer
+      "[カ]タカナabcd"
+      ("viw")
+      "<カタカ[ナ]>abcd")
+    (evil-test-buffer
+      "[カ]タカナabcd"
+      ("vaw")
+      "<カタカ[ナ]>abcd")
+    (evil-test-buffer
+      "[カ]タカナ1234"
+      ("viw")
+      "<カタカ[ナ]>1234")
+    (evil-test-buffer
+      "[カ]タカナ1234"
+      ("vaw")
+      "<カタカ[ナ]>1234")
+    (evil-test-buffer
+      "[カ]タカナ漢字"
+      ("viw")
+      "<カタカ[ナ]>漢字")
+    (evil-test-buffer
+      "[カ]タカナ漢字"
+      ("vaw")
+      "<カタカ[ナ]>漢字")
+    (evil-test-buffer
+      "[カ]タカナひらがな"
+      ("viw")
+      "<カタカ[ナ]>ひらがな")
+    (evil-test-buffer
+      "[カ]タカナひらがな"
+      ("vaw")
+      "<カタカ[ナ]>ひらがな")
+    (evil-test-buffer
+      "[カ]タカナｶﾀｶﾅ"
+      ("viw")
+      "<カタカ[ナ]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[カ]タカナｶﾀｶﾅ"
+      ("vaw")
+      "<カタカ[ナ]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[カ]タカナＡＢＣ"
+      ("viw")
+      "<カタカ[ナ]>ＡＢＣ")
+    (evil-test-buffer
+      "[カ]タカナＡＢＣ"
+      ("vaw")
+      "<カタカ[ナ]>ＡＢＣ")
+    (evil-test-buffer
+      "[カ]タカナ１２３"
+      ("viw")
+      "<カタカ[ナ]>１２３")
+    (evil-test-buffer
+      "[カ]タカナ１２３"
+      ("vaw")
+      "<カタカ[ナ]>１２３")
+    (evil-test-buffer
+      "[カ]タカナ한글"
+      ("viw")
+      "<カタカ[ナ]>한글")
+    (evil-test-buffer
+      "[カ]タカナ한글"
+      ("vaw")
+      "<カタカ[ナ]>한글")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅabcd"
+      ("viw")
+      "<ｶﾀｶﾅabc[d]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅabcd"
+      ("vaw")
+      "<ｶﾀｶﾅabc[d]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ1234"
+      ("viw")
+      "<ｶﾀｶﾅ123[4]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ1234"
+      ("vaw")
+      "<ｶﾀｶﾅ123[4]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ漢字"
+      ("viw")
+      "<ｶﾀｶ[ﾅ]>漢字")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ漢字"
+      ("vaw")
+      "<ｶﾀｶ[ﾅ]>漢字")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅひらがな"
+      ("viw")
+      "<ｶﾀｶ[ﾅ]>ひらがな")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅひらがな"
+      ("vaw")
+      "<ｶﾀｶ[ﾅ]>ひらがな")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅカタカナ"
+      ("viw")
+      "<ｶﾀｶ[ﾅ]>カタカナ")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅカタカナ"
+      ("vaw")
+      "<ｶﾀｶ[ﾅ]>カタカナ")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅＡＢＣ"
+      ("viw")
+      "<ｶﾀｶﾅＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅＡＢＣ"
+      ("vaw")
+      "<ｶﾀｶﾅＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ１２３"
+      ("viw")
+      "<ｶﾀｶﾅ１２[３]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ１２３"
+      ("vaw")
+      "<ｶﾀｶﾅ１２[３]>")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ한글"
+      ("viw")
+      "<ｶﾀｶ[ﾅ]>한글")
+    (evil-test-buffer
+      "[ｶ]ﾀｶﾅ한글"
+      ("vaw")
+      "<ｶﾀｶ[ﾅ]>한글")
+    (evil-test-buffer
+      "[Ａ]ＢＣabcd"
+      ("viw")
+      "<ＡＢＣabc[d]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣabcd"
+      ("vaw")
+      "<ＡＢＣabc[d]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ1234"
+      ("viw")
+      "<ＡＢＣ123[4]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ1234"
+      ("vaw")
+      "<ＡＢＣ123[4]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ漢字"
+      ("viw")
+      "<ＡＢ[Ｃ]>漢字")
+    (evil-test-buffer
+      "[Ａ]ＢＣ漢字"
+      ("vaw")
+      "<ＡＢ[Ｃ]>漢字")
+    (evil-test-buffer
+      "[Ａ]ＢＣひらがな"
+      ("viw")
+      "<ＡＢ[Ｃ]>ひらがな")
+    (evil-test-buffer
+      "[Ａ]ＢＣひらがな"
+      ("vaw")
+      "<ＡＢ[Ｃ]>ひらがな")
+    (evil-test-buffer
+      "[Ａ]ＢＣカタカナ"
+      ("viw")
+      "<ＡＢ[Ｃ]>カタカナ")
+    (evil-test-buffer
+      "[Ａ]ＢＣカタカナ"
+      ("vaw")
+      "<ＡＢ[Ｃ]>カタカナ")
+    (evil-test-buffer
+      "[Ａ]ＢＣｶﾀｶﾅ"
+      ("viw")
+      "<ＡＢＣｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣｶﾀｶﾅ"
+      ("vaw")
+      "<ＡＢＣｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ１２３"
+      ("viw")
+      "<ＡＢＣ１２[３]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ１２３"
+      ("vaw")
+      "<ＡＢＣ１２[３]>")
+    (evil-test-buffer
+      "[Ａ]ＢＣ한글"
+      ("viw")
+      "<ＡＢ[Ｃ]>한글")
+    (evil-test-buffer
+      "[Ａ]ＢＣ한글"
+      ("vaw")
+      "<ＡＢ[Ｃ]>한글")
+    (evil-test-buffer
+      "[１]２３abcd"
+      ("viw")
+      "<１２３abc[d]>")
+    (evil-test-buffer
+      "[１]２３abcd"
+      ("vaw")
+      "<１２３abc[d]>")
+    (evil-test-buffer
+      "[１]２３1234"
+      ("viw")
+      "<１２３123[4]>")
+    (evil-test-buffer
+      "[１]２３1234"
+      ("vaw")
+      "<１２３123[4]>")
+    (evil-test-buffer
+      "[１]２３漢字"
+      ("viw")
+      "<１２[３]>漢字")
+    (evil-test-buffer
+      "[１]２３漢字"
+      ("vaw")
+      "<１２[３]>漢字")
+    (evil-test-buffer
+      "[１]２３ひらがな"
+      ("viw")
+      "<１２[３]>ひらがな")
+    (evil-test-buffer
+      "[１]２３ひらがな"
+      ("vaw")
+      "<１２[３]>ひらがな")
+    (evil-test-buffer
+      "[１]２３カタカナ"
+      ("viw")
+      "<１２[３]>カタカナ")
+    (evil-test-buffer
+      "[１]２３カタカナ"
+      ("vaw")
+      "<１２[３]>カタカナ")
+    (evil-test-buffer
+      "[１]２３ｶﾀｶﾅ"
+      ("viw")
+      "<１２３ｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[１]２３ｶﾀｶﾅ"
+      ("vaw")
+      "<１２３ｶﾀｶ[ﾅ]>")
+    (evil-test-buffer
+      "[１]２３ＡＢＣ"
+      ("viw")
+      "<１２３ＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[１]２３ＡＢＣ"
+      ("vaw")
+      "<１２３ＡＢ[Ｃ]>")
+    (evil-test-buffer
+      "[１]２３한글"
+      ("viw")
+      "<１２[３]>한글")
+    (evil-test-buffer
+      "[１]２３한글"
+      ("vaw")
+      "<１２[３]>한글")
+    (evil-test-buffer
+      "[한]글abcd"
+      ("viw")
+      "<한[글]>abcd")
+    (evil-test-buffer
+      "[한]글abcd"
+      ("vaw")
+      "<한[글]>abcd")
+    (evil-test-buffer
+      "[한]글1234"
+      ("viw")
+      "<한[글]>1234")
+    (evil-test-buffer
+      "[한]글1234"
+      ("vaw")
+      "<한[글]>1234")
+    (evil-test-buffer
+      "[한]글漢字"
+      ("viw")
+      "<한[글]>漢字")
+    (evil-test-buffer
+      "[한]글漢字"
+      ("vaw")
+      "<한[글]>漢字")
+    (evil-test-buffer
+      "[한]글ひらがな"
+      ("viw")
+      "<한[글]>ひらがな")
+    (evil-test-buffer
+      "[한]글ひらがな"
+      ("vaw")
+      "<한[글]>ひらがな")
+    (evil-test-buffer
+      "[한]글カタカナ"
+      ("viw")
+      "<한[글]>カタカナ")
+    (evil-test-buffer
+      "[한]글カタカナ"
+      ("vaw")
+      "<한[글]>カタカナ")
+    (evil-test-buffer
+      "[한]글ｶﾀｶﾅ"
+      ("viw")
+      "<한[글]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[한]글ｶﾀｶﾅ"
+      ("vaw")
+      "<한[글]>ｶﾀｶﾅ")
+    (evil-test-buffer
+      "[한]글ＡＢＣ"
+      ("viw")
+      "<한[글]>ＡＢＣ")
+    (evil-test-buffer
+      "[한]글ＡＢＣ"
+      ("vaw")
+      "<한[글]>ＡＢＣ")
+    (evil-test-buffer
+      "[한]글１２３"
+      ("viw")
+      "<한[글]>１２３")
+    (evil-test-buffer
+      "[한]글１２３"
+      ("vaw")
+      "<한[글]>１２３")))
 
 (ert-deftest evil-test-paragraph-objects ()
   "Test `evil-inner-paragraph' and `evil-a-paragraph'"
@@ -3765,7 +6171,13 @@ Below some empty line."))
       "This is \"a test[\"]. For \"quote\" objects."
       (emacs-lisp-mode)
       ("va\"")
-      "This is< \"a test[\"]>. For \"quote\" objects.")))
+      "This is< \"a test[\"]>. For \"quote\" objects."))
+  (ert-info ("Delete text from outside")
+    (evil-test-buffer
+      "Th[i]s is \"a test\". For \"quote\" objects."
+      (emacs-lisp-mode)
+      ("da\"")
+      "This is[.] For \"quote\" objects.")))
 
 (ert-deftest evil-test-paren-objects ()
   "Test `evil-inner-paren', etc."
@@ -3836,53 +6248,53 @@ Below some empty line."))
     (ert-info ("Inside the parentheses")
       (evil-test-buffer
         "(2[3]4)"
-        (should (equal (evil-paren-range 1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range 1 ?\( ?\) t) '(2 5)))
-        (should (equal (evil-paren-range -1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range -1 ?\( ?\) t) '(2 5)))
-        (should-not (evil-paren-range 0 ?\( ?\)))
-        (should-not (evil-paren-range 0 ?\( ?\) t))))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\) t))))
     (ert-info ("Before opening parenthesis")
       (evil-test-buffer
         "[(]234)"
-        (should (equal (evil-paren-range 1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range 1 ?\( ?\) t) '(2 5)))
-        (should-not (evil-paren-range -1 ?\( ?\)))
-        (should-not (evil-paren-range -1 ?\( ?\) t))
-        (should-not (evil-paren-range 0 ?\( ?\)))
-        (should-not (evil-paren-range 0 ?\( ?\) t))))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should-not (evil-paren-range -1 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range -1 nil nil nil ?\( ?\) t))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\) t))))
     (ert-info ("After opening parenthesis")
       (evil-test-buffer
         "([2]34)"
-        (should (equal (evil-paren-range 1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range 1 ?\( ?\) t) '(2 5)))
-        (should (equal (evil-paren-range -1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range -1 ?\( ?\) t) '(2 5)))
-        (should-not (evil-paren-range 0 ?\( ?\)))
-        (should-not (evil-paren-range 0 ?\( ?\) t))))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\) t))))
     (ert-info ("Before closing parenthesis")
       (evil-test-buffer
         "(234[)]"
-        (should (equal (evil-paren-range 1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range 1 ?\( ?\) t) '(2 5)))
-        (should (equal (evil-paren-range -1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range -1 ?\( ?\) t) '(2 5)))
-        (should-not (evil-paren-range 0 ?\( ?\)))
-        (should-not (evil-paren-range 0 ?\( ?\) t))))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range 1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\) t))))
     (ert-info ("After closing parenthesis")
       (evil-test-buffer
         "(234)[]"
-        (should-not (evil-paren-range 1 ?\( ?\)))
-        (should-not (evil-paren-range 1 ?\( ?\) t))
-        (should (equal (evil-paren-range -1 ?\( ?\)) '(1 6)))
-        (should (equal (evil-paren-range -1 ?\( ?\) t) '(2 5)))
-        (should-not (evil-paren-range 0 ?\( ?\)))
-        (should-not (evil-paren-range 0 ?\( ?\) t)))))
+        (should-not (evil-paren-range 1 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 1 nil nil nil ?\( ?\) t))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\)) '(1 6)))
+        (should (equal (evil-paren-range -1 nil nil nil ?\( ?\) t) '(2 5)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\)))
+        (should-not (evil-paren-range 0 nil nil nil ?\( ?\) t)))))
   (ert-info ("Select two blocks")
     (evil-test-buffer
       "((34567)([0]1234))"
-      (should (equal (evil-paren-range 1 ?\( ?\)) '(9 16)))
-      (should (equal (evil-paren-range 2 ?\( ?\)) '(1 17))))))
+      (should (equal (evil-paren-range 1 nil nil nil ?\( ?\)) '(9 16)))
+      (should (equal (evil-paren-range 2 nil nil nil ?\( ?\)) '(1 17))))))
 
 (ert-deftest evil-test-regexp-range ()
   "Test `evil-regexp-range'"
@@ -3891,57 +6303,57 @@ Below some empty line."))
     (ert-info ("Inside the parentheses")
       (evil-test-buffer
         "(2[3]4)"
-        (should (equal (evil-regexp-range 1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range 1 "(" ")" t) '(2 5)))
-        (should (equal (evil-regexp-range -1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range -1 "(" ")" t) '(2 5)))
-        (should-not (evil-regexp-range 0 "(" ")"))
-        (should-not (evil-regexp-range 0 "(" ")" t))))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")" t) '(2 5)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")" t) '(2 5)))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")" t))))
     (ert-info ("Before opening parenthesis")
       (evil-test-buffer
         "[(]234)"
-        (should (equal (evil-regexp-range 1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range 1 "(" ")" t) '(2 5)))
-        (should-not (evil-regexp-range -1 "(" ")"))
-        (should-not (evil-regexp-range -1 "(" ")" t))
-        (should-not (evil-regexp-range 0 "(" ")"))
-        (should-not (evil-regexp-range 0 "(" ")" t))))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")" t) '(2 5)))
+        (should-not (evil-regexp-range -1 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range -1 nil nil nil"(" ")" t))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")" t))))
     (ert-info ("After opening parenthesis")
       (evil-test-buffer
         "([2]34)"
-        (should (equal (evil-regexp-range 1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range 1 "(" ")" t) '(2 5)))
-        (should (equal (evil-regexp-range -1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range -1 "(" ")" t) '(2 5)))
-        (should-not (evil-regexp-range 0 "(" ")"))
-        (should-not (evil-regexp-range 0 "(" ")" t))))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")" t) '(2 5)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")" t) '(2 5)))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")" t))))
     (ert-info ("Before closing parenthesis")
       (evil-test-buffer
         "(234[)]"
-        (should (equal (evil-regexp-range 1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range 1 "(" ")" t) '(2 5)))
-        (should (equal (evil-regexp-range -1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range -1 "(" ")" t) '(2 5)))
-        (should-not (evil-regexp-range 0 "(" ")"))
-        (should-not (evil-regexp-range 0 "(" ")" t))))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range 1 nil nil nil"(" ")" t) '(2 5)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")" t) '(2 5)))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")" t))))
     (ert-info ("After closing parenthesis")
       (evil-test-buffer
         "(234)[]"
-        (should-not (evil-regexp-range 1 "(" ")"))
-        (should-not (evil-regexp-range 1 "(" ")" t))
-        (should (equal (evil-regexp-range -1 "(" ")") '(1 6)))
-        (should (equal (evil-regexp-range -1 "(" ")" t) '(2 5)))
-        (should-not (evil-regexp-range 0 "(" ")"))
-        (should-not (evil-regexp-range 0 "(" ")" t)))))
+        (should-not (evil-regexp-range 1 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 1 nil nil nil"(" ")" t))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")") '(1 6)))
+        (should (equal (evil-regexp-range -1 nil nil nil"(" ")" t) '(2 5)))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")"))
+        (should-not (evil-regexp-range 0 nil nil nil"(" ")" t)))))
   (ert-info ("Select two blocks")
     (evil-test-buffer
       "((34567)([0]1234))"
-      (should (equal (evil-regexp-range 1 "(" ")") '(9 16)))
-      (should (equal (evil-regexp-range 2 "(" ")") '(1 17)))))
+      (should (equal (evil-regexp-range 1 nil nil nil"(" ")") '(9 16)))
+      (should (equal (evil-regexp-range 2 nil nil nil"(" ")") '(1 17)))))
   (ert-info ("Select a quoted block")
     (evil-test-buffer
       "'q[u]ote'"
-      (should (equal (evil-regexp-range 1 "'" "'") '(1 8))))))
+      (should (equal (evil-regexp-range 1 nil nil nil"'" "'") '(1 8))))))
 
 ;;; Visual state
 
@@ -4119,22 +6531,22 @@ if no previous selection")
   (should (equal (evil-ex-parse "5,2cmd arg")
                  '(evil-ex-call-command
                    (evil-ex-range
-                    (evil-ex-address (string-to-number "5") nil)
-                    (evil-ex-address (string-to-number "2") nil))
+                    (evil-ex-line (string-to-number "5") nil)
+                    (evil-ex-line (string-to-number "2") nil))
                    "cmd"
                    "arg")))
   (should (equal (evil-ex-parse "5,2cmd !arg")
                  '(evil-ex-call-command
                    (evil-ex-range
-                    (evil-ex-address (string-to-number "5") nil)
-                    (evil-ex-address (string-to-number "2") nil))
+                    (evil-ex-line (string-to-number "5") nil)
+                    (evil-ex-line (string-to-number "2") nil))
                    "cmd"
                    "!arg")))
   (should (equal (evil-ex-parse "5,2 arg")
                  '(evil-ex-call-command
                    (evil-ex-range
-                    (evil-ex-address (string-to-number "5") nil)
-                    (evil-ex-address (string-to-number "2") nil))
+                    (evil-ex-line (string-to-number "5") nil)
+                    (evil-ex-line (string-to-number "2") nil))
                    "arg"
                    nil))))
 
@@ -4145,30 +6557,32 @@ if no previous selection")
                  '(evil-ex-full-range)))
   (should (equal (evil-ex-parse "5,27" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address (string-to-number "27") nil))))
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line (string-to-number "27") nil))))
   (should (equal (evil-ex-parse "5;$" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address (evil-ex-last-line) nil))))
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line (evil-ex-last-line) nil))))
   (should (equal (evil-ex-parse "5,'x" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address (evil-ex-marker "x") nil))))
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line (evil-ex-marker "x") nil))))
+  (should (equal (evil-ex-parse "`x,`y" nil 'range)
+                 '(evil-ex-char-marker-range "x" "y")))
   (should (equal (evil-ex-parse "5,+" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line
                     nil (+ (evil-ex-signed-number (intern "+") nil))))))
   (should (equal (evil-ex-parse "5,-" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line
                     nil (+ (evil-ex-signed-number (intern "-") nil))))))
   (should (equal (evil-ex-parse "5;4+2-7-3+10-" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address (string-to-number "5") nil)
-                   (evil-ex-address
+                   (evil-ex-line (string-to-number "5") nil)
+                   (evil-ex-line
                     (string-to-number "4")
                     (+ (evil-ex-signed-number
                         (intern "+") (string-to-number "2"))
@@ -4181,11 +6595,11 @@ if no previous selection")
                        (evil-ex-signed-number (intern "-") nil))))))
   (should (equal (evil-ex-parse ".-2;4+2-7-3+10-" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address
+                   (evil-ex-line
                     (evil-ex-current-line)
                     (+ (evil-ex-signed-number
                         (intern "-") (string-to-number "2"))))
-                   (evil-ex-address
+                   (evil-ex-line
                     (string-to-number "4")
                     (+ (evil-ex-signed-number
                         (intern "+") (string-to-number "2"))
@@ -4199,17 +6613,17 @@ if no previous selection")
                         (intern "-") nil))))))
   (should (equal (evil-ex-parse "'a-2,$-10" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address
+                   (evil-ex-line
                     (evil-ex-marker "a")
                     (+ (evil-ex-signed-number
                         (intern "-") (string-to-number "2"))))
-                   (evil-ex-address
+                   (evil-ex-line
                     (evil-ex-last-line)
                     (+ (evil-ex-signed-number
                         (intern "-") (string-to-number "10")))))))
   (should (equal (evil-ex-parse ".+42" nil 'range)
                  '(evil-ex-range
-                   (evil-ex-address
+                   (evil-ex-line
                     (evil-ex-current-line)
                     (+ (evil-ex-signed-number
                         (intern "+") (string-to-number "42"))))
@@ -4253,61 +6667,68 @@ if no previous selection")
         ("jj:@:" [return] ":1@:" [return])
         "[a]XcdXf\nabcdef\naXcdef"))))
 
-;; search
-(ert-deftest evil-test-ex-substitute ()
-  "Test `evil-ex-substitute'"
-  :tags '(evil ex search)
+(ert-deftest evil-test-ex-repeat2 ()
+  "Test @: command."
+  :tags '(evil ex)
   (evil-without-display
-    (ert-info ("Substitute on current line")
+    (ert-info ("Repeat in current line")
       (evil-test-buffer
-        "ABCABCABC\nABCA[B]CABC\nABCABCABC"
-        (":s/BC/XYZ/" (kbd "RET"))
-        "ABCABCABC\n[A]XYZABCABC\nABCABCABC"))
-    (ert-info ("Substitute on whole current line")
+        "[a]bcdef\nabcdef\nabcdef"
+        (":s/[be]/X" [return])
+        "[a]Xcdef\nabcdef\nabcdef"
+        ("jj@:")
+        "aXcdef\nabcdef\n[a]Xcdef"))
+    (ert-info ("Repeat with count in current line")
       (evil-test-buffer
-        "ABCABCABC\nABC[A]BCABC\nABCABCABC"
-        (":s/BC/XYZ/g" (kbd "RET"))
-        "ABCABCABC\n[A]XYZAXYZAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on last line")
+        "[a]bcdef\nabcdef\nabcdef"
+        (":s/[be]/X" [return])
+        "[a]Xcdef\nabcdef\nabcdef"
+        ("jj2@:")
+        "aXcdef\nabcdef\n[a]XcdXf"))
+    (ert-info ("Do not record dot repeat")
       (evil-test-buffer
-        "ABCABCABC\nABCABCABC\nABCABC[A]BC"
-        (":s/BC/XYZ/" (kbd "RET"))
-        "ABCABCABC\nABCABCABC\n[A]XYZABCABC"))
-    (ert-info ("Substitute on whole last line")
-      (evil-test-buffer
-        "ABCABCABC\nABCABCABC\nABCABC[A]BC"
-        (":s/BC/XYZ/g" (kbd "RET"))
-        "ABCABCABC\nABCABCABC\n[A]XYZAXYZAXYZ"))
-    (ert-info ("Substitute on range")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/" (kbd "RET"))
-        "AXYZABCABC\nQRT\n[A]XYZABCABC\nABCABCABC"))
-    (ert-info ("Substitute whole lines on range")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/g" (kbd "RET"))
-        "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on whole current line confirm")
-      (evil-test-buffer
-        "ABCABCABC\nABC[A]BCABC\nABCABCABC"
-        (":s/BC/XYZ/gc" (kbd "RET") "yny")
-        "ABCABCABC\n[A]XYZABCAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on range confirm")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/c" (kbd "RET") "yn")
-        "[A]XYZABCABC\nQRT\nABCABCABC\nABCABCABC"))
-    (ert-info ("Substitute whole lines on range with other delim")
-      (evil-test-buffer
-        "A/CA/CA/C\nQRT\nA/C[A]/CA/C\nA/CA/CA/C"
-        (":1,3s,/C,XYZ,g" (kbd "RET"))
-        "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nA/CA/CA/C"))
-    (ert-info ("Substitute on whole buffer, smart case")
-      (evil-test-buffer
-        "[A]bcAbcAbc\naBcaBcaBc\nABCABCABC\nabcabcabc"
-        (":%s/bc/xy/g" (kbd "RET"))
-        "AxyAxyAxy\naXyaXyaXy\nAXYAXYAXY\n[a]xyaxyaxy"))))
+        ""
+        ("OAAAAAA" [escape] "^")
+        "[A]AAAAA\n"
+        (":s/A/X" [return])
+        "[X]AAAAA\n"
+        ("@:")
+        "[X]XAAAA\n"
+        (".")
+        "AAAAAA\nXXAAAA\n"))))
+
+(ert-deftest evil-test-ex-visual-char-range ()
+  "Test visual character ranges in ex state."
+  :tags '(evil ex visual)
+  (evil-without-display
+    (ert-info ("No character range, inclusive")
+      (let ((evil-visual-char 'inclusive)
+            evil-ex-visual-char-range)
+        (evil-test-buffer
+          "li[n]e 1\nline 2\nline 3\nline 4\n"
+          ("vjll:d" [return])
+          "line 3\nline 4\n")))
+    (ert-info ("No character range, exclusive")
+      (let ((evil-visual-char 'inclusive)
+            evil-ex-visual-char-range)
+        (evil-test-buffer
+          "li[n]e 1\nline 2\nline 3\nline 4\n"
+          ("vjll:d" [return])
+          "line 3\nline 4\n")))
+    (ert-info ("Character range, inclusive")
+      (let ((evil-visual-char 'inclusive)
+            (evil-ex-visual-char-range t))
+        (evil-test-buffer
+          "li[n]e 1\nline 2\nline 3\nline 4\n"
+          ("vjll:d" [return])
+          "li2\nline 3\nline 4\n")))
+    (ert-info ("Character range, exclusive")
+      (let ((evil-visual-char 'exclusive)
+            (evil-ex-visual-char-range t))
+        (evil-test-buffer
+          "li[n]e 1\nline 2\nline 3\nline 4\n"
+          ("vjll:d" [return])
+          "li 2\nline 3\nline 4\n")))))
 
 (ert-deftest evil-test-ex-substitute-replacement ()
   "Test `evil-ex-substitute' with special replacements."
@@ -4356,18 +6777,30 @@ if no previous selection")
     (evil-test-buffer
       "[a]bcXdefXghiXjkl\n"
       (":s/X/\\|\\/\\|/g" [return])
-      "[a]bc|/|def|/|ghi|/|jkl\n")))
+      "[a]bc|/|def|/|ghi|/|jkl\n"))
+  (ert-info ("Substitute with register")
+    (evil-test-buffer
+      "[a]bc\niiiXiiiXiiiXiii\n"
+      ("\"ayiwj:s/X/\\=@a/g" [return])
+      "abc\n[i]iiabciiiabciiiabciii\n")))
 
 (ert-deftest evil-test-ex-repeat-substitute-replacement ()
   "Test `evil-ex-substitute' with repeating of previous substitutions."
   :tags '(evil ex search)
   (ert-info ("Repeat previous pattern")
+    (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar"
       (":s/foo/AAA" [return])
       "[x]xx AAA bar foo bar foo bar"
       (":s//BBB" [return])
-      "[x]xx AAA bar BBB bar foo bar"))
+      "[x]xx AAA bar BBB bar foo bar"
+      ("/bar" [return] ":s//CCC" [return])
+      "[x]xx AAA CCC BBB bar foo bar"
+      (":s/ar/XX" [return])
+      "[x]xx AAA CCC BBB bXX foo bar"
+      (":s//YY" [return])
+      "[x]xx AAA CCC BBB bXX foo bYY"))
   (ert-info ("Repeat previous replacement")
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar"
@@ -4383,12 +6816,15 @@ if no previous selection")
       (":s/bar/BBB/&" [return])
       "[x]xx AAA BBB AAA BBB AAA BBB"))
   (ert-info ("Repeat previous substitute without flags")
+    (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar\nxxx foo bar foo bar foo bar"
       (":s/foo/AAA/g" [return])
       "[x]xx AAA bar AAA bar AAA bar\nxxx foo bar foo bar foo bar"
       ("j:s" [return])
-      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar foo bar foo bar")
+      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar foo bar foo bar"
+      ("/bar" [return] ":s" [return])
+      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar AAA bar foo bar")
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar\nxxx foo bar foo bar foo bar"
       (":s/foo/AAA/g" [return])
@@ -4639,6 +7075,99 @@ if no previous selection")
         ("/bar/e" [return] "//b+1" [return])
         "foo foo\nbar b[a]r\nbaz baz\nAnother line\nAnd yet another line"))))
 
+(ert-deftest evil-test-ex-search-word ()
+  "Test search for word under point."
+  :tags '(evil ex search)
+  (evil-without-display
+    (evil-select-search-module 'evil-search-module 'evil-search)
+    (setq evil-ex-search-history nil)
+    (evil-test-buffer
+      "so[m]e text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n"
+      (setq evil-symbol-word-search nil)
+      ("*")
+      "some text with a strange word
+and here [s]ome other stuff
+maybe we need one line more with some text\n"
+      ("n")
+      "some text with a strange word
+and here some other stuff
+maybe we need one line more with [s]ome text\n"
+      (ert-info ("Search history")
+        (should (equal evil-ex-search-history '("\\<some\\>"))))
+      ("*")
+      "[s]ome text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n"
+      (ert-info ("Search history with double pattern")
+        (should (equal evil-ex-search-history '("\\<some\\>")))))
+    (ert-info ("Test unbounded search")
+      (evil-select-search-module 'evil-search-module 'evil-search)
+      (setq evil-ex-search-history nil)
+      (evil-test-buffer
+        "[s]ymbol\n(defun my-symbolfunc ())\n(defvar my-symbolvar)\nanother symbol\n"
+        ("*")
+        (setq evil-symbol-word-search nil)
+        "symbol\n(defun my-symbolfunc ())\n(defvar my-symbolvar)\nanother [s]ymbol\n"
+        ("ggg*")
+        "symbol\n(defun my-[s]ymbolfunc ())\n(defvar my-symbolvar)\nanother symbol\n"
+        (should (equal evil-ex-search-history '("symbol" "\\<symbol\\>")))
+        ("n")
+        "symbol\n(defun my-symbolfunc ())\n(defvar my-[s]ymbolvar)\nanother symbol\n"))
+    (ert-info ("Test symbol search")
+      (evil-select-search-module 'evil-search-module 'evil-search)
+      (evil-test-buffer
+        "(defun my-s[y]mbol-func ())\n(defvar my-symbol-var)\n(my-symbol-func)\n(setq my-symbol-func2 (my-symbol-func))\n"
+        (setq evil-symbol-word-search t)
+        ("*")
+        "(defun my-symbol-func ())\n(defvar my-symbol-var)\n([m]y-symbol-func)\n(setq my-symbol-func2 (my-symbol-func))\n"
+        ("n")
+        "(defun my-symbol-func ())\n(defvar my-symbol-var)\n(my-symbol-func)\n(setq my-symbol-func2 ([m]y-symbol-func))\n"))))
+
+(ert-deftest evil-test-isearch-word ()
+  "Test isearch for word under point."
+  :tags '(evil isearch)
+  (evil-without-display
+    (evil-select-search-module 'evil-search-module 'isearch)
+    (evil-test-buffer
+      "so[m]e text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n"
+      (setq evil-symbol-word-search nil)
+      ("*")
+      "some text with a strange word
+and here [s]ome other stuff
+maybe we need one line more with some text\n"
+      ("n")
+      "some text with a strange word
+and here some other stuff
+maybe we need one line more with [s]ome text\n"
+      ("*")
+      "[s]ome text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n")
+    (ert-info ("Test unbounded search")
+      (evil-select-search-module 'evil-search-module 'isearch)
+      (evil-test-buffer
+        "[s]ymbol\n(defun my-symbolfunc ())\n(defvar my-symbolvar)\nanother symbol\n"
+        (setq evil-symbol-word-search nil)
+        ("*")
+        "symbol\n(defun my-symbolfunc ())\n(defvar my-symbolvar)\nanother [s]ymbol\n"
+        ("ggg*")
+        "symbol\n(defun my-[s]ymbolfunc ())\n(defvar my-symbolvar)\nanother symbol\n"
+        ("n")
+        "symbol\n(defun my-symbolfunc ())\n(defvar my-[s]ymbolvar)\nanother symbol\n"))
+    (ert-info ("Test symbol search")
+      (evil-select-search-module 'evil-search-module 'isearch)
+      (evil-test-buffer
+        "(defun my-s[y]mbol-func ())\n(defvar my-symbol-var)\n(my-symbol-func)\n(setq my-symbol-func2 (my-symbol-func))\n"
+        (setq evil-symbol-word-search t)
+        ("*")
+        "(defun my-symbol-func ())\n(defvar my-symbol-var)\n([m]y-symbol-func)\n(setq my-symbol-func2 (my-symbol-func))\n"
+        ("n")
+        "(defun my-symbol-func ())\n(defvar my-symbol-var)\n(my-symbol-func)\n(setq my-symbol-func2 ([m]y-symbol-func))\n"))))
+
 (ert-deftest evil-test-read ()
   "Test of `evil-read'"
   :tags '(evil ex)
@@ -4695,6 +7224,135 @@ if no previous selection")
           "[l]line 1\nline 2"
           (":read!echo -n cmd line 1" [return])
           "line 1\n[c]md line 1\nline 2")))))
+
+(ert-deftest evil-test-shell-command ()
+  "Test `evil-shell-command'."
+  (ert-info ("ex shell command")
+    (evil-test-buffer
+      "[l]ine 5\nline 4\nline 3\nline 2\nline 1\n"
+      (":2,3!sort" [return])
+      "line 5\n[l]ine 3\nline 4\nline 2\nline 1\n"))
+  (ert-info ("shell command operator with count")
+    (evil-test-buffer
+      "line 5\n[l]ine 4\nline 3\nline 2\nline 1\n"
+      ("2!!sort" [return])
+      "line 5\n[l]ine 3\nline 4\nline 2\nline 1\n"))
+  (ert-info ("shell command operator with motion")
+    (evil-test-buffer
+      "line 5\n[l]ine 4\nline 3\nline 2\nline 1\n"
+      ("!jsort" [return])
+      "line 5\n[l]ine 3\nline 4\nline 2\nline 1\n"))
+  (ert-info ("shell command operator with backward motion")
+    (evil-test-buffer
+      "line 5\nline 4\n[l]ine 3\nline 2\nline 1\n"
+      ("!ksort" [return])
+      "line 5\n[l]ine 3\nline 4\nline 2\nline 1\n"))
+  (ert-info ("shell command operator with visual selection")
+    (evil-test-buffer
+      "line 5\n[l]ine 4\nline 3\nline 2\nline 1\n"
+      ("vj!sort" [return])
+      "line 5\n[l]ine 3\nline 4\nline 2\nline 1\n")))
+
+(ert-deftest evil-test-global ()
+  "Test `evil-ex-global'."
+  :tags '(evil ex)
+  (ert-info ("global delete")
+    (evil-test-buffer
+      "[n]o 1\nno 2\nno 3\nyes 4\nno 5\nno 6\nno 7\n"
+      (":g/yes/d" [return])
+      "no 1\nno 2\nno 3\n[n]o 5\nno 6\nno 7\n"))
+  (ert-info ("global substitute")
+    (evil-test-buffer
+      "[n]o 1\nno 2\nno 3\nyes 4\nno 5\nno 6\nno 7\n"
+      (":g/no/s/[3-6]/x" [return])
+      "no 1\nno 2\nno x\nyes 4\nno x\nno x\n[n]o 7\n"
+      ("u")
+      "no 1\nno 2\nno [3]\nyes 4\nno 5\nno 6\nno 7\n")))
+
+(ert-deftest evil-test-normal ()
+  "Test `evil-ex-normal'."
+  :tags '(evil ex)
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4\nline 5\n"
+    (":normal lxIABC" [escape] "AXYZ" [return])
+    "ABClne 1XY[Z]\nline 2\nline 3\nline 4\nline 5\n"
+    (":3,4normal lxIABC" [escape] "AXYZ" [return])
+    "ABClne 1XYZ\nline 2\nABClne 3XYZ\nABClne 4XY[Z]\nline 5\n"
+    ("u")
+    "ABClne 1XYZ\nline 2\nl[i]ne 3\nline 4\nline 5\n"))
+
+(ert-deftest evil-test-copy ()
+  :tags '(evil ex)
+  "Test `evil-copy'."
+  (ert-info ("Copy to last line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,3copy$")
+      "line1\nline2\nline3\nline4\nline5\nline2\n[l]ine3\n"))
+  (ert-info ("Copy to last incomplete line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5"
+      (":2,3copy$")
+      "line1\nline2\nline3\nline4\nline5\nline2\n[l]ine3\n"))
+  (ert-info ("Copy incomplete line to last incomplete line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5"
+      (":4,5copy$")
+      "line1\nline2\nline3\nline4\nline5\nline4\n[l]ine5\n"))
+  (ert-info ("Copy to first line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,3copy0")
+      "line2\n[l]ine3\nline1\nline2\nline3\nline4\nline5\n"))
+  (ert-info ("Copy to intermediate line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,4copy2")
+      "line1\nline2\nline2\nline3\n[l]ine4\nline3\nline4\nline5\n"))
+  (ert-info ("Copy to current line")
+    (evil-test-buffer
+      "line1\nline2\nline3\nli[n]e4\nline5\n"
+      (":2,4copy.")
+      "line1\nline2\nline3\nline4\nline2\nline3\n[l]ine4\nline5\n")))
+
+(ert-deftest evil-test-move ()
+  :tags '(evil ex)
+  "Test `evil-move'."
+  (ert-info ("Move to last line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,3move$")
+      "line1\nline4\nline5\nline2\n[l]ine3\n"))
+  (ert-info ("Move to last incomplete line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5"
+      (":2,3move$")
+      "line1\nline4\nline5\nline2\n[l]ine3\n"))
+  (ert-info ("Move incomplete line to last incomplete line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5"
+      (":4,5move$")
+      "line1\nline2\nline3\nline4\n[l]ine5\n"))
+  (ert-info ("Move to first line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,3move0")
+      "line2\n[l]ine3\nline1\nline4\nline5\n"))
+  (ert-info ("Move to intermediate line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,4move2")
+      "line1\nline2\nline3\n[l]ine4\nline5\n"))
+  (ert-info ("Move to other line")
+    (evil-test-buffer
+      "[l]ine1\nline2\nline3\nline4\nline5\n"
+      (":2,3move4")
+      "line1\nline4\nline2\n[l]ine3\nline5\n"))
+  (ert-info ("Move to current line")
+    (evil-test-buffer
+      "line1\nline2\nline3\nli[n]e4\nline5\n"
+      (":2,4move.")
+      "line1\nline2\nline3\n[l]ine4\nline5\n")))
 
 ;;; Utilities
 
@@ -5134,6 +7792,40 @@ if no previous selection")
 
 (when (or evil-tests-profiler evil-tests-run)
   (evil-tests-initialize))
+
+(ert-deftest evil-test-black-hole-register ()
+  :tags '(evil)
+  (ert-info ("Test \"_ on delete word")
+    (evil-test-buffer
+      "[E]vil evil is awesome."
+      ("dw\"_dwP")
+      "Evil[ ]is awesome."))
+  (ert-info ("Test \"_ on delete line")
+    (evil-test-buffer
+      "[T]his line is a keeper!\nThis line is not."
+      ("dd\"_ddP")
+      "[T]his line is a keeper!"))
+  (ert-info ("Test \"_ on delete region")
+    (evil-test-buffer
+      "<This region is a keeper>!\nThis line is not."
+      ("d\gg\"_dGP")
+      "This region is a keepe[r]")))
+
+(ert-deftest evil-test-pasteable-macros ()
+  "Test if we can yank and paste macros containing
+                  <escape>"
+  :tags '(evil)
+  (ert-info ("Execute yanked macro")
+    (evil-test-buffer
+      "[i]foo\e"
+      ("\"qd$@q\"qp"
+       "fooifoo\e")))
+  (ert-info ("Paste recorded marco")
+    (evil-test-buffer
+      ""
+      (evil-set-register ?q (vconcat "ifoo" [escape]))
+      ("@q\"qp")
+      "fooifoo\e")))
 
 (provide 'evil-tests)
 

@@ -1,5 +1,6 @@
 (require 'slime-repl)
 (require 'slime-tests)
+(require 'cl-lib)
 
 (defmacro slime-repl-test-markers (expected-string-spec &rest marker-specs)
   "For (MARKER SIG FORM) in MARKER-SPECS, produce suitable `should' assertions.
@@ -66,7 +67,7 @@ for the string sig SIG, the latter by evaling FORM in the test buffer."
       ("COMMON-LISP-USER" ("CL-USER")))
   (with-current-buffer (slime-output-buffer)
     (let ((p (slime-eval
-              `(swank:listener-eval
+              `(swank-repl:listener-eval
                 ,(format
                   "(cl:setq cl:*print-case* :upcase)
                    (cl:setq cl:*package* (cl:find-package %S))

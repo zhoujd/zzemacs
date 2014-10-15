@@ -1,4 +1,31 @@
-;;;; Repeat system
+;;; evil-repeat.el --- Repeat system
+
+;; Author: Frank Fischer <frank.fischer at mathematik.tu-chemnitz.de>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0.9
+
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
 
 ;; A repeat begins when leaving Normal state; it ends when re-entering
 ;; Normal state. The diagram below shows possible routes between
@@ -100,11 +127,21 @@
 
 (require 'evil-states)
 
+;;; Code:
+
 (declare-function evil-visual-state-p "evil-visual")
 (declare-function evil-visual-range "evil-visual")
 (declare-function evil-visual-char "evil-visual")
 (declare-function evil-visual-line "evil-visual")
 (declare-function evil-visual-block "evil-visual")
+
+(defmacro evil-without-repeat (&rest body)
+  (declare (indent defun)
+           (debug t))
+  `(let ((pre-command-hook (remq 'evil-repeat-pre-hook pre-command-hook))
+         (post-command-hook (remq 'evil-repeat-post-hook post-command-hook)))
+     ,@body
+     (evil-repeat-abort)))
 
 (defsubst evil-repeat-recording-p ()
   "Returns non-nil iff a recording is in progress."
@@ -209,7 +246,8 @@ If COMMAND doesn't have this property, return DEFAULT."
       (eq repeat-type 'abort)                    ; ... explicitely forced
       (eq evil-recording-repeat 'abort)          ; ... already aborted
       (evil-emacs-state-p)                       ; ... in Emacs state
-      (evil-mouse-events-p (this-command-keys))  ; ... mouse events
+      (and (evil-mouse-events-p (this-command-keys))  ; ... mouse events
+           (eq repeat-type nil))
       (minibufferp)))                            ; ... minibuffer activated
 
 (defun evil-repeat-record (info)
@@ -287,6 +325,9 @@ invoked the current command"
   "Repeation recording function for commands that are repeated by keystrokes."
   (cond
    ((eq flag 'pre)
+    (when evil-this-register
+      (evil-repeat-record
+       `(set evil-this-register ,evil-this-register)))
     (setq evil-repeat-keys (this-command-keys)))
    ((eq flag 'post)
     (evil-repeat-record (if (zerop (length (this-command-keys)))
@@ -345,6 +386,27 @@ If CHANGE is specified, it is added to `evil-repeat-changes'."
                           ,evil-repeat-changes
                           ,(- (point) evil-repeat-pos)))
     (setq evil-repeat-changes nil)))
+
+(defun evil-repeat-insert-at-point (flag)
+  "Repeation recording function for commands that insert text in region.
+This records text insertion when a command inserts some text in a
+buffer between (point) and (mark)."
+  (cond
+   ((eq flag 'pre)
+    (add-hook 'after-change-functions #'evil-repeat-insert-at-point-hook nil t))
+   ((eq flag 'post)
+    (remove-hook 'after-change-functions #'evil-repeat-insert-at-point-hook t))))
+
+(defun evil-repeat-insert-at-point-hook (beg end length)
+  (let ((repeat-type (evil-repeat-type this-command t)))
+    (when (and (evil-repeat-recording-p)
+               (eq repeat-type 'evil-repeat-insert-at-point)
+               (not (evil-emacs-state-p))
+               (not (evil-repeat-different-buffer-p t))
+               evil-state)
+      (setq evil-repeat-pos beg)
+      (evil-repeat-record (list 'insert (buffer-substring beg end))))))
+(put 'evil-repeat-insert-at-point-hook 'permanent-local-hook t)
 
 (defun evil-normalize-repeat-info (repeat-info)
   "Concatenate consecutive arrays in REPEAT-INFO.
@@ -434,8 +496,19 @@ where point should be placed after all changes."
     (dolist (rep repeat-info)
       (cond
        ((or (arrayp rep) (stringp rep))
-        (execute-kbd-macro rep))
+        (let ((input-method current-input-method)
+              (evil-input-method nil))
+          (deactivate-input-method)
+          (unwind-protect
+              (execute-kbd-macro rep)
+            (activate-input-method input-method))))
        ((consp rep)
+        (when (and (= 3 (length rep))
+                   (eq (nth 0 rep) 'set)
+                   (eq (nth 1 rep) 'evil-this-register)
+                   (>= (nth 2 rep) ?0)
+                   (< (nth 2 rep) ?9))
+          (setcar (nthcdr 2 rep) (1+ (nth 2 rep))))
         (apply (car rep) (cdr rep)))
        (t
         (error "Unexpected repeat-info: %S" rep))))))
@@ -484,16 +557,18 @@ If SAVE-POINT is non-nil, do not move point."
     (save-excursion
       (evil-repeat count)))
    (t
-    (let ((confirm-kill-emacs t)
-          (kill-buffer-hook
-           (cons #'(lambda ()
-                     (error "Cannot delete buffer in repeat command"))
-                 kill-buffer-hook))
-          (undo-pointer buffer-undo-list))
-      (evil-with-single-undo
-        (setq evil-last-repeat (list (point) count undo-pointer))
-        (evil-execute-repeat-info-with-count
-         count (ring-ref evil-repeat-ring 0)))))))
+    (unwind-protect
+        (let ((confirm-kill-emacs t)
+              (kill-buffer-hook
+               (cons #'(lambda ()
+                         (error "Cannot delete buffer in repeat command"))
+                     kill-buffer-hook))
+              (undo-pointer buffer-undo-list))
+          (evil-with-single-undo
+            (setq evil-last-repeat (list (point) count undo-pointer))
+            (evil-execute-repeat-info-with-count
+             count (ring-ref evil-repeat-ring 0))))
+      (evil-normal-state)))))
 
 ;; TODO: the same issue concering disabled undos as for `evil-paste-pop'
 (evil-define-command evil-repeat-pop (count &optional save-point)

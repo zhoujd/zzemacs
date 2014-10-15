@@ -1,13 +1,41 @@
 ;;; evil.el --- extensible vi layer
 
-;; Author: Vegard Øye <vegard_oye at hotmail.com>
-;;      Frank Fischer <frank.fischer at mathematik.tu-chemnitz.de>
+;; Authors:
+;;      Alessandro Piras <laynor@gmail.com>
+;;      Antono Vasiljev <antono.vasiljev at gmail.com>
+;;      Barry O'Reilly <gundaetiapo at gmail.com>
+;;      Christoph Lange <langec at web.de>
+;;      Frank Fischer <frank-fischer at shadow-soft.de>
+;;      Frank Terbeck <ft at bewatermyfriend.org>
+;;      Gordon Gustafson <gordon3.14@gmail.com>
+;;      Jonathan Claggett <jclaggett at lonocloud.com>
+;;      José A. Romero L. <escherdragon@gmail.com>
+;;      Lars Andersen <expez at expez.com>
+;;      Lintaro Ina <tarao.gnn at gmail.com>
+;;      Lukasz Wrzosek <wrzoski@gmail.com>
+;;      Marian Schubert <maio@netsafe.cz>
+;;      Michael Markert <markert.michael at googlemail.com>
 ;;      Nikolai Weibull <now at bitwi.se>
+;;      phaebz <phaebz at gmail.com>
+;;      Sanel Zukan <sanelz at gmail.com>
+;;      Sarah Brofeldt <sarah at thinkmonster.(none)>
+;;      Simon Hafner <hafnersimon at gmail.com>
+;;      Stefan Wehr <mail at stefanwehr.de>
+;;      Sune Simonsen <sune.simonsen at jayway.com>
+;;      Thomas Hisch <thomas at opentech.at>
+;;      Trevor Murphy <trevor.m.murphy at gmail.com>
+;;      Ulrich Müller <ulm at gentoo.org>
+;;      Vegard Øye <vegard_oye at hotmail.com>
+;;      Winfred Lu <winfred.lu@gmail.com>
+;;      Wolfgang Jenkner <wjenkner at inode.at>
+;;      Xiao Hanyu <xiaohanyu1988 at gmail.com>
+;;      York Zhao <yzhao at telecor.com>
+
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 ;;      To get in touch, please use the bug tracker or the
 ;;      mailing list (see below).
 ;; Created: 2011-03-01
-;; Version: 0.1
+;; Version: 1.0.9
 ;; Keywords: emulation, vim
 ;; URL: http://gitorious.org/evil
 ;;      Repository: git://gitorious.org/evil/evil.git
@@ -24,6 +52,23 @@
 ;;      within a few days and CC our replies back to you.
 ;;
 ;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -57,23 +102,6 @@
 ;;
 ;; Without this package the corresponding motions will raise an error.
 
-;;; License:
-
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2 of
-;; the License, or any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-;; GNU General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with this program; if not, write to the Free Software
-;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-;; 02111-1307, USA.
-
 ;;; Code:
 
 (require 'evil-vars)
@@ -89,6 +117,8 @@
 (require 'evil-commands)
 (require 'evil-maps)
 (require 'evil-integration)
+
+(run-hooks 'evil-after-load-hook)
 
 (provide 'evil)
 

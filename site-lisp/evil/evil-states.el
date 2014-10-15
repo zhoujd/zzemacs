@@ -1,6 +1,33 @@
-;;;; States
+;;; evil-states.el --- States
+
+;; Author: Vegard Øye <vegard_oye at hotmail.com>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0.9
+
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'evil-core)
+
+;;; Code:
 
 ;;; Normal state
 
@@ -20,7 +47,8 @@ AKA \"Command\" state."
   "Reset command loop variables in Normal state.
 Also prevent point from reaching the end of the line.
 If the region is activated, enter Visual state."
-  (unless (evil-initializing-p)
+  (unless (or (evil-initializing-p)
+              (null this-command))
     (setq command (or command this-command))
     (when (evil-normal-state-p)
       (setq evil-this-type nil
@@ -29,7 +57,13 @@ If the region is activated, enter Visual state."
             evil-this-motion-count nil
             evil-inhibit-operator nil
             evil-inhibit-operator-value nil)
-      (unless (eq command #'evil-use-register)
+      (unless (memq command '(evil-use-register
+                              digit-argument
+                              negative-argument
+                              universal-argument
+                              universal-argument-minus
+                              universal-argument-more
+                              universal-argument-other-key))
         (setq evil-this-register nil))
       (evil-adjust-cursor))))
 (put 'evil-normal-post-command 'permanent-local-hook t)
@@ -41,7 +75,8 @@ If the region is activated, enter Visual state."
   :tag " <I> "
   :cursor (bar . 2)
   :message "-- INSERT --"
-  :exit-hook (evil-cleanup-insert-state)
+  :entry-hook (evil-start-track-last-insertion)
+  :exit-hook (evil-cleanup-insert-state evil-stop-track-last-insertion)
   :input-method t
   (cond
    ((evil-insert-state-p)
@@ -111,7 +146,8 @@ Handles the repeat-count of the insertion command."
 ;; compatible with the Emacs region. This is achieved by "translating"
 ;; the region to the selected text right before a command is executed.
 ;; If the command is a motion, the translation is postponed until a
-;; non-motion command is invoked.
+;; non-motion command is invoked (distinguished by the :keep-visual
+;; command property).
 ;;
 ;; Visual state activates the region, enabling Transient Mark mode if
 ;; not already enabled. This is only temporay: if Transient Mark mode
@@ -197,7 +233,8 @@ the selection is enabled.
   :message 'evil-visual-message
   (cond
    ((evil-visual-state-p)
-    (evil-save-mark)
+    (evil-save-transient-mark-mode)
+    (setq select-active-regions nil)
     (cond
      ((region-active-p)
       (if (< (evil-visual-direction) 0)
@@ -232,12 +269,16 @@ the selection is enabled.
 Expand the region to the selection unless COMMAND is a motion."
   (when (evil-visual-state-p)
     (setq command (or command this-command))
+    (when evil-visual-x-select-timer
+      (cancel-timer evil-visual-x-select-timer))
     (unless (evil-get-command-property command :keep-visual)
+      (evil-visual-update-x-selection)
       (evil-visual-expand-region
        ;; exclude final newline from linewise selection
        ;; unless the command has real need of it
        (and (eq (evil-visual-type) 'line)
             (evil-get-command-property command :exclude-newline))))))
+
 (put 'evil-visual-pre-command 'permanent-local-hook t)
 
 (defun evil-visual-post-command (&optional command)
@@ -246,23 +287,39 @@ If COMMAND is a motion, refresh the selection;
 otherwise exit Visual state."
   (when (evil-visual-state-p)
     (setq command (or command this-command))
-    (cond
-     ((or quit-flag
-          (eq command #'keyboard-quit)
-          ;; Is `mark-active' nil for an unexpanded region?
-          deactivate-mark
-          (and (not evil-visual-region-expanded)
-               (not (region-active-p))
-               (not (eq evil-visual-selection 'block))))
-      (evil-exit-visual-state)
-      (evil-adjust-cursor))
-     (evil-visual-region-expanded
-      (evil-visual-contract-region)
-      (evil-visual-highlight))
-     (t
-      (evil-visual-refresh)
-      (evil-visual-highlight)))))
+    (if (or quit-flag
+            (eq command #'keyboard-quit)
+            ;; Is `mark-active' nil for an unexpanded region?
+            deactivate-mark
+            (and (not evil-visual-region-expanded)
+                 (not (region-active-p))
+                 (not (eq evil-visual-selection 'block))))
+        (progn
+          (evil-exit-visual-state)
+          (evil-adjust-cursor))
+      (if evil-visual-region-expanded
+          (evil-visual-contract-region)
+        (evil-visual-refresh))
+      (setq evil-visual-x-select-timer
+            (run-with-idle-timer evil-visual-x-select-timeout nil
+                                 #'evil-visual-update-x-selection
+                                 (current-buffer)))
+      (evil-visual-highlight))))
 (put 'evil-visual-post-command 'permanent-local-hook t)
+
+(defun evil-visual-update-x-selection (&optional buffer)
+  "Update the X selection with the current visual region."
+  (let ((buf (or buffer (current-buffer))))
+    (when (buffer-live-p buf)
+      (with-current-buffer buf
+        (when (and (evil-visual-state-p)
+                   (fboundp 'x-select-text)
+                   (or (not (boundp 'ns-initialized))
+                       (with-no-warnings ns-initialized))
+                   (not (eq evil-visual-selection 'block)))
+          (x-select-text (buffer-substring-no-properties
+                          evil-visual-beginning
+                          evil-visual-end)))))))
 
 (defun evil-visual-activate-hook (&optional command)
   "Enable Visual state if the region is activated."
@@ -294,7 +351,7 @@ otherwise exit Visual state."
     (evil-exit-visual-state))
    ((not (evil-visual-state-p))
     (evil-active-region -1)
-    (evil-restore-mark))))
+    (evil-restore-transient-mark-mode))))
 (put 'evil-visual-deactivate-hook 'permanent-local-hook t)
 
 (evil-define-command evil-exit-visual-state (&optional later buffer)
@@ -513,23 +570,30 @@ Reuse overlays where possible to prevent flicker."
          (mark (or (mark t) point))
          (overlays (or overlays 'evil-visual-block-overlays))
          (old (symbol-value overlays))
+         (eol-col (and (memq this-command '(next-line previous-line))
+                       (numberp temporary-goal-column)
+                       (1+ (min (round temporary-goal-column)
+                                (1- most-positive-fixnum)))))
          beg-col end-col new nlines overlay window-beg window-end)
-    ;; calculate the rectangular region represented by BEG and END,
-    ;; but put BEG in the upper-left corner and END in the lower-right
-    ;; if not already there
     (save-excursion
+      ;; calculate the rectangular region represented by BEG and END,
+      ;; but put BEG in the upper-left corner and END in the
+      ;; lower-right if not already there
       (setq beg-col (evil-column beg)
             end-col (evil-column end))
       (when (>= beg-col end-col)
         (if (= beg-col end-col)
             (setq end-col (1+ end-col))
           (evil-sort beg-col end-col))
-        (setq beg (save-excursion (goto-char beg)
-                                  (evil-move-to-column beg-col)
-                                  (point))
-              end (save-excursion (goto-char end)
-                                  (evil-move-to-column end-col 1)
-                                  (point))))
+        (setq beg (save-excursion
+                    (goto-char beg)
+                    (evil-move-to-column beg-col))
+              end (save-excursion
+                    (goto-char end)
+                    (evil-move-to-column end-col 1))))
+      ;; update end column with eol-col (extension to eol).
+      (when (and eol-col (> eol-col end-col))
+        (setq end-col eol-col))
       ;; force a redisplay so we can do reliable window
       ;; BEG/END calculations
       (sit-for 0)
@@ -557,7 +621,8 @@ Reuse overlays where possible to prevent flicker."
           (setq row-beg (point))
           ;; end of row
           (evil-move-to-column end-col)
-          (when (< (current-column) end-col)
+          (when (and (not (eolp))
+                     (< (current-column) end-col))
             ;; append overlay with virtual spaces if unable to
             ;; move directly to the last column
             (setq after
@@ -616,7 +681,9 @@ TYPE is the selection's type, and PROPERTIES is a property list
 of miscellaneous selection attributes."
   (apply #'evil-range
          evil-visual-beginning evil-visual-end
-         (evil-visual-type) evil-visual-properties))
+         (evil-visual-type)
+         :expanded t
+         evil-visual-properties))
 
 (defun evil-visual-direction ()
   "Return direction of Visual selection.
@@ -747,13 +814,18 @@ CORNER defaults to `upper-left'."
   :tag " <R> "
   :cursor hbar
   :message "-- REPLACE --"
+  :input-method t
   (cond
    ((evil-replace-state-p)
     (overwrite-mode 1)
-    (add-hook 'pre-command-hook #'evil-replace-pre-command nil t))
+    (add-hook 'pre-command-hook #'evil-replace-pre-command nil t)
+    (unless evil-want-fine-undo
+      (evil-start-undo-step t)))
    (t
     (overwrite-mode -1)
     (remove-hook 'pre-command-hook #'evil-replace-pre-command t)
+    (unless evil-want-fine-undo
+      (evil-end-undo-step t))
     (when evil-move-cursor-back
       (evil-move-cursor-back))))
   (setq evil-replace-alist nil))

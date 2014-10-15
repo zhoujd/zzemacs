@@ -11,16 +11,18 @@
 
 ;;; Administrivia
 
-(in-package :swank-backend)
+(defpackage swank-sbcl
+  (:use cl swank-backend swank-source-path-parser swank-source-file-cache))
+
+(in-package swank-sbcl)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require 'sb-bsd-sockets)
   (require 'sb-introspect)
   (require 'sb-posix)
-  (require 'sb-cltl2)
-  (import-from :sb-gray *gray-stream-symbols* :swank-backend))
+  (require 'sb-cltl2))
 
-(declaim (optimize (debug 2) 
+(declaim (optimize (debug 2)
                    (sb-c::insert-step-conditions 0)
                    (sb-c::insert-debug-catch 0)))
 
@@ -47,6 +49,16 @@
 
 (defun swank-mop:slot-definition-documentation (slot)
   (sb-pcl::documentation slot t))
+
+;; stream support
+
+(defimplementation gray-package-name ()
+  "SB-GRAY")
+
+;; Pretty printer calls this, apparently
+(defmethod sb-gray:stream-line-length
+    ((s sb-gray:fundamental-character-input-stream))
+  nil)
 
 ;;; Connection info
 
@@ -282,6 +294,12 @@
 (defimplementation find-external-format (coding-system)
   (car (rassoc-if (lambda (x) (member coding-system x :test #'equal))
                   *external-format-to-coding-system*)))
+
+(defimplementation set-default-directory (directory)
+  (let ((directory (truename (merge-pathnames directory))))
+    (sb-posix:chdir directory)
+    (setf *default-pathname-defaults* directory)
+    (default-directory)))
 
 (defun make-socket-io-stream (socket external-format buffering)
   (let ((args `(,@()
@@ -946,7 +964,7 @@ Return NIL if the symbol is unbound."
     (:type
      (describe (sb-kernel:values-specifier-type symbol)))))
   
-#+#.(swank-backend::sbcl-with-xref-p)
+#+#.(swank-sbcl::sbcl-with-xref-p)
 (progn
   (defmacro defxref (name &optional fn-name)
     `(defimplementation ,name (what)
@@ -1000,9 +1018,9 @@ Return NIL if the symbol is unbound."
                 (equal (second a) (second b))))))
 
 (defun ignored-xref-function-names ()
-  #-#.(swank-backend::sbcl-with-new-stepper-p)
+  #-#.(swank-sbcl::sbcl-with-new-stepper-p)
   '(nil sb-c::step-form sb-c::step-values)
-  #+#.(swank-backend::sbcl-with-new-stepper-p)
+  #+#.(swank-sbcl::sbcl-with-new-stepper-p)
   '(nil))
 
 (defun function-dspec (fn)
@@ -1015,8 +1033,7 @@ Return a list of the form (NAME LOCATION)."
 ;;; macroexpansion
 
 (defimplementation macroexpand-all (form)
-  (let ((sb-walker:*walk-form-expand-macros-p* t))
-    (sb-walker:walk-form form)))
+  (sb-cltl2:macroexpand-all form))
 
 
 ;;; Debugging
@@ -1047,7 +1064,7 @@ Return a list of the form (NAME LOCATION)."
   (set-break-hook function))
 
 (defimplementation condition-extras (condition)
-  (cond #+#.(swank-backend::sbcl-with-new-stepper-p)
+  (cond #+#.(swank-sbcl::sbcl-with-new-stepper-p)
         ((typep condition 'sb-impl::step-form-condition)
          `((:show-frame-source 0)))
         ((typep condition 'sb-int:reference-condition)
@@ -1085,7 +1102,7 @@ Return a list of the form (NAME LOCATION)."
                                :original-condition condition))))
       (funcall debugger-loop-fn))))
 
-#+#.(swank-backend::sbcl-with-new-stepper-p)
+#+#.(swank-sbcl::sbcl-with-new-stepper-p)
 (progn
   (defimplementation activate-stepping (frame)
     (declare (ignore frame))
@@ -1101,14 +1118,14 @@ Return a list of the form (NAME LOCATION)."
 
 (defimplementation call-with-debugger-hook (hook fun)
   (let ((*debugger-hook* hook)
-        #+#.(swank-backend::sbcl-with-new-stepper-p)
+        #+#.(swank-sbcl::sbcl-with-new-stepper-p)
         (sb-ext:*stepper-hook*
          (lambda (condition)
            (typecase condition
              (sb-ext:step-form-condition
               (let ((sb-debug:*stack-top-hint* (sb-di::find-stepped-frame)))
                 (sb-impl::invoke-debugger condition)))))))
-    (handler-bind (#+#.(swank-backend::sbcl-with-new-stepper-p)
+    (handler-bind (#+#.(swank-sbcl::sbcl-with-new-stepper-p)
                    (sb-ext:step-condition #'sb-impl::invoke-stepper))
       (call-with-break-hook hook fun))))
 
@@ -1130,21 +1147,23 @@ stack."
   (sb-debug::print-frame-call frame stream))
 
 (defimplementation frame-restartable-p (frame)
-  #+#.(swank-backend::sbcl-with-restart-frame)
+  #+#.(swank-sbcl::sbcl-with-restart-frame)
   (not (null (sb-debug:frame-has-debug-tag-p frame))))
 
 (defimplementation frame-call (frame-number)
   (multiple-value-bind (name args)
       (sb-debug::frame-call (nth-frame frame-number))
     (with-output-to-string (stream)
-      (pprint-logical-block (stream nil :prefix "(" :suffix ")")
-        (let ((*print-length* nil)
-              (*print-level* nil))
-          (prin1 (sb-debug::ensure-printable-object name) stream))
-        (let ((args (sb-debug::ensure-printable-object args)))
-          (if (listp args)
-              (format stream "~{ ~_~S~}" args)
-              (format stream " ~S" args)))))))
+      (locally (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+        (pprint-logical-block (stream nil :prefix "(" :suffix ")")
+          (locally (declare (sb-ext:unmuffle-conditions sb-ext:compiler-note))
+            (let ((*print-length* nil)
+                  (*print-level* nil))
+              (prin1 (sb-debug::ensure-printable-object name) stream))
+            (let ((args (sb-debug::ensure-printable-object args)))
+              (if (listp args)
+                  (format stream "~{ ~_~S~}" args)
+                  (format stream " ~S" args)))))))))
 
 ;;;; Code-location -> source-location translation
 
@@ -1372,7 +1391,7 @@ stack."
           (symbol (symbol-package name))
           ((cons (eql setf) (cons symbol)) (symbol-package (cadr name))))))))
 
-#+#.(swank-backend::sbcl-with-restart-frame)
+#+#.(swank-sbcl::sbcl-with-restart-frame)
 (progn
   (defimplementation return-from-frame (index form)
     (let* ((frame (nth-frame index)))
@@ -1404,7 +1423,7 @@ stack."
 ;; FIXME: this implementation doesn't unwind the stack before
 ;; re-invoking the function, but it's better than no implementation at
 ;; all.
-#-#.(swank-backend::sbcl-with-restart-frame)
+#-#.(swank-sbcl::sbcl-with-restart-frame)
 (progn
   (defun sb-debug-catch-tag-p (tag)
     (and (symbolp tag)
@@ -1492,18 +1511,16 @@ stack."
 	  (t (call-next-method o)))))
 
 (defmethod emacs-inspect ((o sb-kernel:code-component))
-          (append
-           (label-value-line*
-            (:code-size (sb-kernel:%code-code-size o))
-            (:entry-points (sb-kernel:%code-entry-points o))
-            (:debug-info (sb-kernel:%code-debug-info o))
-            (:trace-table-offset (sb-kernel:code-header-ref
-                                  o sb-vm:code-trace-table-offset-slot)))
-           `("Constants:" (:newline))
-           (loop for i from sb-vm:code-constants-offset
-                 below (sb-kernel:get-header-data o)
-                 append (label-value-line i (sb-kernel:code-header-ref o i)))
-           `("Code:" (:newline)
+  (append
+   (label-value-line*
+    (:code-size (sb-kernel:%code-code-size o))
+    (:entry-points (sb-kernel:%code-entry-points o))
+    (:debug-info (sb-kernel:%code-debug-info o)))
+   `("Constants:" (:newline))
+   (loop for i from sb-vm:code-constants-offset
+         below (sb-kernel:get-header-data o)
+         append (label-value-line i (sb-kernel:code-header-ref o i)))
+   `("Code:" (:newline)
              , (with-output-to-string (s)
                  (cond ((sb-kernel:%code-debug-info o)
                         (sb-disassem:disassemble-code-component o :stream s))
@@ -1708,9 +1725,14 @@ stack."
   ;; SLIME-OUTPUT-STREAM, and be done, but that class doesn't exist when this
   ;; file is loaded -- so first we need a dummy definition that will be
   ;; overridden by swank-gray.lisp.
-  (defclass slime-output-stream (fundamental-character-output-stream)
+  #.(unless (find-package 'swank-gray) (make-package 'swank-gray) nil)
+  (eval-when (:load-toplevel :execute)
+    (unless (find-package 'swank-gray) (make-package 'swank-gray) nil))
+  (defclass swank-gray::slime-output-stream
+      (sb-gray:fundamental-character-output-stream)
     ())
-  (defmethod stream-force-output :around ((stream slime-output-stream))
+  (defmethod sb-gray:stream-force-output
+      :around ((stream swank-gray::slime-output-stream))
     (handler-case
         (sb-sys:with-deadline (:seconds 0.1)
           (call-next-method))
@@ -1770,19 +1792,19 @@ stack."
 ;;; Weak datastructures
 
 (defimplementation make-weak-key-hash-table (&rest args)  
-  #+#.(swank-backend::sbcl-with-weak-hash-tables)
+  #+#.(swank-sbcl::sbcl-with-weak-hash-tables)
   (apply #'make-hash-table :weakness :key args)
-  #-#.(swank-backend::sbcl-with-weak-hash-tables)
+  #-#.(swank-sbcl::sbcl-with-weak-hash-tables)
   (apply #'make-hash-table args))
 
 (defimplementation make-weak-value-hash-table (&rest args)
-  #+#.(swank-backend::sbcl-with-weak-hash-tables)
+  #+#.(swank-sbcl::sbcl-with-weak-hash-tables)
   (apply #'make-hash-table :weakness :value args)
-  #-#.(swank-backend::sbcl-with-weak-hash-tables)
+  #-#.(swank-sbcl::sbcl-with-weak-hash-tables)
   (apply #'make-hash-table args))
 
 (defimplementation hash-table-weakness (hashtable)
-  #+#.(swank-backend::sbcl-with-weak-hash-tables)
+  #+#.(swank-sbcl::sbcl-with-weak-hash-tables)
   (sb-ext:hash-table-weakness hashtable))
 
 #-win32
@@ -1918,6 +1940,7 @@ stack."
   (sb-int:encapsulated-p spec indicator))
 
 (defun sbcl-wrap (spec before after replace function args)
+  (declare (ignore spec))
   (let (retlist completed)
     (unwind-protect
          (progn
@@ -1931,5 +1954,3 @@ stack."
            (values-list retlist))
       (when after
         (funcall after (if completed retlist :exited-non-locally))))))
-
-(in-package :swank-backend)

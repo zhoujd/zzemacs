@@ -6,48 +6,57 @@
 ## $3 => $REMOTE
 ## $4 => $MERGED
 
-## use emacs as diff tool
-EMACS_FLAG="n"
-EMACS="runemacs"
-
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
 
-if [ "$OS" = "Windows_NT" ] ; then
-    ZZTOOLS_ROOT="$ZZNIX_HOME/home/zhoujd/zztools"
+## use emacs as merge tool
+EMACS_FLAG="n"
 
-    MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
-    ARGS="$*"
+merge_extern()
+{
+    if [ "$OS" = "Windows_NT" ] ; then
+        MERGE_TOOL_0="$ZZNIX_HOME/home/zhoujd/zztools/bcompare/bcompare $*"
+        MERGE_TOOL_1="$ZZNIX_HOME/home/zhoujd/zztools/perforce/p4merge $*"
 
-    #MERGE_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
-    #ARGS="$*"
-else
-    ZZTOOLS_ROOT="$HOME/zztools"
+        MERGE_SELECT=$MERGE_TOOL_0
+    else
+        MERGE_TOOL_0="$HOME/zztools/bcompare/bin/bcompare $*"
+        MERGE_TOOL_1="$HOME/zztools/meld/bin/meld $2 $4 $3"
+        MERGE_TOOL_2="$HOME/zztools/p4v/bin/p4merge $*"
 
-    #MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bin/bcompare"
-    #ARGS="$*"
+        MERGE_SELECT=$MERGE_TOOL_2
+    fi
 
-    #MERGE_TOOL="$ZZTOOLS_ROOT/meld/bin/meld"
-    #ARGS="$2 $4 $3"
+    $MERGE_SELECT
+}
 
-    MERGE_TOOL="$ZZTOOLS_ROOT/p4v/bin/p4merge"
-    ARGS="$*"
-fi
+merge_emacs()
+{
+	if [ "$OS" = "Windows_NT" ] ; then
+		ZZEMACS_PATH="$ZZNIX_HOME/home/zhoujd/zzemacs"
+	else
+		ZZEMACS_PATH="$HOME/zzemacs"
+	fi
+
+    emacs --no-site-file -q \
+		  --eval "(load-file \"$ZZEMACS_PATH/elisp/ediff-sample.el\")" \
+          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
+          --eval "(message \"emacs merge finished.\")"
+}
+
+main()
+{
+    case "$EMACS_FLAG" in
+        "Y" | "y" )
+            merge_emacs $* 
+            ;;
+        * )
+            merge_extern $*
+            ;;
+    esac
+}
 
 ## run merge tools
-case "$EMACS_FLAG" in
-    "Y" | "y" )
-        $EMACS --eval "(progn
-                        (setq emerge-temp-local-file  \"$2\"
-                              emerge-temp-base-file   \"$3\"
-                              emerge-temp-remote-file \"$1\")
-                        (ediff-merge-files-with-ancestor \"$2\" \"$3\" \"$1\" nil \"$4\"))"
-        ;;
-    * )
-        $MERGE_TOOL $ARGS
-        ;;
-esac
-
-exit 0
+main $1 $2 $3 $4

@@ -80,7 +80,7 @@
     )
 
 (define-fn-key (gethash "f5" fn-key-table)
-    [f5]              'speedbar-get-focus
+    [f5]              'evil-mode 
     [S-f5]            'sr-speedbar-toggle
     [C-f5]            'line-to-top-of-window
     [M-f5]            'etags-stack-show

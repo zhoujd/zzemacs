@@ -1,5 +1,119 @@
 * SLIME News                                -*- mode: outline; coding: utf-8 -*-
 
+* 2.9 (August 2014)
+** Core
+*** Various display-related bugfixes
+
+** CMUCL
+*** M-. now works on condition classes
+
+* 2.8 (July 2014)
+** Core
+*** Inspector fixes and improvements for SBCL.
+
+** Contribs
+*** Kawa backend supports Kawa 1.14.
+
+* 2.7 (June 2014)
+
+** Core
+
+*** SWANK now tries harder to send double-floats to Emacs
+
+** Allegro CL Backend
+
+*** Added implementation for FUNCTION-NAME and FIND-SOURCE-LOCATION interfaces
+Notably, this means that pressing "." in the SLIME inspector now works
+on Allegro CL. (Thanks to Gábor Melis.)
+
+* 2.6 (May 2014)
+
+** Core
+
+*** *print-readably* bound to nil when displaying condition messages
+
+*** Issue #144: Removed nicknames and short package names
+The STD nickname for SWANK-TRACE-DIALOG was removed. MONITOR was
+renamed to SWANK-MONITOR and its nickname MON removed.
+
+*** Issues #135, #154: slime-to-lisp-filename used more pervasively
+Now used for the both the port-file and loader file when announced
+from Emacs to the lisp backend. Allows a user-written
+`slime-to-lisp-filename-function' that supports Cygwin lisps with
+non-Cygwin Emacsen or vice-versa. See #135 for an example of such a
+function.
+
+*** Issue #155: Stale SLDB buffers are now properly removed
+Indirect exits from an SLDB buffer that was not selected in a window
+would leave a stale buffer behind, leading to an inconsistent state
+and unexpected errors.
+
+** Contribs
+
+*** Issue #139: Restored "copy to REPL" for slime-presentations
+`slime-copy-presentation-at-point-to-repl' will copy a presentation to
+the REPL, place it at point, and _not_ set *, ** and ***. This
+behaviour restored after refactorings of "copy to REPL" behaviour of
+previous versions.
+
+*** Issue #140: Improvements in the "copy to REPL" behaviour
+With or without the slime-presentations contrib, M-RET will
+copy/return values to REPL from both Inspector and SLDB buffers,
+setting *, ** and *** . If the slime-presentations contrib is enabled,
+the returned part will be an interactive presentation. The protocol
+for copying down parts to REPL has been reworked to not assume a CL
+backend .
+
+*** Now supports more CLHS references: :type, :system-class, :ansi-cl
+
+*** Issue #133: Fixed links to the SBCL manual
+
+** Backend improvements
+
+*** SBCL
+
+**** `slime-set-default-directory' now calls chdir
+This propagates its effects to subprocesses.
+
+* 2.5 (April 2014)
+
+** Backend improvements
+
+*** Clozure CL
+
+**** `slime-set-default-directory' now calls chdir
+This propagates its effects to subprocesses.
+
+*** Allegro CL
+
+**** swank-compile-string no longer binds *default-pathname-defaults*
+This was inconsistent with the behaviour of other backends and caused
+strange issues with SYS:TEMPORARY-DIRECTORY.
+
+**** Improved source file recording
+Whenever possible interactive definition compilation is mapped to the
+actual source file rather than the buffer name to avoid breakage when
+the the buffer name changes or is closed.
+
+** SLIME Trace Dialog
+
+*** (Un)Tracing a definition automatically updates the trace status
+
+** slime-repl
+
+*** Inspecting * in REPL no longer inspects ** (issue #137)
+
+** slime-autodoc
+
+*** Multiline arglists in `slime-autodoc' no longer imply a newline (issue #7)
+
+** Core Bugfixes
+
+*** SWANK port file name defined in more portable fashion
+Bug reported by Mirko Vukovic on slime-devel.
+
+*** inferior-lisp-program can now hold paths with spaces (issue #116)
+
 * 2.4 (March 2014)
 
 ** New contrib SLIME Trace Dialog included in `slime-fancy'
@@ -34,8 +148,6 @@ contribs to be loaded when `M-x slime' is first executed. See section
 `8.1 Loading Contrib Packages' of the SLIME Manual for more details.
 
 ** Bugfixes and stability improvements since the move to Github
-
-*** Issue #7: Multiline arglists in `slime-autodoc' no longer imply a newline
 
 *** Issue #9: new REPL output respectes existing REPL results or presentations.
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+### https://shellshocker.net/#fix
+
 ##Import vars and functions
 . sample.sh
 

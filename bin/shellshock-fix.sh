@@ -2,6 +2,11 @@
 
 ### https://shellshocker.net/#fix
 
+#sudo sh -c 'echo "/usr/local/bin/bash" >> /etc/shells'
+#chsh -s /usr/local/bin/bash
+#sudo mv /bin/bash /bin/bash-backup
+#sudo ln -s /usr/local/bin/bash /bin/bash
+
 ##Import vars and functions
 . sample.sh
 

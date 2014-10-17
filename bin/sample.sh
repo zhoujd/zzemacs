@@ -77,3 +77,5 @@ fi
 #{
 #    cd $(dirname "${BASH_SOURCE}") && pwd
 #}
+#
+#WDIR=$(dirname $0)

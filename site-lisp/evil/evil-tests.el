@@ -1210,7 +1210,7 @@ This buffer is for notes")))
   "Test whether repeat returns to normal state in case of an error."
   (evil-test-buffer
     "[l]ine 1\nline 2\nline 3\nline 4"
-    ("ixxx" [down] [down] [home] "yyy" [escape])
+    ("ixxx" [down] [down] [left] [left] [left] "yyy" [escape])
     "xxxline 1\nline 2\nyy[y]line 3\nline 4"
     (should-error (execute-kbd-macro "j^."))
     (should (evil-normal-state-p))
@@ -7353,6 +7353,108 @@ maybe we need one line more with some text\n")
       "line1\nline2\nline3\nli[n]e4\nline5\n"
       (":2,4move.")
       "line1\nline2\nline3\n[l]ine4\nline5\n")))
+
+;;; Command line window
+
+(ert-deftest evil-test-command-window-ex ()
+  "Test command line window for ex commands"
+  (evil-test-buffer
+    "[f]oo foo foo"
+    (":s/foo/bar" [return])
+    "[b]ar foo foo"
+    (":s/foo/baz" [return])
+    "[b]ar baz foo"
+    ("q:")
+    "s/foo/bar\ns/foo/baz\n[ ]"
+    ("kk:s/bar/quz" [return])
+    "[s]/foo/quz\ns/foo/baz\n "
+    ("fzrx")
+    "s/foo/qu[x]\ns/foo/baz\n "
+    ([return])
+    "[b]ar baz qux"
+    (should (equal (car evil-ex-history)
+                   "s/foo/qux"))))
+
+(ert-deftest evil-test-command-window-recursive ()
+  "Test that recursive command windows shouldn't be allowed"
+  (let ((evil-command-window-height 0))
+    (evil-test-buffer
+      "[f]oo foo foo"
+      (":s/foo/bar" [return])
+      ("q:")
+      (should-error (execute-kbd-macro "q:")))))
+
+(ert-deftest evil-test-command-window-noop ()
+  "Test that executing a blank command does nothing"
+  (evil-test-buffer
+    "[f]oo foo foo"
+    ("q:")
+    "[ ]"
+    ([return])
+    "[f]oo foo foo"))
+
+(ert-deftest evil-test-command-window-multiple ()
+  "Test that multiple command line windows can't be visible at the same time"
+  (let ((evil-command-window-height 0))
+    (evil-test-buffer
+      "[f]oo foo foo"
+      ("q:")
+      (let ((num-windows (length (window-list))))
+        (select-window (previous-window))
+        (execute-kbd-macro "q:")
+        (should (= (length (window-list)) num-windows))))))
+
+(defmacro evil-with-both-search-modules (&rest body)
+  `(mapc (lambda (search-module)
+           (setq evil-search-forward-history nil
+                 evil-search-backward-history nil)
+           (evil-select-search-module 'evil-search-module search-module)
+           ,@body)
+         '(isearch evil-search)))
+
+(ert-deftest evil-test-command-window-search-history ()
+  "Test command window with forward and backward search history"
+  (evil-with-both-search-modules
+   (evil-test-buffer
+     "[f]oo bar baz qux one two three four"
+     ("/qux" [return])
+     "foo bar baz [q]ux one two three four"
+     ("/three" [return])
+     "foo bar baz qux one two [t]hree four"
+     ("?bar" [return])
+     "foo [b]ar baz qux one two three four"
+     ("/four" [return])
+     "foo bar baz qux one two three [f]our"
+     ("?baz" [return])
+     "foo bar [b]az qux one two three four"
+     ("q/")
+     "qux\nthree\nfour\n[ ]"
+     ("k" [return])
+     "foo bar baz qux one two three [f]our"
+     ("0N")
+     "foo bar baz qux one two three [f]our"
+     ("q?")
+     "bar\nbaz\n[ ]"
+     ("k$rr" [return])
+     "foo [b]ar baz qux one two three four"
+     (should-error
+      (progn (execute-kbd-macro "q/iNOT THERE")
+             (execute-kbd-macro [return])))
+     "foo [b]ar baz qux one two three four")))
+
+(ert-deftest evil-test-command-window-search-word ()
+  "Test command window history when searching for word under cursor"
+  (evil-with-both-search-modules
+   (evil-test-buffer
+     "[f]oo bar foo bar foo"
+     ("**")
+     "foo bar foo bar [f]oo"
+     ("B#")
+     "foo [b]ar foo bar foo"
+     ("q/k" [return])
+     "foo bar [f]oo bar foo"
+     ("q?k" [return])
+     "foo [b]ar foo bar foo")))
 
 ;;; Utilities
 

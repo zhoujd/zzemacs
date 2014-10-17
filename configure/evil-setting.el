@@ -7,6 +7,7 @@
 (require 'evil)
 
 ;;key setting using default
+;(evil-set-toggle-key "<f5>")
 
 (provide 'evil-setting)
 

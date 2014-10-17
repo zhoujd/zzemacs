@@ -53,10 +53,10 @@
     )
 
 (define-fn-key (gethash "f2" fn-key-table)
-    [f2]              'bc-next
-    [S-f2]            'bc-previous
-    [C-f2]            'bc-set
-    [M-f2]            'bc-list
+    [f2]              'bc-set
+    [S-f2]            'bc-list
+    [C-f2]            'bc-next
+    [M-f2]            'bc-previous
     (kbd "C-x <f2>")  nil
     (kbd "C-c <f2>")  nil
     )
@@ -80,9 +80,9 @@
     )
 
 (define-fn-key (gethash "f5" fn-key-table)
-    [f5]              'evil-mode 
-    [S-f5]            'sr-speedbar-toggle
-    [C-f5]            'line-to-top-of-window
+    [f5]              'turn-on-evil-mode
+    [S-f5]            'turn-off-evil-mode
+    [C-f5]            'sr-speedbar-toggle
     [M-f5]            'etags-stack-show
     (kbd "C-x <f5>")  nil
     (kbd "C-c <f5>")  nil

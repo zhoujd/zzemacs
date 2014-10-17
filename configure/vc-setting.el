@@ -35,6 +35,10 @@
 (zz-load-path "site-lisp/magit")
 (require 'magit)
 
+;;diffstat
+(require 'diffstat)
+(add-hook 'diff-mode-hook (lambda () (local-set-key "\C-c\C-l" 'diffstat)))
+
 (provide 'vc-setting)
 
 ;;; vc-setting.el ends here

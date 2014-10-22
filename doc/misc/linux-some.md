@@ -87,3 +87,12 @@ Linux something
 9. CD/DVD image burning
     cdrecord -scanbus ==> you well get dev=*,*,*
     cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso
+
+10. CentOS6.5 upgrade gcc 4.7.2
+    wget http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo
+    sudo cp devtools-1.1.repo /etc/yum.repos.d/devtools-1.1.repo
+    sudo yum clean all
+    sudo yum install devtoolset-1.1
+    scl enable devtoolset-1.1 bash
+    gcc –v
+

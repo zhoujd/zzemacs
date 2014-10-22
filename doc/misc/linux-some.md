@@ -92,7 +92,11 @@ Linux something
     wget http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo
     sudo cp devtools-1.1.repo /etc/yum.repos.d/devtools-1.1.repo
     sudo yum clean all
-    sudo yum install devtoolset-1.1
+    sudo yum install devtoolset-1.1   ==>devtools will be installed under /opt/centos/devtoolset-1.1
     scl enable devtoolset-1.1 bash
     gcc –v
 
+    ##Alternatively, you can explicitly define the following variables to use devtools.
+    export CC=/opt/centos/devtoolset-1.1/root/usr/bin/gcc  
+    export CPP=/opt/centos/devtoolset-1.1/root/usr/bin/cpp
+    export CXX=/opt/centos/devtoolset-1.1/root/usr/bin/c++

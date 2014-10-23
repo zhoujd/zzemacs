@@ -114,12 +114,7 @@ main()
         try_command Install_dot_emacs
     fi
 
-    if [ -f ~/.fonts.conf ] ; then
-        confirm_execute "Do you wanna overwrite .fonts.conf? [y/N]" try_command Install_fonts_conf
-    else
-        try_command Install_fonts_conf
-    fi
-
+    try_command Install_fonts_conf
     try_command Install_emacs_run
     try_command Install_other
 

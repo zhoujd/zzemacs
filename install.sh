@@ -47,8 +47,7 @@ EOF
 ##setup font setting
 Install_fonts_conf()
 {
-mkdir -p ~/.fonts.conf.d
-cat > ~/.fonts.conf.d/zzemacs-font.conf <<EOF
+cat > ~/.fonts.conf <<EOF
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <!-- /etc/fonts/fonts.conf file to configure system font access -->

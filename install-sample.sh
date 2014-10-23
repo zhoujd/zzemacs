@@ -17,15 +17,8 @@ EOF
 #http://www.jinbuguo.com/gui/fonts.conf.html
 Install_fonts_conf()
 {
-cat > ~/.fonts.conf <<EOF
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-<!-- /etc/fonts/fonts.conf file to configure system font access -->
-<fontconfig>
-  <!-- Font directory list -->
-  <dir>${ZZEMACS_ROOT}/font</dir>
-</fontconfig>
-EOF
+    mkdir -p ~/.fonts
+    ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
 }
 
 Install_dot_emacs

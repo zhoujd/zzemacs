@@ -41,16 +41,14 @@ Linux something
 4. Multi GCC
 
     gcc -v
-    ls /usr/bin/gcc*
-    sudo apt-get install gcc-4.5 gcc-4.5-multilib g++-4.5 g++-4.5-multilib
+    ls -l /usr/bin/gcc* /usr/bin/g++*
+    sudo apt-get install gcc-4.7 gcc-4.7-multilib g++-4.7 g++-4.7-multilib
 
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.4 50
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.5 40
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.4 50
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.5 40
+    sudo update-alternatives --remove gcc /usr/bin/gcc-4.6
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.7
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 40 --slave /usr/bin/g++ g++ /usr/bin/g++-4.6
 
     sudo update-alternatives --config gcc
-    sudo update-alternatives --remove gcc /usr/bin/gcc-4.5
 
 5. CentOS rpm
     sudo yum update kernel-2.6.32-431.17.1.el6

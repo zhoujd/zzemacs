@@ -35,7 +35,7 @@ diff_emacs()
     if [ "$OS" = "Windows_NT" ] ; then
 		ZZEMACS_PATH="$ZZNIX_HOME/home/zhoujd/zzemacs"
 	else
-		ZZEMACS_PATH="$HOME/zzemacs"
+		ZZEMACS_PATH="$HOME/zhoujd/zzemacs"
 	fi
 
     emacs --no-site-file -q \

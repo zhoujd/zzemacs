@@ -75,11 +75,6 @@ Install_other()
 ##Install thirdparty
 Install_thirdparty()
 {
-    ##git setting
-    cd ${ZZEMACS_ROOT}/bin
-    ./git-setup.sh
-    cd ${ZZEMACS_ROOT}
-
     ##install pymacs
     cd ${ZZEMACS_ROOT}/third-party/python
     ./install.sh

@@ -27,3 +27,7 @@ Grub2 more
 	    root (hd0,8)
 	    configfile /boot/grub/menu.lst
 
+        menuentry "Grub 1 Bootloader" {
+            set root='hd0,msdos8'
+            chainloader +1
+        }

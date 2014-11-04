@@ -22,7 +22,7 @@ try_command cat >> $BASHRC_PATH <<EOF
 # self bash-setting from zzemacs
 if [ -d ${ZZEMACS_ROOT} ] ; then
     export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:\$PATH
-    # source self setting
+
     for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
         if [ -r "\$i" ]; then
             if [ "\${-#*i}" != "\$-" ]; then

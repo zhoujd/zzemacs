@@ -7,31 +7,6 @@ ZZEMACS_ROOT=`pwd`
 
 echo "install .emacs to HOME directory begin..."
 
-Install_package()
-{
-    # dectect OS version
-    if [ "$OS_DISTRO" = "SUSE" ]; then
-        sudo zypper install -y cscope
-        sudo zypper install -y texinfo
-    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get install -y gmrun
-        sudo apt-get install -y cscope
-        sudo apt-get install -y texinfo
-        sudo apt-get install -y markdown
-        sudo apt-get install -y w3m
-    elif [ "$OS_DISTRO" = "CentOS" ]; then
-        sudo yum install -y gmrun
-        sudo yum install -y cscope
-        sudo yum install -y texinfo
-    elif [ "$OS_DISTRO" = "FreeBSD" ]; then
-        sudo pkg_add -r w3m
-        sudo pkg_add -r cscope
-        sudo pkg_add -r gmrun
-    else
-        echo "You are about to install on a non supported linux distribution."
-    fi
-}
-
 ##setup .emacs
 Install_dot_emacs()
 {
@@ -98,19 +73,21 @@ Install_thirdparty()
 
 main()
 {
-    ##install package for emacs
-    confirm_execute "Do you wanna install packages? (y/N): " try_command Install_package
-
     ##install configure file
-    echo "install configure file and fonts"
     if [ -f ~/.emacs ] ; then
         confirm_execute "Do you wanna overwrite .emacs? [y/N]" try_command Install_dot_emacs
     else
+        echo "install configure file"
         try_command Install_dot_emacs
     fi
 
+    echo "install fonts"
     try_command Install_fonts_conf
+
+    echo "install runemacs to $HOME"
     try_command Install_emacs_run
+
+    echo "install others"
     try_command Install_other
 
     ##install third-party

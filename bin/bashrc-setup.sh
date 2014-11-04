@@ -19,23 +19,22 @@ BASHRC_PATH=$HOME/.bashrc
 Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
-# export env ZZEMACS_HOME
-export ZZEMACS_HOME=$ZZEMACS_ROOT
-
-# source self  setting for zachary zhou
-for i in $ZZEMACS_ROOT/etc/profile.d/*.sh ; do
-    if [ -r "\$i" ]; then
-        if [ "\${-#*i}" != "\$-" ]; then
-            . "\$i"
-        else
-            . "\$i" >/dev/null 2>&1
+# self bash-setting from zzemacs
+if [ -d ${ZZEMACS_ROOT} ] ; then
+    export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:\$PATH
+    # source self setting
+    for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
+        if [ -r "\$i" ]; then
+            if [ "\${-#*i}" != "\$-" ]; then
+                . "\$i"
+            else
+                . "\$i" >/dev/null 2>&1
+            fi
         fi
-    fi
-done
-
+    done
+fi
 EOF
 }
-
 
 Install_self_bashrc
 

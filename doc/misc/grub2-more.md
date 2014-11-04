@@ -2,6 +2,7 @@ Grub2 more
 ===================
 
 1. recover boot sector
+
         ##First
         sudo grub2-install /dev/sda
 

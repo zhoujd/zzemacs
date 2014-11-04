@@ -2,15 +2,23 @@ Grub2 more
 ===================
 
 1. recover boot sector
-
+        ##First
         sudo grub2-install /dev/sda
 
+        ##Sencond
         sudo fdisk -l
         sudo mount /dev/sda1 /mnt
         sudo grub-install -root-directory=/mnt/ /dev/sda
-
-        ##reboot
+        sudo reboot
         sudo update-grub
+
+        ##Third
+        sudo fdisk -l
+        sudo mount /dev/sda2 /mnt/boot
+        sudo mount --bind /dev /mnt/dev
+        sudo chroot /mnt
+        sudo update-grub
+        sudo grub-install /dev/sda
 
 2. grub2 for freebsd
 
@@ -19,8 +27,6 @@ Grub2 more
             insmod ufs2
             chainloader +1
         }
-
-        
 
         ==>>
         /etc/grub.d/40_custom***

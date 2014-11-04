@@ -33,13 +33,13 @@ diff_extern()
 diff_emacs()
 {
     if [ "$OS" = "Windows_NT" ] ; then
-        ZZEMACS_PATH="$(cd $(dirname $0)/.. && pwd -W)"
+        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd -W)"
     else
-        ZZEMACS_PATH="$(cd $(dirname $0)/.. && pwd)"
+        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd)"
     fi
 
     emacs --no-site-file -q \
-          --eval "(load-file \"$ZZEMACS_PATH/elisp/ediff-sample.el\")" \
+          --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
           --eval "(ediff-sample-diff \"$1\" \"$2\")" \
           --eval "(message \"emacs diff finished.\")"
 }

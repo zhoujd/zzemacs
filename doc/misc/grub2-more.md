@@ -5,6 +5,13 @@ Grub2 more
 
         sudo grub2-install /dev/sda
 
+        sudo fdisk -l
+        sudo mount /dev/sda1 /mnt
+        sudo grub-install -root-directory=/mnt/ /dev/sda
+
+        ##reboot
+        sudo update-grub
+
 2. grub2 for freebsd
 
         menuentry "FreeBSD(on /dev/sda2)" {
@@ -39,6 +46,7 @@ Grub2 more
 
 4. grub2 setup
         https://help.ubuntu.com/community/Grub2/Setup#Configuring_GRUB_2
+
         Device: sudo grub-probe -t device /boot/grub
         UUID: sudo grub-probe -t fs_uuid /boot/grub
 
@@ -51,3 +59,4 @@ Grub2 more
         GRUB_DISABLE_OS_PROBER=true             ##disable proble os (maybe it is danger)
         GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
         #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.
+

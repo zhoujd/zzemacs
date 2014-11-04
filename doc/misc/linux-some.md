@@ -113,3 +113,8 @@ Linux something
     Acquire::http::proxy "http://hostname:port";
     Acquire::https::proxy "http://hostname:port";
     Acquire::ftp::proxy "http://hostname:port";
+
+12. Ubuntu ISO image
+    http://releases.ubuntu.com/12.04.5/
+    http://cdimage.ubuntu.com/releases/
+    http://mirrors.163.com/ubuntu-releases/

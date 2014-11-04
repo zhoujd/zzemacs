@@ -6,6 +6,7 @@ if [ "$OS" = "Windows_NT" ] ; then
 fi
 
 SETUP_ROOT=`pwd`
+ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 
 ##Import vars and functions
 . $SETUP_ROOT/sample.sh
@@ -13,30 +14,29 @@ SETUP_ROOT=`pwd`
 echo "Setup self .bashrc start ..."
 
 BASHRC_PATH=$HOME/.bashrc
-SELF_BASHRC_PATH=$(cd $SETUP_ROOT/../misc && pwd)
-SELF_BIN_PATH=$(cd $SETUP_ROOT/../bin && pwd)
 
 ##setup .bashrc
 Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
-# add for LS_COLORS
-alias ls='ls --color=auto'
+# export env ZZEMACS_HOME
+export ZZEMACS_HOME=$ZZEMACS_ROOT
 
-# add zzemacs/bin to PATH for zachary zhou
-if [ -d ${SELF_BIN_PATH} ] ; then
-    export PATH=${SELF_BIN_PATH}:\$PATH
-fi
+# source self  setting for zachary zhou
+for i in $ZZEMACS_ROOT/etc/profile.d/*.sh ; do
+    if [ -r "\$i" ]; then
+        if [ "\${-#*i}" != "\$-" ]; then
+            . "\$i"
+        else
+            . "\$i" >/dev/null 2>&1
+        fi
+    fi
+done
 
-# source self .bashrc setting for zachary zhou
-if [ -f ${SELF_BASHRC_PATH}/.bashrc ] ; then
-    . ${SELF_BASHRC_PATH}/.bashrc
-fi
 EOF
 }
 
-if [ -f $SELF_BASHRC_PATH/.bashrc ] ; then
-    Install_self_bashrc
-fi
+
+Install_self_bashrc
 
 echo "Setup self .bashrc end ..."

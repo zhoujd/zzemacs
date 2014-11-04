@@ -98,3 +98,18 @@ Linux something
     export CC=/opt/centos/devtoolset-1.1/root/usr/bin/gcc  
     export CPP=/opt/centos/devtoolset-1.1/root/usr/bin/cpp
     export CXX=/opt/centos/devtoolset-1.1/root/usr/bin/c++
+
+11. Ubuntu proxy
+    ##Temp in shell, ~/.bashrc for /etc/profile
+    $ export http_proxy="http://hostname:port"
+    $ export http_proxy="https://hostname:port"
+    $ export ftp_proxy="http://hostname:port"
+    $ sudo apt-get update
+
+    ##apt-get
+    $ sudo nano /etc/apt/apt.conf
+
+    ##add following
+    Acquire::http::proxy "http://hostname:port";
+    Acquire::https::proxy "http://hostname:port";
+    Acquire::ftp::proxy "http://hostname:port";

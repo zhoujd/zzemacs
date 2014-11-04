@@ -35,8 +35,9 @@ cat > ${LANCHER} <<EOF
 
 emacs --no-site-file -q \\
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \\
-      --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")" \\
-      --eval "(message \"start emacs finished.\")"
+      --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \\
+      --eval "(message \"start emacs finished.\")"     \\
+      $* &
 EOF
 chmod +x ${LANCHER}
 }

@@ -6,7 +6,7 @@
 ;;".emacs_bash"          ;;for bash
 
 ;;;For shell ls color on folder
-;;export LS_COLORS='di=1'
+;;export LS_COLORS='di=01;33:ex=92:ln=04;93'
 ;;alias ls='ls --color=auto'
 
 ;;shell settting

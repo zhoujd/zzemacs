@@ -8,6 +8,18 @@
 (if (fboundp 'scroll-bar-mode)   (scroll-bar-mode -1))
 (if (fboundp 'tooltip-mode)      (tooltip-mode -1))
 
+;; Commont setting
+(setq-default make-backup-files nil)
+(setq make-backup-files nil)
+(setq auto-save-default nil) 
+(setq require-final-newline t)
+(setq visible-bell t)
+(setq ring-bell-function (lambda ()  t))
+(setq x-select-enable-clipboard t)
+(setq mouse-drag-copy-region nil)
+(setq x-select-enable-primary nil) 
+(setq select-active-regions t)
+
 ;; Set default-frame-alist
 (if window-system
     (setq default-frame-alist

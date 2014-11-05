@@ -2,9 +2,6 @@
 
 use warnings;
 use strict;
-use Getopt::Std;
-use Cwd;
-use FindBin;
 
 $| = 1;
 

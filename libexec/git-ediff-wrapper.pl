@@ -13,6 +13,12 @@ sub diff_emacs {
     my $diff_b = shift;
     
     my $zzemacs_path = "~/zzemacs";
+
+    # Reset path on linux
+    if ( "$^O" eq "linux" ) {
+        $zzemacs_path = "$Bin/..";
+    }
+    
     my $elisp_string = sprintf("(progn \
                                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \

@@ -40,6 +40,17 @@ Linux_sample ()
     else
         echo "Run on $OS_DISTRO ..."
     fi
+
+    ## Detect system arch.
+    export SYSARCH=64
+    ULONG_MASK=`getconf ULONG_MAX`
+    if [ $ULONG_MASK = 18446744073709551615 ]; then
+        SYSARCH=64
+        echo "Run on 64bit System ..."
+    else
+        SYSARCH=32
+        echo "Run on 32bit System ..."
+    fi
 }
 
 FreeBSD_sample()
@@ -58,18 +69,6 @@ elif [ "FreeBSD" = "$ZZ_OS_NAME" ]; then
 else
     echo "Run on $ZZ_OS_NAME ..."
 fi
-
-## Detect system arch.
-export SYSARCH=64
-ULONG_MASK=`getconf ULONG_MAX`
-if [ $ULONG_MASK = 18446744073709551615 ]; then
-    SYSARCH=64
-    echo "Run on 64bit System ..."
-else
-    SYSARCH=32
-    echo "Run on 32bit System ..."
-fi
-
 
 ## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 #WDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)   ## only for bash

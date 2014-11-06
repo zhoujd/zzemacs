@@ -73,4 +73,4 @@ fi
 
 ## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 #WDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)   ## only for bash
-#WDIR=$(dirname $0)
+#WDIR=$(cd $(dirname $0) && pwd)

@@ -17,7 +17,7 @@ echo "hg setup start ..."
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=`pwd -W`
 else
-    HG_SETUP_HOME=$(dirname $0)
+    HG_SETUP_HOME=$(cd $(dirname $0) && pwd)
 fi
 
 EXTMERGE=hg-merge-wrapper.py

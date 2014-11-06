@@ -7,7 +7,7 @@ if [ "$OS" = "Windows_NT" ] ; then
 fi
 
 ##Get script path
-BUILD_ROOT=$(dirname $0)
+BUILD_ROOT=$(cd $(dirname $0) && pwd)
 
 ##Import vars and functions
 . $BUILD_ROOT/sample.sh

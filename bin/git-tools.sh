@@ -1,8 +1,8 @@
 #!/bin/sh
 
 ## Git script path
-GIT_TOOLS_ROOT="$(dirname $0)"
-ZZEMACS_ROOT="$(cd $GIT_TOOLS_ROOT/.. && pwd)"
+GIT_TOOLS_ROOT=$(cd $(dirname $0) && pwd)
+ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 
 ##Import vars and functions
 . $GIT_TOOLS_ROOT/sample.sh

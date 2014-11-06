@@ -7,7 +7,7 @@ if [ "$OS" = "Windows_NT" ] ; then
 fi
 
 ##Get Script path
-SETUP_ROOT=$(dirname $0)
+SETUP_ROOT=$(cd $(dirname $0) && pwd)
 
 ##Import vars and functions
 . $SETUP_ROOT/sample.sh

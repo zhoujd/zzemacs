@@ -2,6 +2,9 @@
 
 use warnings;
 use strict;
+use Env;
+use FindBin qw($Bin);
+
 
 $| = 1;
 
@@ -10,6 +13,7 @@ sub diff_emacs {
     my $diff_b = shift;
     
     my $zzemacs_path = "~/zzemacs";
+    print "$zzemacs_path\n";
 
     my $elisp_string=sprintf("\
 (progn \

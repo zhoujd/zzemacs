@@ -44,4 +44,4 @@ touch $SHELLBM_FILE
 source $SHELLBM_FILE
 
 # ls colors setting
-export LS_COLORS='di=01:ln=04'
+export LS_COLORS='di=01;35:ln=04'

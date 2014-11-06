@@ -46,11 +46,10 @@ def merge_emacs(a, b, c, d):
     else:
         zzemacs_path = os.environ.get('HOME') + "/zzemacs"
 
-    elisp_string="\
-(progn \
- (load-file \\\"%s/elisp/ediff-sample.el\\\") \
- (ediff-merge-files \\\"%s\\\" \\\"%s\\\" \\\"%s\\\" \\\"%s\\\") \
- )" % (zzemacs_path, a, b, c, d)
+    elisp_string="(progn \
+                    (load-file \\\"%s/elisp/ediff-sample.el\\\") \
+                    (ediff-merge-files \\\"%s\\\" \\\"%s\\\" \\\"%s\\\" \\\"%s\\\") \
+                  )" % (zzemacs_path, a, b, c, d)
 
     cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
     os.system(cmd)

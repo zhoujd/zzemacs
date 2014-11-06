@@ -17,11 +17,10 @@ def diff_emacs(a, b):
     else:
         zzemacs_path = os.environ.get('HOME') + "/zzemacs"
 
-    elisp_string="\
-(progn \
- (load-file \\\"%s/elisp/ediff-sample.el\\\") \
- (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
- )" % (zzemacs_path, a, b)
+    elisp_string="(progn \
+                    (load-file \\\"%s/elisp/ediff-sample.el\\\") \
+                    (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
+                  )" % (zzemacs_path, a, b)
 
     cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
     os.system(cmd)

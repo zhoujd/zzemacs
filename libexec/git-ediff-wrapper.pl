@@ -13,13 +13,10 @@ sub diff_emacs {
     my $diff_b = shift;
     
     my $zzemacs_path = "~/zzemacs";
-    print "$^O $zzemacs_path\n";
-
-    my $elisp_string=sprintf("\
-(progn \
- (load-file \\\"%s/elisp/ediff-sample.el\\\") \
- (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
- )", $zzemacs_path, $diff_a, $diff_b);
+    my $elisp_string = sprintf("(progn \
+                                    (load-file \\\"%s/elisp/ediff-sample.el\\\") \
+                                    (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
+                                )", $zzemacs_path, $diff_a, $diff_b);
 
     my $cmd = sprintf("emacs -q --no-site-file --eval \"%s\"", $elisp_string);
 

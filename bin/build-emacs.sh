@@ -1,12 +1,16 @@
 #!/bin/sh
 
+##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
     echo "This script is not support on windows."
     exit 0
 fi
 
+##Get script path
+BUILD_ROOT=$(dirname $0)
+
 ##Import vars and functions
-. ~/zzemacs/bin/sample.sh
+. $BUILD_ROOT/sample.sh
 
 echo "Build emacs begin ..."
 

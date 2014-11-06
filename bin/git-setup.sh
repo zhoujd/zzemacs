@@ -74,13 +74,11 @@ git config --global http.postBuffer 524288000
 #git config --global diff.external $GIT_SETUP_HOME/git-diff-default.sh
 
 ## git difftool setting
-chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
 git config --global diff.tool extdiff
 git config --global difftool.extdiff.cmd "$SHELL $GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config --global difftool.prompt false
 
 ## setup merge setting
-chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd "$SHELL $GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode true

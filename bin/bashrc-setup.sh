@@ -6,14 +6,15 @@ if [ "$OS" = "Windows_NT" ] ; then
     exit 0
 fi
 
+##Get Script path
 SETUP_ROOT=$(dirname $0)
-ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 
 ##Import vars and functions
 . $SETUP_ROOT/sample.sh
 
 echo "Setup self .bashrc start ..."
 
+ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 BASHRC_PATH=$HOME/.bashrc
 
 ##setup .bashrc
@@ -23,7 +24,6 @@ try_command cat >> $BASHRC_PATH <<EOF
 # self bash-setting from zzemacs
 if [ -d ${ZZEMACS_ROOT} ] ; then
     export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:\$PATH
-
     for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
         if [ -r "\$i" ]; then
             if [ "\${-#*i}" != "\$-" ]; then

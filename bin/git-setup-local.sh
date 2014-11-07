@@ -17,11 +17,6 @@ git config user.name   "zhoujd"
 git config user.email  "zjd-405@163.com"
 git config color.ui    "true"
 
-## cr && lf
-git config core.autocrlf false
-git config core.safecrlf true
-git config core.filemode false
-
 ## alias
 git config alias.st    "status"
 git config alias.ci    "commit"
@@ -39,11 +34,6 @@ git config alias.ls    "ls-files"
 git config alias.ign   "ls-files -o -i --exclude-standard"
 git config alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 git config alias.fshow "show --pretty=format: --name-only"
-
-## set http proxy
-if [ ! $http_proxy = "" ]; then
-    git config http.proxy $http_proxy
-fi
 
 ## git difftool setting
 git config diff.tool extdiff

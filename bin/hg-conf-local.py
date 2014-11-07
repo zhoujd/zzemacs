@@ -4,6 +4,18 @@ import os
 import sys
 import ConfigParser
 
+def set_conf_item(conf_file, section, name, value):
+    config = ConfigParser.ConfigParser()
+    config.read(conf_file)
+
+    if not config.has_section(section):
+        config.add_section(section)
+    config.set(section, name, value)
+
+    with open(conf_file, 'w') as configfile:
+        config.write(configfile)
+
+
 if __name__ == "__main__":
     hg_root=os.popen("hg root").readlines()[0].rstrip()
     hg_rc_path = hg_root + os.sep + ".hg" + os.sep + "hgrc"

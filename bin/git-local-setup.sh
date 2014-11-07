@@ -45,22 +45,6 @@ if [ ! $http_proxy = "" ]; then
     git config http.proxy $http_proxy
 fi
 
-### fatal: index-pack failed for win7
-#git config pack.windowMemory  10m
-#git config pack.packSizeLimit 20m
-
-### win7 git server (gitblit)
-### http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
-### error: RPC failed; result=18, HTTP code = 0
-git config http.postBuffer 524288000
-
-### git diff is called by git with 7 parameters:
-### path old-file old-hex old-mode new-file new-hex new-mode
-
-## git default diff using external
-#chmod +x $GIT_SETUP_HOME/git-diff-default.sh
-#git config diff.external $GIT_SETUP_HOME/git-diff-default.sh
-
 ## git difftool setting
 git config diff.tool extdiff
 git config difftool.extdiff.cmd "$SHELL $GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""

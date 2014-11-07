@@ -12,10 +12,9 @@ Install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SuSE" ]; then
-        sudo zypper install git gitk
+        sudo zypper install -y git-core
+        sudo zypper install -y gitk
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get install -y python-nautilus python-configobj python-gtk2 python-glade2 python-svn python-dbus meld
-        sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core
         sudo apt-get install -y gitk
     elif [ "$OS_DISTRO" = "CentOS" ]; then

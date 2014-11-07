@@ -30,7 +30,7 @@ Install_package()
 ## Install git self tool
 Install_tools()
 {
-    INS_PATH=/usr/libexec/git-core/
+    INS_PATH=/usr/bin
     
     if [ -d $INS_PATH ] ; then
         sudo ln -sf $ZZEMACS_ROOT/libexec/git-ediff   $INS_PATH

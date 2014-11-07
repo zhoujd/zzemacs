@@ -2,7 +2,7 @@
 
 ### http://gitbook.liuhui998.com/index.html
 
-echo git diff setup start ...
+echo git global setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
@@ -93,4 +93,4 @@ if [ "$OS" = "Windows_NT" ] ; then
 fi
 
 
-echo git diff setup end ...
+echo git global setup end ...

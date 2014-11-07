@@ -30,11 +30,14 @@ Install_package()
 ## Install git self tool
 Install_tools()
 {
-    INS_PATH=/usr/bin
+    INS_PATH=$(git --exec-path)
     
     if [ -d $INS_PATH ] ; then
+        echo "Install git tools on $INS_PATH"
         sudo ln -sf $ZZEMACS_ROOT/libexec/git-ediff   $INS_PATH
         sudo ln -sf $ZZEMACS_ROOT/libexec/git-flow/*  $INS_PATH
+    else
+        echo "Not git install on system"
     fi
 }
 

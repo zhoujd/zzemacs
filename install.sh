@@ -53,7 +53,7 @@ Install_thirdparty()
 {
     ##install pymacs
     cd ${ZZEMACS_ROOT}/third-party/python
-    ./install.sh
+    sh ./install.sh
     cd ${ZZEMACS_ROOT}
 
     ##install pde

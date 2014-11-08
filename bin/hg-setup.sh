@@ -38,6 +38,9 @@ merge = ${EXTMERGE}
 [alias]
 nlog = log --limit
 llog = log --limit 10
+cplog = log --style compact
+cglog = log --style changelog
+flog = log --template 'files: {files}\n'
 mq = hg -R \$(hg root)/.hg/patches \$*
 hgrep = hg manifest | grep \$*
 

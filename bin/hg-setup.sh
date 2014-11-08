@@ -13,6 +13,7 @@ echo "hg setup start ..."
 ##http://mercurial.selenic.com/wiki/GitConcepts
 ##http://mercurial.selenic.com/wiki/Workflows
 ##http://stackoverflow.com/questions/2428870/hosting-mercurial-hg-via-visualsvn-server
+##http://hgbook.red-bean.com/read/customizing-the-output-of-mercurial.html
 
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd -W)

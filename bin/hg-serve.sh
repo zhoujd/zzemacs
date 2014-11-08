@@ -6,8 +6,9 @@
 
 APP_BIN=hg
 SRCNAME="HG repo"
+HG_ROOT=`${APP_BIN} root`
 
-if [ ! -s "$(hg root)" ] ; then
+if [ ! -s "${HG_ROOT}" ] ; then
     echo "`basename $0` should be run under hg repo"
     exit 1
 fi
@@ -71,8 +72,14 @@ case "${STATE}" in
         echo "Mecurial Server service restarting on port:${PORT}."
         (cd ${SRC}; ${APP_BIN} serve --name "${SRCNAME}" -d -p ${PORT} --pid-file ${PID_FILE})
         ;;
+    'install')
+        echo "[web]" >>${HG_ROO}/.hg/hgrc
+        echo "allow_read = *" >>${HG_ROOT}/.hg/hgrc
+        echo "allow_push = *" >>${HG_ROOT}/.hg/hgrc
+        echo "push_ssl   = false" >>${HG_ROOT}/.hg/hgrc
+        ;;
     *)
-        echo "$0 {start [port]|stop|restart [port]}"
+        echo "$0 {start [port]|stop|restart [port]|install}"
         exit 1
         ;;
 esac

@@ -180,7 +180,7 @@
   [(tab)]   (lookup-key global-map [(control tab)])
 
   (kbd "h") 'common-lisp-hyperspec
-  (kbd "i") 'zz-info-open-file
+  (kbd "i") 'info-open-file
   ))
 
 (apply-keys-to-map

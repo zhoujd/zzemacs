@@ -1,3 +1,3 @@
 #!/bin/sh
 
-emacsclient -c -e "(zz-sudo-find-file \"$1\" \"$PWD\")"
+emacsclient -c -e "(sudo-find-file \"$1\" \"$PWD\")"

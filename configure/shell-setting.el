@@ -191,6 +191,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (multi-term-dedicated-toggle))))
 
 ;;switch line/char mode
+;;Try 'term-line-mode' and 'term-char-mode'
 (defun switch-term-and-text ()
   "if current in `term-mode', switch to `text-mode', else switch to `term-mode'."
   (interactive)

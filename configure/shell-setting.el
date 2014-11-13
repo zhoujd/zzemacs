@@ -149,9 +149,9 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;key set for term
 (add-hook 'term-mode-hook
           (lambda ()
-            (define-key term-raw-map (kbd "C-c C-j")         'term-line-mode)
-            (define-key term-raw-map (kbd "C-c C-k")         'term-char-mode)
-            (define-key term-raw-map (kbd "C-c C-q")         'term-pager-toggle)
+            (define-key term-raw-map (kbd "C-c C-j")  'term-line-mode)
+            (define-key term-raw-map (kbd "C-c C-k")  'term-char-mode)
+            (define-key term-raw-map (kbd "C-c C-q")  'term-pager-toggle)
             ))
 
 (defun term-send-esc ()
@@ -207,10 +207,11 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;mulit linux index
 (when-ms-windows
  (defvar multi-linux-index 0 "multi shell index")
+ (defvar multi-linux-name multi-shell-buffer-name "multi shell index")
  (defun get-linux-shell ()
    (interactive)
    (switch-to-shell
-    (format "*%s-%d*" multi-shell-buffer-name multi-linux-index))
+    (format "*%s-%d*" multi-linux-name multi-linux-index))
    (if (>= multi-linux-index 20)
        (setq multi-linux-index 0)
        (setq multi-linux-index (1+ multi-linux-index))))

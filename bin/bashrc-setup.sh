@@ -21,6 +21,7 @@ BASHRC_PATH=$HOME/.bashrc
 Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
+
 # self bash-setting from zzemacs
 if [ -d ${ZZEMACS_ROOT} ] ; then
     export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:\$PATH

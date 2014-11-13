@@ -136,6 +136,29 @@ Dmitriy Igrishin's patched version of comint.el."
  (terminator-basic-setup)
  )
 
+;;set term buffer size to unlimited
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq term-buffer-maximum-size 0)
+            (setq show-trailing-whitespace nil)
+            ))
+
+;;set key press for term
+(add-hook 'term-mode-hook
+          (lambda ()
+            (define-key term-raw-map (kbd "C-y")         'term-paste)
+            (define-key term-raw-map (kbd "C-f")         'forward-char)
+            (define-key term-raw-map (kbd "C-b")         'backward-char)
+            (define-key term-raw-map (kbd "C-a")         'move-beginning-of-line)
+            (define-key term-raw-map (kbd "C-e")         'move-end-of-line)
+            (define-key term-raw-map (kbd "<down>")      'next-line)
+            (define-key term-raw-map (kbd "<up>")        'previous-line)
+            (define-key term-raw-map (kbd "<left>")      'backward-char)
+            (define-key term-raw-map (kbd "<right>")     'forward-char)
+            (define-key term-raw-map (kbd "C-<down>")    'term-send-down)
+            (define-key term-raw-map (kbd "C-<up>")      'term-send-up)
+            ))
+
 (defun term-send-esc ()
   "Send ESC in term mode."
   (interactive)

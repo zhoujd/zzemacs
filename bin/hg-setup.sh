@@ -30,8 +30,10 @@ echo "hg setup start ..."
 
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
+    ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd -W)
 else
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd)
+    ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd)
 fi
 
 EXTMERGE=hg-merge-wrapper.py
@@ -94,7 +96,7 @@ track.current = True
 [web] 
 push_ssl = False
 allow_push = *
-cacerts = ${HG_SETUP_HOME}/hg-cacert.pem
+cacerts = ${ZZ_ETC_ROOT}/hg-cacert.pem
 
 [hostfingerprints]
 bitbucket.org = 45:ad:ae:1a:cf:0e:73:47:06:07:e0:88:f5:cc:10:e5:fa:1c:f7:99

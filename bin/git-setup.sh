@@ -30,10 +30,12 @@ git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"
 git config --global color.ui    "true"
 
-## cr && lf
-git config --global core.autocrlf false
-git config --global core.safecrlf true
-git config --global core.filemode false
+## not check file mode on windows
+if [ "$OS" = "Windows_NT" ] ; then
+    ## cr && lf
+    git config --global core.autocrlf false
+    git config --global core.filemode false
+fi
 
 ## alias
 git config --global alias.st    "status"

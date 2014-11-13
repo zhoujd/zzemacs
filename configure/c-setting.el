@@ -41,7 +41,6 @@
    (if use-cedet-inside-flag
        (progn
          (require 'semantic/bovine/gcc)
-         (require 'semantic/bovine/c)          
          )
        (progn
          (zz-load-path "site-lisp/cedet/semantic/bovine")

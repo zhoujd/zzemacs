@@ -2,6 +2,9 @@
 
 echo "hg setup start ..."
 
+###Source
+##http://selenic.com/hg
+
 ###Two books
 ##http://bucunzai.net/hginit/
 ##http://hgbook.red-bean.com/read/
@@ -14,6 +17,16 @@ echo "hg setup start ..."
 ##http://mercurial.selenic.com/wiki/Workflows
 ##http://stackoverflow.com/questions/2428870/hosting-mercurial-hg-via-visualsvn-server
 ##http://hgbook.red-bean.com/read/customizing-the-output-of-mercurial.html
+
+###Install from source on linux
+##$ sudo yum install python-docutils
+##$ wget http://selenic.com/hg/archive/tip.tar.gz
+##$ tar xf tip.tar.gz
+##$ mv Mercurial-* Mercurail-latest
+##$ cd Mercurail-latest
+##$ make all
+##$ make install  =>default to /usr/local
+
 
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd -W)

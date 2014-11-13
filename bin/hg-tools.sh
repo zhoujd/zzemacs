@@ -14,7 +14,8 @@ Install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SuSE" ]; then
-        echo "Install on suse"
+        sudo zypper install -y python-devel
+        sudo zypper install -y python-docutils
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y mercurial
         sudo apt-get install -y python-docutils

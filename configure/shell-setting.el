@@ -128,7 +128,13 @@ Dmitriy Igrishin's patched version of comint.el."
  (setq multi-term-switch-after-close nil)
  (setq multi-term-dedicated-select-after-open-p t)
  (setq multi-term-program "/bin/bash")
- (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape)))
+ (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape))
+
+ ;;terminator setting
+ (require 'terminator)
+ (terminator-global-mode t)
+ (terminator-basic-setup)
+ )
 
 (defun term-send-esc ()
   "Send ESC in term mode."
@@ -237,7 +243,6 @@ Dmitriy Igrishin's patched version of comint.el."
   (message "switch to %s" buf-name))
 
 ;; switch to named term
-(setq multi-term-buffer-name "term")
 (defun my-term-list ()
   (setq my-terms ())
   (dolist (b (buffer-list))

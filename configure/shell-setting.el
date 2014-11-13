@@ -146,6 +146,14 @@ Dmitriy Igrishin's patched version of comint.el."
             (setq show-trailing-whitespace nil)
             ))
 
+;;key set for term
+(add-hook 'term-mode-hook
+          (lambda ()
+            (define-key term-raw-map (kbd "C-c C-j")         'term-line-mode)
+            (define-key term-raw-map (kbd "C-c C-k")         'term-char-mode)
+            (define-key term-raw-map (kbd "C-c C-q")         'term-pager-toggle)
+            ))
+
 (defun term-send-esc ()
   "Send ESC in term mode."
   (interactive)

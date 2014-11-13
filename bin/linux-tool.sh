@@ -10,8 +10,7 @@ echo "install linux-tool begin..."
 ##package for ubuntu
 Install_package_suse()
 {
-    ##TODO
-    true
+    sudo zypperl install dos2unix
 }
 
 ##package for ubuntu
@@ -23,17 +22,16 @@ Install_package_ubuntu()
     sudo apt-get install -y openssh-server
 
     ##easy split windows for multi-term
-    sudo apt-get install -y terminator
+    #sudo apt-get install -y terminator
 
     ##for gnome
-    sudo apt-get install -y gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+    #sudo apt-get install -y gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
 }
 
 ##package for ubuntu
 Install_package_centos()
 {
-    ##TODO
-    true
+    sudo yum install dos2unix
 }
 
 # dectect OS version

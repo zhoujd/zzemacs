@@ -5,7 +5,7 @@ CURRENT_ROOT=`pwd`
 echo "for perl develop start ..."
 
 echo "==>1 install EPL"
-cd $CURRENT_ROOT/pymacs
+cd $CURRENT_ROOT/EPL
 perl Makefile.PL
 make
 sudo make install

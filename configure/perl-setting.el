@@ -1,14 +1,13 @@
 ;;;;perl programe setting
 ;;;http://emacswiki.org/cgi-bin/wiki/PerlLanguage
 
-;;Use cperl-mode instead of the default perl-mode
+;;use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
-(setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 
-;;Eval buffer by perl
+;;eval buffer by perl
 (defun perl-eval-buffer ()
   "run perl on buffer"
   (interactive)
@@ -29,6 +28,7 @@
     (shell-command cmd)))
 
 (defun my-cperl-mode-hook ()
+  (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
   (setq cperl-indent-level 4)
   (setq cperl-continued-statement-offset 0)
   (setq cperl-extra-newline-before-brace t)
@@ -36,7 +36,7 @@
 
 (add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
 
-;;Perl sepia settings
+;;perl sepia settings
 ;;http://cpansearch.perl.org/src/SEANO/Sepia-0.97/Sepia.html
 ;;http://repo.or.cz/w/sepia.git
 (zz-load-path "site-lisp/sepia")
@@ -69,6 +69,27 @@
                        ac-source-files-in-current-dir
                        ac-source-filename
                        )))))
+
+;;perl code style
+(add-hook  'cperl-mode-hook
+           (lambda ()
+             (add-to-list
+              'cperl-style-alist
+              '("MYPerlStyle"
+                (cperl-auto-newline                         . nil)
+                (cperl-brace-offset                         . 0)
+                (cperl-close-paren-offset                   . -4)
+                (cperl-continued-brace-offset               . 0)
+                (cperl-continued-statement-offset           . 0)
+                (cperl-extra-newline-before-brace           . nil)
+                (cperl-extra-newline-before-brace-multiline . nil)
+                (cperl-indent-level                         . 4)
+                (cperl-indent-parens-as-block               . t)
+                (cperl-label-offset                         . -4)
+                (cperl-merge-trailing-else                  . t)
+                (cperl-tab-always-indent                    . t)))
+             (cperl-set-style "MYPerlStyle")))
+
 
 (provide 'perl-setting)
 

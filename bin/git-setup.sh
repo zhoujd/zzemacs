@@ -23,10 +23,10 @@ cat > ~/.gitconfig <<EOF
 # a comment
 #
 
-[core]
-	gitproxy = none for intel.com
-    gitproxy = $GIT_SETUP_HOME/git-proxy-wrapper.sh
 EOF
+
+## set git proxy
+git config --global core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
 
 ## setup git configure
 git config --global user.name   "zhoujd"

@@ -12,12 +12,15 @@ Install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SuSE" ]; then
+        sudo zypper install -y texinfo
         sudo zypper install -y git-core
         sudo zypper install -y gitk
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
+        sudo apt-get install -y texinfo
         sudo apt-get install -y git-core
         sudo apt-get install -y gitk
     elif [ "$OS_DISTRO" = "CentOS" ]; then
+        sudo yum install -y texinfo
         sudo yum install -y git-core
         sudo yum install -y gitk
     else

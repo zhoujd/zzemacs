@@ -5,6 +5,7 @@
 #
 
 # http://www.dest-unreach.org/socat/
+# http://www.taiyo.co.jp/~gotoh/ssh/connect.c
 
 # Configuration.
 #_proxy=proxy-ir.intel.com

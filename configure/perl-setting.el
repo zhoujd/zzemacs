@@ -1,16 +1,17 @@
-;;;perl programme setting
+;;;;perl programe setting
+;;;http://emacswiki.org/cgi-bin/wiki/PerlLanguage
 
-;; using cperl-mode
+;;Use cperl-mode
 (defalias 'perl-mode 'cperl-mode)
 
-;; Use cperl-mode instead of the default perl-mode
+;;Use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 
-(defun runperl()
+(defun run-perl ()
   "run perl on buffer"
   (interactive)
   (let ((filename buffer-file-name)
@@ -35,11 +36,13 @@
   (setq cperl-extra-newline-before-brace t)
   (set-face-background 'cperl-array-face "wheat")
   (set-face-background 'cperl-hash-face "wheat")
-  (define-key cperl-mode-map (kbd "C-c C-c") 'runperl))
+  (define-key cperl-mode-map (kbd "C-c C-c") 'run-perl))
 
 (add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
 
-;; Perl sepia settings
+;;Perl sepia settings
+;;http://cpansearch.perl.org/src/SEANO/Sepia-0.97/Sepia.html
+;;http://repo.or.cz/w/sepia.git
 (zz-load-path "site-lisp/sepia")
 (setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
 (defalias 'perl-mode 'sepia-mode)
@@ -54,4 +57,4 @@
 
 (provide 'perl-setting)
 
-;; perl-setting.el end here
+;;;; perl-setting.el end here

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Use socat to proxy git through a SOCKS proxy
+# Use socat/connect to proxy git through a SOCKS proxy
 # to access git repositories outside Network
 #
 

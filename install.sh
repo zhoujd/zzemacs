@@ -37,7 +37,7 @@ emacs --no-site-file -q \\
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \\
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \\
       --eval "(message \"start emacs finished.\")"     \\
-      \$* &
+      \$* >/dev/null 2>&1 &
 EOF
 chmod +x ${LANCHER}
 }

@@ -56,24 +56,14 @@ Install_thirdparty()
     sh ./install.sh
     cd ${ZZEMACS_ROOT}
 
-    ##install pde
-    cd ${ZZEMACS_ROOT}/site-lisp/pde
-    perl ./Build.PL
-    perl ./Build test
-    perl ./Build
-    sudo perl ./Build install
-    cd ${ZZEMACS_ROOT}
-
     ##install EPL
-    cd ${ZZEMACS_ROOT}/third-party/perl/EPL
-    perl Makefile.PL
-    make
-    sudo make install
+    cd ${ZZEMACS_ROOT}/third-party/perl
+    sh ./install.sh
     cd ${ZZEMACS_ROOT}
 
     ##install connect
     cd ${ZZEMACS_ROOT}/third-party/git-proxy
-    sh ./build.sh
+    sh ./install.sh
     cd ${ZZEMACS_ROOT}
 }
 

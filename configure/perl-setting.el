@@ -1,9 +1,6 @@
 ;;;;perl programe setting
 ;;;http://emacswiki.org/cgi-bin/wiki/PerlLanguage
 
-;;Use cperl-mode
-(defalias 'perl-mode 'cperl-mode)
-
 ;;Use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
@@ -11,7 +8,8 @@
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 
-(defun run-perl ()
+;;Eval buffer by perl
+(defun perl-eval-buffer ()
   "run perl on buffer"
   (interactive)
   (let ((filename buffer-file-name)
@@ -34,7 +32,7 @@
   (setq cperl-indent-level 4)
   (setq cperl-continued-statement-offset 0)
   (setq cperl-extra-newline-before-brace t)
-  (define-key cperl-mode-map (kbd "C-c C-c") 'run-perl))
+  (define-key cperl-mode-map (kbd "C-c C-c") 'perl-eval-buffer))
 
 (add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
 
@@ -44,7 +42,8 @@
 (zz-load-path "site-lisp/sepia")
 (setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
 (defalias 'perl-mode 'sepia-mode)
-(defalias 'sepia  'sepia-repl)
+(defalias 'sepia     'sepia-repl)
+(defalias 'run-perl  'sepia-repl)
 (require 'sepia)
 
 (defun my-sepia-mode-hook ()

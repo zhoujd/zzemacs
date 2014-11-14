@@ -11,4 +11,15 @@
 #_proxy=proxy-shz.intel.com
 _proxy=10.7.211.16
 _proxyport=1080
-exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
+
+_socat_flag="y"
+
+#exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
+
+echo $1 | grep "\.intel\.com$" > /dev/null 2>&1
+if [ $? -eq 0 ] ; then
+    exec connect $@
+else
+    exec connect -S $_proxy:$_proxyport $@
+    #exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
+fi

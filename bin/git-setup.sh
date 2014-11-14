@@ -23,6 +23,9 @@ cat > ~/.gitconfig <<EOF
 # a comment
 #
 
+[core]
+	gitproxy = none for intel.com
+    gitproxy = $GIT_SETUP_HOME/git-proxy-wrapper.sh
 EOF
 
 ## setup git configure

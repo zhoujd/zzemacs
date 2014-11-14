@@ -1,8 +1,10 @@
 #!/bin/sh
 #
 # Use socat to proxy git through a SOCKS proxy
-# to access git repositories outside Intel.
+# to access git repositories outside Network
 #
+
+# http://www.dest-unreach.org/socat/
 
 # Configuration.
 #_proxy=proxy-ir.intel.com

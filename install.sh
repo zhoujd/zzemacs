@@ -70,6 +70,11 @@ Install_thirdparty()
     make
     sudo make install
     cd ${ZZEMACS_ROOT}
+
+    ##install connect
+    cd ${ZZEMACS_ROOT}/third-party/git-proxy
+    sh ./build.sh
+    cd ${ZZEMACS_ROOT}
 }
 
 main()

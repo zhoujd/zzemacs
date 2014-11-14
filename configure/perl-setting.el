@@ -34,8 +34,6 @@
   (setq cperl-indent-level 4)
   (setq cperl-continued-statement-offset 0)
   (setq cperl-extra-newline-before-brace t)
-  (set-face-background 'cperl-array-face "wheat")
-  (set-face-background 'cperl-hash-face "wheat")
   (define-key cperl-mode-map (kbd "C-c C-c") 'run-perl))
 
 (add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)

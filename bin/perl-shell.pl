@@ -6,12 +6,12 @@ use Data::Dumper;
 my $historyfile = $ENV{HOME} . '/.phistory';
 my $term = new Term::ReadLine 'Perl Shell';
 
-sub save_list 
-{ 
-    my $f = shift; 
-    my $l = shift; 
-    open F, $f; 
-    print F "$_\n" foreach @$l 
+sub save_list
+{
+    my $f = shift;
+    my $l = shift;
+    open F, $f;
+    print F "$_\n" foreach @$l
 }
 
 if (open H, $historyfile)
@@ -23,7 +23,7 @@ if (open H, $historyfile)
     $term->addhistory($_) foreach keys %h;
 }
 
-while ( defined ($_ = $term->readline("ZZ Perl Shell> ")) ) 
+while ( defined ($_ = $term->readline("ZZ Perl Shell> ")) )
 {
     my $res = eval($_);
     warn $@ if $@;

@@ -12,7 +12,7 @@
 ## http://meldmerge.org/
 
 ## use emacs as merge tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
 
 merge_extern()
 {

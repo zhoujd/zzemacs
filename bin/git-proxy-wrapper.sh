@@ -14,8 +14,6 @@ _proxyport=1080
 
 _connect_flag="y"
 
-#exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
-
 echo $1 | grep "\.intel\.com$" > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
     exec connect $@

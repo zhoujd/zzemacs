@@ -6,7 +6,6 @@ echo git local setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
-    SHELL=$(cd $ZZNIX_HOME && pwd -W)/bin/sh
 else
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd)
 fi
@@ -37,12 +36,12 @@ git config alias.flog  "show --pretty=format: --name-only"
 
 ## git difftool setting
 git config diff.tool extdiff
-git config difftool.extdiff.cmd "$SHELL $GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config difftool.extdiff.cmd "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config difftool.prompt false
 
 ## setup merge setting
 git config merge.tool extmerge
-git config mergetool.extmerge.cmd "$SHELL $GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config mergetool.extmerge.trustExitCode true
 git config mergetool.keepBackup false
 

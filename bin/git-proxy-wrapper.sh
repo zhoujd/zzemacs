@@ -14,7 +14,7 @@ _proxyport=1080
 
 _connect_flag="y"
 
-echo $1 | grep "\.intel\.com$" > /dev/null 2>&1
+echo $1 | grep -E "\.intel\.com$|\.kernel\.org$" > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
     exec connect $@
 else

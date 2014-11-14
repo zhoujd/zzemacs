@@ -1,59 +1,56 @@
 ;;;perl programme setting
 
-;;;https://github.com/wenbinye/emacs-pde
-(zz-load-path "site-lisp/pde/lisp")
-(require 'pde-load)
-
-;;;perl code style
-(defun pde-perl-mode-hook ()
-  (abbrev-mode t)
-  (hs-minor-mode t)
-  (setq cperl-lazy-help-time 2)
-  (cperl-lazy-install)
-  (add-to-list 'cperl-style-alist
-               '("MYPDE"
-                 (cperl-auto-newline                         . nil)
-                 (cperl-brace-offset                         . 0)
-                 (cperl-close-paren-offset                   . -4)
-                 (cperl-continued-brace-offset               . 0)
-                 (cperl-continued-statement-offset           . 0)
-                 (cperl-extra-newline-before-brace           . nil)
-                 (cperl-extra-newline-before-brace-multiline . nil)
-                 (cperl-indent-level                         . 4)
-                 (cperl-indent-parens-as-block               . t)
-                 (cperl-label-offset                         . -4)
-                 (cperl-merge-trailing-else                  . t)
-                 (cperl-tab-always-indent                    . t)))
-  (cperl-set-style "MYPDE"))
-
-(add-hook 'cperl-mode-hook 'pde-perl-mode-hook)
-
+;; using cperl-mode
 (defalias 'perl-mode 'cperl-mode)
 
-;;;Use cperl-mode instead of the default perl-mode
+;; Use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("perl5" . cperl-mode))
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
+(setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 
-;;;perl completing
-(add-hook  'cperl-mode-hook
-           (lambda ()
-             (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
-               (require 'perl-completion nil t)
-               (auto-complete-mode t)
-               (perl-completion-mode t)
-               (hs-minor-mode t)
-               (make-variable-buffer-local 'ac-sources)
-               (setq ac-sources
-                     '(
-                       ;;ac-source-perl-completion
-                       ac-source-yasnippet
-                       ac-source-abbrev
-                       ac-source-words-in-buffer
-                       ac-source-files-in-current-dir
-                       ac-source-filename
-                       )))))
+(defun runperl()
+  "run perl on buffer"
+  (interactive)
+  (let ((filename buffer-file-name)
+  (cmd "")
+  (oldbuf (current-buffer))
+  (end (point-max)))
+    (if filename
+      (save-buffer)
+        (save-excursion
+          (setq filename (concat (getenv "tmp") "/temp.pl"))
+          (set-buffer (create-file-buffer filename))
+          (insert-buffer-substring oldbuf 1 end)
+          (write-file filename)
+          (kill-buffer (current-buffer))))
+    (setq cmd (concat "perl -w " filename))
+    (message "%s  ..." cmd)
+    (shell-command cmd)))
+
+(defun my-cperl-mode-hook ()
+  (setq cperl-indent-level 4)
+  (setq cperl-continued-statement-offset 0)
+  (setq cperl-extra-newline-before-brace t)
+  (set-face-background 'cperl-array-face "wheat")
+  (set-face-background 'cperl-hash-face "wheat")
+  (define-key cperl-mode-map (kbd "C-c C-c") 'runperl))
+
+(add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
+
+;; Perl sepia settings
+(zz-load-path "site-lisp/sepia")
+(setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
+(defalias 'perl-mode 'sepia-mode)
+(defalias 'sepia  'sepia-repl)
+(require 'sepia)
+
+(defun my-sepia-mode-hook ()
+  (define-key sepia-mode-map [(tab)] 'sepia-indent-or-complete))
+
+(add-hook 'sepia-mode-hook 'my-sepia-mode-hook t)
+
 
 (provide 'perl-setting)
 

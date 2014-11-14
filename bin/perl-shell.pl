@@ -1,6 +1,5 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl -w
 
-use warnings;
 use Term::ReadLine;
 use Data::Dumper;
 

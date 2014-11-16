@@ -66,6 +66,7 @@ Grub2 more
 
 4. grub2 setup
         https://help.ubuntu.com/community/Grub2/Setup#Configuring_GRUB_2
+        http://www.dedoimedo.com/computers/grub-2.html
 
         Device: sudo grub-probe -t device /boot/grub
         UUID: sudo grub-probe -t fs_uuid /boot/grub

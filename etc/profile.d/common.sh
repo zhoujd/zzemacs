@@ -13,6 +13,7 @@ alias lm='ls -al | more'           # pipeline to more
 alias tree='tree -Csu'             # another better way for 'ls'
 alias which='type -all'
 alias ..='cd ..'
+alias ...='cd ../..'
 alias path='echo -e ${PATH//:/\\n}'
 alias du='du -kh'
 alias df='df -kTh'

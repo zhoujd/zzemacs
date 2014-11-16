@@ -9,7 +9,7 @@ Grub2 more
         ##Sencond
         sudo fdisk -l
         sudo mount /dev/sda1 /mnt
-        sudo grub-install -root-directory=/mnt/ /dev/sda
+        sudo grub-install --root-directory=/mnt/ /dev/sda
         sudo reboot
         sudo update-grub
 

@@ -66,4 +66,5 @@ Grub2 more
         GRUB_DISABLE_OS_PROBER=true             ##disable proble os (maybe it is danger)
         GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
         #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.
-
+	    GRUB_DISABLE_SUBMENU=true               ##disable submenu
+        GRUB_DISABLE_SUBMENU=y                  ##disable submenu on ubuntu 14.04

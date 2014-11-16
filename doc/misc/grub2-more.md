@@ -12,6 +12,7 @@ Grub2 more
         sudo grub-install --root-directory=/mnt/ /dev/sda
         sudo reboot
         sudo update-grub
+        sudo umount /mnt
 
         ##Third
         sudo fdisk -l
@@ -20,14 +21,26 @@ Grub2 more
         sudo chroot /mnt
         sudo update-grub
         sudo grub-install /dev/sda
+        sudo umount /mnt/boot
+        sudo umount /mnt/dev
 
 2. grub2 for freebsd
 
-        menuentry "FreeBSD(on /dev/sda2)" {
+        menuentry "FreeBSD (on /dev/sda2)" {
             set root=(hd0,msdos2) # base on 'sudo fdisk -l' result 
             insmod ufs2
             chainloader +1
         }
+
+        menuentry "Windows (on /dev/sda1)" {
+        	insmod chain
+	        insmod ntfs
+	        set root=(hd0,msdos1)
+	        chainloader +1
+        }
+        
+        ## For first extended partition of the first hard disk drive 
+        (hd1,msdos1,bsd1)
 
         ==>>
         /etc/grub.d/40_custom***
@@ -66,5 +79,4 @@ Grub2 more
         GRUB_DISABLE_OS_PROBER=true             ##disable proble os (maybe it is danger)
         GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
         #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.
-	    GRUB_DISABLE_SUBMENU=true               ##disable submenu
         GRUB_DISABLE_SUBMENU=y                  ##disable submenu on ubuntu 14.04

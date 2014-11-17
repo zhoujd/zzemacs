@@ -8,7 +8,7 @@ VNC More
 
 2. configure
 
-        vim /etc/sysconfig/vncservers
+        sudo vim /etc/sysconfig/vncservers
         VNCSERVERS="1:root "
         VNCSERVERARGS[1]="-geometry 800x600 -nolisten tcp -localhost"
 
@@ -21,10 +21,10 @@ VNC More
 
 4. Start VNC server
 
-        /etc/init.d/vncserver start (stop reload restart etc)
-        service vncserver start (stop restart etc)
-        chkconfig  vncserver on
-        chkconfig --list vncserver
+        sudo /etc/init.d/vncserver start (stop reload restart etc)
+        sudo service vncserver start (stop restart etc)
+        sudo chkconfig  vncserver on
+        sudo chkconfig --list vncserver
 
 5. Connect VNC remote
 
@@ -35,5 +35,5 @@ VNC More
         IP:5901 => for root
         IP:5902 => for user
 
-        vim /root/.vnc/xstartup
+        sudo vim /root/.vnc/xstartup
         twm& => "startkde &" or"gnome-session &"

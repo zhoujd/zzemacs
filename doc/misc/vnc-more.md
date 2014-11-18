@@ -3,10 +3,12 @@ VNC More
 
 1. Install VNC server and client
 
+        rpm -qa | grep tigervnc   
         sudo yum install -y tigervnc-server
         sudo yum install -y tigervnc         ==> Applications->Internet->TigerVNC Viewer
 
         rpm -qc tigervnc-server  =>/etc/sysconfig/vncservers
+        chkconfig --add vncserver
         chkconfig --level 35 vncserver on
 
         su - media
@@ -21,7 +23,7 @@ VNC More
 
         vncviewer -via media@172.31.0.128 localhost:2
         vncpasswd virtual
-        vncviewer -passwd ~/virtual -via media@172.31.0.128 localhost:2
+        vncviewer -passwd  /path/to/server-passwd-file -via media@172.31.0.128 localhost:2
 
 2. configure
 

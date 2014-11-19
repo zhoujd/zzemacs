@@ -37,7 +37,7 @@ Install_src_hg()
     mv Mercurial-* Mercurail-latest
     cd Mercurail-latest
     make all
-    sudo make install #default to /usr/local
+    sudo make PREFIX=/usr install
     
     popd
 }

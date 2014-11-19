@@ -19,7 +19,7 @@ echo "hg setup start ..."
 ##http://hgbook.red-bean.com/read/customizing-the-output-of-mercurial.html
 
 ###Install from source on linux
-##$ sudo yum install python-docutils
+##$ sudo yum install python-docutils python-devel
 ##$ wget http://selenic.com/hg/archive/tip.tar.gz
 ##$ tar xf tip.tar.gz
 ##$ mv Mercurial-* Mercurail-latest

@@ -1,22 +1,62 @@
 #!/bin/bash
 
-##Install from source on linux
-sudo yum install -y  python-docutils python-devel
+HG_INS_HOME=$(cd $(dirname $0) && pwd)
 
-##Init install temp directory
-INS_TEMP_DIR=$HOME/Downloads/hg-src-install
-rm -rf $INS_TEMP_DIR
-mkdir -p $INS_TEMP_DIR
+## Source sample.sh
+. $HG_INS_HOME/sample.sh
 
-pushd $INS_TEMP_DIR
+## Install package for git
+Install_package()
+{
+    # dectect OS version
+    if [ "$OS_DISTRO" = "SuSE" ]; then
+        sudo zypper install -y python-docutils
+        sudo zypper install -y python-devel
+    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
+        sudo apt-get install -y python-docutils
+        sudo apt-get install -y python-dev
+    elif [ "$OS_DISTRO" = "CentOS" ]; then
+        sudo yum install -y  python-docutils
+        sudo yum install -y  python-devel
+    else
+        echo "You are about to install on a non supported linux distribution."
+    fi        
+}
 
-wget http://selenic.com/hg/archive/tip.tar.gz
-tar xf tip.tar.gz
-mv Mercurial-* Mercurail-latest
-cd Mercurail-latest
-make all
-sudo make install #default to /usr/local
+Install_src_hg()
+{
+    ##Init install temp directory
+    INS_TEMP_DIR=$HOME/Downloads/hg-src-install
+    rm -rf $INS_TEMP_DIR
+    mkdir -p $INS_TEMP_DIR
+    
+    pushd $INS_TEMP_DIR
+    
+    wget http://selenic.com/hg/archive/tip.tar.gz
+    tar xf tip.tar.gz
+    mv Mercurial-* Mercurail-latest
+    cd Mercurail-latest
+    make all
+    sudo make install #default to /usr/local
+    
+    popd
+}
 
-popd
+main()
+{
+    ## setup packages
+    echo -n "Do you need install packages? (y/N): "
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            try_command Install_package
+            ;;
+    esac
 
-echo "Install hg from source finished"
+    ## setup hg from source
+    try_command Install_src_hg
+   
+    echo "Install hg from source finished"
+}
+
+main

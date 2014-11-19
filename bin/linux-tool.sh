@@ -20,6 +20,7 @@ Install_package_ubuntu()
     sudo apt-get install -y texinfo
 
     sudo apt-get install -y openssh-server
+    sudo apt-get install -y tree
 
     ##easy split windows for multi-term
     #sudo apt-get install -y terminator

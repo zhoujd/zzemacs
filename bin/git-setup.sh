@@ -44,6 +44,7 @@ git config --global alias.st    "status"
 git config --global alias.ci    "commit"
 git config --global alias.br    "branch"
 git config --global alias.co    "checkout"
+git config --global alias.fp    "format-patch"
 git config --global alias.df    "difftool"
 git config --global alias.dc    "difftool --cached"
 git config --global alias.de    "ediff"
@@ -58,9 +59,7 @@ git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(
 git config --global alias.flog  "show --pretty=format: --name-only"
 
 ## set http proxy
-if [ ! $http_proxy = "" ]; then
-    git config --global http.proxy $http_proxy
-fi
+git config --global http.proxy $http_proxy
 
 ### fatal: index-pack failed for win7
 #git config --global pack.windowMemory  10m

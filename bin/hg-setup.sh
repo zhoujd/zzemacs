@@ -93,6 +93,10 @@ df.diffargs = \$parent \$child
 [bookmarks]
 track.current = True
 
+[http_proxy]
+host = 
+no = localmachine,127.0.0.1
+
 [web] 
 push_ssl = False
 allow_push = *

@@ -24,6 +24,7 @@ alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias lcsh="csh -l"
+alias putty='putty -X'
 
 # shell directory bookmark setting
 SHELLBM_FILE=~/.sdirs

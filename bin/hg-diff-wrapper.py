@@ -39,9 +39,10 @@ def diff_emacs(a, b):
     if sysstr == "Windows":
         a = a.replace("\\", "/")
         b = b.replace("\\", "/")
-        zzemacs_path = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zzemacs"
-    else:
-        zzemacs_path = os.environ.get('HOME') + "/zzemacs"
+
+    strfilepath = os.path.realpath(__file__).replace("\\", "/")
+    print strfilepath
+    zzemacs_path = "%s/../" % (os.path.dirname(strfilepath),)
 
     elisp_string="(progn \
                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \

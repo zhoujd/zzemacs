@@ -33,17 +33,16 @@ def merge_extern(a, b, c, d):
     os.system(" ".join(merge_select))
 
 def merge_emacs(a, b, c, d):
-    zzemacs_path=""
+    strfilepath = os.path.realpath(__file__)
     sysstr = platform.system()
     if sysstr == "Windows":
         a = a.replace("\\", "/")
         b = b.replace("\\", "/")
         c = c.replace("\\", "/")
         d = d.replace("\\", "/")
-        zzemacs_path = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zzemacs"
-    else:
-        zzemacs_path = os.environ.get('HOME') + "/zzemacs"
+        strfilepath = strfilepath.replace("\\", "/")
 
+    zzemacs_path = "%s/../" % (os.path.dirname(strfilepath),)
     elisp_string="(progn \
                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                     (ediff-merge-files \\\"%s\\\" \\\"%s\\\" \\\"%s\\\" \\\"%s\\\") \

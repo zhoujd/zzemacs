@@ -8,6 +8,8 @@
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
+## http://ftp.gnome.org/pub/GNOME/sources/meld/3.12/
+## https://git.gnome.org/browse/meld/
 
 ## use emacs as diff tool
 EMACS_FLAG="y"

@@ -17,14 +17,14 @@ EMACS_FLAG="y"
 diff_extern()
 {
     if [ "$OS" = "Windows_NT" ] ; then
-        DIFF_TOOL_0="$ZZNIX_HOME/home/zhoujd/zztools/bcompare/bcompare $*"
-        DIFF_TOOL_1="$ZZNIX_HOME/home/zhoujd/zztools/perforce/p4merge $*"
+        DIFF_TOOL_0="bcompare $*"
+        DIFF_TOOL_1="p4merge $*"
 
         DIFF_SELECT=$DIFF_TOOL_0
     else
-        DIFF_TOOL_0="$HOME/zztools/bcompare/bin/bcompare $*"
-        DIFF_TOOL_1="$HOME/zztools/meld/bin/meld $*"
-        DIFF_TOOL_2="$HOME/zztools/p4v/bin/p4merge $*"
+        DIFF_TOOL_0="bcompare $*"
+        DIFF_TOOL_1="meld $*"
+        DIFF_TOOL_2="p4merge $*"
 
         DIFF_SELECT=$DIFF_TOOL_1
     fi

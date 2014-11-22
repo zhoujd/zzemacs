@@ -17,14 +17,14 @@ EMACS_FLAG="y"
 merge_extern()
 {
     if [ "$OS" = "Windows_NT" ] ; then
-        MERGE_TOOL_0="$ZZNIX_HOME/home/zhoujd/zztools/bcompare/bcompare $*"
-        MERGE_TOOL_1="$ZZNIX_HOME/home/zhoujd/zztools/perforce/p4merge $*"
+        MERGE_TOOL_0="bcompare $*"
+        MERGE_TOOL_1="p4merge $*"
 
         MERGE_SELECT=$MERGE_TOOL_0
     else
-        MERGE_TOOL_0="$HOME/zztools/bcompare/bin/bcompare $*"
-        MERGE_TOOL_1="$HOME/zztools/meld/bin/meld $2 $4 $3"
-        MERGE_TOOL_2="$HOME/zztools/p4v/bin/p4merge $*"
+        MERGE_TOOL_0="bcompare $*"
+        MERGE_TOOL_1="meld $2 $4 $3"
+        MERGE_TOOL_2="p4merge $*"
 
         MERGE_SELECT=$MERGE_TOOL_2
     fi

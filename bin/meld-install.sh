@@ -7,4 +7,4 @@ git clone https://git.gnome.org/browse/meld
 cd meld
 
 ## Install to /usr bin 
-sudo ln -s `pwd`/bin/meld /usr/bin
+sudo ln -sf `pwd`/bin/meld /usr/bin

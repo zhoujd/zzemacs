@@ -34,16 +34,14 @@ def diff_extern(a, b):
     os.system(" ".join(diff_select))
 
 def diff_emacs(a, b):
-    zzemacs_path=""
+    strfilepath = os.path.realpath(__file__)
     sysstr = platform.system()
     if sysstr == "Windows":
         a = a.replace("\\", "/")
         b = b.replace("\\", "/")
+        strfilepath = strfilepath.replace("\\", "/")
 
-    strfilepath = os.path.realpath(__file__).replace("\\", "/")
-    print strfilepath
     zzemacs_path = "%s/../" % (os.path.dirname(strfilepath),)
-
     elisp_string="(progn \
                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \

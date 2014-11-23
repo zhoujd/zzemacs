@@ -26,22 +26,6 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
 }
 
-Install_emacs_run()
-{
-LANCHER=~/runemacs
-
-cat > ${LANCHER} <<EOF
-#!/bin/sh
-
-emacs --no-site-file -q \\
-      --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \\
-      --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \\
-      --eval "(message \"start emacs finished.\")"     \\
-      \$* >/dev/null 2>&1 &
-EOF
-chmod +x ${LANCHER}
-}
-
 Install_other()
 {
     ##create ~/.emacs.d folder
@@ -79,9 +63,6 @@ main()
 
     echo "install fonts"
     try_command Install_fonts_conf
-
-    echo "install runemacs to $HOME"
-    try_command Install_emacs_run
 
     echo "install others"
     try_command Install_other

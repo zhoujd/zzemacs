@@ -26,6 +26,11 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
 }
 
+Install_emacs_run()
+{
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin/runemacs
+}
+
 Install_other()
 {
     ##create ~/.emacs.d folder
@@ -63,6 +68,9 @@ main()
 
     echo "install fonts"
     try_command Install_fonts_conf
+
+    echo "install runemacs to $HOME"
+    try_command Install_emacs_run
 
     echo "install others"
     try_command Install_other

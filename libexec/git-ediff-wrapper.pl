@@ -17,6 +17,8 @@ sub diff_emacs {
     # Reset path on linux
     if ( "$^O" eq "linux" ) {
         $zzemacs_path = "$Bin/..";
+    } elsif ( "$^O" eq "msys" ) {
+        $zzemacs_path = "$ENV{ZZNIX_HOME}/home/zhoujd/zzemacs";
     }
     
     my $elisp_string = sprintf("(progn \

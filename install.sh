@@ -28,7 +28,7 @@ Install_fonts_conf()
 
 Install_emacs_run()
 {
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin/runemacs
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin
 }
 
 Install_other()

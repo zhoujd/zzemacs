@@ -51,7 +51,7 @@ Install_thirdparty()
     cd ${ZZEMACS_ROOT}
 
     ##install connect
-    cd ${ZZEMACS_ROOT}/third-party/git-proxy
+    cd ${ZZEMACS_ROOT}/third-party/proxy
     sh ./install.sh
     cd ${ZZEMACS_ROOT}
 }

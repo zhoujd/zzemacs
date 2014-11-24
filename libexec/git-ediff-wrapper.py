@@ -8,15 +8,14 @@ import sys
 import platform
 
 def diff_emacs(a, b):
-    zzemacs_path=""
+    strfilepath = os.path.realpath(__file__)
     sysstr = platform.system()
     if sysstr == "Windows":
         a = a.replace("\\", "/")
         b = b.replace("\\", "/")
-        zzemacs_path = os.environ.get('ZZNIX_HOME') + "/home/zhoujd/zzemacs"
-    else:
-        zzemacs_path = os.environ.get('HOME') + "/zzemacs"
+        strfilepath = strfilepath.replace("\\", "/")
 
+    zzemacs_path = "%s/../" % (os.path.dirname(strfilepath),)
     elisp_string="(progn \
                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \

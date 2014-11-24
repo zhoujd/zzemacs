@@ -21,6 +21,12 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
 }
 
+Install_other()
+{
+    ##create ~/.emacs.d folder
+    mkdir -p ~/.emacs.d
+}
+
 Install_dot_emacs
 Install_fonts_conf
-
+Install_other

@@ -16,6 +16,7 @@ def merge_extern(a, b, c, d):
         merge_tool = [
             ["p4merge", a, b, c, d],
             ["bcompare", a, b, c, d],
+            ["meld", a, b, d],
         ]
 
         merge_select = merge_tool[1]

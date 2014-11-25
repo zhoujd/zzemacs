@@ -7,13 +7,9 @@
    (progn
     (list
      (format "%s/bin" (getenv "ZZNIX_HOME"))
-     "C:/Git/bin"
-     "C:/Git/libexec/git-core"
      (format "%s/bin" zzemacs-path)
      (format "%s/libexec" zzemacs-path)
      (format "%s/bin" (getenv "EMACS_DIR"))
-     (format "%s/zztools/bcompare" (getenv "HOME"))
-     (format "%s/zztools/perforce" (getenv "HOME"))
      "C:/strawberry/perl/bin"
      "C:/strawberry/c/bin"
      "C:/Vim/vim73"
@@ -39,9 +35,8 @@
      "/usr/local/Gambit-C/bin"
      (format "%s/bin" zzemacs-path)
      (format "%s/libexec" zzemacs-path)
-     (format "%s/zztools/bcompare/bin" (getenv "HOME"))
-     (format "%s/zztools/meld/bin" (getenv "HOME"))
-     (format "%s/zztools/p4v/bin" (getenv "HOME"))
+     (format "%s/zzmeld/meld/bin" (getenv "HOME"))
+     (format "%s/zzp4merge/p4v/bin" (getenv "HOME"))
      )))
   "add to path and exec-path")
 

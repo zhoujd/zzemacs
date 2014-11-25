@@ -18,9 +18,10 @@ diff_extern()
 {
     if [ "$OS" = "Windows_NT" ] ; then
         DIFF_TOOL_0="bcompare $*"
-        DIFF_TOOL_1="p4merge $*"
+        DIFF_TOOL_1="meld $*"
+        DIFF_TOOL_2="p4merge $*"
 
-        DIFF_SELECT=$DIFF_TOOL_0
+        DIFF_SELECT=$DIFF_TOOL_1
     else
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"

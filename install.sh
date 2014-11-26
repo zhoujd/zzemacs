@@ -26,18 +26,20 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
 }
 
+##setup runemacs.sh
 Install_emacs_run()
 {
     sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin
 }
 
+##setup other
 Install_other()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
 }
 
-##Install thirdparty
+##install thirdparty
 Install_thirdparty()
 {
     ##install pymacs

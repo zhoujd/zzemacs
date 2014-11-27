@@ -1,10 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$OS" = "Windows_NT" ] ; then
     SCRIPT_HOME=$(cd $(dirname $0) && pwd -W)
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd -W)
 else
-    SCRIPT_HOME=$(cd $(dirname $0) && pwd)
+    # Get script path
+    script_path() 
+    {
+        SOURCE=${BASH_SOURCE[0]}
+        DIR=$( dirname "$SOURCE" )
+        while [ -h "$SOURCE" ]
+        do
+            SOURCE=$(readlink "$SOURCE")
+            [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+            DIR=$( cd -P "$( dirname "$SOURCE"  )" && pwd )
+        done
+        DIR=$( cd -P "$( dirname "$SOURCE" )" && pwd )
+        echo $DIR
+    }
+
+    SCRIPT_HOME=$(script_path)
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
 fi
 

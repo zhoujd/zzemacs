@@ -95,7 +95,7 @@ track.current = True
 
 [http_proxy]
 host = 
-no = localmachine,127.0.0.1
+no = 10.0.0.0/8,192.168.0.0/16,localhost,127.0.0.0/8,134.134.0.0/16
 
 [web] 
 push_ssl = False

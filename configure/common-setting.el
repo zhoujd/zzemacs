@@ -47,8 +47,8 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(setq en-font-list '("Consolas 11" "Inconsolata 12" "Monaco 10" "DejaVu Sans Mono 12"))
-(setq cn-font-list '("Microsoft Yahei 13" "Microsoft YaHei Mono 14" "文泉驿等宽微米黑 14" "新宋体 14")) 
+(setq en-font-list '("Consolas 11" "Droid Sans Mono 11"))
+(setq cn-font-list '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")) 
 
 (defun my-cn-font-name (name)
   (string-match ".*[ ]" name)
@@ -76,7 +76,7 @@
 
 (defun local-x-font ()
   (interactive)
-  (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list)))
+  (my-frame-font (nth 1 en-font-list) (nth 1 cn-font-list)))
 
 (if window-system
     (local-x-font)

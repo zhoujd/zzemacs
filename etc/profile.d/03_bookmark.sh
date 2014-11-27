@@ -1,3 +1,5 @@
+## self shell bookmark setting
+
 # shell directory bookmark setting
 SHELLBM_FILE=~/.sdirs
 

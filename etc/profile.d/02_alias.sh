@@ -1,3 +1,5 @@
+## self alias setting
+
 # alias setting
 alias ls='ls --color=auto'         # ls output with color
 alias la='ls -Al'                  # show hide files

@@ -4,7 +4,7 @@ if [ "$OS" = "Windows_NT" ] ; then
     SCRIPT_HOME=$(cd $(dirname $0) && pwd -W)
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd -W)
 else
-    # Get script path
+    # get script path
     script_path() 
     {
         SOURCE=${BASH_SOURCE[0]}

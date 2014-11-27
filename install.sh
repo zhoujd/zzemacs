@@ -20,6 +20,7 @@ EOF
 }
 
 ##setup font setting
+#https://github.com/android/platform_frameworks_base/tree/master/data/fonts
 Install_fonts_conf()
 {
     mkdir -p ~/.fonts

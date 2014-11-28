@@ -529,12 +529,12 @@ the mru bookmark stack."
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
 
-;;Projectile
-(zz-load-path "site-lisp/projectile")
-(zz-load-path "site-lisp/dash")
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-enable-caching t)
+;;Projectile setting
+;(zz-load-path "site-lisp/projectile")
+;(zz-load-path "site-lisp/dash")
+;(require 'projectile)
+;(projectile-global-mode)
+;(setq projectile-enable-caching t)
 
 
 (provide 'prog-setting)

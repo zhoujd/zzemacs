@@ -47,8 +47,14 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(setq en-font-list '("Consolas 11" "Droid Sans Mono 12"))
-(setq cn-font-list '("Microsoft YaHei Mono 14" "Droid Sans Fallback 12"))
+(setq en-font-list (if-ms-windows
+                    '("Consolas 11" "Droid Sans Mono 11")
+                    '("Consolas 11" "Droid Sans Mono 12")
+                    ))
+(setq cn-font-list (if-ms-windows
+                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 12")
+                    ))
 
 (defun my-cn-font-name (name)
   (string-match ".*[ ]" name)
@@ -82,8 +88,14 @@
     (local-x-font)
     (my-console-font (nth 1 cn-font-list)))
 
-(setq sshX-en-font-list '("Consolas 15" "Droid Sans Mono 14"))
-(setq sshX-cn-font-list '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14"))
+(setq sshX-en-font-list (if-ms-windows
+                         '("Consolas 15" "Droid Sans Mono 14")
+                         '("Consolas 15" "Droid Sans Mono 14")
+                         ))
+(setq sshX-cn-font-list (if-ms-windows
+                         '("Microsoft YaHei Mono 15" "Droid Sans Fallback 15")
+                         '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
+                         ))
 (defun ssh-x-font ()
   (interactive)
   (my-frame-font (nth 1 sshX-en-font-list) (nth 1 sshX-cn-font-list)))

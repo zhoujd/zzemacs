@@ -4,14 +4,15 @@
 ;; Description: Change logs for Bookmark+ libraries.
 ;; Author: Drew Adams
 ;; Maintainer: Drew Adams (concat "drew.adams" "@" "oracle" ".com")
-;; Copyright (C) 2000-2010, Drew Adams, all rights reserved.
+;; Copyright (C) 2000-2014, Drew Adams, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Last-Updated: Sun Aug 22 10:13:56 2010 (-0700)
+;; Last-Updated: Sat Nov 15 12:46:37 2014 (-0800)
 ;;           By: dradams
-;;     Update #: 13166
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/bookmark+-chg.el
+;;     Update #: 15753
+;; URL: http://www.emacswiki.org/bookmark+-chg.el
+;; Doc URL: http://www.emacswiki.org/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+
-;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x
+;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x, 24.x
 ;;
 ;; Features that might be required by this library:
 ;;
@@ -32,6 +33,8 @@
 ;;    `bookmark+-lit'    - (optional) code for highlighting bookmarks
 ;;    `bookmark+-bmu.el' - code for the `*Bookmark List*' (bmenu)
 ;;    `bookmark+-1.el'   - other (non-bmenu) required code
+;;    `bookmark+-key.el' - key and menu bindings
+;;
 ;;    `bookmark+-doc'    - documentation (comment-only file)
 ;;    `bookmark+-chg'    - change log (this file)
 ;;
@@ -46,13 +49,36 @@
 ;;
 ;;    2. From the Emacs-Wiki Web site:
 ;;       http://www.emacswiki.org/cgi-bin/wiki/BookmarkPlus.
-;;    
+;;
 ;;    3. From the Bookmark+ group customization buffer:
 ;;       `M-x customize-group bookmark-plus', then click link
 ;;       `Commentary'.
 ;;
 ;;    (The commentary links in #1 and #3 work only if you put library
 ;;    `bookmark+-doc.el' in your `load-path'.)
+;;
+;;
+;;    ****** NOTE ******
+;;
+;;      WHENEVER you update Bookmark+ (i.e., download new versions of
+;;      Bookmark+ source files), I recommend that you do the
+;;      following:
+;;
+;;      1. Delete ALL existing BYTE-COMPILED Bookmark+ files
+;;         (bookmark+*.elc).
+;;      2. Load Bookmark+ (`load-library' or `require').
+;;      3. Byte-compile the source files.
+;;
+;;      In particular, ALWAYS LOAD `bookmark+-mac.el' (not
+;;      `bookmark+-mac.elc') BEFORE YOU BYTE-COMPILE new versions of
+;;      the files, in case there have been any changes to Lisp macros
+;;      (in `bookmark+-mac.el').
+;;
+;;      (This is standard procedure for Lisp: code that depends on
+;;      macros needs to be byte-compiled anew after loading the
+;;      updated macros.)
+;;
+;;    ******************
 ;;
 ;;
 ;;    ****** NOTE ******
@@ -82,7 +108,25 @@
 ;;         `bmkp-bmenu-commands-file' (`~/.emacs-bmk-bmenu-commands.el'),
 ;;         if you have one.
 ;;
+;;      You can do this editing in a virgin Emacs session (`emacs
+;;      -Q'), that is, without loading Bookmark+.
+;;
+;;      Alternatively, you can do this editing in an Emacs session
+;;      where Bookmark+ has been loaded, but in that case you must
+;;      TURN OFF AUTOMATIC SAVING of both your default bookmark file
+;;      and your `*Bookmark List*' state file.  Otherwise, when you
+;;      quit Emacs your manually edits will be overwritten.
+;;
+;;      To turn off this automatic saving, you can use `M-~' and `M-l'
+;;      in buffer `*Bookmark List*' (commands
+;;      `bmkp-toggle-saving-bookmark-file' and
+;;      `bmkp-toggle-saving-menu-list-state' - they are also in the
+;;      `Bookmark+' menu).
+;;
+;;
 ;;      Again, sorry for this inconvenience.
+;;
+;;    ******************
  
 ;;(@> "Index")
 ;;
@@ -95,12 +139,880 @@
 ;;
 ;;  (@> "CHANGE LOG FOR `bookmark+-1.el'")
 ;;  (@> "CHANGE LOG FOR `bookmark+-bmu.el'")
+;;  (@> "CHANGE LOG FOR `bookmark+-key.el'")
 ;;  (@> "CHANGE LOG FOR `bookmark+-lit.el'")
 ;;  (@> "CHANGE LOG FOR `bookmark+-mac.el'")
 ;;  (@> "CHANGE LOG FOR `bookmark+.el'")
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-1.el'")
 ;;
+;; 2014/11/15 dadams
+;;     Added: bmkp-region-jump-narrow-indirect-other-window, bmkp-handle-region+narrow-indirect.
+;;     bmkp-jump-man: Updated for Emacs 24+, where Man-getpage-in-background returns process buffer.
+;; 2014/11/14 dadams
+;;     bmkp-jump-1: Made arg FLIP-USE-REGION-P optional.  Corrected doc string for it: it flips.
+;;     bmkp-snippet-to-kill-ring, bmkp-autonamed-*jump*, bmkp-temporary-jump*, bmkp-w32-browser-jump,
+;;       bmkp-variable-list-jump, bmkp-autofile-jump*: Removed FLIP arg (optional).
+;;     bmkp-region-jump*: Bind bmkp-use-region to t, and don't pass FLIP arg to bmkp-jump-1.
+;; 2014/11/10 dadams
+;;     Added: bookmark-show-annotation-mode, (redefinition of) bookmark-default-annotation-text.
+;;     Renamed: bmkp-edit-annotation-mode-inherit-from to bmkp-annotation-modes-inherit-from.
+;;     bookmark-show-annotation: Call bookmark-show-annotation-mode, not view-mode-enter.
+;;     bookmark-edit-annotation-mode:
+;;       Use literal C-c C-M-c, since bookmark-send-edited-annotation is also bound to C-c C-c.
+;; 2014/11/09/dadams
+;;     Added: bmkp-get-external-annotation, bmkp-visit-external-annotation.
+;;     bookmark-show-annotation: If the annotation is external then jump to its destination.
+;; 2014/11/08 dadams
+;;     bmkp-bookmark-description: Corrected formatting for search-hits-p.
+;; 2014/10/28 dadams
+;;     Added: option bmkp-edit-annotation-mode-inherit-from.
+;;     bookmark-edit-annotation-mode: Redefined to use define-derived-mode (per Emacs 25).
+;;                                    Use new option bmkp-edit-annotation-mode-inherit-from.
+;;     bookmark-send-edited-annotation: Allow derived mode (per Emacs 25).
+;;     bookmark-edit-annotation:
+;;       Call bookmark-insert-annotation.  Set local var bookmark-annotation-name to arg (per E25).
+;; 2014/10/27 dadams
+;;     Added: Redefinition of bookmark-insert-annotation.
+;;     bookmark-edit-annotation-mode: Use bookmark-insert-annotation.
+;; 2014/08/22 dadams
+;;     bmkp-desktop-file-p: Redefined to not visit the file: use insert-file-contents-literally.
+;;                          Added (not (file-directory-p filename)) condition.
+;; 2014/08/21 dadams
+;;     Added: bmkp-annotated-bookmark-p.
+;;     bmkp-autofile-alist-only: Use bmkp-annotated-bookmark-p.
+;;     bmkp-completing-read-1: Bind icicle-bookmark-completing-p.
+;;     bmkp-file-this-dir-bookmark-p: Return nil if BOOKMARK is not a bookmark.
+;;                                    Use bmkp-same-file-p, not equal.
+;; 2014/08/19 dadams
+;;     Added: bmkp-dired-wildcards-alist-only, bmkp-navlist-bookmark-p.
+;; 2014/08/18 dadams
+;;     bmkp-this-file-p: Return nil (instead of raising error) if THIS-FILE is nil.
+;; 2014/07/11 dadams
+;;     bookmark-load: Do not customize-save-variable if no change to bmkp-last-as-first-bookmark-file.
+;;     bmkp-new-bookmark-default-names: Use setq, not push, for Emacs 20.
+;; 2014/07/06 dadams
+;;     Renamed: bmkp-show-end-of-region, bmkp-w3m-allow-multi-tabs to *-flag.
+;; 2014/07/05 dadams
+;;     bookmark-write-file: List in file could be (), in which case cannot search backward for \n).
+;;     bmkp-read-bookmark-for-type: Added optional PROMPT arg.
+;;     bmkp-jump-snippet: Provide PROMPT to bmkp-read-bookmark-for-type.  Better msg.
+;; 2014/07/03 dadams
+;;     Added: bmkp-read-bookmark-file-default.
+;;     Added redefinition of bookmark-import-new-list, bookmark-maybe-rename.
+;;     bookmark-load: Do not set blist to value of bookmark-import-new-list.
+;;     bookmark-alist-from-buffer: Added optional arg do-not-propertize-p.  (Not used anywhere yet.)
+;;     bookmark-save: Use bmkp-read-bookmark-file-default.
+;;     bookmark-write-file:
+;;       Added optional arg ADD.  Do not kill FILE buffer if it existed prior to invoking function.
+;;       Promoted inner let-bindings print-length etc.
+;;       Delete contents only if file does not exist (just in case). Else *-maybe-upgrade-file-format.
+;;       Do not delete region if ADD.  Position point depending on ADD.
+;;     bookmark-write-file, bookmark-default-handler, bmkp-save-menu-list-state, bmkp-goto-position,
+;;       bmkp-compilation-target-set:
+;;         Let-bind enable-local-variables around find-file-noselect.
+;;     bmkp-read-bookmark-file-name: Just pass DEFAULT-FILENAME to read-file-name.
+;;     bmkp-empty-file: Pass nil ADD arg to bookmark-write-file.
+;; 2014/06/29 dadams
+;;     Added: bmkp-before-jump-hook, bmkp-desktop-save, bmkp-desktop-save-as-last,
+;;            bmkp-desktop-current-file, bmkp-desktop-jump-save-before-flag.
+;;     bmkp-jump-1: Run bmkp-before-jump-hook.
+;;     bmkp-set-desktop-bookmark: Use bmkp-desktop-save.
+;;     bmkp-desktop-jump: If bmkp-desktop-jump-save-before-flag then bmkp-desktop-save-as-last.
+;;     bmkp-desktop-kill: Updated for Emacs 24.4+.
+;; 2014/06/21 dadams
+;;     Added: bmkp-icicle-search-hits-alist-only, bmkp-icicle-search-hits-bookmark-p,
+;;       bmkp-icicle-search-hits-retrieve-more, bmkp-jump-icicle-search-hits,
+;;       bmkp-retrieve-icicle-search-hits, bmkp-retrieve-more-icicle-search-hits,
+;;       bmkp-retrieve-icicle-search-hits-1, bmkp-set-icicle-search-hits-bookmark,
+;;       bmkp-make-icicle-search-hits-record, bmkp-unpropertized-string.
+;;     bmkp-bookmark-description: Handle Icicles search hits.
+;; 2014/05/30 dadams
+;;     bmkp-set-restrictions-bookmark: Updated for new restrictions format (wide-n.el).
+;; 2014/05/27 dadams
+;;     bmkp-describe-bookmark(-internals), bmkp-list-defuns-in-commands-file:
+;;       Use bmkp-with-help-window, not with-output-to-temp-buffer (Emacs 24.4+ silliness).
+;; 2014/04/05 dadams
+;;     Removed bmkp-create-dired-bookmarks-recursive: 
+;;      Moved to dired+.el and renamed diredp-do-bookmark-dirs-recursive.
+;; 2014/04/02 dadams
+;;     bmkp-paste-replace-tags: Added Note to doc string about pasting an empty list of tags.
+;; 2014/03/23 dadams
+;;     bmkp-file-target-set: Fix interactive spec (parens).
+;;     bmkp-file-target-set, bmkp-autofile-set, bmkp-autofile-(add|remove)-tags:
+;;       Soft-require ffap.el before using ffap-guesser.
+;; 2014/03/10 dadams
+;;     bookmark-write-file:
+;;       Remove prop face & Icicles props, anyway (but not bothering for sequence entry of seq bmks).
+;;     bookmark-write-file, bmkp-edit-tags, bmkp-save-menu-list-state, bmkp-readable-p:
+;;       Bind print-circle to bmkp-propertize-bookmark-names-flag, not t, to avoid string reuse.
+;; 2014/03/07 dadams
+;;     bookmark-exit-hook-internal: Do not raise error, since this is on kill-emacs-hook.
+;;     Bug reported: http://superuser.com/q/726057/250462.
+;; 2014/01/02 dadams
+;;     Reverted yesterday's change.  Just use cond instead of case.
+;; 2014/01/01 dadams
+;;     Added bmkp-file-cache-ad-hack, as workaround for macro case not getting byte-compiled.
+;;     file-cache-add-file: Use bmkp-file-cache-ad-hack.  Thx to Michael Heerdegen.
+;; 2013/11/21 dadams
+;;    bmkp-url-target-set: Added argument NO-OVERWRITE-P.
+;;    bmkp-(url|file)-target-set: Numeric prefix arg means do not overwrite.  N<0 means use full name.
+;; 2013/11/05 dadams
+;;     Added: bmkp-create-dired-bookmarks-recursive.
+;;     bookmark-set: Added optional arg NO-UPDATE-P - pass it to bookmark-store.
+;; 2013/10/29 dadams
+;;     Added: bmkp-pop-to-readable-marker, bmkp-readable-marker, bmkp-bookmark-set-confirm-overwrite,
+;;            bmkp-bookmark-set-confirms-overwrite-p.
+;;     bookmark-set: Ask for overwrite confirmation if plain prefix arg and bookmark exists.
+;;     bmkp-menu-bar-set-bookmark: Use bmkp-bookmark-set-confirm-overwrite, not bookmark-set.
+;; 2013/10/07 dadams
+;;     bmkp-edit-bookmark-records-send: Move to line of current bmk, if only one.
+;; 2013/08/09 dadams
+;;     Added: bmkp-read-bookmark-file-hook, bmkp-desktop-file-p.
+;;     Renamed: bmkp-printable-p to bmkp-readable-p.
+;;     bmkp-readable-p: Treat string with no text props separately.
+;;     bookmark-alist: Updated doc string.
+;;     bookmark-send-edited-annotation: looking-at -> bmkp-looking-at-p (new).
+;;     bookmark-load: Update blist with bookmark-import-new-list.
+;;                    Run bmkp-read-bookmark-file-hook after reading the bookmark file.
+;;     bmkp-set-desktop-bookmark: Added prefix arg: sets bookmark without saving desktop file.
+;; 2013/07/24 dadams
+;;     bmkp-new-bookmark-default-names, bookmark-make-record-default:
+;;       Test using (region-beginning|end), not mark function (C code and simpler).
+;; 2013/07/11 dadams
+;;     bmkp-url-target-set: Use let* with backquote lambda instead of lexical-let*.
+;; 2013/07/02 dadams
+;;     bmkp-snippet-bookmark-p: Typo: bmkp-snippet-to-kill-ring -> bmkp-jump-snippet.
+;;     bmkp-bookmark-description: Include snippet text in bookmark description (help).
+;; 2013/07/01 dadams
+;;     bookmark-make-record-default: Fixed typo for end-position (listify).
+;;     bmkp-set-snippet-bookmark: Prefix arg now prompts for bookmark name.
+;; 2013/06/30 dadams
+;;     Added: bmkp-set-snippet-bookmark, bmkp-snippet-to-kill-ring, bmkp-jump-snippet,
+;;            bmkp-snippet-alist-only, bmkp-snippet-bookmark-p, bmkp-snippet-history.
+;;     bmkp-autotemp-bookmark-predicates, bmkp-types-alist, bmkp-bookmark-type,
+;;       bmkp-bookmark-description:
+;;         Cover snippet bookmarks too.
+;;     bookmark-make-record-default:
+;;       Added optional arg NO-REGION.  If non-nil then do not include end-position.
+;;       Set NO-CONTEXT to nil for Emacs < 24.  Do not calculate FCS, RCS, FCRS, ECRS if NO-CONTEXT.
+;;     bmkp-make-(gnus|sequence|desktop|bookmark-file|variable-list)-record:
+;;       Pass NO-REGION to bookmark-make-record-default.
+;; 2013/06/29 dadams
+;;     Added: bmkp-read-regexp, bmkp-find-tag-default-as-regexp.
+;;     Use bmkp-read-regexp, not read-string, everywhere for reading a regexp.
+;;     bmkp-bookmark-description: Ensure FILE is non-nil before using it.
+;; 2013/06/10 dadams
+;;     bmkp-set-sequence-bookmark: Typo - bookmark-get-bookmarkp -> bookmark-get-bookmark.
+;; 2013/06/02 dadams
+;;     bmkp-set-sequence-bookmark: Forgot to bind FUN.  Thx to Michael Heerdegen.
+;; 2013/05/31 dadams
+;;     bmkp-save-menu-list-state: Display warning, do not raise error, if write-file fails.
+;;     bookmark-write-file: Use display-warning, if fboundp.
+;; 2013/05/28 dadams
+;;     Renamed: bmkp-edit-bookmark-name-and-file to bmkp-edit-bookmark-name-and-location.
+;;     bmkp-edit-bookmark-name-and-location: Handle location property, urls.
+;;     bmkp-jump-w3m-new-session, bmkp-jump-w3m-only-one-tab: Use location property, not filename.
+;;     Thx to Michael Heerdegen.
+;; 2013/05/15 dadams
+;;     bmkp-*-alist-only: Make sure we call bookmark-maybe-load-default-file.
+;;     Moved bmkp-string-match-p to bookmark+-bmu.el.
+;;     Use bmkp-string-match-p instead of string-match wherever appropriate.
+;; 2013/05/12 dadams
+;;     Added: bmkp-write-bookmark-file-hook.
+;;     bookmark-write-file: Run bmkp-bookmark-write-file-hook functions after writing.
+;; 2013/04/19 dadams
+;;     bookmark-exit-hook-internal: Removed test for non-empty bookmark-alist (Emacs bug #13972).
+;; 2013/04/15 dadams
+;;     bmkp-set-sequence-bookmark: Corrected case of adding one sequence to another.
+;;     bookmark-write-file: Corrected write-out of sequence bookmarks.
+;;     bookmark-alist-from-buffer: Better error message if read error.
+;; 2013/04/14 dadams
+;;     Added: bmkp-wrap-bookmark-with-last-kbd-macro, bmkp-dired-remember-*-marks.
+;;     bookmark-write-file: If not saving propertized, remove text props for bmks in sequence bmk.
+;;     bmkp-edit-bookmark-record-send:
+;;       Raise error if bmkp-edit-bookmark-record-send was somehow reset to nil.
+;;       Do not reset bmkp-edit-bookmark-orig-record if read error.
+;;     bmkp-make-function-bookmark:
+;;       Prefix arg means use last-kbd-macro instead of prompting for FUNCTION.
+;;       Use read-from-whole-string, not read, to convert name to symbol.
+;;       If FUNCTION is a function or vector, do not convert it.
+;;     bmkp-bookmark-description: For sequence-p, remove properties from each bmk name in sequence.
+;;     Define bmkp-bookmark-name-from-record (no longer a defalias) with an optional UNPROPERTIZE arg.
+;;     bmkp-make-dired-record: Use bmkp-dired-remember-*-marks, not dired-remember-marks.
+;;       FUNCTION can now be a vector (a keyboard macro).  Use read-from-whole-string, not read.
+;;     bmkp-jump-function: If function property is a vector, invoke it as a keyboard macro.
+;;     bmkp-set-sequence-bookmark:
+;;       Prefix ARG now allows for replace, in addition to append and prepend.  No replace question.
+;;       A BOOKMARK-NAMES item can now be a bookmark, a function, or keyboard macro - or its name.
+;;       A BOOKMARK-NAMES item that is itself a sequence has its bookmarks spliced in.
+;;       Use lax as value of NAMES-ONLY-P to bmkp-completing-read-bookmarks.
+;; 2013/04/12 dadams
+;;     Added: bmkp-sequence-alist-only.
+;;     bmkp-set-sequence-bookmark: Added prefix arg PREPENDP.  Use bmkp-completing-read-lax.
+;;     Use \\<bmkp-edit-bookmark-record-mode-map> in doc strings with *-record-send.
+;;     bookmark-get-bookmark: A cons must also have a string car, to tell a bmk from a list of bmks.
+;;     bmkp-make-function-bookmark: Use bmkp-completing-read-lax for BOOKMARK-NAME.
+;; 2013/04/10 dadams
+;;     Added: bmkp-set-sequence-bookmark, bmkp-make-sequence-record, bmkp-completing-read-bookmarks.
+;;     bmkp-completing-read-1:
+;;       Do not put DEFAULT in PROMPT if DEFAULT is "".  Removed useless let-binding of DEFAULT.
+;;       Removed unnecessary final massaging of STR.
+;;     bookmark-completing-read: Mention in doc string that nil DEFAULT means return "".
+;; 2013/03/29 dadams
+;;     bmkp-toggle-saving-bookmark-file: If neither is nil, set *-last-* to nil before toggling.
+;; 2013/03/17 dadams
+;;     bmkp-bmenu-list-1: Do not toggle filenames unless bookmark-alist is defined (Emacs bug #13972).
+;; 2013/01/07 dadams
+;;     bmkp-remove-all-tags, bmkp(-autofile)-(add|remove)-tags, bmkp-set-tag-value,
+;;       bmkp-paste-(add|replace)-tags, bmkp-(url|file)-target-set, bmkp-autofile-set:
+;;         Added missing NO-UPDATE-P arg for interactive spec.
+;;     bmkp-remove-all-tags: Moveed msg to the end.
+;;     bmkp-paste-replace-tags: Added sleep-for after first msg.
+;; 2012/11/13 dadams
+;;     bmkp-sorting-description: Fixed 1st case: use ORDER only if bmkp-sort-comparer is also non-nil.
+;; 2012/11/11 dadams
+;;     Added: bmkp-sorting-description (factored out from bmkp-msg-about-sort-order).
+;;     bmkp-msg-about-sort-order: Use bmkp-sorting-description.
+;;     bmkp-current-sort-order: Return nil if bmkp-sort-comparer is not in bmkp-sort-orders-alist.
+;; 2012/11/09 dadams
+;;     Added: bmkp-autofile-filecache.
+;;     Added defadvice for file-cache-add-file.
+;;     bookmark-store, bmkp-url-target-set: Added optional arg NO-UPDATE-P.
+;;     bookmark-set, bmkp-make-function-bookmark, bmkp-url-target-set, bmkp-file-target-set:
+;;       Adjusted calls to bookmark-store to accommodate NO-UPDATE-P arg.
+;;     bmkp-make-record-for-target-file:
+;;       Add CREATED property for all bookmark types.  Factor out the common stuff.
+;;       Remove any text properties from FILE arg before using it.
+;; 2012/10/09 dadams
+;;     Made all autoload cookies explicitly load bookmark+.el(c).  Should help ELPA (e.g. MELPA).
+;; 2012/10/01 dadams
+;;     bmkp-thing-at-point: Updated per icicle-thing-at-point.  Thx to Joe Bloggs.
+;; 2012/09/29 dadams
+;;     Added redefinition of bookmark-version-control.
+;;     bookmark--jump-via:
+;;       When bmkp-use-w32-browser-p, just handle, do after-jump hook & jump-fn, and show annotation.
+;;     bookmark-handle-bookmark:
+;;       When bmkp-use-w32-browser-p, just invoke w32-browser and throw to bookmark--jump-via.
+;;     bookmark-write-file: Use find-file-noselect.
+;;     bmkp-save-menu-list-state:
+;;       Bind print-circle, version-control, require-final-new-line.  Use find-file-noselect.
+;;       Copy shared bookmark lists and single strings, to avoid circular refs.
+;;       Raise error, not just msg, if file-error.
+;;     bookmark-write-file: Bind require-final-newline.
+;; 2012/09/26 dadams
+;;     bmkp-save-menu-list-state: Use write-file, not write-region, so backups are made.
+;; 2012/09/24 dadams
+;;     bookmark-write-file: Use write-file, not write-region, so backups are made.  Emacs bug #12507.
+;; 2012/09/22 dadams
+;;     bookmark-set: Updated handling of bmkp-auto-light-when-set for (non-)autonamed-in-buffer.
+;;     bmkp-autonamed-this-buffer-bookmark-p: Require that the buffer name part match also.
+;;     bmkp-autonamed-this-buffer-alist-only: Corrected to use bmkp-autonamed-this-buffer-bookmark-p.
+;; 2012/09/11 dadams
+;;     bmkp-set-autonamed-bookmark-at-line: Use prefix arg for line no.  Use line-beginning-position.
+;; 2012/09/06 dadams
+;;     Added: bmkp-string-match-p.
+;; 2012/08/28 dadams
+;;     bookmark-send-edited-annotation: Record an empty annotation as nil, not "".
+;; 2012/08/21 dadams
+;;     Call tap-put-thing-at-point-props after load thingatpt+.el.
+;; 2012/08/18 dadams
+;;     Invoke tap-define-aliases-wo-prefix if thingatpt+.el is loaded.
+;;     Added: bmkp-thing-at-point.
+;;     thing-at-point -> bmkp-thing-at-point, everywhere.
+;; 2012/08/10 dadams
+;;     Info-bookmark-make-record: Updated wrt Emacs 24.
+;;     Renamed: old-bookmark-insert to bmkp-ORIG-bookmark-insert.
+;; 2012/07/04 dadams
+;;     bmkp-create-variable-list-bookmark: Removed INTERACTIVEP arg to bookmark-set.
+;;     #'(lambda...) -> (lambda...).
+;; 2012/07/02 dadams
+;;     bmkp-default-handler-for-file:
+;;       Reverted 2012/05/04 change to use lexical-let.  Byte code in saved bookmark was problematic.
+;; 2012/06/26 dadams
+;;     Wrapped require of bookmark+-mac.el in eval-when-compile.
+;; 2012/06/21 dadams
+;;     Try to load-library bookmark+-mac.  Require it only if cannot load-library.
+;; 2012/06/12 dadams
+;;     bmkp-new-bookmark-default-names: 1. Test for DEFS at end is listp, not consp. 2. Return FNS.
+;;     bmkp-completing-read-1: Removed empty-input loop - caller must provide a default or handle "".
+;; 2012/06/1 dadams
+;;     bookmark-make-record: Replace an empty bookmark name with <EMPTY NAME>.
+;;     bookmark-set, bmkp-completing-read-1: Require user to input a non-empty bookmark name.
+;;     bmkp-bookmark-name-member: If NAME is null, just use member.  Skip any in NAMES that is null.
+;; 2012/05/16 dadams
+;;     Added: bmkp-string-less-case-fold-p.
+;;     bmkp-list-all-tags: List tags alphabetically.  Thx to Anders Johansson for the suggestion.
+;; 2012/05/05 dadams
+;;     bookmark-store, bmkp-make-function-bookmark, bmkp-unomit-all, bmkp-url-target-set:
+;;       Added optional arg NO-MSG-P.
+;;     bookmark-store, bookmark-set, bmkp-record-visit, bmkp-make-function-bookmark,
+;;       bmkp-current-bookmark-list-state, bmkp-unomit-all, bmkp-url-target-set, bmkp-file-target-set,
+;;       bmkp-replace-existing-bookmark:
+;;         Pass NO-MSG-P to *-refresh/rebuild-menu-list, *-surreptitiously-rebuild-list, *-store.
+;; 2012/05/04 dadams
+;;     bmkp-remove-tags, bmkp-all-tags(-regexp)-alist-only
+;;       bmkp(-(auto)file(-this-dir))(-(all|some)-tags)(-regexp)-alist-only,
+;;       bmkp-specific-(buffers|files)-alist-only, bmkp-sort-omit, bmkp-url-target-set,
+;;       bmkp-autofile-remove-tags. bmkp-default-handler-for-file, bmkp-set-bookmark-file-bookmark,
+;;       bmkp-set-desktop-bookmark, bmkp-set-variable-list-bookmark,
+;;       bmkp-create-variable-list-bookmark, bmkp-jump-dired,
+;;       bmkp-find-file-(all|some)-tags(-regexp)(-other-window):
+;;         Use lexical-let(*), to get closures for free vars in lambdas.
+;;     bmkp-regexp-filtered-(file-name|tags)-alist-only: Moved let inside lambda.
+;;     bmkp-make-dired-record: Use car instead of (lambda (x) (car x)).
+;; 2012/05/01 dadams
+;;     Added: bmkp-tagged-bookmark-p (alias), bmkp-tagged-cp.
+;;     bmkp-(add|remove)-tags: Return negative nb-* if changed from (un)tagged to not (un)tagged.
+;;     bmkp-paste-replace-tags: Do not call bmkp-remove-all-tags unless there are tags to remove.
+;; 2012/04/27 dadams
+;;     bmkp-edit-(tags|bookmark-record): Use bmkp-with-output-to-plain-temp-buffer.
+;; 2012/04/18 dadams
+;;     Do not try to define bmkp-global-auto-idle-bookmark-mode for Emacs 21 (no define-globalized*).
+;; 2012/04/16 dadams
+;;     bmkp-bookmark-description: List tags as strings on separate lines.
+;;                                Add newline after annotation.
+;; 2012/04/13 dadams
+;;     Added: bmkp-(flagged|modified)-bookmark-p, bmkp-(flagged|modified)-cp.
+;;     bookmark-store, bookmark-set-name, bookmark-prop-set, bmkp-edit-bookmark-record(s)-send,
+;;       bmkp-replace-existing-bookmark, bmkp-delete-bookmarks:
+;;         Use (equivalent of) eq version of add-to-list.
+;; 2012/04/10 dadams
+;;     Added: bmkp-count-multi-mods-as-one-flag.
+;;     bmkp-edit-bookmark-records-send, bmkp-set-tag-value-for-bookmarks, bmkp-remove-tags-from-all,
+;;       bmkp-rename-tag, bmkp-purge-notags-autofiles,
+;;       bmkp-delete(-all)-autonamed(-for)(-this-buffer)(-no-confirm), bmkp-delete-bookmarks,
+;;       bmkp-delete(-all)-temporary(-bookmarks|-no-confirm):
+;;         Corrected bookmark-save to bookmark-save-flag in bindings to nil.
+;;         Use bmkp-count-multi-mods-as-one-flag for the binding.
+;; 2012/04/09 dadams
+;;     bookmark-relocate, bmkp-edit-bookmark-records-send, bmkp-set-tag-value, bmkp-file-target-set,
+;;       bmkp-autofile-set:
+;;         Added optional arg NO-UPDATE-P.  Use it to inhibit display refreshing.
+;;     bmkp-edit-bookmark-records-send, bmkp-set-tag-value-for-bookmarks, bmkp-remove-tags-from-all,
+;;       bmkp-rename-tag, bmkp-purge-notags-autofiles, delete-all-autonamed-for-this-buffer
+;;       bmkp-delete(-all)-temporary-(bookmarks|no-confirm), bmkp-delete-bookmarks,
+;;       bmkp-delete-autonamed(-this-buffer)(-no-confirm):
+;;         Bind bookmark-save to nil around iteration, to inhibit saving until finished.
+;;     bmkp-(add|remove)(-all)-tags, bmkp-paste-(add|replace)-tags, bmkp-autofile-(add|remove)-tags:
+;;       Swapped order of args MSGP and NO-UPDATE-P (put MSGP last).
+;;     bmkp-(add|remove)(-all)-tags, bmkp-autofile-(add|remove)-tags:
+;;       Use NO-UPDATE-P also to inhibit display refreshing.
+;;     bmkp-remove-tags-from-all: Pass non-nil NO-UPDATE-P arg to bmkp-remove-tags.
+;; 2012/04/07 dadams
+;;     Added: bmkp-new-bookmark-default-names (option & function).
+;;     Redefine bookmark-make-record (for all Emacs versions) to use bmkp-new-bookmark-default-names.
+;;     bookmark-set: Use bmkp-new-bookmark-default-names (multiple defaults).
+;;                   Moved the region-text default value stuff to fn bmkp-new-bookmark-default-names.
+;;     bmkp-completing-read-1: Handle a cons DEFAULT.
+;;     Added soft require of thingatpt+.el.
+;; 2012/04/06 dadams
+;;     Added: bmkp-auto-idle-bookmark-min-distance, bmkp-not-near-other-auto-idle-bmks,
+;;            bmkp-auto-idle-bookmarks.
+;;     bmkp-autotemp-bookmark-predicates:
+;;       Changed default value to include bmkp-autonamed-bookmark(-this-buffer)-p.
+;;     bookmark-store: Add the bookmark to bmkp-auto-idle-bookmarks (if appropriate).
+;;     bookmark-delete: Remove the bookmark from bmkp-auto-idle-bookmarks.
+;;     bmkp-auto-idle-bookmark-mode:
+;;       Bind bmkp-setting-auto-idle-bmk-p.  Do nothing if bmkp-not-near-other-auto-idle-bmks says so.
+;; 2012/04/05 dadams
+;;     Added (Emacs 21+): bmkp-global-auto-idle-bookmark-mode, bmkp-turn-on-auto-idle-bookmark-mode.
+;;     bmkp-auto-idle-bookmark-mode (Emacs 21+):
+;;       Made it local:
+;;         Removed keyword :global, added keyword :require.
+;;         Timer function does nothing if the mode is not enabled (i.e., for the current buffer).
+;;     bmkp-auto-idle-bookmark-mode (Emacs 20):
+;;       Changed interactive spec to handle toggle symbol.
+;;       Timer function does nothing if the mode is not enabled (for the current buffer, if local).
+;;       Change message to mention buffer when the mode is local.
+;;     Removed: bmkp-auto-idle-bookmark-mode-hook.
+;;     Added autoload cookie for Emacs 20 defcustom for bmkp-auto-idle-bookmark-mode.
+;;     bmkp-auto-idle-bookmark-mode-timer: Use nil as default value.
+;;     bmkp-auto-idle-bookmark-mode: If timer is non-nil, set it to nil (and cancel it).
+;; 2012/04/04 dadams
+;;     Added: bmkp-auto-idle-bookmark-mode(-delay|-hook|-lighter|-set-function),
+;;            bmkp-temporary-bookmarking-mode-lighter, bmkp-auto-idle-bookmark-mode-timer.
+;;     bmkp-temporary-bookmarking-mode: Added lighter.
+;;     bookmark-set: Pass INTERACTIVEP arg, not constant MSGP, to bmkp-light-(bookmarks|this-buffer).
+;; 2012/04/03 dadams
+;;     Moved to bookmark+-bmu.el: bmkp-face-prop.
+;; 2012/04/02 dadams
+;;     bmkp-toggle-autonamed-bookmark-set/delete, bmkp-set-autonamed-bookmark(-at-line),
+;;       bmkp-delete-bookmarks:
+;;         Made POSITION, NUMBER, ALLP optional.
+;; 2012/03/18 dadams
+;;     Added: bmkp-modified-bookmarks, redefinition of bookmark-set-name.
+;;     bookmark-store, bookmark-set-name, bookmark-prop-set, bmkp-replace-existing-bookmark:
+;;       Add the bookmark to bmkp-modified-bookmarks.
+;;     bookmark-rename: Call bmkp-rename-for-marked-and-omitted-lists _after_ set new name w/ prop.
+;;     bookmark-save: Reset bmkp-modified-bookmarks.  Call bmkp-refresh/rebuild-menu-list.
+;;     bmkp-rename-for-marked-and-omitted-lists: Fixed typo: marked -> omitted.
+;;     bmkp-edit-bookmark-name-and-file:
+;;       Save each of bmk name and file name only if changed (bug fix).  Provide default file name.
+;;       If no automatic save, and modifications, ask user whether to save.
+;;     bmkp-edit-bookmark-records-send:
+;;       Add updated bookmarks to bmkp-modified-bookmarks.
+;;       Merge sanity-check dolist with main dolist.
+;;       Set bmkp-bmenu-marked-bookmarks to names in bmkp-modified-bookmarks, not in edited-bookmarks.
+;;     bmkp-edit-bookmark-record: Use (shallow) copy of bmkp-edit-bookmark-orig-record, not original.
+;;     bmkp-edit-bookmark-record-send: Add updated bookmark to bmkp-modified-bookmarks.
+;;     bmkp-record-visit: Let-bind bmkp-modified-bookmarks to itself, so will be restored.
+;;     bmkp-refresh-menu-list: Pass no FILTEREDP if no current filter (start anew).
+;;     bmkp-bookmark-name-member: If a name in NAMES is unpropertized, don't try to match property.
+;;     bmkp-replace-existing-bookmark: For propertize bookmark-current-bookmark with bmkp-full-record.
+;; 2012/03/13 dadams
+;;     bmkp-incremental-filter-delay:
+;;       Use bookmark-search-delay as default value, if available.  Else use 0.2 (not 0.6).
+;; 2012/03/11 dadams
+;;     bmkp-revert-bookmark-file: Added p to interactive spec (forgot).
+;; 2012/03/06 dadams
+;;     Added: bmkp-revert-bookmark-file.
+;;     bookmark-load: If bookmark-file buffer already existed, do not kill it after loading.
+;; 2012/03/04 dadams
+;;     Added: bmkp-refresh/rebuild-menu-list.
+;;     bookmark-store, bookmark-send-edited-annotation, bookmark-delete,
+;;       bmkp-edit-bookmark-record(s)-send, bmkp-edit-tags-send, bmkp-update-autonamed-bookmark,
+;;       bmkp-remove(-all)-tags, bmkp-add-tags, bmkp-file-target-set, bmkp-refresh/rebuild-menu-list:
+;;         Use bmkp-refresh/rebuild-menu-list.
+;;     bookmark-load:
+;;       Use bmkp-refresh/rebuild-menu-list only if interactive.  Do not call *-surreptitiously-*.
+;;     bmkp-edit-bookmark-record(s)-send: Added optional arg MSGP.  Raise read error if batch.
+;;     bmkp-record-visit:
+;;       Added optional arg BATCHP.  Do not bookmark-bmenu-surreptitiously-rebuild-list if BATCHP.
+;;     bmkp-edit-tags-send: Added optional arg BATCHP, and pass it to bmkp-record-visit.
+;;     bmkp-refresh-menu-list: Use bmkp-bookmark-name-from-record only when BOOKMARK is non-nil.
+;;     bmkp-paste-replace-tags, bmkp-(compilation|occur)-target-set-all:
+;;       Raise error with OK message if user cancels.
+;;     bmkp-purge-notags-autofiles, bmkp-delete-all-temporary-bookmarks: Added optional arg MSGP.
+;;     bmkp-purge-notags-autofiles, bmkp-delete-all-temporary-bookmarks,
+;;       bmkp-delete-temporary-no-confirm:
+;;         Call bmkp-refresh/rebuild-menu-list after the dolist.  Inhibit refresh for bookmark-delete.
+;;     bmkp-jump-bookmark-file: Removed reference to current-prefix-arg: prompt only if SWITCHP.
+;;     bmkp-delete-all-autonamed-for-this-buffer:
+;;       Added optional arg MSGP.  Prompt for confirmation only if MSGP.
+;;     bmkp-delete-autonamed-this-buffer-no-confirm:
+;;       Added optional arg NO-REFRESH-P.  Inhibit refresh for bookmark-delete.
+;;       Unless  NO-REFRESH-P, call bmkp-refresh/rebuild-menu-list after the dolist.
+;;     bmkp-delete-autonamed-no-confirm:
+;;       Call bmkp-delete-autonamed-this-buffer-no-confirm with NO-REFRESH-P.
+;;       Call bmkp-refresh/rebuild-menu-list after the dolist.
+;;     bmkp-delete-bookmarks:
+;;       Added optional arg MSGP.  Prompt for confirmation only if MSGP.
+;;       Raise error with OK message if user cancels.
+;;       Call bmkp-refresh/rebuild-menu-list after the dolist.  Inhibit refresh for bookmark-delete.
+;;       Use bmkp-this-buffer-alist-only, not bookmark-alist, for selecting bookmarks.
+;;       Use `...', etc. when echoing deleted bookmarks.
+;; 2012/03/02 dadams
+;;     bookmark-load:
+;;       Changed last arg from NO-MSG-P to BATCHP.  If non-nil, act with no prompt, saving or not.
+;;       If nil, prompt user whether to save before loading.  If user quits with C-g, do not load.
+;;     bookmark-maybe-load-default-file: Pass symbol nosave, not t, as last arg to bookmark-load.
+;;     bmkp-switch-bookmark-file-create: Last arg is now the complement: BATCHP, not INTERACTIVEP.
+;;     bmkp-temporary-bookmarking-mode: Pass nosave as last arg to bookmark-load, since do save here.
+;;     bmkp-default-handlers-for-file-types: Added eval-when-compile to require cl.el for Emacs 20.
+;;     bmkp-maybe-save-bookmarks: Added optional arg SAME-COUNT-P.
+;;     bmkp-record-visit: Pass non-nil arg to bmkp-maybe-save-bookmarks to prevent changing mod count.
+;;     bookmark-store: Call bmkp-refresh-menu-list if Bookmark List is displayed.
+;;     bmkp-toggle-saving-bookmark-file: Added optional arg MSGP - show message only if non-nil.
+;;     bmkp-find-file(-other-window): Added missing FIL arg for error format string.
+;;     bmkp-temporary-bookmarking-mode: Pass a MSGP arg to bmkp-toggle-saving-bookmark-file.
+;; 2012/02/29 dadams
+;;     bmkp-completing-read-lax: Bind & restore C-M-w, C-M-u, SPC, and ? (so can insert SPC, ? etc.).
+;; 2012/02/28 dadams
+;;     bmkp-file-target-set: Call bmkp-refresh-menu-list if Bookmark List is displayed.
+;;     Renamed option bmkp-default-handler-associations to bmkp-default-handlers-for-file-types.
+;;       bmkp-default-handler-associations is NOW OBSOLETE - RENAME IT IF YOU HAVE CUSTOMIZED IT.
+;;     bmkp-same-file-p: Take advantage of Emacs 24 function, file-equal-p.  Thx to Michael Albinus.
+;;     bmkp-find-file(-other-window):
+;;       Added optional args CREATE-AUTOFILE-P & MSGP (new arg order).  Prefix arg creates bookmark.
+;;       Use bmkp-default-handlers-for-file-types even for files not bookmarked.
+;; 2012/02/26 dadams
+;;     Added: bmkp-(autofile|autonamed)-history, bmkp-autofile-(all|some)-tags(-regexp)-alist-only,
+;;            bmkp-autofile(-(all|some)-tags(-regexp))-jump(-other-window).
+;;     bmkp-types-alist: Added entries for (autofile|autonamed).
+;;     Everywhere that read-file-name is used:
+;;       Bind icicle-unpropertize-completion-result-flag to t, for read-file-name.
+;;     No longer alias bmkp-autofile*-jump to bmkp-find-file.  The *-autofile-*jump commands use
+;;       bmkp-read-bookmark-for-type and bmkp-jump-1, not read-file-name and find-file.
+;;     bmkp-find-file(-other-window):
+;;       Added optional args FILE MUST-EXIST-P.
+;;       Use read-file-name and either bookmark-jump or find-file, not just find-file (and no PRED).
+;;     bmkp-find-file-*-tags(-regexp)(-other-window):
+;;       Added optional FILE arg.
+;;       Use bookmark-jump, not find-file - so only autofiles with the tags are candidates.
+;;       Bind icicle-must-pass-after-match-predicate.  Use PRED for read-file-name only if no Icicles.
+;;     The new bmkp-find-file* commands are bound to ... C-f, not ... a.
+;;     bmkp-default-handler-associations: Correct docstring: double backslashes.
+;; 2012/02/21 dadams
+;;     bmkp-jump-to-type(-other-window): Corrected ALIST: If no HISTORY do not call *-alist-only.
+;; 2012/02/20 dadams
+;;     bookmark-handle-bookmark: Handle, in priority, new property file-handler.
+;;     bookmark-default-handler: Handle new property file-handler.
+;;     bmkp-make-record-for-target-file:
+;;       Use new property file-handler, not handler, for default handler.
+;;       Use file-handler with play-sound-file, not handler with bmkp-sound-jump (deprecated).
+;;     bmkp-default-handler-for-file: Return function bmkp-user, not a lambda that applies it to file.
+;;     bmkp-handler-pred:
+;;       Return t if TYPE is handler or file-handler.  Do not match a lambda that applies the handler.
+;;     bmkp-default-handler-associations, bookmark-alist, bmkp-jump-to-type:
+;;       Updated doc string to reflect new implementation of file handlers using prop file-handler.
+;; 2012/02/19 dadams
+;;     Added: bmkp-handler-pred, bmkp-temporary-history, bmkp-w32-browser-jump.
+;;     bmkp-types-alist: Added bmkp-temporary-history.
+;;     bmkp-read-bookmark-for-type: Prepend a space before "bookmark" in prompt.
+;;     bmkp-jump-to-type:
+;;       Use lax completion.
+;;       When call bmkp-read-bookmark-for-type:
+;;        Do not append a space to TYPE name passed.
+;;        Pass a predicate arg returned by bmkp-handler-pred when TYPE is not a known type.
+;;     bmkp-*-jump(-other-window): Remove space after TYPE name passed to bmkp-read-bookmark-for-type.
+;;     bmkp-(specific-(buffers|files)|temporary)-jump(-other-window):
+;;       Pass specific HIST arg to bmkp-read-bookmark-for-type.
+;; 2012/02/16 dadams
+;;     Updated for Emacs 24+:
+;;       bookmark-set: Do not set bookmark-(yank-point|current-buffer) if set.
+;;       bmkp-make-gnus-record: Be able to bookmark from article buffer, as well as summary buffer.
+;;       bmkp-jump-gnus: Go to article buffer if location field says to.
+;;     Use bmkp-make-gnus-record (not gnus-summary-bookmark-make-record) for Emacs 24+ also.
+;; 2012/02/14 dadams
+;;     bmkp-set-desktop-bookmark: Provide default for read-file-name.  Thx to Markus Grunwald.
+;;                                Provide all bookmarked desktop files as Icicles proxy candidates.
+;; 2012/02/08 dadams
+;;     bmkp-autofile-set: Use MSGP also for the case where the bookmark already exists.
+;;     bmkp-remove-dups: Redefined to use a hash table.
+;; 2012/02/07 dadams
+;;     bmkp-same-file-p: Test compare-strings result using t, not non-nil.  Thx to Michael Heerdegen.
+;; 2012/02/04 dadams
+;;     Added: bmkp-tags-for-completion, bmkp-tags-in-bookmark-file.
+;;     Use bmkp-tags-for-completion for tags completing everywhere - updated doc strings.
+;;     bmkp-list-all-tags: Added args current-only-p and (optional) msgp.
+;;                         Different prefix arg values for different behaviors.
+;;     bmkp-tags-list: Added optional arg current-only-p.  Use bmkp-tags-for-completion by default.
+;; 2012/01/20 dadams
+;;     bmkp(-autofile)-(add|remove)-tags(-from-all), bmkp-find-file-(all|some)-tags(-other-window),
+;;       bmkp(-file(-this-dir))-(all|some)-tags-jump(-other-window):
+;;         Let user use a prefix arg to refresh tags list.  Add this info to doc string.
+;; 2012/01/14 dadams
+;;     Corrected bmkp-same-file-p: call to compare-strings.
+;; 2012/01/13 dadams
+;;     bmkp-same-file-p: Handle case-sensitivity for local files, at least (not yet done for remote).
+;; 2012/01/08 dadams
+;;     Added: bmkp-autonamed-this-buffer-bookmark-p.
+;;     bmkp-autotemp-bookmark-predicates: Updated doc string for *-autonamed-this-buffer-bookmark-p.
+;;     bmkp-autonamed-bookmark-for-buffer-p: Updated doc string to mention it just checks the name.
+;;     bmkp-autonamed-this-buffer-alist-only:
+;;       Use bmkp-this-buffer-p, not bmkp-autonamed-bookmark-for-buffer-p.
+;; 2011/12/30 dadams
+;;     Renamed bmkp-edit-bookmark to bmkp-edit-bookmark-name-and-file.
+;;     Added aliases: bmkp-bookmark-(data|name)-from-record.
+;;     Added: bmkp-get-bookmark-in-alist, bmkp-bookmark-record-from-name,
+;;            bmkp-edit-bookmark-records-(number|send|mode(-map)),
+;;            bookmark-alist-from-buffer (redefinition), bmkp-edit-bookmark-orig-record,
+;;            bmkp-rename-for-marked-and-omitted-lists.
+;;     Use new names (aliases) bmkp-bookmark-(data|name)-from-record.
+;;     bookmark-get-bookmark-record: Use redefinition for all Emacs versions (updated doc string).
+;;     bookmark-get-bookmark: Use bmkp-bookmark-record-from-name, with no MEMP check.
+;;     bookmark-store: Use bmkp-get-bookmark-in-alist to test whether bookmark exists.
+;;                     Set the bookmark name also, not just the data, for an existing bookmark.
+;;                     Unconditionally always put full bookmark on name as property bmkp-full-record.
+;;     bookmark-send-edited-annotation, bookmark-rename:
+;;       Do bookmark-bmenu-surreptitiously-rebuild-list only if no bmenu display window.
+;;     bookmark-rename:
+;;       Return OLD if if BATCHP is non-nil and NEW is nil.  Do not prompt for name if BATCHP.
+;;       Use bmkp-rename-for-marked-and-omitted-lists (rename in those lists too).
+;;       Unconditionally always put full bookmark on name as property bmkp-full-record.
+;;       Use bmkp-bookmark-record-from-name, not bookmark-get-bookmark, to get full record.
+;;     bookmark-delete, bmkp-edit-bookmark-name-and-file, bmkp-edit-bookmark-record,
+;;       bmkp-edit-tags(-send), bmkp-toggle-autonamed-bookmark-set/delete:
+;;         Use bmkp-get-bookmark-in-alist, not bookmark-get-bookmark.
+;;     bookmark-load: Call bmkp-refresh-menu-list only if display is visible, and with NO-MSG-P arg.
+;;     bookmark-show-annotation: Do not raise error if not a valid bookmark.
+;;     bmkp-edit-bookmark-record: Record bmkp-edit-bookmark-orig-record.  Strip properties from name.
+;;                                Updated edit-buffer text.
+;;     bmkp-edit-bookmark-record-send: Rewrote similarly to bmkp-edit-bookmark-records-send.  No args.
+;;     bmkp-default-bookmark-name:
+;;       Use bmkp-bookmark-record-from-name, not bookmark-get-bookmark, requiring membership in ALIST.
+;;     bmkp-save-menu-list-state, bmkp-get-tag-value: Added optional arg MSGP, and status messages.
+;;     bmkp-make-function-bookmark: Use bmkp-bookmark-record-from-name, not bookmark-get-bookmark.
+;;     bmkp-autonamed-bookmark(-for-buffer)-p:
+;;       Use bmkp-bookmark-name-from-record, not bookmark-get-bookmark and bookmark-name-from-*.
+;;     bmkp-get-tag-value, bmkp-has-tag-p: Removed unused arg MSGP.
+;;     bmkp-delete-bookmark-name-from-list:
+;;       For unpropertized DELNAME, Set BNAMES to result of delete call.
+;;       For propertized DELNAME, delete also unpropertized matches.
+;;     bmkp-(compilation|occur)-target-set-all: Do not prompt or show message unless MSGP.
+;;     bmkp-describe-bookmark-internals: Use a copy of the bookmark.  Strip properties from name.
+;;     bmkp-set-autonamed-regexp-buffer: Pass MSGP, do not hardcode.n
+;;     Doc string improvements.
+;; 2011/12/24 dadams
+;;     bmkp-refresh-menu-list: Added progress message.
+;;     bmkp-jump-bookmark-file: Pass NO-MSG-P arg to bookmark-load.
+;; 2011/12/21 dadams
+;;     Added: bmkp-orphaned(-local|-remote)-file-(alist-only|bookmark-p),
+;;            bmkp-dired-wildcards-bookmark-p.
+;;     bookmark-load:
+;;       Call (bmkp-refresh-menu-list (bookmark-bmenu-bookmark)), not (bmkp-bmenu-refresh-menu-list).
+;; 2011/12/19 dadams
+;;     bookmark-set, bmkp-handle-region-default:  Use line-end-position, not end-of-line + point.
+;; 2011/12/17 dadams
+;;     bmkp-remote-file-p:
+;;       If file-remote-p not available, match /...: (same as ffap-ftp-regexp).  Return match.
+;;     bmkp-same-file-p: Redefined to use new bmkp-remote-file-p.  Thx to M. Heerdegen & M. Albinus.
+;; 2011/12/15 dadams
+;;     bmkp-dired-this-dir-bookmark-p: Use file-name-directory, in case filename has wildcards.
+;; 2011/12/13 dadams
+;;     bmkp-handle-region-default: Limit buffer-substring-no-properties positions to point-min/max.
+;; 2011/12/06 dadams
+;;     bmkp-last-as-first-bookmark-file:
+;;       Removed autoload cookie to avoid void-variable error for bookmark-default-file.
+;;     bmkp-edit-bookmark, bookmark-rename: Use bmkp-completing-read-lax, not read-from-minibuffer.
+;; 2011/12/05 dadams
+;;     bmkp-this-buffer-p:
+;;       Do not use buffer-file-name (for Dired).  Wrap bookmark-buffer-file-name with condition-case.
+;;     bookmark-save: Swap write order, so last message is about the bookmark file, not customize.
+;; 2011/12/03 dadams
+;;     Renamed: bmkp-use-bookmark-file-create to bmkp-switch-bookmark-file-create.
+;;     Added: bmkp-last-as-first-bookmark-file, bookmark-maybe-load-default-file (redefinition),
+;;            bookmarks-already-loaded (redefinition), bmkp-default-bookmark-file.
+;;     bookmark-save: Update and save bmkp-last-as-first-bookmark-file.
+;;     bookmark-load: New default for reading file name, and require an existing file (match).
+;;                    Update and save bmkp-last-as-first-bookmark-file.  Update bmkp-sorted-alist.
+;;     bmkp-switch-bookmark-file (no longer used): New default for reading file name.
+;;     bmkp-switch-bookmark-file-create: Added optional arg INTERACTIVEP.  New default for reading
+;;       file name.  Use bookmark-load, not bmkp-switch-bookmark-file.  Require confirmation only for
+;;       new, empty file.  Added final message.
+;;     bmkp-switch-to-last-bookmark-file: Use bmkp-last-as-first-bookmark-file as first fallback.
+;;     bmkp-set-bookmark-file-bookmark: Use bmkp-read-bookmark-file-name, not read-file-name.
+;;                                      New default for reading file name.
+;;     bmkp-temporary-bookmarking-mode: Use bookmark-load, not bmkp-switch-bookmark-file.
+;;     Removed: bookmark-maybe-message.  Use only message now, not bookmark-maybe-message.
+;;     bmkp-autofile-set: For Emacs 23.3+, provide multiple defaults for file name.
+;; 2011/11/30 dadams
+;;     bmkp-same-file-p: Avoid having Tramp prompt for passwords, when possible.  Thx to M. Heerdegen.
+;;     bmkp-toggle-autotemp-on-set: Removed ARG (copy/paste typos).
+;; 2011/11/28 dadams
+;;     bmkp-set-bookmark-file-bookmark: Prompt user for bookmark name here, to make clear what it is.
+;; 2011/11/27 dadams
+;;     bookmark-write-file: If write error, do not overwrite message.  And show error msg for 4 sec.
+;; 2011/11/18 dadams
+;;     Renamed: bmkp-bookmark-image-bookmark-p to bmkp-image-bookmark-p.
+;;     Added: bmkp-image-alist-only, bmkp-image-jump(-other-window), bmkp-image-history.
+;;     bookmark-handle-bookmark: If bmk has handler but it's not a function, use default handler.
+;;     bmkp-autotemp-bookmark-predicates: Update doc string to include bmkp-image-bookmark-p.
+;;     bmkp-types-alist: Added entry for images.
+;; 2011/11/15 dadams
+;;     bookmark-relocate: Redefine without using old-*.  Update Dired location too.
+;;     Added: bmkp-cycle-this-file(/buffer)(-other-window),
+;;            bmkp-(next|previous)-bookmark-this-file(/buffer)(-repeat),
+;;            bmkp-this-file(/buffer)-bmenu-list, bmkp-this-file/buffer-alist-only.
+;;     Renamed bmkp-this-buffer-cycle-sort-comparer to bmkp-this-file/buffer-cycle-sort-comparer.
+;;     bmkp-this-buffer-p: Return nil if bookmark has a file diff from buffer.
+;;     bmkp-this-file-p:
+;;       Ensure bmkp-file-bookmark-p and bookmark-buffer-file-name.  Use bmkp-same-file-p.
+;; 2011/11/09 dadams
+;;     bmkp-jump-dired, bmkp-jump-man: Added bmkp-select-buffer-other-window to other-window fns.
+;; 2011/11/08 dadams
+;;     bmkp-edit-bookmark: For new file name, use read-file-name, not read-from-minibuffer.
+;; 2011/11/03 dadams
+;;     Renamed: bmkp-autoname-bookmark to bmkp-autoname-bookmark-function-default.
+;; 2011/11/01 dadams
+;;     Added: bmkp-temporary-jump(-other-window).
+;;     bmkp-bookmark-description: Title now indicates whether temporary.
+;; 2011/10/31 dadams
+;;     Added: bmkp-toggle-autotemp-on-set, bmkp-autotemp-all-when-set-p.
+;;     bookmark-set: If bmkp-autotemp-all-when-set-p call bmkp-make-bookmark-temporary.
+;; 2011/10/28 dadams
+;;     Added: bmkp-delete-temporary-no-confirm.
+;;     bmkp-delete-all-temporary-bookmarks: Rewrote (it was just a stub).
+;;     bmkp-bmenu-menubar-menu:
+;;       Added: bmkp-temporary-bookmarking-mode, bmkp-delete-all-temporary-bookmarks,
+;;              bmkp-bmenu-toggle-marked-temporary/savable.
+;;     bmkp-bmenu-show-menu: Added: bmkp-bmenu-show-only-temporary.
+;;     bmkp-bmenu-mark-menu:
+;;       Added: bmkp-bmenu-mark-temporary-bookmarks, bmkp-bmenu-mark-autonamed-bookmarks.
+;;     bmkp-bmenu-mouse-3-menu: Added: bmkp-bmenu-toggle-temporary.
+;;     bookmark-bmenu-mode: Updated doc string.
+;; 2011/10/27 dadams
+;;     Added: bmkp-autotemp-bookmark-predicates, bmkp-temporary-bookmarking-mode(-hook),
+;;            bmkp-delete-all-temporary-bookmarks, bmkp-make-bookmark-(savable|temporary),
+;;            bmkp-toggle-temporary-bookmark, bmkp-temporary-alist-only, bmkp-temporary-bookmark-p.
+;;     bookmark-set: Make bookmark temporary, if bmkp-autotemp-bookmark-predicates says to.
+;;     bookmark-write-file: Do not save temporary bookmarks (bmkp-temporary-bookmark-p).
+;; 2011/10/25 dadams
+;;     bmkp-empty-file: Added optional arg CONFIRMP.  By default, no confirmation if not interactive.
+;; 2011/08/09 dadams
+;;     Bind icicle-unpropertize-completion-result-flag to t for all calls to completing-read.
+;; 2011/08/07 dadams
+;;     Added: bmkp-guess-default-handler-for-file-flag, bmkp-file-bookmark-handlers.
+;;     bmkp-file-bookmark-p: Use bmkp-file-bookmark-handlers, which means also image-bookmark-jump.
+;;     bmkp-make-record-for-target-file (need to keep in sync with diredp-bookmark):
+;;       Instead of image-bookmark-make-record, use explicit function that includes file and type.
+;;     bmkp-default-handler-for-file:
+;;       Use bmkp-guess-default only if bmkp-guess-default-handler-for-file-flag is non-nil.
+;;     bmkp-default-handler-associations: Updated doc string.
+;; 2011/08/05 dadams
+;;     bmkp-file-bookmark-p: Allow handler to be bmkp-default-handler-for-file, e.g. for image files.
+;;     bmkp-all-tags-alist-only: Corrected.
+;;     bmkp-refresh-menu-list: Ensure BOOKMARK is a string.
+;;     bmkp-every: Removed unused binding.
+;; 2011/05/08 dadams
+;;     Just put some definitions in alphabetic order - no real change.
+;; 2011/04/25 dadams
+;;     bmkp-bookmark-description: Added optional arg NO-IMAGE.
+;;     bmkp-url-target-set: Protect url-get-url-at-point with fboundp.
+;;     bmkp-(file-target|autofile)-set, bmkp-autofile-(add|remove)-tags:
+;;       Added buffer-file-name as a default possibility.  Removed URL functions for that purpose.
+;; 2011/04/24 dadams
+;;     Added: bmkp-purge-notags-autofiles.
+;;     bookmark-delete: Redefined to accept either bookmark or name as arg.
+;;     bmkp-(url|file|compilation|occur)-target-set(-all), bmkp-autofile-(set|(add|remove)-tags):
+;;       Removed optional args when read prefix.
+;;     bmkp-occur-target-set-all: Made PREFIX arg optional too.
+;;     Added some missing autoload cookies.  Removed some from non-def sexps.
+;; 2011/04/21 dadams
+;;     Added: bmkp-copied-tags, bmkp-copy-tags, bmkp-paste-add-tags, bmkp-paste-replace-tags..
+;; 2011/04/20 dadams
+;;     bmkp-remove-all-tags: Added optional arg no-cache-update-p.
+;; 2011/04/19 dadams
+;;     bmkp-make-record-for-target-file: Fixed backquotes on lambdas.
+;; 2011/04/17 dadams
+;;     bmkp-edit-tags: Do not apply bmkp-full-tag to the tags.
+;; 2011/04/16 dadams
+;;     Added: bmkp-edit-tags(-send|-mode(-map)), bmkp-return-buffer.
+;;     bookmark-(rename|relocate|send-edited-annotation), bmkp-update-autonamed-bookmark,
+;;       bmkp-(add|remove(-all)-tags:
+;;         Wrap with-current-buffer around bmkp-refresh-menu-list.
+;;     bookmark-(store|rename|write-file): Test emacs-major-version, not just (boundp 'print-circle).
+;;     bmkp-autofile-add-tags: Fix interactive args - forgot to include DIR arg (= nil).
+;; 2011/04/15 dadams
+;;     Added: bmkp-autofile-alist-only, bmkp-autofile-bookmark-p.
+;; 2011/04/13 dadams
+;;     Added: bmkp-autofile-jump(-other-window) (aliases), bmkp-find-file(-other-window).
+;;     bmkp-find-file-(all|some)-tags(-regexp)(-other-window): Bind use-file-dialog to nil.
+;; 2011/04/12
+;;     Added: bmkp-bookmark-name-member, bmkp-names-same-bookmark-p, bmkp-sort-omit,
+;;            bmkp-remove-omitted, bmkp-delete-bookmark-name-from-list, bmkp-bookmark-a-file (alias),
+;;            bmkp-autofile-(add|remove)-tags, bmkp-(un)tag-a-file (aliases),
+;;            bmkp-get-autofile-bookmark, bmkp-find-file-(all|some)-tags(-regexp)(-other-window).
+;;     Removed: bmkp-remove-assoc-dups, bmkp-sort-and-remove-dups.
+;;     Applied renaming: bmkp-bmenu-omitted-list to bmkp-bmenu-omitted-bookmarks.
+;;     bookmark-store: Redefine for all Emacs versions now:
+;;       Put the bookmark on the name as property bmkp-full-record.  Use bmkp-maybe-save-bookmarks.
+;;       Return the bookmark.
+;;     bookmark-get-bookmark: Redefine for all Emacs versions now:
+;;       If BOOKMARK is a bookmark-name string that has property bmkp-full-record, return that value.
+;;     bookmark-send-edited-annotation: Make sure it's the annotation buffer that gets killed.
+;;     bookmark-default-handler: Return nil, like vanilla (but why?).
+;;     bookmark-location: Pass full bookmark to the various "get" functions.
+;;     bookmark-rename: Put bmkp-full-record property on new name.
+;;     bookmark-delete:
+;;       Use bmkp-delete-bookmark-name-from-list: If name has bmkp-full-record property, use that
+;;         with name to find bookmark to delete.
+;;       Pass full bookmark to unlight.
+;;     bmkp-edit-bookmark: Save if either is non-empty, not if both are.  Thx to Michael Heerdegen.
+;;     bmkp-edit-bookmark-record: Bind print-circle to t around pp.
+;;     bmkp-default-bookmark-name:
+;;       Use bookmark-name-from-full-record plus bookmark-get-bookmark, not assoc.
+;;       If BNAME is nil (no default) then do not try to look it up in alist.
+;;     bookmark-write-file: Unpropertize only for Emacs 20 or nil bmkp-propertize-bookmark-names-flag.
+;;                          Bind print-circle to t around pp.
+;;     bmkp-save-menu-list-state: Make it interactive (a command).  Bind print-circle.
+;;                                Use bmkp-maybe-unpropertize-bookmark-names on alists and name lists.
+;;                                Bind print-circle to t around pp.
+;;     bmkp-unomit-all: Use bmkp-delete-bookmark-name-from-list, not delete.
+;;     bmkp-dired-this-dir-bookmark-p: Use bmkp-same-file-p, not string=.
+;;     bmkp-url-target-set, bmkp-replace-existing-bookmark:: Return the bookmark.
+;;     bmkp-file-target-set:  Return bookmark.  Added arg MSGP: msg if no file yet.
+;;     bmkp-autofile-set:
+;;       Added DIR arg and MSGP arg: msg if no file yet.  Return the bookmark.
+;;       If read absolute file name, create bmk in its dir, not in default-directory.  Else use DIR.
+;;       Use bmkp-get-autofile-bookmark, so uses bmkp-same-file-p for each file part (not equal).
+;;     bmkp-marked-bookmark-p, bmkp-omitted-bookmark-p: Use bmkp-bookmark-name-member, not member.
+;;     bookmark-location: Pass full bookmark to the various "get" functions.
+;;     bmkp-choose-navlist-from-bookmark-list, bmkp-cycle-this-buffer:
+;;       Use bmkp-sort-omit, not bmkp-sort-and-remove-dups.
+;;     bmkp-bookmark-description, bmkp-describe-bookmark-internals: Add Bookmark `' to title.
+;;     bmkp-make-bookmark-list-record: Use bmkp-maybe-unpropertize-bookmark-names on lists.
+;;     bmkp-printable-p: Bind print-circle to t around prin1.
+;;     bmkp-delete-autonamed(-this-buffer)-no-confirm:
+;;       Do nothing if bookmarks not loaded.  Thx to Christoph Scholtes.
+;; 2011/04/03 dadams
+;;     Added: bmkp-make-record-for-target-file, bmkp-replace-existing-bookmark (not used).
+;;     bmkp-file-this-dir-bookmark-p: Corrected it to compare directory to default-directory.
+;;     bmkp-file-target-set: Added arg NO-OVERWRITE (pass to bookmark-store).
+;;                           Use (new) bmkp-make-record-for-target-file.
+;;     bmkp-autofile-set: Do nothing if bookmark with same name, file and dir exists.
+;;                        Else create one, even if the bookmark name is the same.
+;;                        You can have multiple autofile bookmarks with the same name (diff files).
+;; 2011/04/02 dadams
+;;     Added: bmkp-autofile-set, bmkp-file-this-dir-(all|some)-tags(-regexp)-jump(-other-window),
+;;            bmkp-file-this-dir-(all|some)-tags(-regexp)-alist-only.
+;; 2011/04/01 dadams
+;;     Moved key and menu bindings to (new) bookmark+-key.el.
+;;     Added: bmkp-(dired|file)-this-dir-alist-only, bmkp-(dired|file)-this-dir-bookmark-p,
+;;            bmkp-file-this-dir-jump(-other-window).
+;;     Renamed: bmkp-dired-jump-current(*) to bmkp-dired-this-dir-jump(*).
+;;     bmkp-dired-this-dir-jump(-other-window): Use bmkp-dired-this-dir-alist-only.
+;;     bmkp-types-alist: Added (dired|file)-this-dir.
+;;     Bound bmkp-(dired|file)-this-dir-jump to C-d and C-f in bookmark-jump(-other-window)-map.
+;;     bmkp-jump-dired, bmkp-jump-man: Treat null bmkp-jump-display-function as display-buffer.
+;; 2011/03/26 dadams
+;;     Added: bmkp-file-(all|some)-tags(-regexp)-(alist-only|jump(-other-window)).
+;;     bmkp-jump-menu: Added the new commands, but not Emacs 20, to avoid crash if byte-compiled.
+;;     bmkp-bookmark-jump*-other-window: Simplified doc strings - refer to same-window version.
+;; 2011/03/17 dadams
+;;     bmkp-describe-bookmark: Added 10-pixel margin around thumbnail image.
+;; 2011/03/11 dadams
+;;     Protect use of mouse-wheel-*-event with boundp.  Thx to Chris Poole.
+;; 2011/03/04 dadams
+;;     bmkp-bookmark-description, bmkp-describe-bookmark: Added clickable thumbnail to the help.
+;;     bmkp-bookmark-description: Split file name into dir & relname, so shorter line, in help.
+;; 2011/03/03 dadams
+;;     Added: bmkp-all-exif-data, bmkp-bookmark-image-bookmark-p.
+;;     bmkp-bookmark-description: Handle image EXIF data.
+;; 2011/01/03 dadams
+;;     Removed autoload cookies from non def* sexps and from define-key and define-prefix-command.
+;;     Added some missing autoload cookies for commands, in particular redefined standard commands.
+;; 2010/12/10 dadams
+;;     Added defalias for bookmark-name-from(-full)-record, to fix gratuitous Emacs name change.
+;; 2010/10/22 dadams
+;;     Uncommented key bindings for mouse wheel, since Emacs bug #6256 has now been fixed.
+;;     bmkp-repeat-command: Don't bother to let-bind repeat-previous-repeated-command,
+;;                          and use setq, not let, for last-repeatable-command. Thx to Stefan Monnier.
+;; 2010/09/28 dadams
+;;     Added: bmkp-delete-autonamed(-this-buffer)-no-confirm.
+;; 2010/09/25 dadams
+;;     Added: option bmkp-default-bookmark-name, bmkp-annotated-alist-only.
+;;     Added: bmkp-(next|previous)-*(-repeat), using macro bmkp-define-next+prev-cycle-commands.
+;;     bmkp-default-bookmark-name: Respect option.
+;;     bookmark-edit-annotation-mode, bookmark-edit-annotation:
+;;       Use bmkp-annotated-alist-only (and new bmkp-default-bookmark-name).
+;;     bookmark-send-edited-annotation:
+;;       End in orig buffer, not bmenu buffer.  Delete edit window.  Thx to Joe Bloggs.
+;; 2010/09/24 dadams
+;;     Added: bmkp-autonamed(-this-buffer)-jump(-other-window).  Bound to C-x j # (#|.) and menus.
+;;     Added, using bmkp-define-cycle-command:
+;;       bmkp-cycle-(autonamed|bookmark-list|desktop|dired|gnus|info|lighted|(local-|remote-)file|
+;;                   man|non-file|remote-file|specific-(buffers|files)|variable-list|url)
+;;                   (-other-window).
+;;     Added redefinitions: bookmark-edit-annotation(-mode).
+;;     Renamed: *varlist* to *variable-list*.
+;;     bmkp-autoname-format: Added ^ to anchor numeral at beginning.
+;;     bookmark--jump-via: Don't update autonamed if using w32 association.
+;;     bmkp-update-autonamed-bookmark: bmkp-refresh-menu-list only if buffer list is displayed.
+;;     *-(relocate|rename), *-update-autonamed-bookmark, *-remove-all-tags, *-(add|remove)-tags:
+;;       Don't create bookmark-list buffer if doesn't exist.
+;;     bookmark-show-(annotation|all-annotations): Restore selected window and frame focus.
+;;     bmkp-completing-read-(buffer|file)-name: Added optional NO-DEFAULT-P arg.
+;;     bmkp-describe-bookmark: Default to highlighted bookmarks on line, if there are any.
+;;     bmkp-specific-(buffers|files)-jump(-other-window): Allow empty input, to end loop.
+;;     bmkp-cycle: Ensure bmkp-current-nav-bookmark is a bookmark, else redefine.  Use %9d, not %d.
+;;     bmkp-cycle-other-window: Added optional STARTOVERP arg here too.
+;; 2010/09/20 dadams
+;;     bmkp-choose-navlist-of-type: Empty input means "any".
+;; 2010/09/16 dadams
+;;     bmkp-read-bookmark-file-name:
+;;       Removed extra default-filename in call to read-file-name.  Thx to Pedro Insua.
 ;; 2010/08/22 dadams
 ;;     Added: bmkp-regexp-filtered-annotation-alist-only.
 ;; 2010/08/20 dadams
@@ -126,7 +1038,7 @@
 ;;     bookmark-handle-bookmark:
 ;;       Move non-default handler call outside condition-case.
 ;;       Updated for Emacs 24: Use error condition bookmark-error-no-filename.  Added props for it.
-;;     bookmark-default-handler: Updated for Emacs 24: 
+;;     bookmark-default-handler: Updated for Emacs 24:
 ;;       Signal condition bookmark-error-no-filename, not file-error, and pass (stringp FILE).
 ;;     bookmark-make-record-default: Added optional args NO-CONTEXT, POSITION (Emacs 24), and VISITS.
 ;;     bookmark-load: Updated for Emacs 24: Wrap with abbreviate-file-name.
@@ -162,6 +1074,482 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-bmu.el'")
 ;;
+;; 2014/11/09 dadams
+;;     bookmark-bmenu-show-annotation: Updated doc string to reflect updated bookmark-show-annotation.
+;; 2014/08/22 dadams
+;;     bmkp-looking-at-p: Do not defalias to Emacs looking-at-p because that is a defsubst.
+;; 2014/07/20 dadams
+;;     Protect key bindings for bmkp-bmenu-highlight-menu by boundp.
+;; 2014/07/12 dadams
+;;     Added: bmkp-bmenu-relocate-marked.  Bound to M-R.  Added it to bmkp-bmenu-menubar-menu.
+;; 2014/07/11 dadams
+;;     bmkp-bmenu-highlight-menu: Added item Toggle Autofile Highlighting in Dired.
+;;     bmkp-bmenu-toggle-menu: Added item Autofile Highlighting in Dired.
+;; 2014/07/06 dadams
+;;     Toggle submenu: added lots, improved.
+;; 2014/07/05 dadams
+;;     Added: bmkp-bmenu-create-bookmark-file-from-marked (bound to Y > 0),
+;;            bmkp-bmenu-set-bookmark-file-bookmark-from-marked, bmkp-bmenu-bookmark-file-menu.
+;;     Moved bookmark-file stuff to Bookmark File submenu.
+;;     bookmark-bmenu-mode: Updated doc string.
+;;     bmkp-bmenu-dired-marked: Use bmkp-bmenu-marked-or-this-or-all, not bmkp-marked-bookmarks-only.
+;;     bmkp-bmenu-marked-or-this-or-all: Added optional arg INCLUDE-OMITTED-P - else removed omitted.
+;; 2014/07/04 dadams
+;;     Added to Bookmark+ menu: bmkp-bmenu-(copy|move)-marked-to-bookmark-file.
+;; 2014/07/03 dadams
+;;     Added: bmkp-bmenu-copy-marked-to-bookmark-file, bmkp-bmenu-move-marked-to-bookmark-file.
+;;            Bound to Y > + and Y > -.
+;;     bookmark-bmenu-mode: Mention bmkp-bmenu-(copy|move)-marked-to-bookmark-file in doc string.
+;;     bookmark-bmenu-execute-deletions, bmkp-bmenu-delete-marked:: Added optional arg NO-CONFIRM-P.
+;;     bmkp-bmenu-define(-full-snapshot|jump)-command: Changed to C-c C-c, C-c C-S-c, C-c C-j.
+;;     bmkp-bmenu-show-all: Mention C-u g in doc string.
+;; 2014/06/30 dadams
+;;     bmkp-bmenu-mouse-3-menu:
+;;       Bind bmkp-bmenu-flag-for-deletion, not bookmark-bmenu-delete.  See Emacs bug #17888.
+;; 2014/06/26 dadams
+;;     bmkp-bmenu-show-only-omitted:
+;;       Use bmkp-bmenu-omit/unomit-marked, not bmkp-bmenu-unomit-marked, in doc string.
+;;     bmkp-bmenu-remove-tags-from-marked:
+;;       Typo in interactive spec: allp -> current-prefix-arg.  Thx to Alan Wehmann.
+;; 2014/06/21 dadams
+;;     Added: bmkp-no-jump, bmkp-bmenu-mark-bookmark-list-bookmarks,
+;;       bmkp-bmenu-mark-icicle-search-hits-bookmarks, bmkp-bmenu-show-only-bookmark-lists,
+;;       bmkp-bmenu-show-only-icicle-search-hits.
+;;     bookmark-bmenu-list, bookmark-bmenu-mode: Updated doc string, for additions.
+;;     bmkp-bmenu-mode-status-help: Updated for no-jump (used for Icicles search hits bookmarks).
+;;     bmkp-bmenu-propertize-item: Handle Icicles search hits bookmarks.
+;;     Bind *-bmenu-mark-icicle-search-hits-bookmarks, *-bmenu-show-only-icicle-search-hits: i M, i S.
+;;     Bind bmkp-bmenu-mark-bookmark-list-bookmarks, bmkp-bmenu-show-only-bookmark-lists: Z M, Z S.
+;;     bmkp-bmenu-mark-types-menu:
+;;       Added bmkp-bmenu-mark-icicle-search-hits-bookmarks, bmkp-bmenu-mark-bookmark-list-bookmarks.
+;;     bmkp-bmenu-show-types-menu:
+;;       Added bmkp-bmenu-show-only-icicle-search-hits, bmkp-bmenu-show-only-bookmark-lists.
+;; 2014/06/20 dadams
+;;     bmkp-define-tags-sort-command: Load bookmark+-mac.el(c) in interactive spec.
+;; 2014/05/27 dadams
+;;     bmkp-bmenu-mode-status-help, bmkp-bmenu-describe-marked:
+;;       Use bmkp-with-help-window, not with-output-to-temp-buffer (Emacs 24.4+ silliness).
+;; 2014/04/02 dadams
+;;     bmkp-bmenu-copy-tags, bmkp-bmenu-paste-replace-tags(for-marked):
+;;       Added Note to doc string about pasting an empty list of tags.
+;;     bmkp-bmenu-tags-menu: Added item Copy Tags from This Bookmark for bmkp-bmenu-copy-tags.
+;;     bmkp-bmenu-mouse-3-menu: Added :active bmkp-copied-tags for bmkp-bmenu-paste-add-tags.
+;; 2014/04/01 dadams
+;;     Added: bmkp-bmenu-list-tags-of-marked.
+;;       Bind it to T > l in bookmark-bmenu-mode-map.
+;;       Add it to bmkp-bmenu-tags-menu.
+;;     bookmark-bmenu-mode: List bmkp-bmenu-list-tags-of-marked in doc string.
+;; 2014/03/29 dadams
+;;     Added variable bmkp-bmenu-define-command-history.
+;;     bmkp-bmenu-define(-jump-marked|-full-snapshot)-command:
+;;       Removed quote before bmkp-bmenu-define-command-history.
+;;     Toggle submenu: Use bmkp-menu-bar-make-toggle.
+;; 2014/03/28 dadams
+;;     bmkp-bmenu-describe-marked: Apply bmkp-sort-omit, to show bookmarks in the current sort order.
+;; 2014/03/23 dadams
+;;     Added: bmkp-bmenu-delete-menu, bmkp-bmenu-mark-types-menu, bmkp-bmenu-search-menu,
+;;            bmkp-bmenu-show-types-menu, bmkp-bmenu-toggle-menu.  Move menu items there from top.
+;;     bookmark-bmenu-mode-map:
+;;       Bind jump commands to j prefix and J prefix (like C-x 4 j and C-x j).
+;;       Bind bookmark-bmenu-locate to C-S-l, since w is used as a prefix key now.
+;;     bookmark-bmenu-mode: New jump bindings.  Added bmkp-bmenu-copy-tags.
+;; 2014/03/21 dadams
+;;     bookmark-bmenu-mode: List also global bindings for tag commands.
+;; 2014/03/10 dadams
+;;     bmkp-maybe-unpropertize-bookmark-names: Remove prop face & Icicles props, in any case.
+;;     bmkp-bmenu-define(-jump-marked|-full-snapshot)-command, bmkp-define-tags-sort-command:
+;;       Bind print-circle to bmkp-propertize-bookmark-names-flag, not t, to avoid string reuse.
+;; 2013/12/13 dadams
+;;     bmkp-bmenu-mode-line:
+;;       To avoid Emacs crashes from bug #12867: Do not define it for Emacs 22-23, and wrap
+;;                                               condition-case around the whole function body.
+;; 2013/12/11 dadams
+;;     bmkp-bmenu-mode-line: Protect %360l (line) hack with condition-case.
+;; 2013/10/07 dadams
+;;     bmkp-bmenu-edit-marked: If no marked bmks, mark the current line bmk, to start with.
+;;                             Use correct buffer when go to point-min.
+;; 2013/08/09 dadams
+;;     Added: bmkp-looking-at-p.  Use it instead of looking-at, everywhere.
+;; 2013/07/02 dadams
+;;     Added to menu-bar Edit menu: bmkp-set-snippet-bookmark, bmkp-snippet-to-kill-ring.
+;; 2013/06/30 dadams
+;;     Added: bmkp-snippet, bmkp-bmenu-show-only-snippets, bmkp-bmenu-mark-snippet-bookmarks.
+;;     bookmark-bmenu-list: Added snippet info to doc string.
+;;     bmkp-bmenu-mode-status-help: Cover snippets too.
+;;     Bind bmkp-bmenu-(mark-snippet-bookmarks|show-only-snippets) to w M, w S.  Add to menus.
+;; 2013/06/29 dadams
+;;     bmkp-bmenu-regexp-mark, bmkp-bmenu-search-marked-bookmarks-regexp,
+;;       bmkp-bmenu-(un)mark-bookmarks-tagged-regexp:
+;;         Use bmkp-read-regexp in interactive spec.
+;;     bmkp-bmenu-mode-status-help: Ensure that we have a supported image before calling insert-image.
+;; 2013/06/09 dadams
+;;     bmkp-bmenu-mode-line-string: Added missing let-binding for REGEXP.
+;;     Added vacuous defvars to suppress free-var warnings.
+;; 2013/05/28 dadams
+;;     Renamed: bmkp-bmenu-edit-bookmark-name-and-file to bmkp-bmenu-edit-bookmark-name-and-location.
+;; 2013/05/28 dadams
+;;     bmkp-bmenu-list-1: Do not call put-image if create-image returns nil.
+;; 2013/05/15 dadams
+;;     Moved here from bookmark+-1.el: bmkp-string-match-p.
+;;     Use bmkp-string-match-p instead of string-match wherever appropriate.
+;; 2013/04/10 dadams
+;;     bmkp-bmenu-make-sequence-from-marked: Redefine using bmkp-set-sequence-bookmark (new).
+;; 2013/01/07 dadams
+;;     bookmark-bmenu-mode:
+;;       Added: bmkp-bmenu-set-tag-value-for-marked, bmkp-bmenu-paste-(add|replace)-tags-for-marked.
+;;       Mention C-u = all, for marked.
+;; 2013/01/04 dadams
+;;     bmkp-bmenu-show-only-tagged: Corrected filter function.
+;; 2012/11/14 dadams
+;;     bmkp-bmenu-mode-line: Added mode-line-buffer-identification.
+;; 2012/11/12 dadams
+;;     Added: bmkp-bmenu-marked-or-this-or-all.
+;;     bmkp-bmenu-isearch-marked-bookmarks(-regexp), bmkp-bmenu-search-marked-bookmarks-regexp,
+;;       bmkp-bmenu-query-replace-marked-bookmarks-regexp, bmkp-bmenu-set-tag-value-for-marked,
+;;       bmkp-bmenu-add-tags-to-marked, bmkp-bmenu-remove-tags-from-marked,
+;;       bmkp-bmenu-paste-(add|replace)-tags-(to|for)-marked, bmkp-bmenu-edit-marked,
+;;       bmkp-bmenu-describe-marked:
+;;         Make it work for current bookmark if none marked.
+;;     bmkp-bmenu-isearch-marked-bookmarks(-regexp), bmkp-bmenu-search-marked-bookmarks-regexp,
+;;       bmkp-bmenu-set-tag-value-for-marked, bmkp-bmenu-add-tags-to-marked,
+;;       bmkp-bmenu-remove-tags-from-marked, bmkp-bmenu-paste-(add|replace)-tags-(to|for)-marked,
+;;       bmkp-bmenu-edit-marked:
+;;         Make it work for all bookmarks if use prefix arg.
+;;     Protect all calls to bmkp-bmenu-mode-line with fboundp, for Emacs 20.
+;; 2012/11/11 dadams
+;;     Added: bmkp-bmenu-mode-line, bmkp-bmenu-mode-line-string.
+;;     Removed: bmkp-bmenu-nb-marked-in-mode-name (replaced by bmkp-bmenu-mode-line - shows more).
+;;     Removed faces bmkp-mode-line-marked, bmkp-mode-line-flagged.
+;;     bookmark-bmenu-(delete|(un)mark), bmkp-bmenu-list-1: Call bmkp-bmenu-mode-line.
+;;     bookmark-bmenu-execute-deletions: Inhibit saving until all are deleted, then save.
+;;     bmkp-bmenu-mode-status-help: Show > and D using their faces, bmkp->-mark, bmkp-D-mark.
+;;                                  Use "" if bmkp-current-sort-order (new version) returns nil.
+;; 2012/10/09 dadams
+;;     Made all autoload cookies explicitly load bookmark+.el(c).  Should help ELPA (e.g. MELPA).
+;; 2012/09/29 dadams
+;;     Added: bmkp-maybe-unpropertize-string.
+;;     bmkp-maybe-unpropertize-bookmark-names: Added optional arg COPY.
+;;     bmkp-bmenu-define(-jump-marked|-full-snapshot|-tags-sort)-command:
+;;       Bind print-circle, version-control, require-final-newline.
+;;       Use find-file-noselect & write-file, not write-region.
+;;     bmkp-bmenu-define-jump-marked-command: Use bmkp-maybe-unpropertize-bookmark-names on bookmarks.
+;;     bmkp-bmenu-define-full-snapshot-command:
+;;       Copy shared bookmark lists and single strings, to avoid circular refs.
+;;       Expand file names and use convert-standard-filename, for bookmark file names.
+;; 2012/09/28 dadams
+;;     Added: bmkp-bmenu-jump-to-marked.
+;;     Renamed: bmkp-bmenu-w32-open-select to bmkp-bmenu-w32-jump-to-marked.
+;;     Replace bookmark-bmenu-select with bmkp-bmenu-jump-to-marked, everywhere.
+;;     bmkp-bmenu-w32-open-with-mouse:
+;;       Rewrote to directly call bookmark-handle-bookmark, jump-fn, and show annotations.
+;; 2012/09/03 dadams
+;;     bookmark-bmenu-toggle-filenames: Added missing nil FORCE arg.
+;;     bmkp-bmenu-list-1: Call bookmark-bmenu-toggle-filenames with NO-MSGP arg.
+;;     Removed: bmkp-bmenu-filter-prompt.  bmkp-bmenu-read-filter-input: hard-code the prompt.
+;; 2012/06/26 dadams
+;;     Moved here from bookmark+-mac.el: bmkp-assoc-delete-all, bmkp-replace-regexp-in-string.
+;;     Wrapped require of bookmark+-mac.el in eval-when-compile.
+;; 2012/06/21 dadams
+;;     Added: bmkp-bmenu-nb-marked-in-mode-name.  Added to bookmark-bmenu-mode-hook.
+;;     Try to load-library bookmark+-mac.  Require it only if cannot load-library.
+;; 2012/06/15 dadams
+;;     bookmark-bmenu-mode, bmkp-bmenu-mode-status-help: Improved doc string.
+;;     bmkp-bmenu-show-or-edit-annotation: Corrected doc string: bookmark, not buffer.
+;; 2012/06/14 dadams
+;;     Added face bmkp-no-local.
+;;     Redefined defaults for faces bmkp-non-file and bmkp-variable-list.
+;;     bmkp-bmenu-mode-status-help: Added legend for no such local file.
+;;     bmkp-bmenu-propertize-item: Distinguish no such local file from no such existing buffer.
+;; 2012/06/13 dadams
+;;     bookmark-bmenu-bookmark: forward-char bmkp-bmenu-marks-width, not 1+ that.
+;;     bmkp-bmenu-propertize-item: Allow a file bookmark to get buffer prop if file not yet saved.
+;;                                 Do not require buffer-name attribute for bmkp-non-file face.
+;; 2012/06/11 dadams
+;;     bmkp-bmenu-propertize-item: Use bmkp-non-file-filename also if filename is missing from bmk.
+;; 2012/05/05 dadams
+;;     bookmark-bmenu-(un)mark(-all), bmkp-bmenu-regexp-mark, bmkp-bmenu-toggle-marks,
+;;       bmkp-bmenu-mark-bookmarks-satisfying, bmkp-bmenu-toggle-marked-temporary/savable,
+;;       bmkp-bmenu-(un)mark-bookmarks-tagged-regexp:
+;;         Added optional arg MSG-P.
+;;     bookmark-bmenu-(un)mark(-all), bookmark-bmenu-execute-deletions, bmkp-bmenu-regexp-mark,
+;;       bmkp-bmenu-toggle-show-only-(un)marked, bmkp-bmenu-mark-bookmarks-satisfying,
+;;       bmkp-bmenu-toggle-marks, bmkp-bmenu-toggle-marked-temporary/savable,
+;;       bmkp-bmenu-toggle-temporary, bmkp-bmenu-make-sequence-from-marked,
+;;       bmkp-bmenu-(un)omit(-marked), bmkp-bmenu-(un)mark-bookmarks-tagged-regexp,
+;;       bmkp-bmenu-mark/unmark-bookmarks-tagged-*, bmkp-bmenu-change-sort-order,
+;;       bmkp-reverse(-multi)-sort-order:
+;;         Pass NO-MSG-P to *-refresh/rebuild-menu-list, *-surreptitiously-rebuild-list, *-store.
+;;     bmkp-bmenu-mark/unmark-bookmarks-tagged-(all/none|some/not-all):
+;;       Swapped last two args, so consistent order.
+;;     bmkp-bmenu-(un)mark-bookmarks-tagged-*: Updated arg order in calls to b-b-m/u-b-t-(a/n|s/n-a).
+;;     bmkp-bmenu-(un)mark-bookmarks-tagged-regexp, bmkp-bmenu-mark/unmark-bookmarks-tagged-*:
+;;       Added status message.
+;; 2012/05/01 dadams
+;;     Added redefinition of bookmark-bmenu-delete-backwards (they broke its movement).
+;;     Added aliases: bmkp-bmenu-flag-for-deletion(-backwards).  Bind to d, k, C-d (same as aliases).
+;;     bmkp-bmenu-(add|remove)-tags, bmkp-bmenu-(add|remove)-tags-(to|from)-marked:
+;;         Automatically re-sort if # tagged bmks changed and sort order is tagged first/last (s t).
+;;     Added: bmkp-bmenu-sort-tagged-before-untagged.
+;;     Bind bmkp-bmenu-sort-tagged-before-untagged to s t.
+;;     Bind bmkp-bmenu-sort-by-last-bookmark-access to s d, not s t.
+;;     Bind bmkp-bmenu-sort-by-last-local-file-access to s f d, not s f t.
+;;     Bind bmkp-bmenu-sort-by-local-file-type to s f k, not s f d.
+;; 2012/04/28 dadams
+;;     bookmark-bmenu-(un)mark(-all), bmkp-bmenu-regexp-mark, bmkp-bmenu-mark-bookmarks-satisfying,
+;;       bmkp-bmenu-toggle-marks, bmkp-bmenu-(un)mark-bookmarks-tagged-regexp,
+;;       bmkp-bmenu-mark/unmark-bookmarks-tagged-(all/none|some/not-all):
+;;         Added optional arg NO-RE-SORT-P.
+;;         Automatically re-sort if marks changed and if sort order is marked first/last (s >).
+;;     Changed all non-interactive calls of bookmark-bmenu-(un)mark to pass non-nil NO-RE-SORT-P.
+;;     bmkp-bmenu-toggle-marks: Call bookmark-bmenu-ensure-position at start.
+;; 2012/04/27 dadams
+;;     bmkp-bmenu-edit-marked: Use bmkp-with-output-to-plain-temp-buffer.
+;; 2012/04/13 dadams
+;;     Added: bmkp-bmenu-sort-(flagged|modified)-before-un(flagged|modified), bmkp-flagged-bookmarks.
+;;     Bound bmkp-bmenu-sort-(flagged|modified)-before-un(flagged|modified) to s D, s *.
+;;     bookmark-bmenu-(un)mark: Delete bookmark from bmkp-flagged-bookmarks.
+;;     bookmark-bmenu-mark: Use (equivalent of) eq version of add-to-list.
+;;     bookmark-bmenu-delete: Add bookmark to bmkp-flagged-bookmarks.
+;;     bmkp-bmenu-list-1: Always reset bmkp-(flagged|modified)-bookmarks.
+;;                        Flag bookmarks if bmkp-flagged-bookmark-p.
+;;     bmkp-bmenu-refresh-menu-list: C-u resets bmkp-flagged-bookmarks too.
+;; 2012/04/10 dadams
+;;     bmkp-bmenu-load-marked-bookmark-file-bookmarks:
+;;       Use bmkp-refresh-menu-list, not bmkp-refresh/rebuild-menu-list.
+;;     bmkp-bmenu-(add|remove)-tags-(to|from)-marked, bmkp-bmenu-paste-(add|replace)-tags-to-marked:
+;;       Corrected bookmark-save to bookmark-save-flag in bindings to nil.
+;;       Use bmkp-count-multi-mods-as-one-flag for the binding.
+;;       Call bmkp-refresh-menu-list.
+;; 2012/04/09 dadams
+;;     bmkp-bmenu-set-tag-value, bmkp-bmenu-remove-tags, bmkp-bmenu-paste-(add|replace)-tags:
+;;       Added nil NO-UPDATE-P arg in calls to bmkp-set-tag-value, bmkp-remove-tags,
+;;       bmkp-paste-(add|replace)-tags.
+;;     bmkp-bmenu-add-tags-to-marked, bmkp-bmenu-remove-tags-from-marked,
+;;       bmkp-bmenu-paste-(add|replace)-tags-to-marked:
+;;         Bind bookmark-save to nil around iteration, to inhibit saving until finished.
+;;         New arg order for calls to bmkp-(add|remove)-tags.
+;;         Pass non-nil NO-UPDATE-P arg to bmkp-paste-(add|replace)-tags.
+;; 2012/04/03 dadams
+;;     Moved here from bookmark+-1.el: bmkp-face-prop.
+;; 2012/03/19 dadams
+;;     Added: bmkp-*-mark.
+;;     bmkp-bmenu-list-1, bmkp-bmenu-mode-status-help: Use bmkp-*-mark for *.
+;; 2012/03/18 dadams
+;;     bookmark-bmenu-delete: Remove bookmark from bmkp-modified-bookmarks also.
+;;     bmkp-bmenu-list-1: RESET-P resets bmkp-modified-bookmarks also.  Insert modified marks (*).
+;;     bmkp-bmenu-refresh-menu-list:
+;;       When revert from file: Reset *-marked-bookmarks, *-modified-bookmarks, *-omitted-bookmarks.
+;;                              Bind bmkp-bmenu-filter-function to nil for bmkp-refresh-menu-list.
+;;     bmkp-bmenu-toggle-show-only-(un)marked:
+;;       Save display, so bmkp-bmenu-before-hide-marked-alist is up-to-date.
+;;     bmkp-bmenu-mode-status-help: Added legend for markings.
+;;     bmkp-bmenu-edit-marked: Use (shallow) copies of bookmarks, not originals.
+;;     Added bmkp-save-menu-list-state to Bookmark+ menu.
+;; 2012/03/13 dadams
+;;     bmkp-bmenu-read-filter-input:
+;;       If C-g then restore previous display.
+;;       Use only one catch and test while condition.
+;;       Do not try to pop an empty list.
+;;     bmkp-bmenu-filter-((bookmark|file)-name|annotation|tags)-incrementally:
+;;       Use run-with-idle-timer, not run-with-timer
+;; 2012/03/11 dadams
+;;     Added Revert to Saved (bmkp-revert-bookmark-file) to menu.
+;; 2012/03/07 dadams
+;;     bmkp-bmenu-load-marked-bookmark-file-bookmarks: Use bmkp-sorted-alist to load in display order.
+;; 2012/03/06 dadams
+;;     bookmark-bmenu-mode: Reorg.
+;;     bmkp-bmenu-refresh-menu-list:
+;;       Call bmkp-refresh-menu-list also when revert file.  Use yes-or-no-p, not y-or-n-p.
+;; 2012/03/05 dadams
+;;     bmkp-bmenu-mode-status-help: Added Autosave bookmarks and Autosave list display to info at top.
+;; 2012/03/04 dadams
+;;     Added: bmkp-bmenu-load-marked-bookmark-file-bookmarks.
+;;     Bind bmkp-toggle-saving-menu-list-state to C-M-~, not M-l.
+;;     Bind bmkp-bmenu-load-marked-bookmark-file-bookmarks to M-l.  Add it to menu.
+;; 2012/03/02 dadams
+;;     bookmark-bmenu-list: Reset marked and omitted lists to () if a name is not a current bmk.
+;; 2012/02/28 dadams
+;;     Added face bmkp-file-handler.
+;;     bmkp-bmenu-mode-status-help: Added bmkp-file-handler to face legend.
+;;     bmkp-bmenu-propertize-item: Propertize file-handler bookmarks, with bmkp-file-handler.
+;; 2011/12/31 dadams
+;;     Define macro with-buffer-modified-unmodified for Emacs 23.1, in addition to Emacs < 23.
+;; 2011/12/30 dadams
+;;     Added aliases: bmkp-bookmark-(data|name)-from-record.
+;;     Added: bmkp-bmenu-show-or-edit-annotation, bmkp-bmenu-edit-bookmark-record,
+;;            bmkp-bmenu-edit-marked.
+;;     Renamed bmkp-bmenu-edit-bookmark to bmkp-bmenu-edit-bookmark-name-and-file.
+;;     bookmark-bmenu-mark: Propertize bookmark name with bmkp-full-record before adding to list.
+;;     bookmark-bmenu-list:
+;;       Added optional arg MSGP.  Show status messages.
+;;       Propertize bookmark names if not already propertized, in marked and omitted lists.
+;;     bookmark-bmenu-mode: Updated doc string.
+;;     bmkp-bmenu-make-sequence-from-marked:
+;;       Use bmkp-get-bookmark-in-alist, not bookmark-get-bookmark.
+;;     Bind bmkp-bmenu-show-or-edit-annotation (not *-show-annotation) to a.
+;;     Bind bmkp-bmenu-edit-bookmark-name-and-file to r now, not E.
+;;     Bind bmkp-bmenu-edit-marked to E and T > e.
+;;     Bind bmkp-bmenu-edit-bookmark-record to e.
+;;     bmkp-bmenu-quit: Show progress messages.
+;;     bmkp-bmenu-tags-menu: Added bmkp-bmenu-edit-marked.
+;;     bmkp-bmenu-mouse-3-menu:
+;;       Added: bmkp-bmenu-edit-tags.
+;;       Replaced *-rename and *-relocate with bmkp-bmenu-edit-bookmark-name-and-file.
+;; 2011/12/24 dadams
+;;     Added: bookmark-bmenu-toggle-filenames, with optional arg NO-MSG-P.
+;;     bookmark-bmenu-surreptitiously-rebuild-list, bookmark-bmenu-(show|hide)-filenames:
+;;       Added progress messages and optional arg NO-MSG-P.
+;;     bookmark-bmenu-(show|hide)-filenames, bookmark-bmenu-toggle-filenames:
+;;       Correct FORCE behavior and doc strings.
+;;     bmkp-bmenu-refresh-menu-list: Pass (not) MSG-P to bmkp-refresh-menu-list.
+;; 2011/12/21 dadams
+;;     Added: bmkp-bmenu-mark-orphaned-local-file-bookmarks,
+;;            bmkp-bmenu-show-only-orphaned-local-files, bmkp-bmenu-mark-variable-list-bookmarks.
+;;     bmkp-bmenu-refresh-menu-list: Added optional args ARG and MSGP, so you can revert from file.
+;;     bookmark-bmenu-mode: Updated and reordered doc string.
+;;     Bind O M, O S to orphaned commands, not omit commands.  Changed omit bindings to use -, not O.
+;;     Bind bmkp-bmenu-mark-variable-list-bookmarks to V M.
+;;     bmkp-bmenu-show-menu: Reordered.  Added: *-w3m-urls, *-variable-lists, *-orphaned-local-files.
+;;     bmkp-bmenu-mark-menu: Reordered.  Added: *-w3m-*, *-variable-list-*, *-orphaned-local-file-*.
+;; 2011/12/19 dadams
+;;     Added: with-buffer-modified-unmodified.
+;;     bookmark-bmenu-((un)mark|delete), bookmark-bmenu-(show|hide)-filenames:
+;;       Use with-buffer-modified-unmodified.
+;;     bookmark-bmenu-show-filenames, bmkp-bmenu-mouse-3-menu: Use line-(beginning|end)-position.
+;; 2011/12/15 dadams
+;;     bmkp-bmenu-propertize-item: Use bmkp-local-directory face also for Dired (e.g. with wildcards).
+;;     bmkp-bmenu-mode-status-help: Clarify legend for remote and local dirs/Dired.
+;; 2011/12/08 dadams
+;;     bmkp-bmenu-mouse-3-menu: Use easymenu to build the menu.  Conditionalize some items.
+;;     Bind down-mouse-3, not mouse-3, to bmkp-bmenu-mouse-3-menu.  (bind mouse-3 to ignore).
+;;     Added eval-when-compile for easymenu.el.
+;; 2011/12/05 dadams
+;;     bmkp-bmenu-menubar-menu: Reordered items regarding bookmark files.
+;;     bmkp-bmenu-mode-status-help: Correct intro text, reorder, use marker for position TOP.
+;;     bookmark-bmenu-mode: Changed intro text slightly.
+;; 2011/12/03 dadams
+;;     bmkp-bmenu-list-1: Print current bookmark file at top of display.
+;;     Increased bmkp-bmenu-header-lines to 5.
+;;     bookmark-bmenu-mode: Updated doc string for binding changes and new option.
+;;     bmkp-bmenu-regexp-mark: Mention right-padding of bookmark names in doc string.
+;;     bmkp-bmenu-mode-status-help: Reorder Current Status items, to put bookmark file first.
+;;     Bind L to bmkp-switch-bookmark-file-create, not bmkp-switch-bookmark-file.
+;; 2011/11/19 dadams
+;;     bmkp-bmenu-image-bookmark-icon-file: Default to an existing Emacs image file, not nil.
+;; 2011/11/18 dadams
+;;     Added: bmkp-bmenu-mark-image-bookmarks, bmkp-bmenu-show-only-image-files,
+;;            bmkp-bmenu-image-bookmark-icon-file.
+;;     bmkp-bmenu-list-1: Show icon image for image-file bookmarks.
+;;     bookmark-bmenu-mode: Add to doc string: bmkp-image-jump, bmkp-bmenu-mark-image-bookmarks,
+;;                                             bmkp-bmenu-show-only-image-files.
+;;     bmkp-bmenu-mode-status-help: Added image icon to legend.
+;;     Bound keys: M-I M-M, M-I M-S to *-mark-image-bookmarks *-show-only-image-files.
+;;     Added to menus (Mark, Show): bmkp-bmenu-mark-image-bookmarks, bmkp-bmenu-show-only-image-files.
+;; 2011/11/01 dadams
+;;     bookmark-bmenu-mode: Changed mode-name var for mode line: Bookmarks, not Bookmark Menu.
+;;                          Updated doc string for autofile & temporary jump commands.
+;; 2011/10/31 dadams
+;;     bookmark-bmenu-mode: Updated doc string with bmkp-toggle-autotemp-on-set.
+;;     bmkp-bmenu-menubar-menu: Added: bmkp-toggle-autotemp-on-set.
+;; 2011/10/27 dadams
+;;     Added: bmkp-X-mark, bmkp-bmenu-toggle-marked-temporary/savable, bmkp-bmenu-toggle-temporary,
+;;            bmkp-bmenu-mark-autonamed-bookmarks, bmkp-bmenu-show-only-temporary,
+;;            bmkp-bmenu-mark-temporary-bookmarks.
+;;     bmkp-bmenu-list-1: Mark with X in place of a, if bookmark is temporary.
+;;     bookmark-bmenu-mode: Mode-line major-mode name indicates when in temporary bookmarking mode.
+;;                          Updated doc string with temporary bookmark commands.
+;;     bmkp-t-mark: Changed default attributes.
+;;     Bind: M-L to bmkp-temporary-bookmarking-mode, M-X to bmkp-bmenu-toggle-marked-temporary/savable
+;;           X M to bmkp-bmenu-mark-temporary-bookmarks, X S to bmkp-bmenu-show-only-temporary,
+;;           C-M-X to bmkp-bmenu-toggle-temporary.
+;;     bmkp-bmenu-show-only-bookmark-files: Bind to Y S, not X S.
+;;     bmkp-bmenu-mark-bookmark-file-bookmarks: Bind to Y M, not X M.
+;; 2011/07/01 dadams
+;;     bmkp-bmenu-change-sort-order, bmkp(-multi)-reverse-sort-order: Handle null CURRENT-BMK.
+;; 2011/04/24 dadams
+;;     Added to Tags menu: Purge Autofiles with No Tags.
+;; 2011/04/23 dadams
+;;     Bound bmkp-bmenu-set-tag-value-for-marked to T > v and added to bmkp-bmenu-tags-menu.
+;;     bmkp-bmenu-mouse-3-menu: Added bmkp-rename-tag.
+;; 2011/04/22 dadams
+;;     Bound *-copy-tags to T c, T M-w, *-paste(-add|replace)-tags to T p, T C-y, T q.
+;; 2011/04/21 dadams
+;;     Added:  bmkp-bmenu-copy-tags, bmkp-bmenu-paste-add-tags(-to-marked),
+;;             bmkp-bmenu-paste-replace-tags(-for-marked).
+;;     Bound and added to menus: bmkp-bmenu-paste-add-tags-to-marked,
+;;                               bmkp-bmenu-paste-replace-tags-for-marked.
+;;     Added to This Bookmark menu: bmkp-bmenu-copy-tags, bmkp-bmenu-paste(-add|replace)-tags.
+;; 2011/04/19 dadams
+;;     Added: bmkp-bmenu-unmark-bookmarks-tagged-regexp.  Bound it to T u %.  Added it to menu.
+;; 2011/04/16 dadams
+;;     Added: bmkp-edit-tags-send.  Bound it to T e in bookmark-bmenu-mode-map.
+;;     bookmark-bmenu-mode: Updated help text for tags editing.
+;;     bmkp-maybe-unpropertize-bookmark-names:
+;;       Test emacs-major-version, not just (boundp 'print-circle).
+;; 2011/04/15 dadams
+;;     Added: bmkp-bmenu-mark-autofile-bookmarks, bmkp-bmenu-show-only-autofiles.
+;;       And added them to menus.
+;;     bookmark-bmenu-mode-map:
+;;       Bind bmkp-bmenu-mark-autofile-bookmarks, bmkp-bmenu-show-only-autofiles to A M, A S.
+;;       Bind bookmark-bmenu-show-all-annotations to M-a, not A.
+;;       Bind bmkp-bmenu-search-marked-bookmarks-regexp to M-s a M-s, not M-a.
+;;       Bind *-mark-url-bookmarks, *-show-only-urls to M-u M-m, M-u M-s, not M-u M, M-u S.
+;;     bookmark-bmenu-mode: Updated help to reflect latest bindings.
+;; 2011/04/13 dadams
+;;     bmkp-bmenu-tags-menu: Added: bmkp-(un)tag-a-file.
+;; 2011/04/12
+;;     Added: bmkp-propertize-bookmark-names-flag, bmkp-maybe-unpropertize-bookmark-names,
+;;            bmkp-bmenu-get-marked-files.
+;;     Renamed: bmkp-bmenu-omitted-list to bmkp-bmenu-omitted-bookmarks.
+;;     bmkp-bmenu-define-full-snapshot-command:
+;;       Bind print-circle to t around pp.  Use bmkp-maybe-unpropertize-bookmark-names on lists.
+;;     bookmark-bmenu-(show|hide)-filenames, bmkp-bmenu-toggle-show-only-(un)marked,
+;;       bmkp-bmenu-(un)omit-marked:
+;;         Fit one-window frame only if selected window is *Bookmark List*.
+;;     bookmark-bmenu-bookmark: Added optional arg FULL.  Non-nil means return full bookmark record.
+;;     bookmark-bmenu-unmark, bookmark-bmenu-delete, bmkp-bmenu-unomit-marked:
+;;       Use bmkp-delete-bookmark-name-from-list, not delete.
+;;     bookmark-bmenu-execute-deletions: Pass full bookmark, not name, to delete, and don't use assoc.
+;;     bookmark-bmenu-rename: Use bmkp-bmenu-goto-bookmark-named instead of just searching for name.
+;;     bmkp-bmenu-toggle-marks, bmkp-bmenu-unomit-marked, bmkp-bmenu-define-jump-marked-command,
+;;       bmkp-bmenu-mouse-3-menu:
+;;         Use bmkp-bookmark-name-member, not member.
+;;     bmkp-bmenu-make-sequence-from-marked: Do not invoke bookmark-bmenu-list when no displayed list.
+;;     bmkp-bmenu-define-command: Use bmkp-maybe-unpropertize-bookmark-names on *-omitted-bookmarks.
+;;     bmkp-bmenu-list-1: Use bmkp-sort-omit, not bmkp-sort-and-remove-dups.
+;;                        Pass full bookmark to bmkp-bmenu-propertize-item.
+;;     bmkp-bmenu-propertize-item:
+;;       First arg is now a full bookmark, not a bookmark name.  Get bookmark name from it.
+;;       Put prop bmkp-bookmark-name on buffer text with propertized bookmark-name string as value.
+;;       String has property bmkp-full-record with value the full bookmark record, with string as car.
+;;       Return propertized bookmark-name string.
+;;     bmkp-bmenu-isearch-marked-bookmarks(-regexp), bmkp-bmenu-dired-marked,
+;;       bmkp-bmenu-(search|query-replace)-marked-bookmarks-regexp:
+;;         Use bmkp-sort-omit, not bmkp-sort-and-remove-dups.
+;;     bmkp-bmenu-goto-bookmark-named:
+;;       If NAME has property bmkp-full-record then go to the bookmark it indicates.  Otherwise, just
+;;       go to the first bookmark with the same name.
+;;     bookmark-bmenu-mode: Added bmkp-save-menu-list-state (now a command) to the mode help.
+;; 2011/04/02 dadams
+;;     bookmark-bmenu-mode: Added to mode help: bmkp-file-this-dir-(all|some)-tags(-regexp)-jump.,
+;;                                              Create/Set section, with bmkp-autofile-set.
+;; 2011/04/01 dadams
+;;     bookmark-bmenu-mode: Added to mode help: bmkp-(dired|file)-this-dir-jump.
+;; 2011/03/26 dadams
+;;     bookmark-bmenu-mode: Added new file-with-tags jump commands to the help.
+;; 2011/03/05 dadams
+;;     bmkp-bmenu-edit-bookmark: Use bmkp-refresh-menu-list, not *-surreptitiously-rebuild-list.
+;; 2011/02/11 dadams
+;;     Faces: Better defaults for dark background.
+;; 2011/01/03 dadams
+;;     Removed autoload cookies from non def* sexps and from define-key.
+;;     Added missing autoload cookies for commands, in particular redefined std commands & defalias.
+;; 2010/12/10 dadams
+;;     Added defalias for bookmark-name-from(-full)-record, to fix gratuitous Emacs name change.
+;; 2010/09/24 dadams
+;;     Added: bmkp-bmenu-show-only-autonamed.  Bound to # S.  Added to bmkp-bmenu-show-menu.
+;;     bookmark-bmenu-mode: Updated doc string for autonamed jumps, show.
+;;     Renamed varlist to variable-list everywhere.
 ;; 2010/08/22 dadams
 ;;     Added: bmkp-bmenu-filter-annotation-incrementally, bookmark-bmenu-relocate (Emacs 20, 21),
 ;;            bmkp-bmenu-filter-alist-by-annotation-regexp.  Bound, added to menus and help.
@@ -188,8 +1576,161 @@
 ;; 2010/07/14 dadams
 ;;     Created from bookmark+.el code.
  
+;;;(@* "CHANGE LOG FOR `bookmark+-key.el'")
+;;
+;; 2014/07/11 dadams
+;;     bmkp-highlight-menu: Added item Toggle Autofile Highlighting in Dired.
+;; 2014/07/06 dadams
+;;     Removed: bmkp-options-menu.  Use bmkp-bmenu-toggle-menu, and rename Toggle, not Toggle Option.
+;;     Removed individual toggle commands from menu-bar-bookmark-map (Bookmarks).
+;;     Reuse bmkp-bmenu-toggle-menu for menu-bar-bookmark-map [options].
+;; 2014/07/05 dadams
+;;     Moved submenu bmkp-jump-tags-menu before individual menu items.
+;; 2014/03/23 dadams
+;;     Bind j and J in bookmark-bmenu-mode-map.  Bind also j > there.
+;;     Add bmkp-bmenu-jump-to-marked to bmkp-jump-menu when in bookmark-list display.
+;; 2013/10/29 dadams
+;;     Bind bookmark-set's previous keys to bmkp-bookmark-set-confirm-overwrite.
+;;     Bind bookmark-set to C-x r M, not C-x r m.
+;;     bmkp-menu-bar-set-bookmark: Use bmkp-bookmark-set-confirm-overwrite, not bookmark-set.
+;; 2013/07/20 dadams
+;;     Moved items to new submenus: New/Update and Delete.
+;; 2013/06/30 dadams
+;;     Bind bmkp-set-snippet-bookmark to C-x p M-w, bmkp-snippet-to-kill-ring to C-x j M-w.
+;; 2013/05/28 dadams
+;;     Applied renaming of bmkp-edit-bookmark-name-and-file to bmkp-edit-bookmark-name-and-location.
+;; 2013/04/15 dadams
+;;     In bmkp-set-map: Bind F to bmkp-make-function-bookmark (C-x p c F).
+;;                      Bind C-k to bmkp-wrap-bookmark-with-last-kbd-macro (C-x p c C-k).
+;;                      Bind s to bmkp-set-sequence (C-x p c s).
+;; 2012/08/31 dadams
+;;     Do not bind bmkp-compilation-target-set(-all) unless defined.
+;; 2012/06/26 dadams
+;;     Wrapped require of bookmark+-mac.el in eval-when-compile.
+;; 2012/06/21 dadams
+;;     Try to load-library bookmark+-mac, for bmkp-menu-bar-make-toggle.
+;; 2012/02/26 dadams
+;;     Bind:
+;;       bmkp-this-file/buffer-bmenu-list to C-x p , not C-x p ..
+;;       bmkp-(file|dired)-this-dir-jump* to C-x j . f|d not C-x j C-f|C-d.
+;;       bmkp-file-this-dir-*-tags(-regexp)-jump* to C-x j t . [%][*+] not C-x j t C-f [%][*+].
+;;       bmkp-this-buffer-jump* to C-x j , , not C-x j ..
+;;       bmkp-autonamed-this-buffer-jump* to C-x j , # not C-x j # ..
+;;       bmkp-autonamed-jump* to C-x j # not C-x j # #.
+;;       bmkp-autofile-jump* in all Emacs versions.
+;;       bmkp-find-file(-other-window), which is new, to C-x j C-f.
+;;       new autofile tags jump commands bmkp-autofile-(all|some)-tags(-regexp)-jump* to
+;;         C-x j t a [%][*+], which was for bmkp-find-file-*-tags*.
+;;       bmkp-find-file-(all|some)-tags(-regexp)* to C-x j t C-f [%] [*+] not C-x j t a [%] [*+].
+;;     Add to menus: bmkp-autofile-*.  Rename menu items for bmkp-find-file: Find Autofile....
+;;     Rename menu Bookmarked File to Find File or Autofile.  For Emacs 20-21, make it a single item.
+;;     bmkp-jump-tags-menu, bmkp-find-file-menu: Do not add Autofile tags items for Emacs 20.
+;; 2012/02/21 dadams
+;;     Added bindings for: bmkp-autofile-(all|some)-tags(-regexp)-jump(-other-window),
+;;                         bmkp-find-file(-other-window) (was same as *autofile*).
+;;     Changed bindings:
+;;       *-this-dir*: . [df] (was C-d/C-f), *this-buffer*: , (was .), *find-file*tags*: C-f (was a).
+;;     Define *autofile* for all Emacs versions.  Separate bindings from *find-file* cmds.
+;; 2011/12/30 dadams
+;;     Added aliases: bmkp-bookmark-(data|name)-from-record.
+;;     Bind E to bmkp-edit-bookmark-record, not bmkp-edit-bookmark.
+;;     Bind r to bmkp-edit-bookmark-name-and-file, not bookmark-rename.  Ditto in menu.
+;;     Use bmkp-get-bookmark-in-alist, not bookmark-get-bookmark in :visible conditions.
+;;     menu-bar-bookmark-map: Added bmkp-edit-bookmark-record.
+;;     bmkp-tags-menu: Added bmkp-edit-tags.
+;; 2011/12/14 dadams
+;;     Removed conditions :enable bookmark-alist.
+;; 2011/12/09 dadams
+;;     Commented out menu items with complex :enable conditions, replacing them with simple ones.
+;;       Reason: too slow, especially in Emacs 20.
+;; 2011/12/05 dadams
+;;     menu-bar-bookmark-map: Reordered items regarding bookmark files.
+;; 2011/12/03 dadams
+;;     Bind C-x p L to bmkp-switch-bookmark-file-create, not bmkp-switch-bookmark-file.
+;;     Reordered bookmark-file items in menu-bar-bookmark-map.
+;; 2011/11/18 dadams
+;;     Bind bmkp-image-jump(-other-window) to C-x (4) j M-i.
+;;     bmkp-jump-menu: Add bmkp-image-jump-other-window.
+;; 2011/11/15 dadams
+;;     Bind *-this-file/buffer*, not *-this-buffer*.
+;; 2011/11/01 dadams
+;;     Bind alias bmkp-autofile-jump(-*), not bmkp-find-file(-*) to C-x j a, so Icicles picks up key.
+;;     Bind bmkp-bookmark-file-jump to C-x j y, not C-x j x.  Bind bmkp-temporary-jump(-*) to C-x j x.
+;;     bmkp-jump-menu: Bind bmkp-(autofile|temporary)-jump-other-window.
+;; 2011/10/31 dadams
+;;     Bind bmkp-toggle-autotemp-on-set to C-x p x.  Move bmkp-set-bookmark-file-bookmark to C-x p y.
+;;     menu-bar-bookmark-map: Added: bmkp-toggle-autotemp-on-set.
+;; 2011/10/28 dadams
+;;     menu-bar-bookmark-map:
+;;       Added: bmkp-delete-all-temporary-bookmarks, bmkp-temporary-bookmarking-mode.  Reordered.
+;;     bmkp-options-menu: Added: bmkp-toggle-saving-menu-list-state, bmkp-toggle-saving-bookmark-file.
+;; 2011/04/24 dadams
+;;     Added to Bookmarks menu and its Tags submenu: Purge Autofiles with No Tags.
+;; 2011/04/23 dadams
+;;     bmkp-tags-menu:
+;;       Added bmkp-set-tag-value, bmkp-(add|remove|copy)-tags, bmkp-paste-(add|replace)-tags.
+;; 2011/04/21 dadams
+;;     Bound: bmkp-copy-tags, bmkp-paste-add-tags, bmkp-paste-replace-tags.
+;; 2011/04/16 dadams
+;;     Added: bmkp-tags-map.  Bound tag commands to prefix C-x p t.
+;; 2011/04/14 dadams
+;;     Renamed menu Jump To Bookmark to just Jump To, in menu-bar-bookmark-map.
+;; 2011/04/13 dadams
+;;     Added:
+;;       bmkp-find-file-menu (bmkp-find-file(-(all|some)-tags(-regexp)(-other-window)),
+;;       bmkp-jump-tags-menu (what was in main, plus bmkp-find-file-*-tags-regexp*),
+;;       bmkp-tags-menu (list all, rename, remove from all, (un)tag a file).
+;;     bmkp-jump(-other-window)-map:
+;;       Added bmkp-find-file(-other-window) to menu.
+;;       Bound keys for bmkp-find-file-(all|some)-tags(-regexp)(-other-window): C-x (4) j t a...
+;; 2011/04/02 dadams
+;;     Added bindings for (new) bmkp-autofile-set,
+;;                              bmkp-file-this-dir-(all|some)-tags(-regexp)-jump(-other-window).
+;; 2011/04/01 dadams
+;;     Added to bmkp-jump-menu: bmkp-(dired|file)-this-dir-jump-other-window.
+;;     Created from code in bookmark+-1.el.
+ 
 ;;;(@* "CHANGE LOG FOR `bookmark+-lit.el'")
 ;;
+;; 2014/07/06 dadams
+;;     Added: bmkp-last-auto-light-when-jump, bmkp-last-auto-light-when-set,
+;;            bmkp-toggle-auto-light-when-jump, bmkp-toggle-auto-light-when-set.
+;; 2013/06/09 dadams
+;;     Added vacuous defvars to suppress free-var warnings.
+;; 2013/05/15 dadams
+;;     Use bmkp-string-match-p instead of string-match wherever appropriate.
+;; 2012/10/09 dadams
+;;     Made all autoload cookies explicitly load bookmark+.el(c).  Should help ELPA (e.g. MELPA).
+;; 2012/09/22 dadams
+;;     bmkp-light-bookmark(s): Put full bookmark, not name, on overlay as its bookmark property.
+;;     bmkp-unlight-bookmark: Test using eq against full bookmark, not using equal against name.
+;;     bmkp-a-bookmark-lighted-at-pos: overlay-get now returns full bookmark, so get name if needed.
+;;     bmkp-overlay-of-bookmark: Use bookmark, not its name, like overlay-get does now.  Test with eq.
+;;     bmkp-light-bookmarks: Use add-to-list instead of unconditionally adding ov to ov-symb.
+;; 2012/04/28 dadams
+;;     bmkp-make/move-overlay-of-style, bmkp-make/move-fringe: Use FRONT-ADVANCE arg for make-overlay.
+;; 2011/12/30 dadams
+;;     Added aliases: bmkp-bookmark-(data|name)-from-record.
+;;     bmkp-bookmarks-lighted-at-point: Include only bookmarks in bookmark-alist.
+;;     bmkp-light-bookmark: Do nothing if BOOKMARK is not a bookmark or bookmark name.
+;;     bmkp-a-bookmark-lighted-at-pos: Return nil if no bookmark (at POS) in bookmark-alist.
+;; 2011/11/15 dadams
+;;     Applied renaming: bmkp-this-buffer-cycle-sort-comparer to *-this-file/buffer*.
+;; 2011/08/09 dadams
+;;     Bind icicle-unpropertize-completion-result-flag to t for all calls to completing-read.
+;; 2011/04/12
+;;     bmkp-cycle-lighted-this-buffer: Use bmkp-sort-omit, not bmkp-sort-and-remove-dups.
+;; 2011/04/01 dadams
+;;     bmkp-light-bookmark(s): Don't call bookmark-handle-bookmark.  Wrap with with-current-buffer.
+;; 2011/01/03 dadams
+;;     Added autoload cookies: defcustoms and commands.
+;; 2010/12/10 dadams
+;;     Added defalias for bookmark-name-from(-full)-record, to fix gratuitous Emacs name change.
+;; 2010/09/25 dadams
+;;     Added: bmkp-set-lighting-for(bookmarks|(-this)-buffer).  Requested by Joe Bloggs.
+;;     bmkp-set-lighting-for-bookmark: Added LIGHT-NOW-P arg (from prefix arg).
+;; 2010/09/11 dadams
+;;     Removed eval-when-compile for bookmark+-bmu, bookmark+-1.
 ;; 2010/08/15 dadams
 ;;     Require: bookmark.el.
 ;;     Require when compile: bookmark+-bmu.el, bookmark+-1.el, pp+.el (soft).
@@ -207,6 +1748,43 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+-mac.el'")
 ;;
+;; **************************************************************************************************
+;; NOTE: If you byte-compile Bookmark+ (recommended), then WHENEVER `bookmark+-mac.el' is updated,
+;;       you      must load `bookmark+-mac.el' (not just `bookmark+-mac.elc'), then compile it, then
+;;       RECOMPILE *ALL* of the other Bookmark+ source files as well.  This is normal for Lisp: code
+;;       that depends on macros needs to be byte-compiled anew after loading the updated macros.
+;; **************************************************************************************************
+;;
+;; 2014/07/11 dadams
+;;     bmkp-define-sort-command: Use setq, not push, for Emacs 20.
+;; 2014/07/06 dadams
+;;     bmkp-menu-bar-make-toggle: Redefined - no longer use menu-bar-make-toggle.  Support keywords.
+;; 2014/05/27 dadams
+;;     Added: bmkp-with-help-window.
+;; 2013/04/26 dadams
+;;     Added: bmkp-with-bookmark-dir.  (Not used currently.  For user code.)
+;; 2012/10/09 dadams
+;;     Made all autoload cookies explicitly load bookmark+.el(c).  Should help ELPA (e.g. MELPA).
+;; 2012/06/26 dadams
+;;     Moved bmkp-assoc-delete-all, bmkp-replace-regexp-in-string to bookmark+-bmu.el.
+;; 2012/04/27
+;;     Added: bmkp-with-output-to-plain-temp-buffer.
+;; 2012/04/12 dadams
+;;     bmkp-define-sort-command: Do not bmkp-bmenu-goto-bookmark-named unless current-bmk (play safe).
+;; 2012/04/11 dadams
+;;     bmkp-define-sort-command: In function def, change order to: fn, reverse-fn, unsorted.
+;; 2011/12/30 dadams
+;;     bmkp-define-cycle-command: Applied renaming of bmkp-sort-and-remove-dups to bmkp-sort-omit.
+;;     bmkp-define-file-sort-predicate: Updated doc string of generated functions.
+;;     Added renamings of bookmark-name-from(-full)-record, bookmark-get-bookmark-record.
+;; 2011/04/12
+;;     bmkp-define-cycle-command: Use bmkp-sort-omit, not bmkp-sort-and-remove-dups.
+;; 2011/01/03 dadams
+;;     Added autoload cookies: defmacro.
+;; 2010/09/25 dadams
+;;     Added: bmkp-define-next+prev-cycle-commands.
+;; 2010/09/24 dadams
+;;     Added: bmkp-define-cycle-command.
 ;; 2010/08/18 dadams
 ;;     Removed eval-when-compile for bookmark+-(bmu|1).el.
 ;; 2010/08/15 dadams
@@ -214,6 +1792,24 @@
  
 ;;;(@* "CHANGE LOG FOR `bookmark+.el'")
 ;;
+;; 2013/04/14 dadams
+;;     Added Version entry to header.  Updated bmkp-version-number to the same thing.
+;; 2012/10/09 dadams
+;;     Made all autoload cookies explicitly load bookmark+.el(c).  Should help ELPA (e.g. MELPA).
+;; 2012/06/26 dadams
+;;     Wrapped require of bookmark+-mac.el in eval-when-compile.
+;; 2012/06/21 dadams
+;;     Try to load-library bookmark+-mac.  Require it only if cannot load-library.
+;; 2012/02/26 dadams
+;;     Version 3.4.0.
+;; 2011/12/30 dadams
+;;     Version 3.3.0.
+;; 2011/04/12 dadams
+;;     Version 3.2.2.
+;; 2011/04/01 dadams
+;;     Require bookmark+-key.el (new).  Version 3.2.1.
+;; 2011/01/03 dadams
+;;     Added autoload cookies: defconst, command.
 ;; 2010/08/19
 ;;     bmkp-version-number: Version 3.2.0.
 ;; 2010/08/15 dadams
@@ -240,7 +1836,7 @@
 ;;     bmkp-bmenu-define-full-snapshot-command: Set bmkp-last-bookmark-file.
 ;;     bmkp-bookmark-description: Fixed typo: bmkp-bookmark-file-bookmark-p (not desktop).
 ;;     bmkp-make-bookmark-file-record: Use arg file (not bmkp-non-file-filename) as filename entry.
-;;     
+;;
 ;;     Added more autoload cookies.
 ;; 2010/07/09 dadams
 ;;     Added: bmkp-bmenu-mark-bookmark-file-bookmarks, bmkp-bmenu-show-only-bookmark-files,
@@ -321,7 +1917,7 @@
 ;;     Renamed: bmkp-toggle-autoname-bookmark-set/delete to bmkp-toggle-autonamed-bookmark-set/delete,
 ;;              bmkp-autonamed-bookmarks-alist-only to bmkp-autonamed-this-buffer-alist-only,
 ;;              bmkp-bookmark-autoname-p to bmkp-autonamed-bookmark-for-buffer-p,
-;;     Added: bmkp-autonamed-alist-only, bmkp-non-autonamed-alist-only, bmkp-autonamed-bookmark-p, 
+;;     Added: bmkp-autonamed-alist-only, bmkp-non-autonamed-alist-only, bmkp-autonamed-bookmark-p,
 ;;     bmkp-completing-read-1: Use DEFAULT as default.  Use just (not lax) - no non-t.
 ;;                             Use DEFAULT if empty input only if DEFAULT is non-nil.
 ;;     bmkp-choose-navlist-of-type: Added pseudo-type "any".
@@ -340,7 +1936,7 @@
 ;;     Wrap all (require '* nil t) in condition-case.
 ;; 2010/06/07 dadams
 ;;     Fix deskstop bookmarks for Emacs < 22.  Protect:
-;;       *-release-lock with fboundp, *-buffer-args-list with boundp, *-dir with Emacs version #, 
+;;       *-release-lock with fboundp, *-buffer-args-list with boundp, *-dir with Emacs version #,
 ;; 2010/05/30 dadams
 ;;     Added: bookmarkp-(next|previous)-bookmark-w32(-repeat).  Bound to C-x p (next|prior).
 ;; 2010/05/29 dadams
@@ -354,14 +1950,14 @@
 ;;       Bookmark List for Navlist, Set Navlist to Bookmarks of Type,
 ;;       Set Navlist from Bookmark-List Bookmark, Insert Bookmark Contents, Insert Bookmark Location.
 ;;     Added to Bookmark+ menu: Set Navlist *.
-;;     Added to bookmarkp-bmenu-jump-menu: In Navigation List. 
+;;     Added to bookmarkp-bmenu-jump-menu: In Navigation List.
 ;;     Added :enable entries for menu items.
 ;;     Updated bookmark-bmenu-mode doc string for cycling, navlist, and options.
 ;;     Corrected bindings of bookmarkp-jump-in-navlist(-other-window).
 ;; 2010/05/26 dadams
 ;;     Added:
 ;;       bookmarkp-choose-navlist-(from-bookmark-list|of-type), bookmarkp-crosshairs-highlight,
-;;       bookmarkp-cycle(-this-buffer)(-other-window), bookmarkp-delete-bookmarks, 
+;;       bookmarkp-cycle(-this-buffer)(-other-window), bookmarkp-delete-bookmarks,
 ;;       bookmarkp-jump-in-navlist(-other-window), bookmarkp-navlist-bmenu-list,
 ;;       bookmarkp-(next|previous)-bookmark(-this-buffer)(-repeat),
 ;;       bookmarkp-toggle-autoname-bookmark-set/delete, bookmarkp-autoname-bookmark(-function),
@@ -448,7 +2044,7 @@
 ;;     bookmark-set: Use bookmark-completing-read-lax w/ buffer's bookmarks, not read-from-minibuffer.
 ;;     bookmark-completing-read: Define using bookmarkp-completing-read-1.
 ;; 2010/04/09 dadams
-;;     bookmarkp-edit-bookmark: Update dired-directory property along with filename property. 
+;;     bookmarkp-edit-bookmark: Update dired-directory property along with filename property.
 ;; 2010/03/28 dadams
 ;;     bookmarkp-goto-position: Don't funcall bookmarkp-jump-display-function if it is nil.
 ;; 2010/03/28 dadams
@@ -719,7 +2315,7 @@
 ;;     Added: bookmarkp-list-defuns-in-commands-file, bookmarkp-remove-dups.
 ;; 2009/12/06 dadams
 ;;     Added: bookmarkp-bmenu-mouse-3-menu (bound to mouse-3),
-;;            bookmarkp-bmenu-(menubar|define-command|sort|show|tags|mark)-menu. 
+;;            bookmarkp-bmenu-(menubar|define-command|sort|show|tags|mark)-menu.
 ;;     bookmark-bmenu-delete: Remove newly flagged bookmark from bookmarkp-bookmark-marked-list.
 ;;     bookmarkp-define-tags-sort-command: Save macroexpanded definition in
 ;;                                         bookmarkp-bmenu-commands-file.
@@ -1087,14 +2683,13 @@
 ;;                    Use error, not message.  Change value for setcdr.
 ;;                    Do not use push with non-var (cl).
 ;;                  bookmark-delete:
-;;                    Redefine, to fix vanilla bug: increment count even when batch.
+;;                    Redefine, to fix vanilla bug: increment count even when BATCHP is non-nil.
 ;;                  *-non-file-name: Change to - no file -.  *-bmenu-list: Add arg FILTER-ON.
 ;;                  *-bmenu-execute-deletions: Use delete, not remove.
 ;;                  Add: *-replace-regexp-in-string.
 ;;                  bookmark-set: Fix *-yank-point for region case.  Fix bad parens.
 ;;       2009-09-02 Add: *-non-file-filename.  *-fix-bookmark-alist-and-save: Fix msg.
 ;;                  Require cl (gensym).  *-at-bol/eol' -> line-*-position (for Emacs 20).
-;;                  bookmark-delete: increment *-count if batch arg (fixes vanilla bug).
 ;;                  Redefine *-bmenu-execute-deletions,
 ;;                           *-bmenu-surreptitiously-rebuild-list. 
 ;;                  Update current filtered display - do not reload & display all bmks.
@@ -1245,22 +2840,22 @@
 ;;     Only define bookmark-menu-jump-other-window if < Emacs 22.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
 ;; published by the Free Software Foundation; either version 3, or
 ;; (at your option) any later version.
-;; 
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
-;; 
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:

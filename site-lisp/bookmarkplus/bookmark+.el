@@ -4,21 +4,28 @@
 ;; Description: Bookmark+: extensions to standard library `bookmark.el'.
 ;; Author: Drew Adams, Thierry Volpiatto
 ;; Maintainer: Drew Adams (concat "drew.adams" "@" "oracle" ".com")
-;; Copyright (C) 2000-2010, Drew Adams, all rights reserved.
+;; Copyright (C) 2000-2014, Drew Adams, all rights reserved.
 ;; Copyright (C) 2009, Thierry Volpiatto, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Last-Updated: Thu Aug 19 07:54:26 2010 (-0700)
+;; Version: 2013.07.23
+;; Last-Updated: Sun Jun 22 07:02:09 2014 (-0700)
 ;;           By: dradams
-;;     Update #: 14946
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/bookmark+.el
+;;     Update #: 15020
+;; URL: http://www.emacswiki.org/bookmark+.el
+;; Doc URL: http://www.emacswiki.org/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+, placeholders, annotations, search, info, url, w3m, gnus
-;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x
+;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x, 24.x
 ;;
 ;; Features that might be required by this library:
 ;;
-;;   `bookmark', `bookmark+-1', `bookmark+-bmu', `bookmark+-lit',
-;;   `bookmark+-mac', `dired', `dired-aux', `dired-x', `ffap', `pp',
-;;   `pp+'.
+;;   `apropos', `apropos+', `avoid', `bookmark', `bookmark+-1',
+;;   `bookmark+-bmu', `bookmark+-key', `bookmark+-lit', `cl',
+;;   `cmds-menu', `dired', `dired-aux', `dired-x', `ffap',
+;;   `fit-frame', `frame-fns', `help+20', `info', `info+20',
+;;   `menu-bar', `menu-bar+', `misc-cmds', `misc-fns', `naked', `pp',
+;;   `pp+', `second-sel', `strings', `thingatpt', `thingatpt+',
+;;   `unaccent', `w32browser-dlgopen', `wid-edit', `wid-edit+',
+;;   `widget'.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -33,6 +40,8 @@
 ;;    `bookmark+-lit.el' - (optional) code for highlighting bookmarks
 ;;    `bookmark+-bmu.el' - code for the `*Bookmark List*' (bmenu)
 ;;    `bookmark+-1.el'   - other required code (non-bmenu)
+;;    `bookmark+-key.el' - key and menu bindings
+;;
 ;;    `bookmark+-doc.el' - documentation (comment-only file)
 ;;    `bookmark+-chg.el' - change log (comment-only file)
 ;;
@@ -47,13 +56,36 @@
 ;;
 ;;    2. From the Emacs-Wiki Web site:
 ;;       http://www.emacswiki.org/cgi-bin/wiki/BookmarkPlus.
-;;    
+;;
 ;;    3. From the Bookmark+ group customization buffer:
 ;;       `M-x customize-group bookmark-plus', then click link
 ;;       `Commentary'.
 ;;
 ;;    (The commentary links in #1 and #3 work only if you have library
 ;;    `bookmark+-doc.el' in your `load-path'.)
+;;
+;;    To report Bookmark+ bugs: `M-x customize-group bookmark-plus'
+;;    and then follow (e.g. click) the link `Send Bug Report', which
+;;    helps you prepare an email to me.
+;;
+;;
+;;    ****** NOTE ******
+;;
+;;      Whenever you update Bookmark+ (i.e., download new versions of
+;;      Bookmark+ source files), I recommend that you do the
+;;      following:
+;;
+;;      1. Delete all existing byte-compiled Bookmark+ files
+;;         (bookmark+*.elc).
+;;      2. Load Bookmark+ (`load-library' or `require').
+;;      3. Byte-compile the source files.
+;;
+;;      In particular, always load `bookmark+-mac.el' (not
+;;      `bookmark+-mac.elc') before you byte-compile new versions of
+;;      the files, in case there have been any changes to Lisp macros
+;;      (in `bookmark+-mac.el').
+;;
+;;    ******************
 ;;
 ;;
 ;;    ****** NOTE ******
@@ -83,7 +115,25 @@
 ;;         `bmkp-bmenu-commands-file' (`~/.emacs-bmk-bmenu-commands.el'),
 ;;         if you have one.
 ;;
+;;      You can do this editing in a virgin Emacs session (`emacs
+;;      -Q'), that is, without loading Bookmark+.
+;;
+;;      Alternatively, you can do this editing in an Emacs session
+;;      where Bookmark+ has been loaded, but in that case you must
+;;      TURN OFF AUTOMATIC SAVING of both your default bookmark file
+;;      and your `*Bookmark List*' state file.  Otherwise, when you
+;;      quit Emacs your manually edits will be overwritten.
+;;
+;;      To turn off this automatic saving, you can use `M-~' and `M-l'
+;;      in buffer `*Bookmark List*' (commands
+;;      `bmkp-toggle-saving-bookmark-file' and
+;;      `bmkp-toggle-saving-menu-list-state' - they are also in the
+;;      `Bookmark+' menu).
+;;
+;;
 ;;      Again, sorry for this inconvenience.
+;;
+;;    ******************
 ;;
 ;;
 ;;  Commands defined here:
@@ -118,21 +168,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'bookmark)                     ; Vanilla Emacs.
-(require 'bookmark+-mac)                ; Lisp macros.
-(require 'bookmark+-lit nil t)          ; Optional (soft require) - no error if not found.  If you do
-                                        ; not want to use `bookmark+-lit.el' then simply do not put
-                                        ; it in your `load-path'.
-(require 'bookmark+-bmu)                ; `*Bookmark List*' stuff.
-(require 'bookmark+-1)                  ; Rest of Bookmark+ required stuff.
 
-;;;;;;;;;;;;;;;;;;;;;;;
+;;;###autoload (autoload 'bmkp-version-number "bookmark+")
+(defconst bmkp-version-number "2013.04.13")
 
-(defconst bmkp-version-number "3.2.0")
-
+;;;###autoload (autoload 'bmkp-version "bookmark+")
 (defun bmkp-version ()
   "Show version number of library `bookmark+.el'."
   (interactive)
   (message "Bookmark+, version %s" bmkp-version-number))
+
+
+;; Load Bookmark+ libraries.
+;;
+(eval-when-compile
+ (or (condition-case nil
+         (load-library "bookmark+-mac") ; Lisp macros.
+       (error nil))                     ; Use load-library to ensure latest .elc.
+     (require 'bookmark+-mac)))         ; Require, so can load separately if not on `load-path'.
+
+(require 'bookmark+-lit nil t)          ; Optional (soft require) - no error if not found.  If you do
+                                        ; not want to use `bookmark+-lit.el' then simply do not put
+                                        ; that file in your `load-path'.
+(require 'bookmark+-bmu)                ; `*Bookmark List*' (aka "menu list") stuff.
+(require 'bookmark+-1)                  ; Rest of Bookmark+, except keys & menus.
+(require 'bookmark+-key)                ; Keys & menus.
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 

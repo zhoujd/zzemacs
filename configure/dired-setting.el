@@ -100,6 +100,11 @@
        (list "\\.xls$"  "soffice")
        ))
 
+;;direx
+(require 'direx)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+
+
 (provide 'dired-setting)
 
 ;;; dired-setting.el ends here

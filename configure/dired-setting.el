@@ -102,6 +102,7 @@
 
 ;;direx
 (require 'direx)
+(require 'direx-project)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
 
 

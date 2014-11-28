@@ -47,8 +47,8 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(setq en-font-list '("Consolas 11" "Droid Sans Mono 11"))
-(setq cn-font-list '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")) 
+(setq en-font-list '("Consolas 11" "Droid Sans Mono 12"))
+(setq cn-font-list '("Microsoft YaHei Mono 14" "Droid Sans Fallback 12"))
 
 (defun my-cn-font-name (name)
   (string-match ".*[ ]" name)
@@ -82,11 +82,11 @@
     (local-x-font)
     (my-console-font (nth 1 cn-font-list)))
 
-(setq sshX-en-font-list '("Consolas 15"))
-(setq sshX-cn-font-list '("Microsoft YaHei Mono 15"))
+(setq sshX-en-font-list '("Consolas 15" "Droid Sans Mono 14"))
+(setq sshX-cn-font-list '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14"))
 (defun ssh-x-font ()
   (interactive)
-  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+  (my-frame-font (nth 1 sshX-en-font-list) (nth 1 sshX-cn-font-list)))
 
 (defun my-use-server-mode ()
   ;;server-mode
@@ -158,8 +158,8 @@
     (setq default-frame-alist
           (append
            '((scroll-bar-width . 16)
-             (width . 140)
-             (height . 36))
+             (width . 120)
+             (height . 32))
            default-frame-alist)))
 
 ;;quick display key help

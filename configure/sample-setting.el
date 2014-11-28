@@ -181,7 +181,7 @@
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun my-occur (&optional arg)
+(defun occur-at-point (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.

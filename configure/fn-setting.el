@@ -147,9 +147,9 @@
     [f12]             'find-grep
     [S-f12]           'rgrep
     [C-f12]           'find-name-dired
-    [M-f12]           'my-c-rgrep
-    (kbd "C-x <f12>") 'my-occur
-    (kbd "C-c <f12>") 'my-woman-at-point
+    [M-f12]           'lgrep
+    (kbd "C-x <f12>") 'occur-at-point
+    (kbd "C-c <f12>") 'multi-occur
     )
 
 (provide 'fn-setting)

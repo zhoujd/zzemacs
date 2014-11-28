@@ -137,7 +137,7 @@
 
 ;; `bookmark-map'
 
-(define-key ctl-x-map "\C-p" bookmark-map)
+(define-key ctl-x-map "p" bookmark-map)
 (define-key ctl-x-map "pj" 'bookmark-jump-other-window)                  ; `C-x p j' (also `C-x 4 j j')
 (define-key ctl-x-map "rK" 'bmkp-set-desktop-bookmark)        ; `C-x r K' (also `C-x p K', `C-x p c K')
 (define-key bookmark-map "0"      'bmkp-empty-file)                                   ; `C-x p 0'
@@ -176,7 +176,7 @@
 ;;
 (when (> emacs-major-version 21)
   (define-key bookmark-map [down]       'bmkp-next-bookmark-this-file/buffer-repeat) ; `C-x p down'
-  (define-key bookmark-map "n"          'bmkp-next-bookmark-this-file/buffer-repeat) ; `C-x p n'
+  (define-key bookmark-map "\M-n"       'bmkp-next-bookmark-this-file/buffer-repeat) ; `C-x p M-n'
   (define-key bookmark-map "\C-n"       'bmkp-next-bookmark-this-file/buffer-repeat) ; `C-x p C-n'
 
   ;; This requires the fix for Emacs bug #6256, which is in Emacs 23.3 (presumably).

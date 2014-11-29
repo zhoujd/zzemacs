@@ -98,8 +98,8 @@
 
 ;;;cedet version flag t for inside
 (defvar use-cedet-inside-flag (if (< emacs-major-version 24)
-                                nil
-                                t)
+                                  nil
+                                  t)
   "cedet using flag, t for use buildin, nil for office")
 (if use-cedet-inside-flag
     (progn

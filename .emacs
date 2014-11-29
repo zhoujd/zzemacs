@@ -37,8 +37,8 @@
         macro-setting
         common-setting
         env-setting
-        dired-setting
         prog-setting
+        dired-setting
         vc-setting
         ediff-setting
         other-setting

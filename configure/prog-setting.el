@@ -96,34 +96,6 @@
            'php-mode-hook))
   (add-hook hook (function newline-indents)))
 
-;;;company-mode <f4+tab> to open complete menu
-(defvar use-company-mode nil)
-(when use-company-mode
-  (when-ms-windows 
-   (zz-load-path "site-lisp/company-mode")
-   (require 'company)
-   (setq company-idle-delay 0.2)
-   (setq company-minimum-prefix-length 1)
-   (setq company-show-numbers t)
-   (define-key company-active-map [return]    nil)
-   (define-key company-active-map (kbd "RET") nil)
-   (define-key company-active-map [tab]       'company-complete-selection)
-   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-   (dolist (hook (list
-                  ;;'emacs-lisp-mode-hook
-                  ;;'lisp-mode-hook
-                  ;;'lisp-interaction-mode-hook
-                  ;;'scheme-mode-hook
-                  ;;'c-mode-hook
-                  ;;'c++-mode-hook
-                  ;;'java-mode-hook
-                  ;;'perl-mode-hook
-                  ;;'python-mode-hook
-                  ;;'asm-mode-hook
-                  'shell-mode-hook
-                  ))
-     (add-hook hook 'company-mode))))
-
 ;;;cedet version flag t for inside
 (defvar use-cedet-inside-flag (if (< emacs-major-version 24)
                                 nil
@@ -201,7 +173,6 @@ the mru bookmark stack."
                       'mark)
   ad-do-it)
 
-
 ;; hippie-try-expand settings
 (setq hippie-expand-try-functions-list
       '(
@@ -259,6 +230,35 @@ the mru bookmark stack."
                   (speedbar-set-timer nil)))))
   (set-window-buffer (selected-window)
                      (get-buffer his-speedbar-buffer-name)))
+
+
+;;;company-mode <f4+tab> to open complete menu
+(defvar use-company-mode nil "using company mode flag")
+(when use-company-mode
+  (when-ms-windows 
+   (zz-load-path "site-lisp/company-mode")
+   (require 'company)
+   (setq company-idle-delay 0.2)
+   (setq company-minimum-prefix-length 1)
+   (setq company-show-numbers t)
+   (define-key company-active-map [return]    nil)
+   (define-key company-active-map (kbd "RET") nil)
+   (define-key company-active-map [tab]       'company-complete-selection)
+   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+   (dolist (hook (list
+                  ;;'emacs-lisp-mode-hook
+                  ;;'lisp-mode-hook
+                  ;;'lisp-interaction-mode-hook
+                  ;;'scheme-mode-hook
+                  ;;'c-mode-hook
+                  ;;'c++-mode-hook
+                  ;;'java-mode-hook
+                  ;;'perl-mode-hook
+                  ;;'python-mode-hook
+                  ;;'asm-mode-hook
+                  'shell-mode-hook
+                  ))
+     (add-hook hook 'company-mode))))
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
@@ -530,11 +530,12 @@ the mru bookmark stack."
     (insert file-name ":" (number-to-string file-line) ": ")))
 
 ;;Projectile setting
-;(zz-load-path "site-lisp/projectile")
-;(zz-load-path "site-lisp/dash")
-;(require 'projectile)
-;(projectile-global-mode)
-;(setq projectile-enable-caching t)
+(when-emacs24-3
+ (zz-load-path "site-lisp/projectile")
+ (zz-load-path "site-lisp/dash")
+ (require 'projectile)
+ (projectile-global-mode)
+ (setq projectile-enable-caching t))
 
 
 (provide 'prog-setting)

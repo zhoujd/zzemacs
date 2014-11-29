@@ -28,7 +28,7 @@
 (setq slime-lisp-implementations
       '(
         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
-        (clisp ("clisp"))
+        (clisp ("clisp") :coding-system utf-8-unix)
         (ecl   ("ecl"))
         ))
 

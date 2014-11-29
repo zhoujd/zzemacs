@@ -49,11 +49,11 @@
 ;;font setting
 (setq en-font-list (if-ms-windows
                     '("Consolas 11" "Droid Sans Mono 11")
-                    '("Consolas 11" "Droid Sans Mono 12")
+                    '("Consolas 11" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
                     '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
-                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 12")
+                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
                     ))
 
 (defun my-cn-font-name (name)

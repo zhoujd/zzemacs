@@ -55,9 +55,6 @@
   ;;undo/redo
   (kbd "C-,") 'winner-undo
   (kbd "C-.") 'winner-redo
-
-  ;;Control tab quotes a tab => "\C-q\t"
-  [(control tab)] "\C-q\t"
   ))
 
 (apply-keys-to-map

@@ -101,33 +101,18 @@ the mru bookmark stack."
       (hippie-expand nil)
       (indent-for-tab-command)))
 
-;;;company-mode <f4+tab> to open complete menu
-(defvar use-company-mode nil "using company mode flag")
-(when use-company-mode
-  (when-ms-windows 
-   (zz-load-path "site-lisp/company-mode")
-   (require 'company)
-   (setq company-idle-delay 0.2)
-   (setq company-minimum-prefix-length 1)
-   (setq company-show-numbers t)
-   (define-key company-active-map [return]    nil)
-   (define-key company-active-map (kbd "RET") nil)
-   (define-key company-active-map [tab]       'company-complete-selection)
-   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-   (dolist (hook (list
-                  ;;'emacs-lisp-mode-hook
-                  ;;'lisp-mode-hook
-                  ;;'lisp-interaction-mode-hook
-                  ;;'scheme-mode-hook
-                  ;;'c-mode-hook
-                  ;;'c++-mode-hook
-                  ;;'java-mode-hook
-                  ;;'perl-mode-hook
-                  ;;'python-mode-hook
-                  ;;'asm-mode-hook
-                  'shell-mode-hook
-                  ))
-     (add-hook hook 'company-mode))))
+;;;company-mode <ctrl+tab> to open complete menu
+(zz-load-path "site-lisp/company-mode")
+(require 'company)
+(global-company-mode t)
+(setq company-idle-delay nil) ;; nil for not auto popup
+(setq company-minimum-prefix-length 1)
+(setq company-show-numbers t)
+(define-key company-active-map [return]    nil)
+(define-key company-active-map (kbd "RET") nil)
+(define-key company-active-map [tab]       'company-complete-selection)
+(define-key company-active-map (kbd "TAB") 'company-complete-selection)
+(global-set-key [(control tab)] 'company-complete-common)
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")

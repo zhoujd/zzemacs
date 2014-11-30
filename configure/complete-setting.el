@@ -121,49 +121,45 @@ the mru bookmark stack."
              (concat zzemacs-path "/site-lisp/auto-complete/dict"))
 (ac-config-default)
 
-;; complete
-(when (require 'auto-complete nil t)
-  (global-auto-complete-mode t)
-  (defun ac-next-or-next-line (arg)
-    (interactive "p")
-    (if (/= (length ac-candidates) 1)
-        (ac-next)
+(defun ac-next-or-next-line (arg)
+  (interactive "p")
+  (if (/= (length ac-candidates) 1)
+      (ac-next)
       (ac-abort)
-      (next-line arg)))
-  (defun ac-previous-or-previous-line (arg)
-    (interactive "p")
-    (if (/= (length ac-candidates) 1)
-        (ac-previous)
+    (next-line arg)))
+(defun ac-previous-or-previous-line (arg)
+  (interactive "p")
+  (if (/= (length ac-candidates) 1)
+      (ac-previous)
       (ac-abort)
-      (previous-line arg)))
-  
-  (setq ac-use-menu-map t)
-  ;; Default settings
-  (define-key ac-menu-map "\C-n" 'ac-next)
-  (define-key ac-menu-map "\C-p" 'ac-previous)
+    (previous-line arg)))
 
-  (define-key ac-completing-map "\t" 'ac-complete)
-  (define-key ac-completing-map "\r" nil)
-  
-  (set-face-background 'ac-candidate-face "lightgray")
-  (set-face-underline  'ac-candidate-face "darkgray")
-  (set-face-background 'ac-selection-face "steelblue")
+(setq ac-use-menu-map t)
+;; Default settings
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
 
-  (dolist (command `(backward-delete-char-untabify delete-backward-char))
-    (add-to-list 'ac-trigger-commands command))
+(define-key ac-completing-map "\t" 'ac-complete)
+(define-key ac-completing-map "\r" nil)
 
-  (defun ac-start-use-sources (sources)
-    (interactive)
-    (let ((ac-sources sources))
-      (call-interactively 'ac-start)))
+(set-face-background 'ac-candidate-face "lightgray")
+(set-face-underline  'ac-candidate-face "darkgray")
+(set-face-background 'ac-selection-face "steelblue")
 
-  (defvar ac-trigger-edit-commands
-    `(self-insert-command
-      delete-backward-char
-      backward-delete-char
-      backward-delete-char-untabify)
-    "*Trigger edit commands that specify whether `auto-complete' should start or not when `ac-completing'.")
-  )
+(dolist (command `(backward-delete-char-untabify delete-backward-char))
+        (add-to-list 'ac-trigger-commands command))
+
+(defun ac-start-use-sources (sources)
+  (interactive)
+  (let ((ac-sources sources))
+    (call-interactively 'ac-start)))
+
+(defvar ac-trigger-edit-commands
+  `(self-insert-command
+    delete-backward-char
+    backward-delete-char
+    backward-delete-char-untabify)
+  "*Trigger edit commands that specify whether `auto-complete' should start or not when `ac-completing'.")
 
 ;;YASNIPPET
 (zz-load-path "site-lisp/yasnippet")

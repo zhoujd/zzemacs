@@ -37,6 +37,7 @@
         macro-setting
         common-setting
         env-setting
+        complete-setting
         prog-setting
         dired-setting
         vc-setting

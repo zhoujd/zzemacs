@@ -112,7 +112,7 @@ the mru bookmark stack."
 (define-key company-active-map (kbd "RET") nil)
 (define-key company-active-map [tab]       'company-complete-selection)
 (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-(global-set-key [(control tab)] 'company-complete-common)
+(global-set-key [(control tab)] 'company-complete)
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")

@@ -1,5 +1,5 @@
 Git error and solutions
-========
+=======================
 
 1. Pushing to Git returning Error Code 403 fatal: HTTP request failed
 
@@ -17,3 +17,6 @@ Git error and solutions
 
    git config --global http.proxy <proxy-server-address:port>
 
+3. Delete remote branch
+
+   git push origin :branch-name

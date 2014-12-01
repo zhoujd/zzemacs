@@ -48,11 +48,11 @@
 
 ;;font setting
 (setq en-font-list (if-ms-windows
-                    '("Consolas 11" "Droid Sans Mono 11")
+                    '("Consolas 13" "Droid Sans Mono 11")
                     '("Consolas 11" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
                     '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
                     ))
 
@@ -82,7 +82,7 @@
 
 (defun local-x-font ()
   (interactive)
-  (my-frame-font (nth 1 en-font-list) (nth 1 cn-font-list)))
+  (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list)))
 
 (if window-system
     (local-x-font)
@@ -98,7 +98,7 @@
                          ))
 (defun ssh-x-font ()
   (interactive)
-  (my-frame-font (nth 1 sshX-en-font-list) (nth 1 sshX-cn-font-list)))
+  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
 
 (defun my-use-server-mode ()
   ;;server-mode

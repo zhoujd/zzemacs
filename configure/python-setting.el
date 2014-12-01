@@ -59,6 +59,7 @@
 (zz-load-path "site-lisp/pydb")
 (require 'pydb)
 (autoload 'pydb "pydb" "Python Debugger mode via GUD and pydb" t)
+(setq pydb-pydbtrack-minor-mode-string "")
 
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))

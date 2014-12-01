@@ -23,6 +23,9 @@
 ;;key setting using default
 ;(evil-set-toggle-key "<f5>")
 
+;;disable undo-tree on mode-line
+(setq undo-tree-mode-lighter "")
+
 (provide 'evil-setting)
 
 ;;; evil-setting.el ends here

@@ -93,7 +93,7 @@
                          '("Consolas 15" "Droid Sans Mono 14")
                          ))
 (setq sshX-cn-font-list (if-ms-windows
-                         '("Microsoft YaHei Mono 15" "Droid Sans Fallback 15")
+                         '("Microsoft YaHei Mono 17" "Droid Sans Fallback 15")
                          '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
                          ))
 (defun ssh-x-font ()

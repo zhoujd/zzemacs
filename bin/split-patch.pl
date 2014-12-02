@@ -31,7 +31,7 @@ sub main {
 
     if (@diff_file_list != 0) {
         my $index  = 0;
-        foreach  my $index (0 .. @diff_file_list - 1) {
+        foreach  my $index (0 .. $#diff_file_list) {
             my $file_diff_name = $diff_file_list[$index];
             $file_diff_name =~ s|.*/||;
 

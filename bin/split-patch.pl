@@ -25,8 +25,11 @@ sub main {
         my $line = $diff_stat[$i];
         chomp($line);
         $line =~ s/\|.*$//;
-        $line =~ s/s+//;
+        $line =~ s/^\s+//;
+        $line =~ s/\s+$//;
         $diff_file_list[$i] = $line;
+
+        print "== $line\n";
     }
 
     if (@diff_file_list != 0) {
@@ -34,7 +37,6 @@ sub main {
         foreach  my $index (0 .. $#diff_file_list) {
             my $file_diff_name = $diff_file_list[$index];
             $file_diff_name =~ s|.*/||;
-            $file_diff_name =~ s|\s+$||;
 
             my $index_prefix = sprintf("%04d", $index + 1);
             my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/${index_prefix}-${file_diff_name}.diff";

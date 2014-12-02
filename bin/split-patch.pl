@@ -25,10 +25,10 @@ sub main {
     foreach my $i (0 .. $#diff_stat - 1) {
         my $file_diff_name = $diff_stat[$i];
         chomp($file_diff_name);
-        $file_diff_name =~ s/\|.*$//;     # trim file diff status
-        $file_diff_name =~ s/^\s+//;      # trim head space
-        $file_diff_name =~ s/\s+$//;      # trim tail space
-        $file_diff_name =~ s|.*/||;       # remove folder only file
+        $file_diff_name =~ s!\|.*$!!;     # trim file diff status
+        $file_diff_name =~ s!^\s+!!;      # trim head space
+        $file_diff_name =~ s!\s+$!!;      # trim tail space
+        $file_diff_name =~ s!.*/!!;       # remove folder only file
 
         my $cmd = sprintf("git diff %s %s > $split_dir/%04d-$file_diff_name.diff",
                           "$diff_a -- $file_diff_name",

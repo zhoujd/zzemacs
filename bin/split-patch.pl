@@ -30,15 +30,17 @@ sub main {
         $file_diff_name =~ s/\s+$//;      # trim tail space
         $file_diff_name =~ s|.*/||;       # remove folder only file
 
-        my $index_prefix = sprintf("%04d", ++$index);
-        my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/$index_prefix-$file_diff_name.diff";
+        my $cmd = sprintf("git diff %s %s > $split_dir/%04d-$file_diff_name.diff",
+                          "$diff_a -- $file_diff_name",
+                          "$diff_b -- $file_diff_name",
+                          ++$index);
         print "$cmd\n";
 
         (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";
         (system($cmd) == 0) || die "can`t run $cmd $!";
     }
 
-    printf "patches to %d files finished.\n", $index;
+    print "patches to $index files finished.\n";
 }
 
 main;

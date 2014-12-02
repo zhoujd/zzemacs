@@ -19,7 +19,7 @@ Install_package()
         sudo apt-get install -y markdown
         sudo apt-get install -y w3m
     elif [ "$OS_DISTRO" = "CentOS" ]; then
-        sudo yum install -y gmrun
+        sudo yum install -y redhat-lsb
         sudo yum install -y cscope
         sudo yum install -y texinfo
     elif [ "$OS_DISTRO" = "FreeBSD" ]; then

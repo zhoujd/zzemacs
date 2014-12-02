@@ -31,23 +31,20 @@ sub main {
 
     if (@diff_file_list != 0) {
         my $index  = 0;
-        foreach  my $item (@diff_file_list) {
-            $index += 1;
-            
-            my $file_diff_name = $item;
+        foreach  my $index (0 .. @diff_file_list - 1) {
+            my $file_diff_name = $diff_file_list[$index];
             $file_diff_name =~ s|.*/||;
-            
-            my $index_prefix = sprintf("%04d", $index);
-            my $cmd = "git diff $diff_a -- $item $diff_b -- $item > $split_dir/${index_prefix}_${file_diff_name}_diff";
-            
-            
+
+            my $index_prefix = sprintf("%04d", $index + 1);
+            my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/${index_prefix}_${file_diff_name}.diff";
+
             print "$cmd\n";
-            
+
             (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";
             (system($cmd) == 0) || die "can`t run $cmd $!";
         }
-        
-        print "patches to $index files finished.\n";
+
+        print "patches to $#diff_file_list files finished.\n";
     } else {
         print "no file chaned between $diff_a and $diff_b\n";
     }

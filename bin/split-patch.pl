@@ -37,14 +37,13 @@ sub main {
 
             my $index_prefix = sprintf("%04d", $index + 1);
             my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/${index_prefix}_${file_diff_name}.diff";
-
             print "$cmd\n";
 
             (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";
             (system($cmd) == 0) || die "can`t run $cmd $!";
         }
 
-        print "patches to $#diff_file_list files finished.\n";
+        printf "patches to %d files finished.\n", $#diff_file_list + 1;
     } else {
         print "no file chaned between $diff_a and $diff_b\n";
     }

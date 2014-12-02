@@ -34,9 +34,10 @@ sub main {
         foreach  my $index (0 .. $#diff_file_list) {
             my $file_diff_name = $diff_file_list[$index];
             $file_diff_name =~ s|.*/||;
+            $file_diff_name =~ s|\s+$||;
 
             my $index_prefix = sprintf("%04d", $index + 1);
-            my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/${index_prefix}_${file_diff_name}.diff";
+            my $cmd = "git diff $diff_a -- $file_diff_name $diff_b -- $file_diff_name > $split_dir/${index_prefix}-${file_diff_name}.diff";
             print "$cmd\n";
 
             (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";

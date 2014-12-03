@@ -34,7 +34,7 @@ sub main {
                           "$diff_a -- $file_diff_name",
                           "$diff_b -- $file_diff_name",
                           ++$index);
-        print "$cmd\n";
+        printf "[%04d] $cmd\n", $index;
 
         (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";
         (system($cmd) == 0) || die "can`t run $cmd $!";

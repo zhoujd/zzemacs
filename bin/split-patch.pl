@@ -4,7 +4,7 @@ use strict;
 use Cwd;
 
 # output folder name
-my $out_folder_name = "split-output";
+my $out_folder = "split-output";
 
 sub help {
     print "Usage: $0 diff_a diff_b\n";
@@ -17,13 +17,13 @@ sub main {
     help() if (@ARGV != 2);
 
     my $current_dir = getcwd();
-    my $split_dir   = "$current_dir/$out_folder_name";
+    my $split_dir   = "$current_dir/$out_folder";
+    my $index       = 0;
 
     my $diff_a = $ARGV[0];
     my $diff_b = $ARGV[1];
 
     my @diff_stat = `git diff --stat $diff_a $diff_b`;
-    my $index     = 0;
 
     foreach my $i (0 .. $#diff_stat - 1) {
         my $item = $diff_stat[$i];
@@ -37,14 +37,20 @@ sub main {
         my $file_name = $file_path;
         $file_name =~ s!.*/!!;            # trim folder only file
 
-        my $cmp_diff_a = $diff_a;
-        my $cmp_diff_b = $diff_b;
-        $cmp_diff_a = "$diff_a -- $file_path" if ($item =~ m!\|.*\-!);
-        $cmp_diff_b = "$diff_b -- $file_path" if ($item =~ m!\|.*\+!);
+        my $cmp_a = $diff_a;
+        my $cmp_b = $diff_b;
+        $cmp_a = "$diff_a -- $file_path" if ($item =~ m!\|.*\-!);
+        $cmp_b = "$diff_b -- $file_path" if ($item =~ m!\|.*\+!);
 
-        my $pre_index = sprintf "%04d", ++$index;
-        my $cmd = "git diff $cmp_diff_a $cmp_diff_b > $split_dir/$pre_index-$file_name.diff";
-        print "[$pre_index] $cmd\n";
+        # file content not changed
+        if ($item =~ m!\|.*\s+0!) {
+            $cmp_a = "$diff_a -- $file_path";
+            $cmp_b = "$diff_b -- $file_path";
+        }
+
+        my $prefix = sprintf "%04d", ++$index;
+        my $cmd = "git diff $cmp_a $cmp_b > $split_dir/$prefix-$file_name.diff";
+        print "[$prefix] $cmd\n";
 
         (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";
         (system($cmd) == 0) || die "can`t run $cmd $!";

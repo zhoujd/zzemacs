@@ -10,7 +10,7 @@ $| = 1;
 
 sub usage {
     print "First remote: split -b 200M <filename>\n";
-    print "Second loccal: $0 -f remote-folder -n num\n";
+    print "Second loccal: $0 -p <passwd> -f <remote-folder> -n <num>\n";
 
     exit 1;
 }
@@ -27,11 +27,11 @@ sub main {
     usage() unless @ARGV;
 
     my %opt;
-    getopts('f:t:p:n:', \%opt);
+    getopts('f:p:n:', \%opt);
 
     my @channel_list = ();
     for my $i (0 .. $opt{n} - 1) {
-        my $cmd = "xterm -e scp.exp  $opt{p} $opt{f}/$file_trunks[$i] $opt{t} &";
+        my $cmd = "xterm -e scp.exp  $opt{p} $opt{f}/$file_trunks[$i] . &";
         (system("$cmd") == 0) || die "Cannot run $cmd $!";
     }
 }

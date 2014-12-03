@@ -39,8 +39,16 @@ sub main {
 
         my $cmp_a = $diff_a;
         my $cmp_b = $diff_b;
-        $cmp_a = "$diff_a -- $file_path" if ($item =~ m!\|.*\-!);
-        $cmp_b = "$diff_b -- $file_path" if ($item =~ m!\|.*\+!);
+
+        # remove content to file
+        if ($item =~ m!\|.*\-!) {
+            $cmp_a = "$diff_a -- $file_path";
+        }
+
+        # add new content to file
+        if ($item =~ m!\|.*\+!) {
+            $cmp_b = "$diff_b -- $file_path";
+        }
 
         # file content not changed
         if ($item =~ m!\|.*\s+0!) {

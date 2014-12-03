@@ -31,8 +31,8 @@ sub main {
         $file_path =~ s!^\s+!!;           # trim head space
         $file_path =~ s!\s+$!!;           # trim tail space
 
-        my $file_diff_name = $file_path;
-        $file_diff_name =~ s!.*/!!;       # trim folder only file
+        my $file_name = $file_path;
+        $file_name =~ s!.*/!!;            # trim folder only file
 
         my $cmp_diff_a = $diff_a;
         my $cmp_diff_b = $diff_b;
@@ -41,12 +41,11 @@ sub main {
         }
 
         if ($item =~ m!\|.*\+!) {
-            $cmp_diff_b = "$diff_b -- $file_path"
+            $cmp_diff_b = "$diff_b -- $file_path";
         }
 
         my $pre_index = sprintf "%04d", ++$index;
-        my $cmd = "git diff $cmp_diff_a $cmp_diff_b > $split_dir/$pre_index-$file_diff_name.diff";
-
+        my $cmd = "git diff $cmp_diff_a $cmp_diff_b > $split_dir/$pre_index-$file_name.diff";
         print "[$pre_index] $cmd\n";
 
         (system("mkdir -p $split_dir") == 0) || die "can`t run $cmd $!";

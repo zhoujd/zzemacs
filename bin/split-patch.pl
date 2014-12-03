@@ -18,7 +18,6 @@ sub main {
 
     my $current_dir = getcwd();
     my $split_dir   = "$current_dir/$out_folder";
-    my $index       = 0;
 
     my $diff_a = $ARGV[0];
     my $diff_b = $ARGV[1];
@@ -56,7 +55,7 @@ sub main {
             $cmp_b = "$diff_b -- $file_path";
         }
 
-        my $prefix = sprintf "%04d", ++$index;
+        my $prefix = sprintf "%04d", $i + 1;
         my $cmd = "git diff $cmp_a $cmp_b > $split_dir/$prefix-$file_name.diff";
         print "[$prefix] $cmd\n";
 
@@ -64,7 +63,7 @@ sub main {
         (system($cmd) == 0) || die "can`t run $cmd $!";
     }
 
-    print "patches to $index files finished.\n";
+    print "patches to $#diff_stat files finished.\n";
 }
 
 main;

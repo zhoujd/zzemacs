@@ -26,15 +26,13 @@ sub main {
         my $item = $diff_stat[$i];
         chomp($item);
 
-        #print "$item  zz\n";
-
         my $file_path = $item;
-        $file_path =~ s!\|.*$!!;     # trim file diff status
-        $file_path =~ s!^\s+!!;      # trim head space
-        $file_path =~ s!\s+$!!;      # trim tail space
+        $file_path =~ s!\|.*$!!;          # trim file diff status
+        $file_path =~ s!^\s+!!;           # trim head space
+        $file_path =~ s!\s+$!!;           # trim tail space
 
         my $file_diff_name = $file_path;
-        $file_diff_name =~ s!.*/!!;       # remove folder only file
+        $file_diff_name =~ s!.*/!!;       # trim folder only file
 
         my $cmp_diff_a = $diff_a;
         my $cmp_diff_b = $diff_b;

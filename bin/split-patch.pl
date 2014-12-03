@@ -3,6 +3,9 @@
 use strict;
 use Cwd;
 
+# output folder name
+my $out_folder_name = "split-output";
+
 sub help {
     print "Usage: $0 diff_a diff_b\n";
     exit 1;
@@ -14,7 +17,7 @@ sub main {
     help() if (@ARGV != 2);
 
     my $current_dir = getcwd();
-    my $split_dir   = "$current_dir/out";
+    my $split_dir   = "$current_dir/$out_folder_name";
 
     my $diff_a = $ARGV[0];
     my $diff_b = $ARGV[1];
@@ -36,13 +39,8 @@ sub main {
 
         my $cmp_diff_a = $diff_a;
         my $cmp_diff_b = $diff_b;
-        if ($item =~ m!\|.*\-!) {
-            $cmp_diff_a = "$diff_a -- $file_path";
-        }
-
-        if ($item =~ m!\|.*\+!) {
-            $cmp_diff_b = "$diff_b -- $file_path";
-        }
+        $cmp_diff_a = "$diff_a -- $file_path" if ($item =~ m!\|.*\-!);
+        $cmp_diff_b = "$diff_b -- $file_path" if ($item =~ m!\|.*\+!);
 
         my $pre_index = sprintf "%04d", ++$index;
         my $cmd = "git diff $cmp_diff_a $cmp_diff_b > $split_dir/$pre_index-$file_name.diff";

@@ -47,12 +47,13 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
+;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
-                    '("Consolas 13" "Droid Sans Mono 11")
+                    '("Consolas 12" "Droid Sans Mono 11")
                     '("Consolas 11" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
                     '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
                     ))
 
@@ -104,20 +105,19 @@
   ;;server-mode
   ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
   ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
-  ;;~/.emacs.d/server的属主由Administrators组改为当前用户（右键属性--安全--高级--所有者）
   (defvar server-directory-name "~/.emacs.d/server")
-  (when-ms-windows    
+  (when-ms-windows
    (when (not (file-directory-p server-directory-name))
      (make-directory server-directory-name t)))
-  
+
   (require 'server)
-  (when-ms-windows  
-   (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error "directory
-                                        ; ~/.emacs.d/server is unsafe"
-                                        ; on windows.
+  (when-ms-windows
+   ;;suppress error "directory
+   ;;~/.emacs.d/server is unsafe on windows.
+   (defun server-ensure-safe-dir (dir) "Noop" t)) 
   (unless (server-running-p)
     (server-start))
-  
+
   (add-hook 'kill-emacs-hook
             (lambda ()
               (if (file-exists-p  (concat server-directory-name "/server"))
@@ -127,14 +127,14 @@
 
 (when-ms-windows
  (defun my-use-gnusvr ()
-   ;; start gnuserv on Windows 
-   (progn 
-     (require 'gnuserv) 
-     (setq server-done-function 'bury-buffer gnuserv-frame (car (frame-list))) 
-     (gnuserv-start) 
-      ;;; open buffer in existing frame instead of creating new one... 
-     (setq gnuserv-frame (selected-frame)) 
-     (message "gnuserv started.")))) 
+   ;; start gnuserv on Windows
+   (progn
+     (require 'gnuserv)
+     (setq server-done-function 'bury-buffer gnuserv-frame (car (frame-list)))
+     (gnuserv-start)
+      ;;; open buffer in existing frame instead of creating new one...
+     (setq gnuserv-frame (selected-frame))
+     (message "gnuserv started."))))
 
 (if-ms-windows
  (let ((use-gnusvr-flag nil))
@@ -184,7 +184,7 @@
 (setq make-backup-files nil)
 (setq-default make-backup-files nil)
 ;;no file #filename#
-(setq auto-save-default nil) 
+(setq auto-save-default nil)
 
 ;;auto add newline in file
 (setq require-final-newline t)
@@ -200,7 +200,7 @@
 ;;mouse select
 (setq mouse-drag-copy-region nil)
 ;;stops killing/yanking interacting with primary X11 selection
-(setq x-select-enable-primary nil) 
+(setq x-select-enable-primary nil)
 ;;active region sets primary X11 selection
 (setq select-active-regions t)
 
@@ -289,8 +289,8 @@
 (setq-default kill-whole-line t)
 
 ;;//auto load: transient-mark-mode,delete-selection-mode
-(if (fboundp 'pc-selection-mode)                                              
-    (pc-selection-mode)                                                   
+(if (fboundp 'pc-selection-mode)
+    (pc-selection-mode)
     (require 'pc-select))
 (custom-set-variables '(pc-selection-mode t nil (pc-select)))
 
@@ -406,10 +406,10 @@
 ;;recentf/undo-kill-buffer
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     100
-      recentf-max-menu-items      30      
+      recentf-max-menu-items      30
       )
 
-(unless-ms-windows  
+(unless-ms-windows
   (setq recentf-exclude '("/tmp/" "/ssh:")))
 
 (recentf-mode t)
@@ -457,7 +457,7 @@
 ;;do not open new frame
 (setq woman-use-own-frame nil)
 
-(unless-ms-windows  
+(unless-ms-windows
   (setq woman-manpath (quote ("/usr/share/man"))))
 
 ;(setq resize-mini-windows nil)

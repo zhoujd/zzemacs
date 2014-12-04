@@ -28,29 +28,28 @@ sub main {
         my $item = $diff_stat[$i];
         chomp($item);
 
-        my $file_path = $item;
-        $file_path =~ s!\|.*$!!;          # trim file diff status
-        $file_path =~ s!^\s+!!;           # trim head space
-        $file_path =~ s!\s+$!!;           # trim tail space
+        my ($file_path, $file_stat) = split /\|/,  $item;
+        $file_path =~ s!^\s+!!;
+        $file_path =~ s!\s+$!!;
 
         my $file_name = $file_path;
-        $file_name =~ s!.*/!!;            # trim folder only file
+        $file_name =~ s!.*/!!;
 
         my $cmp_a = $diff_a;
         my $cmp_b = $diff_b;
 
         # remove content to file
-        if ($item =~ m!\|.*\-!) {
+        if ($file_stat =~ m!.*\-!) {
             $cmp_a = "$diff_a -- $file_path";
         }
 
         # add new content to file
-        if ($item =~ m!\|.*\+!) {
+        if ($file_stat =~ m!.*\+!) {
             $cmp_b = "$diff_b -- $file_path";
         }
 
         # file content not changed
-        if ($item =~ m!\|.*\s+0!) {
+        if ($file_stat =~ m!\s+0!) {
             $cmp_a = "$diff_a -- $file_path";
             $cmp_b = "$diff_b -- $file_path";
         }

@@ -49,12 +49,12 @@
 ;;font setting
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
-                    '("Consolas 13" "Droid Sans Mono 11")
-                    '("Consolas 14" "Droid Sans Mono 11")
+                    '("Consolas 11" "Droid Sans Mono 11")
+                    '("Consolas 12" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
-                    '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 13" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 12" "Droid Sans Fallback 14")
                     ))
 
 (defun my-cn-font-name (name)

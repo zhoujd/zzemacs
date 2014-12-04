@@ -28,7 +28,7 @@ sub main {
         my $item = $diff_stat[$i];
         chomp($item);
 
-        my ($file_path, $file_stat) = split /\|/,  $item;
+        my ($file_path, $file_stat) = split(/\|/, $item);
         $file_path =~ s!^\s+!!;
         $file_path =~ s!\s+$!!;
 

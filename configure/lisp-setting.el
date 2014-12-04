@@ -114,6 +114,7 @@
   (slime-connect "127.0.0.1" 4405))
 
 ;;require paredit
+(zz-load-path "site-lisp/paredit")
 (require 'paredit)
 (dolist (hook
           (list

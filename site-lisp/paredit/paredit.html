@@ -1,0 +1,325 @@
+<h3>Basic Insertion Commands</h3>
+<table>
+<tr>
+  <th align="left"><tt>(</tt></th>
+  <th align="left">paredit-open-round</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(a b |c d)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a b (|) c d)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo &quot;bar |baz&quot; quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;bar (|baz&quot; quux)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>)</tt></th>
+  <th align="left">paredit-close-round</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(a b |c   )</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a b c)|</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>; Hello,| world!</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>; Hello,)| world!</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-)</tt></th>
+  <th align="left">paredit-close-round-and-newline</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(defun f (x|  ))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(defun f (x)
+  |)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>; (Foo.|</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>; (Foo.)|</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>[</tt></th>
+  <th align="left">paredit-open-square</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(a b |c d)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a b [|] c d)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo &quot;bar |baz&quot; quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;bar [|baz&quot; quux)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>]</tt></th>
+  <th align="left">paredit-close-square</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(define-key keymap [frob|  ] &apos;frobnicate)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(define-key keymap [frob]| &apos;frobnicate)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>; [Bar.|</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>; [Bar.]|</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>&quot;</tt></th>
+  <th align="left">paredit-doublequote</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob grovel |full lexical)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob grovel &quot;|&quot; full lexical)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob grovel &quot;&quot;| full lexical)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo &quot;bar |baz&quot; quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;bar \&quot;|baz&quot; quux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob grovel)   ; full |lexical</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob grovel)   ; full &quot;|lexical</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-&quot;</tt></th>
+  <th align="left">paredit-meta-doublequote</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo &quot;bar |baz&quot; quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;bar baz&quot;| quux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo |(bar #\x &quot;baz \\ quux&quot;) zot)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;|(bar #\\x \&quot;baz \\\\ quux\&quot;)&quot; zot)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>\</tt></th>
+  <th align="left">paredit-backslash</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(string #|)
+  ; Character to escape: x</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(string #\x|)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>&quot;foo|bar&quot;
+  ; Character to escape: &quot;</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>&quot;foo\&quot;|bar&quot;</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>;</tt></th>
+  <th align="left">paredit-semicolon</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>|(frob grovel)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>;|(frob grovel)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob |grovel)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob ;|grovel
+ )</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob |grovel (bloit
+               zargh))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob ;|grovel
+ (bloit
+  zargh))</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob grovel)          |</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob grovel)          ;|</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-;</tt></th>
+  <th align="left">paredit-comment-dwim</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo |bar)   ; baz</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar)                               ; |baz</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(frob grovel)|</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob grovel)                           ;|</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(zot (foo bar)
+|
+     (baz quux))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(zot (foo bar)
+     ;; |
+     (baz quux))</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(zot (foo bar) |(baz quux))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(zot (foo bar)
+     ;; |
+     (baz quux))</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>|(defun hello-world ...)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>;;; |
+(defun hello-world ...)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-j</tt></th>
+  <th align="left">paredit-newline</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(let ((n (frobbotz))) |(display (+ n 1)
+port))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(let ((n (frobbotz)))
+  |(display (+ n 1)
+           port))</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+</table>
+<h3>Deleting & Killing</h3>
+<table>
+<tr>
+  <th align="left"><tt>C-d</tt>, <tt>&lt;delete&gt;</tt>, <tt>&lt;deletechar&gt;</tt></th>
+  <th align="left">paredit-forward-delete</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(quu|x &quot;zot&quot;)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(quu| &quot;zot&quot;)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(quux |&quot;zot&quot;)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(quux &quot;|zot&quot;)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(quux &quot;|ot&quot;)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (|) bar)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo | bar)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>|(foo bar)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(|foo bar)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>DEL</tt></th>
+  <th align="left">paredit-backward-delete</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(&quot;zot&quot; q|uux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(&quot;zot&quot; |uux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(&quot;zot&quot;| quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(&quot;zot|&quot; quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(&quot;zo|&quot; quux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (|) bar)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo | bar)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo bar)|</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar|)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-k</tt></th>
+  <th align="left">paredit-kill</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo bar)|     ; Useless comment!</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar)|</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(|foo bar)     ; Useful comment!</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(|)     ; Useful comment!</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>|(foo bar)     ; Useless line!</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>|</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo &quot;|bar baz&quot;
+     quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo &quot;|&quot;
+     quux)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-d</tt></th>
+  <th align="left">paredit-forward-kill-word</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>|(foo bar)    ; baz</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(| bar)    ; baz</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(|)    ; baz</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>()    ;|</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>;;;| Frobnicate
+(defun frobnicate ...)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>;;;|
+(defun frobnicate ...)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>;;;
+(| frobnicate ...)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-DEL</tt></th>
+  <th align="left">paredit-backward-kill-word</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo bar)    ; baz
+(quux)|</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar)    ; baz
+(|)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar)    ; |
+()</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo |)    ; 
+()</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(|)    ; 
+()</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+</table>
+<h3>Movement & Navigation</h3>
+<table>
+<tr>
+  <th align="left"><tt>C-M-f</tt></th>
+  <th align="left">paredit-forward</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo |(bar baz) quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (bar baz)| quux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar)|)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (bar))|</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-M-b</tt></th>
+  <th align="left">paredit-backward</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar baz)| quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo |(bar baz) quux)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(|(foo) bar)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>|((foo) bar)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-M-u</tt></th>
+  <th align="left">paredit-backward-up</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-M-d</tt></th>
+  <th align="left">paredit-forward-down</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-M-p</tt></th>
+  <th align="left">paredit-backward-down</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-M-n</tt></th>
+  <th align="left">paredit-forward-up</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+</table>
+<h3>Depth-Changing Commands</h3>
+<table>
+<tr>
+  <th align="left"><tt>M-(</tt></th>
+  <th align="left">paredit-wrap-round</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo |bar baz)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (|bar) baz)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-s</tt></th>
+  <th align="left">paredit-splice-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar| baz) quux)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar| baz quux)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-&lt;up&gt;</tt>, <tt>ESC &lt;up&gt;</tt></th>
+  <th align="left">paredit-splice-sexp-killing-backward</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (let ((x 5)) |(sqrt n)) bar)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo |(sqrt n) bar)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-&lt;down&gt;</tt>, <tt>ESC &lt;down&gt;</tt></th>
+  <th align="left">paredit-splice-sexp-killing-forward</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(a (b c| d e) f)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a b c| f)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-r</tt></th>
+  <th align="left">paredit-raise-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(dynamic-wind in (lambda () |body) out)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(dynamic-wind in |body out)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>|body</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-?</tt></th>
+  <th align="left">paredit-convolute-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(let ((x 5) (y 3)) (frob |(zwonk)) (wibblethwop))</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(frob |(let ((x 5) (y 3)) (zwonk) (wibblethwop)))</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+</table>
+<h3>Barfage & Slurpage</h3>
+<table>
+<tr>
+  <th align="left"><tt>C-)</tt>, <tt>C-&lt;right&gt;</tt></th>
+  <th align="left">paredit-forward-slurp-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar |baz) quux zot)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (bar |baz quux) zot)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(a b ((c| d)) e f)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a b ((c| d) e) f)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-}</tt>, <tt>C-&lt;left&gt;</tt></th>
+  <th align="left">paredit-forward-barf-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar |baz quux) zot)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (bar |baz) quux zot)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-(</tt>, <tt>C-M-&lt;left&gt;</tt>, <tt>ESC C-&lt;left&gt;</tt></th>
+  <th align="left">paredit-backward-slurp-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo bar (baz| quux) zot)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo (bar baz| quux) zot)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>(a b ((c| d)) e f)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(a (b (c| d)) e f)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-{</tt>, <tt>C-M-&lt;right&gt;</tt>, <tt>ESC C-&lt;right&gt;</tt></th>
+  <th align="left">paredit-backward-barf-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(foo (bar baz |quux) zot)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(foo bar (baz |quux) zot)</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+</table>
+<h3>Miscellaneous Commands</h3>
+<table>
+<tr>
+  <th align="left"><tt>M-S</tt></th>
+  <th align="left">paredit-split-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(hello| world)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(hello)| (world)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>&quot;Hello, |world!&quot;</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>&quot;Hello, &quot;| &quot;world!&quot;</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-J</tt></th>
+  <th align="left">paredit-join-sexps</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+<td><table border="1"><tr><td><table><tr><td><pre>(hello)| (world)</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>(hello| world)</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>&quot;Hello, &quot;| &quot;world!&quot;</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>&quot;Hello, |world!&quot;</pre></td></tr></table></td></tr></table></td>
+<td><table border="1"><tr><td><table><tr><td><pre>hello-
+|  world</pre></td></tr><tr><th>&darr;</th></tr><tr><td><pre>hello-|world</pre></td></tr></table></td></tr></table></td>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>C-c C-M-l</tt></th>
+  <th align="left">paredit-recenter-on-sexp</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+<tr>
+  <th align="left"><tt>M-q</tt></th>
+  <th align="left">paredit-reindent-defun</th>
+</tr>
+<tr><td colspan="2"><table cellpadding="5"><tr>
+</tr></table></td></tr>
+</table>

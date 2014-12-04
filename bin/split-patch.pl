@@ -22,12 +22,18 @@ sub main {
     my $diff_a = $ARGV[0];
     my $diff_b = $ARGV[1];
 
-    my @diff_stat = `git diff --stat $diff_a $diff_b`;
+    if ( ! -e ".git") {
+        print "$0 should run under git repo root directory\n";
+        exit 1;
+    }
+
+    my @diff_stat = `git diff --relative --stat $diff_a $diff_b`;
 
     foreach my $i (0 .. $#diff_stat - 1) {
         my $item = $diff_stat[$i];
         chomp($item);
 
+        # split file path and file status
         my ($file_path, $file_stat) = split(/\|/, $item);
         $file_path =~ s!^\s+!!;
         $file_path =~ s!\s+$!!;

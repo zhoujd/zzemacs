@@ -50,7 +50,7 @@
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
                     '("Consolas 12" "Droid Sans Mono 11")
-                    '("Consolas 12" "Droid Sans Mono 11")
+                    '("Consolas 14" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
                     '("Microsoft YaHei Mono 14" "Droid Sans Fallback 14")

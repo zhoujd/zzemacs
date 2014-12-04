@@ -396,11 +396,11 @@ Paredit behaves badly if parentheses are unbalanced, so exercise
    ("M-s"       paredit-splice-sexp
                 ("(foo (bar| baz) quux)"
                  "(foo bar| baz quux)"))
-   (("M-<up>" "ESC <up>")
+   ("C-<up>"    ;;("M-<up>" "ESC <up>")
                 paredit-splice-sexp-killing-backward
                 ("(foo (let ((x 5)) |(sqrt n)) bar)"
                  "(foo |(sqrt n) bar)"))
-   (("M-<down>" "ESC <down>")
+   ("C-<down>"  ;;("M-<down>" "ESC <down>")
                 paredit-splice-sexp-killing-forward
                 ("(a (b c| d e) f)"
                  "(a b c| f)"))

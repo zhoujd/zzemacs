@@ -21,16 +21,17 @@ sub main {
 
     my $diff_a = $ARGV[0];
     my $diff_b = $ARGV[1];
+    my $index  = 0;
 
-    if ( ! -e ".git") {
+    # git repo check
+    if (! -e ".git") {
         print "$0 should run under git repo root directory\n";
         exit 1;
     }
 
-    my @diff_stat = `git diff --relative --stat $diff_a $diff_b`;
-
-    foreach my $i (0 .. $#diff_stat - 1) {
-        my $item = $diff_stat[$i];
+    my @diff_stat = `git diff --stat $diff_a $diff_b`;
+    foreach (0 .. $#diff_stat - 1) {
+        my $item = $diff_stat[$_];
         chomp($item);
 
         # split file path and file status
@@ -60,7 +61,7 @@ sub main {
             $cmp_b = "$diff_b -- $file_path";
         }
 
-        my $prefix = sprintf "%04d", $i + 1;
+        my $prefix = sprintf "%04d", ++$index;
         my $cmd = "git diff $cmp_a $cmp_b > $split_dir/$prefix-$file_name.diff";
         print "[$prefix] $cmd\n";
 
@@ -68,7 +69,7 @@ sub main {
         (system($cmd) == 0) || die "can`t run $cmd $!";
     }
 
-    print "patches to $#diff_stat files finished.\n";
+    print "patches to $index files finished.\n";
 }
 
 main;

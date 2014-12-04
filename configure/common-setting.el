@@ -90,11 +90,11 @@
     (my-console-font (nth 1 cn-font-list)))
 
 (setq sshX-en-font-list (if-ms-windows
-                         '("Consolas 15" "Droid Sans Mono 14")
-                         '("Consolas 15" "Droid Sans Mono 14")
+                         '("Microsoft YaHei Mono 15" "Droid Sans Mono 14")
+                         '("Microsoft YaHei Mono 15" "Droid Sans Mono 14")
                          ))
 (setq sshX-cn-font-list (if-ms-windows
-                         '("Microsoft YaHei Mono 17" "Droid Sans Fallback 14")
+                         '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
                          '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")
                          ))
 (defun ssh-x-font ()

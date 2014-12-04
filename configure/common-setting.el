@@ -49,7 +49,7 @@
 ;;font setting
 (setq en-font-list (if-ms-windows
                     '("Consolas 13" "Droid Sans Mono 11")
-                    '("Consolas 11" "Droid Sans Mono 11")
+                    '("Consolas 12" "Droid Sans Mono 11")
                     ))
 (setq cn-font-list (if-ms-windows
                     '("Microsoft YaHei Mono 15" "Droid Sans Fallback 14")

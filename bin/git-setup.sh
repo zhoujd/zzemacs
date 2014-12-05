@@ -26,7 +26,7 @@ EOF
 
 ## set git proxy
 git config --global core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
-git config --global core.editor "emacs -Q"
+git config --global core.editor    "emacs -Q"
 
 ## setup git configure
 git config --global user.name   "zhoujd"

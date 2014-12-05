@@ -275,12 +275,12 @@
 
 
 ;;rgrep for c/c++
-(setq my-c-file-regex "*.[hc]")
-(defun my-c-rgrep (term &optional dir)
+(setq rgrep-c-file-regex "*.[hc]")
+(defun rgrep-c (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term my-c-file-regex dir)))
+    (rgrep term rgrep-c-file-regex dir)))
 
 ;;self set for rgrep
 (require 'grep)

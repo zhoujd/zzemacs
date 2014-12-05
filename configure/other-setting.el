@@ -138,6 +138,7 @@
 
 ;;tramp setting
 ;;http://www.emacswiki.org/emacs/TrampMode
+;;http://lifegoo.pluskid.org/wiki/EmacsTRAMP.html
 (require 'tramp)      
 (setq tramp-default-method (if-ms-windows "plink" "ssh"))
 (setq tramp-debug-buffer t)

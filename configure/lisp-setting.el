@@ -147,6 +147,10 @@
          (setq bridge-handlers
                '(("copy-it" . my-copy-handler)))))
 
+;;for elisp function help
+(require 'find-func)
+(find-function-setup-keys)
+
 
 (provide 'lisp-setting)
 

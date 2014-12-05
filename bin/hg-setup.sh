@@ -50,6 +50,7 @@ cat > ~/.hgrc <<EOF
 username = zhoujd<zjd-405@163.com>
 verbose = True
 merge = ${EXTMERGE}
+editor = emacs -Q
 
 [alias]
 nlog = log --limit

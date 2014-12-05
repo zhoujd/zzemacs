@@ -147,7 +147,7 @@
     [f12]             'find-grep
     [S-f12]           'rgrep
     [C-f12]           'find-name-dired
-    [M-f12]           'lgrep
+    [M-f12]           'my-c-rgrep
     (kbd "C-x <f12>") 'occur-at-point
     (kbd "C-c <f12>") 'multi-occur
     )

@@ -137,10 +137,11 @@
 ;(add-hook 'shell-mode-hook 'kill-buffer-when-exit)
 
 ;;tramp setting
+;;http://www.emacswiki.org/emacs/TrampMode
 (require 'tramp)      
 (setq tramp-default-method (if-ms-windows "plink" "ssh"))
-(setq tramp-unified-filenames t)
-(setq tramp-auto-save-directory "~/var/tramp")
+(setq tramp-debug-buffer t)
+(setq tramp-verbose 10)
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zjd-405@163.com")

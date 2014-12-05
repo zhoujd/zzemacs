@@ -10,6 +10,9 @@ else
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd)
 fi
 
+## set git proxy
+git config core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
+git config core.editor    "emacs -Q"
 
 ## setup git configure
 git config user.name   "zhoujd"

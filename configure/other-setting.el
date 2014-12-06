@@ -150,11 +150,10 @@
   "Open a remote shell to a host."
   (interactive)
   (with-temp-buffer
-    (let ((host (if host host (read-string "Host: ")))
-          (old-pwd default-directory))
+    (let ((host (if host host (read-string "Host: "))))
       (cd (concat "/" tramp-default-method ":" host ":"))
       (shell (concat "*" host "*"))
-      (cd old-pwd))))
+      )))
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zjd-405@163.com")

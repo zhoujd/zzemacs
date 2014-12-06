@@ -145,6 +145,7 @@
 (setq tramp-debug-buffer t)
 (setq tramp-verbose 10)
 
+;;M-x cd /hostname:/current/path/in/the/shell
 (defun remote-shell (&optional host)
   "Open a remote shell to a host."
   (interactive)

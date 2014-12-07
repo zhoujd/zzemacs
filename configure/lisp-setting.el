@@ -127,6 +127,12 @@
            ))
         (add-hook hook 'enable-paredit-mode))
 
+(eval-after-load 'paredit
+  '(progn
+    (define-key paredit-mode-map (kbd "M-s")      nil)
+    (define-key paredit-mode-map (kbd "<M-up>")   nil)
+    (define-key paredit-mode-map (kbd "<M-down>") nil)))
+
 ;;Advanced highlighting of matching parentheses
 (require 'mic-paren)
 (paren-activate)

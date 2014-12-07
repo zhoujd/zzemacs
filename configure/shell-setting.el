@@ -285,9 +285,7 @@ Dmitriy Igrishin's patched version of comint.el."
           'comint-strip-ctrl-m nil t)
 
 ;;readline complete
-(if-ms-windows
- (progn
-  (setq comint-process-echoes nil))
+(unless-ms-windows
  (progn
   ;;shell completion
   (require 'shell-completion)

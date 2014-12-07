@@ -287,7 +287,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;readline complete
 (if-ms-windows
  (progn
-  (setq comint-process-echoes t))
+  (setq comint-process-echoes nil))
  (progn
   ;;shell completion
   (require 'shell-completion)

@@ -23,6 +23,7 @@
 ;;$touch ~/.ssh/authorized_keys
 ;;$chmod 644 ~/.ssh/authorized_keys
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
+;;http://files.taesoo.org/git-emacs/git-emacs.html
 (zz-load-path "site-lisp/git-emacs")
 (require 'git-emacs)
 (require 'git-show)
@@ -32,8 +33,7 @@
 (require 'mq)
 
 ;;magit setting need upgrade for emacs24.4
-(when (and (<= emacs-major-version 24)
-           (<= emacs-minor-version 3))
+(when (version< emacs-version "24.4")
   (zz-load-path "site-lisp/magit")
   (require 'magit))
 

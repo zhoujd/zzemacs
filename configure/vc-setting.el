@@ -31,9 +31,11 @@
 (require 'mercurial)
 (require 'mq)
 
-;;magit setting
-(zz-load-path "site-lisp/magit")
-(require 'magit)
+;;magit setting need upgrade for emacs24.4
+(when (and (<= emacs-major-version 24)
+           (<= emacs-minor-version 3))
+  (zz-load-path "site-lisp/magit")
+  (require 'magit))
 
 ;;diffstat
 (require 'diffstat)

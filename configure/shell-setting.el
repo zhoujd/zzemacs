@@ -285,18 +285,20 @@ Dmitriy Igrishin's patched version of comint.el."
           'comint-strip-ctrl-m nil t)
 
 ;;readline complete
-(unless-ms-windows  
- ;;shell completion
- (require 'shell-completion)
- 
- (setq explicit-shell-file-name "bash")
- (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
- (setq comint-process-echoes nil)
- 
- (require 'readline-complete)
- (add-to-list 'ac-modes 'shell-mode)
- (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
- )
+(if-ms-windows
+ (progn
+  (setq comint-process-echoes t))
+ (progn
+  ;;shell completion
+  (require 'shell-completion)
+  
+  (setq explicit-shell-file-name "bash")
+  (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+  (setq comint-process-echoes nil)
+  
+  (require 'readline-complete)
+  (add-to-list 'ac-modes 'shell-mode)
+  (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)))
 
 ;;eshell setting
 (setq eshell-prompt-function

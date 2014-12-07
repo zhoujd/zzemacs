@@ -180,7 +180,6 @@ the mru bookmark stack."
             (all-completions ac-prefix candidates)))))
 
 
-
 (provide 'complete-setting)
 
 ;;; complete-setting.el ends here

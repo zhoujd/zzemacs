@@ -320,8 +320,13 @@ Dmitriy Igrishin's patched version of comint.el."
   (with-temp-buffer
     (let ((dir (if dir dir (read-string "Dir: "))))
       (cd dir)
-      (shell (concat "*shell-" dir "*"))
+      (shell (concat "*shell-L:" dir "*"))
       )))
+
+(defun shell-directory (name dir)
+  (interactive "sShell name: \nDDirectory: ")
+  (let ((default-directory dir))
+    (shell name)))
 
 
 (provide 'shell-setting)

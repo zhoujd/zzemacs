@@ -304,6 +304,26 @@ Dmitriy Igrishin's patched version of comint.el."
         (concat "" (user-login-name) "@" (system-name) " "
                 (eshell/pwd) " % ")))
 
+;;M-x cd /hostname:/current/path/in/the/shell
+(defun remote-shell (&optional host)
+  "Open a remote shell to a host."
+  (interactive)
+  (with-temp-buffer
+    (let ((host (if host host (read-string "Host: "))))
+      (cd (concat "/" tramp-default-method ":" host ":"))
+      (shell (concat "*" host "*"))
+      )))
+
+(defun local-shell (&optional dir)
+  "Open a remote shell to a host."
+  (interactive)
+  (with-temp-buffer
+    (let ((dir (if dir dir (read-string "Dir: "))))
+      (cd dir)
+      (shell (concat "*shell-" dir "*"))
+      )))
+
+
 (provide 'shell-setting)
 
 ;;; shell-setting.el ends here

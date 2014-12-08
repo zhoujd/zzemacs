@@ -143,16 +143,6 @@
 (setq tramp-debug-buffer t)
 (setq tramp-verbose 10)
 
-;;M-x cd /hostname:/current/path/in/the/shell
-(defun remote-shell (&optional host)
-  "Open a remote shell to a host."
-  (interactive)
-  (with-temp-buffer
-    (let ((host (if host host (read-string "Host: "))))
-      (cd (concat "/" tramp-default-method ":" host ":"))
-      (shell (concat "*" host "*"))
-      )))
-
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zjd-405@163.com")
 (setq ange-ftp-default-user t)

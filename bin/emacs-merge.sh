@@ -15,7 +15,7 @@ fi
 
 EMACS="emacs"
 
-$EMACS -q --no-site-file \
-		  --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
-          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
-          --eval "(message \"emacs merge finished.\")"
+$EMACS --quick \
+	   --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
+       --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
+       --eval "(message \"emacs merge finished.\")"

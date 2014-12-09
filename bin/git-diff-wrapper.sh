@@ -41,7 +41,7 @@ diff_emacs()
         ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd)"
     fi
 
-    emacs --no-site-file -q \
+    emacs --quick \
           --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
           --eval "(ediff-sample-diff \"$1\" \"$2\")" \
           --eval "(message \"emacs diff finished.\")"

@@ -40,7 +40,7 @@ merge_emacs()
         ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd)"
     fi
 
-    emacs --no-site-file -q \
+    emacs --quick \
           --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
           --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
           --eval "(message \"emacs merge finished.\")"

@@ -13,7 +13,7 @@ fi
 
 EMACS="emacs"
 
-$EMACS --no-site-file -q \
+$EMACS --quick \
        --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
        --eval "(ediff-sample-diff \"$1\" \"$2\")" \
        --eval "(message \"emacs diff finished.\")"

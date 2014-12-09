@@ -49,7 +49,7 @@ def merge_emacs(a, b, c, d):
                     (ediff-merge-files \\\"%s\\\" \\\"%s\\\" \\\"%s\\\" \\\"%s\\\") \
                   )" % (zzemacs_path, a, b, c, d)
 
-    cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
+    cmd = "emacs --quick --eval \"%s\"" % elisp_string
     os.system(cmd)
 
 if __name__ == "__main__":

@@ -47,7 +47,7 @@ def diff_emacs(a, b):
                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
                   )" % (zzemacs_path, a, b)
 
-    cmd = "emacs -q --no-site-file --eval \"%s\"" % elisp_string
+    cmd = "emacs --quick --eval \"%s\"" % elisp_string
     os.system(cmd)
 
 if __name__ == "__main__":

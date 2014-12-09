@@ -193,30 +193,31 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  "1" (when-ms-windows (execute-set-key
-                        "vs-x86-prompt"
-                        '("cmd" "/c" "start" "vcvarsall" "x86")))
-  "2" (when-ms-windows (execute-set-key
-                        "vs-x64-prompt"
-                        '("cmd" "/c" "start" "vcvarsall" "x64")))
-  "3" (when-ms-windows (execute-set-key
-                        "git-shell"
-                        '("cmd" "/c" "start" "sh" "--login" "-i")))
-  "4" (when-ms-windows (execute-set-key
-                        "console"
-                        (list "console2" "-t" "Git" "-d" ".")))
+  "1" (when-ms-windows
+       (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86")))
+  "2" (when-ms-windows
+       (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
+  "3" (when-ms-windows
+       (execute-set-key "git-shell" '("cmd" "/c" "start" "sh" "--login" "-i")))
+  "4" (when-ms-windows
+       (execute-set-key "console" (list "console2" "-t" "Git" "-d" ".")))
+
   "t" 'open-with-terminal
   "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
   "b" (execute-set-key "bcompare" '("bcompare"))
-  ;;;for linux quick run
-  "`" (if-not-ms-windows (execute-set-key "gmrun" '("gmrun")))
-  "m" (if-not-ms-windows (execute-set-key
-                          "gnome-system-monitor" '("gnome-system-monitor")))
-  "c" (if-not-ms-windows (execute-set-key
-                          "gnome-control-center" '("gnome-control-center")))
-  "e" (if-not-ms-windows (execute-set-key "evince" '("evince")))
-  "n" (if-not-ms-windows (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
-  "r" (if-not-ms-windows (execute-set-key "remmina" '("remmina")))
+
+  "`" (if-not-ms-windows
+       (execute-set-key "gmrun" '("gmrun")))
+  "m" (if-not-ms-windows
+       (execute-set-key "gnome-system-monitor" '("gnome-system-monitor")))
+  "c" (if-not-ms-windows
+       (execute-set-key "gnome-control-center" '("gnome-control-center")))
+  "e" (if-not-ms-windows
+       (execute-set-key "evince" '("evince")))
+  "n" (if-not-ms-windows
+       (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
+  "r" (if-not-ms-windows
+       (execute-set-key "remmina" '("remmina")))
   ))
 
 ;;switch to shells

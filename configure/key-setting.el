@@ -193,9 +193,6 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  (kbd "`") (if-not-ms-windows
-             (execute-set-key "gmrun" '("gmrun")))
-
   (kbd "1") (if-ms-windows
              (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
              'remote-shell)
@@ -209,7 +206,8 @@
              (execute-set-key "console" (list "console2" "-t" "Git" "-d" "."))
              (execute-set-key "gnome-terminal" (list "gnome-terminal")))
     
-  (kbd "b") (execute-set-key "bcompare" '("bcompare"))  
+  (kbd "b") (if-ms-windows
+             (execute-set-key "bcompare" '("bcompare")))
   (kbd "c") (if-not-ms-windows
              (execute-set-key "gnome-control-center" '("gnome-control-center")))
   (kbd "e") (if-not-ms-windows

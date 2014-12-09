@@ -193,31 +193,36 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  "1" (when-ms-windows
-       (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86")))
-  "2" (when-ms-windows
-       (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64")))
-  "3" (when-ms-windows
-       (execute-set-key "git-shell" '("cmd" "/c" "start" "sh" "--login" "-i")))
-  "4" (when-ms-windows
-       (execute-set-key "console" (list "console2" "-t" "Git" "-d" ".")))
+  (kbd "`") (if-not-ms-windows
+             (execute-set-key "gmrun" '("gmrun")))
 
-  "t" 'open-with-terminal
-  "f" (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
-  "b" (execute-set-key "bcompare" '("bcompare"))
-
-  "`" (if-not-ms-windows
-       (execute-set-key "gmrun" '("gmrun")))
-  "m" (if-not-ms-windows
-       (execute-set-key "gnome-system-monitor" '("gnome-system-monitor")))
-  "c" (if-not-ms-windows
-       (execute-set-key "gnome-control-center" '("gnome-control-center")))
-  "e" (if-not-ms-windows
-       (execute-set-key "evince" '("evince")))
-  "n" (if-not-ms-windows
-       (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
-  "r" (if-not-ms-windows
-       (execute-set-key "remmina" '("remmina")))
+  (kbd "1") (if-ms-windows
+             (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
+             'remote-shell)
+  (kbd "2") (if-ms-windows
+             (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64"))
+             'local-shell)
+  (kbd "3") (if-ms-windows
+             (execute-set-key "git-shell" '("cmd" "/c" "start" "sh" "--login" "-i"))
+             'shell-directory)
+  (kbd "4") (if-ms-windows
+             (execute-set-key "console" (list "console2" "-t" "Git" "-d" "."))
+             (execute-set-key "gnome-terminal" (list "gnome-terminal")))
+    
+  (kbd "b") (execute-set-key "bcompare" '("bcompare"))  
+  (kbd "c") (if-not-ms-windows
+             (execute-set-key "gnome-control-center" '("gnome-control-center")))
+  (kbd "e") (if-not-ms-windows
+             (execute-set-key "evince" '("evince")))
+  (kbd "f") (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
+  (kbd "m") (if-not-ms-windows
+             (execute-set-key "gnome-system-monitor" '("gnome-system-monitor")))
+    
+  (kbd "n") (if-not-ms-windows
+             (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
+  (kbd "r") (if-not-ms-windows
+             (execute-set-key "remmina" '("remmina")))
+  (kbd "t") 'open-with-terminal
   ))
 
 ;;switch to shells

@@ -26,11 +26,8 @@ Install_fonts_conf()
     FONT_TARGET=~/.fonts
     mkdir -p $FONT_TARGET
 
-    echo "install font to $FONT_TARGET"
-    ln -sf ${ZZEMACS_ROOT}/font/consola/*       $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO/*      $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*  $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/DroidSansMono/* $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/consola/*   $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO/*  $FONT_TARGET
 }
 
 ##setup runemacs.sh
@@ -78,7 +75,7 @@ main()
     echo "install fonts"
     try_command Install_fonts_conf
 
-    echo "install runemacs to $HOME"
+    echo "install runemacs"
     try_command Install_emacs_run
 
     echo "install others"
@@ -86,7 +83,6 @@ main()
 
     ##install third-party
     confirm_execute "Do you wanna install third-party packages? (y/N): " try_command Install_thirdparty
-
 }
 
 main

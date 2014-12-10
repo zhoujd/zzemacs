@@ -325,12 +325,14 @@
       '(:eval (concat (user-login-name) "@" (system-name) "[Emacs" 
                       (nth 2 (split-string (version))) "]  " (fname-title-string))))
 
-;;Suppress GUI features
+;suppress GUI features
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq gnus-inhibit-startup-message t)
+
+;;disable loading of "default.el" at startup
 (setq inhibit-default-init t)
 
 (setq default-major-mode 'text-mode)

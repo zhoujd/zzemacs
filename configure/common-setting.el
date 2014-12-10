@@ -49,12 +49,12 @@
 ;;font setting
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
-                    '("Consolas 11" "Droid Sans Mono 11")
-                    '("Consolas 12" "Droid Sans Mono 11")
+                    '("Consolas 11" "Anonymous Pro 12")
+                    '("Consolas 12" "Anonymous Pro 12")
                     ))
 (setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 13" "Droid Sans Fallback 14")
-                    '("Microsoft YaHei Mono 12" "Droid Sans Fallback 14")
+                    '("Microsoft YaHei Mono 13")
+                    '("Microsoft YaHei Mono 12")
                     ))
 
 (defun my-cn-font-name (name)
@@ -83,23 +83,23 @@
 
 (defun local-x-font ()
   (interactive)
-  (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list)))
+  (my-frame-font (nth 1 en-font-list) (nth 0 cn-font-list)))
 
 (if window-system
     (local-x-font)
     (my-console-font (nth 1 cn-font-list)))
 
 (setq sshX-en-font-list (if-ms-windows
-                         '("Consolas 15" "Droid Sans Mono 14")
-                         '("Consolas 16" "Droid Sans Mono 14" )
+                         '("Consolas 15" "Anonymous Pro 16")
+                         '("Consolas 16" "Anonymous Pro 16")
                          ))
 (setq sshX-cn-font-list (if-ms-windows
-                         '("Microsoft YaHei Mono 17" "Droid Sans Fallback 14")
-                         '("Microsoft YaHei Mono 16" "Droid Sans Fallback 14")
+                         '("Microsoft YaHei Mono 17")
+                         '("Microsoft YaHei Mono 16")
                          ))
 (defun ssh-x-font ()
   (interactive)
-  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+  (my-frame-font (nth 1 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
 
 (defun my-use-server-mode ()
   ;;server-mode

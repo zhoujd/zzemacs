@@ -23,8 +23,12 @@ EOF
 #https://github.com/android/platform_frameworks_base/tree/master/data/fonts
 Install_fonts_conf()
 {
-    mkdir -p ~/.fonts
-    ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
+    FONT_TARGET=~/.fonts
+    mkdir -p $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/consola/*       $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO/*      $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*  $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/DroidSansMono/* $FONT_TARGET
 }
 
 ##setup runemacs.sh

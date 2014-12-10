@@ -313,7 +313,19 @@
 (winner-mode t)
 
 ;;buffer name in title
-(setq frame-title-format '("emacs@" system-name ": %b %+%+ %f"))
+(defun fname-title-string ()
+  "Return the file name of current buffer, using ~ if under home directory"
+  (let
+      ((fname (or
+                (buffer-file-name (current-buffer))
+                (buffer-name))))
+    (when (string-match (getenv "HOME") fname)
+      (setq fname (replace-match "~" t t fname))        )
+    fname))
+
+(setq frame-title-format             
+      '(:eval (concat (user-login-name) "@" (system-name) "[Emacs" 
+                      (nth 2 (split-string (version))) "]  " (fname-title-string))))
 
 ;;Suppress GUI features
 (setq use-file-dialog nil)

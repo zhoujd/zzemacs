@@ -25,6 +25,8 @@ Install_fonts_conf()
 {
     FONT_TARGET=~/.fonts
     mkdir -p $FONT_TARGET
+
+    echo "install font to $FONT_TARGET"
     ln -sf ${ZZEMACS_ROOT}/font/consola/*       $FONT_TARGET
     ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO/*      $FONT_TARGET
     ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*  $FONT_TARGET

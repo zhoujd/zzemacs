@@ -26,8 +26,8 @@ Install_fonts_conf()
     FONT_TARGET=~/.fonts
     mkdir -p $FONT_TARGET
 
-    ln -sf ${ZZEMACS_ROOT}/font/consola/*   $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO/*  $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf  $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/*.ttf          $FONT_TARGET
 }
 
 ##setup runemacs.sh

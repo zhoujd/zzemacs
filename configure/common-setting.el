@@ -49,7 +49,7 @@
 ;;font setting
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
-                    '("Consolas 11" "Anonymous Pro 12")
+                    '("Consolas 11" "Anonymous Pro 13")
                     '("Consolas 12" "Anonymous Pro 12")
                     ))
 (setq cn-font-list (if-ms-windows
@@ -90,7 +90,7 @@
     (my-console-font (nth 1 cn-font-list)))
 
 (setq sshX-en-font-list (if-ms-windows
-                         '("Consolas 15" "Anonymous Pro 16")
+                         '("Consolas 15" "Anonymous Pro 17")
                          '("Consolas 16" "Anonymous Pro 16")
                          ))
 (setq sshX-cn-font-list (if-ms-windows

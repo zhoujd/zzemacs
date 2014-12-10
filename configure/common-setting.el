@@ -315,10 +315,8 @@
 ;;buffer name in title
 (defun fname-title-string ()
   "Return the file name of current buffer, using ~ if under home directory"
-  (let
-      ((fname (or
-                (buffer-file-name (current-buffer))
-                (buffer-name))))
+  (let ((fname (or (buffer-file-name (current-buffer))
+                   (buffer-name))))
     (when (string-match (getenv "HOME") fname)
       (setq fname (replace-match "~" t t fname))        )
     fname))
@@ -333,6 +331,7 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq gnus-inhibit-startup-message t)
+(setq inhibit-default-init t)
 
 (setq default-major-mode 'text-mode)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)

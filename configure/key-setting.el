@@ -31,7 +31,8 @@
 (apply-keys-to-map
  ctl-z-map
  (list
-  (kbd "C-z")  (lookup-key ctl-x-map "\C-z")
+  (kbd "C-s") 'slime-selector
+  (kbd "C-z") (lookup-key ctl-x-map "\C-z")
   ))
 
 (apply-keys-to-map
@@ -79,10 +80,10 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-c s")   'slime-selector
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
-
+  (kbd "C-c h")   'helm-mini
+  
   (kbd "%")       'match-paren
 
   [backspace]     'delete-backward-char
@@ -92,8 +93,6 @@
   [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
   [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
   [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
-
-  (kbd "C-c h")   'helm-mini
 
   ;;quick move other windows
   [M-up]          'windmove-up

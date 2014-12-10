@@ -63,7 +63,7 @@
 
 (define-fn-key (gethash "f3" fn-key-table)
     [f3]              'my-last-buffer-go
-    [S-f3]            'list-bookmarks
+    [S-f3]            'bookmark-bmenu-list
     [C-f3]            'bc-local-next
     [M-f3]            'bc-local-previous
     (kbd "C-x <f3>")  'register-list

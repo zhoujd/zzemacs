@@ -290,6 +290,13 @@
 ;;minimap show left
 (require 'minimap)
 
+;;igrep
+(require 'igrep)
+
+;;escreen
+(require 'escreen)
+(escreen-install)
+
 
 (provide 'other-setting)
 

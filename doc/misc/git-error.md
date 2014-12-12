@@ -19,4 +19,8 @@ Git error and solutions
 
 3. Delete remote branch
 
-   git push origin :branch-name
+   git push origin :<branch-name>
+
+4. Delete remote tag
+
+   git push origin :refs/tags/<tag-name>

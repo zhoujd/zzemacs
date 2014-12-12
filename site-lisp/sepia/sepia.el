@@ -27,7 +27,7 @@
 (ignore-errors (require 'sepia-w3m))
 (ignore-errors (require 'sepia-tree))
 (ignore-errors (require 'sepia-ido))
-(ignore-errors (require 'sepia-snippet))
+;; (ignore-errors (require 'sepia-snippet))
 ;; extensions that should always load (autoload later?)
 (require 'sepia-cpan)
 

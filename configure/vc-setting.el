@@ -24,8 +24,10 @@
 ;;$chmod 644 ~/.ssh/authorized_keys
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
-(zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs)
+(when (version< emacs-version "24.4")
+  (zz-load-path "site-lisp/git-emacs")
+  (require 'git-emacs))
+
 (require 'git-show)
 
 ;;Mercurial Support

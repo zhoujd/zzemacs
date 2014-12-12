@@ -150,7 +150,7 @@ An example function that can make use of this hook is
 
 ;; Keybindings
 
-(defcustom escreen-prefix-char "\C-\\"
+(defcustom escreen-prefix-char "\C-x9"
   "*Character prefixing escreen commands.
 If you wish to change this, you must also do
 

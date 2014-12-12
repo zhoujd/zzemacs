@@ -297,6 +297,10 @@
 (require 'escreen)
 (escreen-install)
 
+;;winring
+(require 'winring)
+(winring-initialize)
+
 
 (provide 'other-setting)
 

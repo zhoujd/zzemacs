@@ -162,6 +162,7 @@ the mru bookmark stack."
   "*Trigger edit commands that specify whether `auto-complete' should start or not when `ac-completing'.")
 
 ;;YASNIPPET
+;;https://github.com/capitaomorte/yasnippet
 (zz-load-path "site-lisp/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)

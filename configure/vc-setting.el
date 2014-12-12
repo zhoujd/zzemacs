@@ -34,7 +34,10 @@
 
 ;;magit setting need upgrade for emacs24.4
 (zz-load-path "site-lisp/git-modes")
-(zz-load-path "site-lisp/magit0")
+(if (version< emacs-version "23.2")
+    (zz-load-path "site-lisp/magit0")
+    (zz-load-path "site-lisp/magit"))
+
 (require 'magit)
 
 ;;diffstat

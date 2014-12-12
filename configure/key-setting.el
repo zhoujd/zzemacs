@@ -83,7 +83,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-mini
-  
+
   (kbd "%")       'match-paren
 
   [backspace]     'delete-backward-char
@@ -207,7 +207,7 @@
   (kbd "4") (if-ms-windows
              (execute-set-key "console" (list "console2" "-t" "Git" "-d" "."))
              (execute-set-key "xterm" (list "xterm")))
-    
+
   (kbd "c") (if-not-ms-windows
              (execute-set-key "gnome-control-center" '("gnome-control-center")))
   (kbd "d") (if-ms-windows
@@ -239,7 +239,7 @@
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   (if-emacs24-3 'smartparens-mode)
 
-  (kbd "C-1")   'my-utf-8
+  (kbd "C-1")   'dos2unix
   (kbd "C-3")   'ssh-x-font
   (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
@@ -251,6 +251,7 @@
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
 
+  (kbd "M-1")   'whitespace-cleanup
   (kbd "M-3")   'local-x-font
   (kbd "M-m")   'magit-status
   ))

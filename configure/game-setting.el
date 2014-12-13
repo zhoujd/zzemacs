@@ -4,7 +4,7 @@
 
 (zz-load-path "site-lisp/games")
 
-(setq sokoban-level-file (concat zzemacs-path "/etc/" "sokoban.levels"))
+(setq sokoban-level-file (concat zzemacs-path "/etc/sokoban.levels"))
 (require 'sokoban)
 
 (provide 'game-setting)

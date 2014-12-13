@@ -54,6 +54,7 @@
         perl-setting
         python-setting
         doc-setting
+        game-setting
         keymap-setting
         fn-setting
         key-setting

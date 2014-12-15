@@ -9,7 +9,7 @@ EMACS_TOOLS_ROOT=`pwd`
 Install_package()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SUSE" ]; then
+    if [ "$OS_DISTRO" = "SuSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then

@@ -32,8 +32,8 @@ git config --global core.editor    "emacs -Q"
 git config --global push.default   simple
 
 ## setup git configure
-#git config --global user.name   "zhoujd"
-#git config --global user.email  "zjd-405@163.com"
+git config --global user.name   "zhoujd"
+git config --global user.email  "zjd-405@163.com"
 
 ## output color
 git config --global color.ui    "true"

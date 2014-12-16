@@ -19,6 +19,7 @@
              (when (probe-file quicklisp-init)
                    (load quicklisp-init)))
 
+        * (setq ql:*proxy-url* "http://host:port")
 
 * Buildapp - Create executables with SBCL
   Buildapp is an application for SBCL that configures and saves an executable Common Lisp image.

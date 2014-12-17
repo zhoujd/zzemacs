@@ -13,7 +13,7 @@
  (eval-after-load "cl-indent"
    '(progn
      (put 'cl-flet 'common-lisp-indent-function
-      (get 'flet 'common-lisp-indent-function))
+          (get 'flet 'common-lisp-indent-function))
      )))
 
 ;;add common lisp configure file mode alias

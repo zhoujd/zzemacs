@@ -47,16 +47,6 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-;;this is only for chinese font test [右键属性--安全--高级--所有者]
-(setq en-font-list (if-ms-windows
-                    '("Consolas 11" "Anonymous Pro 13")
-                    '("Consolas 12" "Anonymous Pro 12")
-                    ))
-(setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 13")
-                    '("Microsoft YaHei Mono 12")
-                    ))
-
 (defun my-cn-font-name (name)
   (string-match ".*[ ]" name)
   (setq my-cn-name (substring (match-string 0 name) 0 -1)))
@@ -81,14 +71,21 @@
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
+;;this is only for chinese font test [右键属性--安全--高级--所有者]
+(setq en-font-list (if-ms-windows
+                    '("Consolas 11" "Anonymous Pro 13")
+                    '("Consolas 12" "Anonymous Pro 12")
+                    ))
+(setq cn-font-list (if-ms-windows
+                    '("Microsoft YaHei Mono 13")
+                    '("Microsoft YaHei Mono 12")
+                    ))
+
 (defun local-x-font ()
   (interactive)
-  (my-frame-font (nth 1 en-font-list) (nth 0 cn-font-list)))
+  (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list)))
 
-(if window-system
-    (local-x-font)
-    (my-console-font (nth 1 cn-font-list)))
-
+;;for ssh X window big font
 (setq sshX-en-font-list (if-ms-windows
                          '("Consolas 15" "Anonymous Pro 17")
                          '("Consolas 16" "Anonymous Pro 16")
@@ -97,9 +94,15 @@
                          '("Microsoft YaHei Mono 17")
                          '("Microsoft YaHei Mono 16")
                          ))
+
 (defun ssh-x-font ()
   (interactive)
-  (my-frame-font (nth 1 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+
+;;console font setting
+(if window-system
+    (local-x-font)
+    (my-console-font (nth 0 cn-font-list)))
 
 (defun my-use-server-mode ()
   ;;server-mode

@@ -1,6 +1,9 @@
 Quicklisp command list
 =========================
 
+;;set proxy if need
+(setq ql:*proxy-url* "http://host:port")
+
 ;;upgrade quicklisp
 (ql:update-client)
 

@@ -18,10 +18,10 @@
 
       ;; select which submodes we want to activate
       (mapc (lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
-            '(global-semantic-mru-bookmark-mode
-              global-semantic-idle-scheduler-mode
-              global-semantic-highlight-func-mode
-              global-semanticdb-minor-mode))
+            '(global-semantic-idle-scheduler-mode
+              global-semanticdb-minor-mode
+              global-semantic-idle-summary-mode
+              global-semantic-mru-bookmark-mode))
 
       ;; smart complitions
       (require 'semantic/ia)
@@ -43,16 +43,16 @@
          (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
                                          emacs-major-version emacs-minor-version)
                                  load-path))))
-      
+
       (zz-load-path "site-lisp/cedet/common")
-      
+
       ;; Load CEDET.
       ;; See cedet/common/cedet.info for configuration details.
       ;; IMPORTANT: For Emacs >= 23.2, you must place this *before* any
-      ;; CEDET component (including EIEIO) gets activated by another 
+      ;; CEDET component (including EIEIO) gets activated by another
       ;; package (Gnus, auth-source, ...).
       (require 'cedet)
-      (global-ede-mode t)      
+      (global-ede-mode t)
       (semantic-load-enable-minimum-features)
       (semantic-load-enable-code-helpers)
 

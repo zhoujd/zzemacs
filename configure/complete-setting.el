@@ -16,11 +16,14 @@
       ;; speed bar
       (require 'semantic/sb)
 
-      ;; Helper tools.
-      (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-                                        global-semanticdb-minor-mode
-                                        global-semantic-idle-summary-mode
-                                        global-semantic-mru-bookmark-mode))
+      ;; select which submodes we want to activate
+      (mapc (lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
+            '(global-semantic-mru-bookmark-mode
+              global-semanticdb-minor-mode
+              global-semantic-idle-scheduler-mode
+              global-semantic-stickyfunc-mode
+              global-semantic-highlight-func-mode
+              global-semanticdb-minor-mode))
 
       ;; smart complitions
       (require 'semantic/ia)

@@ -91,14 +91,16 @@
 ;            (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens)))
 
 ;;slime with auto-complete
-(require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(eval-after-load "auto-complete"
-  '(progn
-    (add-to-list 'ac-modes 'slime-repl-mode)
-    (add-to-list 'ac-modes 'slime-mode)
-  ))
+(defvar slime-ac-flag nil "flag for slime with auto complete cowork")
+(when slime-ac-flag
+  (require 'ac-slime)
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+                   '(progn
+                     (add-to-list 'ac-modes 'slime-repl-mode)
+                     (add-to-list 'ac-modes 'slime-mode)
+                     )))
 
 ;; sawfish mode settings
 ;; load the first sawfish.el or sawfish.elc file found in the load-path

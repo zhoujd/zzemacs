@@ -20,7 +20,6 @@
       (mapc (lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
             '(global-semantic-mru-bookmark-mode
               global-semantic-idle-scheduler-mode
-              global-semantic-stickyfunc-mode
               global-semantic-highlight-func-mode
               global-semanticdb-minor-mode))
 

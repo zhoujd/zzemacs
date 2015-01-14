@@ -74,11 +74,11 @@
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list (if-ms-windows
                     '("Consolas 11" "Anonymous Pro 13")
-                    '("Consolas 12" "Anonymous Pro 12")
+                    '("Consolas 11" "Anonymous Pro 13")
                     ))
 (setq cn-font-list (if-ms-windows
                     '("Microsoft YaHei Mono 13")
-                    '("Microsoft YaHei Mono 12")
+                    '("Microsoft YaHei Mono 13")
                     ))
 
 (defun local-x-font ()
@@ -87,12 +87,12 @@
 
 ;;for ssh X window big font
 (setq sshX-en-font-list (if-ms-windows
-                         '("Consolas 15" "Anonymous Pro 17")
-                         '("Consolas 16" "Anonymous Pro 16")
+                         '("Consolas 15" "Anonymous Pro 16")
+                         '("Consolas 15" "Anonymous Pro 16")
                          ))
 (setq sshX-cn-font-list (if-ms-windows
                          '("Microsoft YaHei Mono 17")
-                         '("Microsoft YaHei Mono 16")
+                         '("Microsoft YaHei Mono 17")
                          ))
 
 (defun ssh-x-font ()

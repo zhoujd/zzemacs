@@ -302,7 +302,7 @@
 (winring-initialize)
 
 ;;power status line
-(require 'powerline)
+;(require 'powerline)
 
 ;;grep+
 (require 'grep+)

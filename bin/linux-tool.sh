@@ -18,6 +18,7 @@ Install_package_ubuntu()
 {
     sudo apt-get install -y texlive
     sudo apt-get install -y texinfo
+    sudo apt-get install -y xmlto
 
     sudo apt-get install -y openssh-server
     sudo apt-get install -y tree

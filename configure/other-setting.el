@@ -301,6 +301,11 @@
 (require 'winring)
 (winring-initialize)
 
+;;power status line
+(require 'powerline)
+
+;;grep+
+(require 'grep+)
 
 (provide 'other-setting)
 

@@ -23,7 +23,7 @@
 
 ;; remove desktop after it's been read
 (add-hook 'desktop-after-read-hook
-	  (lambda ()
+      (lambda ()
         ;; desktop-remove clears desktop-dirname
         (setq desktop-dirname-tmp desktop-dirname)
         (desktop-remove)
@@ -46,8 +46,8 @@
   (interactive)
   (if (saved-session)
       (if (y-or-n-p "Overwrite existing desktop? ")
-	  (desktop-save-in-desktop-dir)
-	(message "Session not saved."))
+      (desktop-save-in-desktop-dir)
+    (message "Session not saved."))
   (desktop-save-in-desktop-dir)))
 
 ;; ask user whether to restore desktop at start-up
@@ -138,7 +138,7 @@
 ;;http://www.emacswiki.org/emacs/TrampMode
 ;;http://lifegoo.pluskid.org/wiki/EmacsTRAMP.html
 ;;http://stackoverflow.com/questions/1134149/emacs-remote-shell
-(require 'tramp)      
+(require 'tramp)
 (setq tramp-default-method (if-ms-windows "plink" "ssh"))
 (setq tramp-debug-buffer t)
 (setq tramp-verbose 10)
@@ -148,7 +148,7 @@
 (setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/
-(require 'smex)  
+(require 'smex)
 (smex-initialize)
 
 ;;mulit-occur
@@ -186,13 +186,13 @@
 
 ;;using the arrow keys to select a buffer
 (defun iswitchb-local-keys ()
-  (mapc (lambda (K) 
-	      (let* ((key (car K)) (fun (cdr K)))
+  (mapc (lambda (K)
+          (let* ((key (car K)) (fun (cdr K)))
             (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
-	    '(("<right>" . iswitchb-next-match)
-	      ("<left>"  . iswitchb-prev-match)
-	      ("<up>"    . isb-filter-prev)
-	      ("<down>"  . isb-filter-next)
+        '(("<right>" . iswitchb-next-match)
+          ("<left>"  . iswitchb-prev-match)
+          ("<up>"    . isb-filter-prev)
+          ("<down>"  . isb-filter-next)
           ("\C-o"    . isb-show-emacs)
           ("\C-p"    . isb-show-dired)
           ("\C-v"    . isb-show-common)

@@ -246,7 +246,7 @@ active on the current window."
 Key bindings:
 \\[terminator-mode-map]"
   nil
-  " trmntr"
+  "" ;; " trmntr" ==> "" by zhoujd
   :group 'terminator
   (when terminator-mode
     (when (not (assq 'terminator-mode minor-mode-map-alist))

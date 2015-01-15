@@ -305,10 +305,8 @@
 (require 'grep+)
 
 ;;powerline
-(require 'powerline)
-(set-face-attribute 'mode-line nil
-                    :background "#bdbdbd"
-                    :box nil)
+;(require 'powerline)
+;(set-face-attribute 'mode-line nil :background "#bdbdbd" :box nil)
 
 
 (provide 'other-setting)

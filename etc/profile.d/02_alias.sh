@@ -22,7 +22,7 @@ alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias lcsh="csh -l"
-alias grep='grep --color=always'
+alias grep='grep --color=auto'
 
 #alias ..='cd ..'
 #alias ...='cd ../..'

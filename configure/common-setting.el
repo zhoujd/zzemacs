@@ -339,8 +339,6 @@
 (setq inhibit-default-init t)
 
 (setq default-major-mode 'text-mode)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-
 (setq truncate-partial-width-windows nil)
 
 ;;indent setting

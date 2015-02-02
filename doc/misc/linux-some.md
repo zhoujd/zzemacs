@@ -118,3 +118,14 @@ Linux something
     http://releases.ubuntu.com/12.04.5/
     http://cdimage.ubuntu.com/releases/
     http://mirrors.163.com/ubuntu-releases/
+
+13. dd backup disk
+    # dd if=/dev/sda1 of=sda1.img bs=4M
+    # dd if=sda1.img.bak of=/dev/sda1
+
+    # dd if=/dev/sda1 | bzip2 >sda1.img.bz2
+    # bzip2 -dc sda1.img.bz2 | dd of=/dev/sda1
+
+    # e2fsck -f /dev/sda1
+    # resize2fs /dev/sda1
+    # e2fsck -f /dev/sda1

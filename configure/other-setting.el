@@ -288,7 +288,7 @@
 (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode))
 
 ;;minimap show left
-(require 'minimap)
+;(require 'minimap)
 
 ;;igrep
 (require 'igrep)

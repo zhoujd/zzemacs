@@ -23,6 +23,10 @@ Install_package_ubuntu()
     sudo apt-get install -y openssh-server
     sudo apt-get install -y tree
 
+    ##ssh -N -v -D localhost:8527 root@remote_ssh_server -p remote_ssh_port
+    ##autossh -M 5122 -N -v -D localhost:8527 root@remote_ssh_server -p remote_ssh_port
+    sudo apt-get install -y autossh
+
     ##easy split windows for multi-term
     #sudo apt-get install -y terminator
 

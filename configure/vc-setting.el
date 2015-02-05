@@ -23,6 +23,7 @@
 ;;$touch ~/.ssh/authorized_keys
 ;;$chmod 644 ~/.ssh/authorized_keys
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
+;;ssh-copy-id user1@123.123.123.123
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
 (when (version< emacs-version "24.4")
   (zz-load-path "site-lisp/git-emacs")

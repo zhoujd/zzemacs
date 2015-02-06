@@ -23,6 +23,8 @@ Install_package_ubuntu()
     sudo apt-get install -y openssh-server
     sudo apt-get install -y tree
 
+    ##http://www.gentoo-wiki.info/SSH_Reverse_Tunnel
+    ##http://www.cnblogs.com/eshizhan/archive/2012/07/16/2592902.html
     ##ssh -N -v -D localhost:8527 root@remote_ssh_server -p remote_ssh_port
     ##autossh -M 5122 -N -v -D localhost:8527 root@remote_ssh_server -p remote_ssh_port
     sudo apt-get install -y autossh

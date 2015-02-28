@@ -22,6 +22,7 @@
     (list (cons "\\.sbclrc$"    'lisp-mode))  ;;sbcl configure file
     (list (cons "\\.eclrc$"     'lisp-mode))  ;;ecl configure file
     (list (cons "\\.stumpwmrc$" 'lisp-mode))  ;;stumpwm configure file
+    (list (cons "\\.clfswmrc$"  'lisp-mode))  ;;clfswm configure file
     auto-mode-alist))
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system

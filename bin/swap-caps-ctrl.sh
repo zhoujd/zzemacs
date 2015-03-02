@@ -1,5 +1,7 @@
 #!/bin/sh
 
+## http://www.emacswiki.org/emacs/MovingTheCtrlKey
+
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
     echo "This script is not support on windows."

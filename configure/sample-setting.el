@@ -198,7 +198,7 @@
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
 ;;open special info file
-(defun info-open-file (dir-name)
+(defun open-info-file (dir-name)
   "Create tags file."
   (interactive "FInfo file: ")
   (info dir-name))

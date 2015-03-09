@@ -175,7 +175,7 @@
   [(tab)]   (lookup-key global-map [(control tab)])
 
   (kbd "h") 'common-lisp-hyperspec
-  (kbd "i") 'info-open-file
+  (kbd "i") 'open-info-file
   ))
 
 (apply-keys-to-map

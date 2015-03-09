@@ -86,7 +86,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (switch-to-shell buf-name))
 
 ;;popup term
-(if-ms-windows    
+(if-ms-windows
  (setq popup-terminal-command '("cmd" "/c" "start"))
  (setq popup-terminal-command '("gnome-terminal")))
 
@@ -126,18 +126,30 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;switch line/char mode
 ;;C-c C-j => 'term-line-mode'
 ;;C-c C-k => 'term-char-mode'
-(unless-ms-windows  
+(unless-ms-windows
  (require 'multi-term)
  (setq multi-term-switch-after-close nil)
  (setq multi-term-dedicated-select-after-open-p t)
  (setq multi-term-program "/bin/bash")
- (add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-escape))
+
+ ;;tmux prefix
+ (defun term-send-tmux ()
+   "Use term-send-raw-string \"\C-b\" for tmux"
+  (interactive)
+  (term-send-raw-string "\C-b"))
+ (add-to-list 'term-bind-key-alist '("C-c C-b" . term-send-tmux))
+
+ ;;screen prefix
+ (defun term-send-screen ()
+   "Use term-send-raw-string \"\C-a\" for screen"
+  (interactive)
+  (term-send-raw-string "\C-a"))
+ (add-to-list 'term-bind-key-alist '("C-c C-a" . term-send-screen))
 
  ;;terminator setting
  (require 'terminator)
  (terminator-global-mode t)
- (terminator-basic-setup)
- )
+ (terminator-basic-setup))
 
 ;;set term buffer size to unlimited
 (add-hook 'term-mode-hook
@@ -225,7 +237,7 @@ Dmitriy Igrishin's patched version of comint.el."
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
   (if (get-buffer buf-name)
-      (progn 
+      (progn
         (switch-to-buffer buf-name))
       (progn
         (if-ms-windows
@@ -260,9 +272,9 @@ Dmitriy Igrishin's patched version of comint.el."
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Term name: " (my-term-list))))
   (if (get-buffer buf-name)
-      (progn 
+      (progn
         (switch-to-buffer buf-name)
-        (message "switch to %s" buf-name)    
+        (message "switch to %s" buf-name)
         (delete-other-windows))))
 
 ;;http://www.docs.uu.se/~mic/emacs.html
@@ -289,11 +301,11 @@ Dmitriy Igrishin's patched version of comint.el."
  (progn
   ;;shell completion
   (require 'shell-completion)
-  
+
   (setq explicit-shell-file-name "bash")
   (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
   (setq comint-process-echoes nil)
-  
+
   (require 'readline-complete)
   (add-to-list 'ac-modes 'shell-mode)
   (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)))

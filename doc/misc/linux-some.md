@@ -132,3 +132,22 @@ Linux something
     # e2fsck -f /dev/sda1
     # resize2fs /dev/sda1
     # e2fsck -f /dev/sda1
+
+14. SUSE ssh access
+    # vim /etc/sysconfig/SuSEfirewall2
+    ## Make sure
+    FW_SERVICES_EXT_TCP="ssh"
+
+    ## YAST firewall can be close by GUI
+
+    # vim /etc/ssh/sshd_config
+    PasswordAuthentication yes
+
+    # sshd-gen-keys-start
+    # service sshd restart
+
+    # netstat -an | grep 22
+
+    # chkconfig --add sshd
+    # chkconfig --level 35 sshd on
+    # chkconfig --list sshd

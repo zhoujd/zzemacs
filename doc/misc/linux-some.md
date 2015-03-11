@@ -151,3 +151,13 @@ Linux something
     # chkconfig --add sshd
     # chkconfig --level 35 sshd on
     # chkconfig --list sshd
+
+15 upgrade glibc
+    ## http://ftp.gnu.org/gnu/glibc/
+    [ghui@StuOS glibc-2.14]$ mkdir build
+    [ghui@StuOS glibc-2.14]$ cd build
+    [ghui@StuOS build]$ ../configure --prefix=/opt/glibc-2.14
+    [ghui@StuOS build]$ make -j4
+    [ghui@StuOS build]$ sudo make install
+    [ghui@StuOS bin]$ export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH
+    [ghui@StuOS bin]$ sudo ldconfig -v

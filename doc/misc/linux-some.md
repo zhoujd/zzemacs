@@ -161,3 +161,6 @@ Linux something
     [ghui@StuOS build]$ sudo make install
     [ghui@StuOS bin]$ export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH
     [ghui@StuOS bin]$ sudo ldconfig -v
+
+16 xargs && cp
+    # ls *.jpg | xargs -n1 -i cp {} /external-hard-drive/directory

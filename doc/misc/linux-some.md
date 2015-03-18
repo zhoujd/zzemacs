@@ -133,6 +133,9 @@ Linux something
     # resize2fs /dev/sda1
     # e2fsck -f /dev/sda1
 
+    # dd if=/dev/hda? | gzip -c | ssh user@other-machine "cat >/path/to/save/to/filename"
+    # cat /path/to/filename | ssh user@knoppix-machine "gunzip -c | dd of=/dev/hda?"
+
 14. SUSE ssh access
     # vim /etc/sysconfig/SuSEfirewall2
     ## Make sure

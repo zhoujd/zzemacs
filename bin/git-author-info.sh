@@ -8,10 +8,17 @@
 ###$git push --force
 ###$git push -f
 
-new_name="zhoujd"
-new_email="zjd-405@163.com"
+
+## Input parameter check
+if [ ! "$#" = "3" ] ; then
+    echo "Usage: `basename $0` <match-mail> <new-name> <new-email>"
+    exit 1;
+fi
 
 match_email="$1"
+
+new_name="$2"
+new_email="$3"
 
 git filter-branch --env-filter " 
 

@@ -83,8 +83,11 @@ Linux something
     http://stackexchange.com/
 
 9. CD/DVD image burning
+    mkisofs -r -o sample.iso my_private
+
     cdrecord -scanbus ==> you well get dev=*,*,*
     cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso
+    cdrecord -v -eject dev=0,0,0 -data cd_image.iso
 
 10. CentOS6.5 upgrade gcc 4.7.2
     wget http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo

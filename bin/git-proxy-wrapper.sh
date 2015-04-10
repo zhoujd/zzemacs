@@ -8,9 +8,10 @@
 # http://www.taiyo.co.jp/~gotoh/ssh/connect.c
 
 # Configuration.
-_proxy=proxy-ir.intel.com
+_proxy=proxy-prc.intel.com
 #_proxy=proxy-shz.intel.com
-#_proxy=10.7.211.16
+#_proxy=proxy-ir.intel.com
+
 _proxyport=1080
 
 _connect_flag="y"

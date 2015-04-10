@@ -83,8 +83,11 @@ Linux something
     http://stackexchange.com/
 
 9. CD/DVD image burning
+    mkisofs -r -o sample.iso my_private
+
     cdrecord -scanbus ==> you well get dev=*,*,*
     cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso
+    cdrecord -v -eject dev=0,0,0 -data cd_image.iso
 
 10. CentOS6.5 upgrade gcc 4.7.2
     wget http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo
@@ -132,6 +135,9 @@ Linux something
     # e2fsck -f /dev/sda1
     # resize2fs /dev/sda1
     # e2fsck -f /dev/sda1
+
+    # dd if=/dev/hda? | gzip -c | ssh user@other-machine "cat >/path/to/save/to/filename"
+    # cat /path/to/filename | ssh user@knoppix-machine "gunzip -c | dd of=/dev/hda?"
 
 14. SUSE ssh access
     # vim /etc/sysconfig/SuSEfirewall2

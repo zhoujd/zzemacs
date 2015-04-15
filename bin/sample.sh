@@ -1,6 +1,6 @@
 #!/bin/sh
 
-##yum install redhat-lsb
+##sudo yum install redhat-lsb
 
 # Try command  for test command result.
 try_command()

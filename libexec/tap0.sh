@@ -1,5 +1,8 @@
 #!/bin/sh
 
+##sudo apt­get install bridge­utils uml­utilities
+##parameter: "-net nic -net tap,ifname=tap0,script=no,downscript=no"
+
 tunctl -t tap0 -u root              # 创建一个tap0接口，只允许root用户访问
 brctl addif br0 tap0                # 在虚拟网桥中增加一个tap0接口
 ifconfig tap0 0.0.0.0 promisc up    # 打开tap0接口

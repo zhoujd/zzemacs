@@ -18,11 +18,7 @@ _connect_flag="n"
 
 echo $1 | grep -E "\.intel\.com|\.kernel\.org" > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
-    if [ $_connect_flag = "y" ] ; then
-        exec connect $@
-    else
-        exec socat $@
-    fi
+    exec connect $@
 else
     if [ $_connect_flag = "y" ] ; then
         exec connect -S $_proxy:$_proxyport $@

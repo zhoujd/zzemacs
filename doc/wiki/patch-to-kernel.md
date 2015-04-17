@@ -48,3 +48,6 @@ Patch to kernel
 
     <http://oss.org.cn/ossdocs/gnu_linux/kernel-api/>
 
+5. Backport kernel
+
+    <https://backports.wiki.kernel.org/index.php/Documentation/backports/hacking>

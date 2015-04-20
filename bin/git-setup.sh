@@ -68,7 +68,7 @@ git config --global alias.flog  "show --pretty=format: --name-only"
 ## set http proxy
 git config --global http.proxy $http_proxy
 git config --global https.proxy $https_proxy
-git config --system http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt
+git config --global http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt
 git config --global credential.helper store
 
 ### fatal: index-pack failed for win7

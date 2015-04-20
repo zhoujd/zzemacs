@@ -6,6 +6,19 @@
 ## git submodule foreach git pull
 ## git submodule update
 ## git cherry-pick xxx-commit-id
+## git pull --squash another
+## git update-index --assume-unchanged /path/to/file 
+## git update-index --no-assume-unchanged /path/to/file
+## find -type d -empty -exec touch {}/.gitignore \;
+
+### Build from source
+## sudo apt-get install libssl-dev libcurl4-openssl-dev libexpat1-dev
+## wget https://github.com/git/git/releases/tag/v1.8.4.3
+## tar xvzf v1.8.4.3.tar.gz
+## cd git-v1.8.4.3
+## make prefix=/opt/git all
+## make prefix=/opt/git install
+## echo /opt/git/bin >> /etc/environment # or others
 
 echo git global setup start ...
 

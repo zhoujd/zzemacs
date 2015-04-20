@@ -1,6 +1,11 @@
 #!/bin/sh
 
 ### http://gitbook.liuhui998.com/index.html
+## git submodule add url path/to/name 
+## git submodule init
+## git submodule foreach git pull
+## git submodule update
+## git cherry-pick xxx-commit-id
 
 echo git global setup start ...
 

@@ -6,8 +6,10 @@ echo git global setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
+    ZZ_ETC_ROOT=$(cd $GIT_SETUP_HOME/../etc && pwd -W)
 else
     GIT_SETUP_HOME=$(cd $(dirname $0) && pwd)
+    ZZ_ETC_ROOT=$(cd $GIT_SETUP_HOME/../etc && pwd)
 fi
 
 ## clear ~/.gitconfig
@@ -67,6 +69,9 @@ git config --global alias.flog  "show --pretty=format: --name-only"
 
 ## set http proxy
 git config --global http.proxy $http_proxy
+git config --global https.proxy $https_proxy
+git config --system http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt
+git config --global credential.helper store
 
 ### fatal: index-pack failed for win7
 #git config --global pack.windowMemory  10m

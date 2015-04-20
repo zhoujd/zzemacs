@@ -65,7 +65,7 @@ git config --global alias.ign   "ls-files -o -i --exclude-standard"
 git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 git config --global alias.flog  "show --pretty=format: --name-only"
 
-## set http proxy
+## set http/https proxy
 git config --global http.proxy $http_proxy
 git config --global https.proxy $https_proxy
 git config --global http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt

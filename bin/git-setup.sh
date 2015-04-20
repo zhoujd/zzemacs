@@ -30,9 +30,6 @@ EOF
 git config --global core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
 git config --global core.editor    "emacs -Q"
 
-## set git push
-git config --global push.default   simple
-
 ## setup git configure
 git config --global user.name   "zhoujd"
 git config --global user.email  "zjd-405@163.com"
@@ -44,6 +41,7 @@ git config --global color.ui    "true"
 if [ "$OS" = "Windows_NT" ] ; then
     ## cr && lf
     git config --global core.autocrlf false
+    git config --global core.safecrlf true
     git config --global core.filemode false
 fi
 

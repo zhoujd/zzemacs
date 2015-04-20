@@ -81,6 +81,11 @@ progress =
 rebase =
 color =
 hgk = 
+largefiles =
+
+[largefiles]
+minsize = 2
+patterns = *.jpg *.{png,bmp} *.ttf
 
 [hgk]
 path = wish ${HG_SETUP_HOME}/hgk.tcl

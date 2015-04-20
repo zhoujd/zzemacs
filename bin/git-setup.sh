@@ -69,7 +69,12 @@ git config --global alias.flog  "show --pretty=format: --name-only"
 git config --global http.proxy $http_proxy
 git config --global https.proxy $https_proxy
 git config --global http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt
-git config --global credential.helper 'cache --timeout=300'
+
+if [ "$OS" = "Windows_NT" ] ; then
+    git config --global credential.helper wincred
+else
+    git config --global credential.helper cache
+fi
 
 ### fatal: index-pack failed for win7
 #git config --global pack.windowMemory  10m

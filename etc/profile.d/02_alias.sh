@@ -1,6 +1,6 @@
 ### self alias setting
 
-# alias setting
+## ls alias
 alias ls='ls --color=auto'         # ls output with color
 alias ll='ls -la'                  # ls for ll
 alias l='ls -l'                    # ls for l
@@ -12,6 +12,9 @@ alias lu='ls -lur'                 # sort by access time
 alias lr='ls -lR'                  # recurse ls
 alias lt='ls -ltr'                 # sort by date
 alias lm='ls -al | more'           # pipeline to more
+
+## buildin alias
+alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias tree='tree -Csu'             # another better way for 'ls'
 alias which='type -all'
 alias path='echo -e ${PATH//:/\\n}'
@@ -22,31 +25,41 @@ alias j='jobs -l'
 alias c='clear'
 alias r='fc -e -'                  # typing'r' repeats the last command
 alias tf='tail -f'
-alias et='emacsclient -t'
-alias ec='emacsclient -c'
-alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
-alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
-alias lcsh="csh -l"
-alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
-alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
 alias top10='sort | uniq -c | sort -n -r | head -n 10'
-alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
-alias wget='wget -c'
-alias userinfo='getent passwd | column  -t -s: -n'
-alias groupinfo='getent group | column  -t -s: -n'
-alias lsmount='mount | sort | column -t'
-alias syslog="tail -F /var/log/syslog"
-alias sl="syslog"
 alias last='last -a'
 alias date='date -R'
 alias less='less -R -S -#2'
 alias rmr='rm -r -I'
 alias cpr='cp -r'
-alias scpr='scp -r'
+alias sizes='du -h --max-depth=1'
 alias date='date -R'
+
+## others shell alias
+alias lcsh="csh -l"
+
+## system alias
+alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
+alias userinfo='getent passwd | column  -t -s: -n'
+alias groupinfo='getent group | column  -t -s: -n'
+alias lsmount='mount | sort | column -t'
+alias syslog='tail -F /var/log/syslog'
+alias sl="syslog"
+
+## color show alias
 alias colorless='ccze -A | less'   # https://github.com/cornet/ccze
 alias cl='colorless'
-alias sizes='du -h --max-depth=1'
+
+## net alias
+alias ports='netstat -tulanp'
+alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
+alias scpr='scp -r'
+alias wget='wget -c'
+
+## edit alias
+alias et='emacsclient -t'
+alias ec='emacsclient -c'
+alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
+alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 
 ## more sudo alias
 if [ $UID -ne 0 ]; then

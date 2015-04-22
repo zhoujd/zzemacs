@@ -158,7 +158,7 @@ Linux something
     # chkconfig --level 35 sshd on
     # chkconfig --list sshd
 
-15 upgrade glibc
+15. upgrade glibc
     ## http://ftp.gnu.org/gnu/glibc/
     [ghui@StuOS glibc-2.14]$ mkdir build
     [ghui@StuOS glibc-2.14]$ cd build
@@ -168,5 +168,12 @@ Linux something
     [ghui@StuOS bin]$ export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH
     [ghui@StuOS bin]$ sudo ldconfig -v
 
-16 xargs && cp
+16. xargs && cp
     # ls *.jpg | xargs -n1 -i cp {} /external-hard-drive/directory
+
+17. sudo without password
+    If you want to run apt-get without having to supply a sudo password, just edit the sudo config file to allow that. (Replace "zhoujd" in this example with your own login).
+
+    zhoujd ALL=(root) NOPASSWD: /usr/bin/apt-get
+
+    Hint: edit the config file with “sudo visudo”, not “sudo vim /etc/sudoers”. Visudo will check that you haven’t totally screwed up the config file before writing it out.

@@ -27,10 +27,7 @@ alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias lcsh="csh -l"
-
-#alias ..='cd ..'
-#alias ...='cd ../..'
-
+alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
 alias top10='sort|uniq -c|sort -n -r|head -n 10'
 alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
@@ -58,4 +55,3 @@ if [ $UID -ne 0 ]; then
     alias apt-get='sudo apt-get'
     alias zypper='sudo zypper'
 fi
-

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-##sudo yum install redhat-lsb
+## sudo yum install redhat-lsb
 
 # Try command  for test command result.
 try_command()
@@ -25,16 +25,19 @@ confirm_execute()
     esac
 }
 
-Linux_sample ()
+linux_sample ()
 {
     ## Dectect OS version
     try_command lsb_release -si > /dev/null
     export OS_DISTRO=`lsb_release -si`
 
+    #try_command cat /etc/issue | awk '{ print $1 }' > /dev/null
+    #export OS_DISTRO=`cat /etc/issue | awk '{ print $1 }'`
+
     case $OS_DISTRO in
         "SUSE LINUX" )
             OS_DISTRO="SuSE"
-            echo "Run on SUSE LINUX ..."
+            echo "Run on SUSE ..."
             ;;
         "Ubuntu" )
             OS_DISTRO="Ubuntu"
@@ -61,7 +64,7 @@ Linux_sample ()
     fi
 }
 
-FreeBSD_sample()
+freebsd_sample()
 {
     export OS_DISTRO="FreeBSD"
     echo "Run on FreeBSD"
@@ -71,10 +74,10 @@ FreeBSD_sample()
 try_command uname -s > /dev/null
 case `uname -s` in
     "Linux" )
-        try_command Linux_sample
+        try_command linux_sample
         ;;
     "FreeBSD" )
-        try_command FreeBSD_sample
+        try_command freebsd_sample
         ;;
     * )
         echo "unknown os ..."

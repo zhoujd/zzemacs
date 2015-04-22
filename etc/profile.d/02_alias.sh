@@ -27,12 +27,16 @@ alias r='fc -e -'                  # typing'r' repeats the last command
 alias tf='tail -f'
 alias top10='sort | uniq -c | sort -n -r | head -n 10'
 alias last='last -a'
-alias date='date -R'
 alias less='less -R -S -#2'
 alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias sizes='du -h --max-depth=1'
+
+## date alias
 alias date='date -R'
+alias now='date +"%T"'
+alias nowtime='now'
+alias nowdate='date +"%d-%m-%Y"'
 
 ## others shell alias
 alias lcsh="csh -l"
@@ -54,6 +58,12 @@ alias ports='netstat -tulanp'
 alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
 alias scpr='scp -r'
 alias wget='wget -c'
+alias ipt='sudo /sbin/iptables'
+alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
+alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
+alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
+alias iptlistfw='sudo /sbin/iptables -L FORWORD -n -v --line-numbers'
+alias firewall='iptlist'
 
 ## edit alias
 alias et='emacsclient -t'

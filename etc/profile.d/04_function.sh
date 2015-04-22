@@ -15,3 +15,20 @@ chmoddr()
         find $2 -type d -print0 | xargs -0 chmod $1
     fi
 }
+
+## e.g. up -> go up 1 directory
+## up 4 -> go up 4 directories
+up()
+{
+    dir=""
+    if [ ! $1 = 1 ]; then
+        x=0
+        while [ $x -lt ${1:-1} ]; do
+            dir=${dir}../
+            x=$(($x+1))
+        done
+    else
+        dir=..
+    fi
+    cd "$dir";
+}

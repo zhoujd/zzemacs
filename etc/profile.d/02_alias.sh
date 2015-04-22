@@ -1,4 +1,5 @@
-## self alias setting
+### self alias setting
+##http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 
 # alias setting
 alias ls='ls --color=auto'         # ls output with color
@@ -17,6 +18,9 @@ alias du='du -kh'
 alias df='df -kTh'
 alias h='history'
 alias j='jobs -l'
+alias c='clear'
+alias r='fc -e -'                  # typing'r' repeats the last command
+alias tf='tail -f'
 alias et='emacsclient -t'
 alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"

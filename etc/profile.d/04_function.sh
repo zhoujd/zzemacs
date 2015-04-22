@@ -5,7 +5,8 @@ ipaddr()  { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()     { cd "$@";  l; }
 
 ## chomod directory recursivly
-chmoddr() {
+chmoddr() 
+{
     if [ -d "$1" ]; then 
         echo "error: please use the mode first, then the directory";
         return 1;

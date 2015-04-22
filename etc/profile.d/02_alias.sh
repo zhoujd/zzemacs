@@ -29,12 +29,12 @@ alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias lcsh="csh -l"
 alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
-alias top10='sort|uniq -c|sort -n -r|head -n 10'
+alias top10='sort | uniq -c | sort -n -r | head -n 10'
 alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
 alias wget='wget -c'
-alias userinfo='getent passwd|column  -t -s: -n'
-alias groupinfo='getent group|column  -t -s: -n'
-alias lsmount='mount|sort|column -t'
+alias userinfo='getent passwd | column  -t -s: -n'
+alias groupinfo='getent group | column  -t -s: -n'
+alias lsmount='mount | sort | column -t'
 alias syslog="tail -F /var/log/syslog"
 alias sl="syslog"
 alias last='last -a'
@@ -44,14 +44,12 @@ alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias scpr='scp -r'
 alias date='date -R'
-alias colorless='ccze -A|less'
+alias colorless='ccze -A | less'
 alias cl='colorless'
+alias sizes='du -h --max-depth=1'
 
 ## more sudo alias
 if [ $UID -ne 0 ]; then
     alias reboot='sudo reboot'
     alias poweroff='sudo poweroff'
-    alias yum='sudo yum'
-    alias apt-get='sudo apt-get'
-    alias zypper='sudo zypper'
 fi

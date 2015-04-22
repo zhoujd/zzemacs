@@ -65,4 +65,6 @@ alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 if [ $UID -ne 0 ]; then
     alias reboot='sudo reboot'
     alias poweroff='sudo poweroff'
+    alias halt='sudo halt'
+    alias shutdown='sudo shutdown'
 fi

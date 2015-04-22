@@ -1,0 +1,16 @@
+### self function setting
+
+ipaddr()    { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
+cdl()       { cd "$@";  l; }
+maillog()   { colortail /var/log/mail*; }
+
+chmoddr()   {
+  # CHMOD _D_irectory _R_ecursivly
+  if [ -d "$1" ]; then 
+   echo "error: please use the mode first, then the directory";
+   return 1;
+  elif [ -d "$2" ]; then
+   find $2 -type d -print0 | xargs -0 chmod $1;
+  fi
+}
+

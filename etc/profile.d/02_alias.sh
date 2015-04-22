@@ -1,8 +1,9 @@
 ### self alias setting
-##http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 
 # alias setting
 alias ls='ls --color=auto'         # ls output with color
+alias ll='ls -la'                  # ls for ll
+alias l='ls -l'                    # ls for l
 alias la='ls -Al'                  # show hide files
 alias lx='ls -lXB'                 # sort by extend
 alias lk='ls -lSr'                 # sort by size
@@ -29,3 +30,32 @@ alias lcsh="csh -l"
 
 #alias ..='cd ..'
 #alias ...='cd ../..'
+
+alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
+alias top10='sort|uniq -c|sort -n -r|head -n 10'
+alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
+alias wget='wget -c'
+alias userinfo='getent passwd|column  -t -s: -n'
+alias groupinfo='getent group|column  -t -s: -n'
+alias lsmount='mount|sort|column -t'
+alias syslog="tail -F /var/log/syslog"
+alias sl="syslog"
+alias last='last -a'
+alias date='date -R'
+alias less='less -R -S -#2'
+alias rmr='rm -r -I'
+alias cpr='cp -r'
+alias scpr='scp -r'
+alias date='date -R'
+alias colorless='ccze -A|less'
+alias cl='colorless'
+
+## more sudo alias
+if [ $UID -ne 0 ]; then
+    alias reboot='sudo reboot'
+    alias poweroff='sudo poweroff'
+    alias yum='sudo yum'
+    alias apt-get='sudo apt-get'
+    alias zypper='sudo zypper'
+fi
+

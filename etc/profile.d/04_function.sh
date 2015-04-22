@@ -21,14 +21,14 @@ chmoddr()
 up()
 {
     dir=""
-    if [ ! -z "$(echo $1 | grep -E '^[0-9]+$')" ]; then
+    if [ -z `echo $1 | grep -E '^[0-9]+$'` ]; then
+        dir=..
+    else
         x=0
         while [ $x -lt ${1:-1} ]; do
             dir=${dir}../
             x=$(($x+1))
         done
-    else
-        dir=..
     fi
-    cd "$dir";
+    cd "$dir"
 }

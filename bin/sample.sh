@@ -30,18 +30,24 @@ Linux_sample ()
     ## Dectect OS version
     try_command lsb_release -si > /dev/null
     export OS_DISTRO=`lsb_release -si`
-    if [ "$OS_DISTRO" = "SUSE LINUX" ]; then
-        OS_DISTRO="SuSE"
-        echo "Run on SUSE LINUX ..."
-    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        OS_DISTRO="Ubuntu"
-        echo "Run on Ubuntu ..."
-    elif [ "$OS_DISTRO" = "CentOS" ]; then
-        OS_DISTRO="CentOS"
-        echo "Run on CentOS ..."
-    else
-        echo "Run on $OS_DISTRO ..."
-    fi
+
+    case $OS_DISTRO in
+        "SUSE LINUX" )
+            OS_DISTRO="SuSE"
+            echo "Run on SUSE LINUX ..."
+            ;;
+        "Ubuntu" )
+            OS_DISTRO="Ubuntu"
+            echo "Run on Ubuntu ..."
+            ;;
+        "CentOS" )
+            OS_DISTRO="CentOS"
+            echo "Run on CentOS ..."
+            ;;
+        t )
+            echo "Run on $OS_DISTRO ..."
+            ;;
+    esac
 
     ## Detect system arch.
     export SYSARCH=64
@@ -63,14 +69,17 @@ FreeBSD_sample()
 
 ## Detect OS type
 try_command uname -s > /dev/null
-export ZZ_OS_NAME=`uname -s`
-if [ "Linux" = "$ZZ_OS_NAME" ]; then
-    try_command Linux_sample
-elif [ "FreeBSD" = "$ZZ_OS_NAME" ]; then
-    try_command FreeBSD_sample
-else
-    echo "Run on $ZZ_OS_NAME ..."
-fi
+case `uname -s` in
+    "Linux" )
+        try_command Linux_sample
+        ;;
+    "FreeBSD" )
+        try_command FreeBSD_sample
+        ;;
+    * )
+        echo "unknown os ..."
+        ;;
+esac
 
 ## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 #WDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)   ## only for bash

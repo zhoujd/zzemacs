@@ -3,7 +3,6 @@
 ## useful function like alias
 ipaddr()  { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()     { cd "$@";  l; }
-maillog() { colortail /var/log/mail*; }
 
 ## chomod directory recursivly
 chmoddr() {

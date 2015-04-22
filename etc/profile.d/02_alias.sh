@@ -44,7 +44,7 @@ alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias scpr='scp -r'
 alias date='date -R'
-alias colorless='ccze -A | less'
+alias colorless='ccze -A | less'   # https://github.com/cornet/ccze
 alias cl='colorless'
 alias sizes='du -h --max-depth=1'
 

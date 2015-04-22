@@ -11,8 +11,10 @@ alias .....='cd ../../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../..'
 
-# shell directory bookmark setting
-SHELLBM_FILE=~/.sdirs
+## shell directory bookmark setting
+shellbm_file=~/.sdirs
+touch $shellbm_file
+source $shellbm_file
 
 alias m0='alias g0="cd `pwd`"'
 alias m1='alias g1="cd `pwd`"'
@@ -26,8 +28,5 @@ alias m8='alias g8="cd `pwd`"'
 alias m9='alias g9="cd `pwd`"'
 
 alias lma='alias | grep -e "alias g[0-9]" | grep -v "alias m" | sed "s/alias //"'
-alias mdump="alias | grep -e 'alias g[0-9]' | grep -v 'alias m' > $SHELLBM_FILE"
-alias mcls="rm -f $SHELLBM_FILE && touch $SHELLBM_FILE"
-
-touch $SHELLBM_FILE
-source $SHELLBM_FILE
+alias mdump="alias | grep -e 'alias g[0-9]' | grep -v 'alias m' > $shellbm_file"
+alias mcls="rm -f $shellbm_file && touch $shellbm_file"

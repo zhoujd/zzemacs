@@ -1,4 +1,15 @@
-## self shell bookmark setting
+### self shell bookmark setting
+
+## get rid of command not found ##
+alias cd..='cd ..'
+ 
+## a quick way to get out of current directory
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../..'
 
 # shell directory bookmark setting
 SHELLBM_FILE=~/.sdirs

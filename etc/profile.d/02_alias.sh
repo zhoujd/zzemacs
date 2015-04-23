@@ -54,7 +54,7 @@ alias sl='syslog'
 alias screenoff='xset dpms force off'
 
 ## color show alias
-alias colorless='ccze -A | less'   # https://github.com/cornet/ccze
+alias colorless='ccze -A | less'   # https://github.com/cornet/ccze.git
 alias cl='colorless'
 
 ## net alias

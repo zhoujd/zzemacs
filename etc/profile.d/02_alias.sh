@@ -1,5 +1,8 @@
 ### self alias setting
 
+## reload .bashrc
+alias rl='. ~/.bashrc'
+
 ## ls alias
 alias ls='ls --color=auto'         # ls output with color
 alias ll='ls -la'                  # ls for ll
@@ -47,7 +50,8 @@ alias userinfo='getent passwd | column  -t -s: -n'
 alias groupinfo='getent group | column  -t -s: -n'
 alias lsmount='mount | sort | column -t'
 alias syslog='tail -F /var/log/syslog'
-alias sl="syslog"
+alias sl='syslog'
+alias screenoff='xset dpms force off'
 
 ## color show alias
 alias colorless='ccze -A | less'   # https://github.com/cornet/ccze

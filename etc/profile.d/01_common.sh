@@ -1,6 +1,7 @@
 ### self common setting
 # http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 # http://souptonuts.sourceforge.net/chirico/index.php
+# http://vanmontfort.be/pub/linux/.bashrc
 
 # ls colors setting
 export LS_COLORS='di=01;35:ln=04'

@@ -11,6 +11,8 @@ Linux something
 
     <http://lxr.free-electrons.com/>
 
+    <http://lxr.linux.no/>
+
 3. FreeBSD & Linux cross refernce
 
     <http://fxr.watson.org/>

@@ -74,6 +74,8 @@ alias et='emacsclient -t'
 alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
+alias mcedit='mcedit -x'
+alias me='mcedit'
 
 ## more sudo alias
 if [ $UID -ne 0 ]; then

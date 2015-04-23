@@ -30,7 +30,7 @@ alias last='last -a'
 alias less='less -R -S -#2'
 alias rmr='rm -r -I'
 alias cpr='cp -r'
-alias sizes='du -h --max-depth=1'
+alias usage='du -h --max-depth=1'
 
 ## date alias
 alias date='date -R'

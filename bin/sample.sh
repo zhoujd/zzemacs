@@ -88,17 +88,26 @@ linux_sample ()
 freebsd_sample()
 {
     OS_DISTRO="FreeBSD"
-    echo "Run on FreeBSD"
+    echo "Run on $OS_DISTRO ..."
+}
+
+mingw_sample()
+{
+    OS_DISTRO="MINGW"
+    echo "Run on $OS_DISTRO ..."
 }
 
 ## Detect OS type
 try_command uname -s > /dev/null
 case `uname -s` in
-    "Linux" )
+    Linux )
         try_command linux_sample
         ;;
-    "FreeBSD" )
+    FreeBSD )
         try_command freebsd_sample
+        ;;
+    MINGW* )
+        try_command mingw_sample
         ;;
     * )
         echo "unknown os ..."

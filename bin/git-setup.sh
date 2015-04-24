@@ -20,6 +20,9 @@
 ## make prefix=/opt/git install
 ## echo /opt/git/bin >> /etc/environment # or others
 
+### Get work root
+## git rev-parse --show-toplevel
+
 echo git global setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then

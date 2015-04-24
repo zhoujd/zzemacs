@@ -88,7 +88,7 @@ minsize = 2
 patterns = *.jpg *.{png,bmp} *.ttf
 
 [hgk]
-path = wish ${HG_SETUP_HOME}/hgk.tcl
+path = wish ${HG_SETUP_HOME}/../libexec/hgk.tcl
 
 [extdiff]
 df = ${HG_SETUP_HOME}/hg-diff-wrapper.py

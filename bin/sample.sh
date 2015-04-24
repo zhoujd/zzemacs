@@ -2,6 +2,9 @@
 
 ## sudo yum install redhat-lsb
 
+export OS_DISTRO="unknown"
+export SYSARCH=64
+
 # Try command  for test command result.
 try_command()
 {
@@ -25,35 +28,43 @@ confirm_execute()
     esac
 }
 
-linux_sample ()
+linux_issue_check()
 {
-    ## Dectect OS version
+    try_command cat /etc/issue > /dev/null
+    if [ ! -z "$(cat /etc/issue | grep 'Ubuntu')" ]; then
+        OS_DISTRO="Ubuntu"
+    elif [ ! -z "$(cat /etc/issue | grep 'CentOS')" ]; then
+        OS_DISTRO="CentOS"
+    elif [ ! -z "$(cat /etc/issue | grep 'SUSE')" ]; then
+        OS_DISTRO="SuSE"
+    fi
+    echo "Run on $OS_DISTRO ..."
+}
+
+linux_lsb_check()
+{
     try_command lsb_release -si > /dev/null
-    export OS_DISTRO=`lsb_release -si`
-
-    #try_command cat /etc/issue | awk '{ print $1 }' > /dev/null
-    #export OS_DISTRO=`cat /etc/issue | awk '{ print $1 }'`
-
-    case $OS_DISTRO in
+    case $(lsb_release -si) in
         "SUSE LINUX" )
             OS_DISTRO="SuSE"
-            echo "Run on SUSE ..."
             ;;
         "Ubuntu" )
             OS_DISTRO="Ubuntu"
-            echo "Run on Ubuntu ..."
             ;;
         "CentOS" )
             OS_DISTRO="CentOS"
-            echo "Run on CentOS ..."
-            ;;
-        t )
-            echo "Run on $OS_DISTRO ..."
             ;;
     esac
+    echo "Run on $OS_DISTRO ..."
+}
+
+linux_sample ()
+{
+    ## Dectect OS version
+    linux_lsb_check
+    #linux_issue_check
 
     ## Detect system arch.
-    export SYSARCH=64
     ULONG_MASK=`getconf ULONG_MAX`
     if [ $ULONG_MASK = 18446744073709551615 ]; then
         SYSARCH=64
@@ -66,7 +77,7 @@ linux_sample ()
 
 freebsd_sample()
 {
-    export OS_DISTRO="FreeBSD"
+    OS_DISTRO="FreeBSD"
     echo "Run on FreeBSD"
 }
 

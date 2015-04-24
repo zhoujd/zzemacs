@@ -1,6 +1,7 @@
 #!/bin/sh
 
-##sudo apt­get install bridge­utils
+##sudo apt-get install bridge-utils
+##sudo yum install bridge-utils
 
 ifconfig eth0 down                  # 先关闭eth0接口
 brctl addbr br0                     # 增加一个虚拟网桥br0

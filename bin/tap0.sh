@@ -1,6 +1,6 @@
 #!/bin/sh
 
-##sudo apt­get install bridge­utils uml­utilities
+##sudo apt-get install bridge-utils uml-utilities
 ##parameter: "-net nic -net tap,ifname=tap0,script=no,downscript=no"
 
 tunctl -t tap0 -u root              # 创建一个tap0接口，只允许root用户访问

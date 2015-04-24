@@ -11,7 +11,7 @@ ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 Install_package()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y texinfo
         sudo zypper install -y git-core
         sudo zypper install -y gitk

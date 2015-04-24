@@ -13,7 +13,7 @@ echo "hg setup start ..."
 Install_package()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y python-devel
         sudo zypper install -y python-docutils
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then

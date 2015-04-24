@@ -38,7 +38,7 @@ linux_issue_check()
         OS_DISTRO="CentOS"
         echo "Run on $OS_DISTRO ..."
     elif [ ! -z "$(cat /etc/issue | grep 'SUSE')" ]; then
-        OS_DISTRO="SuSE"
+        OS_DISTRO="SUSE"
         echo "Run on $OS_DISTRO ..."
     else
         echo "Run on $OS_DISTRO ..."
@@ -51,7 +51,7 @@ linux_lsb_check()
     try_command lsb_release -si > /dev/null
     case $(lsb_release -si) in
         "SUSE LINUX" )
-            OS_DISTRO="SuSE"
+            OS_DISTRO="SUSE"
             echo "Run on $OS_DISTRO ..."
             ;;
         "Ubuntu" )

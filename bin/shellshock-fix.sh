@@ -16,7 +16,7 @@ echo "update bash start ..."
 Update_bash()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper ref -s && zypper up bash 
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get update

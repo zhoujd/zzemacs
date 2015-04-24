@@ -43,7 +43,7 @@ Install_package_centos()
 }
 
 # dectect OS version
-if [ "$OS_DISTRO" = "SuSE" ]; then
+if [ "$OS_DISTRO" = "SUSE" ]; then
     try_command Install_package_suse
 elif [ "$OS_DISTRO" = "Ubuntu" ]; then
     try_command Install_package_ubuntu

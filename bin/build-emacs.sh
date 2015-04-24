@@ -17,7 +17,7 @@ echo "Build emacs begin ..."
 Install_package()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get build-dep -y emacs23

@@ -9,7 +9,7 @@ HG_INS_HOME=$(cd $(dirname $0) && pwd)
 Install_package()
 {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SuSE" ]; then
+    if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y python-docutils
         sudo zypper install -y python-devel
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then

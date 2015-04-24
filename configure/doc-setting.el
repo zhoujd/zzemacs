@@ -14,8 +14,8 @@
         (progn
          (concat "markdown"))
         (progn
-         (concat "perl " zzemacs-path "/bin/markdown.pl | "
-                 "perl " zzemacs-path "/bin/smartypants.pl"))))
+         (concat "perl " zzemacs-path "/libexec/markdown.pl | "
+                 "perl " zzemacs-path "/libexec/smartypants.pl"))))
 
 ;;org-mode setting
 (setq org-export-html-postamble nil)

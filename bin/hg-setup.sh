@@ -31,9 +31,11 @@ echo "hg setup start ..."
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
     ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd -W)
+    ZZ_LIBEXEC_ROOT=$(cd $HG_SETUP_HOME/../libexec && pwd -W)
 else
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd)
     ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd)
+    ZZ_LIBEXEC_ROOT=$(cd $HG_SETUP_HOME/../libexec && pwd)
 fi
 
 EXTMERGE=hg-merge-wrapper.py
@@ -88,7 +90,7 @@ minsize = 2
 patterns = *.jpg *.{png,bmp} *.ttf
 
 [hgk]
-path = wish ${HG_SETUP_HOME}/../libexec/hgk.tcl
+path = wish ${ZZ_LIBEXEC_ROOT}/hgk.tcl
 
 [extdiff]
 df = ${HG_SETUP_HOME}/hg-diff-wrapper.py

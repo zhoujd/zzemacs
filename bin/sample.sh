@@ -37,6 +37,8 @@ linux_issue_check()
         OS_DISTRO="CentOS"
     elif [ ! -z "$(cat /etc/issue | grep 'SUSE')" ]; then
         OS_DISTRO="SuSE"
+    else
+        false
     fi
     echo "Run on $OS_DISTRO ..."
 }
@@ -54,6 +56,9 @@ linux_lsb_check()
         "CentOS" )
             OS_DISTRO="CentOS"
             ;;
+        * )
+            false
+            ;;
     esac
     echo "Run on $OS_DISTRO ..."
 }
@@ -61,8 +66,7 @@ linux_lsb_check()
 linux_sample ()
 {
     ## Dectect OS version
-    linux_lsb_check
-    #linux_issue_check
+    linux_issue_check || linux_lsb_check
 
     ## Detect system arch.
     ULONG_MASK=`getconf ULONG_MAX`

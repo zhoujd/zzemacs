@@ -5,7 +5,7 @@
 echo "Setup local base start ..."
 
 # get script path
-SETUP_ROOT=$(pwd)
+SETUP_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 
 export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:$PATH

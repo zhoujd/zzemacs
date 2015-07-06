@@ -5,6 +5,9 @@
 ##http://archive.ipython.org/release/
 ##https://pypi.python.org/pypi/pyreadline
 
+## remove install files
+# cat setup.log｜xagrs rm -rf
+
 CURRENT_ROOT=`pwd`
 
 echo "for python develop start ..."

@@ -6,13 +6,13 @@ if [ "$OS" = "Windows_NT" ] ; then
     exit 0
 fi
 
+echo "Setup self .bashrc start ..."
+
 ##Get Script path
 SETUP_ROOT=$(cd $(dirname $0) && pwd)
 
 ##Import vars and functions
 . $SETUP_ROOT/sample.sh
-
-echo "Setup self .bashrc start ..."
 
 ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 BASHRC_PATH=$HOME/.bashrc

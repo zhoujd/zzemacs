@@ -40,9 +40,7 @@ cd $CURRENT_ROOT
 
 echo "==>6 install pydb"
 cd $CURRENT_ROOT/pydb
-./configure
-make
-sudo make install
+./configure && make && sudo make install
 cd $CURRENT_ROOT
 
 echo "==>7 install pycomplete"

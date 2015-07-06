@@ -179,3 +179,6 @@ Linux something
     zhoujd ALL=(root) NOPASSWD: /usr/bin/apt-get
 
     Hint: edit the config file with “sudo visudo”, not “sudo vim /etc/sudoers”. Visudo will check that you haven’t totally screwed up the config file before writing it out.
+
+18. multiable file change name
+    find public_html/ -name '*.shtml' | perl -pe 's/(.*)\.shtml/ mv $1.shtml $1.php/' | bash

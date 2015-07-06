@@ -17,6 +17,16 @@ try_command()
     return $status
 }
 
+# example: $ time_command sleep 10
+time_command()
+{
+    time_start=`date +%s`
+    "$@"
+    time_end=`date +%s`
+    interval=$(($time_end-$time_start))
+    echo "Latency: $interval sec"
+}
+
 confirm_execute()
 {
     echo -n $1

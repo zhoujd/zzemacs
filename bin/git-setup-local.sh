@@ -12,7 +12,7 @@ fi
 
 ## set git proxy
 git config core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
-git config core.editor    "emacs -Q"
+git config core.editor    "emacs -nw -Q"
 
 ## setup git configure
 git config user.name   "zhoujd"

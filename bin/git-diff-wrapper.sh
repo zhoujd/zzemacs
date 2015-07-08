@@ -12,7 +12,7 @@
 ## https://git.gnome.org/browse/meld/
 
 ## use emacs as diff tool
-EMACS_FLAG="y"
+EMACS_FLAG="n"
 
 diff_extern()
 {
@@ -21,7 +21,7 @@ diff_extern()
         DIFF_TOOL_1="meld $*"
         DIFF_TOOL_2="p4merge $*"
 
-        DIFF_SELECT=$DIFF_TOOL_1
+        DIFF_SELECT=$DIFF_TOOL_0
     else
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"

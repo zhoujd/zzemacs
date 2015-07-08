@@ -15,9 +15,8 @@ class Dispatch:
         
         if len(self.params) == 1:
             self.usage()
-        elif len(self.params) == 2:
-            if (self.params[1] == "help"):
-                self.usage()
+        elif len(self.params) == 2 and self.params[1] == "help":
+            self.usage()
         elif len(self.params) == 3 and self.params[1] == "help":
             app = self.findapp(self.params[2])
             if app == None:

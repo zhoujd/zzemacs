@@ -1,5 +1,6 @@
 ### multi-rename example
 
+## rename command line
 rename 's/\.sh/\.php/' *               ## *.sh -> *.php
 rename 's/$/\.bak/' /home/www/*.php    ## add bak to *.php tail
 rename 's/^/bak_/' *.bin               ## add bak_ to *.sh head

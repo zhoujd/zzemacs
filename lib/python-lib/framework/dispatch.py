@@ -11,7 +11,6 @@ class Dispatch:
         self.params = argv
         self.appmap = {}
     def run(self):
-        print "framework home: %s\n" % self.srcdir
         self.getappmap()
         
         if len(self.params) == 1:

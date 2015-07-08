@@ -11,13 +11,12 @@ def main():
     srcdir = srcdir.replace("\\", "/")
     sys.path.append(srcdir + "/../lib/python-lib")
 
-    print "==zz %s" % srcdir
-    
     import utils.common as common
     import framework.dispatch as dispatch
+
     workdir = common.getworkdir()
     print "work directory: %s" % (workdir)
-    
+
     dispatcher = dispatch.Dispatch(workdir, srcdir, sys.argv);
     dispatcher.run()
 

@@ -1,4 +1,4 @@
 ## framework config file
 
-appdirname = "applet"
+appdirname = "zz-core"
 appignorefiles = ["__init__.py"]

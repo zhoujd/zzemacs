@@ -18,16 +18,16 @@ class Dispatch:
         elif len(self.params) == 2:
             if (self.params[1] == "help"):
                 self.usage()
+        elif len(self.params) == 3 and self.params[1] == "help":
+            app = self.findapp(self.params[2])
+            if app == None:
+                print "Can't find %s to usaged\n" % self.params[2]
+                print "Try to run '%s help' to get help\n" % self.params[0]
             else:
-                app = self.findapp(self.params[1])
-                if app == None:
-                    print "Can't find %s to usaged\n" % self.params[1]
-                    print "Try to run '%s help' to get help\n" % self.params[0]
-                else:
-                    #print app
-                    cmdline = "%s %s" % (" ".join(app), "help")
-                    print "cmdline: %s\n" % cmdline
-                    os.system(cmdline)
+                #print app
+                cmdline = "%s %s" % (" ".join(app), "help")
+                print "cmdline: %s\n" % cmdline
+                os.system(cmdline)
         else:
             app = self.findapp(self.params[1])
             if app == None:

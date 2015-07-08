@@ -5,7 +5,7 @@
 export OS_DISTRO="unknown"
 export SYSARCH=64
 
-# Try command  for test command result.
+# try command  for test command result.
 try_command()
 {
     "$@"

@@ -6,9 +6,11 @@ echo "Setup local base start ..."
 
 # get script path
 SETUP_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
+ZZEMACS_ROOT=$(cd ${SETUP_ROOT}/.. && pwd)
 
 export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:$PATH
+
+# source bash configure from zzemacs/etc
 for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
     if [ -r "$i" ]; then
         if [ "${-#*i}" != "$-" ]; then

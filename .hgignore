@@ -9,5 +9,14 @@ site-lisp/haskell-mode/dir/
 third-party/python/pydb/emacs/elc-stamp
 third-party/python/pymacs/build/
 
+third-party/python/pycomplete/setup.log
+third-party/python/pycomplete/setup.log
+third-party/python/pymacs/setup.log
+third-party/python/pyreadline/setup.log
+third-party/python/rope/setup.log
+third-party/python/ropemacs/setup.log
+third-party/python/ropemode/setup.log
+
+
 syntax: regexp
 

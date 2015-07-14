@@ -15,6 +15,12 @@ if [ ! $1 = "" ]; then
     input_num=$2 
 fi
 
+if [ ! -f $cpu_mem_file ] ; then
+    echo "$cpu_mem_file does not exist!"
+    echo "run top.sh first!"
+    exit 1
+fi
+
 cpu_core_num=`cat /proc/cpuinfo | grep -c processor`
 eval $(awk '{a+=$1;b+=$2} END {printf("avgcpu=%.1f\navgmem=%.1f", (a/(NR*'"$cpu_core_num"'))*'"$input_num"',(b/NR));}' $cpu_mem_file)
 

@@ -35,6 +35,7 @@ Install_fonts_conf()
 Install_emacs_run()
 {
     sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs-nw.sh /usr/bin
 }
 
 ##setup other
@@ -42,6 +43,9 @@ Install_other()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
+
+    ##link zzemacs/etc/profile
+    ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash
 }
 
 ##install thirdparty

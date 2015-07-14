@@ -10,6 +10,7 @@ class Dispatch:
         self.srcdir = srcdir
         self.params = argv
         self.appmap = {}
+        self.entryname = os.path.basename(argv[0])
     def run(self):
         self.getappmap()
         
@@ -21,7 +22,7 @@ class Dispatch:
             app = self.findapp(self.params[2])
             if app == None:
                 print "Can't find %s to usaged\n" % self.params[2]
-                print "Try to run '%s help' to get help\n" % self.params[0]
+                print "Try to run '%s help' to get help\n" % self.entryname
             else:
                 #print app
                 cmdline = "%s %s" % (" ".join(app), "help")
@@ -31,7 +32,7 @@ class Dispatch:
             app = self.findapp(self.params[1])
             if app == None:
                 print "Can't find %s to usaged\n" % self.params[1]
-                print "Try to run '%s help' to get help\n" % self.params[0]
+                print "Try to run '%s help' to get help\n" % self.entryname
             else:
                 #print app
                 cmdline = "%s %s" % (" ".join(app), " ".join(self.params[2:]))
@@ -40,12 +41,12 @@ class Dispatch:
 
         
     def usage(self):
-        print "Use: %s help           -- for help" % (self.params[0])
+        print "Use: %s help           -- for help" % self.entryname
         for app in self.appmap:
-            print "Use: %s %s [argv]" % (self.params[0], app)
+            print "Use: %s %s [argv]" % (self.entryname, app)
 
         print ""
-        print "Use: %s help <app>     -- for application help" % (self.params[0])
+        print "Use: %s help <app>     -- for application help" % self.entryname
         
     def findapp(self, app):
         if app in self.appmap:

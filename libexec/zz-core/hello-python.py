@@ -1,7 +1,7 @@
 ## This a test for zz.py
 
 def main():
-    print "Hello, Zachary"
+    print "hello python!\n"
 
 if __name__ == '__main__':
     try:

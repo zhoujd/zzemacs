@@ -24,17 +24,8 @@ try_command cat >> $BASHRC_PATH <<EOF
 
 # self bash-setting from zzemacs
 if [ -d ${ZZEMACS_ROOT} ] ; then
-    export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:\$PATH
-    for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
-        if [ -r "\$i" ]; then
-            if [ "\${-#*i}" != "\$-" ]; then
-                . "\$i"
-            else
-                . "\$i" >/dev/null 2>&1
-            fi
-        fi
-    done
-fi
+    . ${ZZEMACS_ROOT}/etc/profile
+fi 
 EOF
 }
 

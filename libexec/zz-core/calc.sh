@@ -12,7 +12,7 @@ cpu_mem_file=cpu_mem.txt
 
 # set channel number if input by command line
 if [ ! $1 = "" ]; then
-    input_num=$2 
+    input_num=$1
 fi
 
 if [ ! -f $cpu_mem_file ] ; then

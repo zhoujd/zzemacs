@@ -77,7 +77,7 @@ class Dispatch:
             elif appext == ".pl":
                 appinfo.append("perl")
             elif appext == ".sh":
-                appinfo.append("sh -c")
+                appinfo.append("sh")
                 
             appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
             self.appmap[appname] = appinfo

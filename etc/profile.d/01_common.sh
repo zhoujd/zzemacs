@@ -25,14 +25,18 @@ color_prompt()
     local mangenta='\[\033[1;35m\]'
     local white='\[\033[1;37m\]'
 
-    if [ $(whoami) = 'root' ]; then
-        PS1="${yellow}\u@\h${white}:${norm}\w${norm}${lred}#${norm} "
-    else
-        PS1="${yellow}\u@\h${white}:${norm}\w${norm}\$ "
-    fi
+    # depend on term type
+    case "$TERM" in
+        xterm* | rxvt*)
+            if [ $(whoami) = 'root' ]; then
+                PS1="${yellow}\u@\h${white}:${norm}\w${norm}${lred}#${norm} "
+            else
+                PS1="${yellow}\u@\h${white}:${norm}\w${norm}\$ "
+            fi
+            ;;
+        * )
+            ;;
+    esac
 }
 
-if [ "$TERM" != "dumb" ]; then
-    color_prompt
-fi
-
+color_prompt

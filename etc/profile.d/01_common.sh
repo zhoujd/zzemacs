@@ -34,8 +34,6 @@ color_prompt()
                 PS1="${yellow}\u@\h${white}:${norm}\w${norm}\$ "
             fi
             ;;
-        * )
-            ;;
     esac
 }
 

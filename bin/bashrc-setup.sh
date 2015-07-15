@@ -23,7 +23,7 @@ Install_self_bashrc()
 try_command cat >> $BASHRC_PATH <<EOF
 
 # self bash-setting from zzemacs
-if [ -d ${ZZEMACS_ROOT} ] ; then
+if [ -f ${ZZEMACS_ROOT}/etc/profile ] ; then
     . ${ZZEMACS_ROOT}/etc/profile
 fi 
 EOF

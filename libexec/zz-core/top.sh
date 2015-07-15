@@ -17,6 +17,7 @@ LogFile=cpu_mem.txt
 Interval=1
 
 echo "cpu mem data file: $LogFile"
+echo "press Ctrl + c for exit"
 
 # clear data
 rm -f $LogFile

@@ -2,4 +2,4 @@
 
 appdirname = "zz-core"
 appignorefiles = ["__init__.py"]
-appnames = ["*.py", "*.pl", "*.sh"]
+appnames = {"*.py" : "python", "*.pl" : "perl", "*.sh" : "sh" }

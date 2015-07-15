@@ -57,7 +57,7 @@ class Dispatch:
     def getappmap(self):
         appdir = "%s/%s" % (self.srcdir, config.appdirname)
         applist = []
-        for appcfgitem in config.appnames:
+        for appcfgitem in config.appnames.keys():
             applist += glob.glob(appdir + "/" + appcfgitem)
 
         applist = map(lambda x: os.path.basename(x), applist)
@@ -71,14 +71,8 @@ class Dispatch:
             appinfo = []
             appname, appext = os.path.splitext(app)
 
-            ## support python && perl script
-            if appext == ".py":
-                appinfo.append("python")
-            elif appext == ".pl":
-                appinfo.append("perl")
-            elif appext == ".sh":
-                appinfo.append("sh")
-                
+            ## for command line
+            appinfo.append(config.appnames["*" + appext])
             appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
             self.appmap[appname] = appinfo
         #print self.appmap

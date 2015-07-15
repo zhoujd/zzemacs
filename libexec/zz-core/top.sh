@@ -1,24 +1,25 @@
 #/bin/bash
 
-Max_CPU=0
-Avg_CPU=0
-Total_Time=1
+# input parameter check
+if [ ! "$#" = "1" ] ; then
+    echo "Usage: `basename $0` <app-name>"
+    exit 1;
+fi
 
-App=$0
-EXC_PATH=${App%tools/top.sh}
-Interval=$1
-rm -f ./cpu_mem.txt
-#mkdir -p output
+AppName=$1
+LogFile=cpu_mem.txt
+Interval=1
 
-LogFile=./cpu_mem.txt
+echo "cpu mem data file: $LogFile"
 
-while sleep $Interval
-#while true
+# clear data
+rm -f $LogFile
+
+while true
 do
-    #collect cpu and mem usage
-    top -d 1 -bn 1 > ./cpu-mem-tmp
-    cat ./cpu-mem-tmp | grep StreamingMediaT |grep -v grep|awk '{print $9"\t"$10}'| grep -v 0.0 >> $LogFile
-#    echo "info:"$s
-#    echo $s >> $LogFile
-    #top  -d 1 -bn 1|grep StreamingMediaT |grep -v grep|awk '{print $9"\t"$10}'| grep -v 0.0 >> $LogFile
+    # collect cpu and mem usage
+    top -d 1 -bn 1 | grep $AppName |grep -v grep|awk '{print $9"\t"$10}'| grep -v 0.0 >> $LogFile
+
+    # sleep for next
+    sleep $Interval
 done

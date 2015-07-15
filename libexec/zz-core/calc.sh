@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# check run OS
+if [ "$OS" = "Windows_NT" ] ; then
+    echo "This script is not support on windows."
+    exit 0
+fi
+
 # variable setting
 input_num=1
 cpu_mem_file=cpu_mem.txt

@@ -1,5 +1,11 @@
 #/bin/bash
 
+# check run OS
+if [ "$OS" = "Windows_NT" ] ; then
+    echo "This script is not support on windows."
+    exit 0
+fi
+
 # input parameter check
 if [ ! "$#" = "1" ] ; then
     echo "Usage: `basename $0` <app-name>"

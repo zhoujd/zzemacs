@@ -32,4 +32,7 @@ color_prompt()
     fi
 }
 
-color_prompt
+if [ "$TERM" != "dumb" ]; then
+    color_prompt
+fi
+

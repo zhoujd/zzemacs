@@ -31,6 +31,13 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
 }
 
+##setup runemacs.sh
+Install_emacs_run()
+{
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs-nw.sh /usr/bin
+}
+
 ##setup others
 Install_others()
 {
@@ -72,6 +79,9 @@ main()
 
     echo "install fonts"
     try_command Install_fonts_conf
+
+    echo "install runemacs"
+    try_command Install_emacs_run
 
     echo "install others"
     try_command Install_others

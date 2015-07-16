@@ -12,21 +12,20 @@ if [ ! "$#" = "1" ] ; then
     exit 1;
 fi
 
-AppName=$1
-LogFile=cpu_mem.txt
-Interval=1
+app_name=$1
+log_file=cpu_mem.txt
+interval=1
 
-echo "cpu mem data file: $LogFile"
+echo "cpu mem data file: $log_file"
 echo "press Ctrl + c for exit"
 
 # clear data
-rm -f $LogFile
+rm -f $log_file
 
-while true
-do
+while true ; do
     # collect cpu and mem usage
-    top -d 1 -bn 1 -c | grep $AppName | grep -v grep | awk '{print $9"\t"$10}' | grep -v 0.0 >> $LogFile
+    top -d 1 -bn 1 -c | grep $app_name | grep -v grep | awk '{print $9"\t"$10}' | grep -v 0.0 >> $log_file
 
     # sleep for next
-    sleep $Interval
+    sleep $interval
 done

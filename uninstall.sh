@@ -4,6 +4,8 @@
 rm_app="rm -ri $1"
 sudo_rm_app="sudo $rm_app"
 
+echo "uninstall zzemacs start ..."
+
 echo "remove .emacs ..."
 $rm_app ~/.emacs
 
@@ -15,3 +17,5 @@ $rm_app ~/.emacs.d
 
 echo "remove /usr/bin/zzemacs ..."
 $sudo_rm_app /usr/bin/zzemacs
+
+echo "uninstall zzemacs end ..."

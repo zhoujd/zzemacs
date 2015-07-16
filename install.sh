@@ -21,7 +21,7 @@ EOF
 
 ##setup font setting
 #https://github.com/android/platform_frameworks_base/tree/master/data/fonts
-Install_fonts_conf()
+Install_fonts()
 {
     FONT_TARGET=~/.fonts
     mkdir -p $FONT_TARGET
@@ -31,18 +31,14 @@ Install_fonts_conf()
     ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
 }
 
-##setup runemacs.sh
-Install_emacs_run()
-{
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs.sh /usr/bin
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/runemacs-nw.sh /usr/bin
-}
-
 ##setup others
 Install_others()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
+
+    ##setup zzemacs
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs /usr/bin
 
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash
@@ -70,18 +66,10 @@ Install_thirdparty()
 main()
 {
     ##install configure file
-    if [ -f ~/.emacs ] ; then
-        confirm_execute "Do you wanna overwrite .emacs? [y/N]" try_command Install_dot_emacs
-    else
-        echo "install configure file"
-        try_command Install_dot_emacs
-    fi
+    confirm_execute "Do you wanna overwrite .emacs? [y/N]" try_command Install_dot_emacs
 
     echo "install fonts"
-    try_command Install_fonts_conf
-
-    echo "install runemacs"
-    try_command Install_emacs_run
+    try_command Install_fonts
 
     echo "install others"
     try_command Install_others

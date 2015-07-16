@@ -23,8 +23,7 @@ else
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
 fi
 
-emacs --quick \
+emacs --quick $* \
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \
-      --eval "(message \"start emacs finished.\")"     \
-      $* >/dev/null 2>&1 &
+      --eval "(message \"start emacs finished.\")"

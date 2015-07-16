@@ -17,11 +17,13 @@ EOF
 #http://www.jinbuguo.com/gui/fonts.conf.html
 Install_fonts_conf()
 {
-    mkdir -p ~/.fonts
-    ln -sf ${ZZEMACS_ROOT}/font/* ~/.fonts
+    FONT_TARGET=~/.fonts
+    mkdir -p $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf $FONT_TARGET
+    ln -sf ${ZZEMACS_ROOT}/font/*.ttf         $FONT_TARGET
 }
 
-Install_other()
+Install_others()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
@@ -29,4 +31,4 @@ Install_other()
 
 Install_dot_emacs
 Install_fonts_conf
-Install_other
+Install_others

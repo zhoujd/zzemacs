@@ -2,7 +2,6 @@
 echo setup to %OS% start ...
 
 set MYCFG_PATH="%APPDATA%\.emacs"
-set MYHOME="c:/zznix/home/zhoujd"
 set CURRENT_DIR=%CD%
 
 if exist %MYCFG_PATH% del %MYCFG_PATH%
@@ -12,7 +11,6 @@ echo setup python environment ...
 @if exist unsetup.bat call unsetup.bat
 @echo off & cd %CURRENT_DIR%
 
-set MYHOME=
 set MYCFG_PATH=
 set CURRENT_DIR=
 

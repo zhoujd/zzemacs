@@ -4,3 +4,4 @@
 *.pyc
 configure/temp-setting.el
 custom.el
+99_proxy.sh

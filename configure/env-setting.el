@@ -7,6 +7,7 @@
    (progn
     (list
      (format "%s/bin" (getenv "ZZNIX_HOME"))
+     (format "%s/libexec/emacs" (getenv "ZZNIX_HOME"))
      (format "%s/bin" zzemacs-path)
      (format "%s/libexec" zzemacs-path)
      (format "%s/bin" (getenv "EMACS_DIR"))

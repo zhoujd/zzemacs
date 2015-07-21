@@ -26,6 +26,17 @@ Install_package()
         sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libdbus-1-dev libgconf2-dev
         sudo apt-get install -y libotf-dev libgpm-dev libm17n-dev libgnutls-dev libselinux1-dev imagemagick
     elif [ "$OS_DISTRO" = "CentOS" ]; then
+        sudo yum groupinstall -y "Development Tools"
+        sudo yum install -y gtk+-devel gtk2-devel
+        sudo yum install -y libXpm-devel
+        sudo yum install -y libpng-devel
+        sudo yum install -y giflib-devel
+        sudo yum install -y libtiff-devel libjpeg-devel
+        sudo yum install -y ncurses-devel
+        sudo yum install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
+        sudo yum install -y GConf2-devel pkgconfig
+        sudo yum install -y libXft-devel
+
         sudo yum install -y git-core
         sudo yum install -y gitk
     else

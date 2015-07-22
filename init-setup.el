@@ -1,4 +1,4 @@
-#!/usr/bin/emacs --script
+#!/usr/local/bin/emacs --script
 ;;;;this script for init emacs configure
 ;;;;http://ergoemacs.org/emacs/emacs.html
 ;;$cd <init-setup.el>
@@ -28,24 +28,26 @@
 
 (defun zz-setup-dotemacs-nt ()
   "setup zzemacs on nt"
-  (let ((zz-winnt-home-path "c:/zznix/home/zhoujd")
-        (zz-dotemacs-content (list
-                              (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                              (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
-                              (format "(setq default-directory \"~\")")
-                              (format "(load-file \"~/zzemacs/.emacs\")")
-                              )))
+  (let* ((zz-winnt-home-path "c:/zznix/home/zhoujd")
+         (zz-dotemacs-content (list
+                               (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                               (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
+                               (format "(setq default-directory \"~\")")
+                               (format "(load-file \"~/zzemacs/.emacs\")")
+                               )))
     (message "setup .emacs to %s on %s" zz-home-path system-type)
     (zz-create-file zz-dotemacs-path zz-dotemacs-content)))
 
 (defun zz-setup-dotemacs-unix ()
   "setup zzemacs on unix"
-  (let ((zz-emacs-root default-directory)
-        (zz-dotemacs-content (list
-                              (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                              (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
-                              (format "(load-file (concat zzemacs-path \".emacs\"))")
-                              )))
+  (let* ((zz-emacs-root default-directory)
+         (zz-dotemacs-content (list
+                               (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                               (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
+                               (format "(if (file-exists-p (concat zzemacs-path \".emacs\"))")
+                               (format "    (load-file (concat zzemacs-path \".emacs\"))")
+                               (format "    (message \"zzemacs has not install\"))")
+                               )))
     (message "setup .emacs to %s on %s" zz-home-path system-type)
     (zz-create-file zz-dotemacs-path zz-dotemacs-content)))
 

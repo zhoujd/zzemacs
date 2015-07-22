@@ -63,7 +63,7 @@
       (let ((sys-font-path (concat (getenv "SystemRoot") "/Fonts")))
          (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
          (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
-         (message "setup font to %s on nt" sys-font-path))
+         (message "setup font to %s on %s" sys-font-path system-type))
       (let ((fonts-conf-path "~/.fonts.conf")
             (fonts-conf-content (list
                                  (format "<?xml version=\"1.0\"?>")
@@ -75,7 +75,7 @@
                                  (format "</fontconfig>")
                                  )))
         (zz-create-file fonts-conf-path fonts-conf-content)
-        (message "setup font to %s on nt" fonts-conf-path))))
+        (message "setup font to %s on %s" fonts-conf-path system-type))))
 
 (defun zz-setup-third-party ()
   "setup third partys"

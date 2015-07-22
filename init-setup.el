@@ -18,30 +18,36 @@
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
+(defvar zz-home-path (if (eq system-type 'windows-nt)
+                         (getenv "APPDATA")
+                         (getenv "HOME"))
+  "home path setting")
+
+(defvar zz-dotemacs-path (concat zz-home-path "/.emacs")
+  "dot emacs path setting")
+
 (defun zz-setup-dotemacs-nt ()
-  (defvar zz-winnt-home-path "c:/zznix/home/zhoujd")
-  (defvar zz-home-path (getenv "APPDATA"))
-  (defvar zz-dotemacs-content (list
-                               (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                               (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
-                               (format "(setq default-directory \"~\")")
-                               (format "(load-file \"~/zzemacs/.emacs\")")
-                               ))
-  (defvar zz-dotemacs-path (concat zz-home-path "/.emacs"))
-  (message "setup .emacs to %s on %s" zz-home-path system-type)
-  (zz-create-file zz-dotemacs-path zz-dotemacs-content))
+  "setup zzemacs on nt"
+  (let ((zz-winnt-home-path "c:/zznix/home/zhoujd")
+        (zz-dotemacs-content (list
+                              (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                              (format "(setenv \"HOME\" \"%s\")" zz-winnt-home-path)
+                              (format "(setq default-directory \"~\")")
+                              (format "(load-file \"~/zzemacs/.emacs\")")
+                              )))
+    (message "setup .emacs to %s on %s" zz-home-path system-type)
+    (zz-create-file zz-dotemacs-path zz-dotemacs-content)))
 
 (defun zz-setup-dotemacs-unix ()
-  (defvar zz-emacs-root  default-directory)
-  (defvar zz-home-path (getenv "HOME"))
-  (defvar zz-dotemacs-content (list
-                               (format ";;;this is .emacs for zhoujd, generate by install.el.")
-                               (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
-                               (format "(load-file (concat zzemacs-path \".emacs\"))")
-                               ))
-  (defvar zz-dotemacs-path (concat zz-home-path "/.emacs"))
-  (message "setup .emacs to %s on %s" zz-home-path system-type)
-  (zz-create-file zz-dotemacs-path zz-dotemacs-content))
+  "setup zzemacs on unix"
+  (let ((zz-emacs-root default-directory)
+        (zz-dotemacs-content (list
+                              (format ";;;this is .emacs for zhoujd, generate by install.el.")
+                              (format "(defvar zzemacs-path \"%s\")" zz-emacs-root)
+                              (format "(load-file (concat zzemacs-path \".emacs\"))")
+                              )))
+    (message "setup .emacs to %s on %s" zz-home-path system-type)
+    (zz-create-file zz-dotemacs-path zz-dotemacs-content)))
 
 (defun zz-setup-dotemacs ()
   "setup dotemacs"
@@ -52,16 +58,22 @@
 (defun zz-setup-font ()
   "setup font to system font path"
   (if (eq system-type 'windows-nt)
-      '()
-      (progn
-        (let ((sys-font-path "/usr/share/fonts/truetype/"))
-          (if (= 0 (user-uid))
-              (progn
-                (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
-                (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
-                (message "setup font to %s" sys-font-path))
-              (message "setup font need run with sudo.")
-              )))))
+      (let ((sys-font-path (concat (getenv "SystemRoot") "/Fonts")))
+         (copy-file (concat default-directory "font/consola.ttf") sys-font-path t)
+         (copy-file (concat default-directory "font/MSYHMONO.ttf") sys-font-path t)
+         (message "setup font to %s on nt" sys-font-path))
+      (let ((fonts-conf-path "~/.fonts.conf")
+            (fonts-conf-content (list
+                                 (format "<?xml version=\"1.0\"?>")
+                                 (format "<!DOCTYPE fontconfig SYSTEM \"fonts.dtd\">")
+                                 (format "<!-- /etc/fonts/fonts.conf file to configure system font access -->")
+                                 (format "<fontconfig>")
+                                 (format "  <!-- Font directory list -->")
+                                 (format "  <dir>%s/zzemacs/font</dir>" zz-home-path)
+                                 (format "</fontconfig>")
+                                 )))
+        (zz-create-file fonts-conf-path fonts-conf-content)
+        (message "setup font to %s on nt" fonts-conf-path))))
 
 (defun zz-setup-third-party ()
   "setup third partys"

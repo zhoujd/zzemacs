@@ -15,7 +15,7 @@ SELF_BASHRC_PATH=$(cd $SETUP_ROOT/../misc && pwd)
 Install_self_bashrc()
 {
 try_command cat >> $BASHRC_PATH <<EOF
-## source self .bashrc setting
+# source self .bashrc setting for zachary zhou
 if [ -f $SELF_BASHRC_PATH/.bashrc ] ; then
     . ${SELF_BASHRC_PATH}/.bashrc
 fi

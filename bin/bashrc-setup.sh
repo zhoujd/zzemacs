@@ -22,7 +22,7 @@ fi
 EOF
 }
 
-if [ -e  $SELF_BASHRC_PATH/.bashrc ] ; then
+if [ -f $SELF_BASHRC_PATH/.bashrc ] ; then
     Install_self_bashrc
 fi
 

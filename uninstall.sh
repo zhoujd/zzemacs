@@ -15,7 +15,7 @@ $rm_app ~/.fonts
 echo "remove .emacs.d ..."
 $rm_app ~/.emacs.d
 
-echo "remove /usr/bin/zzemacs ..."
-$sudo_rm_app /usr/bin/zzemacs
+echo "remove zzemacs & zzvim in /usr/bin ..."
+$sudo_rm_app /usr/bin/zz{emacs,vim}
 
 echo "uninstall zzemacs end ..."

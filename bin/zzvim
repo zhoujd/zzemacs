@@ -23,4 +23,4 @@ else
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
 fi
 
-vim -u $ZZEMACS_ROOT/etc/vimrc
+vim -u $ZZEMACS_ROOT/etc/vimrc "$@"

@@ -37,8 +37,8 @@ Install_others()
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
 
-    ##setup zzemacs
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs /usr/bin
+    ##setup zzemacs & zzvim
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/zz{emacs,vim} /usr/bin
 
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash

@@ -23,7 +23,19 @@ else
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
 fi
 
-emacs --quick $* \
+pre_params=""
+post_param="$@"
+
+test=`echo $@ | grep -e '\(-nw\)\|\(--no-window-system\)'`
+echo $@
+echo $test
+if [ ! -s  "$test" ] ; then
+    pre_params="-nw"
+    post_param=`echo "$@" | sed -e 's/\(-nw\)\|\(--no-window-system\)//g'`
+fi
+
+echo --quick $pre_params \
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \
-      --eval "(message \"start emacs finished.\")"
+      --eval "(message \"start emacs finished.\")"     \
+      $post_param

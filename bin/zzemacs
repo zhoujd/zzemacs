@@ -23,19 +23,18 @@ else
     ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
 fi
 
-pre_params=""
-post_param="$@"
+# reorganize parameters
+pre_params=
+post_params=$@
+nw_check=`echo $@ | grep -e '\(-nw\)\|\(--no-window-system\)'`
 
-test=`echo $@ | grep -e '\(-nw\)\|\(--no-window-system\)'`
-echo $@
-echo $test
-if [ ! -s  "$test" ] ; then
-    pre_params="-nw"
-    post_param=`echo "$@" | sed -e 's/\(-nw\)\|\(--no-window-system\)//g'`
+if [ ! -s  "$nw_check" ] ; then
+    pre_params="--no-window-system"
+    post_params=`echo $@ | sed -e 's/\(-nw\)\|\(--no-window-system\)//g'`
 fi
 
-echo --quick $pre_params \
+emacs --quick $pre_params \
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \
       --eval "(message \"start emacs finished.\")"     \
-      $post_param
+      $post_params

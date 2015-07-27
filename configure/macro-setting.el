@@ -40,6 +40,7 @@
      (interactive)
      (apply 'start-process ,name nil ,args)))
 
+;;start shell in environment setting
 (defmacro with-start-shell (&rest body)
   `(let ((env-shell      shell-file-name)
          (env-shell-cmd  shell-command-switch)
@@ -51,7 +52,6 @@
      (setq explicit-shell-file-name env-shell-file)
      (setenv "SHELL" env-shell)
      ))
-
 
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")
@@ -68,6 +68,11 @@
   `(cond ((fboundp 'async-shell-command) (async-shell-command ,cmd))
          ((fboundp 'shell-command) (shell-command ,cmd))
          (t (message "no shell command function can be run"))))
+
+;;start shell
+(defmacro start-quick-shell (name)
+  `(lambda () (interactive) (start-shell ,name)))
+
 
 (provide 'macro-setting)
 

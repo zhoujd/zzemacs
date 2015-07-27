@@ -28,7 +28,7 @@ pre_params=
 post_params=$@
 nw_check=`echo $@ | grep -e '\(-nw\)\|\(--no-window-system\)'`
 
-if [ ! -s  "$nw_check" ] ; then
+if [ ! -z "$nw_check" ] ; then
     pre_params="--no-window-system"
     post_params=`echo $@ | sed -e 's/\(-nw\)\|\(--no-window-system\)//g'`
 fi

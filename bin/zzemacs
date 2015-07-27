@@ -24,16 +24,15 @@ else
 fi
 
 # reorganize parameters
-pre_params=
-post_params=$@
-nw_check=`echo $@ | grep -e '\(-nw\)\|\(--no-window-system\)'`
+for arg in "$@" ; do
+    if [ ! -z `echo "$arg" | grep  "^-"` ] ; then
+        pre_params="$pre_params $arg"
+    else
+        post_params="$post_params $arg"
+    fi
+done
 
-if [ ! -z "$nw_check" ] ; then
-    pre_params="--no-window-system"
-    post_params=`echo $@ | sed -e 's/\(-nw\)\|\(--no-window-system\)//g'`
-fi
-
-emacs --quick $pre_params \
+echo --quick $pre_params \
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \
       --eval "(message \"start emacs finished.\")"     \

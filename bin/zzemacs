@@ -32,7 +32,7 @@ for arg in "$@" ; do
     fi
 done
 
-echo --quick $pre_params \
+emacs --quick $pre_params \
       --eval "(setq zzemacs-path \"${ZZEMACS_ROOT}\")" \
       --eval "(load-file \"${ZZEMACS_ROOT}/.emacs\")"  \
       --eval "(message \"start emacs finished.\")"     \

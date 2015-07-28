@@ -25,7 +25,7 @@ fi
 
 # reorganize parameters
 for arg in "$@" ; do
-    if [ ! -z `echo "$arg" | grep  "^-"` ] ; then
+    if [ ! -z `echo "$arg" | grep -e '\(-nw\)\|\(--no-window-system\)'` ] ; then
         pre_params="$pre_params $arg"
     else
         post_params="$post_params $arg"

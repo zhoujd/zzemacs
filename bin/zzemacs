@@ -25,11 +25,14 @@ fi
 
 # reorganize parameters
 for arg in "$@" ; do
-    if [ ! -z `echo "$arg" | grep -e '\(-nw\)\|\(--no-window-system\)'` ] ; then
-        pre_params="$pre_params $arg"
-    else
-        post_params="$post_params $arg"
-    fi
+    case "$arg" in
+        "-nw" | "--no-window-system" )
+            pre_params="$pre_params $arg"
+            ;;
+        * )
+            post_params="$post_params $arg"
+            ;;
+    esac
 done
 
 emacs --quick $pre_params \

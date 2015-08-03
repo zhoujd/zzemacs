@@ -77,9 +77,14 @@ alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias mcedit='mcedit -x'
 alias me='mcedit'
 
-## vlc
+## vlc alias
 alias vlch265='vlc --demux hevc'
 alias vlch264='vlc --demux h264'
+
+## rpm alias
+alias rpmls='rpm -qlp'
+alias rpmlsi='rpm -ql'
+alias rpmwhich='rpm -qf'
 
 ## more sudo alias
 if [ $UID -ne 0 ]; then

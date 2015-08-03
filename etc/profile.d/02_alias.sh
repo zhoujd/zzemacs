@@ -77,6 +77,10 @@ alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 alias mcedit='mcedit -x'
 alias me='mcedit'
 
+## vlc
+alias vlch265='vlc --demux hevc'
+alias vlch264='vlc --demux h264'
+
 ## more sudo alias
 if [ $UID -ne 0 ]; then
     alias reboot='sudo reboot'

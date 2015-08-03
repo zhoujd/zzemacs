@@ -72,6 +72,13 @@ Linux something
     make modules_prepare
     make M=drivers/gpu/drm
 
+    ##list rpm files
+    rpm -qlp *.rpm            ## for uninstalled package
+    rpm -ql  package-name     ## for installed package
+
+    ##query file belong rpm package
+    rpm -qf /path/filename
+
 6. Centos LIB dir when compile
     ./configure --prefix=/usr  --libdir=/usr/lib64
 

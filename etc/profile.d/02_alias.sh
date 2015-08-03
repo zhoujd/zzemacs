@@ -81,10 +81,12 @@ alias me='mcedit'
 alias vlch265='vlc --demux hevc'
 alias vlch264='vlc --demux h264'
 
-## rpm alias
+## rpm & dpkg refer to doc/misc/rpm-dpkg-reference.pdf
 alias rpmls='rpm -qlp'
 alias rpmlsi='rpm -ql'
 alias rpmwhich='rpm -qf'
+alias dpkgls='dpkg -c'
+alias dpkglsi='dpkg -L'
 
 ## more sudo alias
 if [ $UID -ne 0 ]; then

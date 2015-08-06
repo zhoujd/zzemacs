@@ -66,16 +66,16 @@ Install_thirdparty()
 main()
 {
     ##install configure file
-    confirm_execute "Do you wanna overwrite .emacs? [y/N]" try_command Install_dot_emacs
+    confirm_execute "Do you wanna overwrite .emacs? [y/N]" run_cmd Install_dot_emacs
 
     echo "install fonts"
-    try_command Install_fonts
+    run_cmd Install_fonts
 
     echo "install others"
-    try_command Install_others
+    run_cmd Install_others
 
     ##install third-party
-    confirm_execute "Do you wanna install third-party packages? (y/N): " try_command Install_thirdparty
+    confirm_execute "Do you wanna install third-party packages? (y/N): " run_cmd Install_thirdparty
 }
 
 main

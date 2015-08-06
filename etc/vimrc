@@ -19,6 +19,9 @@ let &termencoding=&encoding
 set guifont=Microsoft\ YaHei\ Mono:h11:cANSI
 set guifontset=-*-Microsoft\ YaHei\ Mono-medium-r-normal--11-*-*-*-*-*-iso8859-1,fixed
 
+" Allow backspacing over everything in insert mode
+set bs=indent,eol,start
+
 " UI setting
 set shortmess=atI
 set gcr=n:block-blinkon0

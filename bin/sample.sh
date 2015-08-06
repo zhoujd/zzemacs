@@ -17,6 +17,17 @@ run_cmd()
     return $status
 }
 
+# Print an error message and exit with given status
+# call as: die status "message" ["message" ...]
+die()
+{
+   exitstat=$1; shift
+   for i in "$@"; do
+      print -R "$i"
+   done
+   exit $exitstat
+}
+
 # example: $ time_command sleep 10
 time_command()
 {

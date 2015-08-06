@@ -2,7 +2,6 @@
 
 use warnings;
 use strict;
-use Env;
 use FindBin qw($Bin);
 
 
@@ -26,7 +25,7 @@ sub diff_emacs {
                                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
                                 )", $zzemacs_path, $diff_a, $diff_b);
 
-    my $cmd = sprintf("emacs -q --no-site-file --eval \"%s\"", $elisp_string);
+    my $cmd = sprintf("emacs -nw -q --no-site-file --eval \"%s\"", $elisp_string);
 
     (system("$cmd") == 0) || die "Cannot run $cmd $!";
 }

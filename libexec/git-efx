@@ -1,0 +1,30 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+sub main
+{
+	my ($prompt) = @_;
+
+	if (defined($prompt)) {
+		if ($prompt) {
+			$ENV{GIT_DIFFTOOL_PROMPT} = 'true';
+		} else {
+			$ENV{GIT_DIFFTOOL_NO_PROMPT} = 'true';
+		}
+	}
+
+	$ENV{GIT_PAGER} = '';
+	$ENV{GIT_EXTERNAL_DIFF} = "git-ediff-wrapper.py";
+
+	# ActiveState Perl for Win32 does not implement POSIX semantics of
+	# exec* system call. It just spawns the given executable and finishes
+	# the starting program, exiting with code 0.
+	# system will at least catch the errors returned by git diff,
+	# allowing the caller of git difftool better handling of failures.
+	my $rc = system('git', 'diff', @ARGV);
+	exit($rc | ($rc >> 8));
+}
+
+main;

@@ -6,7 +6,7 @@ export OS_DISTRO="unknown"
 export SYSARCH=64
 
 # try command  for test command result.
-try_command()
+run_cmd()
 {
     "$@"
     status=$?
@@ -40,7 +40,7 @@ confirm_execute()
 
 linux_issue_check()
 {
-    try_command cat /etc/issue > /dev/null
+    run_cmd cat /etc/issue > /dev/null
     if [ ! -z "$(cat /etc/issue | grep 'Ubuntu')" ]; then
         OS_DISTRO="Ubuntu"
         echo "Run on $OS_DISTRO ..."
@@ -58,7 +58,7 @@ linux_issue_check()
 
 linux_lsb_check()
 {
-    try_command lsb_release -si > /dev/null
+    run_cmd lsb_release -si > /dev/null
     case $(lsb_release -si) in
         "SUSE LINUX" )
             OS_DISTRO="SUSE"
@@ -108,16 +108,16 @@ mingw_sample()
 }
 
 ## Detect OS type
-try_command uname -s > /dev/null
+run_cmd uname -s > /dev/null
 case `uname -s` in
     Linux )
-        try_command linux_sample
+        run_cmd linux_sample
         ;;
     FreeBSD )
-        try_command freebsd_sample
+        run_cmd freebsd_sample
         ;;
     MINGW* )
-        try_command mingw_sample
+        run_cmd mingw_sample
         ;;
     * )
         echo "unknown os ..."

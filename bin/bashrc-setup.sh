@@ -20,7 +20,7 @@ BASHRC_PATH=$HOME/.bashrc
 ##setup .bashrc
 Install_self_bashrc()
 {
-try_command cat >> $BASHRC_PATH <<EOF
+run_cmd cat >> $BASHRC_PATH <<EOF
 
 # self bash-setting from zzemacs
 if [ -f ${ZZEMACS_ROOT}/etc/profile ] ; then

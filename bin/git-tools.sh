@@ -49,7 +49,7 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        try_command Install_package
+        run_cmd Install_package
         ;;
 esac
 
@@ -58,7 +58,7 @@ echo -n "Do you need install git self tool? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        try_command Install_tools
+        run_cmd Install_tools
         ;;
 esac
 

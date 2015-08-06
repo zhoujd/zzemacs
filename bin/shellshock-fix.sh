@@ -13,7 +13,7 @@
 echo "update bash start ..."
 
 ## update bash for os
-Update_bash()
+update_bash()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -28,6 +28,6 @@ Update_bash()
     fi        
 }
 
-try_command Update_bash
+run_cmd update_bash
 
 echo "update bash end ..."

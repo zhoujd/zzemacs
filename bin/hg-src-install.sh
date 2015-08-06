@@ -49,12 +49,12 @@ main()
     read answer
     case "$answer" in
         "Y" | "y" )
-            try_command Install_package
+            run_cmd Install_package
             ;;
     esac
 
     ## setup hg from source
-    try_command Install_src_hg
+    run_cmd Install_src_hg
    
     echo "Install hg from source finished"
 }

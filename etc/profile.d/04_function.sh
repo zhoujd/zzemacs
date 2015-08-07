@@ -4,6 +4,7 @@
 ipaddr()  { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()     { cd "$@";  l; }
 rpmxf()   { [ "$1" != "" ] && (rpm2cpio "$1" | cpio -idmv); }
+rpmins()  { [ "$1" != "" ] && (rpm -i "$1" 2>&1 | grep -v mock); }
 
 ## chomod directory recursivly
 chmoddr()

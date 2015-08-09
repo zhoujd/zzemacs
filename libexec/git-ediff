@@ -16,7 +16,7 @@ sub main
 	}
 
 	$ENV{GIT_PAGER} = '';
-	$ENV{GIT_EXTERNAL_DIFF} = "git-ef-wrapper.pl";
+	$ENV{GIT_EXTERNAL_DIFF} = "git-ediff-wrapper.pl";
 
 	# ActiveState Perl for Win32 does not implement POSIX semantics of
 	# exec* system call. It just spawns the given executable and finishes

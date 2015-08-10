@@ -5,7 +5,7 @@
 # NOTE: Use :cq to abort the merge and exit Vim with an error code.
 
 if [[ -z $@ || $# != "5" ]] ; then
-    echo -e "Usage: `basename $0` \$BASE \$LOCAL \$REMOTE \$MERGED"
+    echo -e "Usage: $(basename $0) \$BASE \$LOCAL \$REMOTE \$MERGED"
     exit 1
 fi
 

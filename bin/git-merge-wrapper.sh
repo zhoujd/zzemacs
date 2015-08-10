@@ -19,12 +19,14 @@ merge_extern()
     if [ "$OS" = "Windows_NT" ] ; then
         MERGE_TOOL_0="bcompare $*"
         MERGE_TOOL_1="p4merge $*"
+        MERGE_TOOL_2="vimmerge $*"
 
         MERGE_SELECT=$MERGE_TOOL_0
     else
         MERGE_TOOL_0="bcompare $*"
         MERGE_TOOL_1="meld $2 $4 $3"
         MERGE_TOOL_2="p4merge $*"
+        MERGE_TOOL_3="vimmerge $*"
 
         MERGE_SELECT=$MERGE_TOOL_2
     fi

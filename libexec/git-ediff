@@ -3,6 +3,9 @@
 use warnings;
 use strict;
 
+## external diff tool setting
+my $ext_diff_name = "git-ediff-wrapper.pl";
+
 sub main
 {
 	my ($prompt) = @_;
@@ -16,7 +19,7 @@ sub main
 	}
 
 	$ENV{GIT_PAGER} = '';
-	$ENV{GIT_EXTERNAL_DIFF} = "git-ediff-wrapper.pl";
+	$ENV{GIT_EXTERNAL_DIFF} = $ext_diff_name;
 
 	# ActiveState Perl for Win32 does not implement POSIX semantics of
 	# exec* system call. It just spawns the given executable and finishes

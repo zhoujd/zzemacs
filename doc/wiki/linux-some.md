@@ -53,6 +53,8 @@ Linux something
     sudo update-alternatives --config gcc
 
 5. CentOS rpm
+    ## http://wiki.centos.org/HowTos/RebuildSRPM
+    ## http://wiki.centos.org/HowTos/I_need_the_Kernel_Source
     sudo yum update kernel-2.6.32-431.17.1.el6
     sudo yum install kernel-devel
     mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}

@@ -2,10 +2,11 @@
 ;;;
 
 ;;open debug-on-error when starup begin
-(custom-set-variables
- '(debug-on-error t)
- '(byte-compile-warnings nil)
- )
+(setq debug-on-error  t
+      debug-on-signal nil
+      debug-on-quit   nil
+      byte-compile-warnings nil
+      )
 
 (defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))
   "zzemacs`s path")
@@ -69,9 +70,10 @@
 (setq custom-file (concat zzemacs-path "/custom.el"))
 
 ;;close debug-on-error when starup end
-(custom-set-variables
- '(debug-on-error nil)
- '(byte-compile-warnings t)
- )
+(setq debug-on-error  nil
+      debug-on-signal t
+      debug-on-quit   t
+      byte-compile-warnings t
+      )
 
 ;;;; .emacs end here

@@ -20,6 +20,3 @@
   following code is error: 
   int i = (int)ptr;
   void *ptr = (void *)s32Tmp;
-
-
-

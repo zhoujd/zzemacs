@@ -18,6 +18,7 @@
                  "perl " zzemacs-path "/libexec/smartypants.pl"))))
 
 ;;org-mode setting
+;;http://orgmode.org/
 (setq org-export-html-postamble nil)
 (setq org-publish-project-alist
       '(("org"

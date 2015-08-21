@@ -70,9 +70,7 @@
 (setq custom-file (concat zzemacs-path "/custom.el"))
 
 ;;close debug-on-error when starup end
-(setq debug-on-error  nil
-      debug-on-signal t
-      debug-on-quit   t
+(setq debug-on-error nil
       byte-compile-warnings t
       )
 

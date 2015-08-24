@@ -191,3 +191,8 @@ Linux something
 
 18. multiable file change name
     find public_html/ -name '*.shtml' | perl -pe 's/(.*)\.shtml/ mv $1.shtml $1.php/' | bash
+
+19. update initramfs
+    # mkinitrd -f -v /boot/initrd-$(uname -r).img $(uname -r)
+    # dracut -f
+    # dracut -f initramfs-$(uname -r).img $(uname -r)

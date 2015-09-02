@@ -3,12 +3,19 @@
 ##sudo apt-get install bridge-utils
 ##sudo yum install bridge-utils
 
-eth0=enp2s0
-br0=xenbr0
+if [ $# != 2 ] ; then
+    echo "Usage: `basename $0` <NIC> <BRIDGE>"
+    echo "       NIC: find it via ifconfig"
+    echo "       BRIDGE: xenbr0 or br0"
+    exit 1;
+fi
+
+eth0=$1
+br0=$2
 
 ifconfig $eth0 down                  # 先关闭eth0接口
 brctl addbr $br0                     # 增加一个虚拟网桥br0
-brctl addif $br0 $eth0                # 在br0中添加一个接口eth0
+brctl addif $br0 $eth0               # 在br0中添加一个接口eth0
 brctl stp $br0 off                   # 只有一个网桥，所以关闭生成树协议
 brctl setfd $br0 1                   # 设置br0的转发延迟
 brctl sethello $br0 1                # 设置br0的hello时间

@@ -14,6 +14,7 @@ alias lc='ls -lcr'                 # sort by time
 alias lu='ls -lur'                 # sort by access time
 alias lr='ls -lR'                  # recurse ls
 alias lt='ls -ltr'                 # sort by date
+alias lh='ls -lh'                  # ls for -h
 alias lm='ls -al | more'           # pipeline to more
 
 ## buildin alias

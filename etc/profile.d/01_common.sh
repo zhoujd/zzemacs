@@ -29,9 +29,9 @@ color_prompt()
     case "$TERM" in
         xterm* | rxvt*)
             if [ $(whoami) = 'root' ]; then
-                PS1="${yellow}\u@\h${white}:${norm}\w${norm}${lred}#${norm} "
+                PS1="${green}\u@\h${white}:${norm}\w${norm}${lred}#${norm} "
             else
-                PS1="${yellow}\u@\h${white}:${norm}\w${norm}\$ "
+                PS1="${green}\u@\h${white}:${norm}\w${norm}\$ "
             fi
             ;;
     esac

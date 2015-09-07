@@ -32,3 +32,8 @@ up()
     fi
     cd "$dir"
 }
+
+## delete or list invalite soft link
+rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }
+lserrln() { find $1 -type l -print | xargs lsattr -d 2>&1 | grep "No such file or directory" | awk '{print $11}';}
+

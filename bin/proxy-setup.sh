@@ -8,8 +8,12 @@
 ## Acquire::ftp::proxy "ftp://127.0.0.1:8000";  
 ## Acquire::https::proxy "https://127.0.0.1:8000";
 
-echo "Setup self .bashrc start ..."
-echo "Usage: `basename $0` [host:port]"
+echo "Setup proxy .bashrc start ..."
+
+if [ $# != 1 ] ; then
+    echo "Usage: `basename $0` [host:port]"
+    exit 1
+fi
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -17,9 +21,6 @@ if [ "$OS" = "Windows_NT" ] ; then
 else
     SETUP_ROOT=$(cd $(dirname $0) && pwd)
 fi
-
-##Import vars and functions
-. $SETUP_ROOT/sample.sh
 
 ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 

@@ -5,6 +5,13 @@ ipaddr()  { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()     { cd "$@";  l; }
 rpmxf()   { [ "$1" != "" ] && (rpm2cpio "$1" | cpio -idmv); }
 
+## init rpmbuild fold
+rpminit() {     
+    mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
+    echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+    echo "~/rpmbuild is exist now"
+}
+
 ## chomod directory recursivly
 chmoddr()
 {
@@ -36,4 +43,3 @@ up()
 ## delete or list invalite soft link
 rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }
 lserrln() { find $1 -type l -print | xargs lsattr -d 2>&1 | grep "No such file or directory" | awk '{print $11}';}
-

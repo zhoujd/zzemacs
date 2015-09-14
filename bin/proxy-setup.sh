@@ -29,6 +29,7 @@ cat > $ZZEMACS_ROOT/etc/profile.d/99_proxy.sh <<EOF
 export http_proxy=$1
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
+export no_proxy=localhost,127.0.0.0/8,::1
 EOF
 
 echo "Setup proxy .bashrc end ..."

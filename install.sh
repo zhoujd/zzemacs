@@ -38,7 +38,10 @@ Install_others()
     mkdir -p ~/.emacs.d
 
     ##setup zzemacs & zzvim & zztmux
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zz{emacs,vim,tmux} /usr/bin
+    BIN_TARGET=/usr/bin
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
+    sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
 
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash

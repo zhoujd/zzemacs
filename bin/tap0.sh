@@ -3,8 +3,8 @@
 ##sudo apt-get install bridge-utils uml-utilities
 ##parameter: "-net nic -net tap,ifname=tap0,script=no,downscript=no"
 
-tunctl -t tap0 -u root              # 创建一个tap0接口，只允许root用户访问
-brctl addif br0 tap0                # 在虚拟网桥中增加一个tap0接口
-ifconfig tap0 0.0.0.0 promisc up    # 打开tap0接口
-brctl showstp br0                   # 显示br0的各个接口
+tunctl -t tap0 -u root              # create a tap0, only root can access
+brctl addif br0 tap0                # add tap0 to virtural bridge br0
+ifconfig tap0 0.0.0.0 promisc up    # open tap0
+brctl showstp br0                   # show interfaces on br0
 

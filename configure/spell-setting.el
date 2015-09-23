@@ -7,6 +7,11 @@
   (setq ispell-really-hunspell t))
 
 
+(when (executable-find "aspell")
+  (setq-default ispell-program-name "aspell")
+  (setq ispell-really-hunspell t))
+
+
 (provide 'spell-setting)
 
 ;;; spell-setting.el ends here

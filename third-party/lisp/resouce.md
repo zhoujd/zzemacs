@@ -40,14 +40,18 @@
 
   [ASDF-Howto]<http://common-lisp.net/~mmommer/asdf-howto.shtml>
 
+        ;;; Add to .sbclrc as below
         (require :asdf)
-        (setf asdf:*central-registry*
-            ;; Default directories, usually just the "current directory"
-            '(*default-pathname-defaults*
-                ;; Additional places where ASDF can find
-                ;; system definition files
-                #p"/home/zhoujd/lisp/systems/"
-                #p"/usr/share/common-lisp/systems/"))
+        (mapc
+         #'(lambda (path)
+             (let ((full-path (merge-pathnames path (user-homedir-pathname))))
+               (pushnew full-path asdf:*central-registry* :test #'equal)))
+         '(
+           "lisp/system/"
+           ))
+
+        ;;; Load system
+        (asdf:operate 'asdf:load-op 'multiviewer)
 
 
 * Some lisp git repo

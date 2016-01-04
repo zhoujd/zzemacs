@@ -91,6 +91,11 @@
     (add-to-list 'ac-modes 'slime-mode)
   ))
 
+;;connect stumpwm slime swank
+(defun slime-connect-stumpwm ()
+  (interactive)
+  (slime-connect "127.0.0.1" 4405))
+
 (provide 'lisp-setting)
 
 ;; lisp-setting.el end here

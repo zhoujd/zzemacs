@@ -19,11 +19,7 @@ Install_package()
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
         sudo apt-get install -y w3m
-        
-        ##install font
-        FONT_HOME=/usr/share/fonts/truetype/
-        sudo cp -f ${ZZEMACS_ROOT}/font/consola.ttf  ${FONT_HOME}
-        sudo cp -f ${ZZEMACS_ROOT}/font/MSYHMONO.ttf ${FONT_HOME}
+
     elif [ "$LINUX_DISTRO" = "CentOS" ]; then
         sudo yum install -y gmrun
         sudo yum install -y cscope
@@ -52,6 +48,18 @@ try_command cat > ~/.emacs <<EOF
 (if (file-exists-p (concat zzemacs-path ".emacs"))
     (load-file (concat zzemacs-path ".emacs"))
     (message "zzemacs has not install"))
+EOF
+
+##setup font setting
+try_command rm -f ~/.fonts.conf
+try_command cat > ~/.fonts.conf <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<!-- /etc/fonts/fonts.conf file to configure system font access -->
+<fontconfig>
+  <!-- Font directory list -->
+  <dir>${ZZEMACS_ROOT}/font</dir>
+</fontconfig>
 EOF
 
 ##Install thirdparty

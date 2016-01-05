@@ -9,10 +9,15 @@ echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
 ## setup git configure
-git config --global user.name    "zhoujd"
-git config --global user.email   "zjd-405@163.com"
-git config --global color.ui     true
- 
+git config --global user.name      "zhoujd"
+git config --global user.email     "zjd-405@163.com"
+git config --global color.ui       true
+
+## set http proxy
+if [ ! $http_proxy = "" ]; then
+    git config --global http.proxy $http_proxy
+fi
+
 ### fatal: index-pack failed for win7
 #git config --global pack.windowMemory  10m
 #git config --global pack.packSizeLimit 20m

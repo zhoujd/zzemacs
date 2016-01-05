@@ -13,6 +13,7 @@ Install_package()
     if [ "$LINUX_DISTRO" = "SUSE" ]; then
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
+
     elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y gmrun
         sudo apt-get install -y cscope

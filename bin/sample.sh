@@ -33,9 +33,9 @@ export SYSARCH=64
 ULONG_MASK=`getconf ULONG_MAX`
 if [ $ULONG_MASK = 18446744073709551615 ]; then
     SYSARCH=64
-    echo "Run on 64bit System"
+    echo "Run on 64bit System ..."
 else
     SYSARCH=32
-    echo "Run on 32bit System"
+    echo "Run on 32bit System ..."
 fi
 

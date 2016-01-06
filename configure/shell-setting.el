@@ -89,7 +89,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
 (when-ms-windows
- (setq multi-shell-command "cmd"))
+ (setq multi-shell-command "cmdproxy.exe"))
 
 (defun get-local-shell ()
   (interactive)

@@ -17,6 +17,8 @@ Install_package()
         echo "Install on suse"
     elif [ "$LINUX_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y mercurial
+    elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+        sudo yum install -y mercurial
     else
         echo "You are about to install on a non supported linux distribution."
     fi

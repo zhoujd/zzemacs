@@ -14,6 +14,9 @@ Install_package()
         sudo apt-get install -y python-meld3
         sudo apt-get install -y git-core
         sudo apt-get install -y gitk
+    elif [ "$LINUX_DISTRO" = "CentOS" ]; then
+        sudo yum install -y git-core
+        sudo yum install -y gitk
     else
         echo "You are about to install on a non supported linux distribution."
     fi        

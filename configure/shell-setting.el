@@ -88,7 +88,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
-;;local shell setting
+(when-ms-windows
+ (setq multi-shell-command "cmd"))
+
 (defun get-local-shell ()
   (interactive)
   (cond
@@ -241,6 +243,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (switch-to-buffer buf-name)
         (message "switch to %s" buf-name)    
         (delete-other-windows))))
+
 
 ;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)

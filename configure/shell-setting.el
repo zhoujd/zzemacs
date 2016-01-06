@@ -209,15 +209,15 @@ Dmitriy Igrishin's patched version of comint.el."
         (switch-to-buffer buf-name))
       (progn
         (if-ms-windows
-         (with-utf-8-env
-             (with-start-shell
-               (setq shell-file-name "bash")
-               (setq shell-command-switch "-c")
-               (setq explicit-sh-args '("--login" "-i"))
-               (setq explicit-shell-file-name "bash")
-               (setenv "SHELL" shell-file-name)
-               ;;start new shell buffer
-               (shell buf-name))))
+         (when (file-exists-p "bash")
+           (with-utf-8-env
+            (with-start-shell
+             (setq shell-file-name "bash")
+             (setq shell-command-switch "-c")
+             (setq explicit-sh-args '("--login" "-i"))
+             (setq explicit-shell-file-name "bash")
+             (setenv "SHELL" shell-file-name)
+             ))))
          (shell buf-name)))
   (message "switch to %s" buf-name)
   (delete-other-windows))
@@ -243,7 +243,6 @@ Dmitriy Igrishin's patched version of comint.el."
         (switch-to-buffer buf-name)
         (message "switch to %s" buf-name)    
         (delete-other-windows))))
-
 
 ;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)

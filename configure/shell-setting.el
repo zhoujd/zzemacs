@@ -209,7 +209,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (switch-to-buffer buf-name))
       (progn
         (if-ms-windows
-         (when (file-exists-p "bash")
+         (when (file-exists-p "C:/Git/bin/bash.exe")
            (with-utf-8-env
             (with-start-shell
              (setq shell-file-name "bash")

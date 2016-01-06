@@ -449,9 +449,9 @@
 (when-emacs24-3 (setq delete-by-moving-to-trash t))
 
 ;;Make Emacs stop asking “Active processes exist; kill them and exit anyway”
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
-  (flet ((process-list ())) ad-do-it))
+;(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+;  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
+;  (flet ((process-list ())) ad-do-it))
 
 (provide 'common-setting)
 

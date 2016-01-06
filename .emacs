@@ -7,7 +7,7 @@
  '(byte-compile-warnings nil)
  )
 
-(defvar zzemacs-path (format "%s/zzemacs/" (getenv "HOME"))
+(defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))
   "zzemacs`s path")
 
 (defun zz-add-os-path (path)
@@ -19,15 +19,15 @@
 (defun zz-load-path (path)
   "my add to list"
   (when (not (member path load-path))
-    (add-to-list 'load-path (concat zzemacs-path path))))
+    (add-to-list 'load-path (concat zzemacs-path "/" path))))
 
 (defun zz-load-file (file)
   "my load file"
-  (load-file (concat zzemacs-path file)))
+  (load-file (concat zzemacs-path "/" file)))
 
 (defun zz-load-configure (file)
   "my load configure file"
-  (load-file (concat zzemacs-path "configure/" file)))
+  (load-file (concat zzemacs-path "/configure/" file)))
 
 (zz-load-path "configure")
 (mapc (lambda (setting)
@@ -62,11 +62,11 @@
 
 ;;develop setting for tags path etc.
 (defvar zz-dev-set-file "temp-setting.el")
-(when (file-exists-p (concat zzemacs-path "configure/" zz-dev-set-file))
+(when (file-exists-p (concat zzemacs-path "/configure/" zz-dev-set-file))
   (zz-load-configure zz-dev-set-file))
 
 ;;configure saved from menu "Save Options"
-(setq custom-file (concat zzemacs-path "custom.el"))
+(setq custom-file (concat zzemacs-path "/custom.el"))
 
 ;;close debug-on-error when starup end
 (custom-set-variables

@@ -45,9 +45,9 @@ esac
 try_command rm -f ~/.emacs
 try_command cat > ~/.emacs <<EOF
 ;;;this is .emacs for zhoujd.
-(defvar zzemacs-path "${ZZEMACS_ROOT}/")
-(if (file-exists-p (concat zzemacs-path ".emacs"))
-    (load-file (concat zzemacs-path ".emacs"))
+(defvar zzemacs-path "${ZZEMACS_ROOT}")
+(if (file-exists-p (concat zzemacs-path "/.emacs"))
+    (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
 

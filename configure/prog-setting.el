@@ -313,7 +313,7 @@ the mru bookmark stack."
 (zz-load-path "site-lisp/yasnippet")
 (require 'yasnippet) ;; not yasnippet-bundle
 (yas/initialize)
-(yas/load-directory (concat zzemacs-path "site-lisp/yasnippet/snippets"))
+(yas/load-directory (concat zzemacs-path "/site-lisp/yasnippet/snippets"))
 
 ;; yasnippet show complete with  auto-complete
 (defun ac-yasnippet-candidate ()

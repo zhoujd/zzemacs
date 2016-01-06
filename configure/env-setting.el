@@ -6,10 +6,10 @@
   (if-ms-windows
    (progn
     (list
-     (concat zzemacs-path "bin")
      "C:/Git/bin"
      "C:/Git/libexec/git-core"
      "C:/zznix/bin"
+     (format "%s/bin" zzemacs-path)
      (format "%s/bin" (getenv "EMACS_DIR"))
      (format "%s/zztools/bcompare" (getenv "HOME"))
      (format "%s/zztools/perforce" (getenv "HOME"))
@@ -32,11 +32,11 @@
      ))
    (progn
     (list
-     (concat zzemacs-path "bin")
      "/sbin"
      "/usr/sbin"
      "/usr/local/racket/bin"
      "/usr/local/Gambit-C/bin"
+     (format "%s/bin" zzemacs-path)
      (format "%s/zztools/bcompare/bin" (getenv "HOME"))
      (format "%s/zztools/meld/bin" (getenv "HOME"))
      (format "%s/zztools/p4v/bin" (getenv "HOME"))

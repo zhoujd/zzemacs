@@ -201,6 +201,10 @@ Dmitriy Igrishin's patched version of comint.el."
        (setq multi-linux-index (1+ multi-linux-index))))
  )
 
+;; shell on windows
+(defvar linux-bash-p t "when open shell on windows using bash flag")
+
+;; switch to shell
 (defun switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
@@ -209,7 +213,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (switch-to-buffer buf-name))
       (progn
         (if-ms-windows
-         (if (file-exists-p "C:/Git/bin/bash.exe")
+         (if linux-bash-p
              (progn
               (with-utf-8-env
                (with-start-shell

@@ -11,11 +11,17 @@ SRCNAME="package source"
 # Path to PID file of running mercurial process.
 PID_FILE=$HOME/hg-serve.pid
 
-state=$1
-case "$state" in
+STATE=$1
+if [ ! $2 = "" ]; then
+    PORT=$2
+else
+    PORT=8000
+fi
+
+case "${STATE}" in
     'start')
-        echo "Mecurial Server service starting."
-        (cd ${SRC}; ${APP_BIN} serve --name "${SRCNAME}" -d -p 8000 --pid-file ${PID_FILE})
+        echo "Mecurial Server service starting on port:${PORT}."
+        (cd ${SRC}; ${APP_BIN} serve --name "${SRCNAME}" -d -p ${PORT} --pid-file ${PID_FILE})
         ;;
 
     'stop')
@@ -33,7 +39,7 @@ case "$state" in
         ;;
     
     *)
-        echo "$0 {start|stop}"
+        echo "$0 {start [port]|stop}"
         exit 1
         ;;
 esac

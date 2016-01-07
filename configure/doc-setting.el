@@ -12,9 +12,11 @@
 (defun markdown-custom ()
   "markdown-mode-hook"
   (setq markdown-command
-        (concat "markdown | "
-                "perl " zzemacs-path "bin/markdown.pl | "
-                "perl " zzemacs-path "bin/smartypants.pl")))
+        (if-ms-windows
+         (concat "markdown")
+         (concat "markdown | "
+                 "perl " zzemacs-path "bin/markdown.pl | "
+                 "perl " zzemacs-path "bin/smartypants.pl"))))
 
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 

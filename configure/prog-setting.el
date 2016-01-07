@@ -496,6 +496,12 @@ the mru bookmark stack."
 ;;Mercurial Support
 (require 'mercurial)
 
+;;font lock for version configure file
+(setq auto-mode-alist
+      (append '(("\\.gitconfig\\'" . conf-mode)
+                ("\\.hgrc\\'"      . conf-mode))
+              auto-mode-alist))
+
 ;;rgrep for c/c++
 (setq my-c-file-regex "*.[hc]")
 (defun my-c-rgrep (term &optional dir)

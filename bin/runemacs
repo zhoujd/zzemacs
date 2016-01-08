@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$OS" = "Windows_NT" ] ; then
-    emacsclient -a "c:/emacs-24.3/bin/runemacs.exe" -f "~\.emacs.d\server\server" -n  "$@" -c
-else
-    emacsclient -a '' "$@" -c
-fi
-

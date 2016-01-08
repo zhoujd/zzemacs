@@ -425,14 +425,6 @@ the mru bookmark stack."
 (autoload 'bat-mode "bat-mode"
     "DOS and WIndows BAT files" t)
 
-;; sawfish mode settings
-;; load the first sawfish.el or sawfish.elc file found in the load-path
-(require 'sawfish)
-;; this tells emacs to automatically activate the sawfish-mode whenever open
-;; file with "sawfishrc" or "jl" (John Lisp) suffix
-(add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
-(add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
-
 ;; for mysql
 ;; show output on windows in buffer
 (setq sql-mysql-options '("-C" "-t" "-f" "-n"))

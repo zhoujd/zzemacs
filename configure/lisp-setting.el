@@ -95,6 +95,15 @@
     (add-to-list 'ac-modes 'slime-mode)
   ))
 
+;; sawfish mode settings
+;; load the first sawfish.el or sawfish.elc file found in the load-path
+(require 'sawfish)
+;; this tells emacs to automatically activate the sawfish-mode whenever open
+;; file with "sawfishrc" or "jl" (John Lisp) suffix
+(add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
+(add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
+
+
 ;;connect stumpwm slime swank
 (defun slime-connect-stumpwm ()
   (interactive)

@@ -1,6 +1,7 @@
 syntax: glob
 .git/
 site-lisp/pde/lisp/tools/perldoc-cache.el
+configure/temp-setting.el
 
 syntax: regexp
 .elc

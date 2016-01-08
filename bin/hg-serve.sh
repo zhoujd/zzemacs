@@ -28,7 +28,7 @@ case "${STATE}" in
         if [ -f "${PID_FILE}" ]; then
             PID=`cat "${PID_FILE}"`
             if [ "${PID}" -gt 1 ]; then
-                kill -TERM ${PID}
+                kill -TERM ${PID} && rm -f ${PID}
                 echo "Stopping the Mercurial service PID=${PID}."
             else
                 echo Bad PID for Mercurial -- \"${PID}\"

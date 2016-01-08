@@ -25,10 +25,11 @@ case "${STATE}" in
         ;;
 
     'stop')
-        if [ -f "${PID_FILE}" ]; then
+        if [ -e "${PID_FILE}" ]; then
             PID=`cat "${PID_FILE}"`
             if [ "${PID}" -gt 1 ]; then
-                kill -TERM ${PID} && rm -f ${PID}
+                kill -TERM ${PID}
+                rm -f ${PID_FILE}
                 echo "Stopping the Mercurial service PID=${PID}."
             else
                 echo Bad PID for Mercurial -- \"${PID}\"
@@ -37,9 +38,22 @@ case "${STATE}" in
             echo No PID file recorded for mercurial
         fi
         ;;
-    
+
+    'restart')
+        if [ -e "${PID_FILE}" ]; then
+            PID=`cat "${PID_FILE}"`
+            if [ "${PID}" -gt 1 ]; then
+                kill -TERM ${PID}
+                rm -f ${PID_FILE}
+                echo "Stopping the Mercurial service PID=${PID}."
+            fi
+        fi
+
+        echo "Mecurial Server service restarting on port:${PORT}."
+        (cd ${SRC}; ${APP_BIN} serve --name "${SRCNAME}" -d -p ${PORT} --pid-file ${PID_FILE})
+        ;;
     *)
-        echo "$0 {start [port]|stop}"
+        echo "$0 {start [port]|stop|restart [port]}"
         exit 1
         ;;
 esac

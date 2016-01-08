@@ -3,7 +3,7 @@
 (zz-load-path "site-lisp/ajc")
 
 (require 'ajc-java-complete-config)
-(setq ajc-tag-file  (concat zzemacs-path  "site-lisp/ajc/java_base.tag"))
+(setq ajc-tag-file  (concat zzemacs-path  "/site-lisp/ajc/java_base.tag"))
 
 (defun my-java-mode-hook ()
   (ajc-java-complete-mode)

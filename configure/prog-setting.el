@@ -56,7 +56,7 @@
 (defun my-temp-setting ()
   "Create configure/temp-setting.el"
   (interactive)
-  (let ((path  (concat zzemacs-path "configure/" zz-dev-set-file)))
+  (let ((path  (concat zzemacs-path "/configure/" zz-dev-set-file)))
     (my-create-file path my-temp-setting)
     (message "create %s successful." path)
     ))
@@ -262,7 +262,7 @@ the mru bookmark stack."
 (zz-load-path "site-lisp/auto-complete")
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories
-             (concat zzemacs-path "site-lisp/auto-complete/dict"))
+             (concat zzemacs-path "/site-lisp/auto-complete/dict"))
 (ac-config-default)
 
 ;; complete

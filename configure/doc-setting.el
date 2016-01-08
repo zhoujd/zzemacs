@@ -15,8 +15,8 @@
         (if-ms-windows
          (concat "markdown")
          (concat "markdown | "
-                 "perl " zzemacs-path "bin/markdown.pl | "
-                 "perl " zzemacs-path "bin/smartypants.pl"))))
+                 "perl " zzemacs-path "/bin/markdown.pl | "
+                 "perl " zzemacs-path "/bin/smartypants.pl"))))
 
 (add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
 

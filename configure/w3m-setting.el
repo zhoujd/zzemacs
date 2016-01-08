@@ -26,13 +26,13 @@
 
 ;;;browser selecting
 (setq browse-url-browser-function
-      (list (cons (concat zzemacs-path "doc/hyperspec/") 'w3m-browse-url)
+      (list (cons (concat zzemacs-path "/doc/hyperspec/") 'w3m-browse-url)
             (cons "." 'browse-url-default-browser)))
 
 ;;(setq w3m-local-find-file-function nil)
 
 ;;;allow browsing of local files:
-(setq w3m-dirlist-cgi-program "~/site-lisp/emacs-w3m/dirlist.cgi")
+(setq w3m-dirlist-cgi-program (concat zzemacs-path "/site-lisp/emacs-w3m/dirlist.cgi"))
 ;;;causes the return key to submit a form
 (setq w3m-use-form t)
 (setq w3m-use-mule-ucs t)

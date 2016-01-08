@@ -28,6 +28,7 @@ bcomp.gui = True
 [extensions]
 hgext.extdiff =
 bookmarks =
+mq =
 
 [extdiff]
 cmd.bcomp = bcomp

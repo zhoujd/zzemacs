@@ -2,6 +2,7 @@
 
 echo "hg setup start ..."
 
+##http://mercurial.selenic.com/wiki/UsingExtensions
 ##http://mercurial.selenic.com/wiki/GitConcepts
 ##http://mercurial.selenic.com/wiki/Workflows
 
@@ -34,6 +35,7 @@ purge =
 color =
 pager =
 graphlog =
+progress =
 
 [extdiff]
 cmd.bcomp = bcomp

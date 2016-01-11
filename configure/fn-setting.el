@@ -80,8 +80,8 @@
     )
 
 (define-fn-key (gethash "f5" fn-key-table)
-    [f5]              'turn-on-evil-mode
-    [S-f5]            'turn-off-evil-mode
+    [f5]              'turn-off-evil-mode
+    [S-f5]            'turn-on-evil-mode
     [C-f5]            'sr-speedbar-toggle
     [M-f5]            'etags-stack-show
     (kbd "C-x <f5>")  nil

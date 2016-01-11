@@ -60,3 +60,5 @@ VNC More
 
         sudo vim /root/.vnc/xstartup
         twm& => "startkde &" or"gnome-session &"
+
+6. VNC on Windows http://www.tightvnc.com/download.php

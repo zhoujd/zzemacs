@@ -32,6 +32,8 @@ bookmarks =
 mq =
 purge =
 color =
+pager =
+graphlog =
 
 [extdiff]
 cmd.bcomp = bcomp

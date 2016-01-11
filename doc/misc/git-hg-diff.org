@@ -19,7 +19,7 @@
 | git blame -C                                 | (closest equivalent): hg grep --all                                                    |
 | git bisect                                   | hg bisect                                                                              |
 | git rebase --interactive                     | hg histedit <base cset> (Require the HisteditExtension.)                               |
-| git statsh                                   | hg shelve (Require the ShelveExtension or the AtticExtension.)                         |
+| git stash                                    | hg shelve (Require the ShelveExtension or the AtticExtension.)                         |
 | git merge                                    | hg merge                                                                               |
 | git cherry-pick <commit>                     | hg graft <cset>                                                                        |
 | git rebase <upstream>                        | hg rebase -d <cset> (Require the RebaseExtension.)                                     |

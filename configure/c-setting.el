@@ -122,7 +122,7 @@
                 (statement-cont . +))
                ))
 
-(defvar kernel-keywords '("linux" "kernel" "driver")
+(defvar kernel-keywords '("kernel" "driver")
   "Keywords which are used to indicate this file is kernel code.")
 
 (add-hook 'c-mode-hook

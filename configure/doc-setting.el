@@ -10,12 +10,12 @@
 
 ;;set markdow command
 (setq markdown-command
-      (if-ms-windows
-       (progn
-        (concat "markdown"))
-       (progn
-        (concat "perl " zzemacs-path "/bin/markdown.pl | "
-                "perl " zzemacs-path "/bin/smartypants.pl"))))
+       (if-ms-windows
+        (progn
+         (concat "markdown"))
+        (progn
+         (concat "perl " zzemacs-path "/bin/markdown.pl | "
+                 "perl " zzemacs-path "/bin/smartypants.pl"))))
 
 ;;org-mode setting
 (setq org-export-html-postamble nil)

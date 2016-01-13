@@ -1,8 +1,11 @@
 syntax: glob
 .git/
 configure/temp-setting.el
+site-lisp/haskell-mode/haskell-mode.tmp.texi
+site-lisp/haskell-mode/dir/
 
 syntax: regexp
 .elc
 .pyc
 .*build/.*
+.*~

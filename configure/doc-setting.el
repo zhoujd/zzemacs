@@ -3,22 +3,19 @@
 ;;markdown setting
 ;;http://http://johnmacfarlane.net/pandoc/
 (zz-load-path "site-lisp/markdown-mode")
-(autoload 'markdown-mode "markdown-mode"
-          "Major mode for editing Markdown files" t)
+(require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-(defun markdown-custom ()
-  "markdown-mode-hook"
-  (setq markdown-command
-        (if-ms-windows
-         (concat "markdown")
-         (concat "markdown | "
-                 "perl " zzemacs-path "/bin/markdown.pl | "
-                 "perl " zzemacs-path "/bin/smartypants.pl"))))
-
-(add-hook 'markdown-mode-hook '(lambda() (markdown-custom)))
+;;set markdow command
+(setq markdown-command
+      (if-ms-windows
+       (progn
+        (concat "markdown"))
+       (progn
+        (concat "perl " zzemacs-path "/bin/markdown.pl | "
+                "perl " zzemacs-path "/bin/smartypants.pl"))))
 
 ;;org-mode setting
 (setq org-export-html-postamble nil)

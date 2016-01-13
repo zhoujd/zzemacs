@@ -53,6 +53,7 @@
         java-setting
         csharp-setting
         php-setting
+        haskell-setting
         doc-setting
         muse-setting
         keymap-setting

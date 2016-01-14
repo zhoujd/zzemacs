@@ -6,25 +6,30 @@ echo "hg setup start ..."
 ##http://mercurial.selenic.com/wiki/GitConcepts
 ##http://mercurial.selenic.com/wiki/Workflows
 
+if [ "$OS" = "Windows_NT" ] ; then
+    HG_SETUP_HOME=`pwd -W`
+else
+    HG_SETUP_HOME=`pwd`
+fi
+
 echo "remove ~/.hgrc and setting hg configure ..."
 cat > ~/.hgrc <<EOF
 [ui]
 username = zhoujd<zjd-405@163.com>
 verbose = True
-merge = p4
+merge = extmerge
+
+[alias]
+llog = log --limit 10
+mq = hg -R \$(hg root)/.hg/patches $*
+hgrep = hg manifest | grep $*
 
 [merge-tools]
-p4.executable = p4merge
-p4.args = \$base \$local \$other \$output
-p4.priority = 1
-p4.premerge = True
-p4.gui = True
-
-bcomp.executable = bcompare
-bcomp.args = \$local \$other \$base \$output
-bcomp.priority = 1
-bcomp.premerge = True
-bcomp.gui = True
+extmerge.executable = $HG_SETUP_HOME/hg-merge-wrapper.py
+extmerge.args = \$base \$local \$other \$output
+extmerge.priority = 1
+extmerge.premerge = True
+extmerge.gui = True
 
 [extensions]
 hgext.extdiff =
@@ -36,10 +41,10 @@ color =
 pager =
 graphlog =
 progress =
+rebase =
 
 [extdiff]
-cmd.bcomp = bcompare
-cmd.p4diff = p4merge
+cmd.extdiff = $HG_SETUP_HOME/hg-diff-wrapper.py
 
 [bookmarks]
 track.current = True

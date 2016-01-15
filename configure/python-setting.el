@@ -3,16 +3,6 @@
 
 (zz-load-path "site-lisp/python-mode")
 
-;;python-mode settings
-(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-(setq interpreter-mode-alist (cons '("python" . python-mode)
-                                   interpreter-mode-alist))
-;;path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
-
-;;https://launchpad.net/python-mode/
-(setq py-python-command "python")
-(require 'python-mode)
-
 (require 'pymacs)
 (autoload 'pymacs-apply "pymacs") 
 (autoload 'pymacs-call "pymacs") 
@@ -23,8 +13,13 @@
 (pymacs-load "ropemacs" "rope-") 
 (setq ropemacs-enable-autoimport t)
 
-;;ac for python-mode
 (require 'pycomplete)
+(setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+(autoload 'python-mode "python-mode" "Python editing mode." t)
+(setq interpreter-mode-alist(cons '("python" . python-mode)
+                           interpreter-mode-alist))
+
+;;ac for python-mode
 (require 'auto-complete-pycomplete)
 ;;highlight indent
 (require 'highlight-indentation)

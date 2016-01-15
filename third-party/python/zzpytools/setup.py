@@ -14,7 +14,8 @@ setup(
     author_email     = "zjd-405@163.com",
     url              = "https://github.com/zhoujd",
     license          = "LGPL",
-    packages         = ['pycomplete'],
+	packages         = [],
+    py_modules       = ['pycomplete'],
     scripts          = [],
     )
 

@@ -54,4 +54,8 @@ push_ssl = false
 allow_push = *
 EOF
 
+if [ "$OS" = "Windows_NT" ] ; then
+   cp ~/.hgrc $USERPROFILE
+fi
+
 echo "hg setup end ..."

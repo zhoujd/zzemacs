@@ -18,6 +18,14 @@ else
     PORT=8000
 fi
 
+# kill command line
+if [ "$OS" = "Windows_NT" ] ; then
+    KILL_CMD="taskkill //F //PID"
+else
+    KILL_CMD="kill -TERM"
+fi
+
+
 case "${STATE}" in
     'start')
         echo "Mecurial Server service starting on port:${PORT}."
@@ -28,7 +36,7 @@ case "${STATE}" in
         if [ -e "${PID_FILE}" ]; then
             PID=`cat "${PID_FILE}"`
             if [ "${PID}" -gt 1 ]; then
-                kill -TERM ${PID}
+                $KILL_CMD ${PID}
                 rm -f ${PID_FILE}
                 echo "Stopping the Mercurial service PID=${PID}."
             else
@@ -43,7 +51,7 @@ case "${STATE}" in
         if [ -e "${PID_FILE}" ]; then
             PID=`cat "${PID_FILE}"`
             if [ "${PID}" -gt 1 ]; then
-                kill -TERM ${PID}
+                $KILL_CMD ${PID}
                 rm -f ${PID_FILE}
                 echo "Stopping the Mercurial service PID=${PID}."
             fi

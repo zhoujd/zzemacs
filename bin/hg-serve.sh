@@ -5,7 +5,6 @@
 # Change following lines
 
 APP_BIN=hg
-SRC=`pwd`
 
 SRCNAME="package source"
 # Path to PID file of running mercurial process.
@@ -20,12 +19,14 @@ fi
 
 # kill command line
 if [ "$OS" = "Windows_NT" ] ; then
+    SRC=`pwd -W`
     KILL_CMD="taskkill //F //PID"
 else
+    SRC=`pwd`
     KILL_CMD="kill -TERM"
 fi
 
-
+# process operate
 case "${STATE}" in
     'start')
         echo "Mecurial Server service starting on port:${PORT}."

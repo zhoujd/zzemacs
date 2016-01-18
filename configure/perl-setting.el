@@ -1,6 +1,6 @@
 ;;;perl programme setting
 
-;;conflict with rgrep find-grep
+;;;https://github.com/wenbinye/emacs-pde
 (zz-load-path "site-lisp/pde/lisp")
 (require 'pde-load)
 

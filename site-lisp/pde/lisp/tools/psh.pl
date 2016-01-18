@@ -74,13 +74,12 @@ sub symtype {
     if (defined ${$name} ) {
         push @types, "SCALAR";
     }
-    ##marked by zhoujd 20131221
-    #if (defined @{$name} ) {
-    #    push @types, "ARRAY";
-    #}
-    #if (defined %{$name} ) {
-    #    push @types, "HASH";
-    #}
+    if (defined @{$name} ) {
+        push @types, "ARRAY";
+    }
+    if (defined %{$name} ) {
+        push @types, "HASH";
+    }
     if ( defined &{$name} && main->can($name) ) {
         push @types, "CODE";
     }
@@ -121,19 +120,17 @@ sub scalarp {
 sub arrayp {
     my $name = shift;
     no strict;
-    ##marked by zhoujd 20131221
-    #if (defined @{"$name"}) {
-    #    return 1;
-    #}
+    if (defined @{"$name"}) {
+        return 1;
+    }
 }
 
 sub hashp {
     my $name = shift;
     no strict;
-    ##marked by zhoujd 20131221
-    #if ($name !~ /::$/ && defined %{"$name"}) {
-    #    return 1;
-    #}
+    if ($name !~ /::$/ && defined %{"$name"}) {
+        return 1;
+    }
 }
 
 sub nosub {

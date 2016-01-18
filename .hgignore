@@ -9,5 +9,4 @@ site-lisp/haskell-mode/dir/
 third-party/python/pydb/emacs/elc-stamp
 
 syntax: regexp
-.*build/.*
 

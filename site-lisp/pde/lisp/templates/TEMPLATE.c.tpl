@@ -1,4 +1,4 @@
-/* Last modified Time-stamp: <(>>>AUTHOR<<<) (>>>CDATE<<<)>
+/* Last modified Time-stamp: <Ye Wenbin 2007-12-30 16:29:58>
  * @(#)(>>>FILE<<<)
  */
 

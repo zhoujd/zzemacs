@@ -22,8 +22,8 @@ git config --global alias.st    "status"
 git config --global alias.ci    "commit"
 git config --global alias.br    "branch"
 git config --global alias.co    "checkout"
-git config --global alias.df    "diff"
-git config --global alias.dc    "diff --cached"
+git config --global alias.df    "difftool"
+git config --global alias.dc    "difftool --cached"
 git config --global alias.lg    "log -p"
 git config --global alias.lol   "log --graph --decorate --pretty=oneline --abbrev-commit"
 git config --global alias.lola  "log --graph --decorate --pretty=oneline --abbrev-commit --all"
@@ -56,13 +56,13 @@ git config --global http.postBuffer 524288000
 ## git difftool setting
 chmod +x $GIT_SETUP_HOME/git-diff-wrapper.sh
 git config --global diff.tool extdiff
-git config --global difftool.extdiff.cmd "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config --global difftool.extdiff.cmd "$SHELL $GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config --global difftool.prompt false
 
 ## setup merge setting
 chmod +x $GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global merge.tool extmerge
-git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.extmerge.cmd "$SHELL $GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 

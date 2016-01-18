@@ -1,3 +1,3 @@
 #!/bin/sh
 
-hg status -u0 | xargs -0 sudo rm -f
+sudo hg status -un | xargs rm

@@ -7,8 +7,6 @@
 APP_BIN=hg
 
 SRCNAME="package source"
-# Path to PID file of running mercurial process.
-PID_FILE=$HOME/hg-serve.pid
 
 STATE=$1
 if [ ! $2 = "" ]; then
@@ -21,10 +19,18 @@ fi
 if [ "$OS" = "Windows_NT" ] ; then
     SRC=`pwd -W`
     KILL_CMD="taskkill //F //PID"
+
+    # For cmd run
+    if [ $HOME = "" ]; then
+        HOME="c:/zznix/home/zhoujd"
+    fi
 else
     SRC=`pwd`
     KILL_CMD="kill -TERM"
 fi
+
+# Path to PID file of running mercurial process.
+PID_FILE=$HOME/hg-serve.pid
 
 # process operate
 case "${STATE}" in

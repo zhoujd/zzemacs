@@ -16,3 +16,14 @@ FFMPEG
 2. Mp4 to h264
 
     ffmpeg -i input.mp4 -an -vcodec copy -bsf h264_mp4toannexb -f h264 output.h264
+
+3. FFMPEG in script
+
+    for %%i in (*.mkv) do ffmpeg.exe -i "%%i" -vcodec copy -acodec copy "%%~ni.mp4"
+
+    for abc in *.mp4; do
+        name=${abc%.*}
+        echo "$name"
+        ffmpeg -i "$abc" -ac 2 -f wav - | lame -V 0 - "$name.mp3"
+    done
+

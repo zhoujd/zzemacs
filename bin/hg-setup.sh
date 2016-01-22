@@ -22,8 +22,8 @@ merge = extmerge
 
 [alias]
 llog = log --limit 10
-mq = hg -R \$(hg root)/.hg/patches $*
-hgrep = hg manifest | grep $*
+mq = hg -R \$(hg root)/.hg/patches \$*
+hgrep = hg manifest | grep \$*
 
 [merge-tools]
 extmerge.executable = $HG_SETUP_HOME/hg-merge-wrapper.py

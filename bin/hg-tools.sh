@@ -20,6 +20,7 @@ Install_package()
         sudo apt-get install -y python-docutils
     elif [ "$LINUX_DISTRO" = "CentOS" ]; then
         sudo yum install -y mercurial
+        sudo yum install -y python-devel
         sudo yum install -y python-docutils
     else
         echo "You are about to install on a non supported linux distribution."

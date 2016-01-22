@@ -6,9 +6,9 @@
   (if-ms-windows
    (progn
     (list
+     "C:/zznix/bin"
      "C:/Git/bin"
      "C:/Git/libexec/git-core"
-     "C:/zznix/bin"
      (format "%s/bin" zzemacs-path)
      (format "%s/bin" (getenv "EMACS_DIR"))
      (format "%s/zztools/bcompare" (getenv "HOME"))

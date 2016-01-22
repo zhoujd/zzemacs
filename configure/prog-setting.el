@@ -409,7 +409,7 @@ the mru bookmark stack."
   (interactive)
   (create-cscope (gen-proj-find-path proj-list)))
 
-;;add bat mode support
+;;add  mode support
 (setq auto-mode-alist
    (append
     (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
@@ -417,6 +417,9 @@ the mru bookmark stack."
     (list (cons "\\.[gG][dD][bB]$" 'gdb-script-mode))
     (list (cons "\\.gdbinit$"      'gdb-script-mode))
     (list (cons "\\.[mM][aA][kK]$" 'makefile-mode))
+    (list (cons "\\.hgrc$"         'conf-mode))
+    (list (cons "\\.gitconfig$"    'conf-mode))
+    
     ;; For DOS init files
     ;(list (cons "CONFIG\\."   'bat-mode))
     ;(list (cons "AUTOEXEC\\." 'bat-mode))
@@ -425,8 +428,8 @@ the mru bookmark stack."
 (autoload 'bat-mode "bat-mode"
     "DOS and WIndows BAT files" t)
 
-;; for mysql
-;; show output on windows in buffer
+;;for mysql
+;;show output on windows in buffer
 (setq sql-mysql-options '("-C" "-t" "-f" "-n"))
 
 ;; truncate lines for long tables

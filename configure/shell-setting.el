@@ -25,6 +25,14 @@
 (set-face-foreground 'comint-highlight-input  "cyan")
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
+;;add shell-scripte-mode support
+(setq auto-mode-alist
+   (append
+    (list (cons "profile$"         'shell-script-mode))
+    (list (cons "\\.bash_profile$" 'shell-script-mode))
+    (list (cons "\\.bashrc$"       'shell-script-mode))
+    auto-mode-alist))
+
 ;;interpret and use ansi color codes in shell output windows
 (when (fboundp 'ansi-color-for-comint-mode-on)
   ;;escape sequence

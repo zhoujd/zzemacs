@@ -209,10 +209,11 @@
 
 (define-key py-mode-map "\M-\C-i" 'py-complete)
 (define-key py-mode-map "\t" 'py-complete)
-(define-key py-mode-map [f1] 'py-complete-help-thing-at-point)
 (define-key py-mode-map "(" 'py-complete-electric-lparen)
 (define-key py-mode-map "," 'py-complete-electric-comma)
-(define-key py-mode-map [f2] 'py-complete-signature-expr)
-(define-key py-mode-map [f3] 'py-complete-help)
+
+(define-key py-mode-map (kbd "C-c 1") 'py-complete-help-thing-at-point)
+(define-key py-mode-map (kbd "C-c 2") 'py-complete-signature-expr)
+(define-key py-mode-map (kbd "C-c 3") 'py-complete-help)
 
 (provide 'pycomplete)

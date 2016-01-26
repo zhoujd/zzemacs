@@ -39,6 +39,7 @@
         env-setting
         dired-setting
         prog-setting
+        vc-setting
         ediff-setting
         other-setting
         shell-setting

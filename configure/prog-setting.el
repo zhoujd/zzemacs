@@ -417,9 +417,6 @@ the mru bookmark stack."
     (list (cons "\\.[gG][dD][bB]$" 'gdb-script-mode))
     (list (cons "\\.gdbinit$"      'gdb-script-mode))
     (list (cons "\\.[mM][aA][kK]$" 'makefile-mode))
-    (list (cons "\\.hgrc$"         'conf-mode))
-    (list (cons "\\.gitconfig$"    'conf-mode))
-    
     ;; For DOS init files
     ;(list (cons "CONFIG\\."   'bat-mode))
     ;(list (cons "AUTOEXEC\\." 'bat-mode))
@@ -469,27 +466,6 @@ the mru bookmark stack."
         (when proc (set-process-query-on-exit-flag proc nil)))
       (kill-buffer (gdb-get-buffer buffer)))))
 
-;;SVN Support
-;(require 'psvn)
-;(require 'vc-svn)
-
-;;Git Support
-;;=>github ssh-keygen
-;;$ssh-keygen -t rsa -C "your_email@example.com"
-;;;=>gitisos ssh-keygen
-;;$ssh-keygen -t dsa
-;;$ssh -T git@github.com
-;;;=>SSH authorized each other
-;;$ssh-keygen -t rsa
-;;$touch ~/.ssh/authorized_keys
-;;$chmod 644 ~/.ssh/authorized_keys
-;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
-(zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs)
-(require 'git-show)
-
-;;Mercurial Support
-(require 'mercurial)
 
 ;;rgrep for c/c++
 (setq my-c-file-regex "*.[hc]")

@@ -8,9 +8,7 @@ Patch to kernel
 
 2. Code View:
 
-        bash> diff –Nur /path/to/original/kernel /path/to/your/kernel >
-        changes.patch
-
+        bash> diff –Nur /path/to/original/kernel /path/to/your/kernel > changes.patch
 
 3. Build kernel
 

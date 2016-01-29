@@ -28,8 +28,6 @@ git config --global alias.lg    "log -p"
 git config --global alias.lol   "log --graph --decorate --pretty=oneline --abbrev-commit"
 git config --global alias.lola  "log --graph --decorate --pretty=oneline --abbrev-commit --all"
 git config --global alias.ls    "ls-files"
-
-# Show files ignored by git:
 git config --global alias.ign   "ls-files -o -i --exclude-standard"
 
 ## set http proxy

@@ -39,7 +39,6 @@ hgext.fetch =
 bookmarks =
 mq =
 purge =
-color =
 pager =
 graphlog =
 progress =

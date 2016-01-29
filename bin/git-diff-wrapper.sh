@@ -16,8 +16,8 @@ EMACS="runemacs"  ##"emacs"
 if [ "$OS" = "Windows_NT" ] ; then
     ZZTOOLS_ROOT="c:/zznix/home/zhoujd/zztools"
 
-    #DIFF_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
-    DIFF_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
+    DIFF_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
+    #DIFF_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
 else
     ZZTOOLS_ROOT="$HOME/zztools"
 

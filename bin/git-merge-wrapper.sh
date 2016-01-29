@@ -18,11 +18,11 @@ EMACS="runemacs"
 if [ "$OS" = "Windows_NT" ] ; then
     ZZTOOLS_ROOT="c:/zznix/home/zhoujd/zztools"
 
-    #MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
-    #ARGS="$*"
-
-    MERGE_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
+    MERGE_TOOL="$ZZTOOLS_ROOT/bcompare/bcompare"
     ARGS="$*"
+
+    #MERGE_TOOL="$ZZTOOLS_ROOT/perforce/p4merge"
+    #ARGS="$*"
 else
     ZZTOOLS_ROOT="$HOME/zztools"
 

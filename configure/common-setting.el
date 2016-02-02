@@ -78,6 +78,12 @@
     (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
     (my-console-font (nth 1 cn-font-list)))
 
+(setq sshX-en-font-list '("Consolas 16"))
+(setq sshX-cn-font-list '("Microsoft YaHei Mono 16"))
+(defun ssh-x-font ()
+  (interactive)
+  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+
 (defun my-use-server-mode ()
   ;;server-mode
   ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file

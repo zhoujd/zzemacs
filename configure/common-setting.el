@@ -78,8 +78,8 @@
     (my-frame-font (nth 0 en-font-list) (nth 1 cn-font-list))
     (my-console-font (nth 1 cn-font-list)))
 
-(setq sshX-en-font-list '("Consolas 16"))
-(setq sshX-cn-font-list '("Microsoft YaHei Mono 16"))
+(setq sshX-en-font-list '("Consolas 15"))
+(setq sshX-cn-font-list '("Microsoft YaHei Mono 15"))
 (defun ssh-x-font ()
   (interactive)
   (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))

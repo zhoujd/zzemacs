@@ -59,6 +59,7 @@ track.current = True
 [web] 
 push_ssl = false
 allow_push = *
+cacerts = $HG_SETUP_HOME/hg-cacert.pem
 
 [tortoisehg]
 ui.language = en

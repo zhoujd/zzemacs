@@ -2,6 +2,11 @@
 
 echo "hg setup start ..."
 
+###Two books
+##http://bucunzai.net/hginit/
+##http://hgbook.red-bean.com/read/
+
+###useful urls
 ##http://mercurial.selenic.com/wiki/TipsAndTricks
 ##http://mercurial.selenic.com/wiki/UsingExtensions
 ##http://mercurial.selenic.com/wiki/GitConcepts

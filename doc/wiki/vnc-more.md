@@ -62,3 +62,4 @@ VNC More
         twm& => "startkde &" or"gnome-session &"
 
 6. VNC on Windows http://www.tightvnc.com/download.php
+7. Download x11vnc from http://www.karlrunge.com/x11vnc/

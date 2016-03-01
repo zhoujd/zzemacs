@@ -19,6 +19,32 @@ VNC More
 
         ## close firewall
         sudo systemctl stop firewalld.service   # on CentOS7
+        sudo systemctl disable firewalld.service
+
+        ===============================
+        systemctl stop firewalld.service
+        yum install tigervnc-server tigervnc-server-module
+        cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
+        cd /etc/systemd/system
+        vim vncserver@:1.service
+        [Unit]
+        Description=Remote desktop service (VNC)
+        After=syslog.target network.target
+        [Service]
+        Type=forking
+        User=root
+        ExecStart=/usr/bin/vncserver :1 -geometry 1280x1024 -depth 16 -securitytypes=none -fp /usr/share/X11/fonts/misc
+        ExecStop=/usr/bin/vncserver -kill :1
+        [Install]
+        WantedBy=multi-user.target
+
+        systemctl enable vncserver@:1.service
+        vncpasswd
+        systemctl start vncserver@:1.service
+        systemctl status vncserver@:1.service
+        netstat -lnt | grep 590*
+        grep vnc /var/log/messages
+        =================================
 
         vim /etc/sysconfig/iptables
         -A INPUT -m state --state NEW -m tcp -p tcp --dport 5901 -j ACCEPT

@@ -5,6 +5,10 @@ Linux something
 
     <http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php>
 
+    $ ls *rpm | egrep -v "samples" | xargs sudo yum -y localinstall
+    $ sudo yum -y groupinstall "development tools"
+    $ sudo yum -y localinstall *.rpm
+ 
 2. linux cross reference
 
     <http://lxr.oss.org.cn/source/>

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+### wget https://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.xz
+
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
     echo "This script is not support on windows."
@@ -26,7 +28,7 @@ Install_package()
         sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libdbus-1-dev libgconf2-dev
         sudo apt-get install -y libotf-dev libgpm-dev libm17n-dev libgnutls-dev libselinux1-dev imagemagick
     elif [ "$OS_DISTRO" = "CentOS" ]; then
-        sudo yum groupinstall -y "Development Tools"
+        sudo yum -y groupinstall "Development Tools"
         sudo yum install -y gtk+-devel gtk2-devel
         sudo yum install -y libXpm-devel
         sudo yum install -y libpng-devel

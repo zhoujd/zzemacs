@@ -54,7 +54,7 @@ case "$answer" in
         ;;
 esac
 
-./configure
+./configure --prefix=/usr
 make
 sudo make install
 

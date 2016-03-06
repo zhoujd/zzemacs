@@ -200,3 +200,9 @@ Linux something
     # mkinitrd -f -v /boot/initrd-$(uname -r).img $(uname -r)
     # dracut -f
     # dracut -f initramfs-$(uname -r).img $(uname -r)
+
+20. ssh&scp now yes/no ask
+    [root@master ~]# vi /etc/ssh/ssh_config 
+    StrictHostKeyChecking no
+    - or -
+    [root@master ~]# ssh IP -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no

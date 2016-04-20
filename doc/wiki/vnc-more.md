@@ -25,7 +25,7 @@ VNC More
         systemctl stop firewalld.service
         yum install tigervnc-server tigervnc-server-module
         cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
-        cd /etc/systemd/system
+        cd /etc/system/system
         vim vncserver@:1.service
         [Unit]
         Description=Remote desktop service (VNC)

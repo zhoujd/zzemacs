@@ -15,9 +15,10 @@ FFMPEG
 
     ffmpeg -acodec ac3 -i input.mkv -acodec aac -strict experimental -vcodec copy -map 0:0 -map 0:1 -map 0:2 -map 0:3 -scodec copy output.mkv
 
-2. Mp4 to h264
+2. Mp4 to h264/h265
 
     ffmpeg -i input.mp4 -an -vcodec copy -bsf h264_mp4toannexb -f h264 output.h264
+    ffmpeg -i input.mp4 -an -vcodec copy -bsf hevc_mp4toannexb -f hevc output.h265
 
 3. FFMPEG in script
 

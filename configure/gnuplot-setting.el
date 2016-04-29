@@ -12,4 +12,6 @@
 
 (global-set-key [M-f9] 'gnuplot-make-buffer)
 
+(provide 'gnuplot-setting)
+
 ;;; gnuplot-setting.el ends here

@@ -57,6 +57,7 @@
         doc-setting
         spell-setting
         game-setting
+        gnuplot-setting
         keymap-setting
         fn-setting
         key-setting

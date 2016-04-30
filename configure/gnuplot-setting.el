@@ -1,6 +1,9 @@
 ;;;; gnuplot-setting.el --- gnuplot config file
 ;;
 
+;;sokoban setting
+(zz-load-path "site-lisp/gnuplot-mode")
+
 ;;; gnuplot-mode
 (autoload 'gnuplot-mode "gnuplot"
   "gnuplot major mode" t)
@@ -10,7 +13,6 @@
       (append '(("\\.gp$" . gnuplot-mode))
 	      auto-mode-alist))
 
-(global-set-key [M-f9] 'gnuplot-make-buffer)
 
 (provide 'gnuplot-setting)
 

@@ -1,7 +1,7 @@
 @echo off
 echo build emacs-w3m start ...
 
-set EMACS_PATH=C:\emacs-24.3\bin\emacs
+set EMACS_PATH=C:\emacs\bin\emacs
 
 cd ..\site-lisp\emacs-w3m
 echo clean *.elc files

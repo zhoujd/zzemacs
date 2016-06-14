@@ -57,6 +57,7 @@
         spell-setting
         game-setting
         gnuplot-setting
+        w3m-setting
         keymap-setting
         fn-setting
         key-setting

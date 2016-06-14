@@ -47,7 +47,6 @@
         shell-setting
         sample-setting
         media-setting
-        w3m-setting
         evil-setting
         c-setting
         lisp-setting

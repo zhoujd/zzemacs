@@ -25,7 +25,7 @@
     (list (cons "\\.clfswmrc$"  'lisp-mode))  ;;clfswm configure file
     auto-mode-alist))
 
-;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
+;;(setq inferior-lisp-program "sbcl --noinform") ;; your Lisp system
 (setq slime-lisp-implementations
       (if-ms-windows
        '(

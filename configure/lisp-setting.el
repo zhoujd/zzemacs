@@ -27,11 +27,18 @@
 
 ;;(setq inferior-lisp-program "sbcl --noinform") ; your Lisp system
 (setq slime-lisp-implementations
-      '(
-        (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
-        (clisp ("clisp") :coding-system utf-8-unix)
-        (ecl   ("ecl"))
-        ))
+      (if-ms-windows
+       '(
+         (clisp ("clisp") :coding-system utf-8-unix)
+         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix) 
+         (ecl   ("ecl"))
+         )
+       '(
+         (sbcl  ("sbcl" "--noinform") :coding-system utf-8-unix)
+         (clisp ("clisp") :coding-system utf-8-unix)
+         (ecl   ("ecl"))
+         )
+       ))
 
 ;;slime start entry
 (unless-ms-windows

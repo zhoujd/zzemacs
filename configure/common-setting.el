@@ -48,8 +48,9 @@
 
 ;;font setting
 (defun my-cn-font-name (name)
-  (string-match ".*[ ]" name)
-  (setq my-cn-name (substring (match-string 0 name) 0 -1)))
+  (when (string-match ".*[ ]" name)
+    (setq my-cn-name (substring (match-string 0 name) 0 -1))))
+
 (defun my-cn-font-size (name)
   (string-to-number (car (last (split-string name)))))
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### wget https://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.xz
 
@@ -9,12 +9,35 @@ if [ "$OS" = "Windows_NT" ] ; then
 fi
 
 ##Get script path
-BUILD_ROOT=$(cd $(dirname $0) && pwd)
+SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+
+EMACS_SRC=emacs-24.3
+EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
 
 ##Import vars and functions
-. $BUILD_ROOT/sample.sh
+. $SCRIPT_ROOT/sample.sh
 
 echo "Build emacs begin ..."
+
+Build_source()
+{
+    if [ ! -f $EMACS_SRC_FILE ]; then
+        wget https://ftp.gnu.org/gnu/emacs/$EMACS_SRC_FILE
+    fi
+
+    tar xf $EMACS_SRC_FILE
+
+    pushd $EMACS_SRC
+    
+    ## compile emacs
+    ./configure --prefix=/usr
+    make
+
+    ## install emacs
+    sudo make install
+
+    popd
+}
 
 Install_package()
 {
@@ -54,8 +77,6 @@ case "$answer" in
         ;;
 esac
 
-./configure --prefix=/usr
-make
-sudo make install
+run_cmd Build_source
 
 echo "Build emacs end ..."

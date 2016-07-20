@@ -32,9 +32,14 @@ Install_package_ubuntu()
 ##package for centos
 Install_package_centos()
 {
-    sudo yum install -y git gcc diffstat
-    sudo yum install -y cmake gcc-c++ autoconf automake libtool libdrm-devel
-    sudo yum install -y libX11-devel libpciaccess-devel xorg-x11-server-devel
+    sudo yum install -y git diffstat
+    sudo yum install -y gcc cmake gcc-c++ autoconf automake libtool libdrm-devel kernel-headers
+    sudo yum install -y libX11-devel xorg-x11-server-devel libpciaccess-devel libXext-devel libXfixes-devel
+    sudo yum install -y redhat-lsb-core libpciaccess-devel
+    sudo yum install -y bison flex expat-devel
+    sudo yum install -y patch rpm-build libudev-devel
+    sudo yum install -y libpng12
+    sudo yum install -y mesa-dri-drivers #(if system is centos minimal installation, not desktop)
 }
 
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## sudo yum install redhat-lsb
+## sudo yum install redhat-lsb-core
 
 export OS_DISTRO="unknown"
 export SYSARCH=64

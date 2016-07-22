@@ -1,10 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-## Get source
-git clone https://git.gnome.org/browse/meld
+## Install from Org website
+#git clone https://git.gnome.org/browse/meld
+#sudo ln -sf `pwd`/meld/bin/meld /usr/bin
 
-## Try to Run
-cd meld
+## Install from zzmeld
+if [ ! -d zzmeld ]; then
+    git clone https://github.com/zhoujd/zzmeld.git
+fi
 
-## Install to /usr bin 
-sudo ln -sf `pwd`/bin/meld /usr/bin
+pushd zzmeld
+
+./install.sh
+
+popd

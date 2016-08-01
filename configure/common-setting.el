@@ -73,36 +73,33 @@
                  '(font . font-console-name))))
 
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
-(setq en-font-list (if-ms-windows
-                    '("Consolas 13" "Anonymous Pro 13")
-                    '("Consolas 13" "Anonymous Pro 13")
-                    ))
-(setq cn-font-list (if-ms-windows
-                    '("Microsoft YaHei Mono 13")
-                    '("Microsoft YaHei Mono 13")
-                    ))
+(setq en-font-list '(
+                     "Consolas 13"
+                     "Consolas 24"
+                     "Anonymous Pro 13"
+                     "Anonymous Pro 24"
+                     ))
+(setq cn-font-list '(
+                     "Microsoft YaHei Mono 13"
+                     "Microsoft YaHei Mono 16"
+                     "Microsoft YaHei Mono 24"
+                     ))
 
-(defun local-x-font ()
+(defun primary-x-font ()
   (interactive)
-  (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list)))
+  (if-ms-windows
+   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))
+   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))))
 
-;;for ssh X window big font
-(setq sshX-en-font-list (if-ms-windows
-                         '("Consolas 16" "Anonymous Pro 16")
-                         '("Consolas 16" "Anonymous Pro 16")
-                         ))
-(setq sshX-cn-font-list (if-ms-windows
-                         '("Microsoft YaHei Mono 16")
-                         '("Microsoft YaHei Mono 16")
-                         ))
-
-(defun ssh-x-font ()
+(defun secondary-x-font ()
   (interactive)
-  (my-frame-font (nth 0 sshX-en-font-list) (nth 0 sshX-cn-font-list)))
+  (if-ms-windows
+   (my-frame-font (nth 1 en-font-list) (nth 2 cn-font-list))
+   (my-frame-font (nth 1 en-font-list) (nth 2 cn-font-list))))
 
 ;;console font setting
 (if window-system
-    (local-x-font)
+    (primary-x-font)
     (my-console-font (nth 0 cn-font-list)))
 
 (defun my-use-server-mode ()
@@ -118,7 +115,7 @@
   (when-ms-windows
    ;;suppress error "directory
    ;;~/.emacs.d/server is unsafe on windows.
-   (defun server-ensure-safe-dir (dir) "Noop" t)) 
+   (defun server-ensure-safe-dir (dir) "Noop" t))
   (unless (server-running-p)
     (server-start))
 
@@ -325,8 +322,8 @@
       (setq fname (replace-match "~" t t fname))        )
     fname))
 
-(setq frame-title-format             
-      '(:eval (concat (user-login-name) "@" (system-name) "[Emacs" 
+(setq frame-title-format
+      '(:eval (concat (user-login-name) "@" (system-name) "[Emacs"
                       (nth 2 (split-string (version))) "]  " (fname-title-string))))
 
 ;suppress GUI features

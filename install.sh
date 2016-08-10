@@ -25,6 +25,7 @@ Install_fonts()
 {
     TARGET_TYPE="system"
     
+    echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts/zzemacs

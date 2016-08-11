@@ -23,12 +23,29 @@ EOF
 #https://github.com/android/platform_frameworks_base/tree/master/data/fonts
 Install_fonts()
 {
-    FONT_TARGET=~/.fonts
-    mkdir -p $FONT_TARGET
-
-    ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf       $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*.ttf  $FONT_TARGET
-    ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
+    TARGET_TYPE="system"
+    
+    case "$TARGET_TYPE" in
+        "system" )
+            FONT_TARGET=/usr/share/fonts/zzemacs
+            sudo mkdir -p $FONT_TARGET
+            
+            sudo ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf       $FONT_TARGET
+            sudo ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*.ttf  $FONT_TARGET
+            sudo ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
+            ;;
+        "user")
+            FONT_TARGET=~/.fonts
+            mkdir -p $FONT_TARGET
+            
+            ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf       $FONT_TARGET
+            ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*.ttf  $FONT_TARGET
+            ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
+            ;;
+        * )
+            echo "unknown $TARGET_TYPE"
+            ;;
+    esac
 }
 
 ##setup others
@@ -69,16 +86,16 @@ Install_thirdparty()
 main()
 {
     ##install configure file
-    confirm_execute "Do you wanna overwrite .emacs? [y/N]" run_cmd Install_dot_emacs
+    confirm_execute "Do you want to overwrite .emacs ? [y/N]" run_cmd Install_dot_emacs
 
-    echo "install fonts"
-    run_cmd Install_fonts
+    ##install fonts
+    confirm_execute "Do you want to install fonts ? [y/N]" run_cmd Install_fonts
 
-    echo "install others"
-    run_cmd Install_others
+    ##install others
+    confirm_execute "Do you want to install others ? [y/N]" run_cmd Install_others
 
     ##install third-party
-    confirm_execute "Do you wanna install third-party packages? (y/N): " run_cmd Install_thirdparty
+    confirm_execute "Do you want to install third-party packages? (y/N): " run_cmd Install_thirdparty
 }
 
 main

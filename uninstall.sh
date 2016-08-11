@@ -11,11 +11,12 @@ $rm_app ~/.emacs
 
 echo "remove fonts ..."
 $rm_app ~/.fonts
+$sudo_rm_app /usr/share/fonts/zzemacs
 
 echo "remove .emacs.d ..."
 $rm_app ~/.emacs.d
 
-echo "remove zzemacs & zzvim in /usr/bin ..."
-$sudo_rm_app /usr/bin/zz{emacs,vim}
+echo "remove others ..."
+$sudo_rm_app /usr/bin/zz{emacs,vim,tmux}
 
 echo "uninstall zzemacs end ..."

@@ -83,9 +83,9 @@ alias vlc265='vlc --demux hevc'
 alias vlc264='vlc --demux h264'
 
 ## more sudo alias
-if [ $UID -ne 0 ]; then
-    alias reboot='sudo reboot'
-    alias poweroff='sudo poweroff'
-    alias halt='sudo halt'
-    alias shutdown='sudo shutdown'
-fi
+#if [ $UID -ne 0 ]; then
+#    alias reboot='sudo reboot'
+#    alias poweroff='sudo poweroff'
+#    alias halt='sudo halt'
+#    alias shutdown='sudo shutdown'
+#fi

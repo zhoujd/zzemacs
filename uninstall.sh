@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## rm parameter
+## rm parameter add -f for force remove
 rm_app="rm -ri $1"
 sudo_rm_app="sudo $rm_app"
 

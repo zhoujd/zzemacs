@@ -2,7 +2,7 @@
 
 ZZEMACS_ROOT=`pwd`
 
-##Import vars and functions
+##source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
 
 echo "install .emacs to HOME directory begin..."
@@ -19,12 +19,12 @@ cat > ~/.emacs <<EOF
 EOF
 }
 
-##setup font setting
-#https://github.com/android/platform_frameworks_base/tree/master/data/fonts
+##setup font
 Install_fonts()
 {
     TARGET_TYPE="system"
     
+    echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts/zzemacs

@@ -206,3 +206,15 @@ Linux something
     StrictHostKeyChecking no
     - or -
     [root@master ~]# ssh IP -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no
+
+21. disable report problem on ubuntu
+    # ls /var/crash/
+    # sudo rm -fr /var/crash/*
+    # sudo stop apport
+
+    # cat /etc/default/apport
+    # set this to 0 to disable apport, or to 1 to enable it
+    # you can temporarily override this with
+    # sudo service apport start force_start=1
+    enabled=0
+

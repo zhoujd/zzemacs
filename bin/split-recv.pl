@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+## sudo yum install xterm
+
 use warnings;
 use strict;
 use Getopt::Std;

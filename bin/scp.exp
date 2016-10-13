@@ -16,7 +16,7 @@ set passwd [lindex $argv 0]
 set from   [lindex $argv 1]
 set to     [lindex $argv 2]
 
-spawn scp -r $from $to 
+spawn scp -o "StrictHostKeyChecking no" -r $from $to 
 expect "${from}'s password:"
 exec sleep 1
 send "${passwd}\n"

@@ -6,7 +6,7 @@ use warnings;
 use strict;
 use Getopt::Std;
 use Cwd;
-use FindBin;
+use FindBin qw($Bin);
 
 $| = 1;
 
@@ -17,9 +17,11 @@ my @file_trunks = qw |
     xau xav xaw xax xay xaz
 |;
 
-my $verbose = 0;
-
+my $verbose    = 0;
 my $scp_target = ".";
+my $scp_bin    = "$Bin/scp.exp";
+my $term_bin   = "xterm -e";
+
 my @procs = ();
 
 
@@ -87,10 +89,10 @@ sub main
             print "Start $i by child process\n";
             $scp_target = $opt{C} if defined $opt{C};
 
-            my $trans_cmd = "scp.exp $opt{p} $opt{f}/$file_trunks[$i] $scp_target";
+            my $trans_cmd = "$scp_bin $opt{p} $opt{f}/$file_trunks[$i] $scp_target";
             print "$trans_cmd\n";
 
-            my $term_cmd = "xterm -e \"$trans_cmd\"";
+            my $term_cmd = "$term_bin \"$trans_cmd\"";
             run_cmd($term_cmd);
         }
         else

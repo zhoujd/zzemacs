@@ -1,6 +1,8 @@
 #!/usr/bin/env perl
 
+### Xterm is need for this script
 ## sudo yum install xterm
+## sudo apt-get install xterm
 
 use warnings;
 use strict;

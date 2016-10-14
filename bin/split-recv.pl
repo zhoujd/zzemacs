@@ -74,7 +74,7 @@ sub main
     $SIG{INT} = \&catch_zap;
 
     my %opt;
-    getopts('f:p:n:C:', \%opt) or die "Error in command line arguments\n";
+    getopts('p:f:n:C:', \%opt) or die "Error in command line arguments\n";
 
     for my $i (0 .. $opt{n} - 1)
     {
@@ -93,7 +93,7 @@ sub main
             print "$trans_cmd\n";
 
             my $term_cmd = "$term_bin \"$trans_cmd\"";
-            run_cmd($term_cmd);
+            exec("$term_cmd") || die "can't exec $term_cmd: $!";
         }
         else
         {

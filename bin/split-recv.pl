@@ -28,7 +28,7 @@ my @procs = ();
 sub usage
 {
     print "1st remote: \$ split -b 200M <filename>\n";
-    print "2nd local : \$ $0 -p <passwd> -f <remote-folder> -n <num>\n";
+    print "2nd local : \$ $0 -p <passwd> -f <user\@host:R-folder> -n <num> [-C <L-folder>]\n";
     print "3rd local : \$ cat xa* > target-file\n";
 
     exit 1;
@@ -76,6 +76,12 @@ sub main
     my %opt;
     getopts('p:f:n:C:', \%opt) or die "Error in command line arguments\n";
 
+    if (!defined($opt{p}) || !defined($opt{f}) || !defined($opt{n}))
+    {
+        print "Usage: $0 -p <passwd> -f <user\@host:R-folder> -n <num> [-C <L-folder>]\n";
+        exit 1;
+    }
+
     for my $i (0 .. $opt{n} - 1)
     {
         # start  process
@@ -108,7 +114,7 @@ sub main
     foreach my $proc (@procs)
     {
         my $ret = waitpid($proc, 0);
-        print "Completed process pid: $ret\n"
+        print "Completed process pid: $ret\n";
     }
 }
 

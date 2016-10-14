@@ -56,7 +56,7 @@ sub run_cmds
 sub catch_zap
 {
     ## kill xterm procs
-    foreach my $proc (@procs) 
+    foreach my $proc (@procs)
     {
         my $cmd = "kill -9 $proc";
         run_cmd($cmd);
@@ -74,7 +74,7 @@ sub main
     $SIG{INT} = \&catch_zap;
 
     my %opt;
-    getopts('f:p:n:C:', \%opt);
+    getopts('f:p:n:C:', \%opt) or die "Error in command line arguments\n";
 
     for my $i (0 .. $opt{n} - 1)
     {

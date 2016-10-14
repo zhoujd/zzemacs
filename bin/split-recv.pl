@@ -2,6 +2,7 @@
 
 ## sudo yum install xterm
 
+
 use warnings;
 use strict;
 use Getopt::Std;
@@ -10,14 +11,6 @@ use FindBin;
 
 $| = 1;
 
-sub usage
-{
-    print "First remote: split -b 200M <filename>\n";
-    print "Second loccal: $0 -p <passwd> -f <remote-folder> -n <num>\n";
-
-    exit 1;
-}
-
 my @file_trunks = qw |
     xaa xab xac xad xae xaf xag
     xah xai xaj xak xal xam xan
@@ -25,13 +18,24 @@ my @file_trunks = qw |
     xau xav xaw xax xay xaz
 |;
 
+my $scp_target = ".";
+
+sub usage
+{
+    print "1st remote: \$ split -b 200M <filename>\n";
+    print "2nd local : \$ $0 -p <passwd> -f <remote-folder> -n <num>\n";
+    print "3rd local : \$ cat xa* > target-file\n";
+
+    exit 1;
+}
+
 sub main
 {
-    print "Welcome split recv ...\n";
+    print "Welcome to split recv ...\n";
     usage() unless @ARGV;
 
     my %opt;
-    getopts('f:p:n:', \%opt);
+    getopts('f:p:n:C:', \%opt);
 
     my @procs = ();
     for my $i (0 .. $opt{n} - 1)
@@ -45,9 +49,13 @@ sub main
         elsif ($pid == 0)
         {
             print "Start $i by child process\n";
-            my $trans_cmd = "xterm -e \"scp.exp  $opt{p} $opt{f}/$file_trunks[$i] .\"";
+            $scp_target = $opt{C} if defined $opt{C};
+
+            my $trans_cmd = "scp.exp $opt{p} $opt{f}/$file_trunks[$i] $scp_target";
             print "$trans_cmd\n";
-            (system("$trans_cmd") == 0) || die "can't exec $trans_cmd: $!";
+
+            my $term_cmd = "xterm -e \"$trans_cmd\"";
+            (system("$term_cmd") == 0) || die "can't exec $term_cmd: $!";
         }
         else
         {
@@ -59,4 +67,4 @@ sub main
     }
 }
 
-main();
+main;

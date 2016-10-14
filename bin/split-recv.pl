@@ -45,9 +45,9 @@ sub main
         elsif ($pid == 0)
         {
             print "Start $i by child process\n";
-            my $trans_cmd = "scp.exp  $opt{p} $opt{f}/$file_trunks[$i] .";
+            my $trans_cmd = "xterm -e \"scp.exp  $opt{p} $opt{f}/$file_trunks[$i] .\"";
             print "$trans_cmd\n";
-            system("xterm -e \"$trans_cmd\"") || die "can't exec $trans_cmd: $!";
+            (system("$trans_cmd") == 0) || die "can't exec $trans_cmd: $!";
         }
         else
         {

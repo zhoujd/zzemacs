@@ -2,7 +2,6 @@
 
 ## sudo yum install xterm
 
-
 use warnings;
 use strict;
 use Getopt::Std;
@@ -18,7 +17,11 @@ my @file_trunks = qw |
     xau xav xaw xax xay xaz
 |;
 
+my $verbose = 0;
+
 my $scp_target = ".";
+my @procs = ();
+
 
 sub usage
 {
@@ -29,15 +32,48 @@ sub usage
     exit 1;
 }
 
+sub run_cmd
+{
+    my $cmd = shift;
+    (system("$cmd") == 0) || die "can't exec $cmd: $!";
+}
+
+sub run_cmds
+{
+    my @cmds = @_;
+    foreach (@cmds)
+    {
+        print "$_\n" if $verbose;
+        unless ("" eq $_)
+        {
+            (system("$_") == 0) || die "can't exec $_: $!";
+        }
+    }
+}
+
+sub catch_zap
+{
+    ## kill xterm procs
+    foreach my $proc (@procs) 
+    {
+        my $cmd = "kill -9 $proc";
+        run_cmd($cmd);
+    }
+
+    my $clean_cmd = "rm -f $scp_target/xa*";
+    run_cmd($clean_cmd);
+}
+
 sub main
 {
     print "Welcome to split recv ...\n";
     usage() unless @ARGV;
 
+    $SIG{INT} = \&catch_zap;
+
     my %opt;
     getopts('f:p:n:C:', \%opt);
 
-    my @procs = ();
     for my $i (0 .. $opt{n} - 1)
     {
         # start  process
@@ -55,7 +91,7 @@ sub main
             print "$trans_cmd\n";
 
             my $term_cmd = "xterm -e \"$trans_cmd\"";
-            (system("$term_cmd") == 0) || die "can't exec $term_cmd: $!";
+            run_cmd($term_cmd);
         }
         else
         {
@@ -64,6 +100,13 @@ sub main
             push @procs, $pid;
         }
 
+    }
+
+    print "Wait all scp channel finished ...\n";
+    foreach my $proc (@procs)
+    {
+        my $ret = waitpid($proc, 0);
+        print "Completed process pid: $ret\n"
     }
 }
 

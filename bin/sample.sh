@@ -83,6 +83,11 @@ linux_lsb_check()
             OS_DISTRO="CentOS"
             echo "Run on $OS_DISTRO ..."
             ;;
+        "Fedora" )
+            OS_DISTRO="Fedora"
+            echo "Run on $OS_DISTRO ..."
+            ;;
+
         * )
             echo "Run on $OS_DISTRO ..."
             false

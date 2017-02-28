@@ -64,6 +64,21 @@ Install_package()
 
         sudo yum install -y git-core
         sudo yum install -y gitk
+    elif [ "$OS_DISTRO" = "Fedora" ]; then
+        sudo dnf -y groupinstall "Development Tools"
+        sudo dnf install -y gtk+-devel gtk2-devel
+        sudo dnf install -y libXpm-devel
+        sudo dnf install -y libpng-devel
+        sudo dnf install -y giflib-devel
+        sudo dnf install -y libtiff-devel libjpeg-devel
+        sudo dnf install -y ncurses-devel
+        sudo dnf install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
+        sudo dnf install -y GConf2-devel pkgconfig
+        sudo dnf install -y libXft-devel
+
+        sudo dnf install -y git-core
+        sudo dnf install -y gitk
+        
     else
         echo "You are about to install on a non supported linux distribution."
     fi

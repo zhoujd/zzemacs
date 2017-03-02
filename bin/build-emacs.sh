@@ -28,6 +28,9 @@ Build_source()
     tar xf $EMACS_SRC_FILE
 
     pushd $EMACS_SRC
+
+    build_started=`date`
+    echo "//Starting build: $build_started"
     
     ## compile emacs
     ./configure --prefix=/usr
@@ -35,6 +38,11 @@ Build_source()
 
     ## install emacs
     sudo make install
+
+    build_finished=`date`
+    echo
+    echo "//build started:  $build_started"
+    echo "//build finished: $build_finished"
 
     popd
 }

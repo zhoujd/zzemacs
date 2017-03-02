@@ -23,6 +23,10 @@ Install_package()
         sudo yum install -y mercurial
         sudo yum install -y python-devel
         sudo yum install -y python-docutils
+    elif [ "$OS_DISTRO" = "Fedora" ]; then
+        sudo dnf install -y mercurial
+        sudo dnf install -y python-devel
+        sudo dnf install -y python-docutils
     else
         echo "You are about to install on a non supported linux distribution."
     fi

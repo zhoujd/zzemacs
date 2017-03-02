@@ -7,7 +7,7 @@ LINUX_TOOL_ROOT=`pwd`
 
 echo "install linux-tool begin..."
 
-##package for ubuntu
+##package for suse
 Install_package_suse()
 {
     sudo zypperl install dos2unix
@@ -36,11 +36,18 @@ Install_package_ubuntu()
     #sudo apt-get install -y gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
 }
 
-##package for ubuntu
+##package for centos
 Install_package_centos()
 {
     sudo yum install dos2unix
 }
+
+##package for fedora
+Install_package_centos()
+{
+    sudo dnf install dos2unix
+}
+
 
 # dectect OS version
 if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -49,6 +56,8 @@ elif [ "$OS_DISTRO" = "Ubuntu" ]; then
     run_cmd Install_package_ubuntu
 elif [ "$OS_DISTRO" = "CentOS" ]; then
     run_cmd Install_package_centos
+elif [ "$OS_DISTRO" = "Fedora" ]; then
+    run_cmd Install_package_fedora
 else
     echo "You are about to install on a non supported linux distribution."
 fi

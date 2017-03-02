@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+### Bash command line
+### $ for i in sys.argv[1]/*.patch; do patch -p1 < $i; done 
+
 import sys, os
 
 if len(sys.argv) < 2:

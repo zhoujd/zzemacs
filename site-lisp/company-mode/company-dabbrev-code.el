@@ -1,6 +1,6 @@
-;;; company-dabbrev-code.el --- dabbrev-like company-mode back-end for code
+;;; company-dabbrev-code.el --- dabbrev-like company-mode backend for code  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011  Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2011, 2014  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -27,40 +27,49 @@
 
 (require 'company)
 (require 'company-dabbrev)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defgroup company-dabbrev-code nil
-  "dabbrev-like completion back-end for code."
+  "dabbrev-like completion backend for code."
   :group 'company)
 
 (defcustom company-dabbrev-code-modes
-  '(asm-mode batch-file-mode c++-mode c-mode cperl-mode csharp-mode css-mode
-    emacs-lisp-mode erlang-mode f90-mode fortran-mode haskell-mode java-mode
-    javascript-mode jde-mode js2-mode lisp-mode lua-mode objc-mode perl-mode
-    php-mode prog-mode python-mode ruby-mode scheme-mode shell-script-mode)
+  '(prog-mode
+    batch-file-mode csharp-mode css-mode erlang-mode haskell-mode jde-mode
+    lua-mode python-mode)
   "Modes that use `company-dabbrev-code'.
-In all these modes `company-dabbrev-code' will complete only symbols, not text
-in comments or strings.  In other modes `company-dabbrev-code' will pass control
-to other back-ends \(e.g. `company-dabbrev'\).
-Value t means complete in all modes."
-  :type '(choice (repeat (symbol :tag "Major mode"))
-                 (const tag "All modes" t)))
+In all these modes (and their derivatives) `company-dabbrev-code' will
+complete only symbols, not text in comments or strings.  In other modes
+`company-dabbrev-code' will pass control to other backends
+\(e.g. `company-dabbrev'\).  Value t means complete in all modes."
+  :type '(choice (repeat :tag "Some modes" (symbol :tag "Major mode"))
+                 (const :tag "All modes" t)))
 
 (defcustom company-dabbrev-code-other-buffers t
   "Determines whether `company-dabbrev-code' should search other buffers.
-If `all', search all other buffers.  If t, search buffers with the same
-major mode.
-See also `company-dabbrev-code-time-limit'."
+If `all', search all other buffers, except the ignored ones.  If t, search
+buffers with the same major mode.  If `code', search all buffers with major
+modes in `company-dabbrev-code-modes', or derived from one of them.  See
+also `company-dabbrev-code-time-limit'."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "Same major mode" t)
+                 (const :tag "Code major modes" code)
                  (const :tag "All" all)))
 
-(defcustom company-dabbrev-code-time-limit .5
+(defcustom company-dabbrev-code-time-limit .1
   "Determines how long `company-dabbrev-code' should look for matches."
   :type '(choice (const :tag "Off" nil)
                  (number :tag "Seconds")))
 
-(defsubst company-dabbrev-code--make-regexp (prefix)
+(defcustom company-dabbrev-code-everywhere nil
+  "Non-nil to offer completions in comments and strings."
+  :type 'boolean)
+
+(defcustom company-dabbrev-code-ignore-case nil
+  "Non-nil to ignore case when collecting completion candidates."
+  :type 'boolean)
+
+(defun company-dabbrev-code--make-regexp (prefix)
   (concat "\\_<" (if (equal prefix "")
                      "\\([a-zA-Z]\\|\\s_\\)"
                    (regexp-quote prefix))
@@ -68,21 +77,27 @@ See also `company-dabbrev-code-time-limit'."
 
 ;;;###autoload
 (defun company-dabbrev-code (command &optional arg &rest ignored)
-  "dabbrev-like `company-mode' back-end for code.
-The back-end looks for all symbols in the current buffer that aren't in
+  "dabbrev-like `company-mode' backend for code.
+The backend looks for all symbols in the current buffer that aren't in
 comments or strings."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-dabbrev-code))
     (prefix (and (or (eq t company-dabbrev-code-modes)
-                     (apply 'derived-mode-p company-dabbrev-code-modes))
-                 (not (company-in-string-or-comment))
+                     (apply #'derived-mode-p company-dabbrev-code-modes))
+                 (or company-dabbrev-code-everywhere
+                     (not (company-in-string-or-comment)))
                  (or (company-grab-symbol) 'stop)))
-    (candidates (let ((case-fold-search nil))
+    (candidates (let ((case-fold-search company-dabbrev-code-ignore-case))
                   (company-dabbrev--search
                    (company-dabbrev-code--make-regexp arg)
                    company-dabbrev-code-time-limit
-                   company-dabbrev-code-other-buffers t)))
+                   (pcase company-dabbrev-code-other-buffers
+                     (`t (list major-mode))
+                     (`code company-dabbrev-code-modes)
+                     (`all `all))
+                   (not company-dabbrev-code-everywhere))))
+    (ignore-case company-dabbrev-code-ignore-case)
     (duplicates t)))
 
 (provide 'company-dabbrev-code)

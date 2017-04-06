@@ -1,6 +1,6 @@
-;;; company-eclim.el --- company-mode completion back-end for Eclim
+;;; company-eclim.el --- company-mode completion backend for Eclim
 
-;; Copyright (C) 2009, 2011, 2013  Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2011, 2013, 2015  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -21,10 +21,10 @@
 
 ;;; Commentary:
 ;;
-;; Using `emacs-eclim' together with (or instead of) this back-end is
+;; Using `emacs-eclim' together with (or instead of) this backend is
 ;; recommended, as it allows you to use other Eclim features.
 ;;
-;; The alternative back-end provided by `emacs-eclim' uses `yasnippet'
+;; The alternative backend provided by `emacs-eclim' uses `yasnippet'
 ;; instead of `company-template' to expand function calls, and it supports
 ;; some languages other than Java.
 
@@ -32,23 +32,25 @@
 
 (require 'company)
 (require 'company-template)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defgroup company-eclim nil
-  "Completion back-end for Eclim."
+  "Completion backend for Eclim."
   :group 'company)
 
 (defun company-eclim-executable-find ()
   (let (file)
-    (dolist (eclipse-root '("/Applications/eclipse" "/usr/lib/eclipse"
+    (cl-dolist (eclipse-root '("/Applications/eclipse" "/usr/lib/eclipse"
                             "/usr/local/lib/eclipse"))
       (and (file-exists-p (setq file (expand-file-name "plugins" eclipse-root)))
            (setq file (car (last (directory-files file t "^org.eclim_"))))
            (file-exists-p (setq file (expand-file-name "bin/eclim" file)))
-           (return file)))))
+           (cl-return file)))))
 
 (defcustom company-eclim-executable
-  (or (executable-find "eclim") (company-eclim-executable-find))
+  (or (bound-and-true-p eclim-executable)
+      (executable-find "eclim")
+      (company-eclim-executable-find))
   "Location of eclim executable."
   :type 'file)
 
@@ -60,14 +62,9 @@ eclim can only complete correctly when the buffer has been saved."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar company-eclim--project-dir 'unknown)
-(make-variable-buffer-local 'company-eclim--project-dir)
+(defvar-local company-eclim--project-dir 'unknown)
 
-(defvar company-eclim--project-name nil)
-(make-variable-buffer-local 'company-eclim--project-name)
-
-(defvar company-eclim--doc nil)
-(make-variable-buffer-local 'company-eclim--doc)
+(defvar-local company-eclim--project-name nil)
 
 (declare-function json-read "json")
 (defvar json-array-type)
@@ -92,10 +89,11 @@ eclim can only complete correctly when the buffer has been saved."
 
 (defun company-eclim--project-dir ()
   (if (eq company-eclim--project-dir 'unknown)
-      (setq company-eclim--project-dir
-            (directory-file-name
-             (expand-file-name
-              (company-locate-dominating-file buffer-file-name ".project"))))
+      (let ((dir (locate-dominating-file buffer-file-name ".project")))
+        (when dir
+          (setq company-eclim--project-dir
+                (directory-file-name
+                 (expand-file-name dir)))))
     company-eclim--project-dir))
 
 (defun company-eclim--project-name ()
@@ -103,14 +101,15 @@ eclim can only complete correctly when the buffer has been saved."
       (let ((dir (company-eclim--project-dir)))
         (when dir
           (setq company-eclim--project-name
-                (loop for project in (company-eclim--project-list)
-                      when (equal (cdr (assoc 'path project)) dir)
-                      return (cdr (assoc 'name project))))))))
+                (cl-loop for project in (company-eclim--project-list)
+                         when (equal (cdr (assoc 'path project)) dir)
+                         return (cdr (assoc 'name project))))))))
 
 (defun company-eclim--candidates (prefix)
   (interactive "d")
   (let ((project-file (file-relative-name buffer-file-name
-                                          (company-eclim--project-dir))))
+                                          (company-eclim--project-dir)))
+        completions)
     (when company-eclim-auto-save
       (when (buffer-modified-p)
         (basic-save-buffer))
@@ -118,8 +117,6 @@ eclim can only complete correctly when the buffer has been saved."
       (company-eclim--call-process "java_src_update"
                                    "-p" (company-eclim--project-name)
                                    "-f" project-file))
-    (setq company-eclim--doc
-          (make-hash-table :test 'equal))
     (dolist (item (cdr (assoc 'completions
                               (company-eclim--call-process
                                "java_complete" "-p" (company-eclim--project-name)
@@ -130,19 +127,25 @@ eclim can only complete correctly when the buffer has been saved."
                                "-l" "standard"))))
       (let* ((meta (cdr (assoc 'info item)))
              (completion meta))
-        (when (string-match " [:-]" completion)
+        (when (string-match " ?[(:-]" completion)
           (setq completion (substring completion 0 (match-beginning 0))))
-        (puthash completion meta company-eclim--doc))))
-  (let ((completion-ignore-case nil))
-    (all-completions prefix company-eclim--doc)))
+        (put-text-property 0 1 'meta meta completion)
+        (push completion completions)))
+    (let ((completion-ignore-case nil))
+      (all-completions prefix completions))))
 
 (defun company-eclim--search-point (prefix)
-  (if (or (plusp (length prefix)) (eq (char-before) ?.))
+  (if (or (cl-plusp (length prefix)) (eq (char-before) ?.))
       (1- (point))
     (point)))
 
 (defun company-eclim--meta (candidate)
-  (gethash candidate company-eclim--doc))
+  (get-text-property 0 'meta candidate))
+
+(defun company-eclim--annotation (candidate)
+  (let ((meta (company-eclim--meta candidate)))
+    (when (string-match "\\(([^-]*\\) -" meta)
+      (substring meta (match-beginning 1) (match-end 1)))))
 
 (defun company-eclim--prefix ()
   (let ((prefix (company-grab-symbol)))
@@ -153,7 +156,7 @@ eclim can only complete correctly when the buffer has been saved."
       prefix)))
 
 (defun company-eclim (command &optional arg &rest ignored)
-  "`company-mode' completion back-end for Eclim.
+  "`company-mode' completion backend for Eclim.
 Eclim provides access to Eclipse Java IDE features for other editors.
 
 Eclim version 1.7.13 or newer (?) is required.
@@ -161,7 +164,7 @@ Eclim version 1.7.13 or newer (?) is required.
 Completions only work correctly when the buffer has been saved.
 `company-eclim-auto-save' determines whether to do this automatically."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-eclim))
     (prefix (and (derived-mode-p 'java-mode 'jde-mode)
                  buffer-file-name
@@ -173,10 +176,11 @@ Completions only work correctly when the buffer has been saved.
     (meta (company-eclim--meta arg))
     ;; because "" doesn't return everything
     (no-cache (equal arg ""))
-    (crop (when (string-match "(" arg)
-            (substring arg 0 (match-beginning 0))))
-    (post-completion (when (string-match "([^)]" arg)
-                       (company-template-c-like-templatify arg)))))
+    (annotation (company-eclim--annotation arg))
+    (post-completion (let ((anno (company-eclim--annotation arg)))
+                       (when anno
+                         (insert anno)
+                         (company-template-c-like-templatify anno))))))
 
 (provide 'company-eclim)
 ;;; company-eclim.el ends here

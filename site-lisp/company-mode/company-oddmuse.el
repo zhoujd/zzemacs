@@ -1,6 +1,6 @@
-;;; company-oddmuse.el --- company-mode completion back-end for oddmuse-mode
+;;; company-oddmuse.el --- company-mode completion backend for oddmuse-mode
 
-;; Copyright (C) 2009-2011  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2014  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -26,15 +26,15 @@
 ;;; Code:
 
 (require 'company)
-(eval-when 'compile (require 'yaooddmuse nil t))
-(eval-when 'compile (require 'oddmuse nil t))
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
+(eval-when-compile (require 'yaoddmuse nil t))
+(eval-when-compile (require 'oddmuse nil t))
 
 (defvar company-oddmuse-link-regexp
   "\\(\\<[A-Z][[:alnum:]]*\\>\\)\\|\\[\\[\\([[:alnum:]]+\\>\\|\\)")
 
 (defun company-oddmuse-get-page-table ()
-  (case major-mode
+  (cl-case major-mode
     (yaoddmuse-mode (with-no-warnings
                       (yaoddmuse-get-pagename-table yaoddmuse-wikiname)))
     (oddmuse-mode (with-no-warnings
@@ -42,9 +42,9 @@
 
 ;;;###autoload
 (defun company-oddmuse (command &optional arg &rest ignored)
-  "`company-mode' completion back-end for `oddmuse-mode'."
+  "`company-mode' completion backend for `oddmuse-mode'."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-oddmuse))
     (prefix (let ((case-fold-search nil))
               (and (memq major-mode '(oddmuse-mode yaoddmuse-mode))

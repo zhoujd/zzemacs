@@ -1,5 +1,221 @@
 # History of user-visible changes
 
+## 2017-03-29 (0.9.3)
+
+* New variable `company-echo-truncate-lines`.
+* `company-auto-complete` improved compatibility with `electric-pair-mode`.
+* Use of `overriding-terminal-local-map` does not disable completion.
+* `company-clang` and `company-gtags` can work over Tramp.
+* New frontend `company-preview-common-frontend`.
+* `company-clang` calls Clang using a pipe instead of pty.
+* The minimum required version of Emacs is now 24.3.
+
+## 2016-11-14 (0.9.2)
+
+* Miscellaneous fixes and docstring improvements.
+
+## 2016-11-12 (0.9.1)
+
+* `company-indent-or-complete-common` skips trying to indent if
+  `indent-line-function` is `indent-relative` or `indent-relative-maybe`.
+* Better visualization of search matches. New face `company-tooltip-search-selection`.
+* New variable `company-files-exclusions`.
+* `company-next-page` and `company-previous-page` adhere to
+  `company-selection-wrap-around` docstring more closely and only wrap around
+  when the selection is at the start of the end of the list.
+* `company-pseudo-tooltip-unless-just-one-frontend-with-delay` handles custom
+  frontends derived from `company-preview-frontend` better.
+* `company-idle-delay` is automatically adjusted to a non-zero value.
+
+## 2016-06-23 (0.9.0)
+
+* Group of backends can now contain keyword `:separate`, which makes candidates
+  from different backends sorted separately in the combined list.
+* New frontend `company-pseudo-tooltip-unless-just-one-frontend-with-delay`.
+* New transformer `company-sort-prefer-same-case-prefix`.
+* The value of `company-dabbrev-ignore-buffers` can also be a function.
+* `company-files` has been moved to right after `company-capf` in
+  `company-backends`
+  ([#463](https://github.com/company-mode/company-mode/issues/463)).
+* `company-semantic-insert-arguments`: New option. Like in `company-clang`.
+* `company-semantic-begin-after-member-access`: New option. Similar to the one
+  in `company-clang`.
+* `company-capf` accepts `:company-prefix-length` property value.
+* New face `company-tooltip-annotation-selection`, used for the annotation in
+  the selected tooltip line.
+* `company-clang-objc-templatify` has been renamed to
+  `company-template-objc-templatify`.
+* New user option `company-etags-everywhere`.
+* `company-yasnippet` supports `yas-key-syntaxes` better. But we use them in the
+  reverse order, preferring the longest key prefix that matches anything. And we
+  only consider trigger key prefixes that are at least as long as the symbol at
+  point, which effectively means skipping the `"w"` element
+  ([#422](https://github.com/company-mode/company-mode/issues/422)).
+* New user option `company-search-regexp-function`.
+* Completion is not started automatically when a keyboard macro is being
+  recorded ([#374](https://github.com/company-mode/company-mode/issues/374)).
+* New command `company-indent-or-complete-common`.
+* Backend command `doc-buffer` now can also return a cons of buffer and window
+  start position.
+* Backend command `ignore-case` has been documented.
+* `company-template-c-like-templatify` does not replace the default argument
+  values with `argN` anymore
+  ([#336](https://github.com/company-mode/company-mode/issues/336)). This
+  affects `company-clang` and all third-party backends that use this function.
+* Likewise for `company-clang-objc-templatify`.
+* `company-template-add-field` calling convention has changed.
+* New user option `company-dabbrev-ignore-invisible`.
+* `company-ropemacs` was removed. `ropemacs` supports completion via
+  `completion-at-point-functions` starting with version 0.8.
+* `company-pysmell` was removed.
+* `company-select-next`, `company-select-previous`,
+  `company-select-next-or-abort`, `company-select-previous-or-abort` and
+  `company-complete-common-or-cycle` accept a numeric argument.
+* The documentation buffer window can be scrolled with the mouse wheel.
+* New command `company-diag`. Use it in bug reports.
+
+## 2015-02-02 (0.8.10)
+
+* New variable `company-lighter-base`.
+* Better tracking of the current selection.
+* Pressing `M-0`...`M-9` works in the search mode.
+* Pressing `<up>` or `<down>` doesn't quit the search mode.
+
+## 2015-01-23 (0.8.9)
+
+* New commands `company-next-page` and `company-previous-page`, remapping
+  `scroll-up-command` and `scroll-down-command` during completion.
+
+## 2015-01-13 (0.8.8)
+
+* Pressing `M-n` or `M-p` doesn't quit the search mode.
+* New command `company-complete-common-or-cycle`. No default binding.
+* `company-search-toggle-filtering` replaced `company-search-kill-others`.
+* Quitting the search mode resets the filtering.
+* Pressing `backspace` in the search mode deletes the character at the end of
+  the search string.
+* `company-semantic` displays function arguments as annotations.
+* New user option, `company-bbdb-modes`.
+* `company-show-numbers` and `company-complete-number` now use visual numbering
+  of the candidates, taking into account only the ones currently displayed.
+* `company-complete-number` can be bound to keypad numbers directly, with or
+  without modifiers.
+* `company-cmake` expands `<LANG>` and `<CONFIG>` placeholders inside variable
+  names.
+
+## 2014-10-15 (0.8.6)
+
+* `company-clang` and `company-template-c-like-templatify` support templated
+  functions and arguments.
+* `company-dabbrev` ignores "uninteresting" buffers by default. Depends on the
+  new user option, `company-dabbrev-ignore-buffers`.
+* `company-files` checks directory's last modification time.
+* `company-files` supports relative paths and Windows drive letters.
+
+## 2014-08-13 (0.8.4)
+
+* `company-ropemacs` is only used when `ropemacs-mode` is on.
+* `company-gtags` is enabled in all `prog-mode` derivatives by default.
+* `company-end-of-buffer-workaround` is not used anymore.
+* `company-begin-commands` includes some of `cc-mode` commands.
+
+## 2014-08-27 (0.8.3)
+
+* On Emacs 24.4 or newer, tooltip positioning takes line-spacing into account.
+* New face `company-tooltip-search`, used for the search string in the tooltip.
+* The default value of `company-dabbrev-minimum-length` is set to 4, independent
+  of the `company-minimum-prefix-length` value.
+
+## 2014-07-26 (0.8.2)
+
+* New user option `company-occurrence-weight-function`, allowing to tweak the
+  behavior of the transformer `company-sort-by-occurrence`.
+* Setting `company-idle-delay` to `t` is deprecated. Use the value 0 instead.
+
+## 2014-07-01 (0.8.1)
+
+* `company-require-match` is not in effect when the new input doesn't continue
+  the previous prefix, and that prefix was a match.
+* The meaning of `company-begin-commands` value t has slightly changed.
+* New transformer, `company-sort-by-backend-importance`.
+* When grouped back-ends are used, the back-end of the current candidate is
+  indicated in the mode-line, enclosed in angle brackets.
+* New user option `company-gtags-insert-arguments`, t by default.
+* `company-css` knows about CSS3.
+* `company-gtags` supports `meta` and `annotation`.
+* User option `company-dabbrev-code-other-buffers` can have a new value: `code`.
+* New user option `company-tooltip-flip-when-above`.
+* `company-clang` uses the standard header search paths by default.
+* `C-h` is bound to `company-show-doc-buffer` (like `f1`).
+
+## 2014-04-19 (0.8.0)
+
+* `company-capf` is included in `company-backends` in any supported Emacs
+  version (>= 24.1). `company-elisp` goes before it if Emacs version is < 24.4.
+* New user option `company-clang-insert-arguments`, by default t.
+* Default value of `company-idle-delay` lowered to `0.5`.
+* New user option `company-tooltip-minimum-width`, by default 0.
+* New function `company-grab-symbol-cons`.
+* `company-clang` fetches completion candidates asynchronously.
+* Added support for asynchronous back-ends (experimental).
+* Support for back-end command `crop` dropped (it was never documented).
+* Support for Emacs 23 dropped.
+* New user option `company-abort-manual-when-too-short`.
+
+## 2014-03-25 (0.7.3)
+
+* New user option `company-etags-ignore-case`.
+
+## 2014-03-19 (0.7.2)
+
+* Support for Emacs 22 officially dropped.
+* `company-clang` supports `indent-tabs-mode` and multibyte chars before point.
+
+## 2014-03-18 (0.7.1)
+
+* Group of back-ends can now contain keyword `:with`, which makes all back-ends
+  after it to be skipped for prefix calculation.
+* New function `company-version`.
+* New bundled back-end `company-yasnippet`.
+* Completion candidates returned from grouped back-ends are tagged to remember
+  which back-end each came from.
+* New user option `company-tooltip-align-annotations`, off by default.
+* New bundled back-end `company-bbdb`.
+
+## 2014-02-18 (0.7)
+
+* New back-end command, `match`, for non-prefix completion.
+* New user option `company-continue-commands`. The default value aborts
+  completion on buffer saving commands.
+* New back-end command, `annotation`, for text displayed inline in the popup
+  that's not a part of completion candidate.
+* `company-capf`, `company-clang` and `company-eclim` use `annotation`.
+* `company-preview*` faces inherit from `company-tooltip-selection` and
+  `company-tooltip-common-selection` on light themes.
+* New user option `company-transformers`.
+* First transformer, `company-sort-by-occurrence`.
+* New user options controlling `company-dabbrev` and `company-dabbrev-code`.
+
+## 2014-01-25 (0.6.14)
+
+* The tooltip front-end is rendered with scrollbar, controlled by the user
+  option `company-tooltip-offset-display`.
+* The tooltip front-end is rendered with margins, controlled by the user option
+  `company-tooltip-margin`.
+
+## 2014-01-14 (0.6.13)
+
+* Experimental support for non-prefix completion.
+* Starting with Emacs version 24.4, `company-capf` is included in
+  `company-backends` and replaces `company-elisp`.
+* `company-capf` supports completion tables that return non-default boundaries.
+* `company-elisp` is enabled in `inferior-emacs-lisp-mode`.
+
+## 2013-09-28 (0.6.12)
+
+* Default value of `company-begin-commands` changed to `(self-insert-command)`.
+* Futher improvement in `org-indent-mode` compatibility.
+
 ## 2013-08-18 (0.6.11)
 
 * `company-template-c-like-templatify` removes all text after closing paren, for

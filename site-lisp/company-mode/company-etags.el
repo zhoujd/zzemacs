@@ -1,6 +1,6 @@
-;;; company-etags.el --- company-mode completion back-end for etags
+;;; company-etags.el --- company-mode completion backend for etags
 
-;; Copyright (C) 2009-2011  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2014  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -26,10 +26,11 @@
 ;;; Code:
 
 (require 'company)
+(require 'cl-lib)
 (require 'etags)
 
 (defgroup company-etags nil
-  "Completion back-end for etags."
+  "Completion backend for etags."
   :group 'company)
 
 (defcustom company-etags-use-main-table-list t
@@ -39,18 +40,33 @@ buffer automatically."
   :type '(choice (const :tag "off" nil)
                  (const :tag "on" t)))
 
-(defvar company-etags-modes '(c-mode objc-mode c++-mode java-mode jde-mode
-                              pascal-mode perl-mode python-mode))
+(defcustom company-etags-ignore-case nil
+  "Non-nil to ignore case in completion candidates."
+  :type 'boolean
+  :package-version '(company . "0.7.3"))
 
-(defvar company-etags-buffer-table 'unknown)
-(make-variable-buffer-local 'company-etags-buffer-table)
+(defcustom company-etags-everywhere nil
+  "Non-nil to offer completions in comments and strings.
+Set it to t or to a list of major modes."
+  :type '(choice (const :tag "Off" nil)
+                 (const :tag "Any supported mode" t)
+                 (repeat :tag "Some major modes"
+                         (symbol :tag "Major mode")))
+  :package-version '(company . "0.9.0"))
+
+(defvar company-etags-modes '(prog-mode c-mode objc-mode c++-mode java-mode
+                              jde-mode pascal-mode perl-mode python-mode))
+
+(defvar-local company-etags-buffer-table 'unknown)
 
 (defun company-etags-find-table ()
-  (let ((file (company-locate-dominating-file (or buffer-file-name
-                                                  default-directory)
-                                              "TAGS")))
-    (when file
-      (list (expand-file-name file)))))
+  (let ((file (expand-file-name
+               "TAGS"
+               (locate-dominating-file (or buffer-file-name
+                                           default-directory)
+                                       "TAGS"))))
+    (when (and file (file-regular-p file))
+      (list file))))
 
 (defun company-etags-buffer-table ()
   (or (and company-etags-use-main-table-list tags-table-list)
@@ -60,7 +76,7 @@ buffer automatically."
 
 (defun company-etags--candidates (prefix)
   (let ((tags-table-list (company-etags-buffer-table))
-        (completion-ignore-case nil))
+        (completion-ignore-case company-etags-ignore-case))
     (and (or tags-file-name tags-table-list)
          (fboundp 'tags-completion-table)
          (save-excursion
@@ -69,12 +85,14 @@ buffer automatically."
 
 ;;;###autoload
 (defun company-etags (command &optional arg &rest ignored)
-  "`company-mode' completion back-end for etags."
+  "`company-mode' completion backend for etags."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-etags))
-    (prefix (and (memq major-mode company-etags-modes)
-                 (not (company-in-string-or-comment))
+    (prefix (and (apply #'derived-mode-p company-etags-modes)
+                 (or (eq t company-etags-everywhere)
+                     (apply #'derived-mode-p company-etags-everywhere)
+                     (not (company-in-string-or-comment)))
                  (company-etags-buffer-table)
                  (or (company-grab-symbol) 'stop)))
     (candidates (company-etags--candidates arg))
@@ -82,7 +100,8 @@ buffer automatically."
                 (when (fboundp 'find-tag-noselect)
                   (save-excursion
                     (let ((buffer (find-tag-noselect arg)))
-                      (cons buffer (with-current-buffer buffer (point))))))))))
+                      (cons buffer (with-current-buffer buffer (point))))))))
+    (ignore-case company-etags-ignore-case)))
 
 (provide 'company-etags)
 ;;; company-etags.el ends here

@@ -1,6 +1,6 @@
-;;; company-abbrev.el --- company-mode completion back-end for abbrev
+;;; company-abbrev.el --- company-mode completion backend for abbrev
 
-;; Copyright (C) 2009-2011  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2015  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -26,7 +26,7 @@
 ;;; Code:
 
 (require 'company)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 (require 'abbrev)
 
 (defun company-abbrev-insert (match)
@@ -35,17 +35,16 @@
 
 ;;;###autoload
 (defun company-abbrev (command &optional arg &rest ignored)
-  "`company-mode' completion back-end for abbrev."
+  "`company-mode' completion backend for abbrev."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-abbrev
                                         'company-abbrev-insert))
     (prefix (company-grab-symbol))
     (candidates (nconc
                  (delete "" (all-completions arg global-abbrev-table))
                  (delete "" (all-completions arg local-abbrev-table))))
-    (meta (abbrev-expansion arg))
-    (require-match t)))
+    (meta (abbrev-expansion arg))))
 
 (provide 'company-abbrev)
 ;;; company-abbrev.el ends here

@@ -1,6 +1,6 @@
-;;; company-template.el
+;;; company-template.el --- utility library for template expansion
 
-;; Copyright (C) 2009, 2010, 2013 Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2010, 2014-2016 Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -21,7 +21,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defface company-template-field
   '((((background dark)) (:background "yellow" :foreground "black"))
@@ -32,10 +32,10 @@
 (defvar company-template-nav-map
   (let ((keymap (make-sparse-keymap)))
     (define-key keymap [tab] 'company-template-forward-field)
+    (define-key keymap (kbd "TAB") 'company-template-forward-field)
     keymap))
 
-(defvar company-template--buffer-templates nil)
-(make-variable-buffer-local 'company-template--buffer-templates)
+(defvar-local company-template--buffer-templates nil)
 
 ;; interactive ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -58,8 +58,8 @@
   (let* ((start (point))
          (templates (company-template-templates-at (point)))
          (minimum (apply 'max (mapcar 'overlay-end templates)))
-         (fields (loop for templ in templates
-                       append (overlay-get templ 'company-template-fields))))
+         (fields (cl-loop for templ in templates
+                          append (overlay-get templ 'company-template-fields))))
     (dolist (pos (mapcar 'overlay-start fields))
       (and pos
            (> pos (point))
@@ -70,9 +70,9 @@
     (company-template-remove-field (company-template-field-at start))))
 
 (defun company-template-field-at (&optional point)
-  (loop for ovl in (overlays-at (or point (point)))
-        when (overlay-get ovl 'company-template-parent)
-        return ovl))
+  (cl-loop for ovl in (overlays-at (or point (point)))
+           when (overlay-get ovl 'company-template-parent)
+           return ovl))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -93,16 +93,14 @@
         (delq templ company-template--buffer-templates))
   (delete-overlay templ))
 
-(defun company-template-add-field (templ pos text &optional display)
-  "Add new field to template TEMPL at POS, inserting TEXT.
+(defun company-template-add-field (templ beg end &optional display)
+  "Add new field to template TEMPL spanning from BEG to END.
 When DISPLAY is non-nil, set the respective property on the overlay.
 Leave point at the end of the field."
-  (assert templ)
-  (goto-char pos)
-  (insert text)
-  (when (> (point) (overlay-end templ))
-    (move-overlay templ (overlay-start templ) (point)))
-  (let ((ov (make-overlay pos (+ pos (length text))))
+  (cl-assert templ)
+  (when (> end (overlay-end templ))
+    (move-overlay templ (overlay-start templ) end))
+  (let ((ov (make-overlay beg end))
         (siblings (overlay-get templ 'company-template-fields)))
     ;; (overlay-put ov 'evaporate t)
     (overlay-put ov 'intangible t)
@@ -149,22 +147,68 @@ Leave point at the end of the field."
 (defun company-template-c-like-templatify (call)
   (let* ((end (point-marker))
          (beg (- (point) (length call)))
-         (cnt 0))
-    (when (re-search-backward ")" beg t)
-      (delete-region (match-end 0) end))
-    (goto-char beg)
-    (when (search-forward "(" end 'move)
-      (if (eq (char-after) ?\))
+         (templ (company-template-declare-template beg end))
+         paren-open paren-close)
+    (with-syntax-table (make-syntax-table (syntax-table))
+      (modify-syntax-entry ?< "(")
+      (modify-syntax-entry ?> ")")
+      (when (search-backward ")" beg t)
+        (setq paren-close (point-marker))
+        (forward-char 1)
+        (delete-region (point) end)
+        (backward-sexp)
+        (forward-char 1)
+        (setq paren-open (point-marker)))
+      (when (search-backward ">" beg t)
+        (let ((angle-close (point-marker)))
           (forward-char 1)
-        (let ((templ (company-template-declare-template beg end)))
-          (while (re-search-forward (concat " *\\([^,)]*\\)[,)]") end t)
-            (let ((sig (match-string 1)))
-              (delete-region (match-beginning 1) (match-end 1))
-              (save-excursion
-                (company-template-add-field templ (match-beginning 1)
-                                            (format "arg%d" cnt) sig))
-              (incf cnt)))
-          (company-template-move-to-first templ))))))
+          (backward-sexp)
+          (forward-char)
+          (company-template--c-like-args templ angle-close)))
+      (when (looking-back "\\((\\*)\\)(" (line-beginning-position))
+        (delete-region (match-beginning 1) (match-end 1)))
+      (when paren-open
+        (goto-char paren-open)
+        (company-template--c-like-args templ paren-close)))
+    (if (overlay-get templ 'company-template-fields)
+        (company-template-move-to-first templ)
+      (company-template-remove-template templ)
+      (goto-char end))))
+
+(defun company-template--c-like-args (templ end)
+  (let ((last-pos (point)))
+    (while (re-search-forward "\\([^,]+\\),?" end 'move)
+      (when (zerop (car (parse-partial-sexp last-pos (point))))
+        (company-template-add-field templ last-pos (match-end 1))
+        (skip-chars-forward " ")
+        (setq last-pos (point))))))
+
+;; objc ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun company-template-objc-templatify (selector)
+  (let* ((end (point-marker))
+         (beg (- (point) (length selector) 1))
+         (templ (company-template-declare-template beg end))
+         (cnt 0))
+    (save-excursion
+      (goto-char beg)
+      (catch 'stop
+        (while (search-forward ":" end t)
+          (if (looking-at "\\(([^)]*)\\) ?")
+              (company-template-add-field templ (point) (match-end 1))
+            ;; Not sure which conditions this case manifests under, but
+            ;; apparently it did before, when I wrote the first test for this
+            ;; function.  FIXME: Revisit it.
+            (company-template-add-field templ (point)
+                                        (progn
+                                          (insert (format "arg%d" cnt))
+                                          (point)))
+            (when (< (point) end)
+              (insert " "))
+            (cl-incf cnt))
+          (when (>= (point) end)
+            (throw 'stop t)))))
+    (company-template-move-to-first templ)))
 
 (provide 'company-template)
 ;;; company-template.el ends here

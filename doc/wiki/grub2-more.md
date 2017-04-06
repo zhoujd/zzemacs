@@ -59,6 +59,10 @@ Grub2 more
             configfile /boot/grub/grub.cfg
         }
 
+        menuentry "Fedora Grub2 config menu" {
+            configfile (lvm/fedora-root)/grub2/grub.cfg
+        }
+
         menuentry "Grub 1 Bootloader" {
             set root='hd0,msdos8'
             chainloader +1

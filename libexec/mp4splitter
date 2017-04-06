@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+### Script main entry
+
+import os
+import sys
+
+def main():
+    ## add for import path
+    srcdir = os.path.dirname(os.path.realpath(__file__))
+    srcdir = srcdir.replace("\\", "/")
+    sys.path.append(srcdir + "/../lib/python-lib")
+
+    import utils.common as common
+    import framework.dispatch as dispatch
+
+    workdir = common.getworkdir()
+    print "work directory: %s" % (workdir)
+
+    dispatcher = dispatch.Dispatch(workdir, srcdir, sys.argv);
+    dispatcher.run()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print "\nUser Press Ctrl+C, exit\n"

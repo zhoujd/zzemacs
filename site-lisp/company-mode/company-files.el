@@ -1,6 +1,6 @@
-;;; company-files.el --- company-mode completion back-end for file names
+;;; company-files.el --- company-mode completion backend for file names
 
-;; Copyright (C) 2009-2011, 2013  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2014-2015  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -26,63 +26,121 @@
 ;;; Code:
 
 (require 'company)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
-(defun company-files-directory-files (dir prefix)
-  (ignore-errors
-    (if (equal prefix "")
-        (directory-files dir nil "\\`[^.]\\|\\`.[^.]")
-      (file-name-all-completions prefix dir))))
+(defgroup company-files nil
+  "Completion backend for file names."
+  :group 'company)
 
-(defvar company-files-regexps
-  (let ((begin (if (eq system-type 'windows-nt)
-                   "[a-z][A-Z]\\"
-                 "~?/")))
+(defcustom company-files-exclusions nil
+  "File name extensions and directory names to ignore.
+The values should use the same format as `completion-ignored-extensions'."
+  :type '(const string)
+  :package-version '(company . "0.9.1"))
+
+(defun company-files--directory-files (dir prefix)
+  ;; Don't use directory-files. It produces directories without trailing /.
+  (condition-case err
+      (let ((comp (sort (file-name-all-completions prefix dir)
+                        (lambda (s1 s2) (string-lessp (downcase s1) (downcase s2))))))
+        (when company-files-exclusions
+          (setq comp (company-files--exclusions-filtered comp)))
+        (if (equal prefix "")
+            (delete "../" (delete "./" comp))
+          comp))
+    (file-error nil)))
+
+(defun company-files--exclusions-filtered (completions)
+  (let* ((dir-exclusions (cl-delete-if-not #'company-files--trailing-slash-p
+                                           company-files-exclusions))
+         (file-exclusions (cl-set-difference company-files-exclusions
+                                             dir-exclusions)))
+    (cl-loop for c in completions
+             unless (if (company-files--trailing-slash-p c)
+                        (member c dir-exclusions)
+                      (cl-find-if (lambda (exclusion)
+                                    (string-suffix-p exclusion c))
+                                  file-exclusions))
+             collect c)))
+
+(defvar company-files--regexps
+  (let* ((root (if (eq system-type 'windows-nt)
+                   "[a-zA-Z]:/"
+                 "/"))
+         (begin (concat "\\(?:\\.\\{1,2\\}/\\|~/\\|" root "\\)")))
     (list (concat "\"\\(" begin "[^\"\n]*\\)")
           (concat "\'\\(" begin "[^\'\n]*\\)")
           (concat "\\(?:[ \t]\\|^\\)\\(" begin "[^ \t\n]*\\)"))))
 
-(defun company-files-grab-existing-name ()
-  ;; Grab file names with spaces, only when they include quotes.
+(defun company-files--grab-existing-name ()
+  ;; Grab the file name.
+  ;; When surrounded with quotes, it can include spaces.
   (let (file dir)
-    (and (dolist (regexp company-files-regexps)
+    (and (cl-dolist (regexp company-files--regexps)
            (when (setq file (company-grab-line regexp 1))
-             (return file)))
+             (cl-return file)))
+         (company-files--connected-p file)
          (setq dir (file-name-directory file))
          (not (string-match "//" dir))
          (file-exists-p dir)
-         (file-name-all-completions (file-name-nondirectory file) dir)
          file)))
 
-(defvar company-files-completion-cache nil)
+(defun company-files--connected-p (file)
+  (or (not (file-remote-p file))
+      (file-remote-p file nil t)))
 
-(defun company-files-complete (prefix)
+(defun company-files--trailing-slash-p (file)
+  ;; `file-directory-p' is very expensive on remotes. We are relying on
+  ;; `file-name-all-completions' returning directories with trailing / instead.
+  (let ((len (length file)))
+    (and (> len 0) (eq (aref file (1- len)) ?/))))
+
+(defvar company-files--completion-cache nil)
+
+(defun company-files--complete (prefix)
   (let* ((dir (file-name-directory prefix))
          (file (file-name-nondirectory prefix))
-         candidates)
-    (unless (equal dir (car company-files-completion-cache))
-      (dolist (file (company-files-directory-files dir file))
-        (setq file (concat dir file))
-        (push file candidates)
-        (when (file-directory-p file)
-          ;; Add one level of children.
-          (dolist (child (company-files-directory-files file ""))
-            (push (concat file
-                          (unless (eq (aref file (1- (length file))) ?/) "/")
-                          child) candidates))))
-      (setq company-files-completion-cache (cons dir (nreverse candidates))))
-    (cdr company-files-completion-cache)))
+         (key (list file
+                    (expand-file-name dir)
+                    (nth 5 (file-attributes dir))))
+         (completion-ignore-case read-file-name-completion-ignore-case))
+    (unless (company-file--keys-match-p key (car company-files--completion-cache))
+      (let* ((candidates (mapcar (lambda (f) (concat dir f))
+                                 (company-files--directory-files dir file)))
+             (directories (unless (file-remote-p dir)
+                            (cl-remove-if-not (lambda (f)
+                                                (and (company-files--trailing-slash-p f)
+                                                     (not (file-remote-p f))
+                                                     (company-files--connected-p f)))
+                                              candidates)))
+             (children (and directories
+                            (cl-mapcan (lambda (d)
+                                         (mapcar (lambda (c) (concat d c))
+                                                 (company-files--directory-files d "")))
+                                       directories))))
+        (setq company-files--completion-cache
+              (cons key (append candidates children)))))
+    (all-completions prefix
+                     (cdr company-files--completion-cache))))
+
+(defun company-file--keys-match-p (new old)
+  (and (equal (cdr old) (cdr new))
+       (string-prefix-p (car old) (car new))))
 
 ;;;###autoload
 (defun company-files (command &optional arg &rest ignored)
-  "`company-mode' completion back-end existing file names."
+  "`company-mode' completion backend existing file names.
+Completions works for proper absolute and relative files paths.
+File paths with spaces are only supported inside strings."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-files))
-    (prefix (company-files-grab-existing-name))
-    (candidates (company-files-complete arg))
+    (prefix (company-files--grab-existing-name))
+    (candidates (company-files--complete arg))
     (location (cons (dired-noselect
                      (file-name-directory (directory-file-name arg))) 1))
+    (post-completion (when (company-files--trailing-slash-p arg)
+                       (delete-char -1)))
     (sorted t)
     (no-cache t)))
 

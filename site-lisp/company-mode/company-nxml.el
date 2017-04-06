@@ -1,4 +1,4 @@
-;;; company-nxml.el --- company-mode completion back-end for nxml-mode
+;;; company-nxml.el --- company-mode completion backend for nxml-mode
 
 ;; Copyright (C) 2009-2011, 2013  Free Software Foundation, Inc.
 
@@ -26,7 +26,7 @@
 ;;; Code:
 
 (require 'company)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defvar rng-open-elements)
 (defvar rng-validate-mode)
@@ -76,7 +76,7 @@
        ,@body)))
 
 (defun company-nxml-tag (command &optional arg &rest ignored)
-  (case command
+  (cl-case command
     (prefix (and (derived-mode-p 'nxml-mode)
                  rng-validate-mode
                  (company-grab company-nxml-in-tag-name-regexp 1)))
@@ -86,7 +86,7 @@
     (sorted t)))
 
 (defun company-nxml-attribute (command &optional arg &rest ignored)
-  (case command
+  (cl-case command
     (prefix (and (derived-mode-p 'nxml-mode)
                  rng-validate-mode
                  (memq (char-after) '(?\  ?\t ?\n)) ;; outside word
@@ -99,7 +99,7 @@
     (sorted t)))
 
 (defun company-nxml-attribute-value (command &optional arg &rest ignored)
-  (case command
+  (cl-case command
     (prefix (and (derived-mode-p 'nxml-mode)
                  rng-validate-mode
                  (and (memq (char-after) '(?' ?\" ?\  ?\t ?\n)) ;; outside word
@@ -121,9 +121,9 @@
 
 ;;;###autoload
 (defun company-nxml (command &optional arg &rest ignored)
-  "`company-mode' completion back-end for `nxml-mode'."
+  "`company-mode' completion backend for `nxml-mode'."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-nxml))
     (prefix (or (company-nxml-tag 'prefix)
                 (company-nxml-attribute 'prefix)

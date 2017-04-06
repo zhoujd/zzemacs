@@ -1,6 +1,6 @@
-;;; company-dabbrev.el --- dabbrev-like company-mode completion back-end
+;;; company-dabbrev.el --- dabbrev-like company-mode completion backend  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011  Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2011, 2014, 2015, 2016  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -26,22 +26,28 @@
 ;;; Code:
 
 (require 'company)
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 
 (defgroup company-dabbrev nil
-  "dabbrev-like completion back-end."
+  "dabbrev-like completion backend."
   :group 'company)
 
 (defcustom company-dabbrev-other-buffers 'all
   "Determines whether `company-dabbrev' should search other buffers.
-If `all', search all other buffers.  If t, search buffers with the same
-major mode.
-See also `company-dabbrev-time-limit'."
+If `all', search all other buffers, except the ignored ones.  If t, search
+buffers with the same major mode.  See also `company-dabbrev-time-limit'."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "Same major mode" t)
                  (const :tag "All" all)))
 
-(defcustom company-dabbrev-time-limit .5
+(defcustom company-dabbrev-ignore-buffers "\\`[ *]"
+  "Regexp matching the names of buffers to ignore.
+Or a function that returns non-nil for such buffers."
+  :type '(choice (regexp :tag "Regexp")
+                 (function :tag "Predicate"))
+  :package-version '(company . "0.9.0"))
+
+(defcustom company-dabbrev-time-limit .1
   "Determines how many seconds `company-dabbrev' should look for matches."
   :type '(choice (const :tag "Off" nil)
                  (number :tag "Seconds")))
@@ -50,77 +56,139 @@ See also `company-dabbrev-time-limit'."
   "A regular expression matching the characters `company-dabbrev' looks for."
   :type 'regexp)
 
-(defmacro company-dabrev--time-limit-while (test start limit &rest body)
+(defcustom company-dabbrev-ignore-case 'keep-prefix
+  "Non-nil to ignore case when collecting completion candidates.
+When it's `keep-prefix', the text before point will remain unchanged after
+candidate is inserted, even some of its characters have different case.")
+
+(defcustom company-dabbrev-downcase 'case-replace
+  "Whether to downcase the returned candidates.
+
+The value of nil means keep them as-is.
+`case-replace' means use the value of `case-replace'.
+Any other value means downcase.
+
+If you set this value to nil, you may also want to set
+`company-dabbrev-ignore-case' to any value other than `keep-prefix'.")
+
+(defcustom company-dabbrev-minimum-length 4
+  "The minimum length for the completion candidate to be included.
+This variable affects both `company-dabbrev' and `company-dabbrev-code'."
+  :type 'integer
+  :package-version '(company . "0.8.3"))
+
+(defcustom company-dabbrev-ignore-invisible nil
+  "Non-nil to skip invisible text."
+  :type 'boolean
+  :package-version '(company . "0.9.0"))
+
+(defmacro company-dabbrev--time-limit-while (test start limit freq &rest body)
   (declare (indent 3) (debug t))
   `(let ((company-time-limit-while-counter 0))
      (catch 'done
        (while ,test
          ,@body
          (and ,limit
-              (eq (incf company-time-limit-while-counter) 25)
+              (= (cl-incf company-time-limit-while-counter) ,freq)
               (setq company-time-limit-while-counter 0)
               (> (float-time (time-since ,start)) ,limit)
               (throw 'done 'company-time-out))))))
 
-(defsubst company-dabbrev--make-regexp (prefix)
-  (concat "\\<" (if (equal prefix "")
-              company-dabbrev-char-regexp
-            (regexp-quote prefix))
-          "\\(" company-dabbrev-char-regexp "\\)*\\>"))
+(defun company-dabbrev--make-regexp ()
+  (concat "\\(?:" company-dabbrev-char-regexp "\\)+"))
 
 (defun company-dabbrev--search-buffer (regexp pos symbols start limit
                                        ignore-comments)
   (save-excursion
-    (let (match)
+    (cl-labels ((maybe-collect-match
+                 ()
+                 (let ((match (match-string-no-properties 0)))
+                   (when (and (>= (length match) company-dabbrev-minimum-length)
+                              (not (and company-dabbrev-ignore-invisible
+                                        (invisible-p (match-beginning 0)))))
+                     (push match symbols)))))
       (goto-char (if pos (1- pos) (point-min)))
-      ;; search before pos
-      (company-dabrev--time-limit-while (re-search-backward regexp nil t)
-          start limit
-        (setq match (match-string-no-properties 0))
-        (if (and ignore-comments (company-in-string-or-comment))
-            (re-search-backward "\\s<\\|\\s!\\|\\s\"\\|\\s|" nil t)
-          (push match symbols)))
+      ;; Search before pos.
+      (let ((tmp-end (point)))
+        (company-dabbrev--time-limit-while (> tmp-end (point-min))
+            start limit 1
+          (ignore-errors
+            (forward-char -10000))
+          (forward-line 0)
+          (save-excursion
+            ;; Before, we used backward search, but it matches non-greedily, and
+            ;; that forced us to use the "beginning/end of word" anchors in
+            ;; `company-dabbrev--make-regexp'.  It's also about 2x slower.
+            (while (re-search-forward regexp tmp-end t)
+              (if (and ignore-comments (save-match-data (company-in-string-or-comment)))
+                  (re-search-forward "\\s>\\|\\s!\\|\\s\"" tmp-end t)
+                (maybe-collect-match))))
+          (setq tmp-end (point))))
       (goto-char (or pos (point-min)))
-      ;; search after pos
-      (company-dabrev--time-limit-while (re-search-forward regexp nil t)
-          start limit
-        (setq match (match-string-no-properties 0))
-        (if (and ignore-comments (company-in-string-or-comment))
+      ;; Search after pos.
+      (company-dabbrev--time-limit-while (re-search-forward regexp nil t)
+          start limit 25
+        (if (and ignore-comments (save-match-data (company-in-string-or-comment)))
             (re-search-forward "\\s>\\|\\s!\\|\\s\"" nil t)
-          (push match symbols)))
+          (maybe-collect-match)))
       symbols)))
 
-(defun company-dabbrev--search (regexp &optional limit other-buffers
+(defun company-dabbrev--search (regexp &optional limit other-buffer-modes
                                 ignore-comments)
   (let* ((start (current-time))
          (symbols (company-dabbrev--search-buffer regexp (point) nil start limit
                                                   ignore-comments)))
-    (when other-buffers
-      (dolist (buffer (delq (current-buffer) (buffer-list)))
-        (and (or (eq other-buffers 'all)
-                 (eq (buffer-local-value 'major-mode buffer) major-mode))
-             (with-current-buffer buffer
-               (setq symbols
-                     (company-dabbrev--search-buffer regexp nil symbols start
-                                                     limit ignore-comments))))
+    (when other-buffer-modes
+      (cl-dolist (buffer (delq (current-buffer) (buffer-list)))
+        (unless (if (stringp company-dabbrev-ignore-buffers)
+                    (string-match-p company-dabbrev-ignore-buffers
+                                    (buffer-name buffer))
+                  (funcall company-dabbrev-ignore-buffers buffer))
+          (with-current-buffer buffer
+            (when (or (eq other-buffer-modes 'all)
+                      (apply #'derived-mode-p other-buffer-modes))
+              (setq symbols
+                    (company-dabbrev--search-buffer regexp nil symbols start
+                                                    limit ignore-comments)))))
         (and limit
              (> (float-time (time-since start)) limit)
-             (return))))
+             (cl-return))))
     symbols))
+
+(defun company-dabbrev--prefix ()
+  ;; Not in the middle of a word.
+  (unless (looking-at company-dabbrev-char-regexp)
+    ;; Emacs can't do greedy backward-search.
+    (company-grab-line (format "\\(?:^\\| \\)[^ ]*?\\(\\(?:%s\\)*\\)"
+                               company-dabbrev-char-regexp)
+                       1)))
+
+(defun company-dabbrev--filter (prefix candidates)
+  (let ((completion-ignore-case company-dabbrev-ignore-case))
+    (all-completions prefix candidates)))
 
 ;;;###autoload
 (defun company-dabbrev (command &optional arg &rest ignored)
-  "dabbrev-like `company-mode' completion back-end."
+  "dabbrev-like `company-mode' completion backend."
   (interactive (list 'interactive))
-  (case command
+  (cl-case command
     (interactive (company-begin-backend 'company-dabbrev))
-    (prefix (company-grab-word))
+    (prefix (company-dabbrev--prefix))
     (candidates
-     (mapcar 'downcase
-             (company-dabbrev--search (company-dabbrev--make-regexp arg)
-                                      company-dabbrev-time-limit
-                                      company-dabbrev-other-buffers)))
-    (ignore-case t)
+     (let* ((case-fold-search company-dabbrev-ignore-case)
+            (words (company-dabbrev--search (company-dabbrev--make-regexp)
+                                            company-dabbrev-time-limit
+                                            (pcase company-dabbrev-other-buffers
+                                              (`t (list major-mode))
+                                              (`all `all))))
+            (downcase-p (if (eq company-dabbrev-downcase 'case-replace)
+                            case-replace
+                          company-dabbrev-downcase)))
+       (setq words (company-dabbrev--filter arg words))
+       (if downcase-p
+           (mapcar 'downcase words)
+         words)))
+    (ignore-case company-dabbrev-ignore-case)
     (duplicates t)))
 
 (provide 'company-dabbrev)

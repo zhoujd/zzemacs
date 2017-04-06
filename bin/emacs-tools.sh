@@ -24,6 +24,8 @@ Install_package()
     elif [ "$OS_DISTRO" = "Fedora" ]; then
         sudo dnf install -y cscope
         sudo dnf install -y texinfo
+        ## If want to install emacs with dnf tool
+        #sudo dnf install -y emacs emacs-auto-complete emacs-auto-complete-el
     elif [ "$OS_DISTRO" = "FreeBSD" ]; then
         sudo pkg_add -r w3m
         sudo pkg_add -r cscope

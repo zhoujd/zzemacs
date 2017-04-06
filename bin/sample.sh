@@ -5,7 +5,15 @@
 export OS_DISTRO="unknown"
 export SYSARCH=64
 
-# try command  for test command result.
+# ensure dirs exist
+ensure_dirs ()
+{
+    for j in "$@"; do
+         test -d "$j" || mkdir -p "$j"
+    done;
+}
+
+# try command for test command result.
 run_cmd()
 {
     "$@"
@@ -83,6 +91,11 @@ linux_lsb_check()
             OS_DISTRO="CentOS"
             echo "Run on $OS_DISTRO ..."
             ;;
+        "Fedora" )
+            OS_DISTRO="Fedora"
+            echo "Run on $OS_DISTRO ..."
+            ;;
+
         * )
             echo "Run on $OS_DISTRO ..."
             false

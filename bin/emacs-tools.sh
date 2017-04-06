@@ -21,6 +21,9 @@ Install_package()
     elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum install -y cscope
         sudo yum install -y texinfo
+    elif [ "$OS_DISTRO" = "Fedora" ]; then
+        sudo dnf install -y cscope
+        sudo dnf install -y texinfo
     elif [ "$OS_DISTRO" = "FreeBSD" ]; then
         sudo pkg_add -r w3m
         sudo pkg_add -r cscope

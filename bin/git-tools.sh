@@ -23,6 +23,10 @@ Install_package()
         sudo yum install -y texinfo
         sudo yum install -y git-core
         sudo yum install -y gitk
+    elif [ "$OS_DISTRO" = "Fedora" ]; then
+        sudo dnf install -y texinfo
+        sudo dnf install -y git-core
+        sudo dnf install -y gitk
     else
         echo "You are about to install on a non supported linux distribution."
     fi        

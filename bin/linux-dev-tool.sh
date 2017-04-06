@@ -42,6 +42,18 @@ Install_package_centos()
     sudo yum install -y mesa-dri-drivers #(if system is centos minimal installation, not desktop)
 }
 
+##package for fedora
+Install_package_fedora()
+{
+    sudo dnf install -y git diffstat
+    sudo dnf install -y gcc cmake gcc-c++ autoconf automake libtool libdrm-devel kernel-headers
+    sudo dnf install -y libX11-devel xorg-x11-server-devel libpciaccess-devel libXext-devel libXfixes-devel
+    sudo dnf install -y redhat-lsb-core libpciaccess-devel
+    sudo dnf install -y bison flex expat-devel
+    sudo dnf install -y patch rpm-build libudev-devel
+    sudo dnf install -y libpng12
+    sudo dnf install -y mesa-dri-drivers #(if system is centos minimal installation, not desktop)
+}
 
 # dectect OS version
 if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -50,6 +62,8 @@ elif [ "$OS_DISTRO" = "Ubuntu" ]; then
     run_cmd Install_package_ubuntu
 elif [ "$OS_DISTRO" = "CentOS" ]; then
     run_cmd Install_package_centos
+elif [ "$OS_DISTRO" = "Fedora" ]; then
+    run_cmd Install_package_fedora
 else
     echo "You are about to install on a non supported linux distribution."
 fi

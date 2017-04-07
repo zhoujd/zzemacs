@@ -254,7 +254,11 @@ Dmitriy Igrishin's patched version of comint.el."
                 (setenv "SHELL" shell-file-name)
                 (shell buf-name))))
              (shell buf-name))
-         (shell buf-name))))
+        (progn
+         (save-window-excursion
+          (shell buf-name))
+         (switch-to-buffer buf-name)))
+        ))
   ;;(delete-other-windows)
   (message "switch to %s" buf-name))
 

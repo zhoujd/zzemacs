@@ -70,7 +70,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun kill-shell-buffer(process event)
   "The one actually kill shell buffer when exit. "
   (kill-buffer (process-buffer process))
-  ;;(unless (one-window-p) (delete-window))
+  ;(unless (one-window-p)
+  ;  (delete-window))
   )
 
 (defun kill-shell-buffer-after-exit()
@@ -97,7 +98,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
 (when-ms-windows
- (setq multi-shell-command "cmdproxy.exe"))
+ (setq multi-shell-command "cmdproxy"))
 
 (defun get-local-shell ()
   (interactive)
@@ -130,7 +131,7 @@ Dmitriy Igrishin's patched version of comint.el."
  (require 'multi-term)
  (setq multi-term-switch-after-close nil)
  (setq multi-term-dedicated-select-after-open-p t)
- (setq multi-term-program "/bin/bash")
+ (setq multi-term-program "bash")
 
  ;;tmux prefix
  (defun term-send-tmux ()
@@ -219,12 +220,13 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;mulit linux index
 (when-ms-windows
  (defvar multi-linux-index 0 "multi shell index")
+ (defvar multi-linux-max 20 "multi shell max index")
  (defvar multi-linux-name multi-shell-buffer-name "multi shell index")
  (defun get-linux-shell ()
    (interactive)
    (switch-to-shell
     (format "*%s-%d*" multi-linux-name multi-linux-index))
-   (if (>= multi-linux-index 20)
+   (if (>= multi-linux-index multi-linux-max)
        (setq multi-linux-index 0)
        (setq multi-linux-index (1+ multi-linux-index))))
  )
@@ -304,7 +306,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
   (setq explicit-shell-file-name "bash")
   (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
-  (setq comint-process-echoes t)
+  (setq comint-process-echoes nil)
 
   (require 'readline-complete)
   (add-to-list 'ac-modes 'shell-mode)

@@ -234,6 +234,12 @@ Dmitriy Igrishin's patched version of comint.el."
 ;; shell on windows
 (defvar linux-bash-p t "when open shell on windows using bash flag")
 
+;; create shell buffer
+(defun my-create-shell-buffer (buf-name)
+  (save-window-excursion
+   (shell buf-name))
+  (switch-to-buffer buf-name))
+
 ;; switch to shell
 (defun switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
@@ -252,14 +258,11 @@ Dmitriy Igrishin's patched version of comint.el."
                 (setq explicit-sh-args '("--login" "-i"))
                 (setq explicit-shell-file-name "bash")
                 (setenv "SHELL" shell-file-name)
-                (shell buf-name))))
-             (shell buf-name))
-        (progn
-         (save-window-excursion
-          (shell buf-name))
-         (switch-to-buffer buf-name)))
-        ))
-  ;;(delete-other-windows)
+                (my-create-shell-buffer buf-name))))
+             (my-create-shell-buffer buf-name))
+         (progn
+          (my-create-shell-buffer buf-name)
+          ))))
   (message "switch to %s" buf-name))
 
 ;; switch to named term

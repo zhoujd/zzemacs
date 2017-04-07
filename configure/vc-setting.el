@@ -1,5 +1,5 @@
-;;;vc programme setting
-
+;;;version control setting
+;;
 
 ;;add mode support
 (setq auto-mode-alist

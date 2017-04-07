@@ -25,9 +25,9 @@
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
 ;;ssh-copy-id user1@123.123.123.123
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
-(when (version< emacs-version "24.4")
-  (zz-load-path "site-lisp/git-emacs")
-  (require 'git-emacs))
+;;https://github.com/tsgates/git-emacs
+(zz-load-path "site-lisp/git-emacs")
+(require 'git-emacs)
 
 ;;git show
 (require 'git-show)

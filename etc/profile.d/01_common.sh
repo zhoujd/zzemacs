@@ -27,11 +27,11 @@ color_prompt()
 
     # depend on term type
     case "$TERM" in
-        xterm* | rxvt*)
+        xterm* | rxvt* | eterm-color)
             if [ $(whoami) = 'root' ]; then
-                PS1="${green}\u@\h${white}:${norm}\w${norm}${lred}#${norm} "
+                PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "
             else
-                PS1="${green}\u@\h${white}:${norm}\w${norm}\$ "
+                PS1="${green}[\u@\h \W]${norm}${green}\$${norm} "
             fi
             ;;
     esac

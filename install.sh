@@ -33,6 +33,8 @@ Install_fonts()
             sudo ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf       $FONT_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*.ttf  $FONT_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
+
+            sudo fc-cache
             ;;
         "user")
             FONT_TARGET=~/.fonts
@@ -41,6 +43,8 @@ Install_fonts()
             ln -sf ${ZZEMACS_ROOT}/font/consola/*.ttf       $FONT_TARGET
             ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro/*.ttf  $FONT_TARGET
             ln -sf ${ZZEMACS_ROOT}/font/*.ttf               $FONT_TARGET
+
+            fc-cache
             ;;
         * )
             echo "unknown $TARGET_TYPE"

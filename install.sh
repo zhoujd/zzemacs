@@ -99,7 +99,7 @@ main()
     confirm_execute "Do you want to install others ? [y/N]" run_cmd Install_others
 
     ##install third-party
-    confirm_execute "Do you want to install third-party packages? (y/N): " run_cmd Install_thirdparty
+    confirm_execute "Do you want to install third-party packages ? (y/N): " run_cmd Install_thirdparty
 }
 
 main

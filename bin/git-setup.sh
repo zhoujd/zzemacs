@@ -127,6 +127,8 @@ git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh
 git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
+git config --global push.default simple
+
 ## update gitconfig for cmd using
 if [ "$OS" = "Windows_NT" ] ; then
     if [ ! $(cd "$HOME" ; pwd -W) = $(cd $USERPROFILE ; pwd -W) ] ; then

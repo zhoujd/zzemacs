@@ -62,15 +62,11 @@ linux_issue_check()
     run_cmd cat /etc/issue > /dev/null
     if [ ! -z "$(cat /etc/issue | grep 'Ubuntu')" ]; then
         OS_DISTRO="Ubuntu"
-        echo "Run on $OS_DISTRO ..."
     elif [ ! -z "$(cat /etc/issue | grep 'CentOS')" ]; then
         OS_DISTRO="CentOS"
-        echo "Run on $OS_DISTRO ..."
     elif [ ! -z "$(cat /etc/issue | grep 'SUSE')" ]; then
         OS_DISTRO="SUSE"
-        echo "Run on $OS_DISTRO ..."
     else
-        echo "Run on $OS_DISTRO ..."
         false
     fi
 }
@@ -81,23 +77,17 @@ linux_lsb_check()
     case $(lsb_release -si) in
         "SUSE LINUX" )
             OS_DISTRO="SUSE"
-            echo "Run on $OS_DISTRO ..."
             ;;
         "Ubuntu" )
             OS_DISTRO="Ubuntu"
-            echo "Run on $OS_DISTRO ..."
             ;;
         "CentOS" )
             OS_DISTRO="CentOS"
-            echo "Run on $OS_DISTRO ..."
             ;;
         "Fedora" )
             OS_DISTRO="Fedora"
-            echo "Run on $OS_DISTRO ..."
             ;;
-
         * )
-            echo "Run on $OS_DISTRO ..."
             false
             ;;
     esac
@@ -107,6 +97,7 @@ linux_sample ()
 {
     ## Dectect OS version
     linux_issue_check || linux_lsb_check
+    echo "Run on $OS_DISTRO ..."
 
     ## Detect system arch.
     ULONG_MASK=`getconf ULONG_MAX`

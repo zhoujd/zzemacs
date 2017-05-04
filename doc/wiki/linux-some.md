@@ -218,3 +218,6 @@ Linux something
     # sudo service apport start force_start=1
     enabled=0
 
+21. tag kernel
+    #Tag the patched kernel to provide easy identification.
+    $ perl -pi -e 's/.*CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION=".ZZ.r1"/' .config

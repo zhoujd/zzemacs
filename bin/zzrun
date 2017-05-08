@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+use strict;
+
 sub which
 {
 	my $cmd = shift;

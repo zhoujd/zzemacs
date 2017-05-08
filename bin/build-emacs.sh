@@ -53,7 +53,7 @@ Install_package()
     if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get build-dep -y emacs23
+        sudo apt-get build-dep -y emacs24
         sudo apt-get install -y build-essential
         sudo apt-get install -y libxpm-dev libpng12-dev libjpeg-dev libtiff4-dev libgif-dev
         sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libdbus-1-dev libgconf2-dev

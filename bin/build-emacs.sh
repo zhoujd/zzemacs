@@ -41,7 +41,6 @@ Build_source()
 
     build_finished=`date`
     echo
-    echo "//build started:  $build_started"
     echo "//build finished: $build_finished"
 
     popd

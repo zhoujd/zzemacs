@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+sub which
+{
+	my $cmd = shift;
+	foreach my $dir (split(":", $ENV{PATH})) {
+		my $f = $dir."/".$cmd;
+		return $f if -e $f;
+	}
+	return undef;
+}
+
+sub run
+{
+	my @ARGS = @_;
+	my $exe = which(shift @ARGS);
+	return undef if ! defined $exe;
+	print STDERR join("<->", ($exe, @ARGS))."\n";
+	exec($exe, @ARGS);
+}
+

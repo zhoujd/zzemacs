@@ -19,3 +19,4 @@ sub run
 	exec($exe, @ARGS);
 }
 
+run @ARGV;

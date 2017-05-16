@@ -221,3 +221,8 @@ Linux something
 21. tag kernel
     #Tag the patched kernel to provide easy identification.
     $ perl -pi -e 's/.*CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION=".ZZ.r1"/' .config
+
+22. functions in dynamic library
+    $ nm a.so
+    $ readelf -s a.so
+    $ readelf -a a.so

@@ -226,3 +226,4 @@ Linux something
     $ nm a.so
     $ readelf -s a.so
     $ readelf -a a.so
+    $ objdump -x a.so unamed.a

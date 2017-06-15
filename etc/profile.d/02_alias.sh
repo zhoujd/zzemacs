@@ -18,6 +18,7 @@ alias lh='ls -lh'                  # ls for -h
 alias lm='ls -al | more'           # pipeline to more
 
 ## buildin alias
+alias dir='dir --color=auto'
 alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias tree='tree -Csu'             # another better way for 'ls'
 alias which='type -all'
@@ -81,11 +82,3 @@ alias me='mcedit'
 ## vlc alias
 alias vlc265='vlc --demux hevc'
 alias vlc264='vlc --demux h264'
-
-## more sudo alias
-#if [ $UID -ne 0 ]; then
-#    alias reboot='sudo reboot'
-#    alias poweroff='sudo poweroff'
-#    alias halt='sudo halt'
-#    alias shutdown='sudo shutdown'
-#fi

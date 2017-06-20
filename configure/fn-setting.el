@@ -95,7 +95,7 @@
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
     
     (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
-    (kbd "C-c <f6>")  nil
+    (kbd "C-c <f6>")  (if-ms-windows 'get-local-shell 'multi-term)
     )
 
 (define-fn-key (gethash "f7" fn-key-table)

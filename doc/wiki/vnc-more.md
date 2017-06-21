@@ -3,7 +3,7 @@ VNC More
 
 1. Install VNC server and client
 
-        rpm -qa | grep tigervnc   
+        rpm -qa | grep tigervnc
         sudo yum install -y tigervnc-server
         sudo yum install -y tigervnc         ==> Applications->Internet->TigerVNC Viewer
 
@@ -13,7 +13,7 @@ VNC More
 
         su - media
         vncpasswd
-        vncserver 
+        vncserver
         vncserver -list
         vncserver -kill :1
 
@@ -89,3 +89,19 @@ VNC More
 
 6. VNC on Windows http://www.tightvnc.com/download.php
 7. Download x11vnc from http://www.karlrunge.com/x11vnc/
+8. VNC on Ubuntu 14.04
+
+        $ sudo apt-get install vnc4server
+        $ sudo apt-get install gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+        $ cat .vnc/xstartup
+        #!/bin/sh
+        export XKL_XMODMAP_DISABLE=1
+        unset SESSION_MANAGER
+        unset DBUS_SESSION_BUS_ADDRESS
+
+        gnome-panel &
+        gnome-settings-daemon &
+        metacity &
+        nautilus &
+        gnome-terminal &
+

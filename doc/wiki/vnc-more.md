@@ -105,3 +105,8 @@ VNC More
         nautilus &
         gnome-terminal &
 
+9. VNC set geometry for client
+
+        ## on sever side
+        $ vncserver -geometry 1280x720 :1
+

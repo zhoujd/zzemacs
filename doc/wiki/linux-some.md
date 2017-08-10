@@ -8,6 +8,8 @@ Linux something
     $ ls *rpm | egrep -v "samples" | xargs sudo yum -y localinstall
     $ sudo yum -y groupinstall "development tools"
     $ sudo yum -y localinstall *.rpm
+
+    $ yum list installed | grep kmd
  
 2. linux cross reference
 

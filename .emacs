@@ -53,6 +53,7 @@
         scheme-setting
         perl-setting
         python-setting
+        matlab-setting
         doc-setting
         spell-setting
         game-setting

@@ -139,6 +139,16 @@ case `uname -s` in
         ;;
 esac
 
-## reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
-#WDIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)   ## only for bash
-#WDIR=$(cd $(dirname $0) && pwd)
+## Get script path
+#script_path=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) ## only for bash
+#script_path=$(cd $(dirname $0) && pwd)
+
+## Note: using bash array for allow the comments for the arguments
+#cmd=(
+#	./emacs  # run emacs
+#   -Q
+#   --quick
+#)	
+#
+#"${cmd[@]}"
+

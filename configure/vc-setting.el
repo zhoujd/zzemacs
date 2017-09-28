@@ -24,10 +24,12 @@
 ;;$chmod 644 ~/.ssh/authorized_keys
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
 ;;ssh-copy-id user1@123.123.123.123
+
+;;;Waring on 24.5+ so temp disable git-emacs
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
 ;;https://github.com/tsgates/git-emacs
-(zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs)
+;(zz-load-path "site-lisp/git-emacs")
+;(require 'git-emacs)
 
 ;;git show
 (require 'git-show)

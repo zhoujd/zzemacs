@@ -4,7 +4,7 @@
 
 SOURCE="mkv"
 TARGET="mp4"
-AUDIO_MAP="-map 0:1 -map 0:2"
+AUDIO_MAP="-map 0:a"
 
 for abc in *.$SOURCE; do
     name=${abc%.*}

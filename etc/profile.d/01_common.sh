@@ -26,17 +26,26 @@ color_prompt()
     local white='\[\033[1;37m\]'
 
     # depend on term type
-    if [ ! "$OS" = "Windows_NT" ] ; then
-        case "$TERM" in
-            xterm* | rxvt* | eterm-color)
+    case "$TERM" in
+        xterm* | rxvt* | eterm-color)
+            if [ ! "$OS" = "Windows_NT" ] ; then
                 if [ $(whoami) = 'root' ]; then
                     PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "
                 else
                     PS1="${green}[\u@\h \W]${norm}${green}\$${norm} "
                 fi
-                ;;
-        esac
-    fi
+            fi
+            ;;
+        emacs*)
+            if [ "$OS" = "Windows_NT" ] ; then
+                if [ $(whoami) = 'root' ]; then
+                    PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "
+                else
+                    PS1="${green}[\u@\h \W]${norm}${green}\$${norm} "
+                fi
+            fi
+            ;;
+    esac
 }
 
 color_prompt

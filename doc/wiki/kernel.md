@@ -7,7 +7,7 @@ Linux kernel
         CONFIG_KGDB_SERIAL_CONSOLE = y 
 
         ## add parameter to initrd in grub.cfg (kgdb over console)
-        kgdbwait kgdboc=0,9600      ## ttyS0, 9600
+        kgdbwait kgdboc=0,9600      ## ttyS0, 9600/115200
         
         echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
 

@@ -20,6 +20,8 @@ Linux kernel
         (gdb) set remotebaud 9600
         (gdb) target remote /dev/ttyS0
 
+        (gdb) b start_kernel
+
         (gdb) b panic
         Breakpoint 1 at 0x8033e900: file kernel/panic.c, line 88.
         (gdb) b sys_sync
@@ -32,3 +34,14 @@ Linux kernel
 4. gdbtui
 
         ./arm-eabi-4.4.3/bin/arm-eabi-gdbtui ./vmlinux
+
+5. QEMU
+        [root@localhost kvm]# qemu-system-x86_64 -hda vdisk.img -net none -m 1024 -daemonize -cpu host -smp 2 -vnc :1 -s
+        
+        $ virsh edit <vm-name>
+        <qemu:commandline> 
+        <qemu:arg value='-S'/> 
+        <qemu:arg value='-gdb'/> 
+        <qemu:arg value='tcp::1234'/> 
+        </qemu:commandline>
+

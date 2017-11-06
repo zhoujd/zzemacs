@@ -31,7 +31,8 @@ FFMPEG
     done
 
 4. Split and merge
-    $ ffmpeg -i input.mp4 -ss **START_TIME** -t **STOP_TIME** -acodec copy -vcodec copy output.mp4
+    $ ffmpeg -i input.mp4 -ss **START_TIME** -to **STOP_TIME** -acodec copy -vcodec copy output.mp4
+    $ ffmpeg -i input.mp4 -ss **START_TIME** -t **DURING_TIME** -acodec copy -vcodec copy output.mp4
 
     $ cat list.txt
     file '/path/to/file1'

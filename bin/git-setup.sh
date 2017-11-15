@@ -58,9 +58,6 @@ git config --global user.email  "zjd-405@163.com"
 ## output color
 git config --global color.ui    "true"
 
-## work around for git error: Their offer: ssh-dss
-git config --global core.sshCommand "ssh -oHostKeyAlgorithms=+ssh-dss" 
-
 ## not check file mode on windows
 if [ "$OS" = "Windows_NT" ] ; then
     ## cr && lf

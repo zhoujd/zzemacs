@@ -7,6 +7,14 @@ FFMPEG
     For Windows builds
     http://ffmpeg.zeranoe.com/builds/
 
+    For build ffmpeg via source on Ubuntu 16.04
+
+        sudo apt-get install yasm
+
+        ./configure --prefix=/usr
+        make -j4
+        sudo make install
+
 1. Merge multiable mp4 in for one
     
     $ ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts
@@ -39,4 +47,3 @@ FFMPEG
     file '/path/to/file2'
     file '/path/to/file3'
     $ ffmpeg -f concat -i **list.txt** -c copy output.mp4
-

@@ -17,7 +17,7 @@ fi
 
 if [ ! -f $cpu_mem_file ] ; then
     echo "$cpu_mem_file does not exist!"
-    echo "run top.sh first!"
+    echo "run cpu-mem-top.sh first!"
     exit 1
 fi
 

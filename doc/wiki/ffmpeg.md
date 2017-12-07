@@ -11,7 +11,7 @@ FFMPEG
 
         sudo apt-get install yasm
 
-        ./configure --prefix=/usr
+        ./configure --prefix=/usr ./configure --prefix=/usr --enable-shared
         make -j4
         sudo make install
 

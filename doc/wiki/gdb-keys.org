@@ -1,29 +1,42 @@
 * GDB keys in zzemacs for debug
 
-| Keys   | GDB functions                |
-|--------+------------------------------|
-| M-5    | gud-cont (W) / gud-go (L)    |
-| M-6    | gud-break                    |
-| M-7    | gud-next                     |
-| M-8    | gud-step                     |
-| M-9    | gud-print                    |
-| C-5    | gud-until                    |
-| C-6    | gud-remove                   |
-| C-7    | gud-finish                   |
-| C-8    | gud-jump                     |
-| C-9    | gud-pstar                    |
-| F1-5   | gdb-frame-stack-buffer       |
-| F1-6   | gdb-frame-breakpoints-buffer |
-| F1-7   | gdb-frame-assembler-buffer   |
-| F1-8   | gdb-frame-memory-buffer      |
-| F1-9   | gdb-frame-locals-buffer      |
-| F1-0   | gdb-frame-gdb-buffer         |
-| F1--   | gud-up                       |
-| F1-=   | gud-down                     |
-| F8     | gdb                          |
-| S-F8   | gud-kill                     |
-| C-F8   | gdb-restore-windows          |
-| M-F8   | gdb-many-windows             |
-| C-x F8 | gdb-use-separate-io          |
-| C-c F8 | gud-tooltip-mode             |
+https://www.emacswiki.org/emacs/GDB-MI
 
+** gdb -annotate
+  gdb -annotate 1 /bin/ls
+  (gdb) help set annotate
+  Set annotation_level.
+  0 == normal;     1 == fullname (for use when running under emacs)
+  2 == output annotated suitably for use by programs that control GDB.
+
+** gdb key map in emacs
+| GDB keys                 | My Keys | GDB functions                |
+|--------------------------+---------+------------------------------|
+| C-x C-a C-r              | M-5     | gud-cont (W) / gud-go (L)    |
+| C-x C-a C-b or C-x <SPC> | M-6     | gud-break                    |
+| C-x C-a C-n              | M-7     | gud-next                     |
+| C-x C-a C-s              | M-8     | gud-step                     |
+| C-x C-a C-p              | M-9     | gud-print                    |
+| C-x C-a C-u              | C-5     | gud-until                    |
+| C-x C-a C-d              | C-6     | gud-remove                   |
+| C-x C-a C-f              | C-7     | gud-finish                   |
+| C-x C-a C-j              | C-8     | gud-jump                     |
+|                          | C-9     | gud-pstar                    |
+|                          | F1-5    | gdb-frame-stack-buffer       |
+|                          | F1-6    | gdb-frame-breakpoints-buffer |
+|                          | F1-7    | gdb-frame-assembler-buffer   |
+|                          | F1-8    | gdb-frame-memory-buffer      |
+|                          | F1-9    | gdb-frame-locals-buffer      |
+|                          | F1-0    | gdb-frame-gdb-buffer         |
+| C-x C-a <                | F1--    | gud-up                       |
+| C-x C-a >                | F1-=    | gud-down                     |
+|                          | F8      | gdb                          |
+|                          | S-F8    | gud-kill                     |
+|                          | C-F8    | gdb-restore-windows          |
+|                          | M-F8    | gdb-many-windows             |
+|                          | C-x F8  | gdb-use-separate-io          |
+|                          | C-c F8  | gud-tooltip-mode             |
+| C-x C-a C-l              |         | gud-refresh                  |
+| C-x C-a C-i              |         | gud-stepi                    |
+| C-x C-a C-t              |         | gud-tbreak                   |
+| <TAB>                    |         | gud-gdb-complete-command     |

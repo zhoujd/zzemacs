@@ -39,17 +39,17 @@
 ;;perl sepia settings
 ;;http://cpansearch.perl.org/src/SEANO/Sepia-0.97/Sepia.html
 ;;http://repo.or.cz/w/sepia.git
-;(zz-load-path "site-lisp/sepia")
-;(setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
-;(defalias 'perl-mode 'sepia-mode)
-;(defalias 'sepia     'sepia-repl)
-;(defalias 'run-perl  'sepia-repl)
-;(require 'sepia)
-;
-;(defun my-sepia-mode-hook ()
-;  (define-key sepia-mode-map [(tab)] 'sepia-indent-or-complete))
-;
-;(add-hook 'sepia-mode-hook 'my-sepia-mode-hook t)
+(zz-load-path "site-lisp/sepia")
+(setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
+(defalias 'perl-mode 'sepia-mode)
+(defalias 'sepia     'sepia-repl)
+(defalias 'run-perl  'sepia-repl)
+(require 'sepia)
+
+(defun my-sepia-mode-hook ()
+  (define-key sepia-mode-map [(tab)] 'sepia-indent-or-complete))
+
+(add-hook 'sepia-mode-hook 'my-sepia-mode-hook t)
 
 ;;perl completing
 (add-hook  'cperl-mode-hook

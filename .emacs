@@ -46,6 +46,7 @@
         other-setting
         shell-setting
         sample-setting
+        w3m-setting
         ;;dired-setting
         ;;media-setting
         ;;evil-setting
@@ -59,7 +60,6 @@
         ;;spell-setting
         ;;game-setting
         ;;gnuplot-setting
-        ;;w3m-setting
         keymap-setting
         fn-setting
         key-setting

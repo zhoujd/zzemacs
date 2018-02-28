@@ -2,23 +2,23 @@
 
 ;force gdb-mi to not dedicate any windows
 (advice-add 'gdb-display-buffer
-	    :around (lambda (orig-fun &rest r)
-		      (let ((window (apply orig-fun r)))
-			(set-window-dedicated-p window nil)
-			window)))
+            :around (lambda (orig-fun &rest r)
+                      (let ((window (apply orig-fun r)))
+                        (set-window-dedicated-p window nil)
+                        window)))
 
 (advice-add 'gdb-set-window-buffer
-	    :around (lambda (orig-fun name &optional ignore-dedicated window)
-		      (funcall orig-fun name ignore-dedicated window)
-		      (set-window-dedicated-p window nil)))
+            :around (lambda (orig-fun name &optional ignore-dedicated window)
+                      (funcall orig-fun name ignore-dedicated window)
+                      (set-window-dedicated-p window nil)))
 
 (defun gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
   (save-excursion
-    (if (eq (car (fringe-bitmaps-at-pos (point))) 'breakpoint)
-        (gud-remove nil)
-      (gud-break nil))))
+   (if (eq (car (fringe-bitmaps-at-pos (point))) 'breakpoint)
+       (gud-remove nil)
+       (gud-break nil))))
 
 (defun gud-kill ()
   "Kill gdb process."
@@ -28,11 +28,10 @@
                          gdb-threads-buffer gdb-inferior-io
                          gdb-registers-buffer gdb-memory-buffer
                          gdb-locals-buffer gdb-assembler-buffer))
-    (when (gdb-get-buffer buffer)
-      (let ((proc (get-buffer-process (gdb-get-buffer buffer))))
-        (when proc (set-process-query-on-exit-flag proc nil)))
-      (kill-buffer (gdb-get-buffer buffer)))))
-
+          (when (gdb-get-buffer buffer)
+            (let ((proc (get-buffer-process (gdb-get-buffer buffer))))
+              (when proc (set-process-query-on-exit-flag proc nil)))
+            (kill-buffer (gdb-get-buffer buffer)))))
 
 ;;for cdb.exe debug on windows
 ;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1

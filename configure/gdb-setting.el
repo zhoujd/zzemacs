@@ -1,17 +1,18 @@
 ;;;; gdb-setting.el --- gdb common file
 
 ;force gdb-mi to not dedicate any windows
-(require 'nadvice)
-(advice-add 'gdb-display-buffer
-            :around (lambda (orig-fun &rest r)
-                      (let ((window (apply orig-fun r)))
-                        (set-window-dedicated-p window nil)
-                        window)))
-
-(advice-add 'gdb-set-window-buffer
-            :around (lambda (orig-fun name &optional ignore-dedicated window)
-                      (funcall orig-fun name ignore-dedicated window)
-                      (set-window-dedicated-p window nil)))
+(when (and (>= emacs-major-version 24)
+           (>= emacs-minor-version 5))
+  (advice-add 'gdb-display-buffer
+              :around (lambda (orig-fun &rest r)
+                        (let ((window (apply orig-fun r)))
+                          (set-window-dedicated-p window nil)
+                          window)))
+  
+  (advice-add 'gdb-set-window-buffer
+              :around (lambda (orig-fun name &optional ignore-dedicated window)
+                        (funcall orig-fun name ignore-dedicated window)
+                        (set-window-dedicated-p window nil))))
 
 (defun gud-break-remove ()
   "Set/clear breakpoin."

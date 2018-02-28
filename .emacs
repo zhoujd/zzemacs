@@ -40,25 +40,26 @@
         env-setting
         complete-setting
         prog-setting
-        dired-setting
+        gdb-setting
         vc-setting
         ediff-setting
         other-setting
         shell-setting
         sample-setting
-        media-setting
-        evil-setting
+        ;;dired-setting
+        ;;media-setting
+        ;;evil-setting
         c-setting
         lisp-setting
         scheme-setting
         perl-setting
         python-setting
-        matlab-setting
         doc-setting
-        spell-setting
-        game-setting
-        gnuplot-setting
-        w3m-setting
+        ;;matlab-setting
+        ;;spell-setting
+        ;;game-setting
+        ;;gnuplot-setting
+        ;;w3m-setting
         keymap-setting
         fn-setting
         key-setting

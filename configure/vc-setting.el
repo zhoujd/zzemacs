@@ -32,11 +32,11 @@
 ;(require 'git-emacs)
 
 ;;git show
-(require 'git-show)
+;(require 'git-show)
 
 ;;mercurial Support
-(require 'mercurial)
-(require 'mq)
+;(require 'mercurial)
+;(require 'mq)
 
 ;;magit setting need upgrade for emacs24.4
 (zz-load-path "site-lisp/git-modes")

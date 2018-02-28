@@ -103,17 +103,17 @@ the mru bookmark stack."
       (indent-for-tab-command)))
 
 ;;;company-mode <ctrl+tab> to open complete menu
-(zz-load-path "site-lisp/company-mode")
-(require 'company)
-(global-company-mode t)
-(setq company-idle-delay nil) ;; nil for not auto popup
-(setq company-minimum-prefix-length 1)
-(setq company-show-numbers t)
-(define-key company-active-map [return]    nil)
-(define-key company-active-map (kbd "RET") nil)
-(define-key company-active-map [tab]       'company-complete-selection)
-(define-key company-active-map (kbd "TAB") 'company-complete-selection)
-(global-set-key [(control tab)] 'company-complete)
+;(zz-load-path "site-lisp/company-mode")
+;(require 'company)
+;(global-company-mode t)
+;(setq company-idle-delay nil) ;; nil for not auto popup
+;(setq company-minimum-prefix-length 1)
+;(setq company-show-numbers t)
+;(define-key company-active-map [return]    nil)
+;(define-key company-active-map (kbd "RET") nil)
+;(define-key company-active-map [tab]       'company-complete-selection)
+;(define-key company-active-map (kbd "TAB") 'company-complete-selection)
+;(global-set-key [(control tab)] 'company-complete)
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")

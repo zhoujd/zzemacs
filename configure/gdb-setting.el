@@ -1,6 +1,7 @@
 ;;;; gdb-setting.el --- gdb common file
 
 ;force gdb-mi to not dedicate any windows
+(require 'nadvice)
 (advice-add 'gdb-display-buffer
             :around (lambda (orig-fun &rest r)
                       (let ((window (apply orig-fun r)))

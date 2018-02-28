@@ -47,6 +47,7 @@
         shell-setting
         sample-setting
         w3m-setting
+        doc-setting
         ;;dired-setting
         ;;media-setting
         ;;evil-setting
@@ -55,7 +56,6 @@
         scheme-setting
         perl-setting
         python-setting
-        doc-setting
         ;;matlab-setting
         ;;spell-setting
         ;;game-setting

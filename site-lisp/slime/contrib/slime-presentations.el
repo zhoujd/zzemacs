@@ -39,15 +39,8 @@
 ;;           'slime-presentation-inspector-insert-ispec))
 ;;
 (defface slime-repl-output-mouseover-face
-  (if (featurep 'xemacs)
-      '((t (:bold t)))
-    (if (slime-face-inheritance-possible-p)
-        '((t
-           (:box
-            (:line-width 1 :color "black" :style released-button)
-            :inherit
-            slime-repl-inputed-output-face)))
-      '((t (:box (:line-width 1 :color "black"))))))
+    '((t (:box (:line-width 1 :color "black" :style released-button)
+          :inherit slime-repl-inputed-output-face)))
   "Face for Lisp output in the SLIME REPL, when the mouse hovers over it"
   :group 'slime-repl)
 
@@ -812,8 +805,10 @@ output; otherwise the new input is appended."
   "Return the current input as string.
 The input is the region from after the last prompt to the end of
 buffer. Presentations of old results are expanded into code."
-  (slime-buffer-substring-with-reified-output  slime-repl-input-start-mark
-					       (point-max)))
+  (slime-buffer-substring-with-reified-output slime-repl-input-start-mark
+                                              (if until-point-p
+                                                  (point)
+                                                (point-max))))
 
 (defun slime-presentation-on-return-pressed (end-of-input)
   (when (and (car (slime-presentation-around-or-before-point (point)))

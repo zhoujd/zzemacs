@@ -21,17 +21,24 @@
   :type 'integer
   :group 'slime-ui)
 
+;;;###autoload
+(defcustom slime-autodoc-mode-string (purecopy " adoc")
+  "String to display in mode line when Autodoc Mode is enabled; nil for none."
+  :type '(choice string (const :tag "None" nil))
+  :group 'slime-ui)
+
 
 
 (defun slime-arglist (name)
   "Show the argument list for NAME."
   (interactive (list (slime-read-symbol-name "Arglist of: " t)))
-  (let ((arglist (slime-autodoc--retrieve-arglist name)))
+  (let ((arglist (slime-retrieve-arglist name)))
     (if (eq arglist :not-available)
         (error "Arglist not available")
         (message "%s" (slime-autodoc--fontify arglist)))))
 
-(defun slime-autodoc--retrieve-arglist (name)
+;; used also in slime-c-p-c.el.
+(defun slime-retrieve-arglist (name)
   (let ((name (cl-etypecase name
 		(string name)
 		(symbol (symbol-name name)))))
@@ -41,7 +48,7 @@
   "Like autodoc informtion forcing multiline display."
   (interactive)
   (let ((doc (slime-autodoc t)))
-    (cond (doc (eldoc-message "%s" doc))
+    (cond (doc (eldoc-message doc))
 	  (t (eldoc-message nil)))))
 
 ;; Must call eldoc-add-command otherwise (eldoc-display-message-p)
@@ -54,7 +61,7 @@
   (self-insert-command n)
   (let ((doc (slime-autodoc)))
     (when doc
-      (eldoc-message "%s" doc))))
+      (eldoc-message doc))))
 
 (eldoc-add-command 'slime-autodoc-space)
 
@@ -102,8 +109,12 @@
       (let ((highlight (match-string 1)))
         ;; Can't use (replace-match highlight) here -- broken in Emacs 21
         (delete-region (match-beginning 0) (match-end 0))
-	(slime-insert-propertized '(face highlight) highlight)))
+	(slime-insert-propertized '(face eldoc-highlight-function-argument) highlight)))
     (buffer-substring (point-min) (point-max))))
+
+(define-obsolete-function-alias 'slime-fontify-string
+  'slime-autodoc--fontify
+  "SLIME 2.10")
 
 
 ;;;; Autodocs (automatic context-sensitive help)
@@ -152,7 +163,7 @@ If it's not in the cache, the cache will be updated asynchronously."
       ;; Now that we've got our information,
       ;; get it to the user ASAP.
       (when (eldoc-display-message-p)
-	(eldoc-message "%s" (slime-autodoc--format doc multilinep))))))
+	(eldoc-message (slime-autodoc--format doc multilinep))))))
 
 
 ;;; Minor mode definition
@@ -165,15 +176,17 @@ If it's not in the cache, the cache will be updated asynchronously."
 
 (define-minor-mode slime-autodoc-mode
   "Toggle echo area display of Lisp objects at point."
+  :lighter slime-autodoc-mode-string
   :keymap (let ((prefix (slime-autodoc--doc-map-prefix)))
 	    `((,(concat prefix "A") . slime-autodoc-manually)
 	      (,(concat prefix (kbd "C-A")) . slime-autodoc-manually)
 	      (,(kbd "SPC") . slime-autodoc-space)))
   (set (make-local-variable 'eldoc-documentation-function) 'slime-autodoc)
-  (set (make-local-variable 'eldoc-minor-mode-string) " adoc")
+  (set (make-local-variable 'eldoc-minor-mode-string) nil)
   (setq slime-autodoc-mode (eldoc-mode arg))
-  (message "Slime autodoc mode %s."
-	   (if slime-autodoc-mode "enabled" "disabled")))
+  (when (called-interactively-p 'interactive)
+    (message "Slime autodoc mode %s."
+             (if slime-autodoc-mode "enabled" "disabled"))))
 
 
 ;;; Noise to enable/disable slime-autodoc-mode

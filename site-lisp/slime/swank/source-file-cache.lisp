@@ -20,10 +20,12 @@
 ;;; This code has been placed in the Public Domain.  All warranties
 ;;; are disclaimed.
 
-(defpackage swank-source-file-cache
-  (:use cl swank-backend)
-  (:import-from swank-backend
-		defimplementation buffer-first-change)
+(defpackage swank/source-file-cache
+  (:use cl)
+  (:import-from swank/backend
+		defimplementation buffer-first-change
+		guess-external-format
+		find-external-format)
   (:export
    get-source-code
    source-cache-get ;FIXME: isn't it odd that both are exported?
@@ -33,7 +35,7 @@
    read-snippet-from-string
    ))
 
-(in-package swank-source-file-cache)
+(in-package swank/source-file-cache)
 
 (defvar *cache-sourcecode* t
   "When true complete source files are cached.
@@ -119,7 +121,7 @@ If POSITION is given, set the STREAM's file position first."
     (read-snippet s position)))
 
 (defun skip-comments-and-whitespace (stream)
-  (case (peek-char nil stream)
+  (case (peek-char nil stream nil nil)
     ((#\Space #\Tab #\Newline #\Linefeed #\Page)
      (read-char stream)
      (skip-comments-and-whitespace stream))

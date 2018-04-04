@@ -36,7 +36,7 @@ SELECTOR  -- selector for ERT tests ($(SELECTOR))\n"
 
 # Compilation
 #
-slime.elc: slime.el ChangeLog lib/hyperspec.elc
+slime.elc: slime.el lib/hyperspec.elc
 
 %.elc: %.el
 	$(EMACS) -Q $(LOAD_PATH) --batch -f batch-byte-compile $<
@@ -88,7 +88,7 @@ FASLREGEX = .*\.\(fasl\|ufasl\|sse2f\|lx32fsl\|abcl\|fas\|lib\|trace\)$$
 
 clean-fasls:
 	find . -regex '$(FASLREGEX)' -exec rm -v {} \;
-	[ -d ~/.slime/fasl ] && rm -rf ~/.slime/fasl
+	[ ! -d ~/.slime/fasl ] || rm -rf ~/.slime/fasl
 
 clean: clean-fasls
 	find . -iname '*.elc' -exec rm {} \;

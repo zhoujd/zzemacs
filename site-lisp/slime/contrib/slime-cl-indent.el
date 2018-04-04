@@ -103,7 +103,7 @@ form, instead of the keyword position."
 
 (defcustom lisp-loop-body-forms-indentation 3
   "Indentation of loop body clauses."
-  :type 'boolean
+  :type 'integer
   :group 'lisp-indent)
 
 (defcustom lisp-loop-indent-forms-like-keywords nil
@@ -985,7 +985,7 @@ For example, the function `case' has an indent property
               (goto-char indent-point)
               (back-to-indentation)
               (let ((p (point)))
-                (goto-char containing-sexp)
+                (goto-char containing-form-start)
                 (down-list)
                 (let ((one (current-column)))
                   (skip-chars-forward " \t")

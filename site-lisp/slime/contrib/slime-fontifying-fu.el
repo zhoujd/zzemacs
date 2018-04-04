@@ -36,10 +36,7 @@ Fontify CHECK-FOO like CHECK-TYPE."
     'lisp-mode slime-additional-font-lock-keywords)))
 
 (defface slime-reader-conditional-face
-  (if (slime-face-inheritance-possible-p)
     '((t (:inherit font-lock-comment-face)))
-  '((((background light)) (:foreground "DimGray" :bold t))
-    (((background dark)) (:foreground "LightGray" :bold t))))
   "Face for compiler notes while selected."
   :group 'slime-mode-faces)
 
@@ -204,7 +201,11 @@ position, or nil."
                               'slime-extend-region-for-font-lock t t)))))
 
 (let ((byte-compile-warnings '()))
-  (mapc #'byte-compile
+  (mapc (lambda (sym)
+          (cond ((fboundp sym)
+                 (unless (byte-code-function-p (symbol-function sym))
+                   (byte-compile sym)))
+                (t (error "%S is not fbound" sym))))
         '(slime-extend-region-for-font-lock
           slime-compute-region-for-font-lock
           slime-search-directly-preceding-reader-conditional

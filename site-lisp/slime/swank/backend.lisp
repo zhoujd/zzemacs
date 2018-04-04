@@ -10,107 +10,7 @@
 ;;; separately for each Lisp. Each is declared as a generic function
 ;;; for which swank-<implementation>.lisp provides methods.
 
-(defpackage swank-backend
-  (:use cl)
-  (:export *debug-swank-backend*
-           sldb-condition
-           compiler-condition
-           original-condition
-           message
-           source-context
-           condition
-           severity
-           with-compilation-hooks
-           make-location
-           location
-           location-p
-           location-buffer
-           location-position
-	   location-hints
-           position-p
-           position-pos
-           print-output-to-string
-           quit-lisp
-           references
-           unbound-slot-filler
-           declaration-arglist
-           type-specifier-arglist
-           with-struct
-           when-let
-	   defimplementation
-	   converting-errors-to-error-location
-	   make-error-location
-	   deinit-log-output
-           ;; interrupt macro for the backend
-           *pending-slime-interrupts*
-           check-slime-interrupts
-           *interrupt-queued-handler*
-           ;; inspector related symbols
-           emacs-inspect
-           label-value-line
-           label-value-line*
-           with-symbol
-           ;; package helper for backend
-           import-to-swank-mop
-           import-swank-mop-symbols
-	   ;;
-
-           ))
-
-(defpackage swank-mop
-  (:use)
-  (:export
-   ;; classes
-   standard-generic-function
-   standard-slot-definition
-   standard-method
-   standard-class
-   eql-specializer
-   eql-specializer-object
-   ;; standard-class readers
-   class-default-initargs
-   class-direct-default-initargs
-   class-direct-slots
-   class-direct-subclasses
-   class-direct-superclasses
-   class-finalized-p
-   class-name
-   class-precedence-list
-   class-prototype
-   class-slots
-   specializer-direct-methods
-   ;; generic function readers
-   generic-function-argument-precedence-order
-   generic-function-declarations
-   generic-function-lambda-list
-   generic-function-methods
-   generic-function-method-class
-   generic-function-method-combination
-   generic-function-name
-   ;; method readers
-   method-generic-function
-   method-function
-   method-lambda-list
-   method-specializers
-   method-qualifiers
-   ;; slot readers
-   slot-definition-allocation
-   slot-definition-documentation
-   slot-definition-initargs
-   slot-definition-initform
-   slot-definition-initfunction
-   slot-definition-name
-   slot-definition-type
-   slot-definition-readers
-   slot-definition-writers
-   slot-boundp-using-class
-   slot-value-using-class
-   slot-makunbound-using-class
-   ;; generic function protocol
-   compute-applicable-methods-using-classes
-   finalize-inheritance))
-
-(in-package swank-backend)
+(in-package swank/backend)
 
 
 ;;;; Metacode
@@ -126,6 +26,8 @@ magic but really show every frame including SWANK related ones.")
 (defparameter *unimplemented-interfaces* '()
   "List of interface functions that are not implemented.
 DEFINTERFACE adds to this list and DEFIMPLEMENTATION removes.")
+
+(defvar *log-output* nil)            ; should be nil for image dumpers
 
 (defmacro definterface (name args documentation &rest default-body)
   "Define an interface function for the backend to implement.
@@ -173,7 +75,7 @@ Backends implement these functions using DEFIMPLEMENTATION."
             `(pushnew ',name *unimplemented-interfaces*)
             (gen-default-impl))
        (eval-when (:compile-toplevel :load-toplevel :execute)
-         (export ',name :swank-backend))
+         (export ',name :swank/backend))
        ',name)))
 
 (defmacro defimplementation (name args &body body)
@@ -246,12 +148,25 @@ This will be used like so:
   `(let ((,var ,value))
      (when ,var ,@body)))
 
-(defun with-symbol (name package)
-  "Generate a form suitable for testing with #+."
-  (if (and (find-package package)
-           (find-symbol (string name) package))
+(defun boolean-to-feature-expression (value)
+  "Converts a boolean VALUE to a form suitable for testing with #+."
+  (if value
       '(:and)
       '(:or)))
+
+(defun with-symbol (name package)
+  "Check if a symbol with a given NAME exists in PACKAGE and returns a
+form suitable for testing with #+."
+  (boolean-to-feature-expression
+   (and (find-package package)
+        (find-symbol (string name) package))))
+
+(defun choose-symbol (package name alt-package alt-name)
+  "If symbol package:name exists return that symbol, otherwise alt-package:alt-name.
+  Suitable for use with #."
+  (or (and (find-package package)
+           (find-symbol (string name) package))
+      (find-symbol (string alt-name) alt-package)))
 
 
 ;;;; UFT8
@@ -422,16 +337,6 @@ This will be used like so:
   "Convert the (simple-array (unsigned-byte 8)) OCTETS to a string."
   (default-utf8-to-string octets))
 
-;;; Codepoint length
-
-;; we don't need this anymore.
-(definterface codepoint-length (string)
-  "Return the number of codepoints in STRING.
-With some Lisps, like cmucl, LENGTH returns the number of UTF-16 code
-units, but other Lisps return the number of codepoints. The slime
-protocol wants string lengths in terms of codepoints."
-  (length string))
-
 
 ;;;; TCP server
 
@@ -579,6 +484,21 @@ This is used to resolve filenames without directory component."
   '())
 
 
+;;;; Packages
+
+(definterface package-local-nicknames (package)
+  "Returns an alist of (local-nickname . actual-package) describing the
+nicknames local to the designated package."
+  (declare (ignore package))
+  nil)
+
+(definterface find-locally-nicknamed-package (name base-package)
+  "Return the package whose local nickname in BASE-PACKAGE matches NAME.
+Return NIL if local nicknames are not implemented or if there is no
+such package."
+  (cdr (assoc name (package-local-nicknames base-package) :test #'string-equal)))
+
+
 ;;;; Compilation
 
 (definterface call-with-compilation-hooks (func)
@@ -698,7 +618,7 @@ Return nil if the file contains no special markers."
       (loop while (and (< p end)
                        (member (aref str p) '(#\space #\tab)))
             do (incf p))
-      (let ((end (position-if (lambda (c) (find c '(#\space #\tab #\newline)))
+      (let ((end (position-if (lambda (c) (find c '(#\space #\tab #\newline #\;)))
                               str :start p)))
         (find-external-format (subseq str p end))))))
 
@@ -712,6 +632,23 @@ The stream calls WRITE-STRING when output is ready.")
 (definterface make-input-stream (read-string)
   "Return a new character input stream.
 The stream calls READ-STRING when input is needed.")
+
+(defvar *auto-flush-interval* 0.2)
+
+(defun auto-flush-loop (stream interval &optional receive)
+  (loop
+   (when (not (and (open-stream-p stream)
+                   (output-stream-p stream)))
+     (return nil))
+   (force-output stream)
+   (when receive
+     (receive-if #'identity))
+   (sleep interval)))
+
+(definterface make-auto-flush-thread (stream)
+  "Make an auto-flush thread"
+  (spawn (lambda () (auto-flush-loop stream *auto-flush-interval* nil))
+         :name "auto-flush-thread"))
 
 
 ;;;; Documentation
@@ -794,7 +731,7 @@ available."
         (and (consp form) (length=2 form)
              (eq (first form) 'setf) (symbolp (second form))))))
 
-(definterface macroexpand-all (form)
+(definterface macroexpand-all (form &optional env)
    "Recursively expand all macros in FORM.
 Return the resulting form.")
 
@@ -806,7 +743,7 @@ return the results and T.  Otherwise, return the original form and
 NIL."
   (let ((fun (and (consp form)
                   (valid-function-name-p (car form))
-                  (compiler-macro-function (car form)))))
+                  (compiler-macro-function (car form) env))))
     (if fun
 	(let ((result (funcall *macroexpand-hook* fun form env)))
           (values result (not (eq result form))))
@@ -821,6 +758,50 @@ NIL."
                    (frob new-form t)
                    (values new-form expanded)))))
     (frob form env)))
+
+(defmacro with-collected-macro-forms
+    ((forms &optional result) instrumented-form &body body)
+  "Collect macro forms by locally binding *MACROEXPAND-HOOK*.
+
+Evaluates INSTRUMENTED-FORM and collects any forms which undergo
+macro-expansion into a list.  Then evaluates BODY with FORMS bound to
+the list of forms, and RESULT (optionally) bound to the value of
+INSTRUMENTED-FORM."
+  (assert (and (symbolp forms) (not (null forms))))
+  (assert (symbolp result))
+  (let ((result-symbol (or result (gensym))))
+   `(call-with-collected-macro-forms
+     (lambda (,forms ,result-symbol)
+       (declare (ignore ,@(and (not result)
+                               `(,result-symbol))))
+       ,@body)
+     (lambda () ,instrumented-form))))
+
+(defun call-with-collected-macro-forms (body-fn instrumented-fn)
+  (let ((return-value nil)
+        (collected-forms '()))
+    (let* ((real-macroexpand-hook *macroexpand-hook*)
+           (*macroexpand-hook*
+            (lambda (macro-function form environment)
+              (let ((result (funcall real-macroexpand-hook
+                                     macro-function form environment)))
+                (unless (eq result form)
+                  (push form collected-forms))
+                result))))
+      (setf return-value (funcall instrumented-fn)))
+    (funcall body-fn collected-forms return-value)))
+
+(definterface collect-macro-forms (form &optional env)
+  "Collect subforms of FORM which undergo (compiler-)macro expansion.
+Returns two values: a list of macro forms and a list of compiler macro
+forms."
+  (with-collected-macro-forms (macro-forms expansion)
+      (ignore-errors (macroexpand-all form env))
+    (with-collected-macro-forms (compiler-macro-forms)
+        (handler-bind ((warning #'muffle-warning))
+          (ignore-errors
+            (compile nil `(lambda () ,expansion))))
+      (values macro-forms compiler-macro-forms))))
 
 (definterface format-string-expand (control-string)
   "Expand the format string CONTROL-STRING."
@@ -1030,26 +1011,16 @@ returns.")
 
 ;;;; Definition finding
 
-(defstruct (:location (:type list) :named
+(defstruct (location (:type list)
                       (:constructor make-location
-                                    (buffer position &optional hints)))
+                          (buffer position &optional hints)))
+  (type :location)
   buffer position
   ;; Hints is a property list optionally containing:
   ;;   :snippet SOURCE-TEXT
   ;;     This is a snippet of the actual source text at the start of
   ;;     the definition, which could be used in a text search.
   hints)
-
-(defstruct (:error (:type list) :named (:constructor)) message)
-
-;;; Valid content for BUFFER slot
-(defstruct (:file       (:type list) :named (:constructor)) name)
-(defstruct (:buffer     (:type list) :named (:constructor)) name)
-(defstruct (:etags-file (:type list) :named (:constructor)) filename)
-
-;;; Valid content for POSITION slot
-(defstruct (:position (:type list) :named (:constructor)) pos)
-(defstruct (:tag      (:type list) :named (:constructor)) tag1 tag2)
 
 (defmacro converting-errors-to-error-location (&body body)
   "Catches errors during BODY and converts them to an error location."
@@ -1353,6 +1324,14 @@ Don't execute unwind-protected sections, don't raise conditions.
 (definterface receive-if (predicate &optional timeout)
   "Return the first message satisfiying PREDICATE.")
 
+(definterface wake-thread (thread)
+  "Trigger a call to CHECK-SLIME-INTERRUPTS in THREAD without using
+asynchronous interrupts."
+  (declare (ignore thread))
+  ;; Doesn't have to implement this if RECEIVE-IF periodically calls
+  ;; CHECK-SLIME-INTERRUPTS, but that's energy inefficient
+  nil)
+
 (definterface register-thread (name thread)
   "Associate the thread THREAD with the symbol NAME.
 The thread can then be retrieved with `find-registered'.
@@ -1441,6 +1420,27 @@ but that thread may hold it more than once."
   nil)
 
 
+;;;; Floating point
+
+(definterface float-nan-p (float)
+  "Return true if FLOAT is a NaN value (Not a Number)."
+  ;; When the float type implements IEEE-754 floats, two NaN values
+  ;; are never equal; when the implementation does not support NaN,
+  ;; the predicate should return false. An implementation can
+  ;; implement comparison with "unordered-signaling predicates", which
+  ;; emit floating point exceptions.
+  (handler-case (not (= float float))
+    ;; Comparisons never signal an exception other than the invalid
+    ;; operation exception (5.11 Details of comparison predicates).
+    (floating-point-invalid-operation () t)))
+
+(definterface float-infinity-p (float)
+  "Return true if FLOAT is positive or negative infinity."
+  (not (< most-negative-long-float
+          float
+          most-positive-long-float)))
+
+
 ;;;; Character names
 
 (definterface character-completion-set (prefix matchp)
@@ -1500,8 +1500,7 @@ COMPLETION-FUNCTION, if non-nil, should be called after saving the image.")
 
 (defun deinit-log-output ()
   ;; Can't hang on to an fd-stream from a previous session.
-  (setf (symbol-value (find-symbol "*LOG-OUTPUT*" 'swank))
-        nil))
+  (setf *log-output* nil))
 
 
 ;;;; Wrapping

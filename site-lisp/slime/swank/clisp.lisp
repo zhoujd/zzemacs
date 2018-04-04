@@ -34,10 +34,10 @@
 
 ;;; [1] http://cvs.sourceforge.net/viewcvs.py/clocc/clocc/src/tools/metering/
 
-(defpackage swank-clisp
-  (:use cl swank-backend))
+(defpackage swank/clisp
+  (:use cl swank/backend))
 
-(in-package swank-clisp)
+(in-package swank/clisp)
 
 (eval-when (:compile-toplevel)
   (unless (string< "2.44" (lisp-implementation-version))
@@ -58,14 +58,14 @@
                                         :clos))))
     "True in those CLISP images which have a complete MOP implementation."))
 
-#+#.(cl:if swank-clisp::*have-mop* '(cl:and) '(cl:or))
+#+#.(cl:if swank/clisp::*have-mop* '(cl:and) '(cl:or))
 (progn
   (import-swank-mop-symbols :clos '(:slot-definition-documentation))
 
   (defun swank-mop:slot-definition-documentation (slot)
     (clos::slot-definition-documentation slot)))
 
-#-#.(cl:if swank-clisp::*have-mop* '(and) '(or))
+#-#.(cl:if swank/clisp::*have-mop* '(and) '(or))
 (defclass swank-mop:standard-slot-definition ()
   ()
   (:documentation
@@ -260,8 +260,18 @@
           (return (ext:arglist fname)))
         :not-available)))
 
-(defimplementation macroexpand-all (form)
+(defimplementation macroexpand-all (form &optional env)
+  (declare (ignore env))
   (ext:expand-form form))
+
+(defimplementation collect-macro-forms (form &optional env)
+  ;; Currently detects only normal macros, not compiler macros.
+  (declare (ignore env))
+  (with-collected-macro-forms (macro-forms)
+      (handler-bind ((warning #'muffle-warning))
+        (ignore-errors
+          (compile nil `(lambda () ,form))))
+    (values macro-forms nil)))
 
 (defimplementation describe-symbol-for-emacs (symbol)
   "Return a plist describing SYMBOL.

@@ -41,10 +41,9 @@
        ))
 
 ;;slime start entry
-(unless-ms-windows
- (defslime-start sbcl  "sbcl --noinform")
- (defslime-start clisp "clisp")
- (defslime-start ecl   "ecl"))
+(defslime-start sbcl  '("sbcl" "--noinform"))
+(defslime-start clisp 'clisp)
+(defslime-start ecl   'ecl)
 
 ;;reset slime temp directory
 (setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))

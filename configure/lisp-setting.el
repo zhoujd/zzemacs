@@ -41,7 +41,7 @@
        ))
 
 ;;slime start entry
-(defslime-start sbcl  '("sbcl" "--noinform"))
+(defslime-start sbcl  'sbcl)
 (defslime-start clisp 'clisp)
 (defslime-start ecl   'ecl)
 

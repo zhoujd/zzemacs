@@ -20,6 +20,7 @@
 (setq auto-mode-alist
    (append
     (list (cons "\\.sbclrc$"    'lisp-mode))  ;;sbcl configure file
+    (list (cons "\\.clisprc$"   'lisp-mode))  ;;clisp configure file
     (list (cons "\\.eclrc$"     'lisp-mode))  ;;ecl configure file
     (list (cons "\\.stumpwmrc$" 'lisp-mode))  ;;stumpwm configure file
     (list (cons "\\.clfswmrc$"  'lisp-mode))  ;;clfswm configure file

@@ -53,9 +53,18 @@
              (semantic-add-system-include d)))
          ))
    
-   (defconst cedet-user-include-dirs
-     (list ".." "../include" "../inc" "../common" "../public" "."
-           "../.." "../../include" "../../inc" "../../common" "../../public"))
+   (defconst cedet-user-include-dirs (list
+                                      "."
+                                      ".."
+                                      "../include"
+                                      "../inc"
+                                      "../common"
+                                      "../public"
+                                      "../.."
+                                      "../../include"
+                                      "../../inc"
+                                      "../../common"
+                                      "../../public"))
    
    (setq cedet-sys-include-dirs (list
                                  "/usr/include"

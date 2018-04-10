@@ -45,11 +45,11 @@
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
-    [S-f1]            'magit-status
-    [C-f1]            'session-save
-    [M-f1]            'session-restore
-    (kbd "C-x <f1>")  nil
-    (kbd "C-c <f1>")  nil
+    [S-f1]            nil
+    [C-f1]            'magit-status
+    [M-f1]            'monky-status
+    (kbd "C-x <f1>")  'session-save
+    (kbd "C-c <f1>")  'session-restore
     )
 
 (define-fn-key (gethash "f2" fn-key-table)

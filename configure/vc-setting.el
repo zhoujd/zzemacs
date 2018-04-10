@@ -30,13 +30,14 @@
 ;;https://github.com/tsgates/git-emacs
 ;(zz-load-path "site-lisp/git-emacs")
 ;(require 'git-emacs)
-
-;;git show
 ;(require 'git-show)
 
-;;mercurial Support
-;(require 'mercurial)
-;(require 'mq)
+;;mercurial support
+(require 'mercurial)
+(require 'mq)
+
+(require 'monky)
+(setq monky-process-type 'cmdserver)
 
 ;;magit setting need upgrade for emacs24.4
 (zz-load-path "site-lisp/git-modes")

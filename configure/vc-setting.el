@@ -36,6 +36,7 @@
 (require 'mercurial)
 (require 'mq)
 
+(zz-load-path "site-lisp/monky")
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 

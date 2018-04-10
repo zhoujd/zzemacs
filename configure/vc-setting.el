@@ -25,12 +25,12 @@
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
 ;;ssh-copy-id user1@123.123.123.123
 
-;;;Waring on 24.5+ so temp disable git-emacs
+;;;Waring on 24.5+ so need temp disable git-emacs
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
 ;;https://github.com/tsgates/git-emacs
-;(zz-load-path "site-lisp/git-emacs")
-;(require 'git-emacs)
-;(require 'git-show)
+(zz-load-path "site-lisp/git-emacs")
+(require 'git-emacs)
+(require 'git-show)
 
 ;;mercurial support
 (require 'mercurial)
@@ -40,11 +40,9 @@
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
-;;magit setting need upgrade for emacs24.4
+;;magit
 (zz-load-path "site-lisp/git-modes")
-(if (version< emacs-version "23.2")
-    (zz-load-path "site-lisp/magit-legacy")
-    (zz-load-path "site-lisp/magit"))
+(zz-load-path "site-lisp/magit")
 
 (require 'magit)
 

@@ -270,9 +270,9 @@
 (apply-keys-to-map
  help-map
  (list
-  (kbd "1") 'highlight-symbol-at-point
-  (kbd "2") 'highlight-symbol-remove-all
-  (kbd "3") 'highlight-symbol-query-replace
+  ;;"1" -> reserved
+  ;;"2" -> reserved
+  ;;"3" -> reserved
   ;;"4" -> f4-map
 
   ;;gdb frame show setting

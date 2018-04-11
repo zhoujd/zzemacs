@@ -57,8 +57,8 @@
     [S-f2]            'bc-list
     [C-f2]            'bc-next
     [M-f2]            'bc-previous
-    (kbd "C-x <f2>")  'recentf-open-files
-    (kbd "C-c <f2>")  'recentf-open-files-compl
+    (kbd "C-x <f2>")  'sr-speedbar-toggle
+    (kbd "C-c <f2>")  'etags-stack-show
     )
 
 (define-fn-key (gethash "f3" fn-key-table)
@@ -75,8 +75,8 @@
     [S-f4]            'undo-kill-buffer
     [C-f4]            'turn-off-evil-mode
     [M-f4]            'turn-on-evil-mode
-    (kbd "C-x <f4>")  'sr-speedbar-toggle
-    (kbd "C-c <f4>")  'etags-stack-show
+    (kbd "C-x <f4>")  'recentf-open-files
+    (kbd "C-c <f4>")  'recentf-open-files-compl
     )
 
 (define-fn-key (gethash "f5" fn-key-table)
@@ -93,7 +93,6 @@
     [S-f6]            (if-ms-windows 'get-local-curr-shell 'multi-term-dedicated-toggle)
     [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-    
     (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
     (kbd "C-c <f6>")  (if-ms-windows 'get-local-shell 'multi-term)
     )

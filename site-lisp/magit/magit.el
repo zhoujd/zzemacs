@@ -7790,10 +7790,10 @@ init file:
     (if (stringp magit-version)
         (when (called-interactively-p 'any)
           (message "magit-%s" magit-version))
-      (if noerror
-          (progn (setq magit-version 'error)
-                 (message "Cannot determine Magit's version"))
-        (user-error "Cannot determine Magit's version")))
+        (if noerror
+            (progn (setq magit-version 'error)
+                   (message "Cannot determine Magit's version"))
+            (user-error "Cannot determine Magit's version")))
     magit-version))
 
 (cl-eval-when (load eval) (magit-version t))

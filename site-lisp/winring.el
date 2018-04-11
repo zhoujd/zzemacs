@@ -1,24 +1,22 @@
 ;;; winring.el --- Window configuration rings
 
-;; Copyright (C) 1998-2010 Free Software Foundation, Inc.
+;; Copyright (C) 1998-2015 Free Software Foundation, Inc.
 
-;; Author:   1997-2010 Barry A. Warsaw
-;; Contact:  gnu@wooz.org (Barry A. Warsaw)
-;; Homepage: http://launchpad.net/winring
+;; Author:   1997-2015 Barry A. Warsaw
+;; Contact:  barry@python.org (Barry A. Warsaw)
+;; Homepage: https://gitlab.com/warsaw/winring
 ;; Created:  March 1997
 ;; Keywords: frames tools
 
-(defconst winring-version "4.0.1"
+(defconst winring-version "5.0"
   "winring version number.")
 
-;; This file is part of GNU Emacs.
-
-;; GNU Emacs is free software: you can redistribute it and/or modify it under
+;; winring.el is free software: you can redistribute it and/or modify it under
 ;; the terms of the GNU General Public License as published by the Free
 ;; Software Foundation, either version 3 of the License, or (at your option)
 ;; any later version.
 
-;; GNU Emacs is distributed in the hope that it will be useful, but WITHOUT
+;; winring.el is distributed in the hope that it will be useful, but WITHOUT
 ;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 ;; FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 ;; more details.
@@ -72,8 +70,7 @@
 ;;               new configuration's name.
 ;;
 ;;    C-x 7 2 -- Create a duplicate of the current window
-;;               configuration.  C-u has the same semantics as with
-;;               "C-x 7 c".
+;;               configuration.
 ;;
 ;;    C-x 7 j -- Jump to a named configuration (prompts for the name).
 ;;
@@ -114,6 +111,9 @@
 ;; suggestion of RMS.  Wicos also had some support for multiple frames, and
 ;; saving configurations on all visible frames, but it didn't work too well,
 ;; and I like frame independent rings better.
+;;
+;; Version 5.0 has been ported to Emacs 24.4, but support for XEmacs and older
+;; Emacsen has been dropped.
 ;;
 ;; I know of a few other related packages:
 ;;
@@ -232,41 +232,31 @@ If you change this, you must do it before calling `winring-initialize'.")
 
 
 
-;; Compatibility
+;; Utilities
+(defun winring-new-ring ()
+  (make-ring winring-ring-size))
+
 (defun winring-set-frame-ring (frame ring)
-  (cond
-   ;; XEmacs
-   ((fboundp 'set-frame-property)
-    (set-frame-property frame 'winring-ring ring))
-   ;; Emacs
-   ((fboundp 'modify-frame-parameters)
-    (modify-frame-parameters frame (list (cons 'winring-ring ring))))
-   ;; Not supported
-   (t (error "This version of Emacs is not supported by winring"))))
+  (modify-frame-parameters frame (list (cons 'winring-ring ring))))
 
 (defun winring-get-frame-ring (frame)
-  (cond
-   ;; XEmacs
-   ((fboundp 'frame-property)
-    (frame-property frame 'winring-ring))
-   ;; Emacs 20
-   ((fboundp 'frame-parameter)
-    (frame-parameter frame 'winring-ring))
-   ;; Emacs 19.34
-   ((fboundp 'frame-parameters)
-    (cdr (assq 'winring-ring (frame-parameters frame))))
-   ;; Unsupported
-   (t (error "This version of Emacs is not supported by winring"))))
+  (frame-parameter frame 'winring-ring))
 
 (defun winring-create-frame-hook (frame)
-  ;; generate the name, but specify the newly created frame
+  ;; Generate the name, but specify the newly created frame.
   (winring-set-name (and (eq winring-prompt-on-create t)
                          (read-string "Initial window configuration name? "
                                       nil 'winring-name-history))
                     frame))
 
-
-;; Utilities
+(defun winring-cleanup-hook ()
+  ;; Clear everything when emacs exits.  Desktop save modes can save frame
+  ;; parameters, but the winring-ring parameter if saved will contain bogus
+  ;; data.
+  (dolist (frame (frame-list))
+    (winring-set-frame-ring frame (winring-new-ring))
+    ))
+
 (defun winring-set-name (&optional name frame)
   "Set the window configuration name.
 Optional NAME is the name to use; if not given, then
@@ -275,20 +265,15 @@ generated name.  Optional FRAME is the frame to set the name for; if
 not given then the currently selected frame is used."
   (let ((name (or name (funcall winring-name-generator)))
         (frame (or frame (selected-frame))))
-    (if (fboundp 'add-spec-to-specifier)
-        ;; The XEmacs way.  Only supported in hacked 20.4 or 21.0
-        (add-spec-to-specifier winring-name name frame)
-      ;; the Emacs way.  Only supported in Emacs 20.3
-      (modify-frame-parameters frame (list (cons 'winring-name name)))
-      ))
-  (if (not winring-show-names)
+    (modify-frame-parameters frame (list (cons 'winring-name name))))
+  (if (and (not winring-show-names) name)
       (message "Switching to window configuration: %s" name)))
 
 (defun winring-get-ring ()
   (let* ((frame (selected-frame))
          (ring (winring-get-frame-ring frame)))
     (when (not ring)
-      (setq ring (make-ring winring-ring-size))
+      (setq ring (winring-new-ring))
       (winring-set-frame-ring frame ring))
     ring))
 
@@ -302,15 +287,9 @@ not given then the currently selected frame is used."
   (nth 2 config))
 
 (defsubst winring-name-of-current ()
-  (if (fboundp 'specifier-instance)
-      ;; In XEmacs, this variable holds a specifier which
-      ;; must be instanced to get the current
-      ;; configuration name.
-      (specifier-instance winring-name)
-    ;; In Emacs, just use the variable's string value
-    ;; directly, since the `displayed' value is kept as a
-    ;; frame parameter
-    winring-name))
+  ;; In Emacs, just use the variable's string value directly, since the
+  ;; `displayed' value is kept as a frame parameter.
+  winring-name)
 
 (defun winring-save-current-configuration (&optional at-front)
   (let* ((ring (winring-get-ring))
@@ -456,7 +435,7 @@ With \\[universal-argument] prompt for named configuration to delete."
 
 
 
-(defconst winring-help-address "bwarsaw@python.org"
+(defconst winring-help-address "barry@python.org"
   "Address accepting bug report submissions.")
 
 (defun winring-version ()
@@ -497,72 +476,38 @@ The more accurately and succinctly you can describe the\n\
 problem you are encountering, the more likely I can fix it\n\
 in a timely way.\n\n")
       (exchange-point-and-mark)
-      ;;(setq zmacs-region-stays t)
       )))
 
 
 
-;; Initialization.  This is completely different b/w Emacs and XEmacs.
-;; The Emacs 20.3 way is to create a frame-local variable (this is a
-;; new feature with Emacs 20.3), and save the config name as a frame
-;; property.
-;;
-;; In XEmacs 21.0 (a.k.a. 20.5), you create a generic specifier, and
-;; save the config name as an instantiator over the current frame
-;; locale.
-
-;; Be sure to do this only once
-(defvar winring-initialized nil)
+;; Initialization.  Create a frame-local variable and save the config name as
+;; a frame property.
 
 (defun winring-initialize (&optional hack-modeline-function)
-  (unless winring-initialized
-    ;;
-    ;; Create the variable that holds the window configuration name
-    ;;
-    (cond
-     ;; The Emacs 20.3 way: frame-local variables
-     ((fboundp 'make-variable-frame-local)
-      (make-variable-frame-local 'winring-name))
-     ;; The XEmacs 21 way: specifiers
-     ((fboundp 'make-specifier)
-      (setq winring-name (make-specifier 'generic)))
-     ;; Not supported in older X/Emacsen
-     (t nil))
-    ;;
-    ;; Glom the configuration name into the mode-line.  I've
-    ;; experimented with a couple of different locations, including
-    ;; for Emacs 20.3 mode-line-frame-identification, and for XEmacs,
-    ;; just splicing it before the modeline-buffer-identification.
-    ;; Sticking it on the very left side of the modeline, even before
-    ;; mode-line-modified seems like the most useful and
-    ;; cross-compatible place.
-    ;;
-    ;; Note that you can override the default hacking of the modeline
-    ;; by passing in your own `hack-modeline-function'.
-    ;;
-    (if hack-modeline-function
-        (funcall hack-modeline-function)
-      ;; Else, default insertion hackery
-      (let ((format (list 'winring-show-names
-                          '("<" winring-name "> ")))
-            (splice (cdr mode-line-format)))
-        (setcar splice (list format (car splice)))))
-    ;;
-    ;; We need to add a hook so that all newly created frames get
-    ;; initialized properly.  Again, different for Emacs and XEmacs.
-    ;;
-    (if (boundp 'create-frame-hook)
-        ;; XEmacs
-        (add-hook 'create-frame-hook 'winring-create-frame-hook)
-      ;; better be Emacs!
-      (add-hook 'after-make-frame-functions 'winring-create-frame-hook))
-    ;;
-    ;; Now set the initial configuration name on the initial frame...
-    (winring-create-frame-hook (selected-frame))
-    ;; ...the keymap...
-    (global-set-key winring-keymap-prefix winring-map)
-    ;; ...and the init fence
-    (setq winring-initialized t)))
+  ;; Create the variable that holds the window configuration name
+  (make-variable-frame-local 'winring-name)
+  ;; Glom the configuration name into the mode-line.  I've experimented with
+  ;; a couple of different locations, including
+  ;; mode-line-frame-identification.  Sticking it on the very left side of
+  ;; the modeline, even before mode-line-modified seems like the most useful
+  ;; place.
+  ;;
+  ;; Note that you can override the default hacking of the modeline
+  ;; by passing in your own `hack-modeline-function'.
+  (if hack-modeline-function
+      (funcall hack-modeline-function)
+    ;; Else, default insertion hackery
+    (let ((format (list 'winring-show-names
+                        '("<" winring-name "> ")))
+          (splice (cdr mode-line-format)))
+      (setcar splice (list format (car splice)))))
+  ;; Add a hook so that all newly created frames get initialized properly.
+  (add-hook 'after-make-frame-functions 'winring-create-frame-hook)
+  (add-hook 'kill-emacs-hook 'winring-cleanup-hook)
+  ;; Now set the initial configuration name on the initial frame...
+  (winring-create-frame-hook (selected-frame))
+  ;; ...the keymap...
+  (global-set-key winring-keymap-prefix winring-map))
 
 
 

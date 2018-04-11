@@ -780,9 +780,9 @@ Currently-active file is at the head of the list.")
 ;; Utilities
 (defmacro py-safe (&rest body)
   "Safely execute BODY, return nil if an error occurred."
-  (` (condition-case nil
+  `(condition-case nil
 	 (progn (,@ body))
-       (error nil))))
+       (error nil)))
 
 (defsubst py-keep-region-active ()
   "Keep the region active in XEmacs."

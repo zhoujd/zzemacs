@@ -1,18 +1,6 @@
 ;;;; gdb-setting.el --- gdb common file
 
-;force gdb-mi to not dedicate any windows
-(when (and (>= emacs-major-version 24)
-           (>= emacs-minor-version 5))
-  (advice-add 'gdb-display-buffer
-              :around (lambda (orig-fun &rest r)
-                        (let ((window (apply orig-fun r)))
-                          (set-window-dedicated-p window nil)
-                          window)))
-  
-  (advice-add 'gdb-set-window-buffer
-              :around (lambda (orig-fun name &optional ignore-dedicated window)
-                        (funcall orig-fun name ignore-dedicated window)
-                        (set-window-dedicated-p window nil))))
+;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 
 (defun gud-break-remove ()
   "Set/clear breakpoin."
@@ -26,10 +14,15 @@
   "Kill gdb process."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))
-  (dolist (buffer '(gdba gdb-stack-buffer gdb-breakpoints-buffer
-                         gdb-threads-buffer gdb-inferior-io
-                         gdb-registers-buffer gdb-memory-buffer
-                         gdb-locals-buffer gdb-assembler-buffer))
+  (dolist (buffer '(gdba
+                    gdb-stack-buffer
+                    gdb-breakpoints-buffer
+                    gdb-threads-buffer
+                    gdb-inferior-io
+                    gdb-registers-buffer
+                    gdb-memory-buffer
+                    gdb-locals-buffer
+                    gdb-assembler-buffer))
           (when (gdb-get-buffer buffer)
             (let ((proc (get-buffer-process (gdb-get-buffer buffer))))
               (when proc (set-process-query-on-exit-flag proc nil)))

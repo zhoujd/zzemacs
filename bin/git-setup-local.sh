@@ -15,8 +15,8 @@ git config core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
 git config core.editor    $GIT_SETUP_HOME/git-editor.sh
 
 ## setup git configure
-git config user.name   "zhoujd"
-git config user.email  "zjd-405@163.com"
+git config user.name   "Zachary Zhou"
+git config user.email  "zachary.zhou@hotmail.com"
 git config color.ui    "true"
 
 ## alias

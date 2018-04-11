@@ -52,8 +52,8 @@ git config --global core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
 git config --global core.editor    $GIT_SETUP_HOME/git-editor.sh
 
 ## setup git configure
-git config --global user.name   "zhoujd"
-git config --global user.email  "zjd-405@163.com"
+git config --global user.name   "Zachary Zhou"
+git config --global user.email  "zachary.zhou@hotmail.com"
 
 ## output color
 git config --global color.ui    "true"

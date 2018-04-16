@@ -110,14 +110,14 @@
     [f8]              'gdb
     [S-f8]            'gud-kill
     [C-f8]            'gdb-restore-windows
-    [M-f8]            'gdb-many-windows
-    (kbd "C-x <f8>")  'gdb-use-separate-io
-    (kbd "C-c <f8>")  'gud-tooltip-mode
+    [M-f8]            'gud-break-main
+    (kbd "C-x <f8>")  'gud-tooltip-mode
+    (kbd "C-c <f8>")  'gdb-many-windows
     )
 
 (define-fn-key (gethash "f9" fn-key-table)
-    [f9]              (lambda () (interactive)  (start-shell "*shell*"))
-    [S-f9]            (if-ms-windows 'get-linux-shell  'get-local-shell)
+    [f9]              (lambda () (interactive) (start-shell "*shell*"))
+    [S-f9]            (if-ms-windows 'get-linux-shell 'get-local-shell)
     [C-f9]            'switch-to-scratch
     [M-f9]            'popup-term
     (kbd "C-x <f9>")  'switch-to-shell

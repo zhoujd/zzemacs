@@ -14,19 +14,12 @@
   "Kill gdb process."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))
-  (dolist (buffer '(gdba
-                    gdb-stack-buffer
-                    gdb-breakpoints-buffer
-                    gdb-threads-buffer
-                    gdb-inferior-io
-                    gdb-registers-buffer
-                    gdb-memory-buffer
-                    gdb-locals-buffer
-                    gdb-assembler-buffer))
-          (when (gdb-get-buffer buffer)
-            (let ((proc (get-buffer-process (gdb-get-buffer buffer))))
-              (when proc (set-process-query-on-exit-flag proc nil)))
-            (kill-buffer (gdb-get-buffer buffer)))))
+  (kill-process (get-buffer-process gud-comint-buffer)))
+
+(add-hook
+ 'gdb-mode-hook
+ '(lambda ()
+    (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
 
 ;;for cdb.exe debug on windows
 ;;Use kd -k <connection string> instead of cdb <your program> e.g. M-x cdb kd -k com:port=com1

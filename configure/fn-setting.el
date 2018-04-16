@@ -110,9 +110,9 @@
     [f8]              'gdb
     [S-f8]            'gud-kill
     [C-f8]            'gdb-restore-windows
-    [M-f8]            'gud-break-main
+    [M-f8]            'gdb-many-windows
     (kbd "C-x <f8>")  'gud-tooltip-mode
-    (kbd "C-c <f8>")  'gdb-many-windows
+    (kbd "C-c <f8>")  'gud-break-main
     )
 
 (define-fn-key (gethash "f9" fn-key-table)

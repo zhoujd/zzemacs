@@ -1,11 +1,11 @@
-#!/usr/local/bin/emacs --script
+#!/usr/bin/emacs --script
 ;;;;this script for init emacs configure
 ;;;;http://ergoemacs.org/emacs/emacs.html
 ;;$cd <init-setup.el>
 ;;$emacs --script init-setup.el
 
 (message "zzemacs setup script start ...")
-(message "system-type:%s system-name:%s" system-type system-name)
+(message "zzemacs system-type:%s system-name:%s" system-type system-name)
 
 ;;print argument is setting
 (when argv

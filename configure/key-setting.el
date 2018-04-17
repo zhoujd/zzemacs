@@ -16,22 +16,8 @@
  (list
   (kbd "C-z h")  'event-apply-hyper-modifier
   (kbd "C-z a")  'event-apply-alt-modifier
-  (kbd "C-z s")  'event-apply-super-modifier
   (kbd "M-[ h")  'event-apply-hyper-modifier
   (kbd "M-[ a")  'event-apply-alt-modifier
-  (kbd "M-[ s")  'event-apply-super-modifier
-
-  (kbd "C-z 1")  'event-apply-control-modifier
-  (kbd "C-z 2")  'event-apply-meta-modifier
-  (kbd "C-z 3")  'event-apply-shift-modifier
-  
-  (kbd "C-h 1")  'event-apply-control-modifier
-  (kbd "C-h 2")  'event-apply-meta-modifier
-  (kbd "C-h 3")  'event-apply-shift-modifier
-
-  (kbd "<f4> 1") 'event-apply-control-modifier
-  (kbd "<f4> 2") 'event-apply-meta-modifier
-  (kbd "<f4> 3") 'event-apply-shift-modifier
   ))
 
 ;;all of these sequences are translated from term/xterm.el .

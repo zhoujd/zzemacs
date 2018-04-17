@@ -14,10 +14,13 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "C-z h")  'event-apply-hyper-modifier
-  (kbd "C-z a")  'event-apply-alt-modifier
-  (kbd "M-[ h")  'event-apply-hyper-modifier
-  (kbd "M-[ a")  'event-apply-alt-modifier
+  (kbd "M-] h")  'event-apply-hyper-modifier
+  (kbd "M-] a")  'event-apply-alt-modifier
+  (kbd "M-] s")  'event-apply-super-modifier
+
+  (kbd "M-] c")  'event-apply-control-modifier
+  (kbd "M-] m")  'event-apply-meta-modifier
+  (kbd "M-] S")  'event-apply-shift-modifier
   ))
 
 ;;all of these sequences are translated from term/xterm.el .

@@ -14,10 +14,24 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "C-z h") 'event-apply-hyper-modifier
-  (kbd "C-z a") 'event-apply-alt-modifier
-  (kbd "M-[ h") 'event-apply-hyper-modifier
-  (kbd "M-[ a") 'event-apply-alt-modifier
+  (kbd "C-z h")  'event-apply-hyper-modifier
+  (kbd "C-z a")  'event-apply-alt-modifier
+  (kbd "C-z s")  'event-apply-super-modifier
+  (kbd "M-[ h")  'event-apply-hyper-modifier
+  (kbd "M-[ a")  'event-apply-alt-modifier
+  (kbd "M-[ s")  'event-apply-super-modifier
+
+  (kbd "C-z 1")  'event-apply-control-modifier
+  (kbd "C-z 2")  'event-apply-meta-modifier
+  (kbd "C-z 3")  'event-apply-shift-modifier
+  
+  (kbd "C-h 1")  'event-apply-control-modifier
+  (kbd "C-h 2")  'event-apply-meta-modifier
+  (kbd "C-h 3")  'event-apply-shift-modifier
+
+  (kbd "<f4> 1") 'event-apply-control-modifier
+  (kbd "<f4> 2") 'event-apply-meta-modifier
+  (kbd "<f4> 3") 'event-apply-shift-modifier
   ))
 
 ;;all of these sequences are translated from term/xterm.el .
@@ -253,7 +267,6 @@
 
   (kbd "M-1")   'whitespace-cleanup
   (kbd "M-3")   'primary-x-font
-  (kbd "M-m")   'magit-status
   ))
 
 ;;quick shell setting
@@ -270,11 +283,6 @@
 (apply-keys-to-map
  help-map
  (list
-  ;;"1" -> reserved
-  ;;"2" -> reserved
-  ;;"3" -> reserved
-  ;;"4" -> f4-map
-
   ;;gdb frame show setting
   (kbd "5") 'gdb-frame-stack-buffer
   (kbd "6") 'gdb-frame-breakpoints-buffer

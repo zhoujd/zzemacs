@@ -28,8 +28,10 @@
 ;;;Waring on 24.5+ so need temp disable git-emacs
 ;;http://files.taesoo.org/git-emacs/git-emacs.html
 ;;https://github.com/tsgates/git-emacs
-(zz-load-path "site-lisp/git-emacs")
-(require 'git-emacs)
+;(zz-load-path "site-lisp/git-emacs")
+;(require 'git-emacs)
+
+;;git show
 (require 'git-show)
 
 ;;mercurial support

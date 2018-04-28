@@ -26,6 +26,7 @@ Git error and solutions
    $ git push origin :refs/tags/<tag-name>
 
 5. Unable to negotiate with <ip_address>: no matching host key type found. Their offer: ssh-dss
+
    [Linux] /etc/ssh/ssh_config
    [Windows] The OpenSSH config file should be located at C:\Program Files\Git\etc\ssh\ssh_config. 
    Add the following (you will need to do this with administrator privileges):

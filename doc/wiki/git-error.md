@@ -32,7 +32,16 @@ Git error and solutions
   
         HostkeyAlgorithms +ssh-dss
 
-6. Rollback from 'git reset --hard'
+6. Rollback from 'git reset --hard' 
+   
+   If you didn't already commit your local changes (or at least stage them via `git add`, they're gone. 
+   `git reset --hard` is a destructive operation for uncommitted changes.
+   If you did happen to stage them, but didn't commit them, 
+   try `git fsck --lost-found` and then search through the contents of .git/lost-found 
+   - it will contain all of the objects that aren't referenced by a known commit, and may include versions of files that were staged.
+   You can recover anything you git added, with git fsck --lost-found and poke around in .git/lost-found.  
+   find .git/objects -type f | xargs ls -lt | sed 60q will give you the last 60 things to get added to the repo, that'll help. 
+   Anything you didn't git add is gone as surely as if you'd deleted it yourself.
    
    $ git reflog
    

@@ -31,3 +31,8 @@ Git error and solutions
    Add the following (you will need to do this with administrator privileges):
   
         HostkeyAlgorithms +ssh-dss
+
+6. Rollback from 'git reset --hard'
+   
+   git reflog
+   

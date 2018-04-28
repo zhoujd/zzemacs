@@ -3,10 +3,10 @@
 
 (zz-load-path "site-lisp")
 
+;; https://www.mpg123.de/download.shtml
 (defvar mpg123-startup-volume nil)
 (require 'mpg123)
 (setq mpg123-lang 0)
-(setq mpg123-default-dir "e:/emp3")
 (add-hook 'mpg123-hook (lambda () (local-unset-key (kbd "<down-mouse-1>"))))
 
 (require 'mpg123-remote)

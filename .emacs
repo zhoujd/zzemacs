@@ -48,6 +48,7 @@
         sample-setting
         w3m-setting
         doc-setting
+        game-setting
         ;;dired-setting
         ;;media-setting
         ;;evil-setting
@@ -58,7 +59,6 @@
         python-setting
         ;;matlab-setting
         ;;spell-setting
-        ;;game-setting
         ;;gnuplot-setting
         keymap-setting
         fn-setting

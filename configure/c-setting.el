@@ -56,25 +56,12 @@
    (defconst cedet-user-include-dirs (list
                                       "."
                                       ".."
-                                      "../include"
-                                      "../inc"
-                                      "../common"
-                                      "../public"
-                                      "../.."
-                                      "../../include"
-                                      "../../inc"
-                                      "../../common"
-                                      "../../public"))
+                                      ))
    
    (setq cedet-sys-include-dirs (list
                                  "/usr/include"
-                                 "/usr/include/bits"
-                                 "/usr/include/glib-2.0"
-                                 "/usr/include/gnu"
-                                 "/usr/include/gtk-2.0"
-                                 "/usr/include/gtk-2.0/gdk-pixbuf"
-                                 "/usr/include/gtk-2.0/gtk"
-                                 "/usr/local/include"))
+                                 "/usr/local/include"
+                                 ))
    
    (let ((include-dirs cedet-user-include-dirs))
      (setq include-dirs (append include-dirs cedet-sys-include-dirs))

@@ -49,7 +49,7 @@
         w3m-setting
         doc-setting
         game-setting
-        ;;dired-setting
+        dired-setting
         ;;media-setting
         ;;evil-setting
         c-setting

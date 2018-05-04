@@ -1,9 +1,6 @@
 ;;;; dired-setting.el --- dired config file
 ;;;
 
-;;for dired-x tools
-(require 'dired-x)
-
 ;;allow dired to be able to delete or copy a whole dir.
 (setq dired-recursive-copies (quote always)) ;;"always" means no asking
 (setq dired-recursive-deletes (quote top)) ;;"top" means ask once
@@ -100,7 +97,7 @@
        (list "\\.xls$"  "soffice")
        ))
 
-;;direx
+;;Direx
 (require 'direx)
 (require 'direx-project)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)

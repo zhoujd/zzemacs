@@ -75,6 +75,11 @@
 (setq quack-default-program "gsi -:d-")
 (require 'quack)
 
+;;racket mode
+(zz-load-path "site-lisp/racket-mode")
+(require 'racket-mode)
+
+
 (provide 'scheme-setting)
 
 ;; scheme-setting.el end here

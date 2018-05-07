@@ -1,9 +1,5 @@
-;;scheme programme setting
-
-;;PLT scheme
-;(setq scheme-program-name "mzscheme")
-;;MIT scheme
-;(setq scheme-program-name "mit-scheme")
+;;;; scheme programme setting
+;;;
 
 ;;Support racket file
 (setq auto-mode-alist

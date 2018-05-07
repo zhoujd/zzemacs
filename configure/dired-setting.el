@@ -1,6 +1,9 @@
 ;;;; dired-setting.el --- dired config file
 ;;;
 
+;;Dired-x is a build-in model
+(require 'dired-x)
+
 ;;allow dired to be able to delete or copy a whole dir.
 (setq dired-recursive-copies (quote always)) ;;"always" means no asking
 (setq dired-recursive-deletes (quote top)) ;;"top" means ask once
@@ -22,7 +25,7 @@
 ;(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
-(when-ms-windows  
+(when-ms-windows
   (require 'w32-browser)
   (eval-after-load "dired"
     '(define-key dired-mode-map [C-f4] (lambda ()
@@ -44,16 +47,16 @@
             (make-local-variable  'dired-sort-map)
             (setq dired-sort-map (make-sparse-keymap))
             (define-key dired-mode-map "s" dired-sort-map)
-            (define-key dired-sort-map "s"                ;; s s 
+            (define-key dired-sort-map "s"                ;; s s
               (lambda () "sort by Size"
                       (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
-            (define-key dired-sort-map "x"                ;; s x 
+            (define-key dired-sort-map "x"                ;; s x
               (lambda () "sort by eXtension"
                       (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
-            (define-key dired-sort-map "t"                ;; s t 
+            (define-key dired-sort-map "t"                ;; s t
               (lambda () "sort by Time"
                       (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
-            (define-key dired-sort-map "n"                ;; s n 
+            (define-key dired-sort-map "n"                ;; s n
               (lambda () "sort by Name"
                       (interactive) (dired-sort-other (concat dired-listing-switches ""))))
             ))
@@ -75,7 +78,7 @@
 ;(add-hook 'dired-mode-hook
 ;          (lambda ()
 ;            (interactive)
-;            (define-key dired-mode-map (kbd "/")  'dired-omit-expunge)))     
+;            (define-key dired-mode-map (kbd "/")  'dired-omit-expunge)))
 
 (setq dired-guess-shell-alist-user
       (list

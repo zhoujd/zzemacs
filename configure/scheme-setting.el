@@ -72,6 +72,7 @@
 (require 'quack)
 
 ;;racket mode
+;;http://docs.racket-lang.org/guide/Emacs.html
 (zz-load-path "site-lisp/racket-mode")
 (require 'racket-mode)
 

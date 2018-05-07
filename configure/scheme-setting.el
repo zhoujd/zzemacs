@@ -74,8 +74,8 @@
 ;;racket mode
 ;;http://docs.racket-lang.org/guide/Emacs.html
 (zz-load-path "site-lisp/racket-mode")
-(require 'racket-mode)
 (setq tab-always-indent 'complete)
+(require 'racket-mode)
 
 
 (provide 'scheme-setting)

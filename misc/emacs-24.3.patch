@@ -1,0 +1,31 @@
+diff --git a/configure.ac b/configure.ac
+index 62f53a3..e2e72f2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2586,10 +2586,12 @@ if test "${HAVE_X11}" = "yes" || test "${HAVE_W32}" = "yes"; then
+   AH_TEMPLATE(HAVE_JPEG, [Define to 1 if you have the jpeg library (-ljpeg).])dnl
+   if test "${HAVE_JPEG}" = "yes"; then
+     AC_DEFINE(HAVE_JPEG)
+-    AC_EGREP_CPP([version= *(6[2-9]|[7-9][0-9])],
+-        [#include <jpeglib.h>
+-	 version=JPEG_LIB_VERSION
+-],
++    AC_EGREP_CPP([version 6b or later],
++	[#include <jpeglib.h>
++	 #if JPEG_LIB_VERSION >= 62
++	 version 6b or later
++	 #endif
++	],
+         [AC_DEFINE(HAVE_JPEG)],
+         [AC_MSG_WARN([libjpeg found, but not version 6b or later])
+         HAVE_JPEG=no])
+@@ -2661,7 +2663,8 @@ if test "${HAVE_X11}" = "yes" && test "${with_gif}" != "no" \
+   AC_CHECK_HEADER(gif_lib.h,
+ # EGifPutExtensionLast only exists from version libungif-4.1.0b1.
+ # Earlier versions can crash Emacs.
+-    [AC_CHECK_LIB(gif, EGifPutExtensionLast, HAVE_GIF=yes, HAVE_GIF=maybe)])
++    [AC_CHECK_LIB(gif, GifMakeMapObject, HAVE_GIF=yes,
++        [AC_CHECK_LIB(gif, EGifPutExtensionLast, HAVE_GIF=yes, HAVE_GIF=maybe)])])
+ 
+   if test "$HAVE_GIF" = yes; then
+     LIBGIF=-lgif

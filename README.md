@@ -19,9 +19,16 @@ zzemacs - emacs for zachary zhou
 
 * Some url
 
-    for emacs: <http://ftp.gnu.org/emacs>
+    GNU emacs: <http://ftp.gnu.org/emacs>
 	
     third party for emacs refer to
     zzemacs/third-party/readme.txt
 
+* Libraries for build emacs
+    
+    LIBJPEG:           http://www.ijg.org/files
+    LIBGIF & LIBUNGIF: https://sourceforge.net/projects/giflib
+    LIBTIFF:           http://download.osgeo.org/libtiff
+    LIBXPM:            http://www.x.org/releases/current/src/lib 
+    
 * zzemacs will update as I using, hope your support.

@@ -10,7 +10,7 @@ Linux something
     $ sudo yum -y localinstall *.rpm
 
     $ yum list installed | grep kmd
- 
+
 2. linux cross reference
 
     <http://lxr.oss.org.cn/source/>
@@ -115,7 +115,7 @@ Linux something
     gcc –v
 
     ##Alternatively, you can explicitly define the following variables to use devtools.
-    export CC=/opt/centos/devtoolset-1.1/root/usr/bin/gcc  
+    export CC=/opt/centos/devtoolset-1.1/root/usr/bin/gcc
     export CPP=/opt/centos/devtoolset-1.1/root/usr/bin/cpp
     export CXX=/opt/centos/devtoolset-1.1/root/usr/bin/c++
 
@@ -204,7 +204,7 @@ Linux something
     # dracut -f initramfs-$(uname -r).img $(uname -r)
 
 20. ssh&scp now yes/no ask
-    [root@master ~]# vi /etc/ssh/ssh_config 
+    [root@master ~]# vi /etc/ssh/ssh_config
     StrictHostKeyChecking no
     - or -
     [root@master ~]# ssh IP -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no

@@ -482,7 +482,8 @@
 
 ;;when deleted a file goes to the OS's trash folder:
 ;;(setq trash-directory "~/.Trash")
-(when-emacs24-3 (setq delete-by-moving-to-trash t))
+(when-emacs24-3
+ (setq delete-by-moving-to-trash t))
 
 ;;Make Emacs stop asking “Active processes exist; kill them and exit anyway”
 ;(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)

@@ -1,4 +1,0 @@
-#!/bin/sh
-# $0 comN
-
-putty -sercfg 19200,8,n,1,N -serial "$@" &

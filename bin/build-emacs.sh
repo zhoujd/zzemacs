@@ -48,6 +48,18 @@ Build_source()
     popd
 }
 
+Install_libungif()
+{
+    wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
+    tar xf libungif-4.1.4.tar.gz
+
+    pushd libungif-4.1.4
+    ./configure --prefix=/usr
+    make
+    sudo make install
+    popd
+}
+
 Install_package()
 {
     # dectect OS version
@@ -98,6 +110,7 @@ read answer
 case "$answer" in
     "Y" | "y" )
         run_cmd Install_package
+        run_cmd Install_libungif
         ;;
 esac
 

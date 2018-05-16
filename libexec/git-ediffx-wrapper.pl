@@ -25,7 +25,8 @@ sub diff_emacs {
                                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
                                 )", $zzemacs_path, $diff_a, $diff_b);
 
-    my $cmd = sprintf("emacs -Q --eval \"%s\"", $elisp_string);
+    my $emacs_para = "-Q";
+    my $cmd = sprintf("emacs %s --eval \"%s\"", $emacs_para, $elisp_string);
 
     (system("$cmd") == 0) || die "Cannot run $cmd $!";
 }

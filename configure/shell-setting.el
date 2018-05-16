@@ -159,9 +159,14 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;key set for term
 (add-hook 'term-mode-hook
           (lambda ()
-            (define-key term-raw-map (kbd "C-c C-j")  'term-line-mode)
-            (define-key term-raw-map (kbd "C-c C-k")  'term-char-mode)
-            (define-key term-raw-map (kbd "C-c C-q")  'term-pager-toggle)
+            (define-key term-raw-map  (kbd "C-c C-j") 'term-line-mode)
+            (define-key term-raw-map  (kbd "C-c C-k") 'term-char-mode)
+            (define-key term-raw-map  (kbd "C-c C-q") 'term-pager-toggle)
+
+            (define-key term-raw-map  (kbd "C-c 1")   'term-line-mode)
+            (define-key term-raw-map  (kbd "C-c 0")   'term-char-mode)
+            (define-key term-mode-map (kbd "C-c 1")   'term-line-mode)
+            (define-key term-mode-map (kbd "C-c 0")   'term-char-mode)
             ))
 
 (defun term-send-esc ()

@@ -3,16 +3,18 @@
 ;; Filename: w32-browser.el
 ;; Description: Run Windows application associated with a file.
 ;; Author: Emacs Wiki, Drew Adams
-;; Maintainer: Drew Adams
-;; Copyright (C) 2004-2012, Drew Adams, all rights reserved.
+;; Maintainer: Drew Adams (concat "drew.adams" "@" "oracle" ".com")
+;; Copyright (C) 2004-2018, Drew Adams, all rights reserved.
 ;; Created: Thu Mar 11 13:40:52 2004
-;; Version: 21.0
-;; Last-Updated: Sat Mar 10 10:00:37 2012 (-0800)
+;; Version: 0
+;; Package-Requires: ()
+;; Last-Updated: Mon Jan  1 16:19:17 2018 (-0800)
 ;;           By: dradams
-;;     Update #: 218
-;; URL: http://www.emacswiki.org/cgi-bin/wiki/w32-browser.el
+;;     Update #: 246
+;; URL: https://www.emacswiki.org/emacs/download/w32-browser.el
+;; Doc URL: https://emacswiki.org/emacs/MsShellExecute
 ;; Keywords: mouse, dired, w32, explorer
-;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x
+;; Compatibility: GNU Emacs: 20.x, 21.x, 22.x, 23.x, 24.x, 25.x, 26.x
 ;;
 ;; Features that might be required by this library:
 ;;
@@ -24,18 +26,20 @@
 ;;
 ;;    Run Windows application associated with a file.
 ;;
-;; `w32-browser' & `dired-w32-browser' are taken from the Emacs Wiki
-;; (author unknown).
+;; Functions `w32-browser' & `dired-w32-browser' were originally from
+;; code posted on EmacsWiki (author unknown).
 ;;
-;; I modified `w32-browser' to `find-file' if it cannot
-;; `w32-shell-execute'.  I modified `dired-multiple-w32-browser' to
-;; use `w32-browser-wait-time'.  I wrote `dired-mouse-w32-browser',
-;; `w32explore', `dired-w32explore', and dired-mouse-w32explore.
+;; Modified `w32-browser' to invoke `find-file' if it cannot use
+;; `w32-shell-execute'.  Modified `dired-multiple-w32-browser' to use
+;; `w32-browser-wait-time'.  Wrote `dired-mouse-w32-browser',
+;; `w32explore', `dired-w32explore', and `dired-mouse-w32explore'.
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Change Log:
 ;;
+;; 2016/08/14 dadams
+;;     dired-mouse-w32-browser*: No-op if event is not in a window.
 ;; 2012/03/10 dadams
 ;;     dired-w32-browse(-reuse-dir-buffer), w32explore:
 ;;       Use subst-char-in-string, not dired-replace-in-string or substitute.
@@ -54,7 +58,7 @@
 ;; 2006/01/02 dadams
 ;;     Added: w32-browser-wait-time, soft require of dired+.el.
 ;;     Uncommented and updated dired-multiple-w32-browser and its binding.
-;;     Thanks to Mathias Dahl [brakjoller@gmail.com] for recognizing this actually works.
+;;     Thanks to Mathias Dahl for recognizing this actually works.
 ;;     Conditionalized dired+ vs standard dired in bindings.
 ;; 2005/11/05 dadams
 ;;     Renamed menu-bar-dired-immediate-menu to diredp-menu-bar-immediate-menu.
@@ -116,15 +120,17 @@ If no application is associated with file, then `find-file'."
 If file is a directory or no application is associated with file, then
 `find-file' instead."
     (interactive "e")
-    (let (file)
-      (with-current-buffer (window-buffer (posn-window (event-end event)))
-        (save-excursion
-          (goto-char (posn-point (event-end event)))
-          (setq file (dired-get-filename nil t))))
-      (select-window (posn-window (event-end event)))
-      (if (file-directory-p file)
-          (find-file (file-name-sans-versions file t))
-        (w32-browser (file-name-sans-versions file t)))))
+    (let ((win  (posn-window (event-end event)))
+          file)
+      (when (windowp win)               ; E.g. press but move mouse out of any window.
+        (with-current-buffer (window-buffer win)
+          (save-excursion
+            (goto-char (posn-point (event-end event)))
+            (setq file (dired-get-filename nil t))))
+        (select-window (posn-window (event-end event)))
+        (if (file-directory-p file)
+            (find-file (file-name-sans-versions file t))
+          (w32-browser (file-name-sans-versions file t))))))
 
   (defun dired-w32-browser-reuse-dir-buffer ()
     "Like `dired-w32-browser', but reuse Dired buffers."
@@ -137,15 +143,17 @@ If file is a directory or no application is associated with file, then
   (defun dired-mouse-w32-browser-reuse-dir-buffer (event)
     "Like `dired-mouse-w32-browser', but reuse Dired buffers."
     (interactive "e")
-    (let (file)
-      (with-current-buffer (window-buffer (posn-window (event-end event)))
-        (save-excursion
-          (goto-char (posn-point (event-end event)))
-          (setq file (dired-get-filename nil t))))
-      (select-window (posn-window (event-end event)))
-      (if (file-directory-p file)
-          (find-alternate-file (file-name-sans-versions file t))
-        (w32-browser (file-name-sans-versions file t)))))
+    (let ((win  (posn-window (event-end event)))
+          file)
+      (when (windowp win)               ; E.g. press but move mouse out of any window.
+        (with-current-buffer (window-buffer win)
+          (save-excursion
+            (goto-char (posn-point (event-end event)))
+            (setq file (dired-get-filename nil t))))
+        (select-window (posn-window (event-end event)))
+        (if (file-directory-p file)
+            (find-alternate-file (file-name-sans-versions file t))
+          (w32-browser (file-name-sans-versions file t))))))
 
   (defun dired-multiple-w32-browser ()
     "Run default Windows applications associated with marked files."
@@ -156,7 +164,7 @@ If file is a directory or no application is associated with file, then
         (sleep-for w32-browser-wait-time)
         (setq files (cdr files)))))
 
-  (defun w32explore (file)   
+  (defun w32explore (file)
     "Open Windows Explorer to FILE (a file or a folder)."
     (interactive "fFile: ")
     (let ((w32file (subst-char-in-string ?/ ?\\ (expand-file-name file))))
@@ -164,12 +172,12 @@ If file is a directory or no application is associated with file, then
           (w32-shell-execute "explore" w32file "/e,/select,")
         (w32-shell-execute "open" "explorer" (concat "/e,/select," w32file)))))
 
-  (defun dired-w32explore ()   
+  (defun dired-w32explore ()
     "Open Windows Explorer to current file or folder."
     (interactive)
     (w32explore (dired-get-filename nil t)))
 
-  (defun dired-mouse-w32explore (event)   
+  (defun dired-mouse-w32explore (event)
     "Open Windows Explorer to file or folder under mouse."
     (interactive "e")
     (let (file)
@@ -182,7 +190,7 @@ If file is a directory or no application is associated with file, then
 
 ;;; This doesn't work, nor do other variants.
 ;;; Apparently, /select can specify only one file, and only one /select can be used.
-;;;   (defun dired-multiple-w32explore ()   
+;;;   (defun dired-multiple-w32explore ()
 ;;;     "Open Windows Explorer to current directory, with marked files selected."
 ;;;     (interactive)
 ;;;     (let ((files (dired-get-marked-files)))

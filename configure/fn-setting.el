@@ -48,8 +48,8 @@
     [S-f1]            nil
     [C-f1]            'magit-status
     [M-f1]            'monky-status
-    (kbd "C-x <f1>")  'session-save
-    (kbd "C-c <f1>")  'session-restore
+    (kbd "C-x <f1>")  nil
+    (kbd "C-c <f1>")  nil
     )
 
 (define-fn-key (gethash "f2" fn-key-table)
@@ -102,8 +102,8 @@
     [S-f7]            'switch-to-compilation
     [C-f7]            'next-error
     [M-f7]            'previous-error
-    (kbd "C-x <f7>")  nil
-    (kbd "C-c <f7>")  nil
+    (kbd "C-x <f7>")  'session-save
+    (kbd "C-c <f7>")  'session-restore
     )
 
 (define-fn-key (gethash "f8" fn-key-table)

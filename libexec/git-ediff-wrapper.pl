@@ -10,7 +10,7 @@ $| = 1;
 sub diff_emacs {
     my $diff_a = shift;
     my $diff_b = shift;
-    
+
     my $zzemacs_path = "~/zzemacs";
 
     # Reset path on linux
@@ -19,7 +19,7 @@ sub diff_emacs {
     } elsif ( "$^O" eq "msys" ) {
         $zzemacs_path = "$ENV{ZZNIX_HOME}/home/zhoujd/zzemacs";
     }
-    
+
     my $elisp_string = sprintf("(progn \
                                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \

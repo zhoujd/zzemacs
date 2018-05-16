@@ -28,12 +28,13 @@
 (when-ms-windows
   (require 'w32-browser)
   (eval-after-load "dired"
-    '(define-key dired-mode-map [C-f4] (lambda ()
-                                         (interactive)
-                                         (w32-browser
-                                          (dired-replace-in-string
-                                           "/" "\\"
-                                           (dired-get-filename)))))))
+    '(define-key dired-mode-map
+       (kbd "C-c C-e") (lambda ()
+                         (interactive)
+                         (w32-browser
+                          (dired-replace-in-string
+                           "/" "\\"
+                           (dired-get-filename)))))))
 
 (add-hook 'dired-mode-hook
           (lambda ()

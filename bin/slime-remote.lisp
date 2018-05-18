@@ -1,4 +1,4 @@
-#!/usr/local/bin/sbcl --script
+;;; sbcl --load slime-remote.lisp
 
 (write-line "start slime at port:7070")
 

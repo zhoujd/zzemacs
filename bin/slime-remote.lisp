@@ -1,4 +1,7 @@
+;;;; slime-remote.lisp
 ;;; sbcl --load slime-remote.lisp
+;;; http://cl-cookbook.sourceforge.net
+;;; http://cl-cookbook.sourceforge.net/os.html
 
 (write-line "Start slime at default port: 7070")
 

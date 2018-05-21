@@ -38,21 +38,7 @@
 ;;;; Include settings
 (unless-ms-windows    
  (progn
-   (if use-cedet-inside-flag
-       (progn
-         (require 'semantic/bovine/gcc)
-         )
-       (progn
-         (zz-load-path "site-lisp/cedet/semantic/bovine")
-         (require 'semantic-gcc)
-         (eval-after-load "semantic-c"
-           '(dolist (d (list
-                        "/usr/include"
-                        "/usr/local/include"
-                        ))
-             (semantic-add-system-include d)))
-         ))
-   
+   (require 'semantic/bovine/gcc)
    (defconst cedet-user-include-dirs (list
                                       "."
                                       ".."

@@ -3,63 +3,26 @@
 
 (zz-load-path "site-lisp")
 
+;; cedet setting
+(require 'cedet)
+(require 'semantic/sb)
 
-;;;cedet version flag t for inside
-(defvar use-cedet-inside-flag (if (< emacs-major-version 24)
-                                  nil
-                                  t)
-  "cedet using flag, t for use buildin, nil for office")
-(if use-cedet-inside-flag
-    (progn
-      ;;auto complete
-      (require 'cedet)
-      ;; speed bar
-      (require 'semantic/sb)
+;; select which submodes we want to activate
+(mapc (lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
+      '(global-semantic-idle-scheduler-mode
+        global-semanticdb-minor-mode
+        global-semantic-idle-summary-mode
+        global-semantic-mru-bookmark-mode))
 
-      ;; select which submodes we want to activate
-      (mapc (lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
-            '(global-semantic-idle-scheduler-mode
-              global-semanticdb-minor-mode
-              global-semantic-idle-summary-mode
-              global-semantic-mru-bookmark-mode))
+;; smart complitions
+(require 'semantic/ia)
+(setq-mode-local c-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
+(setq-mode-local c++-mode semanticdb-find-default-throttle
+                 '(project unloaded system recursive))
 
-      ;; smart complitions
-      (require 'semantic/ia)
-      (setq-mode-local c-mode semanticdb-find-default-throttle
-                       '(project unloaded system recursive))
-      (setq-mode-local c++-mode semanticdb-find-default-throttle
-                       '(project unloaded system recursive))
-
-      (global-ede-mode t)
-      (semantic-mode t)
-      )
-    (progn
-      ;; Disable cedet inside emacs
-      (if-ms-windows
-       (progn
-         (setq load-path (remove (format "%s/lisp/cedet" (getenv "EMACS_DIR")) load-path)))
-       (progn
-         (setq load-path (remove "/usr/share/emacs/cedet" load-path))
-         (setq load-path (remove (format "/usr/share/emacs/%s.%s/lisp/cedet"
-                                         emacs-major-version emacs-minor-version)
-                                 load-path))))
-
-      (zz-load-path "site-lisp/cedet/common")
-
-      ;; Load CEDET.
-      ;; See cedet/common/cedet.info for configuration details.
-      ;; IMPORTANT: For Emacs >= 23.2, you must place this *before* any
-      ;; CEDET component (including EIEIO) gets activated by another
-      ;; package (Gnus, auth-source, ...).
-      (require 'cedet)
-      (global-ede-mode t)
-      (semantic-load-enable-minimum-features)
-      (semantic-load-enable-code-helpers)
-
-      ;; Enable source code folding
-      (when window-system
-          (global-semantic-tag-folding-mode 1))
-      ))
+(global-ede-mode t)
+(semantic-mode t)
 
 ;; 1:list methold in current buffer
 ;; 2:switch buffer in h & cpp file
@@ -102,18 +65,18 @@ the mru bookmark stack."
       (hippie-expand nil)
       (indent-for-tab-command)))
 
-;;;company-mode <ctrl+tab> to open complete menu
-;(zz-load-path "site-lisp/company-mode")
-;(require 'company)
-;(global-company-mode t)
-;(setq company-idle-delay nil) ;; nil for not auto popup
-;(setq company-minimum-prefix-length 1)
-;(setq company-show-numbers t)
-;(define-key company-active-map [return]    nil)
-;(define-key company-active-map (kbd "RET") nil)
-;(define-key company-active-map [tab]       'company-complete-selection)
-;(define-key company-active-map (kbd "TAB") 'company-complete-selection)
-;(global-set-key [(control tab)] 'company-complete)
+;;company-mode <ctrl+tab> to open complete menu
+(zz-load-path "site-lisp/company-mode")
+(require 'company)
+(global-company-mode t)
+(setq company-idle-delay nil) ;; nil for not auto popup
+(setq company-minimum-prefix-length 1)
+(setq company-show-numbers t)
+(define-key company-active-map [return]    nil)
+(define-key company-active-map (kbd "RET") nil)
+(define-key company-active-map [tab]       'company-complete-selection)
+(define-key company-active-map (kbd "TAB") 'company-complete-selection)
+(global-set-key [(control tab)] 'company-complete)
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")

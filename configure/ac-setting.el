@@ -60,4 +60,4 @@
             (all-completions ac-prefix candidates)))))
 
 
-(provide 'ac-setup)
+(provide 'ac-setting)

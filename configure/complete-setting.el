@@ -73,13 +73,6 @@ the mru bookmark stack."
 (yas/initialize)
 (yas/load-directory (concat zzemacs-path "/site-lisp/yasnippet/snippets"))
 
-;;company mode
-(require 'company-setup)
-
-;;auto complete
-;(require 'ac-setup)
-
-
 (provide 'complete-setting)
 
 ;;; complete-setting.el ends here

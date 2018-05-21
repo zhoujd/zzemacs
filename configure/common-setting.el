@@ -291,17 +291,6 @@
 
 (setq-default kill-whole-line t)
 
-;;//auto load: transient-mark-mode,delete-selection-mode
-(if (fboundp 'pc-selection-mode)
-    (pc-selection-mode)
-    (require 'pc-select))
-(custom-set-variables '(pc-selection-mode t nil (pc-select)))
-
-;;Non-nil if Transient-Mark mode is enabled.
-(setq-default transient-mark-mode t)
-(setq-default delete-selection-mode t)
-(setq pc-select-selection-keys-only t)
-
 ;;scroll properity
 (setq-default scroll-step              1
               scroll-conservatively    most-positive-fixnum

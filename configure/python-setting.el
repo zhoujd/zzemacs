@@ -21,7 +21,7 @@
                            interpreter-mode-alist))
 
 ;;ac for python-mode
-(require 'auto-complete-pycomplete)
+;(require 'auto-complete-pycomplete)
 ;;highlight indent
 (require 'highlight-indentation)
 

@@ -27,9 +27,11 @@
    #+LISPWORKS (lispworks:environment-variable name)
    default))
 
-#+sbcl
+#+SBCL
 (require 'swank)
-#+clisp
+#+ECL
+(require 'swank)
+#+CLISP
 (asdf:operate 'asdf:load-op 'swank)
 
 (defvar *swank-server-p* nil "swant server flag")

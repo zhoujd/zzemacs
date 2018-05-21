@@ -70,8 +70,8 @@ the mru bookmark stack."
 (require 'company)
 (global-company-mode t)
 (setq company-idle-delay nil) ;; nil for not auto popup
-(setq company-minimum-prefix-length 1)
 (setq company-show-numbers t)
+(setq company-minimum-prefix-length 1)
 (define-key company-active-map [return]    nil)
 (define-key company-active-map (kbd "RET") nil)
 (define-key company-active-map [tab]       'company-complete-selection)

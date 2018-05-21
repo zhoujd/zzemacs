@@ -307,19 +307,26 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'comint-output-filter-functions
           'comint-strip-ctrl-m nil t)
 
+;;shell completion
+(unless-ms-windows
+ (require 'shell-completion))
+
 ;;readline complete
 (unless-ms-windows
  (progn
-  ;;shell completion
-  (require 'shell-completion)
-
   (setq explicit-shell-file-name "bash")
   (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
   (setq comint-process-echoes nil)
 
   (require 'readline-complete)
+  ;;; setup for company mode
+  (push 'company-readline company-backends)
+  (add-hook 'rlc-no-readline-hook (lambda () (company-mode -1)))
+
+  ;;; setup for auto-complete mode
   (add-to-list 'ac-modes 'shell-mode)
-  (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)))
+  (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+  ))
 
 ;;eshell setting
 (setq eshell-prompt-function

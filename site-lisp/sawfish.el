@@ -643,7 +643,7 @@ When called interactively, re-reads them."
                sawfish-function-list sawfish-variable-list)
     (setq sawfish-function-list nil
           sawfish-variable-list nil)
-    (flet ((sawfish-fun-p (sym) (second sym))
+    (cl-flet ((sawfish-fun-p (sym) (second sym))
            (sawfish-var-p (sym) (third sym)))
       (loop for sym in (sawfish-eval-read
                         `(mapcar (lambda (sym)

@@ -467,7 +467,7 @@ instead of `helm-walk-ignore-directories'."
                (relative 'file-relative-name)
                (full     'identity)
                (t        'file-name-nondirectory))))
-     (labels ((ls-R (dir)
+     (cl-labels ((ls-R (dir)
                 (unless (and ,skip-subdirs
                              (member (helm-basename dir)
                                      (if (listp ,skip-subdirs)

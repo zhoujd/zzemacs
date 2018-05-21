@@ -998,7 +998,7 @@ This is the main function of mic-paren."
   (let ((loc mic-paren-previous-location)
         charquote two opos matched-paren mismatch face visible)
 
-    (flet ((highlight-p
+    (cl-flet ((highlight-p
             (pos prio which)
             (let ((fcq (mic-paren-is-following-char-quoted pos))
                   (right-prio (eq prio paren-priority))
@@ -1022,7 +1022,7 @@ This is the main function of mic-paren."
             (or (get major-mode 'mic-paren-comment-style)
                 (put major-mode 'mic-paren-comment-style
                      ;; Tested (lightly) w/ SML, Modula-2, Pascal.
-                     (flet ((sub (str pos) (condition-case ()
+                     (cl-flet ((sub (str pos) (condition-case ()
                                                (aref str (if (> 0 pos)
                                                              (+ (length str)
                                                                 pos)

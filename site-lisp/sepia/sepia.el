@@ -251,7 +251,7 @@ might want to bind your keys, which works best when bound to
         (old-pdb (symbol-function 'w3m-about-perldoc-buffer))
         buf)
     (condition-case stuff
-        (flet ((w3m-about-perldoc (&rest args)
+        (cl-flet ((w3m-about-perldoc (&rest args)
                  (let ((res (apply old-pd args)))
                    (or res (error "lose: %s" args))))
                (w3m-about-perldoc-buffer (&rest args)
@@ -1555,7 +1555,7 @@ calling `cperl-describe-perl-symbol'."
                          (?* sepia-module-doc-map)
                          (t (error "sepia-symbol-info: %s" type))))
           ;; Loathe cperl a bit.
-          (flet ((message (&rest blah) (apply #'format blah)))
+          (cl-flet ((message (&rest blah) (apply #'format blah)))
             (let* (case-fold-search
                    (cperl-message-on-help-error nil)
                    (hlp (car (save-excursion
@@ -1799,7 +1799,7 @@ link using `browse-url'."
 
 (defadvice cperl-imenu--create-perl-index (after simplify compile activate)
   "Make cperl's imenu index simpler."
-  (flet ((annoying (x)
+  (cl-flet ((annoying (x)
                    (dolist (y '("Rescan" "^\\+Unsorted" "^\\+Packages"))
                      (when (string-match y (car x))
                        (return-from annoying t)))

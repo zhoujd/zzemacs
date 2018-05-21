@@ -16,7 +16,7 @@ bells-and-whistles.  Arguments are:
     rootp-fn          is dir root?
     slashp-fn         does dir end in slash?
 "
-  (flet ((ido-make-file-list (prefix)
+  (cl-flet ((ido-make-file-list (prefix)
            (setq ido-temp-list (funcall list-fn (or prefix ""))))
          (ido-exhibit () (sepia-ido-exhibit))
          (ido-is-root-directory (&optional dir)

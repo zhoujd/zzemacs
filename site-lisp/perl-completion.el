@@ -498,7 +498,7 @@ so should not change this variable.")
 (defun* plcmp--get-lib-path-list-liberal (&optional (dir (plcmp-get-current-directory))
                                                     (libdir-names '("extlib" "lib")))
   "return list of string"
-  (flet ((aux (libdir-name updirs)
+  (cl-flet ((aux (libdir-name updirs)
               (loop for updir in updirs
                     for dir = (expand-file-name
                                (concat updir libdir-name))

@@ -653,7 +653,7 @@ key/value pairs in each list does not matter."
          (keys-b (ert--significant-plist-keys b))
          (keys-in-a-not-in-b (ert--set-difference-eq keys-a keys-b))
          (keys-in-b-not-in-a (ert--set-difference-eq keys-b keys-a)))
-    (flet ((explain-with-key (key)
+    (cl-flet ((explain-with-key (key)
              (let ((value-a (plist-get a key))
                    (value-b (plist-get b key)))
                (assert (not (equal value-a value-b)) t)
@@ -1137,7 +1137,7 @@ contained in UNIVERSE."
   ;; `backtrace' slot of the result objects in the
   ;; `most-recent-result' slots of test case objects in (eql ...) or
   ;; (member ...) selectors.
-  (labels ((rec (selector)
+  (cl-labels ((rec (selector)
              ;; This code needs to match the etypecase in `ert-select-tests'.
              (etypecase selector
                ((or (member nil t
@@ -1237,7 +1237,7 @@ Also changes the counters in STATS to match."
          (results (ert--stats-test-results stats))
          (old-test (aref tests pos))
          (map (ert--stats-test-map stats)))
-    (flet ((update (d)
+    (cl-flet ((update (d)
              (if (ert-test-result-expected-p (aref tests pos)
                                              (aref results pos))
                  (etypecase (aref results pos)

@@ -1,4 +1,4 @@
-;;; ac-setup.el
+;;;; ac-setting.el --- auto complete file
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
@@ -61,3 +61,5 @@
 
 
 (provide 'ac-setting)
+
+;;;; ac-setting.el --- end here

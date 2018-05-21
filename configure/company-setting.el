@@ -1,4 +1,4 @@
-;;; company-setting.el
+;;;; company-setting.el --- company mode file
 ;;https://www.emacswiki.org/emacs/CompanyMode#toc1
 
 ;;company-mode <ctrl+tab> to open complete menu
@@ -28,3 +28,5 @@
 
 
 (provide 'company-setting)
+
+;;;; company-setting.el --- end here

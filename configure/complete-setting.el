@@ -59,12 +59,6 @@ the mru bookmark stack."
         try-expand-all-abbrevs))
 
 
-(defun my-indent-or-complete ()
-   (interactive)
-   (if (looking-at "\\>")
-      (hippie-expand nil)
-      (indent-for-tab-command)))
-
 ;;YASNIPPET
 ;;https://github.com/capitaomorte/yasnippet
 (zz-load-path "site-lisp/yasnippet")

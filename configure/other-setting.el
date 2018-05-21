@@ -99,7 +99,6 @@
                     )
 
 (require 'what-char)
-(require 'xray)
 
 ;; Support for marking a rectangle of text with highlighting.
 (require 'rect-mark)

@@ -77,7 +77,7 @@ the mru bookmark stack."
 (require 'company-setup)
 
 ;;auto complete
-(require 'ac-setup)
+;(require 'ac-setup)
 
 
 (provide 'complete-setting)

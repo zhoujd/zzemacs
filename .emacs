@@ -39,7 +39,7 @@
         common-setting
         env-setting
         complete-setting
-        company-setting
+        ac-setting
         prog-setting
         gdb-setting
         vc-setting

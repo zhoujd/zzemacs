@@ -2,7 +2,6 @@
 
 
 (zz-load-path "site-lisp")
-(zz-load-path "elisp")
 
 ;; cedet setting
 (require 'cedet)

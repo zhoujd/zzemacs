@@ -22,7 +22,7 @@
 
 (require 'cperl-mode)
 (require 'gud)
-(require 'cl)
+(require 'cl-lib)
 ;; try optional modules, but don't bitch if we fail:
 (ignore-errors (require 'sepia-w3m))
 (ignore-errors (require 'sepia-tree))

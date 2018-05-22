@@ -1,6 +1,6 @@
 (eval-when-compile
   (require 'ido)
-  (require 'cl))
+  (require 'cl-lib))
 
 (defun* sepia-icompleting-recursive-read (prompt dir &key
                                                  list-fn

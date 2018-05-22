@@ -99,7 +99,7 @@
 ;; Wait for some 35 lines until defcustom...
 ;; Things we need:
 (eval-when-compile
-  (require 'cl)
+  (require 'cl-lib)
   (require 'info))
 (require 'thingatpt)
 (require 'font-lock)

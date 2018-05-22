@@ -225,7 +225,7 @@
 
 
 ;;;code:
-(require 'cl)
+(require 'cl-lib)
 (require 'anything) ; perl-completion.el uses `anything-aif' macro.
 (require 'cperl-mode)
 (require 'dabbrev)

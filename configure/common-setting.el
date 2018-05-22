@@ -170,13 +170,10 @@
 
 ;;set default-frame-alist
 (when-ms-windows
- (if window-system
-     (setq default-frame-alist
-           (append
-            '((scroll-bar-width . 16)
-              (width . 120)
-              (height . 32))
-            default-frame-alist))))
+ (setq default-frame-alist (append '((scroll-bar-width . 16)
+                                     (width . 120)
+                                     (height . 32))
+                                   default-frame-alist)))
 
 ;;quick display key help
 (setq echo-keystrokes 0.1)

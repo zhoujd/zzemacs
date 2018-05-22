@@ -63,7 +63,6 @@ Install_others()
     sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
     sudo ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
     sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzshrc  $BIN_TARGET
 
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash
@@ -91,16 +90,17 @@ Install_thirdparty()
 main()
 {
     ##install configure file
-    confirm_execute "Do you want to overwrite .emacs ? [y/N]" run_cmd Install_dot_emacs
-
+    confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
+                    run_cmd Install_dot_emacs
     ##install fonts
-    confirm_execute "Do you want to install fonts ? [y/N]" run_cmd Install_fonts
-
+    confirm_execute "Do you want to install fonts ? [y/N]" \
+                    run_cmd Install_fonts
     ##install others
-    confirm_execute "Do you want to install others ? [y/N]" run_cmd Install_others
-
+    confirm_execute "Do you want to install others ? [y/N]" \
+                    run_cmd Install_others
     ##install third-party
-    confirm_execute "Do you want to install third-party packages ? (y/N): " run_cmd Install_thirdparty
+    confirm_execute "Do you want to install third-party packages ? (y/N): " \
+                    run_cmd Install_thirdparty
 }
 
 main

@@ -132,11 +132,6 @@
     (define-key paredit-mode-map (kbd "<M-up>")   nil)
     (define-key paredit-mode-map (kbd "<M-down>") nil)))
 
-;;Advanced highlighting of matching parentheses
-(require 'mic-paren)
-(paren-activate)
-(setf paren-priarity 'close)
-
 ;;Provide a face for parens in lisp modes
 (require 'parenface)
 

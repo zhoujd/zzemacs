@@ -1,3 +1,4 @@
 #!/bin/sh
 
-emacs --debug-init "$@"
+emacs --debug-init \
+      "$@"

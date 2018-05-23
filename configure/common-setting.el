@@ -276,9 +276,6 @@
 (setq chinese-calendar-terrestrial-branch
       ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
 
-;;work direction
-;(setq default-directory "~/work")
-
 (setq column-number-mode t)
 (setq default-fill-column 80)
 
@@ -288,6 +285,12 @@
 (setq x-stretch-cursor nil)
 
 (setq-default kill-whole-line t)
+
+(setq transient-mark-mode t)
+(setq mark-even-if-inactive t)
+(setq set-mark-command-repeat-pop t)
+(transient-mark-mode 1)
+(delete-selection-mode 1)
 
 ;;scroll properity
 (setq-default scroll-step              1

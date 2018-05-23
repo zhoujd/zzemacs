@@ -289,8 +289,8 @@
 (setq transient-mark-mode t)
 (setq mark-even-if-inactive t)
 (setq set-mark-command-repeat-pop t)
-(transient-mark-mode 1)
-(delete-selection-mode 1)
+(transient-mark-mode t)
+(delete-selection-mode t)
 
 ;;scroll properity
 (setq-default scroll-step              1

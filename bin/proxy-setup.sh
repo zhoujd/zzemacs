@@ -8,12 +8,13 @@
 ## Acquire::ftp::proxy "ftp://127.0.0.1:8000";  
 ## Acquire::https::proxy "https://127.0.0.1:8000";
 
-echo "Setup proxy .bashrc start ..."
-
 if [ $# != 1 ] ; then
     echo "Usage: `basename $0` [host:port]"
+    echo "Usage: no prefix-http/https/ftp"
     exit 1
 fi
+
+echo "Setup proxy start ..."
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -26,14 +27,14 @@ ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 
 cat > $ZZEMACS_ROOT/etc/profile.d/99_proxy.sh <<EOF
 ## This is for bash proxy
-export http_proxy=$1
-export https_proxy=\$http_proxy
-export ftp_proxy=\$http_proxy
+export http_proxy=http://$1
+export https_proxy=https://$1
+export ftp_proxy=ftp://$1
 export no_proxy=localhost,127.0.0.0/8,::1
 EOF
 
 ##Git http/https proxy
-git config --global http.proxy $1
-git config --global https.proxy $1
+git config --global http.proxy http://$1
+git config --global https.proxy https://$1
 
-echo "Setup proxy .bashrc end ..."
+echo "Setup proxy end ..."

@@ -32,4 +32,8 @@ export ftp_proxy=\$http_proxy
 export no_proxy=localhost,127.0.0.0/8,::1
 EOF
 
+##Git http/https proxy
+git config --global http.proxy $1
+git config --global https.proxy $1
+
 echo "Setup proxy .bashrc end ..."

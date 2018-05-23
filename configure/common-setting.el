@@ -286,9 +286,9 @@
 
 (setq-default kill-whole-line t)
 
-(setq transient-mark-mode t)
-(setq mark-even-if-inactive t)
-(setq set-mark-command-repeat-pop t)
+(setq transient-mark-mode t
+      mark-even-if-inactive t
+      set-mark-command-repeat-pop t)
 (transient-mark-mode t)
 (delete-selection-mode t)
 

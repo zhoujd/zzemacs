@@ -58,6 +58,12 @@ the mru bookmark stack."
         try-complete-file-name
         try-expand-all-abbrevs))
 
+(defun indent-or-complete ()
+   "complete if point is at end of a word, otherwise indent line"
+   (interactive)
+   (if (looking-at "\\>")
+       (hippie-expand nil)
+       (indent-for-tab-command)))
 
 ;;YASNIPPET
 ;;https://github.com/capitaomorte/yasnippet

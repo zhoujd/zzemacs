@@ -332,6 +332,7 @@
 (setq truncate-partial-width-windows nil)
 
 ;;indent setting
+(setq-default tab-always-indent 'complete)
 (setq-default indent-tabs-mode nil)
 (setq default-tab-width 4)
 (setq tab-stop-list ())

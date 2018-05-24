@@ -62,7 +62,7 @@
 (c-add-style "kernel-coding"
              '( "linux"
                (c-basic-offset . 8)
-               (indent-tabs-mode . nil)
+               (indent-tabs-mode . t)  ;;kernel use tab to indent
                (tab-width . 8)
                (c-comment-only-line-offset . 0)
                (c-hanging-braces-alist

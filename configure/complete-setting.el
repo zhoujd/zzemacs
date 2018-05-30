@@ -68,11 +68,10 @@ the mru bookmark stack."
 ;;YASNIPPET
 ;;https://github.com/capitaomorte/yasnippet
 (zz-load-path "site-lisp/yasnippet")
-(require 'yasnippet)
-(yas-global-mode t)
-
 (zz-load-path "site-lisp/yasnippet-snippets")
 (require 'yasnippet-snippets)
+(yas-global-mode t)
+
 
 (provide 'complete-setting)
 

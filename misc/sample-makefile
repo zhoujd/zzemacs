@@ -1,6 +1,5 @@
 ### Makefile sample for C/C++ on Linux
-### Any question contact to zjd-405@163.com
-
+##
 
 TARGET = sample
 

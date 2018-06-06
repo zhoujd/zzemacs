@@ -26,6 +26,7 @@
 (defconst my-temp-setting
   '(
     ";;;; temp-setting.el --- program temp file"
+    ""
     ";; set project direcitory list"
     "(setq proj-list"
     "      '("

@@ -10,6 +10,11 @@
       (setenv "PATH" (concat path path-separator (getenv "PATH")))
       (setq exec-path (cons path exec-path))))
 
+(defun zz-add-lib-path (path)
+  (interactive "DDirectory: ")
+  (when (file-exists-p path)
+      (setenv "LD_LIBRARY_PATH" (concat path path-separator (getenv "LD_LIBRARY_PATH")))))
+
 (defun zz-load-path (path)
   "my add to list"
   (when (not (member path load-path))

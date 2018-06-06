@@ -27,34 +27,37 @@
   '(
     ";;;; temp-setting.el --- program temp file"
     ";; set project direcitory list"
-    "(setq proj-list '("
-    "                  \"/usr/include\""
-    "                  \"/opt/intel/mediasdk/include\""
-    "                  ))"
+    "(setq proj-list"
+    "      '("
+    "        \"/usr/include\""
+    "        \"/opt/intel/mediasdk/include\""
+    "        ))"
     ""
-    ";; call below function to create etags"
+    ";; create etags & cscope"
     ";(create-proj-etags)"
-    ";; call below function to create cscope"
     ";(create-proj-cscope)"
     ""
     ";; tags project setting"
-    "(setq tags-table-list '("
-    "                        \"~/work/TAGS\""
-    "                        ))"
+    "(setq tags-table-list"
+    "      '("
+    "        \"~/work/TAGS\""
+    "        ))"
     ""
     ";; cscope project setting"
-    "(setq cscope-database-regexps '("
-    "                                (\"~/work/\"  (t (\"-q\" \"-d\")) t)"
-    "                                ))"
+    "(setq cscope-database-regexps"
+    "      '("
+    "        (\"~/work\" (t (\"-q\" \"-d\")) t)"
+    "        ))"
     ""
-    ";; add to PATH"
-    ";(mapcar 'zz-add-os-path (reverse '("
-    ";                                   \"~/study/script\""
-    ";                                   )))"
+    "(mapc 'zz-add-os-path"
+    "      '("
+    "        \"~/work/script\""
+    "        ))"
     ""
-    ";(setenv \"LD_LIBRARY_PATH\" (concat"
-    ";                             \"~/work/lib\" path-separator"
-    ";                             (getenv \"LD_LIBRARY_PATH\")))"
+    "(mapc 'zz-add-lib-path"
+    "      '("
+    "        \"~/work/lib\""
+    "        ))"
     ""
     ";; project key setting"
     ";(execute-set-key f4-p-map \"f\" \"firefox\" '(\"firefox\" \"http://www.baidu.com\"))"
@@ -182,7 +185,9 @@
 
 (defun gen-etags-cmd (dir-name)
   (format "%s %s -type f \\( %s \\) -print | etags -"
-          find-program dir-name (gen-find-parts my-find-regex)))
+          find-program
+          dir-name
+          (gen-find-parts my-find-regex)))
 
 (defun create-etags (dir-name)
   "Create tags file."
@@ -194,11 +199,15 @@
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
 (defun gen-cscope-cmd (dir-name)
-  (concat
-   (format "%s %s -type f \\( %s \\) -print > %s/cscope.files;"
-           find-program dir-name (gen-find-parts my-find-regex)  default-directory)
-   (format "cscope -b -R -q -i %s/cscope.files" default-directory)
-   ))
+  (let ((files-path (concat default-directory "cscope.files")))
+    (concat
+     (format "%s %s -type f \\( %s \\) -print > %s;"
+             find-program
+             dir-name
+             (gen-find-parts my-find-regex)
+             files-path)
+     (format "cscope -b -R -q -i %s" files-path)
+     )))
 
 (defun create-cscope (dir-name)
   "Create cscope file."

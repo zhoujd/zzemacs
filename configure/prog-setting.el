@@ -115,6 +115,7 @@
 (require 'sr-speedbar)
 (setq sr-speedbar-width  30)
 (setq sr-speedbar-max-width 60)
+(setq sr-speedbar-right-side nil)
 
 ;; his-speedbar-no-separate-frame
 (defconst his-speedbar-buffer-name "SpeedBar")

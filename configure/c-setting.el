@@ -59,7 +59,7 @@
    (setq semantic-c-dependency-system-include-path "/usr/include/")))
 
 ;;add linux kernel style
-(c-add-style "kernel-coding"
+(c-add-style "kernel"
              '( "linux"
                (c-basic-offset . 8)
                (indent-tabs-mode . t)  ;;kernel use tab to indent
@@ -82,7 +82,7 @@
                ))
 
 ;;c/c++ code style
-(c-add-style "my-coding-style"
+(c-add-style "zach"
              '( "k&r"
                (c-basic-offset . 4)
                (indent-tabs-mode . nil)
@@ -125,8 +125,8 @@
                           (if (string-match keyword filename)
                               (setq is-kernel-code t))))
               (if is-kernel-code
-                  (c-set-style "kernel-coding")
-                  (c-set-style "my-coding-style")))))
+                  (c-set-style "kernel")
+                  (c-set-style "ffmpeg")))))
 
 ;;; my c setting hook
 (defun my-c-mode-common-hook()

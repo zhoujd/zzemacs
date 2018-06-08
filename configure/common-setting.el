@@ -235,10 +235,10 @@
 (setq show-paren-style 'parentheses)
 
 ;;Diary Setting
-(setq diary-file "~/diary/rj")
-(setq calendar-latitude +39.9)
-(setq calendar-longitude +116.4)
-(setq calendar-location-name "shenyang")
+(setq diary-file "~/.diary")
+(setq calendar-latitude +31.23)
+(setq calendar-longitude +121.47)
+(setq calendar-location-name "Shanghai")
 (setq calendar-remove-frame-by-deleting t)
 (setq calendar-week-start-day 1)
 

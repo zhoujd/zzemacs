@@ -104,6 +104,15 @@
                 (statement-cont . +))
                ))
 
+(c-add-style "ffmpeg"
+             '("k&r"
+               (c-basic-offset . 4)
+               (indent-tabs-mode . nil)
+               (show-trailing-whitespace . t)
+               (c-offsets-alist
+                (statement-cont . (c-lineup-assignments +)))
+               ))
+
 (defvar kernel-keywords '("kernel" "driver")
   "Keywords which are used to indicate this file is kernel code.")
 

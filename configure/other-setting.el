@@ -222,7 +222,7 @@
                ("Dired" (mode . dired-mode))
                ("Emacs" (or
                           (name . "^\\*.*\\*$")
-                          (name . "^\\*.*\\*<.*>$")
+                          (name . "^\\*.*\\*<[0-9]+>$")
                           (name . "^ ")))))))
 
 (add-hook 'ibuffer-mode-hook

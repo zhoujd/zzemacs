@@ -90,7 +90,6 @@ git config --global alias.cat   "cat-file -p"
 
 ## set http/https proxy
 git config --global http.proxy $http_proxy
-git config --global https.proxy $https_proxy
 git config --global http.sslcainfo $ZZ_ETC_ROOT/curl-ca-bundle.crt
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command

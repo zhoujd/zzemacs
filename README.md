@@ -1,4 +1,4 @@
-zzemacs - emacs for zachary zhou
+zzemacs - emacs for Zachary Zhou
 ================================
 
 * Install emacs configure with script
@@ -9,7 +9,7 @@ zzemacs - emacs for zachary zhou
 	
     also run following command line from emacs.
 	
-    emacs --script init-setup.el
+    emacs --script libexec/init-setup.el
 	
     before you setup zzemacs configure you should
     check path setting in script.

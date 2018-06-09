@@ -28,7 +28,6 @@ ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 cat > $ZZEMACS_ROOT/etc/profile.d/99_proxy.sh <<EOF
 ## This is for bash proxy
 export http_proxy=http://$1
-export https_proxy=http://$1
 export ftp_proxy=ftp://$1
 export no_proxy=localhost,127.0.0.0/8,::1
 EOF

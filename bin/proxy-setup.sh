@@ -10,7 +10,7 @@
 
 if [ $# != 1 ] ; then
     echo "Usage: `basename $0` [host:port]"
-    echo "Usage: no prefix-http/https/ftp"
+    echo "Usage: no prefix-http/ftp"
     exit 1
 fi
 
@@ -34,6 +34,5 @@ EOF
 
 ##Git http/https proxy
 git config --global http.proxy http://$1
-git config --global https.proxy https://$1
 
 echo "Setup proxy end ..."

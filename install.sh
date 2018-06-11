@@ -65,7 +65,7 @@ Install_others()
     sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
 
     ##link zzemacs/etc/profile
-    ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.zzemacs_bash
+    ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.bash_zzemacs
 }
 
 ##install thirdparty

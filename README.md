@@ -9,7 +9,7 @@ zzemacs - emacs for Zachary Zhou
 	
     also run following command line from emacs.
 	
-    emacs --script libexec/init-setup.el
+    emacs --script libexec/emacs-setup.el
 	
     before you setup zzemacs configure you should
     check path setting in script.

@@ -65,12 +65,17 @@
     ))
 
 (defun my-temp-setting ()
-  "Create configure/temp-setting.el"
+  "Create ~/.emacs.d/temp-setting.el"
   (interactive)
-  (let ((path  (concat zzemacs-path "/configure/" zz-dev-set-file)))
-    (my-create-file path my-temp-setting)
-    (message "create %s successful." path)
-    ))
+  (let ((path zz-dev-set-file))
+    (if (file-exists-p path)
+        (progn
+         (find-file path)
+         (message "open %s successful." path))
+        (progn
+         (my-create-file path my-temp-setting)
+         (message "create %s successful." path))
+      )))
 
 ;; holding
 (require 'hideshow)

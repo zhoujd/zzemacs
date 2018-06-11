@@ -41,12 +41,12 @@ class Dispatch:
 
         
     def usage(self):
-        print "Use: %s help           -- for help" % self.entryname
+        print "Use: %s help" % self.entryname
         for app in self.appmap:
             print "Use: %s %s [argv]" % (self.entryname, app)
 
         print ""
-        print "Use: %s help <app>     -- for application help" % self.entryname
+        print "Use: %s help <app>" % self.entryname
         
     def findapp(self, app):
         if app in self.appmap:

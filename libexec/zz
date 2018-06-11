@@ -15,7 +15,7 @@ def main():
     import framework.dispatch as dispatch
 
     workdir = common.getworkdir()
-    print "work directory: %s" % (workdir)
+    print "Work directory: %s" % (workdir)
 
     dispatcher = dispatch.Dispatch(workdir, srcdir, sys.argv);
     dispatcher.run()

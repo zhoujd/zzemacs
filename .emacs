@@ -7,13 +7,15 @@
 (defun zz-add-os-path (path)
   (interactive "DDirectory: ")
   (when (file-exists-p path)
-      (setenv "PATH" (concat path path-separator (getenv "PATH")))
-      (setq exec-path (cons path exec-path))))
+    (setenv "PATH" (concat path path-separator (getenv "PATH")))
+    (setq exec-path (cons path exec-path))))
 
 (defun zz-add-lib-path (path)
   (interactive "DDirectory: ")
   (when (file-exists-p path)
-      (setenv "LD_LIBRARY_PATH" (concat path path-separator (getenv "LD_LIBRARY_PATH")))))
+    (setenv "LD_LIBRARY_PATH" (concat path
+                                      path-separator
+                                      (getenv "LD_LIBRARY_PATH")))))
 
 (defun zz-load-path (path)
   "my add to list"
@@ -65,7 +67,8 @@
         ))
 
 ;;develop setting for tags path etc.
-(defvar zz-dev-set-file "~/.emacs.d/temp-setting.el"
+(defvar zz-dev-set-file (format "%s/.emacs.d/temp-setting.el"
+                                (getenv "HOME"))
   "temp project setting")
 (when (file-exists-p zz-dev-set-file)
   (load-file zz-dev-set-file))

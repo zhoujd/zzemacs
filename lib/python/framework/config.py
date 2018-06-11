@@ -1,5 +1,5 @@
 ## framework config file
 
-appdirname = "zz-core"
+appdirname = "core"
 appignorefiles = ["__init__.py"]
 appnames = {"*.py" : "python", "*.pl" : "perl", "*.sh" : "sh" }

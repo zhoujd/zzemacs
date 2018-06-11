@@ -2,6 +2,7 @@
 
 import os
 import platform
+import framework.config as config
 
 def path2unix(path):
     sysstr = platform.system()
@@ -15,3 +16,6 @@ def getworkdir():
 def getfiledir(filepath):
     strfilepath = os.path.realpath(filepath)
     return path2unix(os.path.dirname(strfilepath))
+
+def setcoredir(dir):
+    config.appdirname = dir

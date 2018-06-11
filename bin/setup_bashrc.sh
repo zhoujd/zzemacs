@@ -13,8 +13,10 @@ Install_self_bashrc()
 {
 cat >> ~/.bashrc <<EOF
 
-# zzemacs bash-setting
-test -f ~/.bash_zzemacs && . ~/.bash_zzemacs
+# zzemacs bash setting
+if [ -f ~/.bash_zzemacs ]; then
+    . ~/.bash_zzemacs
+fi
 EOF
 }
 

@@ -49,7 +49,7 @@ cat > ~/.hgrc <<EOF
 #
 
 [ui]
-username = zhoujd<zjd-405@163.com>
+username = Zachary Zhou<zachary.zhou@hotmail.com>
 verbose = True
 merge = ${EXTMERGE}
 editor = emacs -Q

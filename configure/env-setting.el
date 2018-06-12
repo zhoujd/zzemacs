@@ -14,20 +14,13 @@
      "C:/aspell/bin"
      "C:/strawberry/perl/bin"
      "C:/strawberry/c/bin"
-     "C:/Vim/vim73"
-     "C:/Program Files (x86)/CMake 2.8/bin"
-     "C:/Program Files (x86)/Mozilla Firefox"
-     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/bin"
-     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/VC"
-     "C:/Program Files (x86)/Microsoft Visual Studio 10.0/Common7/IDE"
-     "C:/Program Files/Windows Kits/8.0/Debuggers/x64"
-     "C:/Scheme/Gambit-C/v4.6.7/bin"
-     "C:/Scheme/Racket"
-     "C:/Python27/Scripts"
-     "C:/Python27"
-     "C:/Lisp/ecl"
-     "C:/Lisp/SBCL"
-     "C:/Lisp/clisp"
+     "C:/scheme/Gambit-C/v4.6.7/bin"
+     "C:/scheme/Racket"
+     "C:/python27/Scripts"
+     "C:/python27"
+     "C:/lisp/ecl"
+     "C:/lisp/SBCL"
+     "C:/lisp/clisp"
      ))
    (progn
     (list
@@ -42,7 +35,7 @@
      )))
   "add to path and exec-path")
 
-(mapcar 'zz-add-os-path (reverse my-env-path))
+(mapc #'zz-add-os-path my-env-path)
 
 (provide 'env-setting)
 

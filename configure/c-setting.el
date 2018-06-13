@@ -35,29 +35,6 @@
 ;;sudo apt-get install clang
 ;(require 'auto-complete-clang)
 
-;;;; Include settings
-(unless-ms-windows    
- (progn
-   (require 'semantic/bovine/gcc)
-   (defconst cedet-user-include-dirs (list
-                                      "."
-                                      ".."
-                                      ))
-   
-   (setq cedet-sys-include-dirs (list
-                                 "/usr/include"
-                                 "/usr/local/include"
-                                 ))
-   
-   (let ((include-dirs cedet-user-include-dirs))
-     (setq include-dirs (append include-dirs cedet-sys-include-dirs))
-     (mapc (lambda (dir)
-             (semantic-add-system-include dir 'c++-mode)
-             (semantic-add-system-include dir 'c-mode))
-           include-dirs))
-   
-   (setq semantic-c-dependency-system-include-path "/usr/include/")))
-
 ;;add linux kernel style
 (c-add-style "kernel"
              '( "linux"
@@ -128,22 +105,9 @@
                   (c-set-style "kernel")
                   (c-set-style "ffmpeg")))))
 
-;;; my c setting hook
+;; my c setting hook
 (defun my-c-mode-common-hook()
-  ;; Semantic functions.
-  (semantic-default-c-setup)
-  (local-set-key "\C-c?" 'semantic-ia-complete-symbol-menu)
-  (local-set-key "\C-cb" 'semantic-mrub-switch-tags)
-  (local-set-key "\C-cR" 'semantic-symref)
-  (local-set-key "\C-cj" 'semantic-ia-fast-jump)
-  (local-set-key "\C-cp" 'semantic-ia-show-summary)
-  (local-set-key "\C-cl" 'semantic-ia-show-doc)
-  (local-set-key "\C-cr" 'semantic-symref-symbol)
-  (local-set-key "\C-c/" 'semantic-ia-complete-symbol)
-  (local-set-key [(control return)] 'semantic-ia-complete-symbol)
-  ;(local-set-key "." 'semantic-complete-self-insert)
-  ;(local-set-key ">" 'semantic-complete-self-insert)
-
+  (setq tab-width 4 indent-tabs-mode nil)
   (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
   (define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods)
   ;;process settings
@@ -151,21 +115,25 @@
   (setq c-macro-preprocessor "cpp")
   (setq c-macro-cppflags " ")
   (setq c-macro-prompt-flag t)
-  ;;(imenu-add-to-menubar "Tags")
-  ;;(gtags-mode t)
   (abbrev-mode t)
   (hide-ifdef-mode t))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
-;;;;my c++ setting
+;; my c++ setting
 (defun my-c++-mode-hook()
-  (setq tab-width 4 indent-tabs-mode nil)
   (c-set-style "stroustrup"))
 
-;; c++-mode
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
-(add-hook 'c-mode-hook   'my-c++-mode-hook)
+
+;; auto complete c header
+(defun my:ac-c-header-init ()
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers))
+
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+
 
 (provide 'c-setting)
 

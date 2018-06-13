@@ -240,7 +240,7 @@
   (kbd "<f12>") (start-quick-shell "*shell-f12*")
 
   (kbd "C-=")   'er/expand-region
-  (kbd "C--")   (if-emacs24-3 'smartparens-mode)
+  (kbd "C--")   'smartparens-mode
 
   (kbd "C-1")   'dos2unix
   (kbd "C-3")   'secondary-x-font

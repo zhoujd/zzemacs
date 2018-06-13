@@ -9,12 +9,11 @@
             (setq lisp-indent-function 'common-lisp-indent-function)))
 
 ;;Emacs proper cl-flet indentation
-(when-emacs24-3
- (eval-after-load "cl-indent"
+(eval-after-load "cl-indent"
    '(progn
      (put 'cl-flet 'common-lisp-indent-function
           (get 'flet 'common-lisp-indent-function))
-     )))
+     ))
 
 ;;add common lisp configure file mode alias
 (setq auto-mode-alist

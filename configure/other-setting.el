@@ -275,9 +275,9 @@
 (require 'dash)
 
 ;;smartparens
-(when-emacs24-3
- (zz-load-path "site-lisp/smartparens")
- (require 'smartparens-config))
+(zz-load-path "site-lisp/smartparens")
+(require 'smartparens-config)
+
 
 ;;register-list
 (require 'register-list)

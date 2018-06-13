@@ -8,6 +8,7 @@
 (semantic-mode t)
 (setq semantic-default-submodes
       '(
+        global-semanticdb-minor-mode
         global-semantic-idle-scheduler-mode
         ))
 

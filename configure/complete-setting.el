@@ -4,15 +4,14 @@
 (zz-load-path "site-lisp")
 
 ;; cedet
-(global-ede-mode t)
-(semantic-mode t)
-(mapc #'(lambda (mode)
-          (add-to-list 'semantic-default-submodes mode))
-      '(
+(mapc #'(lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
+      '(global-semantic-idle-scheduler-mode
         global-semanticdb-minor-mode
         global-semantic-idle-summary-mode
-        global-semantic-idle-scheduler-mode
-        ))
+        global-semantic-mru-bookmark-mode))
+
+(global-ede-mode t)
+(semantic-mode t)
 
 (defun my:add-semantic-to-autocomplete() 
   (add-to-list 'ac-sources 'ac-source-semantic))

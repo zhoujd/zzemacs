@@ -310,6 +310,10 @@
 ;(require 'powerline)
 ;(set-face-attribute 'mode-line nil :background "#bdbdbd" :box nil)
 
+;;iedit
+(zz-load-path "site-lisp/iedit")
+(require 'iedit)
+
 
 (provide 'other-setting)
 

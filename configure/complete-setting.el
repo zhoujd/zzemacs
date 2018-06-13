@@ -6,7 +6,8 @@
 ;; cedet
 (global-ede-mode t)
 (semantic-mode t)
-(setq semantic-default-submodes
+(mapc #'(lambda (mode)
+          (add-to-list 'semantic-default-submodes mode))
       '(
         global-semanticdb-minor-mode
         global-semantic-idle-summary-mode

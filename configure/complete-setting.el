@@ -4,7 +4,7 @@
 (zz-load-path "site-lisp")
 
 ;; cedet
-(mapc #'(lambda (MODE) (add-to-list 'semantic-default-submodes MODE))
+(mapc (lambda (mode) (add-to-list 'semantic-default-submodes mode))
       '(global-semantic-idle-scheduler-mode
         global-semanticdb-minor-mode
         global-semantic-idle-summary-mode
@@ -17,8 +17,8 @@
   (add-to-list 'ac-sources 'ac-source-semantic))
 
 (mapc
- #'(lambda (mode)
-     (add-hook mode 'my:add-semantic-to-autocomplete))
+ (lambda (mode)
+   (add-hook mode 'my:add-semantic-to-autocomplete))
  '(
    c-mode-common-hook
    ))

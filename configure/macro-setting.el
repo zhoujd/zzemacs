@@ -58,8 +58,8 @@
 ;;  ((kbd "M-2") "zhoujd"))
 (defmacro defkeys-map (map &rest keys)
   (let ((ks (mapcar
-             #'(lambda (k)
-                 (cons 'define-key (cons map k)))
+             (lambda (k)
+               (cons 'define-key (cons map k)))
              keys))) 
     `(progn ,@ks)))
 

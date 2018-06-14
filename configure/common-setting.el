@@ -179,7 +179,7 @@
 (setq echo-keystrokes 0.1)
 
 ;;scroll bar right
-(set-scroll-bar-mode `right)
+;(set-scroll-bar-mode `right)
 
 ;;no need temp file
 (setq make-backup-files nil)
@@ -195,7 +195,7 @@
 (setq visible-bell t)
 ;;don`t flash the screen on console mode
 ;(setq ring-bell-function 'ignore)
-(setq ring-bell-function (lambda ()  t))
+(setq ring-bell-function (lambda () t))
 ;;use clipboard
 (setq x-select-enable-clipboard t)
 ;;mouse select

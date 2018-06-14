@@ -33,10 +33,37 @@
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
 ;;auto-complete-clang
-;;sudo apt install -y clang llvm-dev libclang-dev
-;;sudo yum install -y llvm-devel clang-devel zlib
+;;apt install clang llvm-dev libclang-dev
+;;yum install llvm-devel clang-devel zlib
 (require 'auto-complete-clang)
-(require 'auto-complete-clang-extension)
+(defun get-include-dirs ()
+  (let* ((command-result (shell-command-to-string "echo \"\" | g++ -v -x c++ -E -"))
+         (start-string "#include <...> search starts here:\n")
+         (end-string "End of search list.\n")
+         (start-pos (string-match start-string command-result))
+         (end-pos (string-match end-string command-result))
+         (include-string (substring command-result (+ start-pos (length start-string)) end-pos)))
+    (split-string include-string)))
+
+(defun my:ac-clang-init ()
+  (add-to-list 'ac-sources 'ac-source-clang)
+  (setq ac-clang-flags
+        (mapcar (lambda (item) (concat "-I" item)) (get-include-dirs))))
+  
+(add-hook 'c-mode-common-hook 'my:ac-clang-init)
+
+;;auto complete c header
+(require 'auto-complete-c-headers)
+(defun my:ac-c-header-init ()
+  (add-to-list 'ac-sources 'ac-source-c-headers)
+  (mapc
+   (lambda (inc)
+     (add-to-list 'achead:include-directories inc))
+   (get-include-dirs)))
+
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+
 
 ;;add linux kernel style
 (c-add-style "kernel"
@@ -128,14 +155,6 @@
   (c-set-style "stroustrup"))
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
-;; auto complete c header
-(defun my:ac-c-header-init ()
-  (require 'auto-complete-c-headers)
-  (add-to-list 'ac-sources 'ac-source-c-headers))
-
-(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-(add-hook 'c-mode-hook 'my:ac-c-header-init)
 
 
 (provide 'c-setting)

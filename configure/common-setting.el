@@ -411,8 +411,7 @@
 ;;recentf/undo-kill-buffer
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     100
-      recentf-max-menu-items      30
-      )
+      recentf-max-menu-items      30)
 
 (unless-ms-windows
   (setq recentf-exclude '("/tmp/" "/ssh:")))

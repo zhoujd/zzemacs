@@ -74,15 +74,15 @@
 
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list '(
-                     "Consolas 13"
+                     "Consolas 15"
                      "Consolas 16"
                      "Consolas 24"
-                     "Anonymous Pro 13"
+                     "Anonymous Pro 15"
                      "Anonymous Pro 16"
                      "Anonymous Pro 24"
                      ))
 (setq cn-font-list '(
-                     "Microsoft YaHei Mono 13"
+                     "Microsoft YaHei Mono 15"
                      "Microsoft YaHei Mono 16"
                      "Microsoft YaHei Mono 24"
                      ))

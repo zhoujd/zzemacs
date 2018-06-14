@@ -93,7 +93,8 @@
 
 (defun newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
-  (local-set-key "\C-m" 'newline-and-indent))
+  (local-set-key "\C-m" 'newline-and-indent)
+  (local-set-key [ret] 'newline-and-indent))
 
 ;; Tell Emacs to use the function above in certain editing modes.
 (dolist (hook
@@ -102,8 +103,7 @@
            'emacs-lisp-mode-hook
            'lisp-interaction-mode-hook
            'scheme-mode-hook
-           'c-mode-hook
-           'c++-mode-hook
+           'c-mode-common-hook
            'java-mode-hook
            'perl-mode-hook
            'python-mode-hook

@@ -33,7 +33,8 @@
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
 ;;sudo apt-get install clang
-;(require 'auto-complete-clang)
+(require 'auto-complete-clang)
+(require 'auto-complete-clang-extension)
 
 ;;add linux kernel style
 (c-add-style "kernel"

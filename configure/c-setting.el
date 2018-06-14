@@ -140,6 +140,7 @@
   (setq tab-width 4 indent-tabs-mode nil)
   (define-key c-mode-base-map (kbd "M-o") 'eassist-switch-h-cpp)
   (define-key c-mode-base-map (kbd "M-m") 'eassist-list-methods)
+  (define-key c-mode-base-map [(control tab)] 'ac-complete-clang)
   ;;process settings
   (setq c-macro-shrink-window-flag t)
   (setq c-macro-preprocessor "cpp")

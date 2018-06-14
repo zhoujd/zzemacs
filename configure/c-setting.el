@@ -32,7 +32,9 @@
 (setq sourcepair-header-path    '( "." "include" "../include" "../*" "../../*"))
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
-;;sudo apt-get install clang
+;;auto-complete-clang
+;;sudo apt install -y clang llvm-dev libclang-dev
+;;sudo yum install -y llvm-devel clang-devel zlib
 (require 'auto-complete-clang)
 (require 'auto-complete-clang-extension)
 

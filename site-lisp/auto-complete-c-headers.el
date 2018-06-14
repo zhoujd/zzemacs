@@ -27,7 +27,7 @@
 ;;; Code:
 
 ;; For `remove-duplicates'
-(require 'cl)
+(require 'cl-lib)
 (require 'auto-complete)
 (require 'tramp)
 

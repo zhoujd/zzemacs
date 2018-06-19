@@ -47,3 +47,9 @@ FFMPEG
     file '/path/to/file2'
     file '/path/to/file3'
     $ ffmpeg -f concat -i **list.txt** -c copy output.mp4
+
+5. FFmpeg qsv
+   
+   $
+   
+   

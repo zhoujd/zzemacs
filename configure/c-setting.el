@@ -20,7 +20,7 @@
 ;;gtags global
 ;;$sudo apt-get install global
 ;;$gtags -v
-;;start Emacs and execute gtags-mode function. 
+;;start Emacs and execute gtags-mode function.
 ;(autoload 'gtags-mode "gtags" "" t)
 
 ;;holding #if
@@ -32,9 +32,10 @@
 (setq sourcepair-header-path    '( "." "include" "../include" "../*" "../../*"))
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
-;;auto-complete-clang
-;;apt install clang llvm-dev libclang-dev
-;;yum install llvm-devel clang-devel zlib
+;;;auto-complete-clang
+;;apt install clang
+;;apt install llvm-dev libclang-dev
+;;yum install llvm-devel clang-devel
 (require 'auto-complete-clang)
 (defun get-include-dirs ()
   (let* ((command-result (shell-command-to-string "echo \"\" | g++ -v -x c++ -E -"))
@@ -48,8 +49,10 @@
 (defun my:ac-clang-init ()
   (add-to-list 'ac-sources 'ac-source-clang)
   (setq ac-clang-flags
-        (mapcar (lambda (item) (concat "-I" item)) (get-include-dirs))))
-  
+        (mapcar (lambda (item)
+                  (concat "-I" item))
+                (get-include-dirs))))
+
 (add-hook 'c-mode-common-hook 'my:ac-clang-init)
 
 ;;auto complete c header

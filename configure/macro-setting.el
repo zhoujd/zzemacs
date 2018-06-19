@@ -14,6 +14,20 @@
 (defmacro when-ms-windows (&rest body)
   `(if-ms-windows (progn ,@body)))
 
+(defmacro if-emacs25 (if-cause &optional else-cause)
+  `(if ,(and (>= emacs-major-version 25)
+             (>= emacs-minor-version 1))
+       ,if-cause ,else-cause))
+
+(defmacro if-not-emacs25 (if-cause &optional else-cause)
+  `(if-emacs25 ,else-cause ,if-cause))
+
+(defmacro when-emacs25 (&rest body)
+  `(if-emacs25 (progn ,@body)))
+
+(defmacro unless-emacs25 (&rest body)
+  `(if-not-emacs25 (progn ,@body)))
+
 (defmacro with-utf-8-env (&rest body)
   `(let ((curr-lang current-language-environment))
      (set-language-environment 'utf-8)
@@ -25,14 +39,6 @@
      (set-language-environment 'Chinese-GB18030)
      ,@body
      (set-language-environment curr-lang)))
-
-(defmacro if-emacs24-3 (if-cause &optional else-cause)
-  `(if ,(and (>= emacs-major-version 24)
-             (>= emacs-minor-version 3))
-       ,if-cause ,else-cause))
-
-(defmacro when-emacs24-3 (&rest body)
-  `(if-emacs24-3 (progn ,@body)))
 
 ;;marcro for start-process
 (defmacro execute-set-key (name args)

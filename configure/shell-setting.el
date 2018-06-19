@@ -311,6 +311,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (unless-ms-windows
  (require 'shell-completion))
 
+;;https://github.com/szermatt/emacs-bash-completion
 (unless-ms-windows
  (require 'bash-completion)
  (bash-completion-setup))

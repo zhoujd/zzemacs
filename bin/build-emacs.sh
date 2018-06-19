@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ### wget https://ftp.gnu.org/gnu/emacs/emacs-25.2.tar.xz
+### wget https://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.xz
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then

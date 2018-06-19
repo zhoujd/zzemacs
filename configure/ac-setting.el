@@ -2,6 +2,8 @@
 
 ;; auto complete
 (zz-load-path "site-lisp/auto-complete")
+(zz-load-path "site-lisp/popup")
+
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories
              (concat zzemacs-path "/site-lisp/auto-complete/dict"))

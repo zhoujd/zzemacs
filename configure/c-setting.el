@@ -33,10 +33,8 @@
 (setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
 
 ;;;auto-complete-clang
-;;apt install clang
-;;apt install llvm-dev libclang-dev
-;;yum install llvm-devel clang-devel
-(require 'auto-complete-clang)
+;;sudo apt install clang
+(require 'auto-complete-clang-async)
 (defun get-include-dirs ()
   (let* ((command-result (shell-command-to-string "echo \"\" | g++ -v -x c++ -E -"))
          (start-string "#include <...> search starts here:\n")
@@ -46,14 +44,19 @@
          (include-string (substring command-result (+ start-pos (length start-string)) end-pos)))
     (split-string include-string)))
 
-(defun my:ac-clang-init ()
-  (add-to-list 'ac-sources 'ac-source-clang)
+;;sudo apt install llvm-dev libclang-dev
+;;sudo yum install llvm-devel clang-devel
+;;https://www.hiroom2.com/2016/10/31/emacs-auto-complete-clang-async-package
+(defun my:ac-clang-async-init ()
+  (setq ac-clang-complete-executable "clang-complete")
   (setq ac-clang-flags
         (mapcar (lambda (item)
                   (concat "-I" item))
-                (get-include-dirs))))
+                (get-include-dirs)))
+  (add-to-list 'ac-sources 'ac-source-clang-async)
+  (ac-clang-launch-completion-process))
 
-(add-hook 'c-mode-common-hook 'my:ac-clang-init)
+(add-hook 'c-mode-common-hook 'my:ac-clang-async-init)
 
 ;;auto complete c header
 (require 'auto-complete-c-headers)

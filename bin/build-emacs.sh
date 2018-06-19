@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### wget https://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.xz
+### wget https://ftp.gnu.org/gnu/emacs/emacs-25.2.tar.xz
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -11,7 +11,7 @@ fi
 ##Get script path
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-EMACS_SRC=emacs-24.3
+EMACS_SRC=emacs-25.2
 EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
 
 ##Import vars and functions
@@ -68,6 +68,7 @@ Install_package()
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y automake
         sudo apt-get install -y build-essential
+        sudo apt-get install -y libxft-dev libotf-dev
         sudo apt-get install -y libxpm-dev libpng12-dev libjpeg-dev libtiff5-dev libgif-dev
         sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libdbus-1-dev libgconf2-dev
         sudo apt-get install -y libotf-dev libgpm-dev libm17n-dev libgnutls-dev libselinux1-dev imagemagick

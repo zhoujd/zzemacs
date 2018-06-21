@@ -1,4 +1,0 @@
-+# Test to see if ./.pydbrc gets loaded.
-+alias
-myc = tbreak %1 ;; continue
-+quit

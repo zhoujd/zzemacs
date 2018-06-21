@@ -38,12 +38,7 @@ cd $CURRENT_ROOT/pyreadline
 sudo python setup.py install --record setup.log
 cd $CURRENT_ROOT
 
-echo "==>6 install pydb"
-cd $CURRENT_ROOT/pydb
-./configure && make && sudo make install
-cd $CURRENT_ROOT
-
-echo "==>7 install pycomplete"
+echo "==>6 install pycomplete"
 cd $CURRENT_ROOT/pycomplete
 sudo python setup.py install --record setup.log
 cd $CURRENT_ROOT

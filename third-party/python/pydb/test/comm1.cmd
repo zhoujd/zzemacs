@@ -1,3 +1,0 @@
-commands
-print "test"
-end

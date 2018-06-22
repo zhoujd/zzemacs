@@ -2,4 +2,4 @@
 
 appdirname = "core"
 appignorefiles = ["__init__.py"]
-appnames = {"*.py" : "python", "*.pl" : "perl", "*.sh" : "sh"}
+appnames = {"*.py" : "python", "*.pl" : "perl", "*.sh" : "bash"}

@@ -12,7 +12,7 @@
 ## http://meldmerge.org/
 
 ## use emacs as merge tool
-EMACS_FLAG="n"
+EMACS_FLAG="y"
 
 merge_extern()
 {
@@ -28,7 +28,7 @@ merge_extern()
         MERGE_TOOL_2="p4merge $*"
         MERGE_TOOL_3="vimmerge $*"
 
-        MERGE_SELECT=$MERGE_TOOL_2
+        MERGE_SELECT=$MERGE_TOOL_1
     fi
 
     $MERGE_SELECT

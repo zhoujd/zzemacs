@@ -98,7 +98,7 @@
 ;            (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens)))
 
 ;;slime with auto-complete
-(defvar slime-ac-flag nil "flag for slime with auto complete cowork")
+(defvar slime-ac-flag t "flag for slime with auto complete cowork")
 (when slime-ac-flag
   (require 'ac-slime)
   (add-hook 'slime-mode-hook 'set-up-slime-ac)

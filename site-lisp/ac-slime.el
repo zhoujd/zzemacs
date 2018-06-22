@@ -1,9 +1,27 @@
 ;;; ac-slime.el --- An auto-complete source using slime completions
-;;
-;;; Author: Steve Purcell <steve@sanityinc.com>
-;;; URL: https://github.com/purcell/ac-slime
-;;; Version: DEV
-;;
+
+;; Copyright (C) 2010-2017  Steve Purcell
+
+;; Author: Steve Purcell <steve@sanityinc.com>
+;; URL: https://github.com/purcell/ac-slime
+;; Package-Version: 0
+;; Package-Requires: ((auto-complete "1.4") (slime "2.9") (cl-lib "0.5"))
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
 
 ;; Usage:
@@ -17,7 +35,7 @@
 
 ;;; Code:
 
-(require 'cl)
+(require 'cl-lib)
 (require 'slime)
 (require 'auto-complete)
 
@@ -45,12 +63,15 @@
 (defun ac-source-slime-simple-candidates ()
   "Return a possibly-empty list of completions for the symbol at point."
   (when (slime-connected-p)
-    (car (slime-simple-completions (substring-no-properties ac-prefix)))))
+    (let ((completions (slime-simple-completions (substring-no-properties ac-prefix))))
+      (if (listp (car completions))
+          (car completions)
+        completions))))
 
 (defun ac-source-slime-case-correcting-completions (name collection)
   (mapcar #'(lambda (completion)
               ;; FIXME
-              (replace completion name))
+              (cl-replace completion name))
           (all-completions (downcase name) collection)))
 
 (defvar ac-slime-current-doc nil "Holds slime docstring for current symbol.")
@@ -102,7 +123,7 @@
 
 ;;;###autoload
 (defun set-up-slime-ac (&optional fuzzy)
-  "Add an optionally-fuzzy slime completion source to `ac-sources'."
+  "Add an optionally FUZZY slime completion source to `ac-sources'."
   (interactive)
   (add-to-list 'ac-sources
                (if fuzzy

@@ -29,23 +29,40 @@ class Dispatch:
                 print "cmdline: %s\n" % cmdline
                 os.system(cmdline)
         else:
-            if len(self.params) >= 5:
-                cmd = "%s-%s-%s" % (self.params[1], self.params[2], self.params[3], self.params[4])
+            cmd = ""
+            args = ""
+            app = None
+            match = False
+            
+            if len(self.params) >= 5 and match == False:
+                cmd = "%s-%s-%s-%s" % (self.params[1], self.params[2], self.params[3], self.params[4])
                 args = " ".join(self.params[5:])
-            if len(self.params) >= 4:
+                app = self.findapp(cmd)
+                if app != None:
+                    match = True;
+                
+            if len(self.params) >= 4 and match == False:
                 cmd = "%s-%s-%s" % (self.params[1], self.params[2], self.params[3])
                 args = " ".join(self.params[4:])
-            elif len(self.params) >= 3:
+                app = self.findapp(cmd)
+                if app != None:
+                    match = True;
+
+            if len(self.params) >= 3 and match == False:
                 cmd = "%s-%s" % (self.params[1], self.params[2])
                 args = " ".join(self.params[3:])
-            elif len(self.params) >= 2:
+                app = self.findapp(cmd)
+                if app != None:
+                    match = True;
+
+            if len(self.params) >= 2 and match == False:
                 cmd = "%s" % (self.params[1])
                 args = " ".join(self.params[2:])
-            else:
-                pass
-
-            app = self.findapp(cmd)
-            if app == None:
+                app = self.findapp(cmd)
+                if app != None:
+                    match = True;
+                    
+            if app == None and match == False:
                 print "Can't find %s to usaged\n" % cmd
                 print "Try to run '%s help' to get help\n" % self.entryname
             else:

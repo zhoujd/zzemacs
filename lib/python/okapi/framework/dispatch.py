@@ -16,18 +16,6 @@ class Dispatch:
         
         if len(self.params) == 1:
             self.usage()
-        elif len(self.params) == 2 and self.params[1] == "help":
-            self.usage()
-        elif len(self.params) == 3 and self.params[1] == "help":
-            app = self.findapp(self.params[2])
-            if app == None:
-                print "Can't find %s to usaged\n" % self.params[2]
-                print "Try to run '%s help' to get help\n" % self.entryname
-            else:
-                #print app
-                cmdline = "%s %s" % (" ".join(app), "help")
-                print "cmdline: %s\n" % cmdline
-                os.system(cmdline)
         else:
             cmd = ""
             args = ""
@@ -72,11 +60,8 @@ class Dispatch:
                 os.system(cmdline)
         
     def usage(self):
-        print "Use: %s help" % self.entryname
         for key, value in sorted(self.appmap.items()):
             print "Use: %s %s [argv]" % (self.entryname, key.replace("-", " "))
-
-        print "Use: %s help <app>" % self.entryname
         
     def findapp(self, app):
         if app in self.appmap.keys():

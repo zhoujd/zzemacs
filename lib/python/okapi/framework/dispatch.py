@@ -1,4 +1,4 @@
-## dispatch
+### dispatch.py
 
 import glob
 import os
@@ -54,7 +54,9 @@ class Dispatch:
                 print "Can't find %s to usaged\n" % cmd
                 print "Try to run '%s help' to get help\n" % self.entryname
             else:
-                #print app
+                if config.verbal == True:
+                    print app
+                    
                 cmdline = "%s %s" % (" ".join(app), args)
                 print "cmdline: %s\n" % cmdline
                 os.system(cmdline)
@@ -72,9 +74,8 @@ class Dispatch:
     def getappmap(self):
         appdir = "%s/%s" % (self.srcdir, config.appdirname)
         applist = []
-        for appcfgitem in config.appnames.keys():
-            applist += glob.glob(appdir + "/" + appcfgitem)
-
+        
+        applist = glob.glob(appdir + "/*")
         applist = map(lambda x: os.path.basename(x), applist)
         for ignore in config.appignorefiles:
             try:
@@ -86,8 +87,13 @@ class Dispatch:
             appinfo = []
             appname, appext = os.path.splitext(app)
 
-            ## for command line
-            appinfo.append(config.appnames["*" + appext])
+            if appext == "":
+                appinfo.append("")
+            else:
+                appinfo.append(config.appnames["*" + appext])
+                
             appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
             self.appmap[appname] = appinfo
-        #print self.appmap
+            
+        if config.verbal == True:
+            print self.appmap

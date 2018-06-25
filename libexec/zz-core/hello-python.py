@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 ## This a test for zz.py
 
 def main():

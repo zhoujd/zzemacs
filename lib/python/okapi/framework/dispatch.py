@@ -75,8 +75,15 @@ class Dispatch:
         appdir = "%s/%s" % (self.srcdir, config.appdirname)
         applist = []
         
-        applist = glob.glob(appdir + "/*")
-        applist = map(lambda x: os.path.basename(x), applist)
+        for (dirname, subdir, subfile) in os.walk(appdir):
+            if config.verbal == True:
+                print 'Dirname: %s' % dirname
+                print 'Subdir: %s'  % subdir
+                print 'Subfile: %s' % subfile
+
+            for f in subfile:
+                applist.append(f)
+        
         for ignore in config.appignorefiles:
             try:
                 applist.remove(ignore)

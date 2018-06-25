@@ -4,11 +4,6 @@
 (zz-load-path "site-lisp")
 (zz-load-path "elisp")
 
-;;helm - anything
-(zz-load-path "site-lisp/helm")
-(require 'helm-files)
-(require 'helm-config)
-
 ;;session + desktop
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
@@ -172,44 +167,6 @@
 ;;bookmark in file setting
 (require 'breadcrumb)
 
-;;uing iswitchb-mode
-(require 'iswitchb-filter)
-(iswitchb-mode t)
-
-(setq iswitchb-buffer-ignore
-      '("^ "
-        "^\*Buffer"
-        "^\*Completions\*"
-        "^\*Ido Completions\*"
-        "^\*Quail Completions\*"
-        "^TAGS"
-        ))
-
-;;using the arrow keys to select a buffer
-(defun iswitchb-local-keys ()
-  (mapc (lambda (K)
-          (let* ((key (car K)) (fun (cdr K)))
-            (define-key iswitchb-mode-map (edmacro-parse-keys key) fun)))
-        '(("<right>" . iswitchb-next-match)
-          ("<left>"  . iswitchb-prev-match)
-          ("<up>"    . isb-filter-prev)
-          ("<down>"  . isb-filter-next)
-          ("\C-o"    . isb-show-emacs)
-          ("\C-p"    . isb-show-dired)
-          ("\C-v"    . isb-show-common)
-          ("\C-u"    . isb-rescan)
-          )))
-
-(add-hook 'iswitchb-define-mode-map-hook 'iswitchb-local-keys)
-
-;;update when kill buffer in iswitchb
-(defadvice iswitchb-kill-buffer (after rescan-after-kill activate)
-  "*Regenerate the list of matching buffer names after a kill.
-    Necessary if using `uniquify' with `uniquify-after-kill-buffer-p'
-    set to non-nil."
-  (setq iswitchb-buflist iswitchb-matches)
-  (isb-rescan))
-
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
@@ -318,6 +275,12 @@
 ;;iedit
 (zz-load-path "site-lisp/iedit")
 (require 'iedit)
+
+;;helm - anything
+(zz-load-path "site-lisp/helm")
+(require 'helm-config)
+(helm-mode t)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
 
 
 (provide 'other-setting)

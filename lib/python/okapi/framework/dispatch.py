@@ -76,7 +76,7 @@ class Dispatch:
         applist = []
         
         for (dirname, subdir, subfile) in os.walk(appdir):
-            if config.verbal == True:
+            if config.verbose == True:
                 print 'Dirname: %s' % dirname
                 print 'Subdir: %s'  % subdir
                 print 'Subfile: %s' % subfile
@@ -102,5 +102,5 @@ class Dispatch:
             appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
             self.appmap[appname] = appinfo
             
-        if config.verbal == True:
+        if config.verbose == True:
             print self.appmap

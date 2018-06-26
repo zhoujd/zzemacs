@@ -57,18 +57,18 @@
 (defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
-  (set-face-attribute
-   'default nil :font font-en-name)
-  ;; Chinese Font
+  (when (member font-en-name (font-family-list))
+    (set-face-attribute 'default nil :font font-en-name))
+  ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec :family (my-cn-font-name font-cn-name)
-                                 :size   (my-cn-font-size font-cn-name)))))
+          (set-fontset-font (frame-parameter nil 'font)
+                            charset
+                            (font-spec :family (my-cn-font-name font-cn-name)
+                                       :size   (my-cn-font-size font-cn-name)))))
 
 (defun my-console-font (font-console-name)
   "my console font setting"
-  (progn
+  (when (member font-console-name (font-family-list))
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 

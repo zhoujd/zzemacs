@@ -279,6 +279,7 @@
 ;;helm - anything
 (zz-load-path "site-lisp/helm")
 (require 'helm-config)
+(helm-mode t)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 
 

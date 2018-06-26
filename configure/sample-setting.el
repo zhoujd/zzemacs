@@ -80,13 +80,15 @@
 	  (my-non-fullscreen)
 	(my-fullscreen)))
 
-(defvar my-maxframe-p t "Check if maxframe is on or off")
 (defun my-toggle-maxframe ()
   (interactive)
-  (setq my-maxframe-p (not my-maxframe-p))
-  (if my-maxframe-p
-	  (restore-frame)
-	(maximize-frame)))
+  (if-ms-windows
+   (progn
+    (w32-send-sys-command 61488))
+   (progn
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+    (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)))
+   ))
 
 ;;display current buffer name
 (defun display-buffer-name ()

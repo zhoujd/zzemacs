@@ -54,7 +54,7 @@ class Dispatch:
                 print "Can't find %s to usaged\n" % cmd
                 print "Try to run '%s help' to get help\n" % self.entryname
             else:
-                if config.verbal == True:
+                if config.verbose == True:
                     print app
                     
                 cmdline = "%s %s" % (" ".join(app), args)

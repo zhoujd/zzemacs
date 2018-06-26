@@ -214,7 +214,7 @@
 (require 'highlight-symbol)
 
 ;;maxframe
-(require 'maxframe)
+;(require 'maxframe)
 
 ;;bookmark+
 (zz-load-path "site-lisp/bookmarkplus")
@@ -279,9 +279,7 @@
 ;;helm - anything
 (zz-load-path "site-lisp/helm")
 (require 'helm-config)
-(helm-mode t)
-(global-set-key (kbd "C-x b")   'helm-buffers-list)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
 
 
 (provide 'other-setting)

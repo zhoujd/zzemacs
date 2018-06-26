@@ -75,7 +75,7 @@
     [S-f4]            'undo-kill-buffer
     [C-f4]            'turn-off-evil-mode
     [M-f4]            'turn-on-evil-mode
-    (kbd "C-x <f4>")  'recentf-open-files
+    (kbd "C-x <f4>")  'helm-recentf
     (kbd "C-c <f4>")  'recentf-open-files-compl
     )
 

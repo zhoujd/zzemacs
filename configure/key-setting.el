@@ -45,15 +45,15 @@
   (kbd "C-`") 'imenu
   (kbd "C-1") 'delete-window
   (kbd "C-2") 'delete-frame
-  (kbd "C-3") 'ibuffer
-  (kbd "C-4") 'delete-frame
+  (kbd "C-3") 'other-frame
+  (kbd "C-4") 'undo-kill-buffer
   ;;gud control setting
   (kbd "C-5") 'gud-until
   (kbd "C-6") 'gud-remove
   (kbd "C-7") 'gud-finish
   (kbd "C-8") 'gud-jump
   (kbd "C-9") 'gud-pstar
-  (kbd "C-0") 'other-frame
+  (kbd "C-0") 'gud-refresh
   (kbd "C--") 'redo
   (kbd "C-=") 'er/expand-region
   ;;undo/redo
@@ -66,7 +66,7 @@
  (list
   (kbd "M-1") 'delete-other-windows
   (kbd "M-2") 'delete-other-frames
-  (kbd "M-3") 'helm-buffers-list
+  (kbd "M-3") 'other-window
   (kbd "M-4") 'kill-this-buffer
   ;;gud control setting
   (kbd "M-5") (if-ms-windows 'gud-cont 'gud-go)
@@ -74,7 +74,7 @@
   (kbd "M-7") 'gud-next
   (kbd "M-8") 'gud-step
   (kbd "M-9") 'gud-print
-  (kbd "M-0") 'other-window
+  (kbd "M-0") 'gud-watch
 
   ;;find-replace
   (kbd "M-#") 'query-replace-regexp

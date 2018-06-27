@@ -69,7 +69,7 @@
   (kbd "M-3") 'other-window
   (kbd "M-4") 'kill-this-buffer
   ;;gud control setting
-  (kbd "M-5") (if-ms-windows 'gud-cont 'gud-go)
+  (kbd "M-5") 'gud-go
   (kbd "M-6") 'gud-break
   (kbd "M-7") 'gud-next
   (kbd "M-8") 'gud-step

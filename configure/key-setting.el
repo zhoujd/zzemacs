@@ -66,7 +66,7 @@
  (list
   (kbd "M-1") 'delete-other-windows
   (kbd "M-2") 'delete-other-frames
-  (kbd "M-3") 'iswitchb-buffer
+  (kbd "M-3") 'helm-buffers-list
   (kbd "M-4") 'kill-this-buffer
   ;;gud control setting
   (kbd "M-5") (if-ms-windows 'gud-cont 'gud-go)

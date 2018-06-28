@@ -128,14 +128,16 @@
 ;(add-hook 'gdb-mode-hook 'kill-buffer-when-exit)
 ;(add-hook 'shell-mode-hook 'kill-buffer-when-exit)
 
-;;tramp setting
+;;;tramp setting
+;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
+;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 ;;http://www.emacswiki.org/emacs/TrampMode
 ;;http://lifegoo.pluskid.org/wiki/EmacsTRAMP.html
 ;;http://stackoverflow.com/questions/1134149/emacs-remote-shell
 (when (require 'tramp nil 'noerror)            ;;run if tramp exists && not loaded yet.
   (setq tramp-shell-prompt-pattern             ;;to work with zsh prompt
         "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
-  (setq tramp-default-method (if-ms-windows "plink" "sshx")) ;;faster, as is "scp"
+  (setq tramp-default-method (if-ms-windows "plink" "ssh"))
   (setq tramp-debug-buffer t)
   (setq tramp-verbose 10))
 

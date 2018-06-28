@@ -56,6 +56,10 @@
   (kbd "C-0") 'gud-refresh
   (kbd "C--") 'redo
   (kbd "C-=") 'er/expand-region
+
+  (kbd "C-_") 'undo
+  (kbd "C-+") 'smartparens-mode
+
   ;;undo/redo
   (kbd "C-,") 'winner-undo
   (kbd "C-.") 'winner-redo

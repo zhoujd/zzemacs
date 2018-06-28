@@ -110,44 +110,14 @@
            'php-mode-hook))
   (add-hook hook (function newline-indents)))
 
-;; speedbar setting
-(setq speedbar-update-speed 3)
-(setq speedbar-use-images nil)  ;; clean face, :)
-;;show unknows files
-(setq speedbar-show-unknown-files t)
-
 ;;sr-speedbar
 (require 'sr-speedbar)
-(setq sr-speedbar-width  30)
-(setq sr-speedbar-max-width 60)
-(setq sr-speedbar-right-side nil)
-
-;; his-speedbar-no-separate-frame
-(defconst his-speedbar-buffer-name "SpeedBar")
-(defun his-speedbar-no-separate-frame ()
-  (interactive)
-  (when (not (buffer-live-p speedbar-buffer))
-    (setq speedbar-buffer (get-buffer-create his-speedbar-buffer-name)
-          speedbar-frame (selected-frame)
-          dframe-attached-frame (selected-frame)
-          speedbar-select-frame-method 'attached
-          speedbar-verbosity-level 0
-          speedbar-last-selected-file nil)
-    (set-buffer speedbar-buffer)
-    (speedbar-mode)
-    (speedbar-reconfigure-keymaps)
-    (speedbar-update-contents)
-    (speedbar-set-timer 1)
-    (make-local-hook 'kill-buffer-hook)
-    (add-hook 'kill-buffer-hook
-              (lambda ()
-                (when (eq (current-buffer) speedbar-buffer)
-                  (setq speedbar-frame nil
-                        dframe-attached-frame nil
-                        speedbar-buffer nil)
-                  (speedbar-set-timer nil)))))
-  (set-window-buffer (selected-window)
-                     (get-buffer his-speedbar-buffer-name)))
+(setq speedbar-update-speed 3
+      speedbar-use-images nil
+      speedbar-show-unknown-files t
+      sr-speedbar-width  30
+      sr-speedbar-max-width 60
+      sr-speedbar-right-side nil)
 
 ;;load the etags-select.el source code
 (require 'etags-select)

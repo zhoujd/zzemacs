@@ -1,6 +1,7 @@
 #!/bin/sh
 
 ZZEMACS_ROOT=`pwd`
+TARGET_TYPE="user"
 
 ##source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
@@ -22,8 +23,6 @@ EOF
 ##setup font
 Install_fonts()
 {
-    TARGET_TYPE="system"
-    
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
@@ -57,13 +56,28 @@ Install_others()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
-
+    
+    echo "install font to $TARGET_TYPE"
     ##setup zzemacs & zzvim & zztmux
-    BIN_TARGET=/usr/bin
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
-    sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
+    case "$TARGET_TYPE" in
+        "system" )
+            BIN_TARGET=/usr/bin
+            sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
+            sudo ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
+            sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
+            ;;
+        "user" )
+            BIN_TARGET=~/local/bin
+            ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
+            ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
+            ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
+            ;;
+        * )
+            echo "unknown $TARGET_TYPE"
+            ;;
 
+    esac
+    
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.bash_zzemacs
 }
@@ -71,20 +85,35 @@ Install_others()
 ##install thirdparty
 Install_thirdparty()
 {
-    ##install pymacs
-    cd ${ZZEMACS_ROOT}/third-party/python
-    sh ./install.sh
-    cd ${ZZEMACS_ROOT}
+    echo "install font to $TARGET_TYPE"
+    ##setup zzemacs & zzvim & zztmux
+    case "$TARGET_TYPE" in
+        "system" )
+            ##install pymacs
+            cd ${ZZEMACS_ROOT}/third-party/python
+            sudo sh ./install.sh
+            cd ${ZZEMACS_ROOT}
 
-    ##install EPL
-    cd ${ZZEMACS_ROOT}/third-party/perl
-    sh ./install.sh
-    cd ${ZZEMACS_ROOT}
+            ##install EPL
+            cd ${ZZEMACS_ROOT}/third-party/perl
+            sudo sh ./install.sh
+            cd ${ZZEMACS_ROOT}
+            ;;
+        "user" )
+            ##install pymacs
+            cd ${ZZEMACS_ROOT}/third-party/python
+            sh ./install.sh
+            cd ${ZZEMACS_ROOT}
 
-    ##install connect
-    cd ${ZZEMACS_ROOT}/third-party/proxy
-    sh ./install.sh
-    cd ${ZZEMACS_ROOT}
+            ##install EPL
+            cd ${ZZEMACS_ROOT}/third-party/perl
+            sh ./install.sh
+            cd ${ZZEMACS_ROOT}
+            ;;
+        * )
+            echo "unknown $TARGET_TYPE"
+            ;;
+    esac
 }
 
 main()

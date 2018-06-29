@@ -90,7 +90,7 @@
 (defun primary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))
+   (my-frame-font (nth 1 en-font-list) (nth 1 cn-font-list))
    (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))))
 
 (defun secondary-x-font ()

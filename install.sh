@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ZZEMACS_ROOT=`pwd`
-TARGET_TYPE="user"
+TARGET_TYPE="system"   ##system/user
 
 ##source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh

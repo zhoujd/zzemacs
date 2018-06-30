@@ -100,9 +100,25 @@
    (my-frame-font (nth 2 en-font-list) (nth 2 cn-font-list))))
 
 ;;console font setting
-(if window-system
-    (primary-x-font)
-    (my-console-font (nth 0 cn-font-list)))
+;(if window-system
+;    (primary-x-font)
+;    (my-console-font (nth 0 cn-font-list)))
+
+
+;(custom-set-faces
+; '(default ((t (:family "Consolas" :foundry "MS  " :slant normal :weight normal :height 143 :width normal)))))
+
+;;font setting
+;;$ xlsfonts
+;;$ xfontsel
+;;M-x menu-set-font 
+(custom-set-faces
+ '(default ((t (:family "Consolas"
+                :foundry "microsoft"
+                :slant normal
+                :weight normal
+                :height 128
+                :width normal)))))
 
 (defun my-use-server-mode ()
   ;;server-mode

@@ -47,30 +47,24 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(defun my-cn-font-name (name)
+(defun my-font-name (name)
   (when (string-match ".*[ ]" name)
     (setq my-cn-name (substring (match-string 0 name) 0 -1))))
 
-(defun my-cn-font-size (name)
+(defun my-font-size (name)
   (string-to-number (car (last (split-string name)))))
 
 (defun my-frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
-  (when (member font-en-name (font-family-list))
-    (set-face-attribute 'default nil :font font-en-name))
+  (set-face-attribute 'default nil :font font-en-name)
+  
   ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
           (set-fontset-font (frame-parameter nil 'font)
                             charset
-                            (font-spec :family (my-cn-font-name font-cn-name)
-                                       :size   (my-cn-font-size font-cn-name)))))
-
-(defun my-console-font (font-console-name)
-  "my console font setting"
-  (when (member font-console-name (font-family-list))
-    (add-to-list 'default-frame-alist
-                 '(font . font-console-name))))
+                            (font-spec :family (my-font-name font-cn-name)
+                                       :size   (my-font-size font-cn-name)))))
 
 ;;this is only for chinese font test [右键属性--安全--高级--所有者]
 (setq en-font-list '(
@@ -107,11 +101,9 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;M-x menu-set-font
-;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
-;(custom-set-faces
-; '(default ((t (:family "Consolas" :size 15)))))
-;(custom-set-faces
-; '(default ((t (:family "Consolas" :foundry "MS  " :slant normal :weight normal :height 128 :width normal)))))
+;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
+;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
+
 
 (defun my-use-server-mode ()
   ;;server-mode

@@ -90,7 +90,7 @@
 (defun primary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 1 en-font-list) (nth 1 cn-font-list))
+   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))
    (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))))
 
 (defun secondary-x-font ()
@@ -100,25 +100,18 @@
    (my-frame-font (nth 2 en-font-list) (nth 2 cn-font-list))))
 
 ;;console font setting
-;(if window-system
-;    (primary-x-font)
-;    (my-console-font (nth 0 cn-font-list)))
-
-
-;(custom-set-faces
-; '(default ((t (:family "Consolas" :foundry "MS  " :slant normal :weight normal :height 143 :width normal)))))
+(if window-system
+    (primary-x-font)
+    (my-console-font (nth 0 cn-font-list)))
 
 ;;font setting
-;;$ xlsfonts
-;;$ xfontsel
-;;M-x menu-set-font 
-(custom-set-faces
- '(default ((t (:family "Consolas"
-                :foundry "microsoft"
-                :slant normal
-                :weight normal
-                :height 128
-                :width normal)))))
+;;tools: xlsfonts or xfontsel
+;;M-x menu-set-font
+;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
+;(custom-set-faces
+; '(default ((t (:family "Consolas" :size 15)))))
+;(custom-set-faces
+; '(default ((t (:family "Consolas" :foundry "MS  " :slant normal :weight normal :height 128 :width normal)))))
 
 (defun my-use-server-mode ()
   ;;server-mode

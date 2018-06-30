@@ -47,26 +47,10 @@
   (t (my-set-language-utf-8)))
 
 ;;font setting
-(defun my-font-name (name)
-  (when (string-match ".*[ ]" name)
-    (setq my-cn-name (substring (match-string 0 name) 0 -1))))
-
-(defun my-font-size (name)
-  (string-to-number (car (last (split-string name)))))
-
-(defun my-frame-font (font-en-name font-cn-name)
-  "my frame font setting"
-  ;; Setting English Font
-  (set-face-attribute 'default nil :font font-en-name)
-  
-  ;; Setting Chinese Font
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-          (set-fontset-font (frame-parameter nil 'font)
-                            charset
-                            (font-spec :family (my-font-name font-cn-name)
-                                       :size   (my-font-size font-cn-name)))))
-
-;;this is only for chinese font test [右键属性--安全--高级--所有者]
+;;tools: xlsfonts or xfontsel
+;;M-x menu-set-font
+;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
+;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq en-font-list '(
                      "Consolas 14"
                      "Consolas 16"
@@ -80,6 +64,30 @@
                      "Microsoft YaHei Mono 16"
                      "Microsoft YaHei Mono 24"
                      ))
+
+(defun my-font-name (name)
+  (when (string-match ".*[ ]" name)
+    (setq my-cn-name (substring (match-string 0 name) 0 -1))))
+
+(defun my-font-size (name)
+  (string-to-number (car (last (split-string name)))))
+
+(defun my-frame-font (font-en-name font-cn-name)
+  "my frame font setting"
+  ;; Setting English Font
+  (set-face-attribute 'default nil :font font-en-name)
+  ;; Setting Chinese Font
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+          (set-fontset-font (frame-parameter nil 'font)
+                            charset
+                            (font-spec :family (my-font-name font-cn-name)
+                                       :size   (my-font-size font-cn-name)))))
+
+(defun my-console-font (font-console-name)
+  "my console font setting"
+  (when (member font-console-name (font-family-list))
+    (add-to-list 'default-frame-alist
+                 '(font . font-console-name))))
 
 (defun primary-x-font ()
   (interactive)
@@ -97,13 +105,6 @@
 (if window-system
     (primary-x-font)
     (my-console-font (nth 0 cn-font-list)))
-
-;;font setting
-;;tools: xlsfonts or xfontsel
-;;M-x menu-set-font
-;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
-;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
-
 
 (defun my-use-server-mode ()
   ;;server-mode

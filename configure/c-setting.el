@@ -34,8 +34,7 @@
 
 ;;;auto-complete-clang
 ;;sudo apt install clang
-(require 'auto-complete-clang-async)
-(defun get-include-dirs ()
+(defun my:get-include-dirs ()
   (let* ((command-result (shell-command-to-string "echo \"\" | g++ -v -x c++ -E -"))
          (start-string "#include <...> search starts here:\n")
          (end-string "End of search list.\n")
@@ -47,29 +46,40 @@
 ;;sudo apt install llvm-dev libclang-dev
 ;;sudo yum install llvm-devel clang-devel
 ;;https://www.hiroom2.com/2016/10/31/emacs-auto-complete-clang-async-package
+(defvar my:clang-async-p  nil "flag for use clang async")
+(defun my:ac-clang-init ()
+  (require 'auto-complete-clang)
+  (setq ac-clang-flags
+        (mapcar (lambda (item)
+                  (concat "-I" item))
+                (my:get-include-dirs)))
+  (add-to-list 'ac-sources 'ac-source-clang))
+
 (defun my:ac-clang-async-init ()
+  (require 'auto-complete-clang-async)
   (setq ac-clang-complete-executable "clang-complete")
   (setq ac-clang-flags
         (mapcar (lambda (item)
                   (concat "-I" item))
-                (get-include-dirs)))
+                (my:get-include-dirs)))
   (add-to-list 'ac-sources 'ac-source-clang-async)
   (ac-clang-launch-completion-process))
 
-(add-hook 'c-mode-common-hook 'my:ac-clang-async-init)
+(if my:clang-async-p
+    (add-hook 'c-mode-common-hook 'my:ac-clang-async-init)
+    (add-hook 'c-mode-common-hook 'my:ac-clang-init))
 
 ;;auto complete c header
-(require 'auto-complete-c-headers)
 (defun my:ac-c-header-init ()
+  (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
   (mapc
    (lambda (inc)
      (add-to-list 'achead:include-directories inc))
-   (get-include-dirs)))
+   (my:get-include-dirs)))
 
 (add-hook 'c++-mode-hook 'my:ac-c-header-init)
 (add-hook 'c-mode-hook 'my:ac-c-header-init)
-
 
 ;;add linux kernel style
 (c-add-style "kernel"

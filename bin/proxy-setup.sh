@@ -26,14 +26,26 @@ fi
 ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
 PROXY_SCRIPT=$ZZEMACS_ROOT/etc/profile.d/99_proxy.sh
 
-cat > $PROXY_SCRIPT <<EOF
+if [ "$OS" = "Windows_NT" ] ; then
+    cat > $PROXY_SCRIPT <<EOF
 ## This is for bash proxy
 export http_proxy=http://$1
 export ftp_proxy=ftp://$1
 export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 EOF
-
-##Git http/https proxy
-git config --global http.proxy http://$1
+    ##Git http proxy
+    git config --global http.proxy http://$1
+else
+    cat > $PROXY_SCRIPT <<EOF
+## This is for bash proxy
+export http_proxy=http://$1
+export https_proxy=https://$1
+export ftp_proxy=ftp://$1
+export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+EOF
+    ##Git http/https proxy
+    git config --global http.proxy http://$1
+    git config --global https.proxy https://$1
+fi
 
 echo "Setup proxy end ..."

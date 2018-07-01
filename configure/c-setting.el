@@ -49,6 +49,7 @@
 (defvar my:clang-async-p  nil "flag for use clang async")
 (defun my:ac-clang-init ()
   (require 'auto-complete-clang)
+  (setq ac-clang-complete-executable "clang++")
   (setq ac-clang-flags
         (mapcar (lambda (item)
                   (concat "-I" item))

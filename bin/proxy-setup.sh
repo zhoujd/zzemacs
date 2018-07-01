@@ -33,8 +33,6 @@ export http_proxy=http://$1
 export ftp_proxy=ftp://$1
 export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 EOF
-    ##Git http proxy
-    git config --global http.proxy http://$1
 else
     cat > $PROXY_SCRIPT <<EOF
 ## This is for bash proxy
@@ -43,9 +41,9 @@ export https_proxy=https://$1
 export ftp_proxy=ftp://$1
 export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
 EOF
-    ##Git http/https proxy
-    git config --global http.proxy http://$1
-    git config --global https.proxy https://$1
 fi
+
+##Git http proxy
+git config --global http.proxy http://$1
 
 echo "Setup proxy end ..."

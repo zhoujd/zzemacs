@@ -170,12 +170,11 @@
       (set-face-background 'default "black")
       (set-face-foreground 'default "gray")))
 
-;;set default-frame-alist
-(when-ms-windows
- (setq default-frame-alist (append '((scroll-bar-width . 16)
-                                     (width . 120)
-                                     (height . 32))
-                                   default-frame-alist)))
+;;default-frame-alist or initial-frame-alist
+(setq initial-frame-alist (append '((scroll-bar-width . 16)
+                                    (width .  110)
+                                    (height . 35))
+                                  initial-frame-alist))
 
 ;;quick display key help
 (setq echo-keystrokes 0.1)

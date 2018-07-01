@@ -24,8 +24,9 @@ else
 fi
 
 ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
+PROXY_SCRIPT=$ZZEMACS_ROOT/etc/profile.d/99_proxy.sh
 
-cat > $ZZEMACS_ROOT/etc/profile.d/99_proxy.sh <<EOF
+cat > $PROXY_SCRIPT <<EOF
 ## This is for bash proxy
 export http_proxy=http://$1
 export ftp_proxy=ftp://$1

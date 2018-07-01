@@ -171,10 +171,10 @@
       (set-face-foreground 'default "gray")))
 
 ;;default-frame-alist or initial-frame-alist
-(setq initial-frame-alist (append '((scroll-bar-width . 16)
+(setq default-frame-alist (append '((scroll-bar-width . 16)
                                     (width .  110)
                                     (height . 35))
-                                  initial-frame-alist))
+                                  default-frame-alist))
 
 ;;quick display key help
 (setq echo-keystrokes 0.1)

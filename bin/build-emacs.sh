@@ -75,10 +75,10 @@ Install_package()
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y automake
         sudo apt-get install -y build-essential
-        sudo apt-get install -y libxft-dev libotf-dev
+        sudo apt-get install -y libxft-dev libotf-dev libgpm-dev imagemagick
         sudo apt-get install -y libxpm-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev
-        sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libdbus-1-dev libgconf2-dev
-        sudo apt-get install -y libotf-dev libgpm-dev libm17n-dev libgnutls28-dev libselinux1-dev imagemagick
+        sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libgconf2-dev
+        sudo apt-get install -y libm17n-dev libgnutls28-dev libselinux1-dev libdbus-1-dev 
     elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum -y groupinstall "Development Tools"
         sudo yum install -y gtk+-devel gtk2-devel

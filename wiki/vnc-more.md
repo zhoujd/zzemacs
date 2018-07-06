@@ -93,9 +93,9 @@ VNC More
         $ export TZ=America/Los_Angeles
         $ ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
             
-        $ sudo  apt install x11vnc xvfb
+        $ sudo apt install x11vnc xvfb
             
-        $ mkdir ~/.vnc
+        $ mkdir -p ~/.vnc
         $ x11vnc -storepasswd 1234 ~/.vnc/passwd
         $ x11vnc -forever -usepw -create &
 

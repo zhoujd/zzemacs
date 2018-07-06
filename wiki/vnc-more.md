@@ -110,3 +110,8 @@ VNC More
         ## on sever side
         $ vncserver -geometry 1280x720 :1
 
+10. Client on Ubuntu
+
+        ## default VNC client for Ubuntu: Remmina
+        $ sudo apt-get install remmina
+        

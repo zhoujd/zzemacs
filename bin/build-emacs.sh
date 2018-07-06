@@ -34,8 +34,11 @@ Build_source()
     echo "//Starting build: $build_started"
     
     ## compile emacs
-    patch -p1 < $SCRIPT_ROOT/../misc/$EMACS_SRC.patch 
-    autoconf
+    if [ "$EMACS_SRC" = "emacs-24.3" ]; then
+        patch -p1 < $SCRIPT_ROOT/../misc/$EMACS_SRC.patch 
+        autoconf
+    fi
+
     ./configure --prefix=/usr
     make
 
@@ -51,7 +54,10 @@ Build_source()
 
 Install_libungif()
 {
-    wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
+    if [ ! -f libungif-4.1.4.tar.gz ]; then
+        wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
+    fi
+    
     tar xf libungif-4.1.4.tar.gz
 
     pushd libungif-4.1.4
@@ -112,7 +118,10 @@ read answer
 case "$answer" in
     "Y" | "y" )
         run_cmd Install_package
-        run_cmd Install_libungif
+
+        if [ "$EMACS_SRC" = "emacs-24.3" ]; then
+            run_cmd Install_libungif
+        fi
         ;;
 esac
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### /etc/yum.conf
 ## proxy=http://username:password@yourproxy:8080
@@ -18,13 +18,17 @@ echo "Setup proxy start ..."
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
-    SETUP_ROOT=$(cd $(dirname $0) && pwd -W)
+    PROXY_SCRIPT=$HOME/.bashrc.d/99_proxy.sh
 else
     SETUP_ROOT=$(cd $(dirname $0) && pwd)
+    PROXY_SCRIPT=/etc/profile.d/proxy.sh
+
+    if [ $EUID -ne 0 ]; then
+        echo "You must be a root user" 2>&1
+    exit 1
 fi
 
-ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
-PROXY_SCRIPT=$ZZEMACS_ROOT/etc/profile.d/99_proxy.sh
+fi
 
 cat > $PROXY_SCRIPT <<EOF
 ## This is for bash proxy

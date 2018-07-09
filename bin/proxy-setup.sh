@@ -32,7 +32,7 @@ fi
 
 cat > $PROXY_SCRIPT <<EOF
 ## This is for bash proxy
-export http_proxy=http://$1
+export http_proxy=http://$1/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
 export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"

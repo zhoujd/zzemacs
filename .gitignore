@@ -2,6 +2,6 @@
 *.elc
 *.*~
 *.pyc
-configure/temp-setting.el
+*.uuid
 custom.el
 99_proxy.sh

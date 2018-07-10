@@ -1,6 +1,7 @@
 #!/bin/sh
 
 ## sudo yum install redhat-lsb-core
+## sudo pacman -S lsb-release
 
 export OS_DISTRO="unknown"
 export SYSARCH=64
@@ -86,6 +87,9 @@ linux_lsb_check()
             ;;
         "Fedora" )
             OS_DISTRO="Fedora"
+            ;;
+        "Arch" )
+            OS_DISTRO="Arch"
             ;;
         * )
             false

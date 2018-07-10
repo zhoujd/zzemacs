@@ -30,6 +30,8 @@ Install_package()
         sudo pkg_add -r w3m
         sudo pkg_add -r cscope
         sudo pkg_add -r gmrun
+    elif [ "$OS_DISTRO" = "Arch" ]; then
+        sudo pacman -S tk cscope w3m
     else
         echo "You are about to install on a non supported linux distribution."
     fi

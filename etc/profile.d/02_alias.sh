@@ -82,3 +82,7 @@ alias me='mcedit'
 ## vlc alias
 alias vlc265='vlc --demux hevc'
 alias vlc264='vlc --demux h264'
+
+## tmux
+alias tmux='TERM=xterm-256color tmux'
+

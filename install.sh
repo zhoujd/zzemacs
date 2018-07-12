@@ -64,13 +64,11 @@ Install_others()
             BIN_TARGET=/usr/bin
             sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
-            sudo ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
             ;;
         "user" )
             BIN_TARGET=~/local/bin
             ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
             ln -sf ${ZZEMACS_ROOT}/bin/zzvim   $BIN_TARGET
-            ln -sf ${ZZEMACS_ROOT}/bin/zztmux  $BIN_TARGET
             ;;
         * )
             echo "unknown $TARGET_TYPE"

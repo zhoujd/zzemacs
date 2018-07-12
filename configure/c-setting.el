@@ -45,9 +45,10 @@
 
 ;;sudo apt install llvm-dev libclang-dev
 ;;sudo yum install llvm-devel clang-devel
+;;sudo pacman -S clang llvm
 ;;(executable-find "clang++")
 ;;https://www.hiroom2.com/2016/10/31/emacs-auto-complete-clang-async-package
-(defvar my:clang-async-p  nil "flag for use clang async")
+(defvar my:clang-async-p  t "flag for use clang async")
 (defun my:ac-clang-init ()
   (require 'auto-complete-clang)
   (setq ac-clang-complete-executable "clang++")

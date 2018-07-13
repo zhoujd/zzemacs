@@ -46,9 +46,9 @@
 (defslime-start ecl   'ecl)
 
 ;;reset slime temp directory
-(setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))
-(unless (file-exists-p temporary-file-directory)
-  (make-directory temporary-file-directory))
+;(setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))
+;(unless (file-exists-p temporary-file-directory)
+;  (make-directory temporary-file-directory))
 
 (require 'slime)
 (slime-setup '(

@@ -6,3 +6,9 @@ VirtualBox
         $ sudo usermod -a -G vboxsf zhoujd
         or
         $ sudo chmod 777 /media/sf_win10
+
+
+2. Command line
+
+        $ vboxmanage list vms
+        

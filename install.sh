@@ -35,7 +35,7 @@ Install_fonts()
 
             sudo fc-cache
             ;;
-        "user")
+        "user" )
             FONT_TARGET=~/.fonts/truetype
             mkdir -p $FONT_TARGET
             
@@ -57,8 +57,7 @@ Install_others()
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
     
-    echo "install font to $TARGET_TYPE"
-    ##setup zzemacs & zzvim & zztmux
+    echo "install others to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             BIN_TARGET=/usr/bin
@@ -83,8 +82,7 @@ Install_others()
 ##install thirdparty
 Install_thirdparty()
 {
-    echo "install font to $TARGET_TYPE"
-    ##setup zzemacs & zzvim & zztmux
+    echo "install third party to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             ##install pymacs

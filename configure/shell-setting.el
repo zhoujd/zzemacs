@@ -130,6 +130,12 @@ Dmitriy Igrishin's patched version of comint.el."
  (setq multi-term-dedicated-select-after-open-p t)
  (setq multi-term-program "bash")
 
+ (set-terminal-coding-system 'utf-8-unix)
+ (add-hook 'term-exec-hook
+           (function
+            (lambda ()
+              (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
+
  ;;tmux prefix
  (defun term-send-tmux ()
    "Use term-send-raw-string \"\C-b\" for tmux"

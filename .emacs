@@ -58,6 +58,7 @@
         scheme-setting
         perl-setting
         python-setting
+        go-setting
         ;;matlab-setting
         ;;spell-setting
         ;;gnuplot-setting

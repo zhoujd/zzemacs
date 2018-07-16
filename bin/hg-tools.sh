@@ -10,7 +10,7 @@ echo "hg setup start ..."
 ##http://hginit.com/ (Hg Init: a Mercurial tutorial)
 ##http://hgbook.red-bean.com/ (Mercurial: The Definitive Guide)
 
-Install_package()
+install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -39,6 +39,8 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        run_cmd Install_package
+        run_cmd install_package
         ;;
 esac
+
+echo "hg setup end ..."

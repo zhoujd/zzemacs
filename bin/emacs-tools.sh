@@ -6,7 +6,7 @@ EMACS_TOOLS_ROOT=`pwd`
 . $EMACS_TOOLS_ROOT/sample.sh
 
 
-Install_package()
+install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -38,4 +38,4 @@ Install_package()
 }
 
 echo "Install package for emacs on $OS_DISTRO"
-Install_package
+install_package

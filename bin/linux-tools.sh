@@ -8,13 +8,13 @@ LINUX_TOOL_ROOT=`pwd`
 echo "install linux-tool begin..."
 
 ##package for suse
-Install_package_suse()
+install_package_suse()
 {
     sudo zypperl install dos2unix
 }
 
 ##package for ubuntu
-Install_package_ubuntu()
+install_package_ubuntu()
 {
     sudo apt-get install -y texlive
     sudo apt-get install -y texinfo
@@ -37,13 +37,13 @@ Install_package_ubuntu()
 }
 
 ##package for centos
-Install_package_centos()
+install_package_centos()
 {
     sudo yum install dos2unix
 }
 
 ##package for fedora
-Install_package_centos()
+install_package_centos()
 {
     sudo dnf install dos2unix
 }
@@ -51,13 +51,13 @@ Install_package_centos()
 
 # dectect OS version
 if [ "$OS_DISTRO" = "SUSE" ]; then
-    run_cmd Install_package_suse
+    run_cmd install_package_suse
 elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-    run_cmd Install_package_ubuntu
+    run_cmd install_package_ubuntu
 elif [ "$OS_DISTRO" = "CentOS" ]; then
-    run_cmd Install_package_centos
+    run_cmd install_package_centos
 elif [ "$OS_DISTRO" = "Fedora" ]; then
-    run_cmd Install_package_fedora
+    run_cmd install_package_fedora
 else
     echo "You are about to install on a non supported linux distribution."
 fi

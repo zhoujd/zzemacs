@@ -9,7 +9,7 @@ fi
 echo "Setup self .bashrc start ..."
 
 ##setup .bashrc
-Install_self_bashrc()
+install_self_bashrc()
 {
 cat >> ~/.bashrc <<EOF
 
@@ -20,6 +20,6 @@ fi
 EOF
 }
 
-Install_self_bashrc
+install_self_bashrc
 
 echo "Setup self .bashrc end ..."

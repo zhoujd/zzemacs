@@ -8,7 +8,7 @@ ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 . $GIT_TOOLS_ROOT/sample.sh
 
 ## Install package for git
-Install_package()
+install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -34,7 +34,7 @@ Install_package()
 
 
 ## Install git self tool
-Install_tools()
+install_tools()
 {
     INS_PATH=$(git --exec-path)
     
@@ -53,7 +53,7 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        run_cmd Install_package
+        run_cmd install_package
         ;;
 esac
 
@@ -62,7 +62,7 @@ echo -n "Do you need install git self tool? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        run_cmd Install_tools
+        run_cmd install_tools
         ;;
 esac
 

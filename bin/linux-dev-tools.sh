@@ -5,10 +5,10 @@ LINUX_DEV_TOOL_ROOT=`pwd`
 ##Import vars and functions
 . $LINUX_DEV_TOOL_ROOT/sample.sh
 
-echo "install linux-dev-tool begin..."
+echo "Install linux-dev-tool begin..."
 
 ##package for ubuntu
-Install_package_suse()
+install_package_suse()
 {
     sudo zypper install -y gcc gcc-c++ automake git gitk diffstat
     sudo zypper install -y ncurses-devel ncurses zlib-devel
@@ -19,7 +19,7 @@ Install_package_suse()
 }
 
 ##package for ubuntu
-Install_package_ubuntu()
+install_package_ubuntu()
 {
     sudo apt-get install -y libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev
     sudo apt-get install -y xorg-dev autoconf libtool yasm
@@ -30,7 +30,7 @@ Install_package_ubuntu()
 }
 
 ##package for centos
-Install_package_centos()
+install_package_centos()
 {
     sudo yum install -y git diffstat
     sudo yum install -y gcc cmake gcc-c++ autoconf automake libtool libdrm-devel kernel-headers
@@ -43,7 +43,7 @@ Install_package_centos()
 }
 
 ##package for fedora
-Install_package_fedora()
+install_package_fedora()
 {
     sudo dnf install -y git diffstat
     sudo dnf install -y gcc cmake gcc-c++ autoconf automake libtool libdrm-devel kernel-headers
@@ -57,15 +57,15 @@ Install_package_fedora()
 
 # dectect OS version
 if [ "$OS_DISTRO" = "SUSE" ]; then
-    run_cmd Install_package_suse
+    run_cmd install_package_suse
 elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-    run_cmd Install_package_ubuntu
+    run_cmd install_package_ubuntu
 elif [ "$OS_DISTRO" = "CentOS" ]; then
-    run_cmd Install_package_centos
+    run_cmd install_package_centos
 elif [ "$OS_DISTRO" = "Fedora" ]; then
-    run_cmd Install_package_fedora
+    run_cmd install_package_fedora
 else
     echo "You are about to install on a non supported linux distribution."
 fi
 
-echo "install linux-dev-tool end..."
+echo "Install linux-dev-tool end..."

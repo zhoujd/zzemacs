@@ -31,4 +31,4 @@ zzemacs - emacs for Zachary Zhou
     LIBTIFF:           http://download.osgeo.org/libtiff
     LIBXPM:            http://www.x.org/releases/current/src/lib 
     
-* zzemacs will update as I using, hope your support.
+* zzemacs will update as I using

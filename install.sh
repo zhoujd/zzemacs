@@ -9,7 +9,7 @@ TARGET_TYPE="system"   ##system/user
 echo "install .emacs to HOME directory begin..."
 
 ##setup .emacs
-Install_dot_emacs()
+install_dot_emacs()
 {
 cat > ~/.emacs <<EOF
 ;;;This is .emacs for zhoujd.
@@ -21,7 +21,7 @@ EOF
 }
 
 ##setup font
-Install_fonts()
+install_fonts()
 {
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
@@ -52,7 +52,7 @@ Install_fonts()
 }
 
 ##setup others
-Install_others()
+install_others()
 {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
@@ -80,7 +80,7 @@ Install_others()
 }
 
 ##install thirdparty
-Install_thirdparty()
+install_thirdparty()
 {
     echo "install third party to $TARGET_TYPE"
     case "$TARGET_TYPE" in
@@ -116,16 +116,16 @@ main()
 {
     ##install configure file
     confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
-                    run_cmd Install_dot_emacs
+                    run_cmd install_dot_emacs
     ##install fonts
     confirm_execute "Do you want to install fonts ? [y/N]" \
-                    run_cmd Install_fonts
+                    run_cmd install_fonts
     ##install others
     confirm_execute "Do you want to install others ? [y/N]" \
-                    run_cmd Install_others
+                    run_cmd install_others
     ##install third-party
     confirm_execute "Do you want to install third-party packages ? (y/N): " \
-                    run_cmd Install_thirdparty
+                    run_cmd install_thirdparty
 }
 
 main

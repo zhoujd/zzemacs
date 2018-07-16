@@ -20,7 +20,7 @@ EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
 
 echo "Build emacs begin ..."
 
-Build_source()
+build_source()
 {
     if [ ! -f $EMACS_SRC_FILE ]; then
         wget https://ftp.gnu.org/gnu/emacs/$EMACS_SRC_FILE
@@ -52,7 +52,7 @@ Build_source()
     popd
 }
 
-Install_libungif()
+install_libungif()
 {
     if [ ! -f libungif-4.1.4.tar.gz ]; then
         wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
@@ -67,7 +67,7 @@ Install_libungif()
     popd
 }
 
-Install_package()
+install_package()
 {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
@@ -118,14 +118,14 @@ echo -n "Do you need install packages? (y/N): "
 read answer
 case "$answer" in
     "Y" | "y" )
-        run_cmd Install_package
+        run_cmd install_package
 
         if [ "$EMACS_SRC" = "emacs-24.3" ]; then
-            run_cmd Install_libungif
+            run_cmd install_libungif
         fi
         ;;
 esac
 
-run_cmd Build_source
+run_cmd build_source
 
 echo "Build emacs end ..."

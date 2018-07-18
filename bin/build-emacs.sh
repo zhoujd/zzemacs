@@ -108,7 +108,7 @@ install_package()
         sudo dnf install -y git-core
         sudo dnf install -y gitk
     elif [ "$OS_DISTRO" = "Arch" ]; then        
-        sudo pacman -S libjpeg libtiff giflib
+        sudo pacman -S libjpeg libtiff giflib imagemagick
     else
         echo "You are about to install on a non supported linux distribution."
     fi

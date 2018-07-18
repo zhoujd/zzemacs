@@ -96,8 +96,10 @@ class Dispatch:
 
             if appext == "":
                 appinfo.append("")
+            elif appext in config.appnames:
+                appinfo.append(config.appnames[appext])
             else:
-                appinfo.append(config.appnames["*" + appext])
+                continue
                 
             appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
             self.appmap[appname] = appinfo

@@ -13,8 +13,8 @@
 ;(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
 
 ;;the current frame to make it transparent
-;(set-frame-parameter (selected-frame) 'alpha '(95 70))
-;(add-to-list 'default-frame-alist '(alpha 95 70))
+(set-frame-parameter (selected-frame) 'alpha '(95 70))
+(add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
 (defun my-set-language-chinese ()

@@ -15,13 +15,8 @@ script_path()
     echo $DIR
 }
 
-SCRIPT_HOME=$(script_path)
-ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
-
-export PATH=${ZZEMACS_ROOT}/bin:${ZZEMACS_ROOT}/libexec:$PATH
-
 # source bash configure from zzemacs/etc
-for i in ${ZZEMACS_ROOT}/etc/profile.d/*.sh ; do
+for i in $(script_path)/profile.d/*.sh ; do
     if [ -r "$i" ]; then
         if [ "${-#*i}" != "$-" ]; then
             . "$i"

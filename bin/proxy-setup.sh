@@ -1,12 +1,12 @@
 #!/bin/bash
 
-### /etc/yum.conf
-## proxy=http://username:password@yourproxy:8080
+## /etc/yum.conf
+# proxy=http://username:password@yourproxy:8080
 
-### /etc/apt/apt.conf
-## Acquire::http::proxy "http://127.0.0.1:8000";  
-## Acquire::ftp::proxy "ftp://127.0.0.1:8000";  
-## Acquire::https::proxy "https://127.0.0.1:8000";
+## /etc/apt/apt.conf
+# Acquire::http::proxy "http://127.0.0.1:8000";  
+# Acquire::ftp::proxy "ftp://127.0.0.1:8000";  
+# Acquire::https::proxy "https://127.0.0.1:8000";
 
 if [ $# != 1 ] ; then
     echo "Usage: `basename $0` [host:port]"
@@ -25,9 +25,8 @@ else
 
     if [ $EUID -ne 0 ]; then
         echo "You must be a root user" 2>&1
-    exit 1
-fi
-
+        exit 1
+    fi
 fi
 
 cat > $PROXY_SCRIPT <<EOF
@@ -35,7 +34,8 @@ cat > $PROXY_SCRIPT <<EOF
 export http_proxy=http://$1/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
-export no_proxy="localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+export no_proxy="localhost, 127.0.0.0/8, ::1, 10.0.0.0/8, 192.168.0.0/16"
+
 EOF
 
 echo "Setup proxy end ..."

@@ -3,8 +3,14 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
 
-export PATH=${ZZEMACS_HOME}/bin:${ZZEMACS_HOME}/libexec:$PATH
+ADD_PATH=(
+    $ZZEMACS_HOME/bin
+    $ZZEMACS_HOME/libexec
+    ~/local/bin
+)
 
-if [ -d ~/local/bin ]; then
-    export PATH=~/local/bin:$PATH
-fi
+for path in ${ADD_PATH[@]} ; do
+    if [ -d $path ]; then
+        PATH=$path:$PATH
+    fi
+done

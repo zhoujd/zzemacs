@@ -86,7 +86,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;popup term
 (if-ms-windows
  (setq popup-terminal-command '("cmd" "/c" "start"))
- (setq popup-terminal-command '("gnome-terminal")))
+ (setq popup-terminal-command '("urxvt")))
 
 (defun popup-term ()
   (interactive)

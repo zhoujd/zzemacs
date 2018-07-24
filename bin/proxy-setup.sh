@@ -34,7 +34,7 @@ cat > $PROXY_SCRIPT <<EOF
 export http_proxy=http://$1/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
-export no_proxy="localhost, 127.0.0.0/8, ::1, 10.0.0.0/8, 192.168.0.0/16"
+export no_proxy="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16"
 
 EOF
 

@@ -12,3 +12,8 @@ VirtualBox
 
         $ vboxmanage list vms
         
+
+3. Enable kernel support
+
+        $ sudo pacman -S virtualbox-host-dkms
+        $ sudo modprobe vboxdrv

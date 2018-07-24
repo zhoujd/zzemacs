@@ -48,8 +48,8 @@ alias lcsh="csh -l"
 
 ## system alias
 alias minfo='egrep "Mem|Cache|Swap" /proc/meminfo'
-alias userinfo='getent passwd | column  -t -s: -n'
-alias groupinfo='getent group | column  -t -s: -n'
+alias userinfo='getent passwd | column -t -s:'
+alias groupinfo='getent group | column -t -s:'
 alias lsmount='mount | sort | column -t'
 alias syslog='tail -F /var/log/syslog'
 alias sl='syslog'
@@ -61,7 +61,7 @@ alias cl='colorless'
 
 ## net alias
 alias ports='netstat -tulanp'
-alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep eth | cut -d\  -f 7)'
+alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep enp | cut -d\  -f 7)'
 alias scpr='scp -r'
 alias wget='wget -c'
 alias ipt='sudo /sbin/iptables'
@@ -76,8 +76,6 @@ alias et='emacsclient -t'
 alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
-alias mcedit='mcedit -x'
-alias me='mcedit'
 
 ## vlc alias
 alias vlc265='vlc --demux hevc'

@@ -3,6 +3,20 @@
 
 (zz-load-path "site-lisp/python-mode")
 
+(defmacro after (mode &rest body)
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
+(after 'auto-complete-config
+       (ac-ropemacs-initialize)
+       (ac-ropemacs-setup))
+
+(after 'auto-complete-autoloads
+       (add-hook 'python-mode-hook
+                 (lambda ()
+                   (add-to-list 'ac-sources 'ac-source-ropemacs)
+                   (auto-complete-mode))))
+
 (require 'pymacs)
 (autoload 'pymacs-apply "pymacs") 
 (autoload 'pymacs-call "pymacs") 

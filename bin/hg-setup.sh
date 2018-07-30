@@ -41,7 +41,7 @@ fi
 EXTMERGE=hg-merge-wrapper.py
 
 echo "remove ~/.hgrc and setting hg configure ..."
-cat > ~/.hgrc <<EOF
+cat <<EOF > ~/.hgrc
 #
 # This is the config file, and
 # a '#' or ';' character indicates
@@ -120,7 +120,7 @@ EOF
 
 add_cfg_tail()
 {
-cat >> ~/.hgrc <<EOF
+cat <<EOF >> ~/.hgrc
 
 [color]
 mode = off

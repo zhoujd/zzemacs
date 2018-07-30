@@ -38,7 +38,7 @@ echo "remove ~/.gitconfig and setting git configure ..."
 rm -f ~/.gitconfig
 
 ## add title
-cat > ~/.gitconfig <<EOF
+cat <<EOF > ~/.gitconfig
 #
 # This is the config file, and
 # a '#' or ';' character indicates

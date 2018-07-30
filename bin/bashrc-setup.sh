@@ -11,7 +11,7 @@ echo "Setup self .bashrc start ..."
 ##setup .bashrc
 install_self_bashrc()
 {
-cat >> ~/.bashrc <<EOF
+cat <<EOF >> ~/.bashrc
 
 # zzemacs bash configure
 if [ -f ~/.bash_zzemacs ]; then

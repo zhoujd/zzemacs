@@ -29,7 +29,7 @@ else
     fi
 fi
 
-cat > $PROXY_SCRIPT <<EOF
+cat <<EOF > $PROXY_SCRIPT
 ## This is for bash proxy
 export http_proxy=http://$1/
 export https_proxy=\$http_proxy

@@ -9,8 +9,15 @@ ADD_PATH=(
     ~/local/bin
 )
 
-for path in ${ADD_PATH[@]} ; do
-    if [ -d $path ]; then
-        export PATH=$path:$PATH
+add-to-path() {
+    case ":$PATH:" in
+        *":$1:"*) :;; # already there
+        *) PATH="$1:$PATH";; # or PATH="$PATH:$1"
+    esac
+}
+
+for new_entry in ${ADD_PATH[@]} ; do
+    if [ -d $new_entry ]; then
+        add-to-path $new_entry
     fi
 done

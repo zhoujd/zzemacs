@@ -10,8 +10,7 @@ echo "hg setup start ..."
 ##http://hginit.com/ (Hg Init: a Mercurial tutorial)
 ##http://hgbook.red-bean.com/ (Mercurial: The Definitive Guide)
 
-install_package()
-{
+install_package() {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y mercurial

@@ -8,14 +8,12 @@ LINUX_TOOL_ROOT=`pwd`
 echo "install linux-tool begin..."
 
 ##package for suse
-install_package_suse()
-{
+install_package_suse() {
     sudo zypperl install dos2unix
 }
 
 ##package for ubuntu
-install_package_ubuntu()
-{
+install_package_ubuntu() {
     sudo apt-get install -y texlive
     sudo apt-get install -y texinfo
     sudo apt-get install -y xmlto
@@ -37,17 +35,14 @@ install_package_ubuntu()
 }
 
 ##package for centos
-install_package_centos()
-{
+install_package_centos() {
     sudo yum install dos2unix
 }
 
 ##package for fedora
-install_package_centos()
-{
+install_package_centos() {
     sudo dnf install dos2unix
 }
-
 
 # dectect OS version
 if [ "$OS_DISTRO" = "SUSE" ]; then

@@ -6,8 +6,7 @@
 # ls colors setting
 export LS_COLORS='di=01;35:ln=04'
 
-color_prompt()
-{
+color_prompt() {
     local norm='\[\033[m\]'
     local bold='\[\033[1m\]'
     local underline='\[\033[4m\]'

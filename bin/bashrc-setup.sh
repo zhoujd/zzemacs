@@ -9,8 +9,7 @@ fi
 echo "Setup self .bashrc start ..."
 
 ##setup .bashrc
-install_self_bashrc()
-{
+install_self_bashrc() {
 cat <<EOF >> ~/.bashrc
 
 # zzemacs bash configure

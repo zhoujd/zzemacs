@@ -6,8 +6,7 @@ EMACS_TOOLS_ROOT=`pwd`
 . $EMACS_TOOLS_ROOT/sample.sh
 
 
-install_package()
-{
+install_package() {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y cscope

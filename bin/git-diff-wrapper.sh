@@ -14,8 +14,7 @@
 ## use emacs as diff tool
 EMACS_FLAG="n"
 
-diff_extern()
-{
+diff_extern() {
     if [ "$OS" = "Windows_NT" ] ; then
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"
@@ -35,8 +34,7 @@ diff_extern()
     $DIFF_SELECT
 }
 
-diff_emacs()
-{
+diff_emacs() {
     if [ "$OS" = "Windows_NT" ] ; then
         ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd -W)"
     else
@@ -49,8 +47,7 @@ diff_emacs()
           --eval "(message \"emacs diff finished.\")"
 }
 
-main()
-{
+main() {
     case "$EMACS_FLAG" in
         "Y" | "y" )
             diff_emacs $*

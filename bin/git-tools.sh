@@ -8,8 +8,7 @@ ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 . $GIT_TOOLS_ROOT/sample.sh
 
 ## Install package for git
-install_package()
-{
+install_package() {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install -y texinfo
@@ -34,8 +33,7 @@ install_package()
 
 
 ## Install git self tool
-install_tools()
-{
+install_tools() {
     INS_PATH=$(git --exec-path)
     
     if [ -d $INS_PATH ] ; then
@@ -46,7 +44,6 @@ install_tools()
         echo "Not git install on system"
     fi
 }
-
 
 ## setup packages
 echo -n "Do you need install packages? (y/N): "

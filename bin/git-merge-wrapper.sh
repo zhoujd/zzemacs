@@ -14,8 +14,7 @@
 ## use emacs as merge tool
 EMACS_FLAG="y"
 
-merge_extern()
-{
+merge_extern() {
     if [ "$OS" = "Windows_NT" ] ; then
         MERGE_TOOL_0="bcompare $*"
         MERGE_TOOL_1="p4merge $*"
@@ -34,8 +33,7 @@ merge_extern()
     $MERGE_SELECT
 }
 
-merge_emacs()
-{
+merge_emacs() {
     if [ "$OS" = "Windows_NT" ] ; then
         ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd -W)"
     else
@@ -48,8 +46,7 @@ merge_emacs()
           --eval "(message \"emacs merge finished.\")"
 }
 
-main()
-{
+main() {
     case "$EMACS_FLAG" in
         "Y" | "y" )
             merge_emacs $*

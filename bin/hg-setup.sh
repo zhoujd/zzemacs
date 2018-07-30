@@ -118,8 +118,7 @@ ui.language = en
 vdiff = df
 EOF
 
-add_cfg_tail()
-{
+add_cfg_tail() {
 cat <<EOF >> ~/.hgrc
 
 [color]

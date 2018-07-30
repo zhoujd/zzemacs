@@ -20,8 +20,7 @@ EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
 
 echo "Build emacs begin ..."
 
-build_source()
-{
+build_source() {
     if [ ! -f $EMACS_SRC_FILE ]; then
         wget https://ftp.gnu.org/gnu/emacs/$EMACS_SRC_FILE
     fi
@@ -52,8 +51,7 @@ build_source()
     popd
 }
 
-install_libungif()
-{
+install_libungif() {
     if [ ! -f libungif-4.1.4.tar.gz ]; then
         wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
     fi
@@ -67,8 +65,7 @@ install_libungif()
     popd
 }
 
-install_package()
-{
+install_package() {
     # dectect OS version
     if [ "$OS_DISTRO" = "SUSE" ]; then
         sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel

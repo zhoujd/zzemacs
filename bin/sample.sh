@@ -7,16 +7,14 @@ export OS_DISTRO="unknown"
 export SYSARCH=64
 
 # ensure dirs exist
-ensure_dirs ()
-{
+ensure_dirs () {
     for j in "$@"; do
          test -d "$j" || mkdir -p "$j"
     done;
 }
 
 # try command for test command result.
-run_cmd()
-{
+run_cmd() {
     "$@"
     status=$?
     if [ $status -ne 0 ]; then
@@ -28,8 +26,7 @@ run_cmd()
 
 # Print an error message and exit with given status
 # call as: die status "message" ["message" ...]
-die()
-{
+die() {
    exitstat=$1; shift
    for i in "$@"; do
       print -R "$i"
@@ -38,8 +35,7 @@ die()
 }
 
 # example: $ time_command sleep 10
-time_command()
-{
+time_command() {
     time_start=`date +%s`
     "$@"
     time_end=`date +%s`
@@ -47,8 +43,7 @@ time_command()
     echo "Latency: $interval sec"
 }
 
-confirm_execute()
-{
+confirm_execute() {
     echo -n $1
     read answer
     case "$answer" in
@@ -58,8 +53,7 @@ confirm_execute()
     esac
 }
 
-linux_issue_check()
-{
+linux_issue_check() {
     run_cmd cat /etc/issue > /dev/null
     if [ ! -z "$(cat /etc/issue | grep 'Ubuntu')" ]; then
         OS_DISTRO="Ubuntu"
@@ -72,8 +66,7 @@ linux_issue_check()
     fi
 }
 
-linux_lsb_check()
-{
+linux_lsb_check() {
     run_cmd lsb_release -si > /dev/null
     case $(lsb_release -si) in
         "SUSE LINUX" )
@@ -97,8 +90,7 @@ linux_lsb_check()
     esac
 }
 
-linux_sample ()
-{
+linux_sample () {
     ## Dectect OS version
     linux_issue_check || linux_lsb_check
     echo "Run on $OS_DISTRO ..."
@@ -114,14 +106,12 @@ linux_sample ()
     fi
 }
 
-freebsd_sample()
-{
+freebsd_sample() {
     OS_DISTRO="FreeBSD"
     echo "Run on $OS_DISTRO ..."
 }
 
-mingw_sample()
-{
+mingw_sample() {
     OS_DISTRO="MINGW"
     echo "Run on $OS_DISTRO ..."
 }

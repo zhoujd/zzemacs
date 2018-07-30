@@ -1,9 +1,9 @@
 ### self function setting
 
 ## useful function like alias
-ipaddr()  { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
-cdl()     { cd "$@";  l; }
-rpmxf()   { [ "$1" != "" ] && (rpm2cpio "$1" | cpio -idmv); }
+ipaddr() { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
+cdl()    { cd "$@";  l; }
+rpmxf()  { [ "$1" != "" ] && (rpm2cpio "$1" | cpio -idmv); }
 
 ## init rpmbuild fold
 rpminit() {     
@@ -13,8 +13,7 @@ rpminit() {
 }
 
 ## chomod directory recursivly
-chmoddr()
-{
+chmoddr() {
     if [ -d "$1" ]; then
         echo "error: please use the mode first, then the directory"
         return 1
@@ -25,8 +24,7 @@ chmoddr()
 
 ## e.g. up -> go up 1 directory
 ## up 4 -> go up 4 directories
-up()
-{
+up() {
     dir=""
     if [ -z `echo $1 | grep -E '^[0-9]+$'` ]; then
         dir=..

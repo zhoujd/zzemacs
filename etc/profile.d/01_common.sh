@@ -33,6 +33,8 @@ color_prompt() {
                 else
                     PS1="${green}[\u@\h \W]${norm}${green}\$${norm} "
                 fi
+
+                export PS1="\[\033]0;\w\007\]$PS1"
             fi
             ;;
         emacs*)

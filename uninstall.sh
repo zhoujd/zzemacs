@@ -17,6 +17,6 @@ echo "remove .emacs.d ..."
 $rm_app ~/.emacs.d
 
 echo "remove others ..."
-$sudo_rm_app /usr/bin/zz{emacs,vim}
+$sudo_rm_app /usr/bin/zz{emacs,run}
 
 echo "uninstall zzemacs end ..."

@@ -9,8 +9,7 @@ TARGET_TYPE="system"   ##system/user
 echo "install .emacs to HOME directory begin..."
 
 ##setup .emacs
-install_dot_emacs()
-{
+install_dot_emacs() {
 cat <<EOF > ~/.emacs
 ;;;This is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
@@ -21,8 +20,7 @@ EOF
 }
 
 ##setup font
-install_fonts()
-{
+install_fonts() {
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
@@ -52,8 +50,7 @@ install_fonts()
 }
 
 ##setup others
-install_others()
-{
+install_others() {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
     
@@ -80,8 +77,7 @@ install_others()
 }
 
 ##install thirdparty
-install_thirdparty()
-{
+install_thirdparty() {
     echo "install third party to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
@@ -112,8 +108,7 @@ install_thirdparty()
     esac
 }
 
-main()
-{
+main() {
     ##install configure file
     confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
                     run_cmd install_dot_emacs

@@ -83,4 +83,11 @@ alias vlc264='vlc --demux h264'
 
 ## tmux
 alias tmux='TERM=xterm-256color tmux'
-
+alias tnews='tmux new-session -s'
+alias tls='tmux list-session'
+alias tlw='tmux list-window'
+alias tsw='tmux switch -t '
+alias tlc='tmux list-command'
+alias tat='tmux attach -t'
+alias trs='tmux rename-session -t'
+alias tks='tmux kill-session -t'

@@ -6,7 +6,7 @@ ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
 ADD_PATH=(
     $ZZEMACS_HOME/bin
     $ZZEMACS_HOME/libexec
-    ~/local/bin
+    $HOME/local/bin
 )
 
 add-to-path() {

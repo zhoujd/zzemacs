@@ -26,7 +26,7 @@ color_prompt() {
 
     # depend on term type
     case "$TERM" in
-        xterm* | rxvt* | eterm-color)
+        xterm* | rxvt* )
             if [ ! "$OS" = "Windows_NT" ] ; then
                 if [ $(whoami) = 'root' ]; then
                     PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "
@@ -37,7 +37,16 @@ color_prompt() {
                 export PS1="\[\033]0;\w\007\]$PS1"
             fi
             ;;
-        emacs*)
+        eterm* )
+            if [ ! "$OS" = "Windows_NT" ] ; then
+                if [ $(whoami) = 'root' ]; then
+                    PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "
+                else
+                    PS1="${green}[\u@\h \W]${norm}${green}\$${norm} "
+                fi
+            fi
+            ;;
+        emacs* )
             if [ "$OS" = "Windows_NT" ] ; then
                 if [ $(whoami) = 'root' ]; then
                     PS1="${green}[\u@\h \W]${norm}${lred}#${norm} "

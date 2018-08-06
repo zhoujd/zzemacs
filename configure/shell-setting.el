@@ -352,6 +352,13 @@ Dmitriy Igrishin's patched version of comint.el."
   (let ((default-directory dir))
     (shell name)))
 
+;;xterm color
+(require 'xterm-color)
+(setq comint-output-filter-functions
+      (remove 'ansi-color-process-output comint-output-filter-functions))
+(add-hook 'shell-mode-hook
+          (lambda () (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)))
+
 
 (provide 'shell-setting)
 

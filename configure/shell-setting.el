@@ -360,6 +360,7 @@ Dmitriy Igrishin's patched version of comint.el."
           (lambda () (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)))
 
 ;;eterm-256color
+;;eterm-color: apt install ncurses-term
 (require 'eterm-256color)
 (add-hook 'term-mode-hook #'eterm-256color-mode)
 

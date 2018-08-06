@@ -74,6 +74,9 @@ install_others() {
     
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.bash_zzemacs
+
+    ##link zzemacs/etc/terminfo
+    ln -sf ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
 }
 
 ##install thirdparty

@@ -50,7 +50,7 @@
 ;;tools: xlsfonts or xfontsel
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
-;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
+;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq en-font-list '(
                      "Consolas 14"
                      "Consolas 16"

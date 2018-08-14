@@ -10,6 +10,9 @@ GO Lang
         $ gdb gdb_sandbox
 
         (gdb) source ~/go/src/runtime/runtime-gdb.py
+        or
+        (gdb) source /usr/share/go/src/runtime/runtime-gdb.py
+
         (gdb) l
         (gdb) b main.go:9 
         (gdb) r

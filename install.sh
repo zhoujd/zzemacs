@@ -26,7 +26,7 @@ install_fonts() {
         "system" )
             FONT_TARGET=/usr/share/fonts/truetype
             sudo mkdir -p $FONT_TARGET
-            
+
             sudo ln -sf ${ZZEMACS_ROOT}/font/consola       $FONT_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
@@ -36,7 +36,7 @@ install_fonts() {
         "user" )
             FONT_TARGET=~/.fonts/truetype
             mkdir -p $FONT_TARGET
-            
+
             ln -sf ${ZZEMACS_ROOT}/font/consola       $FONT_TARGET
             ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
             ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
@@ -53,7 +53,7 @@ install_fonts() {
 install_others() {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
-    
+
     echo "install others to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
@@ -71,7 +71,7 @@ install_others() {
             ;;
 
     esac
-    
+
     ##link zzemacs/etc/profile
     ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.bash_zzemacs
 

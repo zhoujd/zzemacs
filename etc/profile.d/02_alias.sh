@@ -91,3 +91,6 @@ alias tlc='tmux list-command'
 alias tat='tmux attach -t'
 alias trs='tmux rename-session -t'
 alias tks='tmux kill-session -t'
+
+## nano
+alias nano='nano -w'

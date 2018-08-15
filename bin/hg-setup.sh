@@ -30,11 +30,11 @@ echo "hg setup start ..."
 
 if [ "$OS" = "Windows_NT" ] ; then
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
-    ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd -W)
+    ZZ_MISC_ROOT=$(cd $HG_SETUP_HOME/../misc && pwd -W)
     ZZ_LIBEXEC_ROOT=$(cd $HG_SETUP_HOME/../libexec && pwd -W)
 else
     HG_SETUP_HOME=$(cd $(dirname $0) && pwd)
-    ZZ_ETC_ROOT=$(cd $HG_SETUP_HOME/../etc && pwd)
+    ZZ_MISC_ROOT=$(cd $HG_SETUP_HOME/../misc && pwd)
     ZZ_LIBEXEC_ROOT=$(cd $HG_SETUP_HOME/../libexec && pwd)
 fi
 
@@ -108,7 +108,7 @@ no = 10.0.0.0/8,192.168.0.0/16,localhost,127.0.0.0/8,134.134.0.0/16
 [web] 
 push_ssl = False
 allow_push = *
-cacerts = ${ZZ_ETC_ROOT}/hg-cacert.pem
+cacerts = ${ZZ_MISC_ROOT}/hg-cacert.pem
 
 [hostfingerprints]
 bitbucket.org = 46:de:34:e7:9b:18:cd:7f:ae:fd:8b:e3:bc:f4:1a:5e:38:d7:ac:24

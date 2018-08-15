@@ -24,10 +24,10 @@ sub is_windows {
 sub run_cmds {
     my @cmds = @_;
     foreach (@cmds) {
-        print "$_\n" if $conf{'verb'}; 
+        print "$_\n" if $conf{'verb'};
         unless ("" eq $_) {
             (system("$_") == 0) || die "can't run $_ : $!";
-        } 
+        }
     }
 }
 

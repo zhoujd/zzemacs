@@ -18,3 +18,6 @@ GO Lang
         (gdb) b main.go:9
         (gdb) r
 
+2. Godoc
+
+        $ sudo apt install golang-golang-x-tools

@@ -27,11 +27,18 @@ install_package_ubuntu() {
     ##autossh -M 5122 -N -v -D localhost:8527 root@remote_ssh_server -p remote_ssh_port
     sudo apt-get install -y autossh
 
+    ##http://cntlm.sourceforge.net
+    #sudo apt-get install -y cntlm
+    
     ##easy split windows for multi-term
     #sudo apt-get install -y terminator
 
-    ##for gnome
+    ##gnome
     #sudo apt-get install -y gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+
+    ##xfce4
+    #sudo apt-get install -y xfce4
+    #sudo apt-get install -y lightdm lightdm-gtk-greeter
 }
 
 ##package for centos

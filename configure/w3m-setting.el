@@ -71,7 +71,6 @@
 ;;                     '("-o" "http_proxy=http://proxy.hogege.com:8000/")))
 
 ;;(setq w3m-no-proxy-domains '("local.com" "neighbor.com"))
-;;
 
 (provide 'w3m-setting)
 

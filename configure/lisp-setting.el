@@ -128,10 +128,9 @@
          (setq bridge-source-insert nil) ;Don't insert in source buffer
          (setq bridge-destination-insert nil) ;Don't insert in dest buffer
          ;; Handle copy-it messages yourself
-         (setq bridge-handlers
-               '(("copy-it" . my-copy-handler)))))
+         (setq bridge-handlers '(("copy-it" . my-copy-handler)))))
 
-;;for elisp function help
+;;elisp function help
 (require 'find-func)
 (find-function-setup-keys)
 

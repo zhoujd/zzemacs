@@ -21,3 +21,7 @@ GO Lang
 2. Godoc
 
         $ sudo apt install golang-golang-x-tools
+
+3. Go project directories
+
+        <https://github.com/golang-standards/project-layout>

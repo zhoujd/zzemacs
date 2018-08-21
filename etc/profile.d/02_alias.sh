@@ -1,5 +1,14 @@
 ### self alias setting
 
+## pass alias through sudo
+salias() {
+    local a c
+    a=$(echo "$1" | cut -f1 -d=)
+    c=$(echo "$1" | cut -f2- -d=)
+    alias $a="$c"
+    alias s$a="sudo $c"
+}
+
 ## reload .bashrc
 alias rl='. ~/.bashrc'
 

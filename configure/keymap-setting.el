@@ -50,7 +50,7 @@
  (list
   (kbd "C-z")   ctl-z-map
   (kbd "M-[")   ctl-z-map
-  (kbd "M-]")   f4-map
+  (kbd "M-] 4") f4-map
   [f4]          f4-map
   ))
 

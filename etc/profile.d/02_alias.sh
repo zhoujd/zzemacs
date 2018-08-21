@@ -36,6 +36,7 @@ alias less='less -R -S -#2'
 alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias usage='du -h --max-depth=1'
+alias sudo='sudo '
 
 ## date alias
 alias date='date -R'

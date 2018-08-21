@@ -21,15 +21,19 @@ if [ "$OS" = "Windows_NT" ] ; then
     PROXY_SCRIPT=$HOME/.bashrc.d/99_proxy.sh
 else
     SETUP_ROOT=$(cd $(dirname $0) && pwd)
-    PROXY_SCRIPT=/etc/profile.d/proxy.sh
-
-    if [ $EUID -ne 0 ]; then
-        echo "You must be a root user" 2>&1
-        exit 1
+    SETUP_SYS=1
+    if [ $SETUP_SYS -ne 0 ]; then
+        if [ $EUID -ne 0 ]; then
+            echo "You must be a root user" 2>&1
+            exit 1
+        fi
+        PROXY_SCRIPT=/etc/profile.d/proxy.sh
+    else
+        PROXY_SCRIPT=$HOME/.bashrc
     fi
 fi
 
-cat <<EOF > $PROXY_SCRIPT
+cat <<EOF >> $PROXY_SCRIPT
 ## This is for bash proxy
 export http_proxy=http://$1/
 export https_proxy=\$http_proxy

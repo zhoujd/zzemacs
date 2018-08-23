@@ -1,14 +1,5 @@
 ### self alias setting
 
-## pass alias through sudo
-salias() {
-    local a c
-    a=$(echo "$1" | cut -f1 -d=)
-    c=$(echo "$1" | cut -f2- -d=)
-    alias $a="$c"
-    alias s$a="sudo $c"
-}
-
 ## reload .bashrc
 alias rl='. ~/.bashrc'
 
@@ -71,7 +62,7 @@ alias cl='colorless'
 
 ## net alias
 alias ports='netstat -tulanp'
-alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep enp | cut -d\  -f 7)'
+alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep en | cut -d\  -f 7)'
 alias scpr='scp -r'
 alias wget='wget -c'
 alias ipt='sudo /sbin/iptables'

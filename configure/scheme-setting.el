@@ -11,10 +11,10 @@
 
 ;;auto-complete setting
 (defvar ac-source-scheme
-  '((candidates
-     . (lambda ()
-         (require 'scheme-complete)
-         (all-completions ac-target (car (scheme-current-env))))))
+  '((candidates . (lambda ()
+                    (require 'scheme-complete)
+                    (all-completions ac-target
+                                     (car (scheme-current-env))))))
   "Source for scheme keywords.")
 
 ;;Auto-complete-mode config
@@ -45,9 +45,6 @@
 
 (add-hook 'scheme-mode-hook
           (lambda ()
-            (make-local-variable 'eldoc-documentation-function)
-            (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
-            (eldoc-mode t)
             (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;geiser for scheme

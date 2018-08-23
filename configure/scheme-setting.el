@@ -72,6 +72,9 @@
 ;;http://docs.racket-lang.org/guide/Emacs.html
 (zz-load-path "site-lisp/racket-mode")
 (require 'racket-mode)
+(add-hook 'racket-mode-hook
+          (lambda ()
+            (define-key racket-mode-map (kbd "C-c r") 'racket-run)))
 
 
 (provide 'scheme-setting)

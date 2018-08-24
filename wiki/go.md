@@ -25,3 +25,19 @@ GO Lang
 3. Go project directories
 
         <https://github.com/golang-standards/project-layout>
+
+4. Go as script
+
+        $ cat vikas.go
+        //usr/bin/env go run "$0" "$@"; exit
+
+        package main
+
+        import "fmt"
+
+        func main() {
+            fmt.Printf("Hello World\n")
+        }
+        
+        $ ./vikas.go
+        Hello World

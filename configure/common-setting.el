@@ -171,7 +171,8 @@
       (set-face-foreground 'default "gray")))
 
 ;;default-frame-alist or initial-frame-alist
-(setq default-frame-alist (append '((scroll-bar-width . 16)
+(setq default-frame-alist (append '((mouse-color . "white")
+                                    (scroll-bar-width . 16)
                                     (width .  110)
                                     (height . 35))
                                   default-frame-alist))
@@ -468,21 +469,22 @@
 ;(setq resize-mini-windows nil)
 ;(setq default-line-spacing 0)
 
-;; set the mouse scroll wheel to move 1 line per event
+;;set the mouse scroll wheel to move 1 line per event
 ;(setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
 ;;(setq trash-directory "~/.Trash")
 (setq delete-by-moving-to-trash t)
 
-;;Make Emacs stop asking “Active processes exist; kill them and exit anyway”
+;;stop asking “Active processes exist; kill them and exit anyway”
 ;(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
 ;  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
 ;  (flet ((process-list ())) ad-do-it))
 
 ;;M-x set-variable RET -> input: case-fold-search/case-replace RET->nil RET
-(setq-default case-fold-search nil)   ;; require exact matches
-(setq-default case-replace nil)       ;; never change case when replacing
+(setq-default case-fold-search nil)   ; require exact matches
+(setq-default case-replace nil)       ; never change case when replacing
+
 
 (provide 'common-setting)
 

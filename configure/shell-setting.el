@@ -162,6 +162,16 @@ Dmitriy Igrishin's patched version of comint.el."
             (setq show-trailing-whitespace nil)
             ))
 
+(defun term-send-esc ()
+  "Send ESC in term mode."
+  (interactive)
+  (term-send-raw-string "\e"))
+
+(defun term-send-clear ()
+  "Send ESC in term mode."
+  (interactive)
+  (term-send-raw-string "\C-l"))
+
 ;;key set for term
 (add-hook 'term-mode-hook
           (lambda ()
@@ -173,12 +183,10 @@ Dmitriy Igrishin's patched version of comint.el."
             (define-key term-raw-map  (kbd "C-c ]")   'term-char-mode)
             (define-key term-mode-map (kbd "C-c [")   'term-line-mode)
             (define-key term-mode-map (kbd "C-c ]")   'term-char-mode)
-            ))
 
-(defun term-send-esc ()
-  "Send ESC in term mode."
-  (interactive)
-  (term-send-raw-string "\e"))
+            (define-key term-raw-map  (kbd "C-c M-o")   'term-send-clear)
+            (define-key term-mode-map (kbd "C-c M-o")   'term-send-clear)
+            ))
 
 (defun last-term-buffer (l)
   "Return most recently used term buffer."

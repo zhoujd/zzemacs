@@ -239,6 +239,11 @@
  (list
   (kbd "<f4>")  'kill-this-buffer
 
+  (kbd "<f5>")  (lambda () (interactive) (terminator-open-template 0))
+  (kbd "<f6>")  (lambda () (interactive) (terminator-open-template 1))
+  (kbd "<f7>")  (lambda () (interactive) (terminator-open-template 2))
+  (kbd "<f8>")  (lambda () (interactive) (terminator-open-template 3))
+
   (kbd "<f9>")  (start-quick-shell "*shell-f9*")
   (kbd "<f10>") (start-quick-shell "*shell-f10*")
   (kbd "<f11>") (start-quick-shell "*shell-f11*")
@@ -267,6 +272,10 @@
 (apply-keys-to-map
  f4-map
  (list
+  (kbd "5")     (lookup-key f4-map [f5])
+  (kbd "6")     (lookup-key f4-map [f6])
+  (kbd "7")     (lookup-key f4-map [f7])
+  (kbd "8")     (lookup-key f4-map [f8])
   (kbd "9")     (lookup-key f4-map [f9])
   (kbd "0")     (lookup-key f4-map [f10])
   (kbd "-")     (lookup-key f4-map [f11])
@@ -278,20 +287,20 @@
  help-map
  (list
   ;;gdb frame show setting
-  (kbd "5") 'gdb-frame-stack-buffer
-  (kbd "6") 'gdb-frame-breakpoints-buffer
-  (kbd "7") 'gdb-frame-assembler-buffer
-  (kbd "8") 'gdb-frame-memory-buffer
-  (kbd "9") 'gdb-frame-locals-buffer
-  (kbd "0") 'gdb-frame-gdb-buffer
-  (kbd "-") 'gud-up
-  (kbd "=") 'gud-down
+  (kbd "5")     'gdb-frame-stack-buffer
+  (kbd "6")     'gdb-frame-breakpoints-buffer
+  (kbd "7")     'gdb-frame-assembler-buffer
+  (kbd "8")     'gdb-frame-memory-buffer
+  (kbd "9")     'gdb-frame-locals-buffer
+  (kbd "0")     'gdb-frame-gdb-buffer
+  (kbd "-")     'gud-up
+  (kbd "=")     'gud-down
 
   ;;window size change
-  [up]      (lookup-key global-map [S-up])
-  [down]    (lookup-key global-map [S-down])
-  [left]    (lookup-key global-map [S-left])
-  [right]   (lookup-key global-map [S-right])
+  [up]          (lookup-key global-map [S-up])
+  [down]        (lookup-key global-map [S-down])
+  [left]        (lookup-key global-map [S-left])
+  [right]       (lookup-key global-map [S-right])
   ))
 
 (provide 'key-setting)

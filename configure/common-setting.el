@@ -473,7 +473,7 @@
 ;(setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
-;;(setq trash-directory "~/.Trash")
+(setq trash-directory "~/.Trash")
 (setq delete-by-moving-to-trash t)
 
 ;;stop asking “Active processes exist; kill them and exit anyway”

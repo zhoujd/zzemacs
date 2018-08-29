@@ -162,11 +162,6 @@ Dmitriy Igrishin's patched version of comint.el."
             (setq show-trailing-whitespace nil)
             ))
 
-(defun term-send-esc ()
-  "Send ESC in term mode."
-  (interactive)
-  (term-send-raw-string "\e"))
-
 (defun term-send-clear ()
   "Send ESC in term mode."
   (interactive)

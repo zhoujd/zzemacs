@@ -236,18 +236,19 @@
 
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   'smartparens-mode
-
-  (kbd "C-1")   'dos2unix
-  (kbd "C-3")   'secondary-x-font
+  
   (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
                  (execute-set-key "explorer" (list "explorer" "."))
-                 'open-with-nautilus)
+                 (execute-set-key "thunar" '("thunar")))
   (kbd "C-h")   'sourcepair-jump-to-headerfile
   (kbd "C-l")   'command-history
   (kbd "C-r")   'add-code-review-note
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
+  
+  (kbd "C-1")   'dos2unix
+  (kbd "C-3")   'secondary-x-font
 
   (kbd "M-1")   'whitespace-cleanup
   (kbd "M-3")   'primary-x-font

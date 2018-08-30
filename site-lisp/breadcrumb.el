@@ -1,6 +1,6 @@
 ;;; breadcrumb.el --- Breadcrumb.  Set breadcrumb bookmarks and jump to them.
 ;;
-;; Copyright (C) 2004-2008 William W. Wong
+;; Copyright (C) 2004-2013 William W. Wong
 ;;
 ;; Author: William W. Wong <williamw520(AT)yahoo(DOT)com>
 ;; Created: October, 2004
@@ -131,6 +131,12 @@
 
 ;;; History:
 ;;
+;;  2013/11/19 William Wong
+;;      Migrate source control to Github.
+;;      Minor clean up
+;;      Add custom setting bc-default-switch-buffer-func to set the func to switch buffer.
+;;      Version 1.2 release
+;;
 ;;  2008/02/29 William Wong
 ;;      Minor bug fixes and cleanup
 ;;      Version 1.1.4 release
@@ -187,6 +193,10 @@
   :link '(emacs-library-link :tag "Source Lisp File" "breadcrumb.el")
   :group 'editing
   :prefix "bc-")
+
+(defcustom bc-default-switch-buffer-func 'switch-to-buffer
+  "*Function to use to switch to a buffer"
+  :group 'breadcrumb)
 
 (defcustom bc-bookmark-limit 16
   "*Maximum numbers of breadcrumb bookmarks to keep in the queue."
@@ -327,7 +337,7 @@ The list is (Bookmark1 Bookmark2 ...) where each Bookmark is (TYPE FILENAME . PO
   "Construct a bookmark record, saving its file and position in the bookmark list.
 TYPE the type of the buffer to bookmark ('file or 'info)
 FILENAME filename of the breadcrumb bookmark.
-POSITION the positio of the breadcrumb bookmark."
+POSITION the position of the breadcrumb bookmark."
   (cons type (cons filename position)))
 
 (defun bc-bookmark-type (bookmark)
@@ -477,7 +487,7 @@ BOOKMARK is the bookmark to jump to, which has the form (FILENAME . POSITION)."
           (filename (bc-bookmark-filename bookmark))
           (position (bc-bookmark-position bookmark)))
       (if (null switch-buffer-func)
-          (setq switch-buffer-func 'switch-to-buffer))
+          (setq switch-buffer-func bc-default-switch-buffer-func))
       (cond 
        ((or (eq type bc--type-file) 
             (eq type bc--type-dired))

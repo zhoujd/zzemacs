@@ -200,37 +200,22 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  (kbd "`") (if-not-ms-windows
-             (execute-set-key "gmrun" '("gmrun")))
-
-  (kbd "1") (if-ms-windows
-             (execute-set-key "vs-x86-prompt" '("cmd" "/c" "start" "vcvarsall" "x86"))
-             'remote-shell)
-  (kbd "2") (if-ms-windows
-             (execute-set-key "vs-x64-prompt" '("cmd" "/c" "start" "vcvarsall" "x64"))
-             'local-shell)
-  (kbd "3") (if-ms-windows
-             (execute-set-key "git-shell" '("cmd" "/c" "start" "sh" "--login" "-i"))
-             'shell-directory)
-  (kbd "4") (if-ms-windows
-             (execute-set-key "console" (list "console2" "-t" "Git" "-d" "."))
-             (execute-set-key "xterm" (list "xterm")))
-
-  (kbd "c") (if-not-ms-windows
-             (execute-set-key "gnome-control-center" '("gnome-control-center")))
-  (kbd "d") (if-ms-windows
-             (execute-set-key "bcompare" '("bcompare"))
-             (execute-set-key "meld" '("meld")))
-  (kbd "e") (if-not-ms-windows
-             (execute-set-key "evince" '("evince")))
-  (kbd "f") (execute-set-key "firefox"  '("firefox" "http://www.baidu.com"))
-  (kbd "m") (if-not-ms-windows
-             (execute-set-key "gnome-system-monitor" '("gnome-system-monitor")))
-  (kbd "n") (if-not-ms-windows
-             (execute-set-key "nautilus" '("nautilus" "--no-desktop")))
-  (kbd "r") (if-not-ms-windows
-             (execute-set-key "remmina" '("remmina")))
-  (kbd "t") 'open-with-terminal
+  (kbd "c")  (if-not-ms-windows
+              (execute-set-key "urxvt" (list "urxvt")))
+  (kbd "d")  (if-not-ms-windows
+              (execute-set-key "meld" '("meld")))
+  (kbd "v")  (if-not-ms-windows
+              (execute-set-key "evince" '("evince")))
+  (kbd "f")  (if-not-ms-windows
+              (execute-set-key "firefox" '("firefox")))
+  (kbd "m")  (if-not-ms-windows
+              (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
+  (kbd "h")  (if-not-ms-windows
+              (execute-set-key "thunar" '("thunar")))
+  (kbd "r")  (if-not-ms-windows
+              (execute-set-key "remmina" '("remmina")))
+  (kbd "t")  (if-not-ms-windows
+              (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
   ))
 
 ;;switch to shells

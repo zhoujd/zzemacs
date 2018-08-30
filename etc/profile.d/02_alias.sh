@@ -87,11 +87,21 @@ alias tmux='TERM=xterm-256color tmux'
 alias tnews='tmux new-session -s'
 alias tls='tmux list-session'
 alias tlw='tmux list-window'
-alias tsw='tmux switch -t '
+alias tsw='tmux switch -t'
 alias tlc='tmux list-command'
 alias tat='tmux attach -t'
 alias trs='tmux rename-session -t'
 alias tks='tmux kill-session -t'
+
+##byobu
+alias bnews='byobu new-session -s'
+alias bls='byobu list-session'
+alias blw='byobu list-window'
+alias bsw='byobu switch -t'
+alias blc='byobu list-command'
+alias bat='byobu attach -t'
+alias brs='byobu rename-session -t'
+alias bks='byobu kill-session -t'
 
 ## nano
 alias nano='nano -w'

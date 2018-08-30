@@ -39,6 +39,9 @@ install_package_ubuntu() {
     ##xfce4
     #sudo apt-get install -y xfce4
     #sudo apt-get install -y lightdm lightdm-gtk-greeter
+
+    ##tmux byobu
+    #sudo apt-get install -y tmux byobu
 }
 
 ##package for centos

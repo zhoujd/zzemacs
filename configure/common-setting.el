@@ -174,7 +174,7 @@
 (setq default-frame-alist (append '((mouse-color . "white")
                                     (scroll-bar-width . 16)
                                     (width .  110)
-                                    (height . 35))
+                                    (height . 32))
                                   default-frame-alist))
 
 ;;quick display key help

@@ -124,4 +124,9 @@ VNC More
 
         ## default VNC client for Ubuntu: Remmina
         $ sudo apt-get install remmina
-        
+
+11. VNC Viewer on Windows
+
+        ## https://www.realvnc.com/en/connect/download/vnc/
+        ## remove "Sign in" button
+        File -> Preference -> Expert -> AllowSignin => false

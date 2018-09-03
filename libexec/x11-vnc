@@ -17,7 +17,7 @@ case "$1" in
         if [ -z "$(pidof x11vnc)" ]; then
             mkdir ~/.vnc
             x11vnc -storepasswd intel123 ~/.vnc/passwd
-            x11vnc -forever -usepw -create &
+            x11vnc  -ncache 10 -forever -usepw -create &
         else
             echo "x11vnc already exist."
         fi

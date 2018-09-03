@@ -1,0 +1,35 @@
+#!/bin/bash
+
+## x11vnc
+#set -x -v
+
+case "$1" in
+    "install" )
+        if [ -z "$(pidof x11vnc)" ]; then
+            #TZ=Asia/Shanghai
+            #sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+            #sudo echo $TZ > /etc/timezone
+            
+            sudo apt install -y x11vnc xvfb
+        fi
+        ;;
+    'start' )
+        if [ -z "$(pidof x11vnc)" ]; then
+            mkdir ~/.vnc
+            x11vnc -storepasswd intel123 ~/.vnc/passwd
+            x11vnc -forever -usepw -create &
+        else
+            echo "x11vnc already exist."
+        fi
+        ;;
+    'stop' )
+        if [ -z "$(pidof x11vnc)" ]; then
+            echo "no x11vnc exist"
+        else
+            kill -9 `pidof x11vnc`
+        fi
+        ;;
+    * )
+        echo "$0 [install|start|stop]"
+        ;;
+esac

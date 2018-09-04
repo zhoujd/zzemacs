@@ -16,12 +16,13 @@ fi
 
 echo "Setup proxy start ..."
 
-##Check run OS
+## check run os
 if [ "$OS" = "Windows_NT" ] ; then
     PROXY_SCRIPT=$HOME/.bashrc.d/99_proxy.sh
 else
-    SETUP_ROOT=$(cd $(dirname $0) && pwd)
+    ## 1: system, 0: user
     SETUP_SYS=1
+    
     if [ $SETUP_SYS -ne 0 ]; then
         if [ $EUID -ne 0 ]; then
             echo "You must be a root user" 2>&1

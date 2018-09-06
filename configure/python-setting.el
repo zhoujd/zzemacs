@@ -3,6 +3,17 @@
 
 (zz-load-path "site-lisp/python-mode")
 
+;;pymacs & ropemacs
+(require 'pymacs)
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call  "pymacs")
+(autoload 'pymacs-eval  "pymacs" nil t)
+(autoload 'pymacs-exec  "pymacs" nil t)
+(autoload 'pymacs-load  "pymacs" nil t)
+
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+
 ;;pymacs with auto complete
 (ac-ropemacs-initialize)
 (ac-ropemacs-setup)
@@ -19,6 +30,9 @@
       (cons '("python" . python-mode)
             interpreter-mode-alist))
 
+;;remove warning
+(setq python-shell-completion-native-enable nil)
+
 ;;ac for python-mode
 (require 'auto-complete-pycomplete)
 ;;highlight indent
@@ -27,18 +41,7 @@
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python -i -m pdb <file-name.py>
 ;;M-x pdb
-(when-ms-windows
- (setq pdb-path 'c:/python27/Lib/pdb.py
-       gud-pdb-command-name (symbol-name pdb-path))
- (defadvice pdb (before gud-query-cmdline activate)
-   "Provide a better default command line when called interactively."
-   (interactive
-    (list (gud-query-cmdline pdb-path
-                             (file-name-nondirectory buffer-file-name))))))
-
-;;pdb setup on linux
-(unless-ms-windows
- (setq gud-pdb-command-name "python -i -m pdb"))
+(setq gud-pdb-command-name "python -i -m pdb")
 
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))

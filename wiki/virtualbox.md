@@ -7,6 +7,9 @@ VirtualBox
         or
         $ sudo chmod 777 /media/sf_win10
 
+        ## mount manually
+        $ sudo mkdir -p /mnt/VMshare 
+        $ sudo mount -t vboxsf VMshare /mnt/VMshare
 
 2. Command line
 

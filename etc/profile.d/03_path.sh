@@ -21,3 +21,5 @@ for new_entry in ${ADD_PATH[@]} ; do
         add-to-path $new_entry
     fi
 done
+
+export PATH

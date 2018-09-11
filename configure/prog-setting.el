@@ -5,11 +5,16 @@
 ;;;$find -type f -name Makefile | xargs grep DIRVER_NAME
 ;;;$find -type f -name Makefile -exec grep -n DIRVER_NAME {} NUL;
 ;;;$find . -iregex .*\.el$ | xargs etags
-;;win32 find grep set
 (when-ms-windows    
- (progn
-   (setq find-program "\"find.exe\"")
-   (setq grep-program "\"grep.exe\"")))
+ (setq find-program "\"find.exe\"")
+ (setq grep-program "\"grep.exe\""))
+
+;;develop setting for tags path etc.
+(defvar zz-dev-set-file (format "%s/.emacs.d/temp-setting.el"
+                                (getenv "HOME"))
+  "temp project setting")
+(when (file-exists-p zz-dev-set-file)
+  (load-file zz-dev-set-file))
 
 ;;generate temp-setting.el
 (defun my-create-file (fpath content)

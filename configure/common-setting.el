@@ -485,6 +485,9 @@
 (setq-default case-fold-search nil)   ; require exact matches
 (setq-default case-replace nil)       ; never change case when replacing
 
+;;configure saved from menu "Save Options"
+(setq custom-file (concat zzemacs-path "/custom.el"))
+
 
 (provide 'common-setting)
 

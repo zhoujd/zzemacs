@@ -70,14 +70,4 @@
         key-setting
         ))
 
-;;develop setting for tags path etc.
-(defvar zz-dev-set-file (format "%s/.emacs.d/temp-setting.el"
-                                (getenv "HOME"))
-  "temp project setting")
-(when (file-exists-p zz-dev-set-file)
-  (load-file zz-dev-set-file))
-
-;;configure saved from menu "Save Options"
-(setq custom-file (concat zzemacs-path "/custom.el"))
-
 ;;;; .emacs end here

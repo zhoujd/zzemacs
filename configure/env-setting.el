@@ -1,6 +1,23 @@
 ;;;; env-setting.el --- env config file
 ;;
 
+;;add path to PATH
+(defun zz-add-os-path (path)
+  (interactive "DDirectory: ")
+  (when (file-exists-p path)
+    (unless (string-match path (getenv "PATH"))
+      (setenv "PATH" (concat path path-separator (getenv "PATH")))
+      (setq exec-path (cons path exec-path)))))
+
+;;add path to LD_LIBRARY_PATH
+(defun zz-add-lib-path (path)
+  (interactive "DDirectory: ")
+  (when (file-exists-p path)
+    (unless (string-match path (getenv "LD_LIBRARY_PATH"))
+      (setenv "LD_LIBRARY_PATH" (concat path
+                                        path-separator
+                                        (getenv "LD_LIBRARY_PATH"))))))
+
 ;;add path for excute files
 (defvar my-env-path
   (if-ms-windows

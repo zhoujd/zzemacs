@@ -12,7 +12,6 @@ install_package() {
         sudo zypper install -y cscope
         sudo zypper install -y texinfo
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get install -y gmrun
         sudo apt-get install -y cscope
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
@@ -28,7 +27,6 @@ install_package() {
     elif [ "$OS_DISTRO" = "FreeBSD" ]; then
         sudo pkg_add -r w3m
         sudo pkg_add -r cscope
-        sudo pkg_add -r gmrun
     elif [ "$OS_DISTRO" = "Arch" ]; then
         sudo pacman -S tk cscope w3m
     else

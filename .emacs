@@ -7,8 +7,9 @@
 (defun zz-add-os-path (path)
   (interactive "DDirectory: ")
   (when (file-exists-p path)
-    (setenv "PATH" (concat path path-separator (getenv "PATH")))
-    (setq exec-path (cons path exec-path))))
+    (when (not (string-match path (getenv "PATH")))
+      (setenv "PATH" (concat path path-separator (getenv "PATH")))
+      (setq exec-path (cons path exec-path)))))
 
 (defun zz-add-lib-path (path)
   (interactive "DDirectory: ")

@@ -280,11 +280,32 @@
   (kbd "M-3")   'primary-x-font
   ))
 
-;;f1 1,2,3,4 for highlight-symbol
+(apply-keys-to-map
+ f4-map
+ (list
+  (kbd "1")     nil
+  (kbd "2")     nil
+  (kbd "3")     nil
+  (kbd "3")     nil
+  (kbd "4")     nil
+  (kbd "5")     'gdb-display-stack-buffer
+  (kbd "6")     'gdb-display-breakpoints-buffer
+  (kbd "7")     'gdb-display-assembler-buffer
+  (kbd "8")     'gdb-display-memory-buffer
+  (kbd "9")     'gdb-display-locals-buffer
+  (kbd "0")     'gdb-display-gdb-buffer
+  (kbd "-")     'gud-up
+  (kbd "=")     'gud-down
+  ))
+
 (apply-keys-to-map
  help-map
  (list
-  ;;gdb frame show setting
+  (kbd "1")     nil
+  (kbd "2")     nil
+  (kbd "3")     nil
+  (kbd "3")     nil
+  (kbd "4")     nil
   (kbd "5")     'gdb-frame-stack-buffer
   (kbd "6")     'gdb-frame-breakpoints-buffer
   (kbd "7")     'gdb-frame-assembler-buffer
@@ -293,12 +314,6 @@
   (kbd "0")     'gdb-frame-gdb-buffer
   (kbd "-")     'gud-up
   (kbd "=")     'gud-down
-
-  ;;window size change
-  [up]          (lookup-key global-map [S-up])
-  [down]        (lookup-key global-map [S-down])
-  [left]        (lookup-key global-map [S-left])
-  [right]       (lookup-key global-map [S-right])
   ))
 
 (provide 'key-setting)

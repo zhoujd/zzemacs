@@ -128,6 +128,7 @@ Dmitriy Igrishin's patched version of comint.el."
  (require 'multi-term)
  (setq multi-term-switch-after-close nil)
  (setq multi-term-dedicated-select-after-open-p t)
+ (setq multi-term-scroll-to-bottom-on-output t)
  (setq multi-term-program "bash")
 
  (set-terminal-coding-system 'utf-8-unix)

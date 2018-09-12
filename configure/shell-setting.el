@@ -173,7 +173,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (kill-ring-save b e t)
   (when (term-in-line-mode)
     (term-char-mode)
-    (term-send-raw-string "")))
+    (term-send-raw-string "")))
 
 ;;key set for term
 (add-hook 'term-mode-hook
@@ -187,11 +187,11 @@ Dmitriy Igrishin's patched version of comint.el."
             (define-key term-mode-map (kbd "C-c [")   'term-line-mode)
             (define-key term-mode-map (kbd "C-c ]")   'term-char-mode)
 
-            (define-key term-raw-map  (kbd "C-c M-o")   'term-send-clear)
-            (define-key term-mode-map (kbd "C-c M-o")   'term-send-clear)
+            (define-key term-raw-map  (kbd "C-c M-o") 'term-send-clear)
+            (define-key term-mode-map (kbd "C-c M-o") 'term-send-clear)
 
-            (define-key term-raw-map  (kbd "M-w")   'kill-ring-save-switch-to-char-mode)
-            (define-key term-mode-map (kbd "M-w")   'kill-ring-save-switch-to-char-mode)
+            (define-key term-raw-map  (kbd "M-w")     'kill-ring-save-switch-to-char-mode)
+            (define-key term-mode-map (kbd "M-w")     'kill-ring-save-switch-to-char-mode)
             ))
 
 (defun last-term-buffer (l)

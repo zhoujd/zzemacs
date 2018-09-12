@@ -23,7 +23,7 @@
 (defun define-fn-key
     (fn-name fn-sym fn s-fn-sym s-fn c-fn-sym c-fn m-fn-sym m-fn
      ctrl-x-fn-sym ctrl-x-fn ctrl-c-fn-sym ctrl-c-fn &optional doc)
-  (when (and fn-sym fn) 
+  (when (and fn-sym fn)
     (define-key global-map       fn-sym         fn)
     (define-key zz/fn-map        fn-name        fn))
   (when (and s-fn-sym s-fn)
@@ -125,31 +125,32 @@
     )
 
 (define-fn-key (gethash "f10" fn-key-table)
-    [f10]             'menu-bar-open
-    [S-f10]           'menu-bar-mode
-    [C-f10]           'my-toggle-maxframe
-    [M-f10]           'my-toggle-fullscreen
-    (kbd "C-x <f10>") 'scroll-bar-mode
-    (kbd "C-c <f10>") 'tool-bar-mode
+    [f10]             'occur-at-point
+    [S-f10]           'multi-occur
+    [C-f10]           'whitespace-cleanup
+    [M-f10]           'blank-mode
+    (kbd "C-x <f10>") 'menu-bar-open
+    (kbd "C-c <f10>") 'menu-bar-mode
     )
 
 (define-fn-key (gethash "f11" fn-key-table)
     [f11]             'linum-mode
-    [S-f11]           'fci-mode
+    [S-f11]           'blank-mode
     [C-f11]           'hl-line-mode
-    [M-f11]           'blank-mode
-    (kbd "C-x <f11>") 'my-unicad-switch
-    (kbd "C-c <f11>") 'my-os-file-switch
+    [M-f11]           'fci-mode
+    (kbd "C-x <f11>") 'tool-bar-mode
+    (kbd "C-c <f11>") 'scroll-bar-mode
     )
 
 (define-fn-key (gethash "f12" fn-key-table)
     [f12]             'find-grep
-    [S-f12]           'rgrep
-    [C-f12]           'find-name-dired
+    [S-f12]           'find-name-dired
+    [C-f12]           'rgrep
     [M-f12]           'rgrep-c
-    (kbd "C-x <f12>") 'occur-at-point
-    (kbd "C-c <f12>") 'multi-occur
+    (kbd "C-x <f12>") 'my-unicad-switch
+    (kbd "C-c <f12>") 'my-os-file-switch
     )
+
 
 (provide 'fn-setting)
 

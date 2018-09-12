@@ -3,18 +3,18 @@
 
 ;;;;some keymap define by emacs default
 ;;;esc-map           --- <ESC>
-;;;help-map          --- C-h 
+;;;help-map          --- C-h
 ;;;mode-specific-map --- C-c
 ;;;ctl-x-map         --- C-x
-;;;mule-keymap       --- C-x <RET> 
-;;;ctl-x-4-map       --- C-x 4 
-;;;ctl-x-5-map       --- C-x 5 
-;;;2C-mode-map       --- C-x 6 
+;;;mule-keymap       --- C-x <RET>
+;;;ctl-x-4-map       --- C-x 4
+;;;ctl-x-5-map       --- C-x 5
+;;;2C-mode-map       --- C-x 6
 ;;;vc-prefix-map     --- C-x v
 ;;;goto-map          --- M-g
-;;;search-map        --- M-s 
+;;;search-map        --- M-s
 ;;;facemenu-keymap   --- M-o
-;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name 
+;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
 
 ;;;;function key setting on console
 ;;Ctl-z map
@@ -62,6 +62,9 @@
   (kbd "[")     zz/ctrl-map
   (kbd "]")     zz/meta-map
 
+  ;;self f4-map
+  [f4]          f4-map
+
   ;;self ctl-x/ctl-c
   [f7]          zz/ctrl-x-fn-map
   [f8]          zz/ctrl-c-fn-map
@@ -71,9 +74,6 @@
   [f10]         zz/shift-fn-map
   [f11]         zz/ctrl-fn-map
   [f12]         zz/meta-fn-map
-
-  ;;self extend
-  (kbd "4")     f4-map
   ))
 
 (apply-keys-to-map
@@ -92,9 +92,6 @@
   (kbd "s")     zz/shift-fn-map
   (kbd "c")     zz/ctrl-fn-map
   (kbd "m")     zz/meta-fn-map
-
-  ;;self extend
-  (kbd "4")     f4-map
   ))
 
 (apply-keys-to-map

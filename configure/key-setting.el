@@ -36,6 +36,17 @@
  (list
   (kbd "C-s") 'slime-selector
   (kbd "C-z") (lookup-key ctl-x-map "\C-z")
+
+  ;; select multi-term buffers by number from anywhere
+  (kbd "1")  (start-quick-term "*terminal<1>*")
+  (kbd "2")  (start-quick-term "*terminal<2>*")
+  (kbd "3")  (start-quick-term "*terminal<3>*")
+  (kbd "4")  (start-quick-term "*terminal<4>*")
+  (kbd "5")  (start-quick-term "*terminal<5>*")
+  (kbd "6")  (start-quick-term "*terminal<6>*")
+  (kbd "7")  (start-quick-term "*terminal<7>*")
+  (kbd "8")  (start-quick-term "*terminal<8>*")
+  (kbd "9")  (start-quick-term "*terminal<9>*")
   ))
 
 (apply-keys-to-map

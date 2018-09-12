@@ -79,6 +79,14 @@
 (defmacro start-quick-shell (name)
   `(lambda () (interactive) (start-shell ,name)))
 
+;;switch term
+(defmacro start-quick-term (name)
+  `(lambda ()
+     (interactive)
+     (if (get-buffer ,name)
+         (switch-to-buffer ,name)
+         (message "%s is not exist" ,name))))
+
 ;;start slime
 (defmacro defslime-start (name lisp)
  `(defun ,name ()

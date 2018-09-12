@@ -163,6 +163,11 @@ Dmitriy Igrishin's patched version of comint.el."
             (setq show-trailing-whitespace nil)
             ))
 
+(eval-after-load "term"
+  '(progn
+     ;; ensure that scrolling doesn't break on output
+     (setq term-scroll-to-bottom-on-output t)))
+
 (defun term-send-clear ()
   "Send ESC in term mode."
   (interactive)

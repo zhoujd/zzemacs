@@ -167,6 +167,14 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (term-send-raw-string "\C-l"))
 
+(defun kill-ring-save-switch-to-char-mode (b e)
+  "In line-mode, M-w also switches back to char-mode and goes back to prompt."
+  (interactive "r")
+  (kill-ring-save b e t)
+  (when (term-in-line-mode)
+    (term-char-mode)
+    (term-send-raw-string "")))
+
 ;;key set for term
 (add-hook 'term-mode-hook
           (lambda ()
@@ -181,6 +189,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
             (define-key term-raw-map  (kbd "C-c M-o")   'term-send-clear)
             (define-key term-mode-map (kbd "C-c M-o")   'term-send-clear)
+
+            (define-key term-raw-map  (kbd "M-w")   'kill-ring-save-switch-to-char-mode)
+            (define-key term-mode-map (kbd "M-w")   'kill-ring-save-switch-to-char-mode)
             ))
 
 (defun last-term-buffer (l)

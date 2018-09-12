@@ -37,16 +37,31 @@
   (kbd "C-s") 'slime-selector
   (kbd "C-z") (lookup-key ctl-x-map "\C-z")
 
-  ;; select multi-term buffers by number from anywhere
-  (kbd "1")  (start-quick-term "*terminal<1>*")
-  (kbd "2")  (start-quick-term "*terminal<2>*")
-  (kbd "3")  (start-quick-term "*terminal<3>*")
-  (kbd "4")  (start-quick-term "*terminal<4>*")
-  (kbd "5")  (start-quick-term "*terminal<5>*")
-  (kbd "6")  (start-quick-term "*terminal<6>*")
-  (kbd "7")  (start-quick-term "*terminal<7>*")
-  (kbd "8")  (start-quick-term "*terminal<8>*")
-  (kbd "9")  (start-quick-term "*terminal<9>*")
+  (kbd "`")   'switch-to-term
+  (kbd "1")   (switch-quick-buffer "*terminal<1>*")
+  (kbd "2")   (switch-quick-buffer "*terminal<2>*")
+  (kbd "3")   (switch-quick-buffer "*terminal<3>*")
+  (kbd "4")   (switch-quick-buffer "*terminal<4>*")
+  (kbd "5")   (switch-quick-buffer "*terminal<5>*")
+  (kbd "6")   (switch-quick-buffer "*terminal<6>*")
+  (kbd "7")   (switch-quick-buffer "*terminal<7>*")
+  (kbd "8")   (switch-quick-buffer "*terminal<8>*")
+  (kbd "9")   (switch-quick-buffer "*terminal<9>*")
+  ))
+
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "M-] `")   'switch-to-shell
+  (kbd "M-] 1")   (switch-quick-buffer "*shell<1>*")
+  (kbd "M-] 2")   (switch-quick-buffer "*shell<2>*")
+  (kbd "M-] 3")   (switch-quick-buffer "*shell<3>*")
+  (kbd "M-] 4")   (switch-quick-buffer "*shell<4>*")
+  (kbd "M-] 5")   (switch-quick-buffer "*shell<5>*")
+  (kbd "M-] 6")   (switch-quick-buffer "*shell<6>*")
+  (kbd "M-] 7")   (switch-quick-buffer "*shell<7>*")
+  (kbd "M-] 8")   (switch-quick-buffer "*shell<8>*")
+  (kbd "M-] 9")   (switch-quick-buffer "*shell<9>*")
   ))
 
 (apply-keys-to-map
@@ -263,20 +278,6 @@
 
   (kbd "M-1")   'whitespace-cleanup
   (kbd "M-3")   'primary-x-font
-  ))
-
-;;quick shell setting
-(apply-keys-to-map
- f4-map
- (list
-  (kbd "5")     (lookup-key f4-map [f5])
-  (kbd "6")     (lookup-key f4-map [f6])
-  (kbd "7")     (lookup-key f4-map [f7])
-  (kbd "8")     (lookup-key f4-map [f8])
-  (kbd "9")     (lookup-key f4-map [f9])
-  (kbd "0")     (lookup-key f4-map [f10])
-  (kbd "-")     (lookup-key f4-map [f11])
-  (kbd "=")     (lookup-key f4-map [f12])
   ))
 
 ;;f1 1,2,3,4 for highlight-symbol

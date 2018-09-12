@@ -48,10 +48,11 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-z")   ctl-z-map
-  (kbd "M-[")   ctl-z-map
-  (kbd "M-] 4") f4-map
-  [f4]          f4-map
+  (kbd "C-z")      ctl-z-map
+  (kbd "M-[")      ctl-z-map
+  (kbd "M-[ <f4>") f4-map
+  (kbd "M-] <f4>") f4-map
+  [f4]             f4-map
   ))
 
 ;;fn-key entry access

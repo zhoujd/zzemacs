@@ -80,7 +80,7 @@
   `(lambda () (interactive) (start-shell ,name)))
 
 ;;switch term
-(defmacro start-quick-term (name)
+(defmacro switch-quick-buffer (name)
   `(lambda ()
      (interactive)
      (if (get-buffer ,name)

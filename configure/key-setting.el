@@ -273,21 +273,17 @@
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
   
-  (kbd "C-1")   'dos2unix
-  (kbd "C-3")   'secondary-x-font
-
-  (kbd "M-1")   'whitespace-cleanup
-  (kbd "M-3")   'primary-x-font
+  (kbd "C-f")   'secondary-x-font
+  (kbd "M-f")   'primary-x-font
   ))
 
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "1")     nil
-  (kbd "2")     nil
-  (kbd "3")     nil
-  (kbd "3")     nil
-  (kbd "4")     nil
+  (kbd "1")     'gdb-display-io-buffer
+  (kbd "2")     'gdb-display-locals-for-thread
+  (kbd "3")     'gdb-display-stack-for-thread
+  (kbd "4")     'gdb-display-registers-for-thread
   (kbd "5")     'gdb-display-stack-buffer
   (kbd "6")     'gdb-display-breakpoints-buffer
   (kbd "7")     'gdb-display-assembler-buffer
@@ -301,11 +297,10 @@
 (apply-keys-to-map
  help-map
  (list
-  (kbd "1")     nil
-  (kbd "2")     nil
-  (kbd "3")     nil
-  (kbd "3")     nil
-  (kbd "4")     nil
+  (kbd "1")     'gdb-frame-io-buffer
+  (kbd "2")     'gdb-frame-locals-for-thread
+  (kbd "3")     'gdb-frame-stack-for-thread
+  (kbd "4")     'gdb-frame-registers-for-thread
   (kbd "5")     'gdb-frame-stack-buffer
   (kbd "6")     'gdb-frame-breakpoints-buffer
   (kbd "7")     'gdb-frame-assembler-buffer

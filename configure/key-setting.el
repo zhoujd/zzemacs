@@ -222,28 +222,6 @@
   [right]   (lookup-key global-map [S-right])
   ))
 
-;;execute start-process key
-(apply-keys-to-map
- f4-e-map
- (list
-  (kbd "c")  (if-not-ms-windows
-              (execute-set-key "urxvt" (list "urxvt")))
-  (kbd "d")  (if-not-ms-windows
-              (execute-set-key "meld" '("meld")))
-  (kbd "v")  (if-not-ms-windows
-              (execute-set-key "evince" '("evince")))
-  (kbd "f")  (if-not-ms-windows
-              (execute-set-key "firefox" '("firefox")))
-  (kbd "m")  (if-not-ms-windows
-              (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
-  (kbd "h")  (if-not-ms-windows
-              (execute-set-key "thunar" '("thunar")))
-  (kbd "r")  (if-not-ms-windows
-              (execute-set-key "remmina" '("remmina")))
-  (kbd "t")  (if-not-ms-windows
-              (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
-  ))
-
 ;;switch to shells
 (apply-keys-to-map
  f4-map
@@ -262,7 +240,7 @@
 
   (kbd "C-=")   'er/expand-region
   (kbd "C--")   'smartparens-mode
-  
+
   (kbd "C-b")   'browse-url
   (kbd "C-d")   (if-ms-windows
                  (execute-set-key "explorer" (list "explorer" "."))
@@ -272,7 +250,7 @@
   (kbd "C-r")   'add-code-review-note
   (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
-  
+
   (kbd "C-f")   'secondary-x-font
   (kbd "M-f")   'primary-x-font
   ))
@@ -292,6 +270,38 @@
   (kbd "0")     'gdb-display-gdb-buffer
   (kbd "-")     'gud-up
   (kbd "=")     'gud-down
+  ))
+
+;;execute start-process key
+(apply-keys-to-map
+ f4-e-map
+ (list
+  ;;quick terminal and shell buffer
+  (kbd "5")  (lookup-key f4-map (kbd "<f5>"))
+  (kbd "6")  (lookup-key f4-map (kbd "<f6>"))
+  (kbd "7")  (lookup-key f4-map (kbd "<f7>"))
+  (kbd "8")  (lookup-key f4-map (kbd "<f8>"))
+  (kbd "9")  (lookup-key f4-map (kbd "<f9>"))
+  (kbd "0")  (lookup-key f4-map (kbd "<f10>"))
+  (kbd "-")  (lookup-key f4-map (kbd "<f11>"))
+  (kbd "=")  (lookup-key f4-map (kbd "<f12>"))
+
+  (kbd "c")  (if-not-ms-windows
+              (execute-set-key "urxvt" (list "urxvt")))
+  (kbd "d")  (if-not-ms-windows
+              (execute-set-key "meld" '("meld")))
+  (kbd "v")  (if-not-ms-windows
+              (execute-set-key "evince" '("evince")))
+  (kbd "f")  (if-not-ms-windows
+              (execute-set-key "firefox" '("firefox")))
+  (kbd "m")  (if-not-ms-windows
+              (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
+  (kbd "h")  (if-not-ms-windows
+              (execute-set-key "thunar" '("thunar")))
+  (kbd "r")  (if-not-ms-windows
+              (execute-set-key "remmina" '("remmina")))
+  (kbd "t")  (if-not-ms-windows
+              (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
   ))
 
 (apply-keys-to-map

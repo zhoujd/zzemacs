@@ -29,7 +29,6 @@
 (defvar zz/meta-fn-map   (make-sparse-keymap) "M-f1/f12")
 
 (defvar f4-map           (make-sparse-keymap) "f4 map for self functions.")
-(defvar f4-backquote-map (make-sparse-keymap) "f4-backquote for self help function.")
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
@@ -48,11 +47,10 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-z")      ctl-z-map
-  (kbd "M-[")      ctl-z-map
-  (kbd "M-[ <f4>") f4-map
-  (kbd "M-] <f4>") f4-map
-  [f4]             f4-map
+  (kbd "C-z")   ctl-z-map
+  (kbd "M-[")   ctl-z-map
+  (kbd "M-] $") f4-map
+  [f4]          f4-map
   ))
 
 ;;fn-key entry access
@@ -64,7 +62,11 @@
   (kbd "]")     zz/meta-map
 
   ;;self f4-map
-  [f4]          f4-map
+  (kbd "$")     f4-map
+
+  ;;self f4-e-map/f4-p-map
+  [f5]          f4-e-map
+  [f6]          f4-p-map
 
   ;;self ctl-x/ctl-c
   [f7]          zz/ctrl-x-fn-map
@@ -93,6 +95,11 @@
   (kbd "s")     zz/shift-fn-map
   (kbd "c")     zz/ctrl-fn-map
   (kbd "m")     zz/meta-fn-map
+
+  ;;self f4-map
+  (kbd "$")     f4-map
+  (kbd "e")     f4-e-map
+  (kbd "p")     f4-p-map
   ))
 
 (apply-keys-to-map
@@ -102,7 +109,6 @@
   (kbd "[")     zz/ctrl-map
   (kbd "]")     zz/meta-map
 
-  (kbd "`")     f4-backquote-map
   (kbd "e")     f4-e-map
   (kbd "p")     f4-p-map
   ))

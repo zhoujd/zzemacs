@@ -7,15 +7,9 @@
 (c-set-offset 'friend '-)
 (c-set-offset 'substatement-open 0)
 
-;;win32->http://sourceforge.net/project/showfiles.php?group_id=196604
+;;https://github.com/dkogan/xcscope.el
 (require 'xcscope)
-(setq cscope-do-not-update-database t)
-
-;(setq cscope-database-regexps
-;      '(
-;        ("/home/zhoujd/freebsd8/"       (t ("-q" "-d")) t)
-;        ("/home/zhoujd/nginx-0.8.54/"   (t ("-q" "-d")) t)
-;        ))
+(cscope-setup)
 
 ;;gtags global
 ;;$sudo apt-get install global

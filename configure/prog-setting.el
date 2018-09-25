@@ -46,12 +46,12 @@
     ";; tags project setting"
     "(setq tags-table-list"
     "      '("
-    "        \"~/work/TAGS\""
+    "        \"~/work/tag/TAGS\""
     "        ))"
     ""
     ";; cscope project setting"
     "(setq cscope-initial-directory"
-    "      \"~/work\")"
+    "      \"~/work/tag\")"
     ""
     "(mapc #'zz-add-os-path"
     "      '("
@@ -186,7 +186,7 @@
              dir-name
              (gen-find-parts my-find-regex)
              files-path)
-     (format "cscope -b -R -q -i %s" files-path)
+     (format "cscope -b -R -i %s" files-path)
      )))
 
 (defun create-cscope (dir-name)

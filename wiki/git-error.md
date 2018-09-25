@@ -57,3 +57,9 @@ Git error and solutions
 
         $ git cat-file p <ID> > a.md
         $ git cat-file p 3115844befa835f26603625d1cf09ba59011e2b8 ## remove /
+
+7. Delete submodule
+
+        ## 1. remove projects from .gitmodules
+        ## 2. git rm --cached projects/<name>
+

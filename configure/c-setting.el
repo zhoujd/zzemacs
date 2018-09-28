@@ -133,21 +133,6 @@
                 (statement-cont . (c-lineup-assignments +)))
                ))
 
-(defvar kernel-keywords '("kernel" "driver")
-  "Keywords which are used to indicate this file is kernel code.")
-
-(add-hook 'c-mode-hook
-          (lambda ()
-            (let* ((filename (buffer-file-name))
-                   (is-kernel-code nil))
-              (if filename
-                  (dolist (keyword kernel-keywords)
-                          (if (string-match keyword filename)
-                              (setq is-kernel-code t))))
-              (if is-kernel-code
-                  (c-set-style "kernel")
-                  (c-set-style "ffmpeg")))))
-
 ;; my c setting hook
 (defun my-c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
@@ -163,6 +148,12 @@
   (hide-ifdef-mode t))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+;; my c setting
+(defun my-c-mode-hook()
+  (c-set-style "zach"))
+
+(add-hook 'c-mode-hook 'my-c-mode-hook)
 
 ;; my c++ setting
 (defun my-c++-mode-hook()

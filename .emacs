@@ -25,6 +25,7 @@
         macro-setting
         common-setting
         env-setting
+        cedet-setting
         complete-setting
         ac-setting
         prog-setting

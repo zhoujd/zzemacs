@@ -16,10 +16,7 @@
 
 ;; hippie-try-expand settings
 (setq hippie-expand-try-functions-list
-      '(
-        yas/hippie-try-expand
-        semantic-ia-complete-symbol
-        try-expand-dabbrev
+      '(try-expand-dabbrev
         try-expand-dabbrev-visible
         try-expand-dabbrev-all-buffers
         try-expand-dabbrev-from-kill

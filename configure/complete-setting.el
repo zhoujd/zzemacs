@@ -3,25 +3,6 @@
 
 (zz-load-path "site-lisp")
 
-;; cedet
-(mapc (lambda (mode) (add-to-list 'semantic-default-submodes mode))
-      '(global-semanticdb-minor-mode
-        global-semantic-idle-summary-mode
-        global-semantic-mru-bookmark-mode))
-
-(global-ede-mode t)
-(semantic-mode t)
-
-(defun my:add-semantic-to-autocomplete() 
-  (add-to-list 'ac-sources 'ac-source-semantic))
-
-(mapc
- (lambda (mode)
-   (add-hook mode 'my:add-semantic-to-autocomplete))
- '(
-   c-mode-common-hook
-   ))
-
 ;; list methold in current buffer
 ;; switch buffer in h & cpp file
 (require 'eassist)

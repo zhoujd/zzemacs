@@ -22,6 +22,8 @@
    python-mode-hook
    ))
 
+(setq semantic-idle-scheduler-function (lambda () t))
+
 (provide 'cedet-setting)
 
 ;;; cedet-setting.el ends here

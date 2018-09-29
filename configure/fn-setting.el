@@ -121,7 +121,7 @@
     [C-f9]            'switch-to-scratch
     [M-f9]            'popup-term
     (kbd "C-x <f9>")  'switch-to-shell
-    (kbd "C-c <f9>")  'remote-shell
+    (kbd "C-c <f9>")  (if-ms-windows 'eshell 'remote-shell)
     )
 
 (define-fn-key (gethash "f10" fn-key-table)

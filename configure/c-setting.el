@@ -106,8 +106,8 @@
              '( "k&r"
                (c-basic-offset . 4)
                (indent-tabs-mode . nil)
+               (show-trailing-whitespace . t)
                (tab-width . 4)
-               (c-comment-only-line-offset . 0)
                (c-hanging-braces-alist
                 (brace-list-open)
                 (brace-entry-open)
@@ -151,7 +151,7 @@
 
 ;; my c setting
 (defun my-c-mode-hook()
-  (c-set-style "zach"))
+  (c-set-style "ffmpeg"))
 
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 

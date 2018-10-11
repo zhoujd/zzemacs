@@ -238,6 +238,12 @@ Dmitriy Igrishin's patched version of comint.el."
              (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-shell-buffer-name)
              (buffer-name b))
             (string-match
+             (format "^\\\*%s.+\\\*$" "shell-r:")
+             (buffer-name b))
+            (string-match
+             (format "^\\\*%s.+\\\*$" "shell-l:")
+             (buffer-name b))
+            (string-match
              (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
              (buffer-name b)))
       (progn
@@ -355,7 +361,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (with-temp-buffer
     (let ((host (if host host (read-string "Host: "))))
       (cd (concat "/" tramp-default-method ":" host ":"))
-      (shell (concat "*" host "*"))
+      (shell (concat "*shell-r:" host "*"))
       )))
 
 (defun local-shell (&optional dir)
@@ -364,7 +370,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (with-temp-buffer
     (let ((dir (if dir dir (read-string "Dir: "))))
       (cd dir)
-      (shell (concat "*shell-L:" dir "*"))
+      (shell (concat "*shell-l:" dir "*"))
       )))
 
 (defun shell-directory (name dir)

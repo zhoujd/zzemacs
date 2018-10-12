@@ -253,6 +253,15 @@
 
   (kbd "C-f")   'secondary-x-font
   (kbd "M-f")   'primary-x-font
+
+  (kbd "M-r")   (if-not-ms-windows
+                 (execute-set-key "rofi-run" '("rofi" "-show" "run")))
+  (kbd "M-w")   (if-not-ms-windows
+                 (execute-set-key "rofi-window" '("rofi" "-show" "window")))
+  (kbd "M-s")   (if-not-ms-windows
+                 (execute-set-key "rofi-ssh" '("rofi" "-show" "ssh")))
+  (kbd "M-d")   (if-not-ms-windows
+                 (execute-set-key "rofi-drun" '("rofi" "-show" "drun")))
   ))
 
 (apply-keys-to-map

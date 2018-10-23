@@ -111,7 +111,6 @@
             ))
 
 
-
 (provide 'dired-setting)
 
 ;;; dired-setting.el ends here

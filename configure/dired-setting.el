@@ -36,11 +36,6 @@
                            "/" "\\"
                            (dired-get-filename)))))))
 
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (define-key dired-mode-map "U" 'dired-up-directory)
-            (define-key dired-mode-map "/" 'dired-isearch-filenames)))
-
 ;;sort setting
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -105,6 +100,16 @@
 (require 'direx)
 (require 'direx-project)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+
+
+(zz-load-path "site-lisp/dired-hacks")
+(require 'dired-filter)
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "/") dired-filter-map)
+            ))
+
 
 
 (provide 'dired-setting)

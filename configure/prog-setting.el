@@ -9,6 +9,8 @@
  (setq find-program "\"find.exe\"")
  (setq grep-program "\"grep.exe\""))
 
+(setq grep-find-use-xargs t)
+
 ;;develop setting for tags path etc.
 (defvar zz-dev-set-file (format "%s/.emacs.d/temp-setting.el"
                                 (getenv "HOME"))

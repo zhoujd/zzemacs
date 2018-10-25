@@ -20,9 +20,10 @@
   "fn-key-table")
 
 ;;group define fn key
-(defun define-fn-key
-    (fn-name fn-sym fn s-fn-sym s-fn c-fn-sym c-fn m-fn-sym m-fn
-     ctrl-x-fn-sym ctrl-x-fn ctrl-c-fn-sym ctrl-c-fn &optional doc)
+(defun define-fn-key (fn-name fn-sym fn s-fn-sym s-fn
+                              c-fn-sym c-fn m-fn-sym m-fn
+                              ctrl-x-fn-sym ctrl-x-fn
+                              ctrl-c-fn-sym ctrl-c-fn &optional doc)
   (when (and fn-sym fn)
     (define-key global-map       fn-sym         fn)
     (define-key zz/fn-map        fn-name        fn))

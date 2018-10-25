@@ -244,7 +244,6 @@
 
 (add-hook 'sql-mode-hook 'font-lock-mode)
 
-
 ;;rgrep for c/c++
 (setq rgrep-c-file-regex "*.[hc]")
 (defun rgrep-c (term &optional dir)
@@ -252,12 +251,6 @@
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
     (rgrep term rgrep-c-file-regex dir)))
-
-;;self set for rgrep
-(require 'grep)
-(add-to-list 'grep-files-aliases
-             '("hhcc" .  "*.cc *.[ch]xx *.[ch]pp *.[CHh] *.CC *.HH *.[ch]++")
-             )
 
 ;;javascript mode
 (require 'js2-mode)

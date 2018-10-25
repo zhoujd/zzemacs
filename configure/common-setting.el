@@ -481,10 +481,6 @@
 ;  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
 ;  (flet ((process-list ())) ad-do-it))
 
-;;M-x set-variable RET -> input: case-fold-search/case-replace RET->nil RET
-(setq-default case-fold-search nil)   ; require exact matches
-(setq-default case-replace nil)       ; never change case when replacing
-
 ;;configure saved from menu "Save Options"
 (setq custom-file "~/.emacs.d/custom.el")
 

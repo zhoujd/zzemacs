@@ -146,7 +146,7 @@
     [f12]             'find-grep
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
-    [M-f12]           'rgrep-c
+    [M-f12]           'lgrep
     (kbd "C-x <f12>") 'my-unicad-switch
     (kbd "C-c <f12>") 'my-os-file-switch
     )

@@ -296,7 +296,11 @@ Dmitriy Igrishin's patched version of comint.el."
                 (my-create-shell-buffer buf-name))))
              (my-create-shell-buffer buf-name))
          (progn
-          (my-create-shell-buffer buf-name)
+          (let ((shell-file-name "bash")
+                (shell-command-switch "-c")
+                (explicit-bash-args '("--login" "-i"))
+                (explicit-shell-file-name "bash"))
+            (my-create-shell-buffer buf-name))
           ))))
   (message "switch to %s" buf-name))
 

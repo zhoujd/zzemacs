@@ -130,7 +130,8 @@ Dmitriy Igrishin's patched version of comint.el."
  (setq multi-term-dedicated-select-after-open-p t)
  (setq multi-term-scroll-to-bottom-on-output t)
  (setq multi-term-program "bash")
-
+ (setq multi-term-program-switches "--login")
+ 
  (set-terminal-coding-system 'utf-8-unix)
  (add-hook 'term-exec-hook
            (function
@@ -289,7 +290,7 @@ Dmitriy Igrishin's patched version of comint.el."
                (with-start-shell
                 (setq shell-file-name "bash")
                 (setq shell-command-switch "-c")
-                (setq explicit-sh-args '("--login" "-i"))
+                (setq explicit-bash-args '("--login" "-i"))
                 (setq explicit-shell-file-name "bash")
                 (setenv "SHELL" shell-file-name)
                 (my-create-shell-buffer buf-name))))

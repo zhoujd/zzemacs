@@ -304,7 +304,7 @@ Dmitriy Igrishin's patched version of comint.el."
              (my-create-shell-buffer buf-name))
          (progn
           (my-create-shell-buffer buf-name))
-          ))))
+          )))
   (message "switch to %s" buf-name))
 
 ;; switch to named term

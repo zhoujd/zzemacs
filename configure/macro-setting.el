@@ -46,19 +46,6 @@
      (interactive)
      (apply 'start-process ,name nil ,args)))
 
-;;start shell in environment setting
-(defmacro with-start-shell (&rest body)
-  `(let ((env-shell      shell-file-name)
-         (env-shell-cmd  shell-command-switch)
-         (env-shell-file explicit-shell-file-name)
-         (env-shell      (getenv "SHELL")))
-     ,@body
-     (setq shell-file-name env-shell)
-     (setq shell-command-switch env-shell-cmd)
-     (setq explicit-shell-file-name env-shell-file)
-     (setenv "SHELL" env-shell)
-     ))
-
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")
 ;;  ((kbd "M-2") "zhoujd"))

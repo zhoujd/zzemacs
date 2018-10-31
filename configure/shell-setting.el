@@ -294,14 +294,15 @@ Dmitriy Igrishin's patched version of comint.el."
          (if linux-bash-p
              (progn
               (with-utf-8-env
-               (with-start-shell
-                (setq shell-file-name "bash")
-                (setq shell-command-switch "-c")
-                (setq explicit-bash-args '("--login" "-i"))
-                (setq explicit-shell-file-name "bash")
-                (setenv "SHELL" shell-file-name)
-                (my-create-shell-buffer buf-name))))
-             (my-create-shell-buffer buf-name))
+               (let ((shell-file-name "bash")
+                     (shell-command-switch "-c")
+                     (explicit-bash-args '("--login" "-i"))
+                     (explicit-shell-file-name "bash"))
+                 (setenv "SHELL" shell-file-name)
+                 (my-create-shell-buffer buf-name)
+                 )))
+             (progn
+              (my-create-shell-buffer buf-name)))
          (progn
           (my-create-shell-buffer buf-name))
           )))

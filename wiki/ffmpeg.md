@@ -48,8 +48,10 @@ FFMPEG
     file '/path/to/file3'
     $ ffmpeg -f concat -i **list.txt** -c copy output.mp4
 
-5. FFmpeg qsv
+5. FFmpeg build 32 bit execute
    
-   $
-   
-   
+   $ sudo apt-get install gcc-multilib g++-multilib module-assistant
+   $ ./configure --cc='gcc -m32'
+
+   $ sudo apt install ccache
+   $ ./configure --cc='ccache gcc -m32'

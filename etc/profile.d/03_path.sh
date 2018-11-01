@@ -15,6 +15,8 @@ add-to-path() {
             *":$1:"*) :;;
             *) PATH="$1:$PATH";;
         esac
+            
+        export PATH
     fi
 }
 
@@ -22,8 +24,6 @@ add-to-path-group() {
     for new_entry in ${ADD_PATH[@]} ; do
         add-to-path $new_entry
     done
-    
-    export PATH
 }
 
 add-to-path-group

@@ -18,7 +18,7 @@ echo "Setup proxy start ..."
 
 ## check run os
 if [ "$OS" = "Windows_NT" ] ; then
-    PROXY_SCRIPT=$HOME/.bashrc.d/99_proxy.sh
+    PROXY_SCRIPT=$HOME/.bashrc.d/99-proxy.sh
 else
     ## 1: system, 0: user
     SETUP_SYS=1
@@ -28,7 +28,7 @@ else
             echo "You must be a root user" 2>&1
             exit 1
         fi
-        PROXY_SCRIPT=/etc/profile.d/proxy.sh
+        PROXY_SCRIPT=/etc/profile.d/zz-proxy.sh
     else
         PROXY_SCRIPT=$HOME/.bashrc
     fi

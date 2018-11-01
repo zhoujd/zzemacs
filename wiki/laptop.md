@@ -6,3 +6,4 @@ Laptop setting
 
         $ sudo vim /etc/systemd/logind.conf
           HandleLidSwitch=lock
+        $ sudo systemctl restart systemd-logind

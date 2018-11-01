@@ -10,20 +10,16 @@ ADD_PATH=(
 )
 
 add-to-path() {
-    if [ -d $1 ]; then
-        case ":$PATH:" in
-            *":$1:"*) :;;
-            *) PATH="$1:$PATH";;
-        esac
-            
-        export PATH
-    fi
-}
-
-add-to-path-group() {
     for new_entry in ${ADD_PATH[@]} ; do
-        add-to-path $new_entry
+        if [ -d $new_entry ]; then
+            case ":$PATH:" in
+                *":$new_entry:"*) :;;
+                *) PATH="$new_entry:$PATH";;
+            esac
+        fi
     done
+
+    export PATH
 }
 
-add-to-path-group
+add-to-path

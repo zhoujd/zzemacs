@@ -129,7 +129,7 @@
     [f10]             'occur-at-point
     [S-f10]           'multi-occur
     [C-f10]           'whitespace-cleanup
-    [M-f10]           'untabify
+    [M-f10]           'toggle-case-fold-search
     (kbd "C-x <f10>") 'menu-bar-open
     (kbd "C-c <f10>") 'menu-bar-mode
     )

@@ -481,7 +481,11 @@
 ;  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
 ;  (flet ((process-list ())) ad-do-it))
 
-;;configure saved from menu "Save Options"
+;;displays CFS when the searching is case-insensitive, otherwise it shows nothing.
+(add-to-list 'minor-mode-alist '(case-fold-search " CFS"))
+(defalias 'c 'toggle-case-fold-search)
+
+;;Configure saved from menu "Save Options"
 (setq custom-file "~/.emacs.d/custom.el")
 
 

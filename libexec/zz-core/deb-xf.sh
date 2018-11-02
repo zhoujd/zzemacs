@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# != 1 ]; then
-    echo "Usage: $0 <1.rpm>"
+    echo "Usage: $0 <1.deb>"
     exit 1
 fi
 

@@ -1,120 +1,80 @@
-```
- _____                            _   _      _
-| ____|_ __ ___   __ _  ___ ___  | | | | ___| |_ __ ___
-|  _| | '_ ` _ \ / _` |/ __/ __| | |_| |/ _ \ | '_ ` _ \
-| |___| | | | | | (_| | (__\__ \ |  _  |  __/ | | | | | |
-|_____|_| |_| |_|\__,_|\___|___/ |_| |_|\___|_|_| |_| |_|
-```
-
-## Abstract
-
-`Helm` is incremental completion and selection narrowing framework for
-Emacs. It will help steer you in the right direction when you're looking
-for stuff in Emacs (like buffers, files, etc).
-
-Helm is a fork of `anything.el` originaly written by Tamas Patrovic
-and can be considered to be its successor. 
-`Helm` sets out to clean up the legacy code in `anything.el`
-and provide a cleaner, leaner and more modular tool, that's not tied in
-the trap of backward compatibility. 
-
-## Getting Started
-
-### Quick install
-
-  1. Clone the `helm` repository to some directory:
-  
-    ```elisp
-    $ git clone https://github.com/emacs-helm/helm.git /path/to/helm/directory
-    ```
-  
-  2. Run make from this directory.
-  3. Add to `.emacs.el` (or equivalent):
-
-    ```elisp
-    (add-to-list 'load-path "/path/to/helm/directory")
-    (require 'helm-config)
-    ```
-
-Alternatively, you can have a quick try to helm by launching from the helm directory:
-
-`./emacs-helm.sh`
-
-Note that this will not work on Windows systems.
-
-### Install from Emacs packaging system
-
-Helm is now available on Melpa at `http://melpa.milkbox.net/`
-You will find there instructions to install.
-
-**Note to Linux Distributions Maintainers**
-
-`Only the extensions present in the github emacs-helm organisation are supported.`
-
-### Alternate install warning
-
-Some people are installing `helm` with their own config using diverses `require`, `autoload`
-and other hacks, not using `helm-config`.
-Expect failures and slowdown at startup unless you really know what you are doing when you do so.
-
-### Emacs Prelude
-
-If you're afraid to play with Emacs's configuration, but want to try
-out Helm - have NO FEAR. Have a look at
-[Emacs Prelude](https://github.com/bbatsov/prelude) - it has
-Helm built-in and properly set-up.
-
-### Basic usage
-
-Just type `M-x helm-mini` and enjoy. You might want to bind that command to
-a keyboard shortcut. Here's a suggestion:
-
-```elisp
-(global-set-key (kbd "C-c h") 'helm-mini)
-```
-You can also start with `M-x helm-mode` and enjoy helm completion in your favourites
-Emacs commands (e.g `M-x`, `C-x C-f`, etc...).
-You can enable this by adding in your init file:
-
-```elisp
-(helm-mode 1)
-```
-
-As a startup point you can also look at the helm section in Emacs menu to
-discover some of the commands provided by helm.
-
-### Advanced usage
-
-Helm is capable of a lot.
-
-You can find all the gory details on the [Helm Wiki](https://github.com/emacs-helm/helm/wiki).
-
-## Known issues
-
-Check out the project's
-[issue list](https://github.com/emacs-helm/helm/issues?sort=created&direction=desc&state=open)
-a list of unresolved issues. By the way - feel free to fix any of them
-and sent us a pull request. :-)
-
-## Contributors
-
-Here's a [list](https://github.com/emacs-helm/helm/contributors) of all the people who have contributed to the
-development of Helm.
-
-## Bugs & Improvements
-
-Bug reports and suggestions for improvements are always
-welcome. GitHub pull requests are even better! :-)
-
-NOTE: When trying if something is working or not, be sure to start helm from `Emacs -Q` or even better
-Start it from your helm directory with `./emacs-helm.sh`.
-
-## Getting help
-
-If [Helm Wiki](https://github.com/emacs-helm/helm/wiki) is not enough, you can ask for help
-on [emacs-helm google group](https://groups.google.com/group/emacs-helm?hl=en).
+<p align="center"><a href="http://www.gnu.org/licenses/gpl-3.0.txt"><img src="https://img.shields.io/badge/license-GPL_3-green.svg" alt="License GPL 3" /></a>
+  <a href="https://melpa.org/#/helm"><img alt="MELPA" src="https://melpa.org/packages/helm-badge.svg"/></a>
+  <a href="https://stable.melpa.org/#/helm"><img alt="MELPA Stable" src="https://stable.melpa.org/packages/helm-badge.svg"/></a>
+</p>
 
 
-Cheers,<br>
-The Helm Team
+<h1 align="center">Emacs-Helm</h1>
 
+<p align="center">
+  <img src="https://avatars3.githubusercontent.com/u/1541688?v=3&amp;s=200" alt="Emacs-helm" title="" />
+</p>
+
+***
+<p align="justify">
+  <b>Helm</b> is an Emacs framework for incremental completions and narrowing
+  selections. It provides an easy-to-use API for developers wishing to build
+  their own Helm applications in Emacs, powerful search tools and dozens of
+  already built-in commands providing completion to almost everything.
+  It is a must-have for anyone using Emacs as a main work environment.
+  Helm has been widely adopted by many Emacs power-users.
+  It is available in Melpa and can be easily installed from the Emacs package manager.
+</p>
+
+***
+<p align="center">
+  <a href="https://emacs-helm.github.io/helm/"><b>Homepage</b></a> |
+  <a href="https://github.com/emacs-helm/helm/releases"><b>Downloads</b></a> |
+  <a href="https://github.com/emacs-helm/helm/wiki#install"><b>Get started</b></a> |
+  <a href="https://github.com/emacs-helm/helm/wiki"><b>Helm wiki</b></a> |
+  <a href="https://github.com/emacs-helm/helm/wiki/FAQ"><b>FAQ</b></a>
+</p>
+
+***
+
+<p align="center">
+  Maintaining Helm requires a <a href="https://github.com/emacs-helm/helm/commits?author=thierryvolpiatto"><b>lot of work</b></a>,
+  which I have done voluntarily since 2011.<br>
+  As it demands lots of my time it gets increasingly difficult<br>
+  maintaining it without financial help.<br>
+  Thanks to all the people that are helping or have helped Helm development,<br>
+  but they are actually too few to continue serenely.<br>
+  By the way, after the release of version 3.0 I will have to stop<br>
+  developing Helm seriously until I get enough financial support,<br> 
+  only providing a minimal bugfix maintenance.<br>
+  Thanks for your understanding<br>
+  If you feel Helm is making your daily work easier,<br>
+  <b>please consider making a donation.</b><br>
+
+</p>
+
+<p align="center">
+  <i>Thank you! &mdash; Thierry Volpiatto</i>
+</p>
+
+<div align="center">
+  <a href="https://www.paypal.me/thierryvolpiatto/20">
+    <img title="Donate with Paypal"
+         alt="Donate with Paypal"
+         style="height: 50px; width: auto;"
+         src="https://github.com/emacs-helm/helm/blob/master/images/paypal.png?raw=true"></a>
+  &nbsp;&nbsp;
+  <a href="https://patreon.com/preview/30231724baf440fabe80d44d0ee77067">
+    <img title="Donate monthly using Patreon"
+         alt="Donate monthly using Patreon"
+         style="height: 50px; width: auto;"
+         src="https://github.com/emacs-helm/helm/blob/master/images/patreon-25x.png?raw=true"></a>
+  &nbsp;&nbsp;
+</div>
+
+***
+
+<p align="center">
+  Helm in action searching with <a href="https://github.com/ggreer/the_silver_searcher"<b>Grep Ag</b></a>
+                                   </p>
+
+<p align="center">
+  <img src="https://github.com/emacs-helm/helm/blob/master/images/helm-grep-ag-persistent.png?raw=true" alt="Emacs-helm grep ag" title="" />
+</p>
+
+[badge-license]: https://img.shields.io/badge/license-GPL_3-green.svg

@@ -279,6 +279,7 @@
 (require 'iedit)
 
 ;;helm - anything
+(zz-load-path "site-lisp/emacs-async")
 (zz-load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)

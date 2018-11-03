@@ -1,6 +1,6 @@
-;;; helm-org.el --- Helm for org headlines and keywords completion
+;;; helm-org.el --- Helm for org headlines and keywords completion -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2013 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,165 +16,409 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 (require 'helm)
-(require 'helm-plugin)
+(require 'helm-utils)
 (require 'org)
+
+;; Load org-with-point-at macro when compiling
+(eval-when-compile
+  (require 'org-macs))
 
-(declare-function org-get-current-options "ext:org-exp.el")
+(declare-function org-agenda-switch-to "org-agenda.el")
 
-;;; Org headlines
+(defgroup helm-org nil
+  "Org related functions for helm."
+  :group 'helm)
+
+(defcustom helm-org-headings-fontify nil
+  "Fontify org buffers before parsing them.
+This reflect fontification in helm-buffer when non--nil.
+NOTE: This will be slow on large org buffers."
+  :group 'helm-org
+  :type 'boolean)
+
+(defcustom helm-org-format-outline-path nil
+  "Show all org level as path."
+  :group 'helm-org
+  :type 'boolean)
+
+(defcustom helm-org-show-filename nil
+  "Show org filenames in `helm-org-agenda-files-headings' when non--nil.
+Note this have no effect in `helm-org-in-buffer-headings'."
+  :group 'helm-org
+  :type 'boolean)
+
+(defcustom helm-org-headings-min-depth 1
+  "Minimum depth of org headings to start with."
+  :group 'helm-org
+  :type 'integer)
+
+(defcustom helm-org-headings-max-depth 8
+  "Go down to this maximum depth of org headings."
+  :group 'helm-org
+  :type 'integer)
+
+(defcustom helm-org-headings-actions
+  '(("Go to heading" . helm-org-goto-marker)
+    ("Open in indirect buffer `C-c i'" . helm-org--open-heading-in-indirect-buffer)
+    ("Refile heading(s) (marked-to-selected|current-to-selected) `C-c w`" . helm-org--refile-heading-to)
+    ("Insert link to this heading `C-c l`" . helm-org-insert-link-to-heading-at-marker))
+  "Default actions alist for
+  `helm-source-org-headings-for-files'."
+  :group 'helm-org
+  :type '(alist :key-type string :value-type function))
+
+(defcustom helm-org-truncate-lines t
+  "Truncate org-header-lines when non-nil"
+  :type 'boolean
+  :group 'helm-org)
+
+(defcustom helm-org-ignore-autosaves nil
+  "Ignore autosave files when starting `helm-org-agenda-files-headings'."
+  :type 'boolean
+  :group 'helm-org)
+
+
+;;; Org capture templates
 ;;
 ;;
-(defvar helm-source-org-headline
-  `((name . "Org Headline")
-    (headline
-     ,@(mapcar
-        (lambda (num)
-          (format "^\\*\\{%d\\} \\(.+?\\)\\([ \t]*:[a-zA-Z0-9_@:]+:\\)?[ \t]*$"
-                  num))
-        (number-sequence 1 8)))
-    (condition . (eq major-mode 'org-mode))
-    (migemo)
-    (subexp . 1)
-    (persistent-action . (lambda (elm)
-                           (helm-action-line-goto elm)
-                           (org-cycle)))
-    (action-transformer
-     . (lambda (actions candidate)
-         '(("Go to line" . helm-action-line-goto)
-           ("Refile to this headline" . helm-org-headline-refile)
-           ("Insert link to this headline"
-            . helm-org-headline-insert-link-to-headline)))))
-  "Show Org headlines.
-org-mode is very very much extended text-mode/outline-mode.
-
-See (find-library \"org.el\")
-See http://orgmode.org for the latest version.")
-
-(defun helm-org-headline-insert-link-to-headline (lineno-and-content)
-  (insert
-   (save-excursion
-     (helm-goto-line (car lineno-and-content))
-     (and (looking-at org-complex-heading-regexp)
-          (org-make-link-string (concat "*" (match-string 4)))))))
-
-(defun helm-org-headline-refile (lineno-and-content)
-  "Refile current org entry to LINENO-AND-CONTENT."
-  (with-helm-current-buffer
-    (org-cut-subtree)
-    (helm-goto-line (car lineno-and-content))
-    (org-end-of-subtree t t)
-    (let ((org-yank-adjusted-subtrees t))
-      (org-yank))))
-
-
-;;; Org keywords
+(defvar org-capture-templates)
+(defun helm-source-org-capture-templates ()
+  (helm-build-sync-source "Org Capture Templates:"
+    :candidates (cl-loop for template in org-capture-templates
+                         collect (cons (nth 1 template) (nth 0 template)))
+    :action '(("Do capture" . (lambda (template-shortcut)
+                                (org-capture nil template-shortcut))))))
+
+;;; Org headings
 ;;
 ;;
-(defvar helm-source-org-keywords
-  '((name . "Org Keywords")
-    (init . helm-org-keywords-init)
-    (candidates . helm-org-keywords-candidates)
-    (action . helm-org-keywords-insert)
-    (persistent-action . helm-org-keywords-show-help)
-    (persistent-help . "Show an example and info page to describe this keyword.")
-    (keywords-examples)
-    (keywords)))
+(defun helm-org-goto-marker (marker)
+  (switch-to-buffer (marker-buffer marker))
+  (goto-char (marker-position marker))
+  (org-show-context)
+  (re-search-backward "^\\*+ " nil t)
+  (org-show-entry))
 
-(defvar helm-org-keywords-info-location
-  '(("#+TITLE:" . "(org)Export options")
-    ("#+AUTHOR:" . "(org)Export options")
-    ("#+DATE:" . "(org)Export options")
-    ("#+EMAIL:" . "(org)Export options")
-    ("#+DESCRIPTION:" . "(org)Export options")
-    ("#+KEYWORDS:" . "(org)Export options")
-    ("#+LANGUAGE:" . "(org)Export options")
-    ("#+TEXT:" . "(org)Export options")
-    ("#+TEXT:" . "(org)Export options")
-    ("#+OPTIONS:" . "(org)Export options")
-    ("#+BIND:" . "(org)Export options")
-    ("#+LINK_UP:" . "(org)Export options")
-    ("#+LINK_HOME:" . "(org)Export options")
-    ("#+LATEX_HEADER:" . "(org)Export options")
-    ("#+EXPORT_SELECT_TAGS:" . "(org)Export options")
-    ("#+EXPORT_EXCLUDE_TAGS:" . "(org)Export options")
-    ("#+INFOJS_OPT" . "(org)Javascript support")
-    ("#+BEGIN_HTML" . "(org)Quoting HTML tags")
-    ("#+BEGIN_LaTeX" . "(org)Quoting LaTeX code")
-    ("#+ORGTBL" . "(org)Radio tables")
-    ("#+HTML:" . "(org)Quoting HTML tags")
-    ("#+LaTeX:" . "(org)Quoting LaTeX code")
-    ("#+BEGIN:" . "(org)Dynamic blocks") ;clocktable columnview
-    ("#+BEGIN_EXAMPLE" . "(org)Literal examples")
-    ("#+BEGIN_QUOTE" . "(org)Paragraphs")
-    ("#+BEGIN_VERSE" . "(org)Paragraphs")
-    ("#+BEGIN_SRC" . "(org)Literal examples")
-    ("#+CAPTION" . "(org)Tables in HTML export")
-    ("#+LABEL" . "(org)Tables in LaTeX export")
-    ("#+ATTR_HTML" . "(org)Links")
-    ("#+ATTR_LaTeX" . "(org)Images in LaTeX export")))
+(defun helm-org--open-heading-in-indirect-buffer (marker)
+  (helm-org-goto-marker marker)
+  (org-tree-to-indirect-buffer)
 
-(defun helm-org-keywords-init ()
-  (unless (helm-attr 'keywords-examples)
-    (require 'org)
-    (helm-attrset 'keywords-examples
-                  (append
-                   (mapcar
-                    (lambda (x)
-                      (string-match "^#\\+\\(\\([A-Z_]+:?\\).*\\)" x)
-                      (cons (match-string 2 x) (match-string 1 x)))
-                    (org-split-string (org-get-current-options) "\n"))
-                   (mapcar 'list org-additional-option-like-keywords)))
-    (helm-attrset 'keywords (mapcar 'car (helm-attr 'keywords-examples)))))
+  ;; Put the non-indirect buffer at the bottom of the prev-buffers
+  ;; list so it won't be selected when the indirect buffer is killed
+  (set-window-prev-buffers nil (append (cdr (window-prev-buffers))
+                                       (car (window-prev-buffers)))))
 
-(defun helm-org-keywords-candidates ()
-  (and (or (eq (buffer-local-value 'major-mode helm-current-buffer) 'org-mode)
-           (eq (buffer-local-value 'major-mode helm-current-buffer) 'message-mode))
-       (helm-attr 'keywords)))
+(defun helm-org-run-open-heading-in-indirect-buffer ()
+  "Open selected Org heading in an indirect buffer."
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action #'helm-org--open-heading-in-indirect-buffer)))
+(put 'helm-org-run-open-heading-in-indirect-buffer 'helm-only t)
 
-(defun helm-org-keywords-insert (keyword)
-  (cond ((and (string-match "BEGIN" keyword)
-              (helm-region-active-p))
-         (let ((beg (region-beginning))
-               (end (region-end)))
-           (goto-char end)
-           (insert "\n#+" (replace-regexp-in-string
-                           "BEGIN" "END" keyword) "\n")
-           (goto-char beg)
-           (insert "#+" keyword " ")
-           (save-excursion (insert "\n"))))
-        ((string-match "BEGIN" keyword)
-         (insert "#+" keyword " ")
-         (save-excursion
-           (insert "\n#+" (replace-regexp-in-string
-                           "BEGIN" "END" keyword) "\n")))
-        (t (insert "#+" keyword " "))))
+(defvar helm-org-headings-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map helm-map)
+    (define-key map (kbd "C-c i") 'helm-org-run-open-heading-in-indirect-buffer)
+    (define-key map (kbd "C-c w") 'helm-org-run-refile-heading-to)
+    (define-key map (kbd "C-c l") 'helm-org-run-insert-link-to-heading-at-marker)
+    map)
+  "Keymap for `helm-source-org-headings-for-files'.")
 
-(defun helm-org-keywords-show-help (keyword)
-  (info (or (assoc-default (concat "#+" keyword) helm-org-keywords-info-location)
-            "(org)In-buffer settings"))
-  (search-forward (concat "#+" keyword) nil t)
-  (helm-persistent-highlight-point)
-  (message "%s" (or (cdr (assoc keyword (helm-attr 'keywords-examples))) "")))
+(defclass helm-org-headings-class (helm-source-sync)
+  ((parents
+    :initarg :parents
+    :initform nil
+    :custom boolean)
+   (match :initform
+          (lambda (candidate)
+            (string-match
+             helm-pattern
+             (helm-aif (get-text-property 0 'helm-real-display candidate)
+                 it
+               candidate))))
+   (help-message :initform 'helm-org-headings-help-message)
+   (action :initform 'helm-org-headings-actions)
+   (keymap :initform 'helm-org-headings-map)
+   (group :initform 'helm-org)))
+
+(defmethod helm--setup-source :after ((source helm-org-headings-class))
+  (let ((parents (slot-value source 'parents)))
+    (setf (slot-value source 'candidate-transformer)
+          (lambda (candidates)
+            (let ((cands (helm-org-get-candidates candidates parents)))
+              (if parents (nreverse cands) cands))))))
+
+(defun helm-source-org-headings-for-files (filenames &optional parents)
+  (helm-make-source "Org Headings" 'helm-org-headings-class
+    :filtered-candidate-transformer 'helm-org-startup-visibility
+    :parents parents
+    :candidates filenames))
+
+(defun helm-org-startup-visibility (candidates _source)
+  "Indent headings and hide leading stars displayed in the helm buffer.
+If `org-startup-indented' and `org-hide-leading-stars' are nil, do
+nothing to CANDIDATES."
+  (cl-loop for i in candidates
+	   collect
+           ;; Transformation is not needed if these variables are t.
+	   (if (or helm-org-show-filename helm-org-format-outline-path)
+	       (cons
+		(car i) (cdr i))
+             (cons
+              (if helm-org-headings-fontify
+                  (when (string-match "^\\(\\**\\)\\(\\* \\)\\(.*\n?\\)" (car i))
+                    (replace-match "\\1\\2\\3" t nil (car i)))
+                (when (string-match "^\\(\\**\\)\\(\\* \\)\\(.*\n?\\)" (car i))
+                  (let ((foreground (org-find-invisible-foreground)))
+                    (with-helm-current-buffer
+                      (cond
+                       ;; org-startup-indented is t, and org-hide-leading-stars is t
+                       ;; Or: #+STARTUP: indent hidestars
+                       ((and org-startup-indented org-hide-leading-stars)
+                        (with-helm-buffer
+                          (require 'org-indent)
+                          (org-indent-mode 1)
+                          (replace-match
+                           (format "%s\\2\\3"
+                                   (propertize (replace-match "\\1" t nil (car i))
+                                               'face `(:foreground ,foreground)))
+                           t nil (car i))))
+                       ;; org-startup-indented is nil, org-hide-leading-stars is t
+                       ;; Or: #+STARTUP: noindent hidestars
+                       ((and (not org-startup-indented) org-hide-leading-stars)
+                        (with-helm-buffer
+                          (replace-match
+                           (format "%s\\2\\3"
+                                   (propertize (replace-match "\\1" t nil (car i))
+                                               'face `(:foreground ,foreground)))
+                           t nil (car i))))
+                       ;; org-startup-indented is nil, and org-hide-leading-stars is nil
+                       ;; Or: #+STARTUP: noindent showstars
+                       (t
+                        (with-helm-buffer
+                          (replace-match "\\1\\2\\3" t nil (car i)))))))))
+              (cdr i)))))
+
+(defun helm-org-get-candidates (filenames &optional parents)
+  (apply #'append
+         (mapcar (lambda (filename)
+                   (helm-org--get-candidates-in-file
+                    filename
+                    helm-org-headings-fontify
+                    (or parents (null helm-org-show-filename))
+                    parents))
+                 filenames)))
+
+(defun helm-org--get-candidates-in-file (filename &optional fontify nofname parents)
+  (with-current-buffer (pcase filename
+                         ((pred bufferp) filename)
+                         ((pred stringp) (find-file-noselect filename t)))
+    (let ((match-fn (if fontify
+                        #'match-string
+                      #'match-string-no-properties))
+          (search-fn (lambda ()
+                       (re-search-forward
+                        org-complex-heading-regexp nil t)))
+          (file (unless (or (bufferp filename) nofname)
+                  (concat (helm-basename filename) ":"))))
+      (when parents
+        (add-function :around (var search-fn)
+                      (lambda (old-fn &rest args)
+                                (when (org-up-heading-safe)
+                                  (apply old-fn args)))))
+      (save-excursion
+        (save-restriction
+          (unless (and (bufferp filename)
+                       (buffer-base-buffer filename))
+            ;; Only widen direct buffers, not indirect ones.
+            (widen))
+          (unless parents (goto-char (point-min)))
+          ;; clear cache for new version of org-get-outline-path
+          (and (boundp 'org-outline-path-cache)
+               (setq org-outline-path-cache nil))
+          (cl-loop with width = (window-width (helm-window))
+                   while (funcall search-fn)
+                   for beg = (point-at-bol)
+                   for end = (point-at-eol)
+                   when (and fontify
+                             (null (text-property-any
+                                    beg end 'fontified t)))
+                   do (jit-lock-fontify-now beg end)
+                   for level = (length (match-string-no-properties 1))
+                   for heading = (funcall match-fn 4)
+                   if (and (>= level helm-org-headings-min-depth)
+                           (<= level helm-org-headings-max-depth))
+                   collect `(,(propertize
+                               (if helm-org-format-outline-path
+                                   (org-format-outline-path
+                                    ;; org-get-outline-path changed in signature and behaviour since org's
+                                    ;; commit 105a4466971. Let's fall-back to the new version in case
+                                    ;; of wrong-number-of-arguments error.
+                                    (condition-case nil
+                                        (append (apply #'org-get-outline-path
+                                                       (unless parents
+                                                         (list t level heading)))
+                                                (list heading))
+                                      (wrong-number-of-arguments
+                                       (org-get-outline-path t t)))
+                                    width file)
+                                   (if file
+                                       (concat file (funcall match-fn  0))
+                                       (funcall match-fn  0)))
+                               'helm-real-display heading)
+                              . ,(point-marker))))))))
+
+(defun helm-org-insert-link-to-heading-at-marker (marker)
+  (with-current-buffer (marker-buffer marker)
+    (let ((heading-name (save-excursion (goto-char (marker-position marker))
+                                        (nth 4 (org-heading-components))))
+          (file-name (buffer-file-name)))
+      (with-helm-current-buffer
+        (org-insert-link
+         file-name (concat "file:" file-name "::*" heading-name))))))
+
+(defun helm-org-run-insert-link-to-heading-at-marker ()
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action
+     'helm-org-insert-link-to-heading-at-marker)))
+
+(defun helm-org--refile-heading-to (marker)
+  "Refile headings to heading at MARKER.
+If multiple candidates are marked in the Helm session, they will
+all be refiled.  If no headings are marked, the selected heading
+will be refiled."
+  (let* ((victims (with-helm-buffer (helm-marked-candidates)))
+         (buffer (marker-buffer marker))
+         (filename (buffer-file-name buffer))
+         (rfloc (list nil filename nil marker)))
+    (when (and (= 1 (length victims))
+               (equal (helm-get-selection) (car victims)))
+      ;; No candidates are marked; we are refiling the entry at point
+      ;; to the selected heading
+      (setq victims (list (point))))
+    ;; Probably best to check that everything returned a value
+    (when (and victims buffer filename rfloc)
+      (cl-loop for victim in victims
+               do (org-with-point-at victim
+                    (org-refile nil nil rfloc))))))
+
+(defun helm-org-in-buffer-preselect ()
+  (if (org-on-heading-p)
+      (buffer-substring-no-properties (point-at-bol) (point-at-eol))
+      (save-excursion
+        (outline-previous-visible-heading 1)
+        (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
+
+(defun helm-org-run-refile-heading-to ()
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action 'helm-org--refile-heading-to)))
+(put 'helm-org-run-refile-heading-to 'helm-only t)
+
+;;;###autoload
+(defun helm-org-agenda-files-headings ()
+  "Preconfigured helm for org files headings."
+  (interactive)
+  (let ((autosaves (cl-loop for f in (org-agenda-files)
+                            when (file-exists-p
+                                  (expand-file-name
+                                   (concat "#" (helm-basename f) "#")
+                                   (helm-basedir f)))
+                            collect (helm-basename f))))
+    (when (or (null autosaves)
+              helm-org-ignore-autosaves
+              (y-or-n-p (format "%s have auto save data, continue?"
+                                (mapconcat 'identity autosaves ", "))))
+      (helm :sources (helm-source-org-headings-for-files (org-agenda-files))
+            :candidate-number-limit 99999
+            :truncate-lines helm-org-truncate-lines
+            :buffer "*helm org headings*"))))
 
 ;;;###autoload
-(defun helm-org-keywords ()
-  "Preconfigured `helm' for org keywords."
+(defun helm-org-in-buffer-headings ()
+  "Preconfigured helm for org buffer headings."
   (interactive)
-  (helm-other-buffer 'helm-source-org-keywords "*org keywords*"))
+  (let (helm-org-show-filename)
+    (helm :sources (helm-source-org-headings-for-files
+                    (list (current-buffer)))
+          :candidate-number-limit 99999
+          :preselect (helm-org-in-buffer-preselect)
+          :truncate-lines helm-org-truncate-lines
+          :buffer "*helm org inbuffer*")))
 
 ;;;###autoload
-(defun helm-org-headlines ()
-  "Preconfigured helm to show org headlines."
+(defun helm-org-parent-headings ()
+  "Preconfigured helm for org headings that are parents of the
+current heading."
   (interactive)
-  (helm-other-buffer 'helm-source-org-headline "*org headlines*"))
+  ;; Use a large max-depth to ensure all parents are displayed.
+  (let ((helm-org-headings-min-depth 1)
+        (helm-org-headings-max-depth  50))
+    (helm :sources (helm-source-org-headings-for-files
+                    (list (current-buffer)) t)
+          :candidate-number-limit 99999
+          :truncate-lines helm-org-truncate-lines
+          :buffer "*helm org parent headings*")))
 
+;;;###autoload
+(defun helm-org-capture-templates ()
+  "Preconfigured helm for org templates."
+  (interactive)
+  (helm :sources (helm-source-org-capture-templates)
+        :candidate-number-limit 99999
+        :truncate-lines helm-org-truncate-lines
+        :buffer "*helm org capture templates*"))
+
+;;; Org tag completion
+
+;; Based on code from Anders Johansson posted on 3 Mar 2016 at
+;; <https://groups.google.com/d/msg/emacs-helm/tA6cn6TUdRY/G1S3TIdzBwAJ>
+
+(defvar crm-separator)
+
+;;;###autoload
+(defun helm-org-completing-read-tags (prompt collection pred req initial
+                                      hist def inherit-input-method _name _buffer)
+  "Completing read function for Org tags.
+
+This function is used as a `completing-read' function in
+`helm-completing-read-handlers-alist' by `org-set-tags' and
+`org-capture'.
+
+NOTE: Org tag completion will work only if you disable org fast tag
+selection, see (info \"(org) setting tags\")."
+  (if (not (string= "Tags: " prompt))
+      ;; Not a tags prompt.  Use normal completion by calling
+      ;; `org-icompleting-read' again without this function in
+      ;; `helm-completing-read-handlers-alist'
+      (let ((helm-completing-read-handlers-alist
+             (rassq-delete-all
+              'helm-org-completing-read-tags
+              (copy-alist helm-completing-read-handlers-alist))))
+        (org-icompleting-read
+         prompt collection pred req initial hist def inherit-input-method))
+    ;; Tags prompt
+    (let* ((curr (and (stringp initial)
+                      (not (string= initial ""))
+                      (org-split-string initial ":")))
+           (table   (delete curr
+                            (org-uniquify
+                             (mapcar 'car org-last-tags-completion-table))))
+           (crm-separator ":\\|,\\|\\s-"))
+      (cl-letf (((symbol-function 'crm-complete-word)
+                 'self-insert-command))
+        (mapconcat 'identity
+                   (completing-read-multiple
+                    prompt table pred nil initial hist def)
+                   ":")))))
 
 (provide 'helm-org)
 
 ;; Local Variables:
-;; byte-compile-warnings: (not cl-functions obsolete)
+;; byte-compile-warnings: (not obsolete)
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:

@@ -1,9 +1,13 @@
 ;;; helm-pkg.el --- define helm for package.el
 
-(define-package "helm" "1.5.2"
-  "Helm is an Emacs incremental and narrowing framework")
+(define-package "helm" "3.0"
+  "Helm is an Emacs incremental and narrowing framework"
+  '((emacs "24.4")
+    (async "1.9.3")
+    (popup "0.5.3")
+    (helm-core "3.0"))
+  :url "https://emacs-helm.github.io/helm/")
 
 ;; Local Variables:
-;; byte-compile-warnings: (not cl-functions obsolete)
 ;; no-byte-compile: t
 ;; End:

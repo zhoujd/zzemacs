@@ -1,7 +1,7 @@
-# makefile for helm.
+# makefile for async.
 
-# Author: Michael Markert.
-# Copyright (C) 2011~2012, Michael Markert, all rights reserved.
+# Author: Thierry Volpiatto.
+# Copyright (C) 2011~2017, Thierry Volpiatto, all rights reserved.
 
 ## This file is NOT part of GNU Emacs
 ##
@@ -25,32 +25,23 @@
 # Emacs invocation
 EMACS_COMMAND   := emacs
 
-# Use -q to have /usr/local/share/emacs/site-lisp and subdirs in load-path 
-EMACS		:= $(EMACS_COMMAND) -q -batch
+EMACS		:= $(EMACS_COMMAND) -Q -batch
 
 EVAL := $(EMACS) --eval
 
 PKGDIR := .
 
 # Additional emacs loadpath
-LOADPATH	:= -L $(PKGDIR)
-ELPA_DIR        =  $(HOME)/.emacs.d/elpa
-ASYNC_ELPA_DIR  =  $(shell \
-	test -d $(ELPA_DIR) && \
-	find -L $(ELPA_DIR) -maxdepth 1 -regex '.*/async-[.0-9]*' 2> /dev/null | \
-	sort | tail -n 1)
-ifneq "$(ASYNC_ELPA_DIR)" ""
-	LOADPATH += -L $(ASYNC_ELPA_DIR)
-endif
+LOADPATH	:= -L .
 
 # Files to compile
-EL			:= $(sort $(wildcard helm*.el))
+EL			:= $(sort $(wildcard *async*.el))
 
 # Compiled files
 ELC			:= $(EL:.el=.elc)
 
 
-.PHONY: clean autoloads batch-compile
+.PHONY: clean autoloads batch-compile install uninstall
 
 all: clean autoloads batch-compile
 
@@ -70,21 +61,17 @@ clean:
 
 # Make autoloads file
 autoloads:
-	$(EVAL) "(let ((generated-autoload-file (expand-file-name \"helm-autoloads.el\" \"$(PKGDIR)\")) \
+	$(EVAL) "(let ((generated-autoload-file (expand-file-name \"async-autoloads.el\" \"$(PKGDIR)\")) \
 (backup-inhibited t)) (update-directory-autoloads \"$(PKGDIR)\"))"
 
-PREFIX=/usr/local/
-BIN=${PREFIX}bin/
-DESTDIR=${PREFIX}share/emacs/site-lisp/helm/
+PREFIX=/usr/local/share/
+DESTDIR=${PREFIX}emacs/site-lisp/emacs-async/
 install:
 	test -d ${DESTDIR} || mkdir ${DESTDIR}
 	cp -vf *.el $(DESTDIR)
 	cp -vf *.elc $(DESTDIR)
-	cp -vf helm-autoloads.el $(DESTDIR)
-	cp -vf emacs-helm.sh $(DESTDIR)
-	ln -fs ${DESTDIR}emacs-helm.sh ${BIN}helm
+	cp -vf async-autoloads.el $(DESTDIR)
+
 uninstall:
 	rm -vf ${DESTDIR}*.elc
 	rm -vf ${DESTDIR}*.el
-	rm -vf ${DESTDIR}emacs-helm.sh
-	rm -vf ${BIN}helm

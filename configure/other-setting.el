@@ -284,6 +284,7 @@
 (require 'helm)
 (require 'helm-config)
 (helm-mode t)
+(setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 

@@ -284,6 +284,7 @@
 (require 'helm)
 (require 'helm-config)
 (helm-mode t)
+(helm-autoresize-mode t)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 
 

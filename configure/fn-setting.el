@@ -126,7 +126,7 @@
     )
 
 (define-fn-key (gethash "f10" fn-key-table)
-    [f10]             'occur-at-point
+    [f10]             'helm-occur
     [S-f10]           'multi-occur
     [C-f10]           'whitespace-cleanup
     [M-f10]           'toggle-case-fold-search

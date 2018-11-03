@@ -16,6 +16,7 @@ install_package() {
         sudo apt-get install -y texinfo
         sudo apt-get install -y markdown
         sudo apt-get install -y w3m
+        sudo apt-get install -y silversearcher-ag
     elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum install -y cscope
         sudo yum install -y texinfo

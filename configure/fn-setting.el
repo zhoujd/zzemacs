@@ -148,8 +148,8 @@
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
     [M-f12]           'lgrep
-    (kbd "C-x <f12>") 'my-unicad-switch
-    (kbd "C-c <f12>") 'my-os-file-switch
+    (kbd "C-x <f12>") 'helm-find
+    (kbd "C-c <f12>") 'helm-do-grep-ag
     )
 
 

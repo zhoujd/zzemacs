@@ -103,8 +103,8 @@
     [S-f7]            'switch-to-compilation
     [C-f7]            'next-error
     [M-f7]            'previous-error
-    (kbd "C-x <f7>")  'session-save
-    (kbd "C-c <f7>")  'session-restore
+    (kbd "C-x <f7>")  'toggle-case-fold-search
+    (kbd "C-c <f7>")  'toggle-text-mode-auto-fill
     )
 
 (define-fn-key (gethash "f8" fn-key-table)
@@ -129,7 +129,7 @@
     [f10]             'helm-occur
     [S-f10]           'multi-occur
     [C-f10]           'whitespace-cleanup
-    [M-f10]           'toggle-case-fold-search
+    [M-f10]           'whitespace-cleanup-region
     (kbd "C-x <f10>") 'menu-bar-open
     (kbd "C-c <f10>") 'menu-bar-mode
     )

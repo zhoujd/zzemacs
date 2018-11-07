@@ -332,6 +332,7 @@
 
 (setq default-major-mode 'text-mode)
 (setq truncate-partial-width-windows nil)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;;indent setting
 (setq-default tab-always-indent 'complete)

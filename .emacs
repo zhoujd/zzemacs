@@ -50,7 +50,7 @@
         ;;matlab-setting
         ;;spell-setting
         ;;gnuplot-setting
-        package-setting
+        ;;package-setting
         keymap-setting
         fn-setting
         key-setting

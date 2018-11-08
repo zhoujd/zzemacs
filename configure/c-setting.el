@@ -161,6 +161,15 @@
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
+;; switch c and c++ mode
+(defun c-c++-toggle ()
+  "toggles between c-mode and c++-mode"
+  (interactive)
+  (cond ((string= major-mode "c-mode")
+         (c++-mode))
+        ((string= major-mode "c++-mode")
+         (c-mode))))
+
 
 (provide 'c-setting)
 

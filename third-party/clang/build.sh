@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "install clang-complete start ..."
-sudo apt install llvm-dev libclang-dev
+sudo apt install -y llvm-dev libclang-dev
 
 make
 sudo mv clang-complete /usr/bin/

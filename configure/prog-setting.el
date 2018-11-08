@@ -48,7 +48,7 @@
     ";; tags project setting"
     "(setq tags-table-list"
     "      '("
-    "        \"~/work/tag/TAGS\""
+    "        \"~/work/tag\""
     "        ))"
     ""
     ";; cscope project setting"

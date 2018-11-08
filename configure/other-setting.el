@@ -293,6 +293,9 @@
 (require 'helm-etags-plus)
 (global-set-key "\M-." 'helm-etags-plus-select)
 (global-set-key "\M-*" 'helm-etags-plus-history)
+(global-set-key "\M-_" 'helm-etags-plus-history-go-back)
+(global-set-key "\M-+" 'helm-etags-plus-history-go-forward)
+
 
 
 (provide 'other-setting)

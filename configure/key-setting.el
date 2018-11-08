@@ -108,7 +108,6 @@
 
   ;;find-replace
   (kbd "M-#") 'query-replace-regexp
-  (kbd "M-*") 'pop-tag-mark
   ))
 
 (apply-keys-to-map

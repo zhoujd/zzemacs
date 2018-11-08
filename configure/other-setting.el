@@ -283,11 +283,16 @@
 (zz-load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)
+(require 'helm-tags)
 (helm-mode t)
 (setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)
 (add-to-list 'helm-mode-no-completion-in-region-in-modes 'shell-mode)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
+
+(require 'helm-etags-plus)
+(global-set-key "\M-." 'helm-etags-plus-select)
+(global-set-key "\M-*" 'helm-etags-plus-history)
 
 
 (provide 'other-setting)

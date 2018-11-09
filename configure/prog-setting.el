@@ -134,10 +134,8 @@
     (tags-table-check-computed-list)
     tags-table-computed-list))
 
-;(require 'etags-table)
+(require 'etags-table)
 (require 'etags-stack)
-
-(global-set-key "\M-." 'etags-select-find-tag)
 
 ;;make ctags
 (defun gen-ctags-cmd (dir-name)

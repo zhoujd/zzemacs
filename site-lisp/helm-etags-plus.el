@@ -695,6 +695,7 @@ Argument CANDIDATE-MARKER candidate marker."
         (helm-quit-if-no-candidate
          (lambda () (message "No history record in `helm-etags-plus-markers'"))))
     (helm :sources    '(helm-etags-plus-history-source)
+          :buffer     "*helm-etags-history*"
           :input      ""
           :preselect  "\t")))           ;if an candidate ,then this line is preselected
 

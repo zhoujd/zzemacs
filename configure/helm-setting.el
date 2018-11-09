@@ -20,6 +20,7 @@
       helm-always-two-windows nil
       helm-split-window-in-side-p t
       helm-candidate-number-limit 100
+      helm-input-idle-delay 0
       helm-tramp-verbose 0
       helm-move-to-line-cycle-in-source t)
 

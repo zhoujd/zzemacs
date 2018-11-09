@@ -29,6 +29,7 @@
         complete-setting
         ac-setting
         prog-setting
+        helm-setting
         gdb-setting
         vc-setting
         ediff-setting

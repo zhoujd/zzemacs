@@ -278,27 +278,6 @@
 (zz-load-path "site-lisp/iedit")
 (require 'iedit)
 
-;;helm - anything
-(zz-load-path "site-lisp/emacs-async")
-(zz-load-path "site-lisp/helm")
-(require 'helm)
-(require 'helm-config)
-
-(setq helm-autoresize-min-height 20)
-(setq helm-display-header-line nil)
-
-(helm-mode t)
-(helm-autoresize-mode t)
-
-(add-to-list 'helm-mode-no-completion-in-region-in-modes 'shell-mode)
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
-
-(require 'helm-etags-plus)
-(global-set-key "\M-." 'helm-etags-plus-select)
-(global-set-key "\M-*" 'helm-etags-plus-history)
-(global-set-key "\M-_" 'helm-etags-plus-history-go-back)
-(global-set-key "\M-+" 'helm-etags-plus-history-go-forward)
-
 
 (provide 'other-setting)
 

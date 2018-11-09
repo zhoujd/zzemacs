@@ -91,7 +91,7 @@ git config --global alias.cat   "cat-file -p"
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 git config --global https.proxy $http_proxy
-git config --global http.sslcainfo $ZZ_MISC_ROOT/curl-ca-bundle.crt
+git config --global http.sslcainfo $ZZ_MISC_ROOT/ca-bundle.crt
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 if [ "$OS" = "Windows_NT" ] ; then

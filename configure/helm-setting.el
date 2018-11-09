@@ -14,6 +14,7 @@
 
 ;;https://writequit.org/eos/eos-helm.html
 (setq helm-display-header-line nil
+      helm-always-two-windows nil
       helm-split-window-in-side-p t
       helm-candidate-number-limit 100
       helm-tramp-verbose 0
@@ -38,6 +39,7 @@
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 (global-set-key (kbd "C-h M-a") 'helm-apropos)
 (global-set-key (kbd "C-h M-t") 'helm-world-time)
+(global-set-key (kbd "C-h M-g") 'helm-grep-do-git-grep)
 
 (define-key helm-map (kbd "C-<return>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-p")   'helm-previous-line)

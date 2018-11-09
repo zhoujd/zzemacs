@@ -1,6 +1,9 @@
 ;;;; helm-setting.el --- helm setting file
 ;;;
 
+(zz-load-path "elisp")
+(require 'apply-keys)
+
 (zz-load-path "site-lisp/emacs-async")
 (zz-load-path "site-lisp/helm")
 (require 'helm)
@@ -36,28 +39,40 @@
 
 (setq helm-autoresize-min-height 20)
 
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
-(global-set-key (kbd "M-x")   'helm-M-x)
-(global-set-key (kbd "C-M-z") 'helm-resume)
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-x b")      'helm-buffers-list
+  (kbd "M-x")        'helm-M-x
+  (kbd "C-M-z")      'helm-resume
 
-(global-set-key (kbd "C-h M-a") 'helm-apropos)
-(global-set-key (kbd "C-h M-t") 'helm-world-time)
-(global-set-key (kbd "C-h M-g") 'helm-grep-do-git-grep)
-(global-set-key (kbd "C-h M-m") 'helm-man-woman)
+  (kbd "C-h M-a")    'helm-apropos
+  (kbd "C-h M-t")    'helm-world-time
+  (kbd "C-h M-g")    'helm-grep-do-git-grep
+  (kbd "C-h M-m")    'helm-man-woman
+  ))
 
-(define-key helm-map (kbd "C-<return>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-p")   'helm-previous-line)
-(define-key helm-map (kbd "C-n")   'helm-next-line)
-(define-key helm-map (kbd "C-M-n") 'helm-next-source)
-(define-key helm-map (kbd "C-M-p") 'helm-previous-source)
-(define-key helm-map (kbd "M-N")   'helm-next-source)
-(define-key helm-map (kbd "M-P")   'helm-previous-source)
+(apply-keys-to-map
+ helm-map
+ (list
+  (kbd "C-<return>") 'helm-execute-persistent-action
+  (kbd "C-p")        'helm-previous-line
+  (kbd "C-n")        'helm-next-line
+  (kbd "C-M-n")      'helm-next-source
+  (kbd "C-M-p")      'helm-previous-source
+  (kbd "M-N")        'helm-next-source
+  (kbd "M-P")        'helm-previous-source
+  ))
 
 (require 'helm-etags-plus)
-(global-set-key "\M-." 'helm-etags-plus-select)
-(global-set-key "\M-*" 'helm-etags-plus-history)
-(global-set-key "\M-_" 'helm-etags-plus-history-go-back)
-(global-set-key "\M-+" 'helm-etags-plus-history-go-forward)
+(apply-keys-to-map
+ global-map
+ (list
+  "\M-."             'helm-etags-plus-select
+  "\M-*"             'helm-etags-plus-history
+  "\M-_"             'helm-etags-plus-history-go-back
+  "\M-+"             'helm-etags-plus-history-go-forward
+  ))
 
 
 (provide 'helm-setting)

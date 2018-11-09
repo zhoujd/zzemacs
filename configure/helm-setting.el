@@ -47,7 +47,6 @@
  (list
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
-  (kbd "M-x")        'helm-smex
   (kbd "C-h M-a")    'helm-apropos
   (kbd "C-h M-t")    'helm-world-time
   (kbd "C-h M-g")    'helm-grep-do-git-grep

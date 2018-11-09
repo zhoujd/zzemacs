@@ -37,9 +37,13 @@
 (setq helm-autoresize-min-height 20)
 
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "M-x")   'helm-M-x)
+(global-set-key (kbd "C-M-z") 'helm-resume)
+
 (global-set-key (kbd "C-h M-a") 'helm-apropos)
 (global-set-key (kbd "C-h M-t") 'helm-world-time)
 (global-set-key (kbd "C-h M-g") 'helm-grep-do-git-grep)
+(global-set-key (kbd "C-h M-m") 'helm-man-woman)
 
 (define-key helm-map (kbd "C-<return>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-p")   'helm-previous-line)

@@ -40,6 +40,7 @@
 
 (setq helm-autoresize-min-height 20)
 
+;;https://github.com/ptrv/helm-smex
 (require 'helm-smex)
 (require 'helm-etags-plus)
 

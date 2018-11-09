@@ -43,7 +43,6 @@
  global-map
  (list
   (kbd "C-x b")      'helm-buffers-list
-  (kbd "M-x")        'helm-M-x
   (kbd "C-M-z")      'helm-resume
 
   (kbd "C-h M-a")    'helm-apropos

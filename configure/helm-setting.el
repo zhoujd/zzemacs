@@ -39,16 +39,24 @@
 
 (setq helm-autoresize-min-height 20)
 
+(require 'helm-smex)
+(require 'helm-etags-plus)
+
 (apply-keys-to-map
  global-map
  (list
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
-
+  (kbd "M-x")        'helm-smex
   (kbd "C-h M-a")    'helm-apropos
   (kbd "C-h M-t")    'helm-world-time
   (kbd "C-h M-g")    'helm-grep-do-git-grep
   (kbd "C-h M-m")    'helm-man-woman
+
+  (kbd "M-.")        'helm-etags-plus-select
+  (kbd "M-*")        'helm-etags-plus-history
+  (kbd "M-_")        'helm-etags-plus-history-go-back
+  (kbd "M-+")        'helm-etags-plus-history-go-forward
   ))
 
 (apply-keys-to-map
@@ -61,16 +69,6 @@
   (kbd "C-M-p")      'helm-previous-source
   (kbd "M-N")        'helm-next-source
   (kbd "M-P")        'helm-previous-source
-  ))
-
-(require 'helm-etags-plus)
-(apply-keys-to-map
- global-map
- (list
-  "\M-."             'helm-etags-plus-select
-  "\M-*"             'helm-etags-plus-history
-  "\M-_"             'helm-etags-plus-history-go-back
-  "\M-+"             'helm-etags-plus-history-go-forward
   ))
 
 

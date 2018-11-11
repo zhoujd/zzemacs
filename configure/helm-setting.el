@@ -49,9 +49,7 @@
 
 (apply-keys-to-map
  global-map
- (list
-  (kbd "C-c h")      'helm-command-prefix
-  
+ (list  
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
 

@@ -140,7 +140,6 @@
 
   ;;zz/apps-key for M-x
   zz/apps-key     'smex
-  (kbd "M-x")     'smex
   (kbd "M-X")     'smex-major-mode-commands
   (kbd "C-x M-x") 'execute-extended-command
   ))
@@ -335,6 +334,7 @@
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-x C-f")    'helm-find-files
   (kbd "C-M-z")      'helm-resume
+  (kbd "M-x")        'helm-M-x
 
   (kbd "C-`")        'helm-imenu
   (kbd "C-~")        'helm-semantic

@@ -1,15 +1,14 @@
 ;;;; helm-setting.el --- helm setting file
 ;;;
 
-(zz-load-path "elisp")
-(require 'apply-keys)
-
 (zz-load-path "site-lisp/emacs-async")
 (zz-load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)
 
 (helm-mode t)
+
+(setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)
 
 ;;no completion for shell-mode
@@ -38,54 +37,12 @@
                                 ("Europe/London" "London")
                                 ("Australia/Sydney" "Sydney")))
 
-(setq helm-autoresize-min-height 20)
-
 ;;https://github.com/ptrv/helm-smex
 (require 'helm-smex)
 (require 'helm-etags-plus)
 
 (require 'helm-descbinds)
 (helm-descbinds-mode)
-
-(apply-keys-to-map
- global-map
- (list  
-  (kbd "C-x b")      'helm-buffers-list
-  (kbd "C-M-z")      'helm-resume
-
-  (kbd "M-.")        'helm-etags-plus-select
-  (kbd "M-*")        'helm-etags-plus-history
-  (kbd "M-_")        'helm-etags-plus-history-go-back
-  (kbd "M-+")        'helm-etags-plus-history-go-forward
-  ))
-
-(apply-keys-to-map
- help-map
- (list
-  (kbd "M-a")        'helm-apropos
-  (kbd "M-t")        'helm-world-time
-  (kbd "M-g")        'helm-grep-do-git-grep
-  (kbd "M-m")        'helm-man-woman
-  (kbd "SPC")        'helm-all-mark-rings
-  ))
-
-(apply-keys-to-map
- helm-command-map
- (list
-  (kbd "C-b")        'helm-mini
-  ))
-
-(apply-keys-to-map
- helm-map
- (list
-  (kbd "C-<return>") 'helm-execute-persistent-action
-  (kbd "C-p")        'helm-previous-line
-  (kbd "C-n")        'helm-next-line
-  (kbd "C-M-n")      'helm-next-source
-  (kbd "C-M-p")      'helm-previous-source
-  (kbd "M-N")        'helm-next-source
-  (kbd "M-P")        'helm-previous-source
-  ))
 
 
 (provide 'helm-setting)

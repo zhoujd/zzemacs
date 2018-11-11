@@ -328,6 +328,47 @@
   (kbd "=")     'gud-down
   ))
 
+(apply-keys-to-map
+ global-map
+ (list  
+  (kbd "C-x b")      'helm-buffers-list
+  (kbd "C-M-z")      'helm-resume
+
+  (kbd "M-.")        'helm-etags-plus-select
+  (kbd "M-*")        'helm-etags-plus-history
+  (kbd "M-_")        'helm-etags-plus-history-go-back
+  (kbd "M-+")        'helm-etags-plus-history-go-forward
+  ))
+
+(apply-keys-to-map
+ help-map
+ (list
+  (kbd "M-a")        'helm-apropos
+  (kbd "M-t")        'helm-world-time
+  (kbd "M-g")        'helm-grep-do-git-grep
+  (kbd "M-m")        'helm-man-woman
+  (kbd "SPC")        'helm-all-mark-rings
+  ))
+
+(apply-keys-to-map
+ helm-command-map
+ (list
+  (kbd "C-b")        'helm-mini
+  ))
+
+(apply-keys-to-map
+ helm-map
+ (list
+  (kbd "C-<return>") 'helm-execute-persistent-action
+  (kbd "C-p")        'helm-previous-line
+  (kbd "C-n")        'helm-next-line
+  (kbd "C-M-n")      'helm-next-source
+  (kbd "C-M-p")      'helm-previous-source
+  (kbd "M-N")        'helm-next-source
+  (kbd "M-P")        'helm-previous-source
+  ))
+
+
 (provide 'key-setting)
 
 ;;; key-setting.el ends here

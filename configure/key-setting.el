@@ -67,47 +67,43 @@
 (apply-keys-to-map
  global-map
  (list
-  ;;ctrl number setting
-  (kbd "C-1") 'delete-window
-  (kbd "C-2") 'delete-frame
-  (kbd "C-3") 'other-frame
-  (kbd "C-4") 'undo-kill-buffer
-  ;;gud control setting
-  (kbd "C-5") 'gud-until
-  (kbd "C-6") 'gud-remove
-  (kbd "C-7") 'gud-finish
-  (kbd "C-8") 'gud-jump
-  (kbd "C-9") 'gud-pstar
-  (kbd "C-0") 'gud-refresh
-  (kbd "C--") 'redo
-  (kbd "C-=") 'er/expand-region
-
-  (kbd "C-_") 'undo
-  (kbd "C-+") 'smartparens-mode
-
-  ;;undo/redo
-  (kbd "C-,") 'winner-undo
-  (kbd "C-.") 'winner-redo
+  (kbd "C-1")     'delete-window
+  (kbd "C-2")     'delete-frame
+  (kbd "C-3")     'other-frame
+  (kbd "C-4")     'undo-kill-buffer
+  (kbd "C-5")     'gud-until
+  (kbd "C-6")     'gud-remove
+  (kbd "C-7")     'gud-finish
+  (kbd "C-8")     'gud-jump
+  (kbd "C-9")     'gud-pstar
+  (kbd "C-0")     'gud-refresh
+  (kbd "C--")     'redo
+  (kbd "C-=")     'er/expand-region
+                  
+  (kbd "C-_")     'undo
+  (kbd "C-+")     'smartparens-mode
+                  
+  ;;undo/redo     
+  (kbd "C-,")     'winner-undo
+  (kbd "C-.")     'winner-redo
   ))
 
 (apply-keys-to-map
  global-map
  (list
-  ;;meta number setting
-  (kbd "M-1") 'delete-other-windows
-  (kbd "M-2") 'delete-other-frames
-  (kbd "M-3") 'other-window
-  (kbd "M-4") 'kill-this-buffer
-  ;;gud control setting
-  (kbd "M-5") 'gud-go
-  (kbd "M-6") 'gud-break
-  (kbd "M-7") 'gud-next
-  (kbd "M-8") 'gud-step
-  (kbd "M-9") 'gud-print
-  (kbd "M-0") 'gud-watch
+  (kbd "M-1")     'delete-other-windows
+  (kbd "M-2")     'delete-other-frames
+  (kbd "M-3")     'other-window
+  (kbd "M-4")     'kill-this-buffer
+  (kbd "M-5")     'gud-go
+  (kbd "M-6")     'gud-break
+  (kbd "M-7")     'gud-next
+  (kbd "M-8")     'gud-step
+  (kbd "M-9")     'gud-print
+  (kbd "M-0")     'gud-watch
 
   ;;find-replace
-  (kbd "M-#") 'query-replace-regexp
+  (kbd "M-#")     'query-replace-regexp
   ))
 
 (apply-keys-to-map
@@ -148,134 +144,134 @@
  esc-map
  (list
   ;;quick move other windows
-  [up]    (lookup-key global-map [M-up])
-  [down]  (lookup-key global-map [M-down])
-  [left]  (lookup-key global-map [M-left])
-  [right] (lookup-key global-map [M-right])
+  [up]            (lookup-key global-map [M-up])
+  [down]          (lookup-key global-map [M-down])
+  [left]          (lookup-key global-map [M-left])
+  [right]         (lookup-key global-map [M-right])
   ))
 
 ;;number 0-1/-/=
 (apply-keys-to-map
  zz/meta-map
  (list
-  (kbd "1") (lookup-key global-map (kbd "M-1"))
-  (kbd "2") (lookup-key global-map (kbd "M-2"))
-  (kbd "3") (lookup-key global-map (kbd "M-3"))
-  (kbd "4") (lookup-key global-map (kbd "M-4"))
-  (kbd "5") (lookup-key global-map (kbd "M-5"))
-  (kbd "6") (lookup-key global-map (kbd "M-6"))
-  (kbd "7") (lookup-key global-map (kbd "M-7"))
-  (kbd "8") (lookup-key global-map (kbd "M-8"))
-  (kbd "9") (lookup-key global-map (kbd "M-9"))
-  (kbd "0") (lookup-key global-map (kbd "M-0"))
-  (kbd "-") (lookup-key global-map (kbd "M--"))
-  (kbd "=") (lookup-key global-map (kbd "M-="))
-
-  ;;find-replace
-  (kbd "#") (lookup-key global-map (kbd "M-#"))
+  (kbd "1")       (lookup-key global-map (kbd "M-1"))
+  (kbd "2")       (lookup-key global-map (kbd "M-2"))
+  (kbd "3")       (lookup-key global-map (kbd "M-3"))
+  (kbd "4")       (lookup-key global-map (kbd "M-4"))
+  (kbd "5")       (lookup-key global-map (kbd "M-5"))
+  (kbd "6")       (lookup-key global-map (kbd "M-6"))
+  (kbd "7")       (lookup-key global-map (kbd "M-7"))
+  (kbd "8")       (lookup-key global-map (kbd "M-8"))
+  (kbd "9")       (lookup-key global-map (kbd "M-9"))
+  (kbd "0")       (lookup-key global-map (kbd "M-0"))
+  (kbd "-")       (lookup-key global-map (kbd "M--"))
+  (kbd "=")       (lookup-key global-map (kbd "M-="))
+                  
+  ;;find-replace  
+  (kbd "#")       (lookup-key global-map (kbd "M-#"))
 
   ;;quick move other windows
-  [up]      (lookup-key global-map [M-up])
-  [down]    (lookup-key global-map [M-down])
-  [left]    (lookup-key global-map [M-left])
-  [right]   (lookup-key global-map [M-right])
+  [up]            (lookup-key global-map [M-up])
+  [down]          (lookup-key global-map [M-down])
+  [left]          (lookup-key global-map [M-left])
+  [right]         (lookup-key global-map [M-right])
   ))
 
 (apply-keys-to-map
  zz/ctrl-map
  (list
-  (kbd "`") (lookup-key global-map (kbd "C-`"))
-  (kbd "1") (lookup-key global-map (kbd "C-1"))
-  (kbd "2") (lookup-key global-map (kbd "C-2"))
-  (kbd "3") (lookup-key global-map (kbd "C-3"))
-  (kbd "4") (lookup-key global-map (kbd "C-4"))
-  (kbd "5") (lookup-key global-map (kbd "C-5"))
-  (kbd "6") (lookup-key global-map (kbd "C-6"))
-  (kbd "7") (lookup-key global-map (kbd "C-7"))
-  (kbd "8") (lookup-key global-map (kbd "C-8"))
-  (kbd "9") (lookup-key global-map (kbd "C-9"))
-  (kbd "0") (lookup-key global-map (kbd "C-0"))
-  (kbd "-") (lookup-key global-map (kbd "C--"))
-  (kbd "=") (lookup-key global-map (kbd "C-="))
+  (kbd "`")       (lookup-key global-map (kbd "C-`"))
+  (kbd "1")       (lookup-key global-map (kbd "C-1"))
+  (kbd "2")       (lookup-key global-map (kbd "C-2"))
+  (kbd "3")       (lookup-key global-map (kbd "C-3"))
+  (kbd "4")       (lookup-key global-map (kbd "C-4"))
+  (kbd "5")       (lookup-key global-map (kbd "C-5"))
+  (kbd "6")       (lookup-key global-map (kbd "C-6"))
+  (kbd "7")       (lookup-key global-map (kbd "C-7"))
+  (kbd "8")       (lookup-key global-map (kbd "C-8"))
+  (kbd "9")       (lookup-key global-map (kbd "C-9"))
+  (kbd "0")       (lookup-key global-map (kbd "C-0"))
+  (kbd "-")       (lookup-key global-map (kbd "C--"))
+  (kbd "=")       (lookup-key global-map (kbd "C-="))
 
   ;;winner restore
-  (kbd ",") (lookup-key global-map (kbd "C-,"))
-  (kbd ".") (lookup-key global-map (kbd "C-."))
+  (kbd ",")       (lookup-key global-map (kbd "C-,"))
+  (kbd ".")       (lookup-key global-map (kbd "C-."))
 
   ;;Control tab quotes a tab => "\C-q\t"
-  [(tab)]   (lookup-key global-map [(control tab)])
-
-  (kbd "h") 'common-lisp-hyperspec
-  (kbd "i") 'open-info-file
+  [(tab)]         (lookup-key global-map [(control tab)])
+                
+  (kbd "h")       'common-lisp-hyperspec
+  (kbd "i")       'open-info-file
   ))
 
 (apply-keys-to-map
  zz/shift-fn-map
  (list
   ;;window size change
-  [up]      (lookup-key global-map [S-up])
-  [down]    (lookup-key global-map [S-down])
-  [left]    (lookup-key global-map [S-left])
-  [right]   (lookup-key global-map [S-right])
+  [up]            (lookup-key global-map [S-up])
+  [down]          (lookup-key global-map [S-down])
+  [left]          (lookup-key global-map [S-left])
+  [right]         (lookup-key global-map [S-right])
   ))
 
 ;;switch to shells
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "<f4>")  'kill-this-buffer
-
-  (kbd "<f5>")  (lambda () (interactive) (terminator-open-template 0))
-  (kbd "<f6>")  (lambda () (interactive) (terminator-open-template 1))
-  (kbd "<f7>")  (lambda () (interactive) (terminator-open-template 2))
-  (kbd "<f8>")  (lambda () (interactive) (terminator-open-template 3))
-
-  (kbd "<f9>")  (start-quick-shell "*shell-f9*")
-  (kbd "<f10>") (start-quick-shell "*shell-f10*")
-  (kbd "<f11>") (start-quick-shell "*shell-f11*")
-  (kbd "<f12>") (start-quick-shell "*shell-f12*")
-
-  (kbd "C-=")   'er/expand-region
-  (kbd "C--")   'smartparens-mode
-
-  (kbd "C-b")   'browse-url
-  (kbd "C-d")   (if-ms-windows
-                 (execute-set-key "explorer" (list "explorer" "."))
-                 (execute-set-key "thunar" '("thunar")))
-  (kbd "C-h")   'sourcepair-jump-to-headerfile
-  (kbd "C-l")   'command-history
-  (kbd "C-r")   'add-code-review-note
-  (kbd "C-s")   (if-not-ms-windows 'slime-connect-stumpwm)
-  (kbd "C-t")   (unless-ms-windows 'open-with-terminal)
-
-  (kbd "C-f")   'secondary-x-font
-  (kbd "M-f")   'primary-x-font
-
-  (kbd "M-r")   (if-not-ms-windows
-                 (execute-set-key "rofi-run" '("rofi" "-show" "run")))
-  (kbd "M-w")   (if-not-ms-windows
-                 (execute-set-key "rofi-window" '("rofi" "-show" "window")))
-  (kbd "M-s")   (if-not-ms-windows
-                 (execute-set-key "rofi-ssh" '("rofi" "-show" "ssh")))
-  (kbd "M-d")   (if-not-ms-windows
-                 (execute-set-key "rofi-drun" '("rofi" "-show" "drun")))
+  (kbd "<f4>")    'kill-this-buffer
+                  
+  (kbd "<f5>")    (lambda () (interactive) (terminator-open-template 0))
+  (kbd "<f6>")    (lambda () (interactive) (terminator-open-template 1))
+  (kbd "<f7>")    (lambda () (interactive) (terminator-open-template 2))
+  (kbd "<f8>")    (lambda () (interactive) (terminator-open-template 3))
+                  
+  (kbd "<f9>")    (start-quick-shell "*shell-f9*")
+  (kbd "<f10>")   (start-quick-shell "*shell-f10*")
+  (kbd "<f11>")   (start-quick-shell "*shell-f11*")
+  (kbd "<f12>")   (start-quick-shell "*shell-f12*")
+                  
+  (kbd "C-=")     'er/expand-region
+  (kbd "C--")     'smartparens-mode
+                  
+  (kbd "C-b")     'browse-url
+  (kbd "C-d")     (if-ms-windows
+                   (execute-set-key "explorer" (list "explorer" "."))
+                   (execute-set-key "thunar" '("thunar")))
+  (kbd "C-h")     'sourcepair-jump-to-headerfile
+  (kbd "C-l")     'command-history
+  (kbd "C-r")     'add-code-review-note
+  (kbd "C-s")     (if-not-ms-windows 'slime-connect-stumpwm)
+  (kbd "C-t")     (unless-ms-windows 'open-with-terminal)
+                  
+  (kbd "C-f")     'secondary-x-font
+  (kbd "M-f")     'primary-x-font
+                  
+  (kbd "M-r")     (if-not-ms-windows
+                   (execute-set-key "rofi-run" '("rofi" "-show" "run")))
+  (kbd "M-w")     (if-not-ms-windows
+                   (execute-set-key "rofi-window" '("rofi" "-show" "window")))
+  (kbd "M-s")     (if-not-ms-windows
+                   (execute-set-key "rofi-ssh" '("rofi" "-show" "ssh")))
+  (kbd "M-d")     (if-not-ms-windows
+                   (execute-set-key "rofi-drun" '("rofi" "-show" "drun")))
   ))
 
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "1")     'gdb-display-io-buffer
-  (kbd "2")     'gdb-display-locals-for-thread
-  (kbd "3")     'gdb-display-stack-for-thread
-  (kbd "4")     'gdb-display-registers-for-thread
-  (kbd "5")     'gdb-display-stack-buffer
-  (kbd "6")     'gdb-display-breakpoints-buffer
-  (kbd "7")     'gdb-display-assembler-buffer
-  (kbd "8")     'gdb-display-memory-buffer
-  (kbd "9")     'gdb-display-locals-buffer
-  (kbd "0")     'gdb-display-gdb-buffer
-  (kbd "-")     'gud-up
-  (kbd "=")     'gud-down
+  (kbd "1")       'gdb-display-io-buffer
+  (kbd "2")       'gdb-display-locals-for-thread
+  (kbd "3")       'gdb-display-stack-for-thread
+  (kbd "4")       'gdb-display-registers-for-thread
+  (kbd "5")       'gdb-display-stack-buffer
+  (kbd "6")       'gdb-display-breakpoints-buffer
+  (kbd "7")       'gdb-display-assembler-buffer
+  (kbd "8")       'gdb-display-memory-buffer
+  (kbd "9")       'gdb-display-locals-buffer
+  (kbd "0")       'gdb-display-gdb-buffer
+  (kbd "-")       'gud-up
+  (kbd "=")       'gud-down
   ))
 
 ;;execute start-process key
@@ -283,94 +279,94 @@
  f4-e-map
  (list
   ;;quick terminal and shell buffer
-  (kbd "5")  (lookup-key f4-map (kbd "<f5>"))
-  (kbd "6")  (lookup-key f4-map (kbd "<f6>"))
-  (kbd "7")  (lookup-key f4-map (kbd "<f7>"))
-  (kbd "8")  (lookup-key f4-map (kbd "<f8>"))
-  (kbd "9")  (lookup-key f4-map (kbd "<f9>"))
-  (kbd "0")  (lookup-key f4-map (kbd "<f10>"))
-  (kbd "-")  (lookup-key f4-map (kbd "<f11>"))
-  (kbd "=")  (lookup-key f4-map (kbd "<f12>"))
-
-  (kbd "c")  (if-not-ms-windows
-              (execute-set-key "urxvt" (list "urxvt")))
-  (kbd "d")  (if-not-ms-windows
-              (execute-set-key "meld" '("meld")))
-  (kbd "v")  (if-not-ms-windows
-              (execute-set-key "evince" '("evince")))
-  (kbd "f")  (if-not-ms-windows
-              (execute-set-key "firefox" '("firefox")))
-  (kbd "m")  (if-not-ms-windows
-              (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
-  (kbd "h")  (if-not-ms-windows
-              (execute-set-key "thunar" '("thunar")))
-  (kbd "r")  (if-not-ms-windows
-              (execute-set-key "remmina" '("remmina")))
-  (kbd "t")  (if-not-ms-windows
-              (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
+  (kbd "5")       (lookup-key f4-map (kbd "<f5>"))
+  (kbd "6")       (lookup-key f4-map (kbd "<f6>"))
+  (kbd "7")       (lookup-key f4-map (kbd "<f7>"))
+  (kbd "8")       (lookup-key f4-map (kbd "<f8>"))
+  (kbd "9")       (lookup-key f4-map (kbd "<f9>"))
+  (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
+  (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
+  (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
+                  
+  (kbd "c")       (if-not-ms-windows
+                   (execute-set-key "urxvt" (list "urxvt")))
+  (kbd "d")       (if-not-ms-windows
+                   (execute-set-key "meld" '("meld")))
+  (kbd "v")       (if-not-ms-windows
+                   (execute-set-key "evince" '("evince")))
+  (kbd "f")       (if-not-ms-windows
+                   (execute-set-key "firefox" '("firefox")))
+  (kbd "m")       (if-not-ms-windows
+                   (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
+  (kbd "h")       (if-not-ms-windows
+                   (execute-set-key "thunar" '("thunar")))
+  (kbd "r")       (if-not-ms-windows
+                   (execute-set-key "remmina" '("remmina")))
+  (kbd "t")       (if-not-ms-windows
+                   (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
   ))
 
 (apply-keys-to-map
  help-map
  (list
-  (kbd "1")     'gdb-frame-io-buffer
-  (kbd "2")     'gdb-frame-locals-for-thread
-  (kbd "3")     'gdb-frame-stack-for-thread
-  (kbd "4")     'gdb-frame-registers-for-thread
-  (kbd "5")     'gdb-frame-stack-buffer
-  (kbd "6")     'gdb-frame-breakpoints-buffer
-  (kbd "7")     'gdb-frame-assembler-buffer
-  (kbd "8")     'gdb-frame-memory-buffer
-  (kbd "9")     'gdb-frame-locals-buffer
-  (kbd "0")     'gdb-frame-gdb-buffer
-  (kbd "-")     'gud-up
-  (kbd "=")     'gud-down
+  (kbd "1")       'gdb-frame-io-buffer
+  (kbd "2")       'gdb-frame-locals-for-thread
+  (kbd "3")       'gdb-frame-stack-for-thread
+  (kbd "4")       'gdb-frame-registers-for-thread
+  (kbd "5")       'gdb-frame-stack-buffer
+  (kbd "6")       'gdb-frame-breakpoints-buffer
+  (kbd "7")       'gdb-frame-assembler-buffer
+  (kbd "8")       'gdb-frame-memory-buffer
+  (kbd "9")       'gdb-frame-locals-buffer
+  (kbd "0")       'gdb-frame-gdb-buffer
+  (kbd "-")       'gud-up
+  (kbd "=")       'gud-down
   ))
 
 ;;helm key setting
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-x b")      'helm-buffers-list
-  (kbd "C-x C-f")    'helm-find-files
-  (kbd "C-M-z")      'helm-resume
-  (kbd "M-x")        'helm-M-x
+  (kbd "C-x b")   'helm-buffers-list
+  (kbd "C-x C-f") 'helm-find-files
+  (kbd "C-M-z")   'helm-resume
+  (kbd "M-x")     'helm-M-x
 
-  (kbd "C-`")        'helm-imenu
-  (kbd "C-~")        'helm-semantic
+  (kbd "C-`")     'helm-imenu
+  (kbd "C-~")     'helm-semantic
   
-  (kbd "M-.")        'helm-etags-plus-select
-  (kbd "M-*")        'helm-etags-plus-history
-  (kbd "M-_")        'helm-etags-plus-history-go-back
-  (kbd "M-+")        'helm-etags-plus-history-go-forward
+  (kbd "M-.")     'helm-etags-plus-select
+  (kbd "M-*")     'helm-etags-plus-history
+  (kbd "M-_")     'helm-etags-plus-history-go-back
+  (kbd "M-+")     'helm-etags-plus-history-go-forward
   ))
 
 (apply-keys-to-map
  help-map
  (list
-  (kbd "M-a")        'helm-apropos
-  (kbd "M-t")        'helm-world-time
-  (kbd "M-g")        'helm-grep-do-git-grep
-  (kbd "M-m")        'helm-man-woman
-  (kbd "SPC")        'helm-all-mark-rings
+  (kbd "M-a")     'helm-apropos
+  (kbd "M-t")     'helm-world-time
+  (kbd "M-g")     'helm-grep-do-git-grep
+  (kbd "M-m")     'helm-man-woman
+  (kbd "SPC")     'helm-all-mark-rings
   ))
 
 (apply-keys-to-map
  helm-command-map
  (list
-  (kbd "C-b")        'helm-mini
+  (kbd "C-b")     'helm-mini
   ))
 
 (apply-keys-to-map
  helm-map
  (list
-  (kbd "C-<return>") 'helm-execute-persistent-action
-  (kbd "C-p")        'helm-previous-line
-  (kbd "C-n")        'helm-next-line
-  (kbd "C-M-n")      'helm-next-source
-  (kbd "C-M-p")      'helm-previous-source
-  (kbd "M-N")        'helm-next-source
-  (kbd "M-P")        'helm-previous-source
+  (kbd "C-<RET>") 'helm-execute-persistent-action
+  (kbd "C-p")     'helm-previous-line
+  (kbd "C-n")     'helm-next-line
+  (kbd "C-M-n")   'helm-next-source
+  (kbd "C-M-p")   'helm-previous-source
+  (kbd "M-N")     'helm-next-source
+  (kbd "M-P")     'helm-previous-source
   ))
 
 

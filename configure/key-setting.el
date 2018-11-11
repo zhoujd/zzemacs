@@ -333,6 +333,7 @@
  global-map
  (list
   (kbd "C-x b")      'helm-buffers-list
+  (kbd "C-x C-f")    'helm-find-files
   (kbd "C-M-z")      'helm-resume
 
   (kbd "C-`")        'helm-imenu

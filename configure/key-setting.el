@@ -34,19 +34,19 @@
 (apply-keys-to-map
  ctl-z-map
  (list
-  (kbd "C-s") 'slime-selector
-  (kbd "C-z") (lookup-key ctl-x-map "\C-z")
-
-  (kbd "`")   'switch-to-term
-  (kbd "1")   (switch-quick-buffer "*terminal<1>*")
-  (kbd "2")   (switch-quick-buffer "*terminal<2>*")
-  (kbd "3")   (switch-quick-buffer "*terminal<3>*")
-  (kbd "4")   (switch-quick-buffer "*terminal<4>*")
-  (kbd "5")   (switch-quick-buffer "*terminal<5>*")
-  (kbd "6")   (switch-quick-buffer "*terminal<6>*")
-  (kbd "7")   (switch-quick-buffer "*terminal<7>*")
-  (kbd "8")   (switch-quick-buffer "*terminal<8>*")
-  (kbd "9")   (switch-quick-buffer "*terminal<9>*")
+  (kbd "C-s")     'slime-selector
+  (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
+                  
+  (kbd "`")       'switch-to-term
+  (kbd "1")       (switch-quick-buffer "*terminal<1>*")
+  (kbd "2")       (switch-quick-buffer "*terminal<2>*")
+  (kbd "3")       (switch-quick-buffer "*terminal<3>*")
+  (kbd "4")       (switch-quick-buffer "*terminal<4>*")
+  (kbd "5")       (switch-quick-buffer "*terminal<5>*")
+  (kbd "6")       (switch-quick-buffer "*terminal<6>*")
+  (kbd "7")       (switch-quick-buffer "*terminal<7>*")
+  (kbd "8")       (switch-quick-buffer "*terminal<8>*")
+  (kbd "9")       (switch-quick-buffer "*terminal<9>*")
   ))
 
 (apply-keys-to-map
@@ -68,7 +68,6 @@
  global-map
  (list
   ;;ctrl number setting
-  (kbd "C-`") 'imenu
   (kbd "C-1") 'delete-window
   (kbd "C-2") 'delete-frame
   (kbd "C-3") 'other-frame
@@ -94,6 +93,7 @@
 (apply-keys-to-map
  global-map
  (list
+  ;;meta number setting
   (kbd "M-1") 'delete-other-windows
   (kbd "M-2") 'delete-other-frames
   (kbd "M-3") 'other-window
@@ -331,10 +331,13 @@
 ;;helm key setting
 (apply-keys-to-map
  global-map
- (list  
+ (list
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
 
+  (kbd "C-`")        'helm-imenu
+  (kbd "C-~")        'helm-semantic
+  
   (kbd "M-.")        'helm-etags-plus-select
   (kbd "M-*")        'helm-etags-plus-history
   (kbd "M-_")        'helm-etags-plus-history-go-back

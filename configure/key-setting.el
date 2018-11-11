@@ -115,8 +115,6 @@
  (list
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
-  (kbd "C-c h")   'helm-mini
-
   (kbd "%")       'match-paren
 
   [backspace]     'delete-backward-char

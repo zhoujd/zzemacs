@@ -44,9 +44,14 @@
 (require 'helm-smex)
 (require 'helm-etags-plus)
 
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
 (apply-keys-to-map
  global-map
  (list
+  (kbd "C-c h")      'helm-command-prefix
+  
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
 
@@ -64,6 +69,12 @@
   (kbd "M-g")        'helm-grep-do-git-grep
   (kbd "M-m")        'helm-man-woman
   (kbd "SPC")        'helm-all-mark-rings
+  ))
+
+(apply-keys-to-map
+ helm-command-map
+ (list
+  (kbd "C-b")        'helm-mini
   ))
 
 (apply-keys-to-map

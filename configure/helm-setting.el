@@ -49,15 +49,21 @@
  (list
   (kbd "C-x b")      'helm-buffers-list
   (kbd "C-M-z")      'helm-resume
-  (kbd "C-h M-a")    'helm-apropos
-  (kbd "C-h M-t")    'helm-world-time
-  (kbd "C-h M-g")    'helm-grep-do-git-grep
-  (kbd "C-h M-m")    'helm-man-woman
 
   (kbd "M-.")        'helm-etags-plus-select
   (kbd "M-*")        'helm-etags-plus-history
   (kbd "M-_")        'helm-etags-plus-history-go-back
   (kbd "M-+")        'helm-etags-plus-history-go-forward
+  ))
+
+(apply-keys-to-map
+ help-map
+ (list
+  (kbd "M-a")        'helm-apropos
+  (kbd "M-t")        'helm-world-time
+  (kbd "M-g")        'helm-grep-do-git-grep
+  (kbd "M-m")        'helm-man-woman
+  (kbd "SPC")        'helm-all-mark-rings
   ))
 
 (apply-keys-to-map

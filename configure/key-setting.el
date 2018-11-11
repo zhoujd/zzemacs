@@ -328,6 +328,7 @@
   (kbd "=")     'gud-down
   ))
 
+;;helm key setting
 (apply-keys-to-map
  global-map
  (list  

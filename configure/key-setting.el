@@ -360,7 +360,9 @@
 (apply-keys-to-map
  helm-map
  (list
-  (kbd "C-<RET>") 'helm-execute-persistent-action
+  (kbd "TAB")     'helm-maybe-exit-minibuffer
+  (kbd "C-i")     'helm-maybe-exit-minibuffer
+  (kbd "C-z")     'helm-select-action
   (kbd "C-p")     'helm-previous-line
   (kbd "C-n")     'helm-next-line
   (kbd "C-M-n")   'helm-next-source

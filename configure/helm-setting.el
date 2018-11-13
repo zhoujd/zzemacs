@@ -41,6 +41,8 @@
 (require 'helm-descbinds)
 (helm-descbinds-mode)
 
+(require 'helm-swoop)
+
 
 (provide 'helm-setting)
 

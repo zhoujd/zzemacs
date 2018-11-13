@@ -11,9 +11,6 @@
 (setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)
 
-;;no completion for shell-mode
-(add-to-list 'helm-mode-no-completion-in-region-in-modes 'shell-mode)
-
 ;;https://writequit.org/eos/eos-helm.html
 (setq helm-display-header-line          nil
       helm-echo-input-in-header-line    nil

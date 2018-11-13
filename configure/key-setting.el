@@ -339,6 +339,9 @@
   (kbd "M-*")     'helm-etags-plus-history
   (kbd "M-_")     'helm-etags-plus-history-go-back
   (kbd "M-+")     'helm-etags-plus-history-go-forward
+
+  (kbd "C-c M-i") 'helm-multi-swoop
+  (kbd "C-x M-i") 'helm-multi-swoop-all
   ))
 
 (apply-keys-to-map

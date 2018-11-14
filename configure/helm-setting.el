@@ -8,6 +8,9 @@
 
 (helm-mode t)
 
+;;no completion for shell-mode
+(add-to-list 'helm-mode-no-completion-in-region-in-modes 'shell-mode)
+
 (setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)
 

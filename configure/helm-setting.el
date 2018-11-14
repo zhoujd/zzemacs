@@ -45,7 +45,7 @@
 (require 'helm-swoop)
 (setq helm-multi-swoop-edit-save t
       helm-swoop-split-with-multiple-windows t
-      helm-swoop-split-direction 'split-window-horizontally
+      helm-swoop-split-direction 'split-window-vertically
       helm-swoop-pre-input-function (lambda () "")
       helm-swoop-speed-or-color nil)
 

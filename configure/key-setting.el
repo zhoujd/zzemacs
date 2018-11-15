@@ -1,14 +1,18 @@
 ;;;; key-setting.el --- key config file
 ;;;
-;;;;emacs default setting
+
+;;;emacs default setting
 ;;C-x @ S        event-apply-shift-modifier
 ;;C-x @ a        event-apply-alt-modifier
 ;;C-x @ c        event-apply-control-modifier
 ;;C-x @ h        event-apply-hyper-modifier
 ;;C-x @ m        event-apply-meta-modifier
 ;;C-x @ s        event-apply-super-modifier
-(defvar zz/apps-key
-  (if-ms-windows [apps] [menu])
+
+(zz-load-path "elisp")
+(require 'apply-keys)
+
+(defvar zz/apps-key (if-ms-windows [apps] [menu])
   "zz/apps-key")
 
 (apply-keys-to-map

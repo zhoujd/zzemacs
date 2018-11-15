@@ -46,11 +46,11 @@
 
 ;;https://github.com/ShingoFukuyama/helm-swoop
 (require 'helm-swoop)
-(setq helm-multi-swoop-edit-save t
+(setq helm-multi-swoop-edit-save             t
       helm-swoop-split-with-multiple-windows t
-      helm-swoop-split-direction 'split-window-vertically
-      helm-swoop-pre-input-function (lambda () "")
-      helm-swoop-speed-or-color nil)
+      helm-swoop-split-direction             'split-window-vertically
+      helm-swoop-pre-input-function          (lambda () "")
+      helm-swoop-speed-or-color              nil)
 
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)

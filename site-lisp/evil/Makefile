@@ -1,6 +1,6 @@
 SHELL = /bin/sh
-EMACS = emacs
-FILES = $(filter-out evil-tests.el,$(filter-out evil-pkg.el,$(wildcard evil*.el)))
+EMACS ?= emacs
+FILES = $(filter-out evil-test-helpers.el evil-tests.el evil-pkg.el,$(wildcard evil*.el))
 VERSION := $(shell sed -ne '/define-package/,$$p' evil-pkg.el | sed -ne '/^\s*"[[:digit:]]\+\(\.[[:digit:]]\+\)*"\s*$$/ s/^.*"\(.*\)".*$$/\1/p')
 ELPAPKG = evil-$(VERSION)
 PROFILER =
@@ -20,7 +20,7 @@ compile: $(ELCFILES)
 	@echo Compute dependencies
 	@rm -f .depend
 	@for f in $(FILES); do \
-	    sed -n "s/(require '\(evil-.*\))/$${f}c: \1.elc/p" $$f >> .depend;\
+	    sed -n "s/ *(require '\(evil-[^)]*\).*)/$${f}c: \1.elc/p" $$f >> .depend;\
 	done
 
 -include .depend
@@ -68,7 +68,7 @@ tests: compile
 emacs:
 	$(EMACS) -Q -L . $(LIBS) -l goto-chg.el -l evil-tests.el \
 --eval "(evil-mode 1)" \
---eval "(evil-tests-initialize '(${TAG}) '(${PROFILER}) t)" &
+--eval "(evil-tests-initialize '(${TAG}) '(${PROFILER}) t)"
 
 # Load Evil in a terminal Emacs and run all tests.
 term: terminal
@@ -112,24 +112,9 @@ elpa:
 
 # Change the version using make VERSION=x.y.z
 version:
-	$(EMACS) --batch --eval '(setq vc-handled-backends nil)' ${FILES} evil-tests.el -Q \
---eval "\
-(progn \
-  (find-file \"evil-vars.el\") \
-  (when (re-search-forward \"^(defconst evil-version \\\"\\\\([-_.[:word:]]*\\\\)\\\"\" nil t) \
-    (replace-match \"${VERSION}\" t t nil 1)) \
-  (find-file \"evil-pkg.el\") \
-  (goto-line 3) \
-  (when (and (string-match-p \"[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+\" \"${VERSION}\") \
-             (re-search-forward \"\\\"\\\\([-_.[:word:]]*\\\\)\\\"\" nil t)) \
-    (replace-match \"${VERSION}\" t t nil 1)) \
-  (dolist (buffer (reverse (buffer-list))) \
-    (when (buffer-file-name buffer) \
-      (set-buffer buffer) \
-      (goto-char (point-min)) \
-      (when (re-search-forward \"^;;[[:space:]]*Version:[[:space:]]*\\\\([-_.[:word:]]*\\\\)\" nil t) \
-        (replace-match \"${VERSION}\" t t nil 1)) \
-      (when (buffer-modified-p) (save-buffer 0))))) \
-"
+	@$(EMACS) --script scripts/evilupdate "${VERSION}"
 
+# Change the version using make VERSION=x.y.z, but do not post to the newsgroup
+nversion:
+	@$(EMACS) --script scripts/evilupdate nonews "${VERSION}"
 

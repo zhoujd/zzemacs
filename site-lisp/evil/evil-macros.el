@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0.9
+;; Version: 1.2.13
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -152,39 +152,6 @@ The return value is a list (BEG END TYPE)."
          (interactive ,@interactive)
          ,@body))))
 
-(defmacro evil-define-union-move (name args &rest moves)
-  "Create a movement function named NAME.
-The function moves to the nearest object boundary defined by one
-of the movement function in MOVES, which is a list where each
-element has the form \(FUNC PARAMS... COUNT).
-
-COUNT is a variable which is bound to 1 or -1, depending on the
-direction. In each iteration, the function calls each move in
-isolation and settles for the nearest position. If unable to move
-further, the return value is the number of iterations that could
-not be performed.
-
-\(fn NAME (COUNT) MOVES...)"
-  (declare (indent defun)
-           (debug (&define name lambda-list
-                           [&optional stringp]
-                           def-body)))
-  (let* ((var (or (car-safe args) 'var))
-         (doc (when (stringp (car-safe moves))
-                (pop moves)))
-         (moves (mapcar #'(lambda (move)
-                            `(save-excursion
-                               ;; don't include failing moves
-                               (when (zerop ,move)
-                                 (point))))
-                        moves)))
-    `(evil-define-motion ,name (count)
-       ,@(when doc `(,doc))
-       (evil-motion-loop (,var (or count 1))
-         (if (> ,var 0)
-             (evil-goto-min ,@moves)
-           (evil-goto-max ,@moves))))))
-
 (defmacro evil-narrow-to-line (&rest body)
   "Narrow BODY to the current line.
 BODY will signal the errors 'beginning-of-line or 'end-of-line
@@ -202,6 +169,7 @@ upon reaching the beginning or end of the current line.
        (setq end (max beg (1- end))))
      ;; don't include the newline in Normal state
      (when (and evil-move-cursor-back
+                (not evil-move-beyond-eol)
                 (not (evil-visual-state-p))
                 (not (evil-operator-state-p)))
        (setq end (max beg (1- end))))
@@ -347,6 +315,42 @@ of the object; otherwise it is placed at the end of the object."
      (t
       count))))
 
+(defun evil-text-object-make-linewise (range)
+  "Turn the text object selection RANGE to linewise.
+The selection is adjusted in a sensible way so that the selected
+lines match the user intent. In particular, whitespace-only parts
+at the first and last lines are omitted. This function returns
+the new range."
+  ;; Bug #607
+  ;; If new type is linewise and the selection of the
+  ;; first line consists of whitespace only, the
+  ;; beginning is moved to the start of the next line. If
+  ;; the selections of the last line consists of
+  ;; whitespace only, the end is moved to the end of the
+  ;; previous line.
+  (if (eq (evil-type range) 'line)
+      range
+    (let ((expanded (plist-get (evil-range-properties range) :expanded))
+          (newrange (evil-expand-range range t)))
+      (save-excursion
+        ;; skip whitespace at the beginning
+        (goto-char (evil-range-beginning newrange))
+        (skip-chars-forward " \t")
+        (when (and (not (bolp)) (eolp))
+          (evil-set-range-beginning newrange (1+ (point))))
+        ;; skip whitepsace at the end
+        (goto-char (evil-range-end newrange))
+        (skip-chars-backward " \t")
+        (when (and (not (eolp)) (bolp))
+          (evil-set-range-end newrange (1- (point))))
+        ;; only modify range if result is not empty
+        (if (> (evil-range-beginning newrange)
+               (evil-range-end newrange))
+            range
+          (unless expanded
+            (evil-contract-range newrange))
+          newrange)))))
+
 (defmacro evil-define-text-object (object args &rest body)
   "Define a text object command OBJECT.
 BODY should return a range (BEG END) to the right of point
@@ -392,7 +396,7 @@ if COUNT is positive, and to the left of it if negative.
            (cond
             ;; Visual state: extend the current selection
             ((and (evil-visual-state-p)
-                  (evil-called-interactively-p))
+                  (called-interactively-p 'any))
              ;; if we are at the beginning of the Visual selection,
              ;; go to the left (negative COUNT); if at the end,
              ;; go to the right (positive COUNT)
@@ -407,7 +411,15 @@ if COUNT is positive, and to the left of it if negative.
                ;; unless the selection goes the other way
                (setq mark  (evil-range-beginning range)
                      point (evil-range-end range)
-                     type  (evil-type range))
+                     type  (evil-type
+                            (if evil-text-object-change-visual-type
+                                range
+                              (evil-visual-range))))
+               (when (and (eq type 'line)
+                          (not (eq type (evil-type range))))
+                 (let ((newrange (evil-text-object-make-linewise range)))
+                   (setq mark (evil-range-beginning newrange)
+                         point (evil-range-end newrange))))
                (when (< dir 0)
                  (evil-swap mark point))
                ;; select the union
@@ -423,9 +435,9 @@ if COUNT is positive, and to the left of it if negative.
                (if extend
                    (setq range (evil-range-union range selection))
                  (evil-set-type range (evil-type range type)))
-               ;; ensure the range is properly expanded
-               (evil-contract-range range)
-               (evil-expand-range range)
+               ;; possibly convert to linewise
+               (when (eq evil-this-type-modified 'line)
+                 (setq range (evil-text-object-make-linewise range)))
                (evil-set-range-properties range nil)
                range))))))))
 
@@ -506,7 +518,7 @@ if COUNT is positive, and to the left of it if negative.
        (unwind-protect
            (let ((evil-inhibit-operator evil-inhibit-operator-value))
              (unless (and evil-inhibit-operator
-                          (evil-called-interactively-p))
+                          (called-interactively-p 'any))
                ,@body))
          (setq evil-inhibit-operator-value nil)))))
 
@@ -515,21 +527,23 @@ if COUNT is positive, and to the left of it if negative.
   "Read a motion from the keyboard and return its buffer positions.
 The return value is a list (BEG END), or (BEG END TYPE) if
 RETURN-TYPE is non-nil."
-  (let ((motion (or evil-operator-range-motion
-                    (when (evil-ex-p) 'evil-line)))
-        (type evil-operator-range-type)
-        (range (evil-range (point) (point)))
-        command count modifier)
+  (let* ((evil-ex-p (and (not (minibufferp)) (evil-ex-p)))
+         (motion (or evil-operator-range-motion
+                     (when evil-ex-p 'evil-line)))
+         (type evil-operator-range-type)
+         (range (evil-range (point) (point)))
+         command count modifier)
+    (setq evil-this-type-modified nil)
     (evil-save-echo-area
       (cond
        ;; Ex mode
-       ((and (evil-ex-p) evil-ex-range)
+       ((and evil-ex-p evil-ex-range)
         (setq range evil-ex-range))
        ;; Visual selection
-       ((and (not (evil-ex-p)) (evil-visual-state-p))
+       ((and (not evil-ex-p) (evil-visual-state-p))
         (setq range (evil-visual-range)))
        ;; active region
-       ((and (not (evil-ex-p)) (region-active-p))
+       ((and (not evil-ex-p) (region-active-p))
         (setq range (evil-range (region-beginning)
                                 (region-end)
                                 (or evil-this-type 'exclusive))))
@@ -750,7 +764,7 @@ via KEY-VALUE pairs. BODY should evaluate to a list of values.
    ;; and does not match all three-letter words.)
    '(("(\\(evil-\\(?:ex-\\)?define-\
 \\(?:[^ k][^ e][^ y]\\|[-[:word:]]\\{4,\\}\\)\\)\
-\\>[ \f\t\n\r\v]*\\(\\sw+\\)?"
+\\>[ \f\t\n\r\v]*\\(\\(?:\\sw\\|\\s_\\)+\\)?"
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face nil t))
      ("(\\(evil-\\(?:delay\\|narrow\\|signal\\|save\\|with\\(?:out\\)?\\)\

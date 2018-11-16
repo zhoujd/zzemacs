@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0.9
+;; Version: 1.2.13
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -39,6 +39,7 @@ AKA \"Command\" state."
   :exit-hook (evil-repeat-start-hook)
   (cond
    ((evil-normal-state-p)
+    (overwrite-mode -1)
     (add-hook 'post-command-hook #'evil-normal-post-command nil t))
    (t
     (remove-hook 'post-command-hook #'evil-normal-post-command t))))
@@ -70,6 +71,40 @@ If the region is activated, enter Visual state."
 
 ;;; Insert state
 
+(defun evil-maybe-remove-spaces (&optional do-remove)
+  "Remove space from newly opened empty line.
+This function removes (indentation) spaces that have been
+inserted by opening a new empty line. The behavior depends on the
+variable `evil-maybe-remove-spaces'. If this variable is nil the
+function does nothing. Otherwise the behavior depends on
+DO-REMOVE.  If DO-REMOVE is non-nil the spaces are
+removed. Otherwise `evil-maybe-remove-spaces' is set to nil
+unless the last command opened yet another new line.
+
+This function should be added as a post-command-hook to track
+commands opening a new line."
+  (cond
+   ((not evil-maybe-remove-spaces)
+    (remove-hook 'post-command-hook #'evil-maybe-remove-spaces))
+   (do-remove
+    (when (save-excursion
+            (beginning-of-line)
+            (looking-at "^\\s-*$"))
+      (delete-region (line-beginning-position)
+                     (line-end-position)))
+    (setq evil-maybe-remove-spaces nil)
+    (remove-hook 'post-command-hook #'evil-maybe-remove-spaces))
+   ((not (memq this-command
+               '(evil-open-above
+                 evil-open-below
+                 evil-append
+                 evil-append-line
+                 newline
+                 newline-and-indent
+                 indent-and-newline)))
+    (setq evil-maybe-remove-spaces nil)
+    (remove-hook 'post-command-hook #'evil-maybe-remove-spaces))))
+
 (evil-define-state insert
   "Insert state."
   :tag " <I> "
@@ -80,15 +115,19 @@ If the region is activated, enter Visual state."
   :input-method t
   (cond
    ((evil-insert-state-p)
+    (add-hook 'post-command-hook #'evil-maybe-remove-spaces)
     (add-hook 'pre-command-hook #'evil-insert-repeat-hook)
-    (unless evil-want-fine-undo
-      (evil-start-undo-step t)))
+    (setq evil-maybe-remove-spaces t)
+    (unless (eq evil-want-fine-undo t)
+      (evil-start-undo-step)))
    (t
+    (remove-hook 'post-command-hook #'evil-maybe-remove-spaces)
     (remove-hook 'pre-command-hook #'evil-insert-repeat-hook)
+    (evil-maybe-remove-spaces t)
     (setq evil-insert-repeat-info evil-repeat-info)
     (evil-set-marker ?^ nil t)
-    (unless evil-want-fine-undo
-      (evil-end-undo-step t))
+    (unless (eq evil-want-fine-undo t)
+      (evil-end-undo-step))
     (when evil-move-cursor-back
       (when (or (evil-normal-state-p evil-next-state)
                 (evil-motion-state-p evil-next-state))
@@ -106,7 +145,9 @@ Handles the repeat-count of the insertion command."
   (when evil-insert-count
     (dotimes (i (1- evil-insert-count))
       (when evil-insert-lines
-        (evil-insert-newline-below))
+        (evil-insert-newline-below)
+        (when evil-auto-indent
+          (indent-according-to-mode)))
       (when (fboundp 'evil-execute-repeat-info)
         (evil-execute-repeat-info
          (cdr evil-insert-repeat-info)))))
@@ -313,13 +354,11 @@ otherwise exit Visual state."
     (when (buffer-live-p buf)
       (with-current-buffer buf
         (when (and (evil-visual-state-p)
-                   (fboundp 'x-select-text)
-                   (or (not (boundp 'ns-initialized))
-                       (with-no-warnings ns-initialized))
+                   (display-selections-p)
                    (not (eq evil-visual-selection 'block)))
-          (x-select-text (buffer-substring-no-properties
-                          evil-visual-beginning
-                          evil-visual-end)))))))
+          (evil-set-selection 'PRIMARY (buffer-substring-no-properties
+                                        evil-visual-beginning
+                                        evil-visual-end)))))))
 
 (defun evil-visual-activate-hook (&optional command)
   "Enable Visual state if the region is activated."
@@ -614,7 +653,7 @@ Reuse overlays where possible to prevent flicker."
             (setq before
                   (propertize
                    (make-string
-                    (- beg-col (current-column)) ?\ )
+                    (- beg-col (current-column)) ?\s)
                    'face
                    (or (get-text-property (1- (point)) 'face)
                        'default))))
@@ -631,7 +670,7 @@ Reuse overlays where possible to prevent flicker."
                     (if (= (point) row-beg)
                         (- end-col beg-col)
                       (- end-col (current-column)))
-                    ?\ ) 'face 'region))
+                    ?\s) 'face 'region))
             ;; place cursor on one of the virtual spaces
             (if (= point row-beg)
                 (put-text-property
@@ -795,17 +834,8 @@ CORNER defaults to `upper-left'."
 (defun evil-half-cursor ()
   "Change cursor to a half-height box.
 \(This is really just a thick horizontal bar.)"
-  (let (height)
-    ;; make `window-line-height' reliable
-    (redisplay)
-    (setq height (window-line-height))
-    (setq height (+ (nth 0 height) (nth 3 height)))
-    ;; cut cursor height in half
-    (setq height (/ height 2))
-    (setq cursor-type (cons 'hbar height))
-    ;; ensure the cursor is redisplayed
-    (force-window-update (selected-window))
-    (redisplay)))
+  (let ((height (/ (window-pixel-height) (* (window-height) 2))))
+    (setq cursor-type (cons 'hbar height))))
 
 ;;; Replace state
 
@@ -819,13 +849,13 @@ CORNER defaults to `upper-left'."
    ((evil-replace-state-p)
     (overwrite-mode 1)
     (add-hook 'pre-command-hook #'evil-replace-pre-command nil t)
-    (unless evil-want-fine-undo
-      (evil-start-undo-step t)))
+    (unless (eq evil-want-fine-undo t)
+      (evil-start-undo-step)))
    (t
     (overwrite-mode -1)
     (remove-hook 'pre-command-hook #'evil-replace-pre-command t)
-    (unless evil-want-fine-undo
-      (evil-end-undo-step t))
+    (unless (eq evil-want-fine-undo t)
+      (evil-end-undo-step))
     (when evil-move-cursor-back
       (evil-move-cursor-back))))
   (setq evil-replace-alist nil))

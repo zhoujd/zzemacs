@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0.9
+;; Version: 1.2.13
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -25,13 +25,19 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
+
+;;; Commentary:
+
+;; This provides evil integration for various emacs modes.
+;; Additional keybindings (or default state) should go into evil-keybindings.el.
+
+;;; Code:
+
 (require 'evil-maps)
 (require 'evil-core)
 (require 'evil-macros)
 (require 'evil-types)
 (require 'evil-repeat)
-
-;;; Code:
 
 ;;; Evilize some commands
 
@@ -51,7 +57,8 @@
       '(what-cursor-position))
 (mapc #'evil-declare-change-repeat
       '(dabbrev-expand
-        hippie-expand))
+        hippie-expand
+        quoted-insert))
 (mapc #'evil-declare-abort-repeat
       '(balance-windows
         eval-expression
@@ -89,62 +96,11 @@
   (when (fboundp 'evil-repeat-abort)
     (evil-repeat-abort)))
 
-;; etags-select
-;; FIXME: probably etags-select should be recomended in docs
-(eval-after-load 'etags-select
-  '(progn
-     (define-key evil-motion-state-map "g]" 'etags-select-find-tag-at-point)))
-
-;;; Buffer-menu
-
-(evil-add-hjkl-bindings Buffer-menu-mode-map 'motion)
-
-;; dictionary.el
-
-(evil-add-hjkl-bindings dictionary-mode-map 'motion
-  "?" 'dictionary-help        ; "h"
-  "C-o" 'dictionary-previous) ; "l"
-
-;;; Dired
-
-(eval-after-load 'dired
-  '(progn
-     ;; use the standard Dired bindings as a base
-     (defvar dired-mode-map)
-     (evil-make-overriding-map dired-mode-map 'normal)
-     (evil-add-hjkl-bindings dired-mode-map 'normal
-       "J" 'dired-goto-file                   ; "j"
-       "K" 'dired-do-kill-lines               ; "k"
-       "r" 'dired-do-redisplay                ; "l"
-       ;; ":d", ":v", ":s", ":e"
-       ";" (lookup-key dired-mode-map ":"))))
-
 (eval-after-load 'wdired
   '(progn
      (add-hook 'wdired-mode-hook #'evil-change-to-initial-state)
      (defadvice wdired-change-to-dired-mode (after evil activate)
        (evil-change-to-initial-state nil t))))
-
-;;; ELP
-
-(eval-after-load 'elp
-  '(defadvice elp-results (after evil activate)
-     (evil-motion-state)))
-
-;;; ERT
-
-(evil-add-hjkl-bindings ert-results-mode-map 'motion)
-
-;;; Info
-
-(evil-add-hjkl-bindings Info-mode-map 'motion
-  "0" 'evil-digit-argument-or-evil-beginning-of-line
-  (kbd "\M-h") 'Info-help   ; "h"
-  "\C-t" 'Info-history-back ; "l"
-  "\C-o" 'Info-history-back
-  " " 'Info-scroll-up
-  "\C-]" 'Info-follow-nearest-node
-  (kbd "DEL") 'Info-scroll-down)
 
 ;;; Parentheses
 
@@ -183,42 +139,21 @@
           (let ((ov (and (boundp ov) (symbol-value ov))))
             (when (overlayp ov) (delete-overlay ov))))))))
 
-;;; Speedbar
-
-(evil-add-hjkl-bindings speedbar-key-map 'motion
-  "h" 'backward-char
-  "j" 'speedbar-next
-  "k" 'speedbar-prev
-  "l" 'forward-char
-  "i" 'speedbar-item-info
-  "r" 'speedbar-refresh
-  "u" 'speedbar-up-directory
-  "o" 'speedbar-toggle-line-expansion
-  (kbd "RET") 'speedbar-edit-line)
-
-;; Ibuffer
-(eval-after-load 'ibuffer
-  '(progn
-     (defvar ibuffer-mode-map)
-     (evil-make-overriding-map ibuffer-mode-map 'normal)
-     (evil-define-key 'normal ibuffer-mode-map
-       "j" 'evil-next-line
-       "k" 'evil-previous-line
-       "RET" 'ibuffer-visit-buffer)))
-
 ;;; Undo tree
 (when (and (require 'undo-tree nil t)
            (fboundp 'global-undo-tree-mode))
   (global-undo-tree-mode 1))
 
 (eval-after-load 'undo-tree
-  '(progn
+  '(with-no-warnings
      (defun evil-turn-on-undo-tree-mode ()
        "Enable `undo-tree-mode' if evil is enabled.
 This function enables `undo-tree-mode' when Evil is activated in
 some buffer, but only if `global-undo-tree-mode' is also
 activated."
-       (when global-undo-tree-mode (undo-tree-mode 1)))
+       (when (and (boundp 'global-undo-tree-mode)
+                  global-undo-tree-mode)
+         (turn-on-undo-tree-mode)))
 
      (add-hook 'evil-local-mode-hook #'evil-turn-on-undo-tree-mode)
 
@@ -311,21 +246,37 @@ activated."
              company-filter-candidates))))
 
 ;; Eval last sexp
-(defadvice preceding-sexp (around evil activate)
-  "In normal-state or motion-state, last sexp ends at point."
-  (if (or (evil-normal-state-p) (evil-motion-state-p))
-      (save-excursion
-        (unless (or (eobp) (eolp)) (forward-char))
-        ad-do-it)
-    ad-do-it))
+(cond
+ ((version< emacs-version "25")
+  (defadvice preceding-sexp (around evil activate)
+    "In normal-state or motion-state, last sexp ends at point."
+    (if (and (not evil-move-beyond-eol)
+             (or (evil-normal-state-p) (evil-motion-state-p)))
+        (save-excursion
+          (unless (or (eobp) (eolp)) (forward-char))
+          ad-do-it)
+      ad-do-it))
 
-(defadvice pp-last-sexp (around evil activate)
-  "In normal-state or motion-state, last sexp ends at point."
-  (if (or (evil-normal-state-p) (evil-motion-state-p))
-      (save-excursion
-        (unless (or (eobp) (eolp)) (forward-char))
-        ad-do-it)
-    ad-do-it))
+  (defadvice pp-last-sexp (around evil activate)
+    "In normal-state or motion-state, last sexp ends at point."
+    (if (and (not evil-move-beyond-eol)
+             (or (evil-normal-state-p) (evil-motion-state-p)))
+        (save-excursion
+          (unless (or (eobp) (eolp)) (forward-char))
+          ad-do-it)
+      ad-do-it)))
+ (t
+  (defun evil--preceding-sexp (command &rest args)
+    "In normal-state or motion-state, last sexp ends at point."
+    (if (and (not evil-move-beyond-eol)
+             (or (evil-normal-state-p) (evil-motion-state-p)))
+        (save-excursion
+          (unless (or (eobp) (eolp)) (forward-char))
+          (apply command args))
+      (apply command args)))
+
+  (advice-add 'elisp--preceding-sexp :around 'evil--preceding-sexp '((name . evil)))
+  (advice-add 'pp-last-sexp          :around 'evil--preceding-sexp '((name . evil)))))
 
 ;; Show key
 (defadvice quail-show-key (around evil activate)
@@ -403,7 +354,10 @@ the mark and entering `recursive-edit'."
       ;; to `evil-find-char-backward'
       (when (and (equal buf (current-buffer))
                  (< (point) pnt))
-        (setq evil-this-type 'exclusive)))))
+        (setq evil-this-type
+              (cond
+               ((eq evil-this-type 'exclusive) 'inclusive)
+               ((eq evil-this-type 'inclusive) 'exclusive)))))))
 
 (evil-define-motion evil-ace-jump-char-to-mode (count)
   "Jump visually to the char in front of a char using ace-jump."
@@ -417,7 +371,10 @@ the mark and entering `recursive-edit'."
                (< (point) pnt))
           (progn
             (or (eobp) (forward-char))
-            (setq evil-this-type 'exclusive))
+            (setq evil-this-type
+                  (cond
+                   ((eq evil-this-type 'exclusive) 'inclusive)
+                   ((eq evil-this-type 'inclusive) 'exclusive))))
         (backward-char)))))
 
 (evil-define-motion evil-ace-jump-line-mode (count)
@@ -440,10 +397,116 @@ the mark and entering `recursive-edit'."
 (define-key evil-motion-state-map [remap ace-jump-line-mode] #'evil-ace-jump-line-mode)
 (define-key evil-motion-state-map [remap ace-jump-word-mode] #'evil-ace-jump-word-mode)
 
+;;; avy
+(declare-function 'avy-goto-word-or-subword-1 "avy")
+(declare-function 'avy-goto-line "avy")
+(declare-function 'avy-goto-char "avy")
+(declare-function 'avy-goto-char-2 "avy")
+(declare-function 'avy-goto-char-2-above "avy")
+(declare-function 'avy-goto-char-2-below "avy")
+(declare-function 'avy-goto-char-in-line "avy")
+(declare-function 'avy-goto-word-0 "avy")
+(declare-function 'avy-goto-word-1 "avy")
+(declare-function 'avy-goto-word-1-above "avy")
+(declare-function 'avy-goto-word-1-below "avy")
+(declare-function 'avy-goto-subword-0 "avy")
+(declare-function 'avy-goto-subword-1 "avy")
+(declare-function 'avy-goto-char-timer "avy")
+
+(defmacro evil-enclose-avy-for-motion (&rest body)
+  "Enclose avy to make it suitable for motions.
+Based on `evil-enclose-ace-jump-for-motion'."
+  (declare (indent defun)
+           (debug t))
+  `(let ((avy-all-windows
+          (if (and (not (memq evil-state '(visual operator)))
+                   (boundp 'avy-all-windows))
+              avy-all-windows
+            nil)))
+     ,@body))
+
+(defmacro evil-define-avy-motion (command type)
+  (declare (indent defun)
+           (debug t))
+  (let ((name (intern (format "evil-%s" command))))
+    `(evil-define-motion ,name (_count)
+       ,(format "Evil motion for `%s'." command)
+       :type ,type
+       :jump t
+       :repeat abort
+       (evil-without-repeat
+         (evil-enclose-avy-for-motion
+           (call-interactively ',command))))))
+
+;; define evil-avy-* motion commands for avy-* commands
+(evil-define-avy-motion avy-goto-char inclusive)
+(evil-define-avy-motion avy-goto-char-2 inclusive)
+(evil-define-avy-motion avy-goto-char-2-above inclusive)
+(evil-define-avy-motion avy-goto-char-2-below inclusive)
+(evil-define-avy-motion avy-goto-char-in-line inclusive)
+(evil-define-avy-motion avy-goto-char-timer inclusive)
+(evil-define-avy-motion avy-goto-line line)
+(evil-define-avy-motion avy-goto-line-above line)
+(evil-define-avy-motion avy-goto-line-below line)
+(evil-define-avy-motion avy-goto-subword-0 exclusive)
+(evil-define-avy-motion avy-goto-subword-1 exclusive)
+(evil-define-avy-motion avy-goto-symbol-1 exclusive)
+(evil-define-avy-motion avy-goto-symbol-1-above exclusive)
+(evil-define-avy-motion avy-goto-symbol-1-below exclusive)
+(evil-define-avy-motion avy-goto-word-0 exclusive)
+(evil-define-avy-motion avy-goto-word-1 exclusive)
+(evil-define-avy-motion avy-goto-word-1-above exclusive)
+(evil-define-avy-motion avy-goto-word-1-below exclusive)
+(evil-define-avy-motion avy-goto-word-or-subword-1 exclusive)
+
+;; remap avy-* commands to evil-avy-* commands
+(dolist (command '(avy-goto-char
+                   avy-goto-char-2
+                   avy-goto-char-2-above
+                   avy-goto-char-2-below
+                   avy-goto-char-in-line
+                   avy-goto-char-timer
+                   avy-goto-line
+                   avy-goto-line-above
+                   avy-goto-line-below
+                   avy-goto-subword-0
+                   avy-goto-subword-1
+                   avy-goto-symbol-1
+                   avy-goto-symbol-1-above
+                   avy-goto-symbol-1-below
+                   avy-goto-word-0
+                   avy-goto-word-1
+                   avy-goto-word-1-above
+                   avy-goto-word-1-below
+                   avy-goto-word-or-subword-1))
+  (define-key evil-motion-state-map
+    (vector 'remap command) (intern-soft (format "evil-%s" command))))
+
 ;;; nXhtml/mumamo
 ;; ensure that mumamo does not toggle evil through its globalized mode
 (eval-after-load 'mumamo
-  '(push 'evil-mode-cmhh mumamo-change-major-mode-no-nos))
+  '(with-no-warnings
+     (push 'evil-mode-cmhh mumamo-change-major-mode-no-nos)))
+
+;; visual-line-mode integration
+(when evil-respect-visual-line-mode
+  (let ((swaps '((evil-next-line . evil-next-visual-line)
+                 (evil-previous-line . evil-previous-visual-line)
+                 (evil-beginning-of-line . evil-beginning-of-visual-line)
+                 (evil-end-of-line . evil-end-of-visual-line))))
+    (dolist (swap swaps)
+      (define-key visual-line-mode-map (vector 'remap (car swap)) (cdr swap))
+      (define-key visual-line-mode-map (vector 'remap (cdr swap)) (car swap)))))
+
+;;; abbrev.el
+(when evil-want-abbrev-expand-on-insert-exit
+  (eval-after-load 'abbrev
+    '(add-hook 'evil-insert-state-exit-hook 'expand-abbrev)))
+
+;;; ElDoc
+(eval-after-load 'eldoc
+  '(when (fboundp 'eldoc-add-command-completions)
+     (eldoc-add-command-completions "evil-window-")))
 
 (provide 'evil-integration)
 

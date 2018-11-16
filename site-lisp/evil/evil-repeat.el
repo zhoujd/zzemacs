@@ -3,7 +3,7 @@
 ;; Author: Frank Fischer <frank.fischer at mathematik.tu-chemnitz.de>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0.9
+;; Version: 1.2.13
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -61,7 +61,7 @@
 ;; of all commands that are executed starting and ending in normal
 ;; state.
 ;;
-;; Not all commands are recored. There are several commands that are
+;; Not all commands are recorded. There are several commands that are
 ;; completely ignored and other commands that even abort the currently
 ;; active recording, e.g., commands that change the current buffer.
 ;;
@@ -155,8 +155,7 @@
     (let* ((range (evil-visual-range))
            (beg (evil-range-beginning range))
            (end (1- (evil-range-end range)))
-           (nfwdlines (- (line-number-at-pos end)
-                         (line-number-at-pos beg))))
+           (nfwdlines (evil-count-lines beg end)))
       (evil-repeat-record
        (cond
         ((eq evil-visual-selection 'char)
@@ -321,6 +320,16 @@ invoked the current command"
   (clear-this-command-keys t)
   (setq evil-repeat-keys ""))
 
+(defun evil-this-command-keys (&optional post-cmd)
+  "Version of `this-command-keys' with finer control over prefix args."
+  (let ((arg (if post-cmd current-prefix-arg prefix-arg)))
+    (vconcat
+     (when (and (numberp arg)
+                ;; Only add prefix if no repeat info recorded yet
+                (null evil-repeat-info))
+       (string-to-vector (number-to-string arg)))
+     (this-single-command-keys))))
+
 (defun evil-repeat-keystrokes (flag)
   "Repeation recording function for commands that are repeated by keystrokes."
   (cond
@@ -328,11 +337,11 @@ invoked the current command"
     (when evil-this-register
       (evil-repeat-record
        `(set evil-this-register ,evil-this-register)))
-    (setq evil-repeat-keys (this-command-keys)))
+    (setq evil-repeat-keys (evil-this-command-keys)))
    ((eq flag 'post)
-    (evil-repeat-record (if (zerop (length (this-command-keys)))
+    (evil-repeat-record (if (zerop (length (evil-this-command-keys t)))
                             evil-repeat-keys
-                          (this-command-keys)))
+                          (evil-this-command-keys t)))
     ;; erase commands keys to prevent double recording
     (evil-clear-command-keys))))
 
@@ -561,7 +570,7 @@ If SAVE-POINT is non-nil, do not move point."
         (let ((confirm-kill-emacs t)
               (kill-buffer-hook
                (cons #'(lambda ()
-                         (error "Cannot delete buffer in repeat command"))
+                         (user-error "Cannot delete buffer in repeat command"))
                      kill-buffer-hook))
               (undo-pointer buffer-undo-list))
           (evil-with-single-undo
@@ -586,7 +595,7 @@ If COUNT is negative, this is a more recent kill."
   (cond
    ((not (and (eq last-command #'evil-repeat)
               evil-last-repeat))
-    (error "Previous command was not evil-repeat: %s" last-command))
+    (user-error "Previous command was not evil-repeat: %s" last-command))
    (save-point
     (save-excursion
       (evil-repeat-pop count)))

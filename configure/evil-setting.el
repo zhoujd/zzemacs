@@ -9,6 +9,22 @@
 ;;evil-evil
 (require 'evil)
 
+;;toggle evil
+(defun toggle-evil-mode ()
+  (interactive)
+  (if (bound-and-true-p evil-local-mode)
+    (progn
+      ;; go emacs
+      (evil-local-mode (or -1 1))
+      (undo-tree-mode (or -1 1))
+      (set-variable 'cursor-type 'box)
+      )
+    (progn
+      ;; go evil
+      (evil-local-mode (or 1 1))
+      (set-variable 'cursor-type 'box)
+      )))
+
 ;;evil-surround
 (require 'evil-surround)
 (global-evil-surround-mode 1)
@@ -20,11 +36,9 @@
                      "b" 'switch-to-buffer
                      "k" 'kill-buffer)
 
-;;key setting using default
-;(evil-set-toggle-key "<f5>")
-
 ;;disable undo-tree on mode-line
 (setq undo-tree-mode-lighter "")
+
 
 (provide 'evil-setting)
 

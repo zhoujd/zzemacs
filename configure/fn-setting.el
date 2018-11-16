@@ -46,7 +46,7 @@
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
-    [S-f1]            'version
+    [S-f1]            'toggle-evil-mode
     [C-f1]            'magit-status
     [M-f1]            'monky-status
     (kbd "C-x <f1>")  nil
@@ -74,8 +74,8 @@
 (define-fn-key (gethash "f4" fn-key-table)
     [f4]              f4-map
     [S-f4]            'undo-kill-buffer
-    [C-f4]            'turn-off-evil-mode
-    [M-f4]            'turn-on-evil-mode
+    [C-f4]            'helm-find
+    [M-f4]            'helm-do-grep-ag
     (kbd "C-x <f4>")  'helm-recentf
     (kbd "C-c <f4>")  'recentf-open-files-compl
     )
@@ -127,7 +127,7 @@
 
 (define-fn-key (gethash "f10" fn-key-table)
     [f10]             'helm-occur
-    [S-f10]           'multi-occur
+    [S-f10]           'helm-multi-swoop
     [C-f10]           'whitespace-cleanup
     [M-f10]           'whitespace-cleanup-region
     (kbd "C-x <f10>") 'menu-bar-open
@@ -148,8 +148,8 @@
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
     [M-f12]           'lgrep
-    (kbd "C-x <f12>") 'helm-find
-    (kbd "C-c <f12>") 'helm-do-grep-ag
+    (kbd "C-x <f12>") 'untabify
+    (kbd "C-c <f12>") 'tabify
     )
 
 

@@ -41,7 +41,7 @@
         game-setting
         dired-setting
         ;;media-setting
-        ;;evil-setting
+        evil-setting
         c-setting
         lisp-setting
         scheme-setting

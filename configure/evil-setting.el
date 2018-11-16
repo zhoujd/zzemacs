@@ -9,26 +9,23 @@
 ;;evil-evil
 (require 'evil)
 
-;;toggle evil
+;;toggle evil mode
 (defun toggle-evil-mode ()
   (interactive)
   (if (bound-and-true-p evil-local-mode)
       (progn
-       ;; go emacs
+       ;;go emacs
        (evil-local-mode (or -1 1))
        (undo-tree-mode (or -1 1))
        (set-variable 'cursor-type 'box))
       (progn
-       ;; go evil
+       ;;go evil
        (evil-local-mode (or 1 1))
-       (if (evil-normal-state-p)
-           (set-variable 'cursor-type 'box)
-           (set-variable 'cursor-type 'bar))
        (evil-refresh-cursor))))
 
 ;;evil-surround
 (require 'evil-surround)
-(global-evil-surround-mode 1)
+(global-evil-surround-mode t)
 
 ;;evil-leader
 (require 'evil-leader)

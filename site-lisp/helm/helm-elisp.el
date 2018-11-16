@@ -906,30 +906,29 @@ i.e the `symbol-name' of any existing symbol."
     (wrong-number-of-arguments nil)))
 
 (if (helm-btf--usable-p)        ; Check if BTF accept more than one arg.
-    ;; Emacs 24.4.
-    (dont-compile
-      (defvar helm-sexp--last-sexp nil)
-      ;; This wont work compiled.
-      (defun helm-sexp-eval-1 ()
-        (interactive)
-        (unwind-protect
-             (progn
-               ;; Trick called-interactively-p into thinking that `cand' is
-               ;; an interactive call, See `repeat-complex-command'.
-               (add-hook 'called-interactively-p-functions
-                         #'helm-complex-command-history--called-interactively-skip)
-               (eval (read helm-sexp--last-sexp)))
-          (remove-hook 'called-interactively-p-functions
-                       #'helm-complex-command-history--called-interactively-skip)))
+  ;; Emacs 24.4.
+  (defvar helm-sexp--last-sexp nil)
+  ;; This wont work compiled.
+  (defun helm-sexp-eval-1 ()
+    (interactive)
+    (unwind-protect
+         (progn
+           ;; Trick called-interactively-p into thinking that `cand' is
+           ;; an interactive call, See `repeat-complex-command'.
+           (add-hook 'called-interactively-p-functions
+                     #'helm-complex-command-history--called-interactively-skip)
+           (eval (read helm-sexp--last-sexp)))
+      (remove-hook 'called-interactively-p-functions
+                   #'helm-complex-command-history--called-interactively-skip)))
 
-      (defun helm-complex-command-history--called-interactively-skip (i _frame1 frame2)
-        (and (eq 'eval (cadr frame2))
-             (eq 'helm-sexp-eval-1
-                 (cadr (backtrace-frame (+ i 2) #'called-interactively-p)))
-             1))
+  (defun helm-complex-command-history--called-interactively-skip (i _frame1 frame2)
+    (and (eq 'eval (cadr frame2))
+         (eq 'helm-sexp-eval-1
+             (cadr (backtrace-frame (+ i 2) #'called-interactively-p)))
+         1))
 
-      (defun helm-sexp-eval (_candidate)
-        (call-interactively #'helm-sexp-eval-1)))
+  (defun helm-sexp-eval (_candidate)
+    (call-interactively #'helm-sexp-eval-1))
   ;; Emacs 24.3
   (defun helm-sexp-eval (cand)
     (let ((sexp (read cand)))

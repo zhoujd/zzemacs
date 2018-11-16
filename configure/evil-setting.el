@@ -13,17 +13,18 @@
 (defun toggle-evil-mode ()
   (interactive)
   (if (bound-and-true-p evil-local-mode)
-    (progn
-      ;; go emacs
-      (evil-local-mode (or -1 1))
-      (undo-tree-mode (or -1 1))
-      (set-variable 'cursor-type 'box)
-      )
-    (progn
-      ;; go evil
-      (evil-local-mode (or 1 1))
-      (set-variable 'cursor-type 'box)
-      )))
+      (progn
+       ;; go emacs
+       (evil-local-mode (or -1 1))
+       (undo-tree-mode (or -1 1))
+       (set-variable 'cursor-type 'box))
+      (progn
+       ;; go evil
+       (evil-local-mode (or 1 1))
+       (if (evil-normal-state-p)
+           (set-variable 'cursor-type 'box)
+           (set-variable 'cursor-type 'bar))
+       (evil-refresh-cursor))))
 
 ;;evil-surround
 (require 'evil-surround)

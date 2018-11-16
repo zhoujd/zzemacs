@@ -40,7 +40,6 @@
         doc-setting
         game-setting
         dired-setting
-        ;;media-setting
         evil-setting
         c-setting
         lisp-setting
@@ -48,6 +47,7 @@
         perl-setting
         python-setting
         go-setting
+        ;;media-setting
         ;;matlab-setting
         ;;spell-setting
         ;;gnuplot-setting

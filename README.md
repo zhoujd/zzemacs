@@ -26,9 +26,9 @@ zzemacs - emacs for Zachary Zhou
 
 * Libraries for build emacs
     
-    LIBJPEG:           http://www.ijg.org/files
-    LIBGIF & LIBUNGIF: https://sourceforge.net/projects/giflib
-    LIBTIFF:           http://download.osgeo.org/libtiff
-    LIBXPM:            http://www.x.org/releases/current/src/lib 
+    - LIBJPEG:           http://www.ijg.org/files
+    - LIBGIF & LIBUNGIF: https://sourceforge.net/projects/giflib
+    - LIBTIFF:           http://download.osgeo.org/libtiff
+    - LIBXPM:            http://www.x.org/releases/current/src/lib 
     
 * zzemacs will update as I using

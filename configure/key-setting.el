@@ -245,7 +245,7 @@
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-r")     'my:add-code-review-note
-  (kbd "C-s")     (if-not-ms-windows 'slime-connect-stumpwm)
+  (kbd "C-s")     (if-not-ms-windows 'my:slime-connect-stumpwm)
   (kbd "C-t")     (unless-ms-windows 'my:open-with-terminal)
                   
   (kbd "C-f")     'my:secondary-x-font

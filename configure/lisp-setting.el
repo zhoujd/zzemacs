@@ -76,10 +76,11 @@
 (setq common-lisp-hyperspec-root (concat zzemacs-path "/doc/hyperspec/"))
 
 ;;eldoc
-(defun turn-on-eldoc-mode () (eldoc-mode t))
+(defun my:turn-on-eldoc-mode ()
+  (eldoc-mode t))
 (require 'eldoc-extension)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-inteeraction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'my:turn-on-eldoc-mode)
+(add-hook 'lisp-inteeraction-mode-hook 'my:turn-on-eldoc-mode)
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
 
@@ -92,8 +93,8 @@
               ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 
 ;;slime with auto-complete
-(defvar slime-ac-flag t "flag for slime with auto complete cowork")
-(when slime-ac-flag
+(defvar my:slime-ac-flag t "flag for slime with auto complete cowork")
+(when my:slime-ac-flag
   (require 'ac-slime)
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
   (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
@@ -112,7 +113,7 @@
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
 ;;connect stumpwm slime swank
-(defun slime-connect-stumpwm ()
+(defun my:slime-connect-stumpwm ()
   (interactive)
   (slime-connect "127.0.0.1" 4405))
 

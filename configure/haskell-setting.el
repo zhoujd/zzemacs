@@ -12,11 +12,11 @@
 (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 (add-hook 'haskell-mode-hook 'outline-minor-mode)
 
-(defun my-haskell-mode-hook()
+(defun my:haskell-mode-hook()
   (make-local-variable 'outline-regexp)
   (setq outline-regexp "^//w+[^/n/r]*::[^/n/r]*"))
 
-(add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
+(add-hook 'haskell-mode-hook 'my:haskell-mode-hook)
 
 (provide 'haskell-setting)
 

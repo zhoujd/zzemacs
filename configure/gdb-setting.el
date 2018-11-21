@@ -33,9 +33,9 @@
 ;;Symbol Server (Microsoft): srv*c:\mss*http://msdl.microsoft.com/download/symbols
 ;(when-ms-windows  
 ; (load-library "cdb-gud.el")
-; (defun my-cdb-mode-hook ()
+; (defun my:cdb-mode-hook ()
 ;   (gud-def cdb-bc  "bc * "  nil "Breakpoint clean all."))
-; (add-hook 'cdb-mode-hook 'my-cdb-mode-hook))
+; (add-hook 'cdb-mode-hook 'my:cdb-mode-hook))
 
 
 (provide 'gdb-setting)

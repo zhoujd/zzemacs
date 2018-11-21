@@ -150,11 +150,11 @@
 ;;make etags
 (defvar my:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
 
-(defun my:gen-find-parts (my-file-name)
-  (setq my-find-parts "")
-  (dolist (cell (split-string my-file-name))
-    (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -o ")))
-  (setq my-find-parts (substring my-find-parts 0 -4)))
+(defun my:gen-find-parts (file-name)
+  (setq my:find-parts "")
+  (dolist (cell (split-string file-name))
+    (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
+  (setq my:find-parts (substring my:find-parts 0 -4)))
 
 ;(setq  my:c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "

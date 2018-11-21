@@ -7,12 +7,12 @@
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
-(defun w3m-build-in-emacs ()
+(defun my:w3m-build-in-emacs ()
   "compile emacs-w3m"
   (interactive)
   (apply
    'start-process
-   "my-w3m-cmp"
+   "my w3m compile"
    nil
    (split-string
     (format "%s -batch -q -no-site-file -l w3mhack.el NONE -f w3mhack-nonunix-install"
@@ -40,8 +40,7 @@
 (setq w3m-home-page "http://www.google.com/")
 (setq w3m-view-this-url-new-session-in-background t)
 
-(add-hook 'w3m-fontify-after-hook 'remove-w3m-output-garbages)
-(defun remove-w3m-output-garbages ()
+(defun my:remove-w3m-output-garbages ()
       (interactive)
       (let ((buffer-read-only))
         (setf (point) (point-min))
@@ -49,6 +48,8 @@
           (replace-match " "))
         (set-buffer-multibyte t))
       (set-buffer-modified-p nil)) 
+
+(add-hook 'w3m-fontify-after-hook 'my:remove-w3m-output-garbages)
 
 ;;(setq w3m-command-arguments
 ;;              (nconc w3m-command-arguments

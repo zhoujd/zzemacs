@@ -52,12 +52,17 @@
       helm-swoop-pre-input-function          (lambda () "")
       helm-swoop-speed-or-color              nil)
 
-(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-(define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
-(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
-(define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
-(define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
+(defkeys-map isearch-mode-map
+  ((kbd "M-i") 'helm-swoop-from-isearch))
+
+(defkeys-map helm-swoop-map
+  ((kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  ((kbd "C-r") 'helm-previous-line)
+  ((kbd "C-s") 'helm-next-line))
+
+(defkeys-map helm-multi-swoop-map
+  ((kbd "C-r") 'helm-previous-line)
+  ((kbd "C-s") 'helm-next-line))
 
 
 (provide 'helm-setting)

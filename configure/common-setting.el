@@ -51,19 +51,19 @@
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
-(setq en-font-list '(
-                     "Consolas 14"
-                     "Consolas 16"
-                     "Consolas 24"
-                     "Anonymous Pro 14"
-                     "Anonymous Pro 16"
-                     "Anonymous Pro 24"
-                     ))
-(setq cn-font-list '(
-                     "Microsoft YaHei Mono 14"
-                     "Microsoft YaHei Mono 16"
-                     "Microsoft YaHei Mono 24"
-                     ))
+(setq my:en-font-list '(
+                        "Consolas 14"
+                        "Consolas 16"
+                        "Consolas 24"
+                        "Anonymous Pro 14"
+                        "Anonymous Pro 16"
+                        "Anonymous Pro 24"
+                        ))
+(setq my:cn-font-list '(
+                        "Microsoft YaHei Mono 14"
+                        "Microsoft YaHei Mono 16"
+                        "Microsoft YaHei Mono 24"
+                        ))
 
 (defun my-font-name (name)
   (when (string-match ".*[ ]" name)
@@ -89,22 +89,22 @@
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
-(defun primary-x-font ()
+(defun my-primary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))
-   (my-frame-font (nth 0 en-font-list) (nth 0 cn-font-list))))
+   (my-frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))
+   (my-frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))))
 
-(defun secondary-x-font ()
+(defun my-secondary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 1 en-font-list) (nth 1 cn-font-list))
-   (my-frame-font (nth 2 en-font-list) (nth 2 cn-font-list))))
+   (my-frame-font (nth 1 my:en-font-list) (nth 1 my:cn-font-list))
+   (my-frame-font (nth 2 my:en-font-list) (nth 2 my:cn-font-list))))
 
 ;;console font setting
 (if window-system
-    (primary-x-font)
-    (my-console-font (nth 0 cn-font-list)))
+    (my-primary-x-font)
+    (my-console-font (nth 0 my:cn-font-list)))
 
 (defun my-use-server-mode ()
   ;;server-mode
@@ -222,7 +222,7 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun insert-time-stamp ()
+(defun my-insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
@@ -308,7 +308,7 @@
 (winner-mode t)
 
 ;;buffer name in title
-(defun fname-title-string ()
+(defun my-fname-title-string ()
   "Return the file name of current buffer, using ~ if under home directory"
   (let ((fname (or (buffer-file-name (current-buffer))
                    (buffer-name))))
@@ -318,7 +318,7 @@
 
 (setq frame-title-format
       '(:eval (concat (user-login-name) "@" (system-name) "[Emacs"
-                      (nth 2 (split-string (version))) "]  " (fname-title-string))))
+                      (nth 2 (split-string (version))) "]  " (my-fname-title-string))))
 
 ;suppress GUI features
 (setq use-file-dialog nil)
@@ -413,7 +413,7 @@
             (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
        ad-do-it))
 
-;;recentf/undo-kill-buffer
+;;recentf
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     100
       recentf-max-menu-items      30)
@@ -426,7 +426,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun undo-kill-buffer (arg)
+(defun my-undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -442,7 +442,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun recentf-open-files-compl ()
+(defun my-recentf-open-files-compl ()
   (interactive)
    (let* ((all-files recentf-list)
           (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))

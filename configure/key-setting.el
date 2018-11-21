@@ -74,7 +74,7 @@
   (kbd "C-1")     'delete-window
   (kbd "C-2")     'delete-frame
   (kbd "C-3")     'other-frame
-  (kbd "C-4")     'my-undo-kill-buffer
+  (kbd "C-4")     'my:undo-kill-buffer
   (kbd "C-5")     'gud-until
   (kbd "C-6")     'gud-remove
   (kbd "C-7")     'gud-finish
@@ -244,12 +244,12 @@
                    (execute-set-key "thunar" '("thunar")))
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
-  (kbd "C-r")     'add-code-review-note
+  (kbd "C-r")     'my:add-code-review-note
   (kbd "C-s")     (if-not-ms-windows 'slime-connect-stumpwm)
   (kbd "C-t")     (unless-ms-windows 'open-with-terminal)
                   
-  (kbd "C-f")     'my-secondary-x-font
-  (kbd "M-f")     'my-primary-x-font
+  (kbd "C-f")     'my:secondary-x-font
+  (kbd "M-f")     'my:primary-x-font
                   
   (kbd "M-r")     (if-not-ms-windows
                    (execute-set-key "rofi-run" '("rofi" "-show" "run")))

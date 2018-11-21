@@ -17,7 +17,7 @@
 (add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
-(defun my-set-language-chinese ()
+(defun my:set-language-chinese ()
   "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
@@ -25,7 +25,7 @@
   (message "This is for chinese"))
 
 ;; -*- Japanese -*-
-(defun my-set-language-japanese ()
+(defun my:set-language-japanese ()
   "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
@@ -33,7 +33,7 @@
   (message "This is for japanese"))
 
 ;; -*- utf-8 -*-
-(defun my-set-language-utf-8 ()
+(defun my:set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
@@ -42,9 +42,9 @@
 
 ;; -*- Language switch -*-
 (cond
-  ;;((string-match "j[ap].*" (getenv "LANG")) (my-set-language-japanese))
-  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my-set-language-chinese))
-  (t (my-set-language-utf-8)))
+  ;;((string-match "j[ap].*" (getenv "LANG")) (my:set-language-japanese))
+  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my:set-language-chinese))
+  (t (my:set-language-utf-8)))
 
 ;;font setting
 ;;tools: xlsfonts or xfontsel
@@ -65,14 +65,14 @@
                         "Microsoft YaHei Mono 24"
                         ))
 
-(defun my-font-name (name)
+(defun my:font-name (name)
   (when (string-match ".*[ ]" name)
-    (setq my-cn-name (substring (match-string 0 name) 0 -1))))
+    (setq my:cn-name (substring (match-string 0 name) 0 -1))))
 
-(defun my-font-size (name)
+(defun my:font-size (name)
   (string-to-number (car (last (split-string name)))))
 
-(defun my-frame-font (font-en-name font-cn-name)
+(defun my:frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
@@ -80,33 +80,33 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
           (set-fontset-font (frame-parameter nil 'font)
                             charset
-                            (font-spec :family (my-font-name font-cn-name)
-                                       :size   (my-font-size font-cn-name)))))
+                            (font-spec :family (my:font-name font-cn-name)
+                                       :size   (my:font-size font-cn-name)))))
 
-(defun my-console-font (font-console-name)
+(defun my:console-font (font-console-name)
   "my console font setting"
   (when (member font-console-name (font-family-list))
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
-(defun my-primary-x-font ()
+(defun my:primary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))
-   (my-frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))))
+   (my:frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))
+   (my:frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))))
 
-(defun my-secondary-x-font ()
+(defun my:secondary-x-font ()
   (interactive)
   (if-ms-windows
-   (my-frame-font (nth 1 my:en-font-list) (nth 1 my:cn-font-list))
-   (my-frame-font (nth 2 my:en-font-list) (nth 2 my:cn-font-list))))
+   (my:frame-font (nth 1 my:en-font-list) (nth 1 my:cn-font-list))
+   (my:frame-font (nth 2 my:en-font-list) (nth 2 my:cn-font-list))))
 
 ;;console font setting
 (if window-system
-    (my-primary-x-font)
-    (my-console-font (nth 0 my:cn-font-list)))
+    (my:primary-x-font)
+    (my:console-font (nth 0 my:cn-font-list)))
 
-(defun my-use-server-mode ()
+(defun my:use-server-mode ()
   ;;server-mode
   ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
   ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
@@ -131,7 +131,7 @@
   (message "start emacs server..."))
 
 (when-ms-windows
- (defun my-use-gnusvr ()
+ (defun my:use-gnusvr ()
    ;; start gnuserv on Windows
    (progn
      (require 'gnuserv)
@@ -144,9 +144,9 @@
 (if-ms-windows
  (let ((use-gnusvr-flag nil))
    (if use-gnusvr-flag
-       (my-use-gnusvr)
-       (my-use-server-mode)))
- (my-use-server-mode))
+       (my:use-gnusvr)
+       (my:use-server-mode)))
+ (my:use-server-mode))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")
@@ -222,7 +222,7 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun my-insert-time-stamp ()
+(defun my:insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
@@ -308,7 +308,7 @@
 (winner-mode t)
 
 ;;buffer name in title
-(defun my-fname-title-string ()
+(defun my:fname-title-string ()
   "Return the file name of current buffer, using ~ if under home directory"
   (let ((fname (or (buffer-file-name (current-buffer))
                    (buffer-name))))
@@ -318,7 +318,7 @@
 
 (setq frame-title-format
       '(:eval (concat (user-login-name) "@" (system-name) "[Emacs"
-                      (nth 2 (split-string (version))) "]  " (my-fname-title-string))))
+                      (nth 2 (split-string (version))) "]  " (my:fname-title-string))))
 
 ;suppress GUI features
 (setq use-file-dialog nil)
@@ -426,7 +426,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun my-undo-kill-buffer (arg)
+(defun my:undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -442,7 +442,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun my-recentf-open-files-compl ()
+(defun my:recentf-open-files-compl ()
   (interactive)
    (let* ((all-files recentf-list)
           (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))
@@ -458,7 +458,7 @@
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 ;;manpath
-(defun my-woman-at-point ()
+(defun my:woman-at-point ()
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))

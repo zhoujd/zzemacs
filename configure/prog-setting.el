@@ -19,7 +19,7 @@
   (load-file zz-dev-set-file))
 
 ;;generate temp-setting.el
-(defun my-create-file (fpath content)
+(defun my:create-file (fpath content)
   "Process the file at path FPATH ..."
   (let ((tmp-buf-name (file-name-nondirectory fpath)))
     (set-buffer (get-buffer-create tmp-buf-name))  
@@ -30,20 +30,20 @@
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
-(defconst my-temp-setting
+(defconst my:temp-template
   '(
     ";;;; temp-setting.el --- program temp file"
     ""
     ";; set project direcitory list"
-    "(setq proj-list"
+    "(setq my:proj-list"
     "      '("
     "        \"/usr/include\""
     "        \"/opt/intel/mediasdk/include\""
     "        ))"
     ""
     ";; create etags & cscope"
-    ";(create-proj-etags)"
-    ";(create-proj-cscope)"
+    ";(my:create-proj-etags)"
+    ";(my:create-proj-cscope)"
     ""
     ";; tags project setting"
     "(setq tags-table-list"
@@ -69,7 +69,7 @@
     ";(execute-set-key f4-p-map \"f\" \"firefox\" '(\"firefox\" \"http://www.baidu.com\"))"
     ))
 
-(defun my-temp-setting ()
+(defun my:temp-setting ()
   "Create ~/.emacs.d/temp-setting.el"
   (interactive)
   (let ((path zz-dev-set-file))
@@ -78,7 +78,7 @@
          (find-file path)
          (message "open %s successful." path))
         (progn
-         (my-create-file path my-temp-setting)
+         (my:create-file path my:temp-template)
          (message "create %s successful." path))
       )))
 
@@ -96,7 +96,7 @@
   (add-hook hook 'hs-minor-mode))
 
 
-(defun newline-indents ()
+(defun my:newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent)
   (local-set-key [ret] 'newline-and-indent))
@@ -113,7 +113,7 @@
            'perl-mode-hook
            'python-mode-hook
            'php-mode-hook))
-  (add-hook hook (function newline-indents)))
+  (add-hook hook (function my:newline-indents)))
 
 ;;sr-speedbar
 (require 'sr-speedbar)
@@ -138,77 +138,77 @@
 (require 'etags-stack)
 
 ;;make ctags
-(defun gen-ctags-cmd (dir-name)
+(defun my:gen-ctags-cmd (dir-name)
   (format "ctags %s -f %s/TAGS -e -R %s"
           dir-name (directory-file-name dir-name)))
 
-(defun create-ctags (dir-name)
+(defun my:create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (run-command-sort (gen-ctags-cmd dir-name)))
+  (run-command-sort (my:gen-ctags-cmd dir-name)))
 
 ;;make etags
-(setq my-find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
+(defvar my:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
 
-(defun gen-find-parts (my-file-name)
+(defun my:gen-find-parts (my-file-name)
   (setq my-find-parts "")
   (dolist (cell (split-string my-file-name))
     (setq my-find-parts (concat my-find-parts "-name \"" cell "\" -o ")))
   (setq my-find-parts (substring my-find-parts 0 -4)))
 
-;(setq  my-c/c++-file-regex
+;(setq  my:c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "
 ;              "-type f -name \"*.[hc]pp\" -print -or "
 ;              "-type f -name \"*.[hc]++\" -print -or "
 ;              "-type f -name \"*.[hc]xx\" -print "
 ;              ))
 
-(defun gen-etags-cmd (dir-name)
+(defun my:gen-etags-cmd (dir-name)
   (format "%s %s -type f \\( %s \\) -print | etags -"
           find-program
           dir-name
-          (gen-find-parts my-find-regex)))
+          (my:gen-find-parts my:find-regex)))
 
-(defun create-etags (dir-name)
+(defun my:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (run-command-sort (gen-etags-cmd dir-name)))
+  (run-command-sort (my:gen-etags-cmd dir-name)))
 
 ;;make cscope
 ; #!/bin/bash  
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
-(defun gen-cscope-cmd (dir-name)
+(defun my:gen-cscope-cmd (dir-name)
   (let ((files-path (concat default-directory "cscope.files")))
     (concat
      (format "%s %s -type f \\( %s \\) -print > %s;"
              find-program
              dir-name
-             (gen-find-parts my-find-regex)
+             (my:gen-find-parts my:find-regex)
              files-path)
      (format "cscope -b -R -i %s" files-path)
      )))
 
-(defun create-cscope (dir-name)
+(defun my:create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (run-command-sort (gen-cscope-cmd dir-name)))
+  (run-command-sort (my:gen-cscope-cmd dir-name)))
 
 ;;creast etags/cscope for multi project
-(defvar proj-list (list zzemacs-path) "project directory list")
-(defun gen-proj-find-path (proj-list)
+(defvar my:proj-list (list zzemacs-path) "project directory list")
+(defun my:gen-proj-find-path (my:proj-list)
   (setq proj-path-parts "")
-  (dolist (cell proj-list)
+  (dolist (cell my:proj-list)
     (setq proj-path-parts (concat proj-path-parts cell " ")))
   (setq proj-path-parts (substring proj-path-parts 0 -1)))
 
-(defun create-proj-etags ()
+(defun my:create-proj-etags ()
   (interactive)
-  (create-etags (gen-proj-find-path proj-list)))
+  (my:create-etags (my:gen-proj-find-path my:proj-list)))
 
-(defun create-proj-cscope ()
+(defun my:create-proj-cscope ()
   (interactive)
-  (create-cscope (gen-proj-find-path proj-list)))
+  (my:create-cscope (my:gen-proj-find-path my:proj-list)))
 
 ;;add  mode support
 (setq auto-mode-alist
@@ -245,12 +245,12 @@
 (add-hook 'sql-mode-hook 'font-lock-mode)
 
 ;;rgrep for c/c++
-(setq rgrep-c-file-regex "*.[hc]")
-(defun rgrep-c (term &optional dir)
+(defvar my:rgrep-c-file-regex "*.[hc]")
+(defun my:rgrep-c (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term rgrep-c-file-regex dir)))
+    (rgrep term my:rgrep-c-file-regex dir)))
 
 ;;javascript mode
 (require 'js2-mode)
@@ -266,7 +266,7 @@
               auto-mode-alist))
 
 ;;Add code review note
-(defun add-code-review-note ()
+(defun my:add-code-review-note ()
   "Add note for current file and line number"
   (interactive)
   (let ((file-name (buffer-file-name))

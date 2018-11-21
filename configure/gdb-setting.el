@@ -2,7 +2,7 @@
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 
-(defun gud-break-remove ()
+(defun my:gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
   (save-excursion
@@ -10,7 +10,7 @@
        (gud-remove nil)
        (gud-break nil))))
 
-(defun gud-kill ()
+(defun my:gud-kill ()
   "Kill gdb process."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))

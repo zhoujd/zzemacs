@@ -12,8 +12,8 @@
 (zz-load-path "elisp")
 (require 'apply-keys)
 
-(defvar zz/apps-key (if-ms-windows [apps] [menu])
-  "zz/apps-key")
+(defvar zz:apps-key (if-ms-windows [apps] [menu])
+  "zz:apps-key")
 
 (apply-keys-to-map
  key-translation-map
@@ -138,8 +138,8 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;zz/apps-key for M-x
-  zz/apps-key     'smex
+  ;;zz:apps-key for M-x
+  zz:apps-key     'smex
   (kbd "M-X")     'smex-major-mode-commands
   (kbd "C-x M-x") 'execute-extended-command
   ))

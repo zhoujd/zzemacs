@@ -32,7 +32,8 @@
   (setq cperl-indent-level 4)
   (setq cperl-continued-statement-offset 0)
   (setq cperl-extra-newline-before-brace t)
-  (define-key cperl-mode-map (kbd "C-c C-c") 'perl-eval-buffer))
+  (defkeys-map cperl-mode-map
+    ((kbd "C-c C-c") 'perl-eval-buffer)))
 
 (add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
 
@@ -47,7 +48,8 @@
 (require 'sepia)
 
 (defun my-sepia-mode-hook ()
-  (define-key sepia-mode-map [(tab)] 'sepia-indent-or-complete))
+  (defkeys-map sepia-mode-map
+    ([(tab)] 'sepia-indent-or-complete)))
 
 (add-hook 'sepia-mode-hook 'my-sepia-mode-hook t)
 

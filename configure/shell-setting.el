@@ -185,21 +185,22 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;key set for term
 (add-hook 'term-mode-hook
           (lambda ()
-            (define-key term-raw-map  (kbd "C-c C-j") 'term-line-mode)
-            (define-key term-raw-map  (kbd "C-c C-k") 'term-char-mode)
-            (define-key term-raw-map  (kbd "C-c C-q") 'term-pager-toggle)
-
-            (define-key term-raw-map  (kbd "C-c [")   'term-line-mode)
-            (define-key term-raw-map  (kbd "C-c ]")   'term-char-mode)
-            (define-key term-mode-map (kbd "C-c [")   'term-line-mode)
-            (define-key term-mode-map (kbd "C-c ]")   'term-char-mode)
-
-            (define-key term-raw-map  (kbd "C-c M-o") 'term-send-clear)
-            (define-key term-mode-map (kbd "C-c M-o") 'term-send-clear)
-
-            (define-key term-raw-map  (kbd "M-w")     'kill-ring-save-switch-to-char-mode)
-            (define-key term-mode-map (kbd "M-w")     'kill-ring-save-switch-to-char-mode)
-            ))
+            (defkeys-map term-raw-map
+              ((kbd "C-c C-j") 'term-line-mode)
+              ((kbd "C-c C-k") 'term-char-mode)
+              ((kbd "C-c C-q") 'term-pager-toggle)
+              
+              ((kbd "C-c [")   'term-line-mode)
+              ((kbd "C-c ]")   'term-char-mode)
+              ((kbd "C-c M-o") 'term-send-clear)
+              ((kbd "M-w")     'kill-ring-save-switch-to-char-mode))
+            
+            (defkeys-map term-mode-map
+              ((kbd "C-c [")   'term-line-mode)
+              ((kbd "C-c ]")   'term-char-mode)
+              ((kbd "C-c M-o") 'term-send-clear)
+              ((kbd "M-w")     'kill-ring-save-switch-to-char-mode)
+              )))
 
 (defun last-term-buffer (l)
   "Return most recently used term buffer."
@@ -340,7 +341,8 @@ Dmitriy Igrishin's patched version of comint.el."
      (setq comint-buffer-maximum-size old-max)))
 
 (defun my-comint-hook ()
-  (define-key comint-mode-map (kbd "C-c M-o") 'clear-input))
+  (defkeys-map comint-mode-map
+    ((kbd "C-c M-o") 'clear-input)))
 (add-hook 'comint-mode-hook 'my-comint-hook)
 
 (add-hook 'comint-output-filter-functions

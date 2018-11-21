@@ -67,8 +67,9 @@
 
 ;;redo+
 (require 'redo+)
-(global-set-key [M-S-backspace] 'redo)
-(global-set-key (kbd "C-?") 'redo)
+(defkeys-map global-map
+  ([M-S-backspace] 'redo)
+  ((kbd "C-?")     'redo))
 
 ;; space tab show
 ;(require 'jaspace)
@@ -97,13 +98,15 @@
 
 ;; Support for marking a rectangle of text with highlighting.
 (require 'rect-mark)
-(define-key ctl-x-map "r\C-@" 'rm-set-mark)
-(define-key ctl-x-map [?r ?\C-\ ] 'rm-set-mark)
-(define-key ctl-x-map "r\C-x" 'rm-exchange-point-and-mark)
-(define-key ctl-x-map "r\C-w" 'rm-kill-region)
-(define-key ctl-x-map "r\M-w" 'rm-kill-ring-save)
-(define-key ctl-x-map "r\C-y" 'yank-rectangle)
-(define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
+(defkeys-map ctl-x-map
+  ("r\C-@"     'rm-set-mark)
+  ([?r ?\C-\ ] 'rm-set-mark)
+  ("r\C-x"     'rm-exchange-point-and-mark)
+  ("r\C-w"     'rm-kill-region)
+  ("r\M-w"     'rm-kill-ring-save)
+  ("r\C-y"     'yank-rectangle))
+(defkeys-map global-map
+  ([S-down-mouse-1] 'rm-mouse-drag-region))
 
 (require 'fill-column-indicator)
 (setq fci-rule-color "gray30")

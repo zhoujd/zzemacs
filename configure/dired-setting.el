@@ -21,20 +21,20 @@
 
 ;;If you want Enter ↵ and ^ (parent dir) to use the same buffer
 ;;put the following in your emacs init file:
-;(define-key dired-mode-map (kbd "<return>") 'dired-find-alternate-file)
-;(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))
+(defkeys-map dired-mode-map
+  ((kbd "<return>") 'dired-find-alternate-file)
+  ((kbd "^")        (lambda () (interactive) (find-alternate-file ".."))))
 
 ;;http://www.emacswiki.org/emacs/w32-browser.el
 (when-ms-windows
   (require 'w32-browser)
   (eval-after-load "dired"
-    '(define-key dired-mode-map
-       (kbd "C-c C-e") (lambda ()
+    '(defkeys-map dired-mode-map
+       ((kbd "C-c C-e") (lambda ()
                          (interactive)
-                         (w32-browser
-                          (dired-replace-in-string
-                           "/" "\\"
-                           (dired-get-filename)))))))
+                         (w32-browser (dired-replace-in-string
+                                       "/" "\\"
+                                       (dired-get-filename))))))))
 
 ;;sort setting
 (add-hook 'dired-mode-hook
@@ -42,20 +42,18 @@
             (interactive)
             (make-local-variable  'dired-sort-map)
             (setq dired-sort-map (make-sparse-keymap))
-            (define-key dired-mode-map "s" dired-sort-map)
-            (define-key dired-sort-map "s"                ;; s s
-              (lambda () "sort by Size"
+            (defkeys-map dired-mode-map
+              ("s" dired-sort-map))
+            (defkeys-map dired-sort-map
+              ("s" (lambda () "sort by Size"      ;; s s
                       (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
-            (define-key dired-sort-map "x"                ;; s x
-              (lambda () "sort by eXtension"
+              ("x" (lambda () "sort by eXtension" ;; s x
                       (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
-            (define-key dired-sort-map "t"                ;; s t
-              (lambda () "sort by Time"
+              ("t" (lambda () "sort by Time"      ;; s t
                       (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
-            (define-key dired-sort-map "n"                ;; s n
-              (lambda () "sort by Name"
-                      (interactive) (dired-sort-other (concat dired-listing-switches ""))))
-            ))
+              ("n" (lambda () "sort by Name"      ;; s n
+                           (interactive) (dired-sort-other (concat dired-listing-switches ""))))
+              )))
 
 ;;dir first
 (defun sof/dired-sort ()
@@ -69,12 +67,6 @@
        (dired-insert-set-properties (point-min) (point-max)))
   (set-buffer-modified-p nil))
 (add-hook 'dired-after-readin-hook 'sof/dired-sort)
-
-;;filter files
-;(add-hook 'dired-mode-hook
-;          (lambda ()
-;            (interactive)
-;            (define-key dired-mode-map (kbd "/")  'dired-omit-expunge)))
 
 (setq dired-guess-shell-alist-user
       (list
@@ -99,7 +91,8 @@
 ;;Direx
 (require 'direx)
 (require 'direx-project)
-(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+(defkeys-map global-map
+  ((kbd "C-x C-j") 'direx:jump-to-directory))
 
 
 (zz-load-path "site-lisp/dired-hacks")
@@ -107,7 +100,8 @@
 
 (add-hook 'dired-mode-hook
           (lambda ()
-            (define-key dired-mode-map (kbd "/") dired-filter-map)
+            (defkeys-map dired-mode-map
+              ((kbd "/") dired-filter-map))
             ))
 
 

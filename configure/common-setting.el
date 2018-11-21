@@ -398,8 +398,9 @@
 
 (add-hook 'ido-minibuffer-setup-hook
           (lambda ()
-            (define-key ido-completion-map (kbd "M-n") 'ido-next-match)
-            (define-key ido-completion-map (kbd "M-p") 'ido-prev-match)))
+            (defkeys-map ido-completion-map
+              ((kbd "M-n") 'ido-next-match)
+              ((kbd "M-p") 'ido-prev-match))))
 
 ;;only auto spit windows
 (setq split-height-threshold 0)

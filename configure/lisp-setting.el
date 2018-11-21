@@ -65,7 +65,9 @@
 
 ;;my slime-repl-mode setting
 (defun my-slime-repl-mode-hook ()
-  (define-key slime-repl-mode-map (kbd "C-c ;") 'slime-insert-balanced-comments))
+  (defkeys-map slime-repl-mode-map
+    ((kbd "C-c ;") 'slime-insert-balanced-comments)
+    ))
 
 (add-hook 'slime-repl-mode-hook 'my-slime-repl-mode-hook)
 
@@ -83,10 +85,11 @@
 
 ;;adjust parens
 ;(require 'adjust-parens)
-;(add-hook 'lisp-mode-hook
-;          (lambda ()
-;            (define-key help-map (kbd "TAB") 'lisp-indent-adjust-parens)
-;            (define-key help-map (kbd "<backtab>") 'lisp-dedent-adjust-parens)))
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (defkeys help-map
+              ((kbd "TAB")       'lisp-indent-adjust-parens)
+              ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 
 ;;slime with auto-complete
 (defvar slime-ac-flag t "flag for slime with auto complete cowork")
@@ -117,10 +120,11 @@
 (zz-load-path "site-lisp/paredit")
 (require 'paredit)
 (eval-after-load 'paredit
-  '(progn
-    (define-key paredit-mode-map (kbd "M-s")      nil)
-    (define-key paredit-mode-map (kbd "<M-up>")   nil)
-    (define-key paredit-mode-map (kbd "<M-down>") nil)))
+                 '(progn
+                   (defkeys-map paredit-mode-map
+                     ((kbd "M-s")      nil)
+                     ((kbd "<M-up>")   nil)
+                     ((kbd "<M-down>") nil))))
 
 ;;Provide a face for parens in lisp modes
 (require 'parenface)

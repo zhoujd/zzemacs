@@ -27,17 +27,19 @@
 (require 'scheme-complete)
 (eval-after-load 'scheme
   '(progn
-    (define-key scheme-mode-map "\C-c=" 'geiser-mode)
-    (define-key scheme-mode-map "\t"    'scheme-complete-or-indent)
-    (define-key scheme-mode-map "\e\t"  'scheme-smart-complete)))
+    (defkeys-map scheme-mode-map
+      ("\C-c=" 'geiser-mode)
+      ("\t"    'scheme-complete-or-indent)
+      ("\e\t"  'scheme-smart-complete))))
 
 ;;IUScheme Setup
 (require 'iuscheme)
 (add-hook 'inferior-scheme-mode-hook
           (lambda ()
-            (define-key inferior-scheme-mode-map "\t"    'scheme-complete-or-indent)
-            (define-key inferior-scheme-mode-map "\e\t"  'scheme-smart-complete)
-            ))
+            (defkeys-map inferior-scheme-mode-map
+              ("\t"    'scheme-complete-or-indent)
+              ("\e\t"  'scheme-smart-complete)
+              )))
 
 ;;Balanced Setup
 ;(require 'balanced)
@@ -74,7 +76,8 @@
 (require 'racket-mode)
 (add-hook 'racket-mode-hook
           (lambda ()
-            (define-key racket-mode-map (kbd "C-c r") 'racket-run)))
+            (defkeys-map racket-mode-map
+              ((kbd "C-c r") 'racket-run))))
 
 
 (provide 'scheme-setting)

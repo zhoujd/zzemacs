@@ -41,7 +41,7 @@
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 
 ;;automatically_close_completions_in_emacs_shell_comint_mode.txt
-(defun comint-close-completions ()
+(defun my:comint-close-completions ()
   "Close the comint completions buffer.
 Used in advice to various comint functions to automatically close
 the completions buffer as soon as I'm done with it. Based on
@@ -52,43 +52,43 @@ Dmitriy Igrishin's patched version of comint.el."
         (setq comint-dynamic-list-completions-config nil))))
 
 (defadvice comint-send-input (after close-completions activate)
-  (comint-close-completions))
+  (my:comint-close-completions))
 
 (defadvice comint-dynamic-complete-as-filename (after close-completions activate)
-  (if ad-return-value (comint-close-completions)))
+  (if ad-return-value (my:comint-close-completions)))
 
 (defadvice comint-dynamic-simple-complete (after close-completions activate)
   (if (member ad-return-value '('sole 'shortest 'partial))
-      (comint-close-completions)))
+      (my:comint-close-completions)))
 
 (defadvice comint-dynamic-list-completions (after close-completions activate)
-    (comint-close-completions)
+    (my:comint-close-completions)
     (if (not unread-command-events)
         ;; comint's "Type space to flush" swallows space. put it back in.
         (setq unread-command-events (listify-key-sequence " "))))
 
-(defun kill-shell-buffer(process event)
+(defun my:kill-shell-buffer(process event)
   "The one actually kill shell buffer when exit. "
   (kill-buffer (process-buffer process)))
 
-(defun kill-shell-buffer-after-exit()
+(defun my:kill-shell-buffer-after-exit()
   "kill shell buffer when exit."
   (set-process-sentinel (get-buffer-process (current-buffer))
-                        #'kill-shell-buffer))
+                        #'my:kill-shell-buffer))
 
-(add-hook 'shell-mode-hook 'kill-shell-buffer-after-exit t)
+(add-hook 'shell-mode-hook 'my:kill-shell-buffer-after-exit t)
 
 ;;start shell prompt
-(defun start-shell (buf-name)
+(defun my:start-shell (buf-name)
   (interactive)
-  (switch-to-shell buf-name))
+  (my:switch-to-shell buf-name))
 
 ;;popup term
 (if-ms-windows
  (setq popup-terminal-command '("cmd" "/c" "start"))
  (setq popup-terminal-command '("urxvt")))
 
-(defun popup-term ()
+(defun my:popup-term ()
   (interactive)
   (apply 'start-process "terminal" nil popup-terminal-command))
 
@@ -97,7 +97,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (when-ms-windows
  (setq multi-shell-command "cmdproxy"))
 
-(defun get-local-shell ()
+(defun my:get-local-shell ()
   (interactive)
   (cond
     ;;((string-match "j[ap].*" (getenv "LANG"))
@@ -108,7 +108,7 @@ Dmitriy Igrishin's patched version of comint.el."
      (multi-shell-new))
     ))
 
-(defun get-local-curr-shell ()
+(defun my:get-local-curr-shell ()
   (interactive)
   (cond
     ;;((string-match "j[ap].*" (getenv "LANG"))
@@ -139,18 +139,18 @@ Dmitriy Igrishin's patched version of comint.el."
               (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
 
  ;;tmux prefix
- (defun term-send-tmux ()
+ (defun my:term-send-tmux ()
    "Use term-send-raw-string \"\C-b\" for tmux"
   (interactive)
   (term-send-raw-string "\C-b"))
- (add-to-list 'term-bind-key-alist '("C-c C-b" . term-send-tmux))
+ (add-to-list 'term-bind-key-alist '("C-c C-b" . my:term-send-tmux))
 
  ;;screen prefix
- (defun term-send-screen ()
+ (defun my:term-send-screen ()
    "Use term-send-raw-string \"\C-a\" for screen"
   (interactive)
   (term-send-raw-string "\C-a"))
- (add-to-list 'term-bind-key-alist '("C-c C-a" . term-send-screen))
+ (add-to-list 'term-bind-key-alist '("C-c C-a" . my:term-send-screen))
 
  ;;terminator setting
  (require 'terminator)
@@ -169,12 +169,12 @@ Dmitriy Igrishin's patched version of comint.el."
      ;; ensure that scrolling doesn't break on output
      (setq term-scroll-to-bottom-on-output t)))
 
-(defun term-send-clear ()
+(defun my:term-send-clear ()
   "Send ESC in term mode."
   (interactive)
   (term-send-raw-string "\C-l"))
 
-(defun kill-ring-save-switch-to-char-mode (b e)
+(defun my:kill-ring-save-switch-to-char-mode (b e)
   "In line-mode, M-w also switches back to char-mode and goes back to prompt."
   (interactive "r")
   (kill-ring-save b e t)
@@ -192,32 +192,32 @@ Dmitriy Igrishin's patched version of comint.el."
               
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
-              ((kbd "C-c M-o") 'term-send-clear)
-              ((kbd "M-w")     'kill-ring-save-switch-to-char-mode))
+              ((kbd "C-c M-o") 'my:term-send-clear)
+              ((kbd "M-w")     'my:kill-ring-save-switch-to-char-mode))
             
             (defkeys-map term-mode-map
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
-              ((kbd "C-c M-o") 'term-send-clear)
-              ((kbd "M-w")     'kill-ring-save-switch-to-char-mode)
+              ((kbd "C-c M-o") 'my:term-send-clear)
+              ((kbd "M-w")     'my:kill-ring-save-switch-to-char-mode)
               )))
 
-(defun last-term-buffer (l)
+(defun my:last-term-buffer (l)
   "Return most recently used term buffer."
   (when l
     (if (eq 'term-mode (with-current-buffer (car l) major-mode))
-        (car l) (last-term-buffer (cdr l)))))
+        (car l) (my:last-term-buffer (cdr l)))))
 
-(defun get-term ()
+(defun my:get-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
-  (let ((b (last-term-buffer (buffer-list))))
+  (let ((b (my:last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'term-mode major-mode))
         (multi-term)
         (switch-to-buffer b))))
 
-(defun it-multi-term-dedicated-toggle ()
+(defun my:multi-term-dedicated-toggle ()
   "jump back to previous location after toggling ded term off"
   (interactive)
   (if (multi-term-dedicated-exist-p)
@@ -230,8 +230,8 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;switch to named shell
 (setq multi-shell-buffer-name "shell")
-(defun my-shell-list ()
-  (setq my-shells ())
+(defun my:shell-list ()
+  (setq my:shells ())
   (dolist (b (buffer-list))
     (if (or (string-match
              (format "^\\\*%s\\\*$" "shell")
@@ -249,26 +249,26 @@ Dmitriy Igrishin's patched version of comint.el."
              (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
              (buffer-name b)))
       (progn
-        (setq my-shells (cons  (buffer-name b) my-shells)))))
+        (setq my:shells (cons  (buffer-name b) my:shells)))))
   (catch 'return
-    (throw 'return my-shells)))
+    (throw 'return my:shells)))
 
 ;;mulit linux index
 (when-ms-windows
  (defvar multi-linux-index 0 "multi shell index")
  (defvar multi-linux-max 20 "multi shell max index")
  (defvar multi-linux-name multi-shell-buffer-name "multi shell index")
- (defun get-linux-shell ()
+ (defun my:get-linux-shell ()
    (interactive)
-   (switch-to-shell
+   (my:switch-to-shell
     (format "*%s-%d*" multi-linux-name multi-linux-index))
    (if (>= multi-linux-index multi-linux-max)
        (setq multi-linux-index 0)
-       (setq multi-linux-index (1+ multi-linux-index))))
- )
+       (setq multi-linux-index (1+ multi-linux-index))
+     )))
 
 ;; shell on windows
-(defvar linux-bash-p t "when open shell on windows using bash flag")
+(defvar my:linux-bash-p t "when open shell on windows using bash flag")
 
 ;; default login_shelll for linux
 (unless-ms-windows
@@ -278,21 +278,21 @@ Dmitriy Igrishin's patched version of comint.el."
  (setq explicit-shell-file-name "bash"))
 
 ;; create shell buffer
-(defun my-create-shell-buffer (buf-name)
+(defun my:create-shell-buffer (buf-name)
   (save-window-excursion
    (shell buf-name))
   (switch-to-buffer buf-name))
 
 ;; switch to shell
-(defun switch-to-shell (buf-name)
+(defun my:switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Shell name: " (my-shell-list))))
+  (interactive (list (ido-completing-read "Shell name: " (my:shell-list))))
   (if (get-buffer buf-name)
       (progn
         (switch-to-buffer buf-name))
       (progn
         (if-ms-windows
-         (if linux-bash-p
+         (if my:linux-bash-p
              (progn
               (with-utf-8-env
                (let ((shell-file-name "bash")
@@ -300,30 +300,30 @@ Dmitriy Igrishin's patched version of comint.el."
                      (explicit-bash-args '("--login" "-i"))
                      (explicit-shell-file-name "bash"))
                  (setenv "SHELL" shell-file-name)
-                 (my-create-shell-buffer buf-name)
+                 (my:create-shell-buffer buf-name)
                  )))
              (progn
-              (my-create-shell-buffer buf-name)))
+              (my:create-shell-buffer buf-name)))
          (progn
-          (my-create-shell-buffer buf-name))
+          (my:create-shell-buffer buf-name))
           )))
   (message "switch to %s" buf-name))
 
 ;; switch to named term
-(defun my-term-list ()
-  (setq my-terms ())
+(defun my:term-list ()
+  (setq my:terms ())
   (dolist (b (buffer-list))
     (if (string-match
          (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
          (buffer-name b))
       (progn
-        (setq my-terms (cons  (buffer-name b) my-terms)))))
+        (setq my:terms (cons  (buffer-name b) my:terms)))))
   (catch 'return
-    (throw 'return my-terms)))
+    (throw 'return my:terms)))
 
-(defun switch-to-term (buf-name)
+(defun my:switch-to-term (buf-name)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Term name: " (my-term-list))))
+  (interactive (list (ido-completing-read "Term name: " (my:term-list))))
   (if (get-buffer buf-name)
       (progn
         (switch-to-buffer buf-name)
@@ -333,17 +333,17 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;http://www.docs.uu.se/~mic/emacs.html
 (require 'shell-toggle)
 
-(defun clear-input ()
+(defun my:clear-input ()
    (interactive)
    (let ((old-max comint-buffer-maximum-size))
      (setq comint-buffer-maximum-size 0)
      (comint-truncate-buffer)
      (setq comint-buffer-maximum-size old-max)))
 
-(defun my-comint-hook ()
+(defun my:comint-hook ()
   (defkeys-map comint-mode-map
-    ((kbd "C-c M-o") 'clear-input)))
-(add-hook 'comint-mode-hook 'my-comint-hook)
+    ((kbd "C-c M-o") 'my:clear-input)))
+(add-hook 'comint-mode-hook 'my:comint-hook)
 
 (add-hook 'comint-output-filter-functions
           'comint-watch-for-password-prompt nil t)
@@ -366,7 +366,7 @@ Dmitriy Igrishin's patched version of comint.el."
                 (eshell/pwd) " % ")))
 
 ;;M-x cd /hostname:/current/path/in/the/shell
-(defun remote-shell (&optional host)
+(defun my:remote-shell (&optional host)
   "Open a remote shell to a host."
   (interactive)
   (with-temp-buffer
@@ -375,7 +375,7 @@ Dmitriy Igrishin's patched version of comint.el."
       (shell (concat "*shell-r:" host "*"))
       )))
 
-(defun local-shell (&optional dir)
+(defun my:local-shell (&optional dir)
   "Open a remote shell to a host."
   (interactive)
   (with-temp-buffer
@@ -384,7 +384,7 @@ Dmitriy Igrishin's patched version of comint.el."
       (shell (concat "*shell-l:" dir "*"))
       )))
 
-(defun shell-directory (name dir)
+(defun my:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")
   (let ((default-directory dir))
     (shell name)))

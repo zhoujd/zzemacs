@@ -8,7 +8,7 @@
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 
 ;;eval buffer by perl
-(defun perl-eval-buffer ()
+(defun my:perl-eval-buffer ()
   "run perl on buffer"
   (interactive)
   (let ((filename buffer-file-name)
@@ -27,15 +27,15 @@
     (message "%s  ..." cmd)
     (shell-command cmd)))
 
-(defun my-cperl-mode-hook ()
+(defun my:cperl-mode-hook ()
   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
   (setq cperl-indent-level 4)
   (setq cperl-continued-statement-offset 0)
   (setq cperl-extra-newline-before-brace t)
   (defkeys-map cperl-mode-map
-    ((kbd "C-c C-c") 'perl-eval-buffer)))
+    ((kbd "C-c C-c") 'my:perl-eval-buffer)))
 
-(add-hook 'cperl-mode-hook 'my-cperl-mode-hook t)
+(add-hook 'cperl-mode-hook 'my:cperl-mode-hook t)
 
 ;;perl sepia settings
 ;;http://cpansearch.perl.org/src/SEANO/Sepia-0.97/Sepia.html
@@ -47,11 +47,11 @@
 (defalias 'run-perl  'sepia-repl)
 (require 'sepia)
 
-(defun my-sepia-mode-hook ()
+(defun my:sepia-mode-hook ()
   (defkeys-map sepia-mode-map
     ([(tab)] 'sepia-indent-or-complete)))
 
-(add-hook 'sepia-mode-hook 'my-sepia-mode-hook t)
+(add-hook 'sepia-mode-hook 'my:sepia-mode-hook t)
 
 ;;perl completing
 (add-hook  'cperl-mode-hook

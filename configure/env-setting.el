@@ -2,7 +2,7 @@
 ;;
 
 ;;add path to PATH
-(defun zz-add-os-path (path)
+(defun my:add-os-path (path)
   (interactive "DDirectory: ")
   (when (file-exists-p path)
     (unless (string-match path (getenv "PATH"))
@@ -10,7 +10,7 @@
       (setq exec-path (cons path exec-path)))))
 
 ;;add path to LD_LIBRARY_PATH
-(defun zz-add-lib-path (path)
+(defun my:add-lib-path (path)
   (interactive "DDirectory: ")
   (when (file-exists-p path)
     (unless (string-match path (getenv "LD_LIBRARY_PATH"))
@@ -19,7 +19,7 @@
                                         (getenv "LD_LIBRARY_PATH"))))))
 
 ;;add path for excute files
-(defvar my-env-path
+(defvar my:env-path
   (if-ms-windows
    (progn
     (list
@@ -41,7 +41,7 @@
      )))
   "add to path and exec-path")
 
-(mapc #'zz-add-os-path my-env-path)
+(mapc #'my:add-os-path my:env-path)
 
 (provide 'env-setting)
 

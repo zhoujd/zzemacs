@@ -63,7 +63,7 @@
     )
 
 (define-fn-key (gethash "f3" fn-key-table)
-    [f3]              'my-last-buffer-go
+    [f3]              'my:last-buffer-go
     [S-f3]            'bookmark-bmenu-list
     [C-f3]            'bc-local-next
     [M-f3]            'bc-local-previous
@@ -90,17 +90,17 @@
     )
 
 (define-fn-key (gethash "f6" fn-key-table)
-    [f6]              (if-ms-windows 'get-local-shell 'get-term)
-    [S-f6]            (if-ms-windows 'get-local-curr-shell 'multi-term-dedicated-toggle)
+    [f6]              (if-ms-windows 'my:get-local-shell 'my:get-term)
+    [S-f6]            (if-ms-windows 'my:get-local-curr-shell 'multi-term-dedicated-toggle)
     [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-    (kbd "C-x <f6>")  (if-ms-windows 'switch-to-shell 'switch-to-term)
-    (kbd "C-c <f6>")  (if-ms-windows 'get-local-shell 'ansi-term)
+    (kbd "C-x <f6>")  (if-ms-windows 'my:switch-to-shell 'my:switch-to-term)
+    (kbd "C-c <f6>")  (if-ms-windows 'my:get-local-shell 'ansi-term)
     )
 
 (define-fn-key (gethash "f7" fn-key-table)
     [f7]              'compile
-    [S-f7]            'switch-to-compilation
+    [S-f7]            'my:switch-to-compilation
     [C-f7]            'next-error
     [M-f7]            'previous-error
     (kbd "C-x <f7>")  'toggle-case-fold-search
@@ -117,12 +117,12 @@
     )
 
 (define-fn-key (gethash "f9" fn-key-table)
-    [f9]              (lambda () (interactive) (start-shell "*shell*"))
-    [S-f9]            (if-ms-windows 'get-linux-shell 'get-local-shell)
-    [C-f9]            'switch-to-scratch
-    [M-f9]            'popup-term
-    (kbd "C-x <f9>")  'switch-to-shell
-    (kbd "C-c <f9>")  (if-ms-windows 'eshell 'remote-shell)
+    [f9]              (lambda () (interactive) (my:start-shell "*shell*"))
+    [S-f9]            (if-ms-windows 'my:get-linux-shell 'my:get-local-shell)
+    [C-f9]            'my:switch-to-scratch
+    [M-f9]            'my:popup-term
+    (kbd "C-x <f9>")  'my:switch-to-shell
+    (kbd "C-c <f9>")  (if-ms-windows 'eshell 'my:remote-shell)
     )
 
 (define-fn-key (gethash "f10" fn-key-table)

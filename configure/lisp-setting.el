@@ -64,12 +64,12 @@
 (setq slime-startup-animation nil)
 
 ;;my slime-repl-mode setting
-(defun my-slime-repl-mode-hook ()
+(defun my:slime-repl-mode-hook ()
   (defkeys-map slime-repl-mode-map
     ((kbd "C-c ;") 'slime-insert-balanced-comments)
     ))
 
-(add-hook 'slime-repl-mode-hook 'my-slime-repl-mode-hook)
+(add-hook 'slime-repl-mode-hook 'my:slime-repl-mode-hook)
 
 ;;hpperspec.el
 (require 'hyperspec)
@@ -138,7 +138,7 @@
          (setq bridge-source-insert nil) ;Don't insert in source buffer
          (setq bridge-destination-insert nil) ;Don't insert in dest buffer
          ;; Handle copy-it messages yourself
-         (setq bridge-handlers '(("copy-it" . my-copy-handler)))))
+         (setq bridge-handlers '(("copy-it" . my:copy-handler)))))
 
 ;;elisp function help
 (require 'find-func)

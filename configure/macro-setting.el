@@ -64,7 +64,7 @@
 
 ;;start shell
 (defmacro start-quick-shell (name)
-  `(lambda () (interactive) (start-shell ,name)))
+  `(lambda () (interactive) (my:start-shell ,name)))
 
 ;;switch term
 (defmacro switch-quick-buffer (name)

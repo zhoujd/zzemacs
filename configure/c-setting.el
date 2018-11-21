@@ -134,7 +134,7 @@
                ))
 
 ;; my c setting hook
-(defun my-c-mode-common-hook()
+(defun my:c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
     ((kbd "M-o")     'eassist-switch-h-cpp)
@@ -148,22 +148,22 @@
   (abbrev-mode t)
   (hide-ifdef-mode t))
 
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+(add-hook 'c-mode-common-hook 'my:c-mode-common-hook)
 
 ;; my c setting
-(defun my-c-mode-hook()
+(defun my:c-mode-hook()
   (c-set-style "ffmpeg"))
 
-(add-hook 'c-mode-hook 'my-c-mode-hook)
+(add-hook 'c-mode-hook 'my:c-mode-hook)
 
 ;; my c++ setting
-(defun my-c++-mode-hook()
+(defun my:c++-mode-hook()
   (c-set-style "stroustrup"))
 
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+(add-hook 'c++-mode-hook 'my:c++-mode-hook)
 
 ;; switch c and c++ mode
-(defun c-c++-toggle ()
+(defun my:c-c++-toggle ()
   "toggles between c-mode and c++-mode"
   (interactive)
   (cond ((string= major-mode "c-mode")

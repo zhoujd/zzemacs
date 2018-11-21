@@ -41,7 +41,7 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
                   
-  (kbd "`")       'switch-to-term
+  (kbd "`")       'my:switch-to-term
   (kbd "1")       (switch-quick-buffer "*terminal<1>*")
   (kbd "2")       (switch-quick-buffer "*terminal<2>*")
   (kbd "3")       (switch-quick-buffer "*terminal<3>*")
@@ -56,7 +56,7 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "M-] `")   'switch-to-shell
+  (kbd "M-] `")   'my:switch-to-shell
   (kbd "M-] 1")   (switch-quick-buffer "*shell<1>*")
   (kbd "M-] 2")   (switch-quick-buffer "*shell<2>*")
   (kbd "M-] 3")   (switch-quick-buffer "*shell<3>*")
@@ -206,7 +206,7 @@
   [(tab)]         (lookup-key global-map [(control tab)])
                 
   (kbd "h")       'common-lisp-hyperspec
-  (kbd "i")       'open-info-file
+  (kbd "i")       'my:open-info-file
   ))
 
 (apply-keys-to-map
@@ -246,7 +246,7 @@
   (kbd "C-l")     'command-history
   (kbd "C-r")     'my:add-code-review-note
   (kbd "C-s")     (if-not-ms-windows 'slime-connect-stumpwm)
-  (kbd "C-t")     (unless-ms-windows 'open-with-terminal)
+  (kbd "C-t")     (unless-ms-windows 'my:open-with-terminal)
                   
   (kbd "C-f")     'my:secondary-x-font
   (kbd "M-f")     'my:primary-x-font

@@ -31,8 +31,8 @@
   (eval-after-load "dired"
     '(defkeys-map dired-mode-map
        ((kbd "C-c C-e") (lambda ()
-                         (interactive)
-                         (w32-browser (dired-replace-in-string
+                          (interactive)
+                          (w32-browser (dired-replace-in-string
                                        "/" "\\"
                                        (dired-get-filename))))))))
 
@@ -45,14 +45,18 @@
             (defkeys-map dired-mode-map
               ("s" dired-sort-map))
             (defkeys-map dired-sort-map
-              ("s" (lambda () "sort by Size"      ;; s s
-                      (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
-              ("x" (lambda () "sort by eXtension" ;; s x
-                      (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
-              ("t" (lambda () "sort by Time"      ;; s t
-                      (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
-              ("n" (lambda () "sort by Name"      ;; s n
-                      (interactive) (dired-sort-other (concat dired-listing-switches ""))))
+              ("s" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
+              ("x" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
+              ("t" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
+              ("n" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches ""))))
+              ("g" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches "G"))))
+              ("h" (lambda ()
+                     (interactive) (dired-sort-other (concat dired-listing-switches "h"))))
               )))
 
 ;;dir first

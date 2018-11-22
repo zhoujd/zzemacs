@@ -41,9 +41,9 @@
     "                     ))"
     ""
     ";; tags project setting"
-    "(setq tags-table-list ("
-    "                       \"~/work/tag\""
-    "                       ))"
+    "(setq tags-table-list '("
+    "                        \"~/work/tag\""
+    "                        ))"
     ""
     ";; cscope project setting"
     "(setq cscope-initial-directory \"~/work/tag\")"
@@ -66,7 +66,7 @@
     ";(execute-set-key f4-p-map \"f\" \"firefox\" '(\"firefox\" \"http://www.baidu.com\"))"
     ))
 
-(defun my:temp-create ()
+(defun my:temp-setting ()
   "Create ~/.emacs.d/temp-setting.el"
   (interactive)
   (let ((path my:dev-set-file))

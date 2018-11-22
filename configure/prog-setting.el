@@ -12,11 +12,11 @@
 (setq grep-find-use-xargs t)
 
 ;;develop setting for tags path etc.
-(defvar zz-dev-set-file (format "%s/.emacs.d/temp-setting.el"
+(defvar my:dev-set-file (format "%s/.emacs.d/temp-setting.el"
                                 (getenv "HOME"))
   "temp project setting")
-(when (file-exists-p zz-dev-set-file)
-  (load-file zz-dev-set-file))
+(when (file-exists-p my:dev-set-file)
+  (load-file my:dev-set-file))
 
 ;;generate temp-setting.el
 (defun my:create-file (fpath content)
@@ -35,25 +35,22 @@
     ";;;; temp-setting.el --- program temp file"
     ""
     ";; set project direcitory list"
-    "(setq my:proj-list"
-    "      '("
-    "        \"/usr/include\""
-    "        \"/opt/intel/mediasdk/include\""
-    "        ))"
+    "(setq my:proj-list '("
+    "                     \"/usr/include\""
+    "                     \"/opt/zach/include\""
+    "                     ))"
+    ""
+    ";; tags project setting"
+    "(setq tags-table-list ("
+    "                       \"~/work/tag\""
+    "                       ))"
+    ""
+    ";; cscope project setting"
+    "(setq cscope-initial-directory \"~/work/tag\")"
     ""
     ";; create etags & cscope"
     ";(my:create-proj-etags)"
     ";(my:create-proj-cscope)"
-    ""
-    ";; tags project setting"
-    "(setq tags-table-list"
-    "      '("
-    "        \"~/work/tag\""
-    "        ))"
-    ""
-    ";; cscope project setting"
-    "(setq cscope-initial-directory"
-    "      \"~/work/tag\")"
     ""
     "(mapc #'my:add-os-path"
     "      '("
@@ -69,10 +66,10 @@
     ";(execute-set-key f4-p-map \"f\" \"firefox\" '(\"firefox\" \"http://www.baidu.com\"))"
     ))
 
-(defun my:temp-setting ()
+(defun my:temp-create ()
   "Create ~/.emacs.d/temp-setting.el"
   (interactive)
-  (let ((path zz-dev-set-file))
+  (let ((path my:dev-set-file))
     (if (file-exists-p path)
         (progn
          (find-file path)
@@ -81,6 +78,15 @@
          (my:create-file path my:temp-template)
          (message "create %s successful." path))
       )))
+
+(defun my:temp-delete ()
+  "delte ~/.emacs.d/temp-setting.el"
+  (interactive)
+  (let ((path my:dev-set-file))
+    (when (file-exists-p path)
+      (delete-file path)
+      (message "delete %s successful." path))
+      ))
 
 ;; holding
 (require 'hideshow)

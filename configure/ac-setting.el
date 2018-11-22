@@ -13,18 +13,7 @@
 (set-face-underline  'ac-candidate-face "darkgray")
 (set-face-background 'ac-selection-face "steelblue")
 
-;; yasnippet show complete with  auto-complete
-(defun ac-yasnippet-candidate ()
-  (let ((table (yas/get-snippet-tables major-mode)))
-    (if table
-      (let (candidates (list))
-            (mapcar (lambda (mode)
-                      (maphash (lambda (key value)
-                                 (push key candidates))
-                               (yas/snippet-table-hash mode)))
-                    table)
-            (all-completions ac-prefix candidates)))))
-
+(setq ac-source-yasnippet nil)
 
 (provide 'ac-setting)
 

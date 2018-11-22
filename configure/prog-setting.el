@@ -132,14 +132,6 @@
 
 ;;load the etags-select.el source code
 (require 'etags-select)
-(defun etags-select-get-tag-files ()
-  "Get tag files."
-  (if etags-select-use-xemacs-etags-p
-      (buffer-tag-table-list)
-    (mapcar 'tags-expand-table-name tags-table-list)
-    (tags-table-check-computed-list)
-    tags-table-computed-list))
-
 (require 'etags-table)
 (require 'etags-stack)
 
@@ -162,7 +154,7 @@
     (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
   (setq my:find-parts (substring my:find-parts 0 -4)))
 
-;(setq  my:c/c++-file-regex
+;(setq my:c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "
 ;              "-type f -name \"*.[hc]pp\" -print -or "
 ;              "-type f -name \"*.[hc]++\" -print -or "
@@ -203,10 +195,10 @@
 ;;creast etags/cscope for multi project
 (defvar my:proj-list (list zzemacs-path) "project directory list")
 (defun my:gen-proj-find-path (my:proj-list)
-  (setq proj-path-parts "")
+  (setq my:proj-path-parts "")
   (dolist (cell my:proj-list)
-    (setq proj-path-parts (concat proj-path-parts cell " ")))
-  (setq proj-path-parts (substring proj-path-parts 0 -1)))
+    (setq my:proj-path-parts (concat my:proj-path-parts cell " ")))
+  (setq my:proj-path-parts (substring my:proj-path-parts 0 -1)))
 
 (defun my:create-proj-etags ()
   (interactive)

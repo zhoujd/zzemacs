@@ -12,8 +12,8 @@
 (zz-load-path "elisp")
 (require 'apply-keys)
 
-(defvar zz:apps-key (if-ms-windows [apps] [menu])
-  "zz:apps-key")
+(defvar zz-apps-key (if-ms-windows [apps] [menu])
+  "zz-apps-key")
 
 (apply-keys-to-map
  key-translation-map
@@ -138,8 +138,8 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;zz:apps-key for M-x
-  zz:apps-key     'smex
+  ;;zz-apps-key for M-x
+  zz-apps-key     'smex
   (kbd "M-X")     'smex-major-mode-commands
   (kbd "C-x M-x") 'execute-extended-command
   ))
@@ -154,63 +154,8 @@
   [right]         (lookup-key global-map [M-right])
   ))
 
-;;number 0-1/-/=
 (apply-keys-to-map
- zz:meta-map
- (list
-  (kbd "1")       (lookup-key global-map (kbd "M-1"))
-  (kbd "2")       (lookup-key global-map (kbd "M-2"))
-  (kbd "3")       (lookup-key global-map (kbd "M-3"))
-  (kbd "4")       (lookup-key global-map (kbd "M-4"))
-  (kbd "5")       (lookup-key global-map (kbd "M-5"))
-  (kbd "6")       (lookup-key global-map (kbd "M-6"))
-  (kbd "7")       (lookup-key global-map (kbd "M-7"))
-  (kbd "8")       (lookup-key global-map (kbd "M-8"))
-  (kbd "9")       (lookup-key global-map (kbd "M-9"))
-  (kbd "0")       (lookup-key global-map (kbd "M-0"))
-  (kbd "-")       (lookup-key global-map (kbd "M--"))
-  (kbd "=")       (lookup-key global-map (kbd "M-="))
-                  
-  ;;find-replace  
-  (kbd "#")       (lookup-key global-map (kbd "M-#"))
-
-  ;;quick move other windows
-  [up]            (lookup-key global-map [M-up])
-  [down]          (lookup-key global-map [M-down])
-  [left]          (lookup-key global-map [M-left])
-  [right]         (lookup-key global-map [M-right])
-  ))
-
-(apply-keys-to-map
- zz:ctrl-map
- (list
-  (kbd "`")       (lookup-key global-map (kbd "C-`"))
-  (kbd "1")       (lookup-key global-map (kbd "C-1"))
-  (kbd "2")       (lookup-key global-map (kbd "C-2"))
-  (kbd "3")       (lookup-key global-map (kbd "C-3"))
-  (kbd "4")       (lookup-key global-map (kbd "C-4"))
-  (kbd "5")       (lookup-key global-map (kbd "C-5"))
-  (kbd "6")       (lookup-key global-map (kbd "C-6"))
-  (kbd "7")       (lookup-key global-map (kbd "C-7"))
-  (kbd "8")       (lookup-key global-map (kbd "C-8"))
-  (kbd "9")       (lookup-key global-map (kbd "C-9"))
-  (kbd "0")       (lookup-key global-map (kbd "C-0"))
-  (kbd "-")       (lookup-key global-map (kbd "C--"))
-  (kbd "=")       (lookup-key global-map (kbd "C-="))
-
-  ;;winner restore
-  (kbd ",")       (lookup-key global-map (kbd "C-,"))
-  (kbd ".")       (lookup-key global-map (kbd "C-."))
-
-  ;;Control tab quotes a tab => "\C-q\t"
-  [(tab)]         (lookup-key global-map [(control tab)])
-                
-  (kbd "h")       'common-lisp-hyperspec
-  (kbd "i")       'my:open-info-file
-  ))
-
-(apply-keys-to-map
- zz:shift-fn-map
+ shift-fn-map
  (list
   ;;window size change
   [up]            (lookup-key global-map [S-up])

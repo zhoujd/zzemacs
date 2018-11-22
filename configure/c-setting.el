@@ -9,6 +9,9 @@
 
 ;;https://github.com/dkogan/xcscope.el
 (require 'xcscope)
+(setq cscope-option-use-inverted-index t
+      cscope-close-window-after-select t)
+
 (cscope-setup)
 
 ;;gtags global

@@ -184,7 +184,7 @@
              dir-name
              (my:gen-find-parts my:find-regex)
              files-path)
-     (format "cscope -b -R -i %s" files-path)
+     (format "cscope -b -R -q -i %s" files-path)
      )))
 
 (defun my:create-cscope (dir-name)

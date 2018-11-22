@@ -52,7 +52,7 @@
               ("t" (lambda () "sort by Time"      ;; s t
                       (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
               ("n" (lambda () "sort by Name"      ;; s n
-                           (interactive) (dired-sort-other (concat dired-listing-switches ""))))
+                      (interactive) (dired-sort-other (concat dired-listing-switches ""))))
               )))
 
 ;;dir first

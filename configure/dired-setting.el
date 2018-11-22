@@ -36,31 +36,30 @@
                                        "/" "\\"
                                        (dired-get-filename))))))))
 
-;;sort setting
+;;start slime
+(defmacro dired-sort (name switch)
+  `(defun ,name ()
+     (interactive)
+     (dired-sort-other (concat dired-listing-switches ,switch))))
+
 (add-hook 'dired-mode-hook
           (lambda ()
             (interactive)
             (make-local-variable  'dired-sort-map)
             (setq dired-sort-map (make-sparse-keymap))
             (defkeys-map dired-mode-map
-              ("s" dired-sort-map))
+              ("s"   dired-sort-map))            
             (defkeys-map dired-sort-map
-              ("s" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches "S"))))
-              ("x" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches "X"))))
-              ("t" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches "t"))))
-              ("n" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches ""))))
-              ("g" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches "G"))))
-              ("h" (lambda ()
-                     (interactive) (dired-sort-other (concat dired-listing-switches "h"))))
+              ("s"   (dired-sort my:dired-sort-size     "S"))
+              ("x"   (dired-sort my:dired-sort-extend   "X"))
+              ("t"   (dired-sort my:dired-sort-time     "t"))
+              ("n"   (dired-sort my:dired-sort-name     ""))
+              ("g"   (dired-sort my:dired-sort-no-group "G"))
+              ("h"   (dired-sort my:dired-sort-human    "h"))
               )))
 
 ;;dir first
-(defun my:dired-sort ()
+(defun my:dired-dir-first ()
   "Dired sort hook to list directories first."
   (save-excursion
     (let (buffer-read-only)
@@ -70,7 +69,7 @@
        (fboundp 'dired-insert-set-properties)
        (dired-insert-set-properties (point-min) (point-max)))
   (set-buffer-modified-p nil))
-(add-hook 'dired-after-readin-hook 'my:dired-sort)
+(add-hook 'dired-after-readin-hook 'my:dired-dir-first)
 
 (setq dired-guess-shell-alist-user
       (list

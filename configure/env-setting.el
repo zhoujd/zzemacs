@@ -1,22 +1,28 @@
 ;;;; env-setting.el --- env config file
 ;;
 
+;;add path to env name
+(defun my:add-os-env (path name)
+  (when (file-exists-p path)
+    (unless (string-match path (getenv name))
+      (setenv name (concat path path-separator (getenv name)))
+      )))
+
 ;;add path to PATH
 (defun my:add-os-path (path)
   (interactive "DDirectory: ")
-  (when (file-exists-p path)
-    (unless (string-match path (getenv "PATH"))
-      (setenv "PATH" (concat path path-separator (getenv "PATH")))
-      (setq exec-path (cons path exec-path)))))
+  (my:add-os-env path "PATH")
+  (setq exec-path (cons path exec-path)))
 
 ;;add path to LD_LIBRARY_PATH
 (defun my:add-lib-path (path)
   (interactive "DDirectory: ")
-  (when (file-exists-p path)
-    (unless (string-match path (getenv "LD_LIBRARY_PATH"))
-      (setenv "LD_LIBRARY_PATH" (concat path
-                                        path-separator
-                                        (getenv "LD_LIBRARY_PATH"))))))
+  (my:add-os-env path "LD_LIBRARY_PATH"))
+
+;;add path to PKG_CONFIG_PATH
+(defun my:add-pkg-path (path)
+  (interactive "DDirectory: ")
+  (my:add-os-env path "PKG_CONFIG_PATH"))
 
 ;;add path for excute files
 (defvar my:env-path

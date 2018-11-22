@@ -2115,7 +2115,7 @@ overrides the current directory, which would otherwise be used."
   (interactive)
   (cscope-cleanup-overlay-arrow)
   (bury-buffer)
-  (delete-other-windows))
+  (delete-window))
 
 
 

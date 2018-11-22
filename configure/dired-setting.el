@@ -36,12 +36,6 @@
                                        "/" "\\"
                                        (dired-get-filename))))))))
 
-;;start slime
-(defmacro dired-sort (name switch)
-  `(defun ,name ()
-     (interactive)
-     (dired-sort-other (concat dired-listing-switches ,switch))))
-
 (add-hook 'dired-mode-hook
           (lambda ()
             (interactive)

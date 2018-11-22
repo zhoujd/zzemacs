@@ -64,7 +64,9 @@
 
 ;;start shell
 (defmacro start-quick-shell (name)
-  `(lambda () (interactive) (my:start-shell ,name)))
+  `(lambda ()
+     (interactive)
+     (my:start-shell ,name)))
 
 ;;switch term
 (defmacro switch-quick-buffer (name)
@@ -75,10 +77,17 @@
          (message "%s is not exist" ,name))))
 
 ;;start slime
-(defmacro defslime-start (name lisp)
- `(defun ,name ()
+(defmacro defslime-start (fn-name lisp)
+ `(defun ,fn-name ()
      (interactive)
      (slime ,lisp)))
+
+;;dired sort
+(defmacro dired-sort (fn-name switch)
+  `(defun ,fn-name ()
+     (interactive)
+     (dired-sort-other (concat dired-listing-switches ,switch))))
+
 
 (provide 'macro-setting)
 

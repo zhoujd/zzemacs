@@ -156,7 +156,7 @@
 
 ;;number 0-1/-/=
 (apply-keys-to-map
- zz/meta-map
+ zz:meta-map
  (list
   (kbd "1")       (lookup-key global-map (kbd "M-1"))
   (kbd "2")       (lookup-key global-map (kbd "M-2"))
@@ -182,7 +182,7 @@
   ))
 
 (apply-keys-to-map
- zz/ctrl-map
+ zz:ctrl-map
  (list
   (kbd "`")       (lookup-key global-map (kbd "C-`"))
   (kbd "1")       (lookup-key global-map (kbd "C-1"))
@@ -210,7 +210,7 @@
   ))
 
 (apply-keys-to-map
- zz/shift-fn-map
+ zz:shift-fn-map
  (list
   ;;window size change
   [up]            (lookup-key global-map [S-up])

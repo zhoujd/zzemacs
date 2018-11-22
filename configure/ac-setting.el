@@ -13,7 +13,6 @@
 (set-face-underline  'ac-candidate-face "darkgray")
 (set-face-background 'ac-selection-face "steelblue")
 
-(setq ac-source-yasnippet nil)
 
 (provide 'ac-setting)
 

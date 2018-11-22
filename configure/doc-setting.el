@@ -30,7 +30,7 @@
                  href=\"../other/mystyle.css\"
                  type=\"text/css\"/>")))
 
-(defun org-insert-src-block (src-code-type)
+(defun my:org-insert-src-block (src-code-type)
   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
   (interactive
    (let ((src-code-types

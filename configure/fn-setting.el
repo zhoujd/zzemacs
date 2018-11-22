@@ -46,7 +46,7 @@
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
-    [S-f1]            'toggle-evil-mode
+    [S-f1]            'my:toggle-evil-mode
     [C-f1]            'magit-status
     [M-f1]            'monky-status
     (kbd "C-x <f1>")  nil

@@ -116,7 +116,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-command-prefix
-  (kbd "%")       'match-paren
+  (kbd "%")       'my:match-paren
 
   [backspace]     'delete-backward-char
   [delete]        'delete-char

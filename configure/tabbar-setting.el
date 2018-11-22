@@ -22,7 +22,7 @@
 (setq tabbar-excluded-buffers '("*Ido Completions*" "*Completions*"
                                 "*ESS*" "*Pymacs*" "*WoMan-Log*"))
 
-(defun tabbar-buffer-list ()
+(defun my:tabbar-buffer-list ()
   "Return the list of buffers to show in tabs.
 Exclude buffers whose name starts with a space or *, when they are not
 visiting a file.  The current buffer is always included."
@@ -37,12 +37,12 @@ visiting a file.  The current buffer is always included."
                     ((buffer-live-p b) b)))
                 (buffer-list))))
 
-(setq tabbar-buffer-list-function 'tabbar-buffer-list)
+(setq tabbar-buffer-list-function 'my:tabbar-buffer-list)
 
 ;;define all tabs to be one of 2 possible groups: "Emacs Buffer", "User Buffer".
-(defun tabbar-buffer-groups ()
+(defun my:tabbar-buffer-groups ()
   "Return the list of group names the current buffer belongs to.
-This function is a custom function for tabbar-mode's tabbar-buffer-groups.
+This function is a custom function for tabbar-mode's my:tabbar-buffer-groups.
 This function group all buffers into 3 groups:
 Those Dired, those user buffer, and those emacs buffer.
 Emacs buffer are those starting with *."
@@ -60,7 +60,7 @@ Emacs buffer are those starting with *."
      )
     )))
 
-(setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
+(setq tabbar-buffer-groups-function 'my:tabbar-buffer-groups)
 
 ;;tabbar font name setting
 (if (boundp 'my:font-en-name)

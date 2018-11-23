@@ -46,6 +46,8 @@
 ;;; Code:
 
 (require 'expand-region-core)
+(require 'er-basic-expansions)
+(require 'cc-cmds)
 
 (defun er/c-mark-statement ()
   "Mark the current C statement.
@@ -69,7 +71,7 @@ either fully inside or fully outside the statement."
 
   (let (beg end)
     ;; Determine boundaries of the outside-pairs region
-    (save-excursion
+    (save-mark-and-excursion
       (c-end-of-statement)
       (er/mark-outside-pairs)
       (setq beg (point)

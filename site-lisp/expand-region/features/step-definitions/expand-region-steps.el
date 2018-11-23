@@ -2,19 +2,23 @@
        (lambda ()
          (setq set-mark-default-inactive t)))
 
+(Given "^cursor behaviour is set to smart$"
+       (lambda ()
+         (setq expand-region-smart-cursor t)))
+
 (When "^I expand the region$"
       (lambda ()
-        (cl-flet ((message (&rest args) nil))
+        (flet ((message (&rest args) nil))
           (er/expand-region 1))))
 
 (When "^I quit$"
       (lambda ()
-        (cl-flet ((signal (&rest args) nil))
+        (flet ((signal (&rest args) nil))
           (keyboard-quit))))
 
 (When "^I expand the region \\([0-9]+\\) times$"
       (lambda (arg)
-        (cl-flet ((message (&rest args) nil))
+        (flet ((message (&rest args) nil))
           (er/expand-region (string-to-number arg)))))
 
 (And "^I contract the region$"
@@ -80,3 +84,6 @@
 (When "^I set \\(.+\\) to \\(.+\\)$"
       (lambda (var val)
         (set (intern var) (read val))))
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

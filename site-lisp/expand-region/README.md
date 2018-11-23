@@ -1,4 +1,4 @@
-# expand-region.el [![Build Status](https://secure.travis-ci.org/magnars/expand-region.el.png)](http://travis-ci.org/magnars/expand-region.el)
+# expand-region.el [![Build Status](https://secure.travis-ci.org/magnars/expand-region.el.png)](http://travis-ci.org/magnars/expand-region.el) [![Coverage Status](https://coveralls.io/repos/magnars/expand-region.el/badge.svg?branch=master&service=github)](https://coveralls.io/github/magnars/expand-region.el)
 
 Expand region increases the selected region by semantic units. Just keep
 pressing the key until it selects what you want.
@@ -17,11 +17,20 @@ You can set it up like this:
     (require 'expand-region)
     (global-set-key (kbd "C-=") 'er/expand-region)
 
-You can contract the region again with a negative prefix, if you expand too far.
+If you expand too far, you can contract the region by pressing `-` (minus key).
 
 ## Video
 
 You can [watch an intro to expand-region at Emacs Rocks](http://emacsrocks.com/e09.html).
+
+## Installation
+
+I highly recommend installing expand-region through elpa.
+
+It's available on [marmalade](http://marmalade-repo.org/) and
+[melpa](http://melpa.milkbox.net/):
+
+    M-x package-install expand-region
 
 ## Language support
 
@@ -113,6 +122,8 @@ sure to add a set of basic tests around the functionality you're changing.
 * [Roland Walker](https://github.com/rolandwalker) added option to copy the contents of the most recent action to a register, and some fixes.
 * [Damien Cassou](https://github.com/DamienCassou) added option to continue expanding/contracting with fast keys after initial expand.
 * [Sylvain Rousseau](https://github.com/thisirs) fixed loads of little annoyances.
+* [Ryan Mulligan](https://github.com/ryantm) cleaned up a lot of byte compilation warnings.
+* [Lefteris Karapetsas](https://github.com/LefterisJP) added subword-mode expansions.
 
 ### Language specific contributions
 
@@ -125,10 +136,24 @@ sure to add a set of basic tests around the functionality you're changing.
 * [Rotem Yaari](https://github.com/vmalloc) also contributed an adapter for the region expansion in web-mode.
 * [Kang-min Liu](https://github.com/gugod) contributed Perl expansions.
 * [Alexis Gallagher](https://github.com/algal) contributs Standard ML expansions.
+* [Matt Price](https://github.com/titaniumbones) improved on org-mode expansions.
+* [Maksim Grinman](https://github.com/maksle) added inner-quotes expansion for nxml-mode.
+* [Andrea Orru](https://github.com/AndreaOrru) added `expand-region-smart-cursor`.
 
 Thanks!
 
-## Changelist
+## Changelog
+
+* Option `expand-region-smart-cursor` to keep cursor at beginning of region if it is there (Andrea Orru)
+
+### From 0.9 to 0.10
+
+* Smarter expansion of ruby heredoc contents (Steve Purcell)
+* Add enh-ruby-mode expansions (Bradley Wright)
+* Add basic expansion er/mark-defun
+* Big cleanup of byte compilation warnings (Ryan Mulligan)
+* Better performance
+* Lots of bugfixes
 
 ### From 0.8 to 0.9
 
@@ -156,7 +181,7 @@ Thanks!
 
 ## License
 
-Copyright (C) 2011-2013 Magnar Sveen
+Copyright (C) 2011-2016 Magnar Sveen
 
 Author: Magnar Sveen <magnars@gmail.com>
 Keywords: marking region

@@ -5,10 +5,12 @@
 
 (add-to-list 'load-path expand-region-root-path)
 
+(require 'undercover)
+(undercover "*.el")
+
 (require 'expand-region)
 (require 'espuds)
 (require 'ert)
-(package-initialize)
 
 (Before
  (global-set-key (kbd "C-@") 'er/expand-region)
@@ -20,7 +22,11 @@
  (transient-mark-mode 1)
  (cua-mode 0)
  (setq er--show-expansion-message t)
+ (setq expand-region-smart-cursor nil)
  (setq set-mark-default-inactive nil)
  (deactivate-mark))
 
 (After)
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

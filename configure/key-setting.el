@@ -40,7 +40,7 @@
  (list
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
-                  
+
   (kbd "`")       'my:switch-to-term
   (kbd "1")       (switch-quick-buffer "*terminal<1>*")
   (kbd "2")       (switch-quick-buffer "*terminal<2>*")
@@ -81,13 +81,11 @@
   (kbd "C-8")     'gud-jump
   (kbd "C-9")     'gud-pstar
   (kbd "C-0")     'gud-refresh
+
+  ;;undo/redo
   (kbd "C--")     'redo
-  (kbd "C-=")     'er/expand-region
-                  
   (kbd "C-_")     'undo
-  (kbd "C-+")     'smartparens-mode
-                  
-  ;;undo/redo     
+  
   (kbd "C-,")     'winner-undo
   (kbd "C-.")     'winner-redo
   ))
@@ -106,8 +104,8 @@
   (kbd "M-9")     'gud-print
   (kbd "M-0")     'gud-watch
 
-  ;;find-replace
   (kbd "M-#")     'query-replace-regexp
+  (kbd "M-+")     'er/expand-region
   ))
 
 (apply-keys-to-map
@@ -169,20 +167,20 @@
  f4-map
  (list
   (kbd "<f4>")    'kill-this-buffer
-                  
+
   (kbd "<f5>")    (lambda () (interactive) (terminator-open-template 0))
   (kbd "<f6>")    (lambda () (interactive) (terminator-open-template 1))
   (kbd "<f7>")    (lambda () (interactive) (terminator-open-template 2))
   (kbd "<f8>")    (lambda () (interactive) (terminator-open-template 3))
-                  
+
   (kbd "<f9>")    (start-quick-shell "*shell-f9*")
   (kbd "<f10>")   (start-quick-shell "*shell-f10*")
   (kbd "<f11>")   (start-quick-shell "*shell-f11*")
   (kbd "<f12>")   (start-quick-shell "*shell-f12*")
-                  
+
   (kbd "C-=")     'er/expand-region
   (kbd "C--")     'smartparens-mode
-                  
+
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows
                    (execute-set-key "explorer" (list "explorer" "."))
@@ -192,10 +190,10 @@
   (kbd "C-r")     'my:add-code-review-note
   (kbd "C-s")     (if-not-ms-windows 'my:slime-connect-stumpwm)
   (kbd "C-t")     (unless-ms-windows 'my:open-with-terminal)
-                  
+
   (kbd "C-f")     'my:secondary-x-font
   (kbd "M-f")     'my:primary-x-font
-                  
+
   (kbd "M-r")     (if-not-ms-windows
                    (execute-set-key "rofi-run" '("rofi" "-show" "run")))
   (kbd "M-w")     (if-not-ms-windows
@@ -236,7 +234,7 @@
   (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
   (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
-                  
+
   (kbd "c")       (if-not-ms-windows
                    (execute-set-key "urxvt" (list "urxvt")))
   (kbd "d")       (if-not-ms-windows
@@ -283,11 +281,11 @@
 
   (kbd "C-`")     'helm-imenu
   (kbd "C-~")     'helm-semantic
-  
+
   (kbd "M-.")     'helm-etags-plus-select
   (kbd "M-*")     'helm-etags-plus-history
-  (kbd "M-_")     'helm-etags-plus-history-go-back
-  (kbd "M-+")     'helm-etags-plus-history-go-forward
+  (kbd "C-=")     'helm-etags-plus-history-go-back
+  (kbd "C-+")     'helm-etags-plus-history-go-forward
 
   (kbd "C-c M-i") 'helm-multi-swoop
   (kbd "C-x M-i") 'helm-multi-swoop-all

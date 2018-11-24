@@ -40,6 +40,7 @@
  (list
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
+  (kbd "SPC")     'er/expand-region
 
   (kbd "`")       'my:switch-to-term
   (kbd "1")       (switch-quick-buffer "*terminal<1>*")
@@ -114,7 +115,6 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-command-prefix
-  (kbd "C-c SPC") 'er/expand-region
   (kbd "%")       'my:match-paren
 
   [backspace]     'delete-backward-char

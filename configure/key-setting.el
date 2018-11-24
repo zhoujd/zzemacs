@@ -105,7 +105,7 @@
   (kbd "M-0")     'gud-watch
 
   (kbd "M-#")     'query-replace-regexp
-  (kbd "M-+")     'er/expand-region
+  (kbd "M-+")     'smartparens-mode
   ))
 
 (apply-keys-to-map
@@ -114,6 +114,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-command-prefix
+  (kbd "C-c SPC") 'er/expand-region
   (kbd "%")       'my:match-paren
 
   [backspace]     'delete-backward-char
@@ -177,9 +178,6 @@
   (kbd "<f10>")   (start-quick-shell "*shell-f10*")
   (kbd "<f11>")   (start-quick-shell "*shell-f11*")
   (kbd "<f12>")   (start-quick-shell "*shell-f12*")
-
-  (kbd "C-=")     'er/expand-region
-  (kbd "C--")     'smartparens-mode
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows

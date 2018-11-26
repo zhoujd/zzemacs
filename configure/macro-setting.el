@@ -63,10 +63,10 @@
          (t (message "no shell command function can be run"))))
 
 ;;start shell
-(defmacro start-quick-shell (name)
-  `(lambda ()
+(defmacro zz:quick-shell (fn-name buf-name)
+  `(defun ,fn-name ()
      (interactive)
-     (my:start-shell ,name)))
+     (my:start-shell ,buf-name)))
 
 ;;switch term
 (defmacro zz:quick-buffer (fn-name buf-name)

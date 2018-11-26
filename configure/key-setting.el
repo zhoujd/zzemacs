@@ -174,10 +174,10 @@
   (kbd "<f7>")    (lambda () (interactive) (terminator-open-template 2))
   (kbd "<f8>")    (lambda () (interactive) (terminator-open-template 3))
 
-  (kbd "<f9>")    (start-quick-shell "*shell-f9*")
-  (kbd "<f10>")   (start-quick-shell "*shell-f10*")
-  (kbd "<f11>")   (start-quick-shell "*shell-f11*")
-  (kbd "<f12>")   (start-quick-shell "*shell-f12*")
+  (kbd "<f9>")    (zz:quick-shell my:shell-f9  "*shell-f9*")
+  (kbd "<f10>")   (zz:quick-shell my:shell-f10 "*shell-f10*")
+  (kbd "<f11>")   (zz:quick-shell my:shell-f11 "*shell-f11*")
+  (kbd "<f12>")   (zz:quick-shell my:shell-f12 "*shell-f12*")
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows

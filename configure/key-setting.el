@@ -181,8 +181,8 @@
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows
-                   (execute-set-key "explorer" (list "explorer" "."))
-                   (execute-set-key "thunar" '("thunar")))
+                   (zz:execute-key my:explorer '("explorer" "."))
+                   (zz:execute-key my:thunar '("thunar")))
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-r")     'my:add-code-review-note
@@ -193,13 +193,13 @@
   (kbd "M-f")     'my:primary-x-font
 
   (kbd "M-r")     (if-not-ms-windows
-                   (execute-set-key "rofi-run" '("rofi" "-show" "run")))
+                   (zz:execute-key my:rofi-run '("rofi" "-show" "run")))
   (kbd "M-w")     (if-not-ms-windows
-                   (execute-set-key "rofi-window" '("rofi" "-show" "window")))
+                   (zz:execute-key my:rofi-window '("rofi" "-show" "window")))
   (kbd "M-s")     (if-not-ms-windows
-                   (execute-set-key "rofi-ssh" '("rofi" "-show" "ssh")))
+                   (zz:execute-key my:rofi-ssh '("rofi" "-show" "ssh")))
   (kbd "M-d")     (if-not-ms-windows
-                   (execute-set-key "rofi-drun" '("rofi" "-show" "drun")))
+                   (zz:execute-key my:rofi-drun '("rofi" "-show" "drun")))
   ))
 
 (apply-keys-to-map
@@ -234,21 +234,21 @@
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
 
   (kbd "c")       (if-not-ms-windows
-                   (execute-set-key "urxvt" (list "urxvt")))
+                   (zz:execute-key my:urxvt '("urxvt")))
   (kbd "d")       (if-not-ms-windows
-                   (execute-set-key "meld" '("meld")))
+                   (zz:execute-key my:meld '("meld")))
   (kbd "v")       (if-not-ms-windows
-                   (execute-set-key "evince" '("evince")))
+                   (zz:execute-key my:evince '("evince")))
   (kbd "f")       (if-not-ms-windows
-                   (execute-set-key "firefox" '("firefox")))
+                   (zz:execute-key my:firefox '("firefox")))
   (kbd "m")       (if-not-ms-windows
-                   (execute-set-key "xfce4-taskmanager" '("xfce4-taskmanager")))
+                   (zz:execute-key my:taskmanager '("xfce4-taskmanager")))
   (kbd "h")       (if-not-ms-windows
-                   (execute-set-key "thunar" '("thunar")))
+                   (zz:execute-key my:thunar '("thunar")))
   (kbd "r")       (if-not-ms-windows
-                   (execute-set-key "remmina" '("remmina")))
+                   (zz:execute-key my:remmina '("remmina")))
   (kbd "t")       (if-not-ms-windows
-                   (execute-set-key "tmux" '("urxvt" "-e" "tmux")))
+                   (zz:execute-key my:tmux '("urxvt" "-e" "tmux")))
   ))
 
 (apply-keys-to-map

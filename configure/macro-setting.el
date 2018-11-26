@@ -41,10 +41,10 @@
      (set-language-environment curr-lang)))
 
 ;;marcro for start-process
-(defmacro execute-set-key (name args)
-  `(lambda ()
+(defmacro zz:execute-key (fn-name args)
+  `(defun ,fn-name ()
      (interactive)
-     (apply 'start-process ,name nil ,args)))
+     (apply 'start-process "execute-key" nil ,args)))
 
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")

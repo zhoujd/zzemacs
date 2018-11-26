@@ -43,30 +43,30 @@
   (kbd "SPC")     'er/expand-region
 
   (kbd "`")       'my:switch-to-term
-  (kbd "1")       (switch-quick-buffer "*terminal<1>*")
-  (kbd "2")       (switch-quick-buffer "*terminal<2>*")
-  (kbd "3")       (switch-quick-buffer "*terminal<3>*")
-  (kbd "4")       (switch-quick-buffer "*terminal<4>*")
-  (kbd "5")       (switch-quick-buffer "*terminal<5>*")
-  (kbd "6")       (switch-quick-buffer "*terminal<6>*")
-  (kbd "7")       (switch-quick-buffer "*terminal<7>*")
-  (kbd "8")       (switch-quick-buffer "*terminal<8>*")
-  (kbd "9")       (switch-quick-buffer "*terminal<9>*")
+  (kbd "1")       (zz:quick-buffer my:term-1 "*terminal<1>*")
+  (kbd "2")       (zz:quick-buffer my:term-2 "*terminal<2>*")
+  (kbd "3")       (zz:quick-buffer my:term-3 "*terminal<3>*")
+  (kbd "4")       (zz:quick-buffer my:term-4 "*terminal<4>*")
+  (kbd "5")       (zz:quick-buffer my:term-5 "*terminal<5>*")
+  (kbd "6")       (zz:quick-buffer my:term-6 "*terminal<6>*")
+  (kbd "7")       (zz:quick-buffer my:term-7 "*terminal<7>*")
+  (kbd "8")       (zz:quick-buffer my:term-8 "*terminal<8>*")
+  (kbd "9")       (zz:quick-buffer my:term-9 "*terminal<9>*")
   ))
 
 (apply-keys-to-map
  global-map
  (list
   (kbd "M-] `")   'my:switch-to-shell
-  (kbd "M-] 1")   (switch-quick-buffer "*shell<1>*")
-  (kbd "M-] 2")   (switch-quick-buffer "*shell<2>*")
-  (kbd "M-] 3")   (switch-quick-buffer "*shell<3>*")
-  (kbd "M-] 4")   (switch-quick-buffer "*shell<4>*")
-  (kbd "M-] 5")   (switch-quick-buffer "*shell<5>*")
-  (kbd "M-] 6")   (switch-quick-buffer "*shell<6>*")
-  (kbd "M-] 7")   (switch-quick-buffer "*shell<7>*")
-  (kbd "M-] 8")   (switch-quick-buffer "*shell<8>*")
-  (kbd "M-] 9")   (switch-quick-buffer "*shell<9>*")
+  (kbd "M-] 1")   (zz:quick-buffer my:shell-1 "*shell<1>*")
+  (kbd "M-] 2")   (zz:quick-buffer my:shell-2 "*shell<2>*")
+  (kbd "M-] 3")   (zz:quick-buffer my:shell-3 "*shell<3>*")
+  (kbd "M-] 4")   (zz:quick-buffer my:shell-4 "*shell<4>*")
+  (kbd "M-] 5")   (zz:quick-buffer my:shell-5 "*shell<5>*")
+  (kbd "M-] 6")   (zz:quick-buffer my:shell-6 "*shell<6>*")
+  (kbd "M-] 7")   (zz:quick-buffer my:shell-7 "*shell<7>*")
+  (kbd "M-] 8")   (zz:quick-buffer my:shell-8 "*shell<8>*")
+  (kbd "M-] 9")   (zz:quick-buffer my:shell-9 "*shell<9>*")
   ))
 
 (apply-keys-to-map

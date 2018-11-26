@@ -69,12 +69,12 @@
      (my:start-shell ,name)))
 
 ;;switch term
-(defmacro switch-quick-buffer (name)
-  `(lambda ()
+(defmacro zz:quick-buffer (fn-name buf-name)
+  `(defun ,fn-name ()
      (interactive)
-     (if (get-buffer ,name)
-         (switch-to-buffer ,name)
-         (message "%s is not exist" ,name))))
+     (if (get-buffer ,buf-name)
+         (switch-to-buffer ,buf-name)
+         (message "%s is not exist" ,buf-name))))
 
 ;;start slime
 (defmacro defslime-start (fn-name lisp)

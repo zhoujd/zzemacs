@@ -68,6 +68,12 @@
      (interactive)
      (my:start-shell ,buf-name)))
 
+;;start terminator
+(defmacro zz:quick-termintor (fn-name type)
+  `(defun ,fn-name ()
+     (interactive)
+     (terminator-open-template ,type)))
+
 ;;switch term
 (defmacro zz:quick-buffer (fn-name buf-name)
   `(defun ,fn-name ()

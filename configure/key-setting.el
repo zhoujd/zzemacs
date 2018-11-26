@@ -169,10 +169,10 @@
  (list
   (kbd "<f4>")    'kill-this-buffer
 
-  (kbd "<f5>")    (lambda () (interactive) (terminator-open-template 0))
-  (kbd "<f6>")    (lambda () (interactive) (terminator-open-template 1))
-  (kbd "<f7>")    (lambda () (interactive) (terminator-open-template 2))
-  (kbd "<f8>")    (lambda () (interactive) (terminator-open-template 3))
+  (kbd "<f5>")    (zz:quick-termintor my:terminator-0 0)
+  (kbd "<f6>")    (zz:quick-termintor my:terminator-1 1)
+  (kbd "<f7>")    (zz:quick-termintor my:terminator-2 2)
+  (kbd "<f8>")    (zz:quick-termintor my:terminator-3 3)
 
   (kbd "<f9>")    (zz:quick-shell my:shell-f9  "*shell-f9*")
   (kbd "<f10>")   (zz:quick-shell my:shell-f10 "*shell-f10*")

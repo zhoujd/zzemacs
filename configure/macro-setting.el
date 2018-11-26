@@ -57,7 +57,7 @@
     `(progn ,@ks)))
 
 ;;run command macro
-(defmacro run-command-sort (cmd)
+(defmacro zz:run-command (cmd)
   `(cond ((fboundp 'async-shell-command) (async-shell-command ,cmd))
          ((fboundp 'shell-command) (shell-command ,cmd))
          (t (message "no shell command function can be run"))))
@@ -77,13 +77,13 @@
          (message "%s is not exist" ,buf-name))))
 
 ;;start slime
-(defmacro defslime-start (fn-name lisp)
+(defmacro zz:slime-start (fn-name lisp)
  `(defun ,fn-name ()
      (interactive)
      (slime ,lisp)))
 
 ;;dired sort
-(defmacro dired-sort (fn-name switch)
+(defmacro zz:dired-sort (fn-name switch)
   `(defun ,fn-name ()
      (interactive)
      (dired-sort-other (concat dired-listing-switches ,switch))))

@@ -44,12 +44,12 @@
             (defkeys-map dired-mode-map
               ("s"   dired-sort-map))            
             (defkeys-map dired-sort-map
-              ("s"   (dired-sort my:dired-sort-size     "S"))
-              ("x"   (dired-sort my:dired-sort-extend   "X"))
-              ("t"   (dired-sort my:dired-sort-time     "t"))
-              ("n"   (dired-sort my:dired-sort-name     ""))
-              ("g"   (dired-sort my:dired-sort-no-group "G"))
-              ("h"   (dired-sort my:dired-sort-human    "h"))
+              ("s"   (zz:dired-sort my:dired-sort-size     "S"))
+              ("x"   (zz:dired-sort my:dired-sort-extend   "X"))
+              ("t"   (zz:dired-sort my:dired-sort-time     "t"))
+              ("n"   (zz:dired-sort my:dired-sort-name     ""))
+              ("g"   (zz:dired-sort my:dired-sort-no-group "G"))
+              ("h"   (zz:dired-sort my:dired-sort-human    "h"))
               )))
 
 ;;dir first

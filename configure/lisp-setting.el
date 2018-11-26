@@ -40,9 +40,9 @@
        ))
 
 ;;slime start entry
-(defslime-start sbcl  'sbcl)
-(defslime-start clisp 'clisp)
-(defslime-start ecl   'ecl)
+(zz:slime-start sbcl  'sbcl)
+(zz:slime-start clisp 'clisp)
+(zz:slime-start ecl   'ecl)
 
 ;;reset slime temp directory
 ;(setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))

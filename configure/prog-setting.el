@@ -143,7 +143,7 @@
 (defun my:create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (run-command-sort (my:gen-ctags-cmd dir-name)))
+  (zz:run-command (my:gen-ctags-cmd dir-name)))
 
 ;;make etags
 (defvar my:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
@@ -170,7 +170,7 @@
 (defun my:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (run-command-sort (my:gen-etags-cmd dir-name)))
+  (zz:run-command (my:gen-etags-cmd dir-name)))
 
 ;;make cscope
 ; #!/bin/bash  
@@ -190,7 +190,7 @@
 (defun my:create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (run-command-sort (my:gen-cscope-cmd dir-name)))
+  (zz:run-command (my:gen-cscope-cmd dir-name)))
 
 ;;creast etags/cscope for multi project
 (defvar my:proj-list (list zzemacs-path) "project directory list")

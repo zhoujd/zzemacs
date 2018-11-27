@@ -16,7 +16,6 @@ alias lr='ls -lR'                  # recurse ls
 alias lt='ls -ltr'                 # sort by date
 alias lh='ls -lh'                  # ls for -h
 alias lm='ls -al | more'           # pipeline to more
-alias sl='ls'                      # typo
 
 ## buildin alias
 alias dir='dir --color=auto'

@@ -68,13 +68,16 @@
 ;;https://github.com/emacs-helm/helm-ls-git
 (require 'helm-ls-git)
 
+;;https://github.com/bbatsov/projectile
+(require 'projectile)
+(projectile-mode t)
+(setq projectile-mode-line-function (lambda () t))
+(defkeys-map projectile-mode-map
+  ((kbd "C-c p") 'projectile-command-map))
+
 ;;https://github.com/bbatsov/helm-projectile
 (require 'helm-projectile)
 (helm-projectile-on)
-
-(projectile-mode t)
-(defkeys-map projectile-mode-map
-  ((kbd "C-c p") 'projectile-command-map))
 
 
 (provide 'helm-setting)

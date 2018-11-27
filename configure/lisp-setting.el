@@ -135,11 +135,8 @@
 (autoload 'install-bridge "bridge" "Install a process bridge." t)
 (setq bridge-hook 
       '(lambda ()
-         ;; Example options
-         (setq bridge-source-insert nil) ;Don't insert in source buffer
-         (setq bridge-destination-insert nil) ;Don't insert in dest buffer
-         ;; Handle copy-it messages yourself
-         (setq bridge-handlers '(("copy-it" . my:copy-handler)))))
+         (setq bridge-source-insert nil)
+         (setq bridge-destination-insert nil)))
 
 ;;elisp function help
 (require 'find-func)

@@ -68,6 +68,10 @@
 ;;https://github.com/emacs-helm/helm-ls-git
 (require 'helm-ls-git)
 
+;;https://github.com/bbatsov/helm-projectile
+(require 'helm-projectile)
+(helm-projectile-on)
+
 
 (provide 'helm-setting)
 

@@ -170,7 +170,9 @@
 (defun my:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (zz:run-command (my:gen-etags-cmd dir-name)))
+  (if (executable-find "etags")
+      (zz:run-command (my:gen-etags-cmd dir-name))
+      (message "no etags, please install it")))
 
 ;;make cscope
 ; #!/bin/bash  
@@ -190,7 +192,9 @@
 (defun my:create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
-  (zz:run-command (my:gen-cscope-cmd dir-name)))
+  (if (executable-find "cscope")
+      (zz:run-command (my:gen-cscope-cmd dir-name))
+      (message "no cscope, please install it")))
 
 ;;creast etags/cscope for multi project
 (defun my:gen-proj-find-path (proj-list)

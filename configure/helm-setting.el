@@ -71,7 +71,7 @@
 ;;https://github.com/bbatsov/projectile
 (require 'projectile)
 (projectile-mode t)
-(setq projectile-mode-line-function (lambda () t))
+(setq projectile-dynamic-mode-line nil)
 (defkeys-map projectile-mode-map
   ((kbd "C-c p") 'projectile-command-map))
 

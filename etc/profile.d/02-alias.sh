@@ -53,7 +53,6 @@ alias userinfo='getent passwd | column -t -s:'
 alias groupinfo='getent group | column -t -s:'
 alias lsmount='mount | sort | column -t'
 alias syslog='tail -F /var/log/syslog'
-alias sl='syslog'
 alias screenoff='xset dpms force off'
 
 ## color show alias

@@ -5,10 +5,6 @@
 ;;;$find -type f -name Makefile | xargs grep DIRVER_NAME
 ;;;$find -type f -name Makefile -exec grep -n DIRVER_NAME {} NUL;
 ;;;$find . -iregex .*\.el$ | xargs etags
-(when-ms-windows    
- (setq find-program "\"find.exe\"")
- (setq grep-program "\"grep.exe\""))
-
 (setq grep-find-use-xargs t)
 
 ;;develop setting for tags path etc.
@@ -25,11 +21,15 @@
     (set-buffer (get-buffer-create tmp-buf-name))  
     (goto-char 0)
     (dolist (item content)
-      (insert item)
-      (insert "\n"))
+            (insert item)
+            (insert "\n"))
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
+;;project list
+(defvar my:proj-list (list zzemacs-path) "project directory list")
+
+;;temp setting template
 (defconst my:temp-template
   '(
     ";;;; temp-setting.el --- program temp file"
@@ -99,7 +99,7 @@
            'perl-mode-hook
            'php-mode-hook
            'emacs-lisp-mode-hook))
-  (add-hook hook 'hs-minor-mode))
+        (add-hook hook 'hs-minor-mode))
 
 
 (defun my:newline-indents ()
@@ -109,17 +109,17 @@
 
 ;; Tell Emacs to use the function above in certain editing modes.
 (dolist (hook
-          (list
-           'lisp-mode-hook
-           'emacs-lisp-mode-hook
-           'lisp-interaction-mode-hook
-           'scheme-mode-hook
-           'c-mode-common-hook
-           'java-mode-hook
-           'perl-mode-hook
-           'python-mode-hook
-           'php-mode-hook))
-  (add-hook hook (function my:newline-indents)))
+         (list
+          'lisp-mode-hook
+          'emacs-lisp-mode-hook
+          'lisp-interaction-mode-hook
+          'scheme-mode-hook
+          'c-mode-common-hook
+          'java-mode-hook
+          'perl-mode-hook
+          'python-mode-hook
+          'php-mode-hook))
+        (add-hook hook (function my:newline-indents)))
 
 ;;sr-speedbar
 (require 'sr-speedbar)
@@ -151,7 +151,7 @@
 (defun my:gen-find-parts (file-name)
   (setq my:find-parts "")
   (dolist (cell (split-string file-name))
-    (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
+          (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
   (setq my:find-parts (substring my:find-parts 0 -4)))
 
 ;(setq my:c/c++-file-regex
@@ -193,12 +193,11 @@
   (zz:run-command (my:gen-cscope-cmd dir-name)))
 
 ;;creast etags/cscope for multi project
-(defvar my:proj-list (list zzemacs-path) "project directory list")
-(defun my:gen-proj-find-path (my:proj-list)
-  (setq my:proj-path-parts "")
-  (dolist (cell my:proj-list)
-    (setq my:proj-path-parts (concat my:proj-path-parts cell " ")))
-  (setq my:proj-path-parts (substring my:proj-path-parts 0 -1)))
+(defun my:gen-proj-find-path (proj-list)
+  (let ((proj-path-parts ""))
+    (dolist (cell proj-list)
+            (setq proj-path-parts (concat proj-path-parts cell " ")))
+    (substring proj-path-parts 0 -1)))
 
 (defun my:create-proj-etags ()
   (interactive)

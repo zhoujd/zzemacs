@@ -88,7 +88,7 @@
 ;(require 'adjust-parens)
 (add-hook 'lisp-mode-hook
           (lambda ()
-            (defkeys help-map
+            (defkeys-map help-map
               ((kbd "TAB")       'lisp-indent-adjust-parens)
               ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 

@@ -41,6 +41,7 @@
 (require 'helm-etags-plus)
 
 ;;https://github.com/emacs-helm/helm-descbinds
+;;C-h b
 (require 'helm-descbinds)
 (helm-descbinds-mode)
 

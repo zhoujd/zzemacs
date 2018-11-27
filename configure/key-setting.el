@@ -296,7 +296,6 @@
   (kbd "M-t")     'helm-world-time
   (kbd "M-g")     'helm-grep-do-git-grep
   (kbd "M-m")     'helm-man-woman
-  (kbd "M-h")     'helm-descbinds
   (kbd "SPC")     'helm-all-mark-rings
   ))
 

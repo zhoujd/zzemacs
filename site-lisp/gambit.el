@@ -129,8 +129,6 @@
         (setq alist (cdr alist))))
     method))
 
-(set lisp-indent-function 'gambit-indent-function)
-
 (defvar gambit-indent-regexp-alist
   '(
     ("^declare$"               . defun)

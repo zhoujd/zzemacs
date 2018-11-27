@@ -62,6 +62,9 @@
 (setq gambit-highlight-color "gray")
 (setq scheme-program-name "gsi -:d-")
 (require 'gambit)
+(add-hook 'gambit-mode-hook
+          (lambda ()
+            (setq lisp-indent-function 'gambit-indent-function)))
 
 ;;quack
 (setq quack-remap-find-file-bindings-p nil)

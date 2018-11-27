@@ -21,8 +21,8 @@
     (set-buffer (get-buffer-create tmp-buf-name))  
     (goto-char 0)
     (dolist (item content)
-            (insert item)
-            (insert "\n"))
+      (insert item)
+      (insert "\n"))
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
@@ -91,16 +91,15 @@
 ;; holding
 (require 'hideshow)
 (dolist (hook
-          (list
-           'java-mode-hook
-           'c++-mode-hook
-           'python-mode-hook
-           'c-mode-hook
-           'perl-mode-hook
-           'php-mode-hook
-           'emacs-lisp-mode-hook))
-        (add-hook hook 'hs-minor-mode))
-
+         (list
+          'java-mode-hook
+          'c++-mode-hook
+          'python-mode-hook
+          'c-mode-hook
+          'perl-mode-hook
+          'php-mode-hook
+          'emacs-lisp-mode-hook))
+  (add-hook hook 'hs-minor-mode))
 
 (defun my:newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
@@ -119,7 +118,7 @@
           'perl-mode-hook
           'python-mode-hook
           'php-mode-hook))
-        (add-hook hook (function my:newline-indents)))
+  (add-hook hook (function my:newline-indents)))
 
 ;;sr-speedbar
 (require 'sr-speedbar)
@@ -151,7 +150,7 @@
 (defun my:gen-find-parts (file-name)
   (setq my:find-parts "")
   (dolist (cell (split-string file-name))
-          (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
+    (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
   (setq my:find-parts (substring my:find-parts 0 -4)))
 
 ;(setq my:c/c++-file-regex
@@ -200,7 +199,7 @@
 (defun my:gen-proj-find-path (proj-list)
   (let ((proj-path-parts ""))
     (dolist (cell proj-list)
-            (setq proj-path-parts (concat proj-path-parts cell " ")))
+      (setq proj-path-parts (concat proj-path-parts cell " ")))
     (substring proj-path-parts 0 -1)))
 
 (defun my:create-proj-etags ()

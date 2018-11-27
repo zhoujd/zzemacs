@@ -65,6 +65,9 @@
   ((kbd "C-r") 'helm-previous-line)
   ((kbd "C-s") 'helm-next-line))
 
+;;https://github.com/emacs-helm/helm-ls-git
+(require 'helm-ls-git)
+
 
 (provide 'helm-setting)
 

@@ -1,4 +1,4 @@
-;;; monky.el --- Control Hg from Emacs.
+;;; monky.el --- Control Hg from Emacs.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2011 Anantha Kumaran.
 
@@ -27,6 +27,9 @@
 (require 'cl)
 (require 'cl-lib)
 (require 'bindat)
+(require 'ediff)
+(require 'view)
+(require 'tramp)
 
 (defgroup monky nil
   "Controlling Hg from Emacs."
@@ -38,7 +41,7 @@
   :group 'monky
   :type 'string)
 
-(defcustom monky-hg-standard-options '("--config" "diff.git=Off")
+(defcustom monky-hg-standard-options '("--config" "diff.git=Off" "--config" "ui.merge=:merge")
   "Standard options when running Hg."
   :group 'monky
   :type '(repeat string))
@@ -112,6 +115,62 @@ is usually faster if Monky runs several commands."
   :type '(choice (const :tag "Single processes" :value nil)
                  (const :tag "Use command server" :value cmdserver)))
 
+(defcustom monky-pull-args ()
+  "Extra args to pass to pull."
+  :group 'monky
+  :type '(repeat string))
+
+(defcustom monky-repository-paths nil
+  "*Paths where to find repositories.  For each repository an alias is defined, which can then be passed to `monky-open-repository` to open the repository.
+
+Lisp-type of this option: The value must be a list L whereas each
+element of L is a 2-element list: The first element is the full
+path of a directory \(string) and the second element is an
+arbitrary alias \(string) for this directory which is then
+displayed instead of the underlying directory."
+  :group 'monky
+  :initialize 'custom-initialize-default
+  :set (function (lambda (symbol value)
+                   (set symbol value)
+                   (if (and (boundp 'ecb-minor-mode)
+                            ecb-minor-mode
+			    (functionp 'ecb-update-directories-buffer))
+		       (ecb-update-directories-buffer))))
+  :type '(repeat (cons :tag "Path with alias"
+		       (string :tag "Alias")
+		       (directory :tag "Path"))))
+
+(defun monky-root-dir-descr (dir)
+  "Return the name of dir if it matches a path in monky-repository-paths, otherwise return nil"
+  (catch 'exit
+    (dolist (root-dir monky-repository-paths)
+      (let ((base-dir
+	     (concat
+	      (replace-regexp-in-string
+	       "/$" ""
+	       (replace-regexp-in-string
+		"^\~" (getenv "HOME")
+		(cdr root-dir)))
+	      "/")))
+	(when (equal base-dir dir)
+	  (throw 'exit (cons (car root-dir)
+			     base-dir)))))))
+
+(defun monky-open-repository ()
+  "Prompt for a repository path or alias, then display the status
+buffer.  Aliases are set in monky-repository-paths."
+  (interactive)
+  (let* ((rootdir (condition-case nil
+		      (monky-get-root-dir)
+		    (error nil)))
+	 (default-repo (or (monky-root-dir-descr rootdir) rootdir))
+	 (msg (if default-repo
+		  (concat "repository (default " (car default-repo) "): ")
+		"repository: "))
+	 (repo-name (completing-read msg (mapcar 'car monky-repository-paths)))
+	 (repo (or (assoc repo-name monky-repository-paths) default-repo)))
+    (when repo (monky-status (cdr repo)))))
+
 (defgroup monky-faces nil
   "Customize the appearance of Monky"
   :prefix "monky-"
@@ -119,14 +178,15 @@ is usually faster if Monky runs several commands."
   :group 'monky)
 
 (defface monky-header
-  '((t))
+  '((t :weight bold))
   "Face for generic header lines.
 
 Many Monky faces inherit from this one by default."
   :group 'monky-faces)
 
 (defface monky-section-title
-  '((t :weight bold :inherit monky-header))
+  '((((class color) (background light)) :foreground "DarkGoldenrod4" :inherit monky-header)
+    (((class color) (background  dark)) :foreground "LightGoldenrod2" :inherit monky-header))
   "Face for section titles."
   :group 'monky-faces)
 
@@ -136,20 +196,27 @@ Many Monky faces inherit from this one by default."
   :group 'monky-faces)
 
 (defface monky-diff-title
-  '((t :inherit (monky-header highlight)))
+  '((t :inherit (monky-header)))
   "Face for diff title lines."
   :group 'monky-faces)
 
 (defface monky-diff-hunk-header
-  '((t :slant italic :inherit monky-header))
+  '((((class color) (background light))
+     :background "grey80"
+     :foreground "grey30")
+    (((class color) (background dark))
+     :background "grey25"
+     :foreground "grey70"))
   "Face for diff hunk header lines."
   :group 'monky-faces)
 
 (defface monky-diff-add
   '((((class color) (background light))
-     :foreground "blue1")
+     :background "#cceecc"
+     :foreground "#22aa22")
     (((class color) (background dark))
-     :foreground "green3"))
+     :background "#336633"
+     :foreground "#cceecc"))
   "Face for lines in a diff that have been added."
   :group 'monky-faces)
 
@@ -160,17 +227,24 @@ Many Monky faces inherit from this one by default."
 
 (defface monky-diff-del
   '((((class color) (background light))
-     :foreground "red")
+     :background "#eecccc"
+     :foreground "#aa2222")
     (((class color) (background dark))
-     :foreground "red"))
+     :background "#663333"
+     :foreground "#eecccc"))
   "Face for lines in a diff that have been deleted."
   :group 'monky-faces)
 
-(defface monky-log-sha1
+(defface monky-commit-id
   '((((class color) (background light))
      :foreground "firebrick")
     (((class color) (background dark))
      :foreground "tomato"))
+  "Face for commit IDs: SHA1 codes and commit numbers."
+  :group 'monky-faces)
+
+(defface monky-log-sha1
+  '((t :inherit monky-commit-id))
   "Face for the sha1 element of the log output."
   :group 'monky-faces)
 
@@ -410,15 +484,14 @@ refreshes buffers."
                 (with-current-buffer buffer
                   (bury-buffer))))
       (setq default-directory dir)
-      (let ((monky-cmd-process (monky-start-process "monky-hg" buf "sh" "-c" "hg --config extensions.mq= serve --cmdserver pipe 2> /dev/null")))
+      (let ((monky-cmd-process (monky-start-process
+                                "monky-hg" buf "sh" "-c"
+                                (format "%s --config extensions.mq= serve --cmdserver pipe 2> /dev/null" monky-hg-executable))))
         (set-process-coding-system monky-cmd-process 'no-conversion 'no-conversion)
         (set-process-sentinel monky-cmd-process #'monky-cmdserver-sentinel)
         (setq monky-cmd-hello-message
               (monky-cmdserver-parse-hello (monky-cmdserver-read)))
         monky-cmd-process))))
-
-(defun monky-cmdserver-stop (proc)
-  (delete-process proc))
 
 (defun monky-cmdserver-parse-hello (hello-message)
   "Parse hello message to get encoding information."
@@ -518,7 +591,7 @@ refreshes buffers."
 
 (defun monky-process-file (&rest args)
   "Same as `process-file' in the current hg environment.
-This function either call `monky-process-file-cmdserver' or
+This function either calls `monky-cmdserver-process-file' or
 `monky-process-file-single' depending on whether the hg
 command-server should be used."
   (apply (cond
@@ -628,6 +701,7 @@ FUNC should leave point at the end of the modified region"
     (define-key map (kbd ":") 'monky-hg-command)
     (define-key map (kbd "l l") 'monky-log-current-branch)
     (define-key map (kbd "l a") 'monky-log-all)
+    (define-key map (kbd "l r") 'monky-log-revset)
     (define-key map (kbd "b") 'monky-branches)
     (define-key map (kbd "Q") 'monky-queue)
     (define-key map (kbd "q") 'monky-quit-window)
@@ -641,12 +715,13 @@ FUNC should leave point at the end of the modified region"
     (define-key map (kbd "U") 'monky-unstage-all)
     (define-key map (kbd "a") 'monky-commit-amend)
     (define-key map (kbd "c") 'monky-log-edit)
+    (define-key map (kbd "e") 'monky-ediff-item)
     (define-key map (kbd "y") 'monky-bookmark-create)
     (define-key map (kbd "C") 'monky-checkout)
+    (define-key map (kbd "M") 'monky-merge)
     (define-key map (kbd "B") 'monky-backout)
     (define-key map (kbd "P") 'monky-push)
     (define-key map (kbd "f") 'monky-pull)
-    (define-key map (kbd "F") 'monky-fetch)
     (define-key map (kbd "k") 'monky-discard-item)
     (define-key map (kbd "m") 'monky-resolve-item)
     (define-key map (kbd "x") 'monky-unresolve-item)
@@ -659,6 +734,7 @@ FUNC should leave point at the end of the modified region"
   (let ((map (make-keymap)))
     (define-key map (kbd "e") 'monky-log-show-more-entries)
     (define-key map (kbd "C") 'monky-checkout-item)
+    (define-key map (kbd "M") 'monky-merge-item)
     (define-key map (kbd "B") 'monky-backout-item)
     (define-key map (kbd "i") 'monky-qimport-item)
     map))
@@ -670,6 +746,7 @@ FUNC should leave point at the end of the modified region"
 (defvar monky-branches-mode-map
   (let ((map (make-keymap)))
     (define-key map (kbd "C") 'monky-checkout-item)
+    (define-key map (kbd "M") 'monky-merge-item)
     map))
 
 (defvar monky-commit-mode-map
@@ -693,6 +770,11 @@ FUNC should leave point at the end of the modified region"
     (define-key map (kbd "o") 'monky-qreorder)
     (define-key map (kbd "A") 'monky-addremove-all)
     map))
+
+(defvar monky-pre-log-edit-window-configuration nil)
+(defvar monky-log-edit-client-buffer nil)
+(defvar monky-log-edit-operation nil)
+(defvar monky-log-edit-info nil)
 
 (defvar monky-log-edit-mode-map
   (let ((map (make-sparse-keymap)))
@@ -846,9 +928,8 @@ CMD is an external command that will be run with ARGS as arguments"
                             (goto-char (point-min))
                             (funcall washer)
                             (goto-char (point-max)))))))
-      (if (= body-beg (point))
-          (monky-cancel-section section)
-        (insert "\n"))
+      (when (= body-beg (point))
+        (monky-cancel-section section))
       section)))
 
 (defun monky-cancel-section (section)
@@ -893,6 +974,10 @@ CMD is an external command that will be run with ARGS as arguments"
                                 (monky-section-children parent)))))
           (or next
               (monky-next-section parent))))))
+
+(monky-def-permanent-buffer-local monky-submode)
+(monky-def-permanent-buffer-local monky-refresh-function)
+(monky-def-permanent-buffer-local monky-refresh-args)
 
 (defun monky-goto-next-section ()
   "Go to the next monky section."
@@ -969,11 +1054,6 @@ CMD is an external command that will be run with ARGS as arguments"
          washer
          monky-hg-executable
          (append monky-hg-standard-options args)))
-
-(defun monky-set-section-needs-refresh-on-show (flag &optional section)
-  (setf (monky-section-needs-refresh-on-show
-         (or section monky-top-section))
-        flag))
 
 (defun monky-section-set-hidden (section hidden)
   "Hide SECTION if HIDDEN is not nil, show it otherwise."
@@ -1132,7 +1212,8 @@ IF FLAG-OR-FUNC is a Boolean value, the section will be hidden if its true, show
         (message msg)))
     (when (not successp)
       (let ((msg (monky-abort-message (process-buffer process))))
-        (and msg (message msg))))
+        (when msg
+          (message msg))))
     (setq monky-process nil)
     (monky-set-mode-line-process nil)
     (if (buffer-live-p monky-process-client-buffer)
@@ -1165,6 +1246,14 @@ IF FLAG-OR-FUNC is a Boolean value, the section will be hidden if its true, show
                               monky-hg-standard-options)
                         args))))
 
+(defun monky-run-hg-sync (&rest args)
+    (message "Running %s %s"
+           monky-hg-executable
+           (mapconcat #'identity args " "))
+  (monky-run* (append (cons monky-hg-executable
+			    monky-hg-standard-options)
+		      args)))
+
 (defun monky-run-hg-async (&rest args)
   (message "Running %s %s"
            monky-hg-executable
@@ -1181,7 +1270,7 @@ IF FLAG-OR-FUNC is a Boolean value, the section will be hidden if its true, show
   "Display output from most recent hg command."
   (interactive)
   (unless (get-buffer monky-process-buffer-name)
-    (error "No Hg commands have run"))
+    (user-error "No Hg commands have run"))
   (display-buffer monky-process-buffer-name))
 
 (defun monky-hg-command (command)
@@ -1274,7 +1363,52 @@ With a prefix argument, visit in other window."
       ((longer)
        (monky-log-show-more-entries))
       ((queue)
-       (monky-qqueue info)))))
+       (monky-qqueue info))
+      ((branch)
+       (monky-checkout info)))))
+
+(defun monky-ediff-item ()
+  "Open the ediff merge editor on the item."
+  (interactive)
+  (monky-section-action (item info "ediff")
+    ((merged diff)
+     (if (eq (monky-diff-item-kind item) 'unresolved)
+	 (monky-ediff-merged item)
+       (user-error "Already resolved.  Unresolve first.")))
+    ((unmodified diff)
+     (user-error "Cannot ediff an unmodified file during a merge."))
+    ((staged diff)
+     (user-error "Already staged"))
+    ((changes diff)
+     (monky-ediff-changes item))
+    ))
+
+(defun monky-ediff-merged (item)
+  (let* ((file (monky-diff-item-file item))
+	 (file-path (concat (monky-get-root-dir) file)))
+    (condition-case nil
+	(monky-run-hg-sync "resolve" "--tool" "internal:dump" file)
+      (error nil))
+    (condition-case nil
+	(ediff-merge-files-with-ancestor
+	 (concat file-path ".local")
+	 (concat file-path ".other")
+	 (concat file-path ".base")
+	 nil file)
+      (error nil))
+    (delete-file (concat file-path ".local"))
+    (delete-file (concat file-path ".other"))
+    (delete-file (concat file-path ".base"))
+    (delete-file (concat file-path ".orig"))))
+
+(defun monky-ediff-changes (item)
+  (ediff-revision
+   (concat (monky-get-root-dir)
+	   (monky-diff-item-file item))))
+
+(defvar monky-staged-all-files nil)
+(defvar monky-old-staged-files '())
+(monky-def-permanent-buffer-local monky-staged-files)
 
 (defun monky-stage-all ()
   "Add all items in Changes to the staging area."
@@ -1299,11 +1433,11 @@ With a prefix argument, visit in other window."
     ((changes)
      (monky-stage-all))
     ((staged diff)
-     (error "Already staged"))
+     (user-error "Already staged"))
     ((unmodified diff)
-     (error "Cannot partially commit a merge"))
+     (user-error "Cannot partially commit a merge"))
     ((merged diff)
-     (error "Cannot partially commit a merge"))))
+     (user-error "Cannot partially commit a merge"))))
 
 (defun monky-unstage-all ()
   "Remove all items from the staging area"
@@ -1323,26 +1457,18 @@ With a prefix argument, visit in other window."
       ((staged)
        (monky-unstage-all))
       ((changes diff)
-       (error "Already unstaged")))))
+       (user-error "Already unstaged")))))
 
 ;;; Updating
 
-(defun monky-fetch ()
-  "Run hg fetch."
-  (interactive)
-  (let ((remote (if current-prefix-arg
-                    (monky-read-remote "Fetch from : ")
-                  monky-incoming-repository)))
-    (monky-run-hg-async "fetch" remote
-                        "--config" "extensions.fetch=")))
-
 (defun monky-pull ()
-  "Run hg pull."
+  "Run hg pull. The monky-pull-args variable contains extra arguments to pass to hg."
   (interactive)
   (let ((remote (if current-prefix-arg
                     (monky-read-remote "Pull from : ")
                   monky-incoming-repository)))
-    (monky-run-hg-async "pull" remote)))
+    (apply #'monky-run-hg-async
+	   "pull" (append monky-pull-args (list remote)))))
 
 (defun monky-remotes ()
   (mapcar #'car (monky-hg-config-section "paths")))
@@ -1365,11 +1491,17 @@ With a prefix argument, visit in other window."
                      (monky-read-remote
                       (format "Push branch %s to : " branch))
                    monky-outgoing-repository)))
-    (monky-run-hg-async "push" "--branch" branch remote)))
+    (if (string= "" remote)
+        (monky-run-hg-async "push" "--branch" branch)
+      (monky-run-hg-async "push" "--branch" branch remote))))
 
 (defun monky-checkout (node)
-  (interactive (list (monky-read-revision "Update to : ")))
+  (interactive (list (monky-read-revision "Update to: ")))
   (monky-run-hg "update" node))
+
+(defun monky-merge (node)
+  (interactive (list (monky-read-revision "Merge with: ")))
+  (monky-run-hg "merge" node))
 
 (defun monky-reset-tip ()
   (interactive)
@@ -1393,7 +1525,7 @@ With a prefix argument, visit in other window."
     ((merged diff)
      (if (eq (monky-diff-item-kind item) 'resolved)
          (monky-run-hg "resolve" "--unmark" (monky-diff-item-file item))
-       (error "Already unresolved")))))
+       (user-error "Already unresolved")))))
 
 (defun monky-resolve-item ()
   "Mark the item at point as resolved."
@@ -1402,7 +1534,7 @@ With a prefix argument, visit in other window."
     ((merged diff)
      (if (eq (monky-diff-item-kind item) 'unresolved)
          (monky-run-hg "resolve" "--mark" (monky-diff-item-file item))
-       (error "Already resolved")))))
+       (user-error "Already resolved")))))
 
 ;; History
 
@@ -1437,8 +1569,15 @@ With a prefix argument, visit in other window."
 ;;; Miscellaneous
 
 (defun monky-revert-file (file)
-  (when (or (not monky-revert-item-confirm) (yes-or-no-p (format "Revert %s? " file)))
-    (monky-run-hg "revert" "--no-backup" file)))
+  (when (or (not monky-revert-item-confirm)
+	    (yes-or-no-p (format "Revert %s? " file)))
+    (monky-run-hg "revert" "--no-backup" file)
+    (let ((file-buf (find-buffer-visiting
+		     (concat (monky-get-root-dir) file))))
+      (if file-buf
+	  (save-current-buffer
+	    (set-buffer file-buf)
+	    (revert-buffer t t t))))))
 
 (defun monky-discard-item ()
   "Delete the file if not tracked, otherwise revert it."
@@ -1532,10 +1671,10 @@ in the corresponding directory."
         (dolist (w (get-buffer-window-list (current-buffer)))
           (set-window-point w (point)))))))
 
-(defvar last-point)
+(defvar monky-last-point nil)
 
 (defun monky-remember-point ()
-  (setq last-point (point)))
+  (setq monky-last-point (point)))
 
 (defun monky-invisible-region-end (pos)
   (while (and (not (= pos (point-max))) (invisible-p pos))
@@ -1560,7 +1699,7 @@ end, except when that would move point back to where it was
 before the last command."
   (if (invisible-p (point))
       (let ((end (monky-invisible-region-end (point))))
-        (goto-char (if (= end last-point)
+        (goto-char (if (= end monky-last-point)
                        (monky-invisible-region-start (point))
                      end))))
   (setq disable-point-adjustment t))
@@ -1569,10 +1708,6 @@ before the last command."
   (monky-correct-point-after-command))
 
 ;;; Monky mode
-
-(monky-def-permanent-buffer-local monky-submode)
-(monky-def-permanent-buffer-local monky-refresh-function)
-(monky-def-permanent-buffer-local monky-refresh-args)
 
 (defun monky-mode ()
   "View the status of a Hg Repository.
@@ -1607,9 +1742,7 @@ before the last command."
   "Create a temporary file name, evaluate BODY and delete the file."
   (declare (indent 1)
            (debug (symbolp body)))
-  `(let ((,file (expand-file-name
-                 (make-temp-name "monky-temp-file")
-                 temporary-file-directory)))
+  `(let ((,file (make-temp-file "monky-temp-file")))
      (unwind-protect
          (progn ,@body)
        (delete-file ,file))))
@@ -1654,16 +1787,16 @@ before the last command."
   (let ((root (monky-hg-string "root")))
     (if root
 	(concat root "/")
-      (error "Not inside a hg repo"))))
+      (user-error "Not inside a hg repo"))))
 
 (defun monky-get-tramp-root-dir ()
   (let ((root (monky-hg-string "root"))
-	(tramp-path (tramp-dissect-file-name default-directory)))
+        (tramp-path (vconcat (tramp-dissect-file-name default-directory))))
     (if root
-	(progn (aset tramp-path 3 root)
-	       (concat (apply 'tramp-make-tramp-file-name (append tramp-path ()))
-		       "/"))
-      (error "Not inside a hg repo"))))
+        (progn (aset tramp-path 6 root)
+               (concat (apply 'tramp-make-tramp-file-name (cdr (append tramp-path nil)))
+                       "/"))
+      (user-error "Not inside a hg repo"))))
 
 (defun monky-find-buffer (submode &optional dir)
   (let ((rootdir (expand-file-name (or dir (monky-get-root-dir)))))
@@ -1703,7 +1836,8 @@ before the last command."
                     (equal section (caar item)))
                   (monky-hg-config))))
 
-(defvar monky-el-directory (file-name-directory load-file-name)
+(defvar monky-el-directory
+  (file-name-directory (or load-file-name default-directory))
   "The parent directory of monky.el")
 
 (defun monky-get-style-path (filename)
@@ -1713,19 +1847,11 @@ before the last command."
 (defvar monky-hg-style-log-graph
   (monky-get-style-path "log-graph"))
 
-(defvar monky-hg-style-files
-  (monky-get-style-path "files"))
-
 (defvar monky-hg-style-files-status
   (monky-get-style-path "files-status"))
 
 (defvar monky-hg-style-tags
   (monky-get-style-path "tags"))
-
-(defun monky-hg-log-files (revision &rest args)
-  (apply #'monky-hg-lines "log"
-         "--style" monky-hg-style-files
-         "--rev" revision args))
 
 (defun monky-hg-log-tags (revision &rest args)
   (apply #'monky-hg-lines "log"
@@ -1770,7 +1896,8 @@ before the last command."
    (monky-with-wash-status status file
      (monky-with-section file 'file
        (monky-set-section-info file)
-       (insert "\t" file "\n")))))
+       (insert file "\n"))
+     (insert "\n"))))
 
 ;; Hunk
 
@@ -1784,8 +1911,6 @@ before the last command."
   (save-excursion
     (beginning-of-line)
     (let ((line (line-number-at-pos)))
-      (if (looking-at "-")
-          (error "Can't visit removed lines"))
       (goto-char (monky-section-beginning hunk))
       (if (not (looking-at "@@+ .* \\+\\([0-9]+\\),[0-9]+ @@+"))
           (error "Hunk header not found"))
@@ -1803,7 +1928,7 @@ before the last command."
       (let ((n-columns (1- (length (match-string 1))))
             (head (match-string 0)))
         (monky-with-section head 'hunk
-          (add-text-properties (match-beginning 0) (match-end 0)
+          (add-text-properties (match-beginning 0) (1+ (match-end 0))
                                '(face monky-diff-hunk-header))
           (forward-line)
           (while (not (or (eobp)
@@ -1835,30 +1960,36 @@ before the last command."
         (t
          nil)))
 
-(defun monky-wash-diff-section (&optional status)
-  (if (looking-at "^diff")
-      (let* ((file (monky-diff-line-file))
-             (end (save-excursion
-                    (forward-line)
-                    (if (search-forward-regexp "^diff\\|^@@" nil t)
-                        (goto-char (match-beginning 0))
-                      (goto-char (point-max)))
-                    (point-marker)))
-             (status (or status
-                         (cond
-                          ((save-excursion
-                             (search-forward-regexp "^--- /dev/null" end t))
-                           'new)
-                          ((save-excursion
-                             (search-forward-regexp "^+++ /dev/null" end t))
-                           'removed)
-                          (t 'modified)))))
-        (monky-set-section-info (list status file))
-        (monky-insert-diff-title status file)
-        (goto-char end)
-        (let ((monky-section-hidden-default nil))
-          (monky-wash-sequence #'monky-wash-hunk)))
-    nil))
+(defun monky-wash-diff-section (&optional status file)
+  (let ((case-fold-search nil))
+   (cond ((looking-at "^diff ")
+	  (let* ((file (monky-diff-line-file))
+		 (end (save-excursion
+		        (forward-line)
+		        (if (search-forward-regexp "^diff \\|^@@" nil t)
+			    (goto-char (match-beginning 0))
+			  (goto-char (point-max)))
+		        (point-marker)))
+		 (status (or status
+			     (cond
+			      ((save-excursion
+				 (search-forward-regexp "^--- /dev/null" end t))
+			       'new)
+			      ((save-excursion
+				 (search-forward-regexp "^+++ /dev/null" end t))
+			       'removed)
+			      (t 'modified)))))
+	    (monky-set-section-info (list status file))
+	    (monky-insert-diff-title status file)
+            ;; Remove the 'diff ...' text and '+++' text, as it's redundant.
+            (delete-region (point) end)
+	    (let ((monky-section-hidden-default nil))
+	      (monky-wash-sequence #'monky-wash-hunk))))
+	 ;; sometimes diff returns empty output
+	 ((and status file)
+	  (monky-set-section-info (list status file))
+	  (monky-insert-diff-title status file))
+	 (t nil))))
 
 (defun monky-wash-diff ()
   (let ((monky-section-hidden-default monky-hide-diffs))
@@ -1876,13 +2007,13 @@ before the last command."
     (save-restriction
       (narrow-to-region p (point))
       (goto-char p)
-      (monky-wash-diff-section status)
+      (monky-wash-diff-section status file)
       (goto-char (point-max)))))
 
 (defun monky-insert-diff-title (status file)
   (insert
    (propertize
-    (format "\t%-10s %s\n" (capitalize (symbol-name status)) file)
+    (format "%-10s %s\n" (symbol-name status) file)
     'face 'monky-diff-title)))
 
 ;;; Untracked files
@@ -1919,10 +2050,6 @@ before the last command."
 
 ;; Staged Changes
 
-(defvar monky-staged-all-files nil)
-(defvar monky-old-staged-files '())
-(monky-def-permanent-buffer-local monky-staged-files)
-
 (defun monky-stage-file (file)
   (if (not (member file monky-staged-files))
       (setq monky-staged-files (cons file monky-staged-files))))
@@ -1953,6 +2080,17 @@ before the last command."
 (defun monky-wash-parent ()
   (if (looking-at "changeset:\s*\\([0-9]+\\):\\([0-9a-z]+\\)")
       (let ((changeset (match-string 2)))
+        (put-text-property
+         (match-beginning 1)
+         (match-end 1)
+         'face
+         'monky-commit-id)
+        (put-text-property
+         (match-beginning 2)
+         (match-end 2)
+         'face
+         'monky-commit-id)
+
         (add-to-list 'monky-parents changeset)
         (forward-line)
         (while (not (or (eobp)
@@ -1991,7 +2129,7 @@ before the last command."
     (monky-hg-section 'merged "Merged Files:" #'monky-wash-merged-files
                       "resolve" "--list")))
 
-;;; UnModified Files
+;;; Unmodified Files
 
 (defun monky-wash-unmodified-files ()
   (monky-wash-sequence
@@ -2003,7 +2141,7 @@ before the last command."
 
 (defun monky-insert-resolved-files ()
   (let ((monky-hide-diffs t))
-    (monky-hg-section 'unmodified "UnModified Files during Merge:" #'monky-wash-unmodified-files
+    (monky-hg-section 'unmodified "Unmodified files during merge:" #'monky-wash-unmodified-files
                       "status" "--modified" "--added" "--removed")))
 ;;; Status mode
 
@@ -2105,6 +2243,10 @@ PROPERTIES is the arguments for the function `propertize'."
   (interactive)
   (monky-log nil))
 
+(defun monky-log-revset (revset)
+  (interactive  "sRevset: ")
+  (monky-log revset))
+
 (defun monky-log (revs)
   (monky-with-process
     (let ((topdir (monky-get-root-dir)))
@@ -2122,7 +2264,7 @@ PROPERTIES is the arguments for the function `propertize'."
    "<tags>\\(.?*\\)</tags>"             ; 4. tags
    "<bookmarks>\\(.?*\\)</bookmarks>"   ; 5. bookmarks
    "<phase>\\(.?*\\)</phase>"           ; 6. phase
-   "<author>\\([A-z]+\\).?*</author>"   ; 7. author
+   "<author>\\(.*?\\)</author>"         ; 7. author
    "<monky-date>\\([0-9]+\\).?*</monky-date>" ; 8. date
    "\\(.*\\)$"                          ; 9. msg
    ))
@@ -2145,6 +2287,27 @@ Example:
                          (format "^<%s>\\|</%s>$" tag tag) "" xml-like)
                         (format "</%s><%s>" tag tag))))
 
+(defvar monky-log-count ()
+  "Internal var used to count the number of logs actually added in a buffer.")
+
+(defun monky--author-name (s)
+  "Extract the name from a Mercurial author string."
+  (save-match-data
+    (cond
+     ((string-match
+       ;; If S contains a space, take the first word.
+       (rx (group (1+ (not space)))
+           space)
+       s)
+      (match-string 1 s))
+     ((string-match
+       ;; If S is just an email, take the username.
+       (rx (group (1+ (not (any "@"))))
+           "@")
+       s)
+      (match-string 1 s))
+     (t s))))
+
 (defun monky-wash-log-line ()
   (if (looking-at monky-log-graph-re)
       (let ((width (window-total-width))
@@ -2154,7 +2317,7 @@ Example:
             (tags (match-string 4))
             (bookmarks (match-string 5))
             (phase (match-string 6))
-            (author (match-string 7))
+            (author (monky--author-name (match-string 7)))
             (date (format-time-string "%Y-%m-%d" (seconds-to-time (string-to-number (match-string 8)))))
             (msg (match-string 9)))
         (monky-delete-line)
@@ -2182,9 +2345,6 @@ Example:
 (defun monky-wash-logs ()
   (let ((monky-old-top-section nil))
     (monky-wash-sequence #'monky-wash-log-line)))
-
-(defvar monky-log-count ()
-  "Internal var used to count the number of logs actually added in a buffer.")
 
 (defmacro monky-create-log-buffer-sections (&rest body)
   "Empty current buffer of text and monky's section, and then evaluate BODY.
@@ -2255,8 +2415,6 @@ With a non numeric prefix ARG, show all entries"
   :lighter ()
   :keymap monky-blame-mode-map)
 
-(defvar monky-blame-buffer-name "*monky-blame*")
-
 (defun monky-present-blame-line (author changeset text)
   (concat author
 	  " "
@@ -2300,12 +2458,22 @@ With a non numeric prefix ARG, show all entries"
   (interactive)
   (monky-with-process
     (let ((file-name (buffer-file-name))
-	  (topdir (monky-get-root-dir)))
-      (pop-to-buffer monky-blame-buffer-name)
+	  (topdir (monky-get-root-dir))
+          (line-num (line-number-at-pos))
+          (column (current-column)))
+      (pop-to-buffer
+       (format "*monky-blame: %s*"
+               (file-name-nondirectory buffer-file-name)))
       (monky-mode-init topdir 'blame #'monky-refresh-blame-buffer file-name)
-      (monky-blame-mode t))))
-
-
+      (monky-blame-mode t)
+      ;; Put point on the same line number as the original file.
+      (forward-line (1- line-num))
+      (while (and (not (looking-at ":")) (not (eolp)))
+        (forward-char))
+      ;; Step over the blame information columns.
+      (forward-char (length ":  "))
+      ;; Put point at the same column as the original file.
+      (forward-char column))))
 
 ;;; Commit mode
 
@@ -2355,17 +2523,21 @@ With a non numeric prefix ARG, show all entries"
 (defun monky-refresh-commit-buffer (commit)
   (monky-create-buffer-sections
     (monky-hg-section nil nil
-                      'monky-wash-commit
+                      #'monky-wash-commit
                       "-v"
                       "log"
+                      "--stat"
                       "--patch"
                       "--rev" commit)))
 
 (defun monky-wash-commit ()
-  (while (and (not (eobp)) (not (looking-at "^diff")) )
-    (forward-line))
-  (when (looking-at "^diff")
-    (monky-wash-diffs)))
+  (save-excursion
+    (monky-wash-parent))
+  (let ((case-fold-search nil))
+   (while (and (not (eobp)) (not (looking-at "^diff ")) )
+     (forward-line))
+   (when (looking-at "^diff ")
+     (monky-wash-diffs))))
 
 ;;; Branch mode
 (define-minor-mode monky-branches-mode
@@ -2437,6 +2609,15 @@ With a non numeric prefix ARG, show all entries"
     ((log commits commit)
      (monky-checkout info))))
 
+(defun monky-merge-item ()
+  "Merge the revision represented by current item."
+  (interactive)
+  (monky-section-action (item info "merge")
+    ((branch)
+     (monky-merge info))
+    ((log commits commit)
+     (monky-merge info))))
+
 ;;; Queue mode
 (define-minor-mode monky-queue-mode
   "Minor mode for hg Queue.
@@ -2490,6 +2671,10 @@ With a non numeric prefix ARG, show all entries"
 
 (defun monky-wash-queue-patch ()
   (monky-wash-queue-insert-patch #'insert-file-contents))
+
+(defvar monky-queue-staged-all-files nil)
+(monky-def-permanent-buffer-local monky-queue-staged-files)
+(monky-def-permanent-buffer-local monky-queue-old-staged-files)
 
 (defun monky-wash-queue-discarding ()
   (monky-wash-sequence
@@ -2609,10 +2794,6 @@ With a non numeric prefix ARG, show all entries"
 
 ;;; Queue Staged Changes
 
-(defvar monky-queue-staged-all-files nil)
-(monky-def-permanent-buffer-local monky-queue-staged-files)
-(monky-def-permanent-buffer-local monky-queue-old-staged-files)
-
 (defun monky-queue-stage-file (file)
   (add-to-list 'monky-queue-staged-files file))
 
@@ -2670,6 +2851,9 @@ With a non numeric prefix ARG, show all entries"
   (interactive)
   (monky-run-hg "qpop" "--all"
                 "--config" "extensions.mq="))
+
+(defvar monky-log-edit-buffer-name "*monky-edit-log*"
+  "Buffer name for composing commit messages.")
 
 (defun monky-qrefresh ()
   (interactive)
@@ -2855,18 +3039,7 @@ With a non numeric prefix ARG, show all entries"
 
 ;;; Log edit mode
 
-(defvar monky-log-edit-mode-hook nil
-  "Hook run by `monky-log-edit-mode'.")
-
-(defvar monky-log-edit-buffer-name "*monky-edit-log*"
-  "Buffer name for composing commit messages.")
-
 (define-derived-mode monky-log-edit-mode text-mode "Monky Log Edit")
-
-(defvar monky-pre-log-edit-window-configuration nil)
-(defvar monky-log-edit-client-buffer nil)
-(defvar monky-log-edit-operation nil)
-(defvar monky-log-edit-info nil)
 
 (defun monky-restore-pre-log-edit-window-configuration ()
   (when monky-pre-log-edit-window-configuration
@@ -2877,7 +3050,7 @@ With a non numeric prefix ARG, show all entries"
   "Finish edit and commit."
   (interactive)
   (when (= (buffer-size) 0)
-    (error "No %s message" monky-log-edit-operation))
+    (user-error "No %s message" monky-log-edit-operation))
   (let ((commit-buf (current-buffer)))
     (case monky-log-edit-operation
       ('commit
@@ -2954,9 +3127,11 @@ With a non numeric prefix ARG, show all entries"
 (defun monky-log-edit ()
   "Bring up a buffer to allow editing of commit messages."
   (interactive)
-  (if (not (or monky-staged-files (monky-merge-p)))
-      (error "Nothing staged")
-    (monky-pop-to-log-edit 'commit)))
+  (when (not (or monky-staged-files (monky-merge-p)))
+    (if (y-or-n-p "Nothing staged. Stage and commit all changes? ")
+        (monky-stage-all)
+      (user-error "Nothing staged")))
+  (monky-pop-to-log-edit 'commit))
 
 (defun monky-commit-amend ()
   "Amends previous commit.

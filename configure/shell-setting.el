@@ -372,7 +372,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (with-temp-buffer
     (let ((host (if host host (read-string "Host: "))))
       (cd (concat "/" tramp-default-method ":" host ":"))
-      (shell (concat "*shell-r:" host "*"))
+      (shell (concat "*shell " host "*"))
       )))
 
 (defun my:local-shell (&optional dir)
@@ -381,7 +381,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (with-temp-buffer
     (let ((dir (if dir dir (read-string "Dir: "))))
       (cd dir)
-      (shell (concat "*shell-l:" dir "*"))
+      (shell (concat "*shell " dir "*"))
       )))
 
 (defun my:shell-directory (name dir)

@@ -72,6 +72,10 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
+(projectile-mode t)
+(defkeys-map projectile-mode-map
+  ((kbd "C-c p") 'projectile-command-map))
+
 
 (provide 'helm-setting)
 

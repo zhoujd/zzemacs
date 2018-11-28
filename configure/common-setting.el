@@ -78,10 +78,10 @@
   (set-face-attribute 'default nil :font font-en-name)
   ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-          (set-fontset-font (frame-parameter nil 'font)
-                            charset
-                            (font-spec :family (my:font-name font-cn-name)
-                                       :size   (my:font-size font-cn-name)))))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset
+                      (font-spec :family (my:font-name font-cn-name)
+                                 :size   (my:font-size font-cn-name)))))
 
 (defun my:console-font (font-console-name)
   "my console font setting"

@@ -56,7 +56,7 @@ LS () {
 }
 
 sl () {
-    echo "YOU TYPED 'LS' INSTEAD OF 'ls'!"
+    echo "YOU TYPED 'sl' INSTEAD OF 'ls'!"
     echo "Guess I can list it anyways..."
     ls --color=auto $*
 }

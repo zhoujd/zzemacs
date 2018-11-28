@@ -49,6 +49,17 @@ empty () {
     pushd > /dev/null
 }
 
+LS () {
+    echo "YOU TYPED 'LS' INSTEAD OF 'ls'!"
+    echo "Guess I can list it anyways..."
+    ls --color=auto $*
+}
+
+sl () {
+    echo "YOU TYPED 'LS' INSTEAD OF 'ls'!"
+    echo "Guess I can list it anyways..."
+    ls --color=auto $*
+}
 
 ## delete or list invalite soft link
 #rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }

@@ -150,7 +150,7 @@
     (interactive)
     (recenter 0))
 
-;; used in my ion C-F2 key binding. run before shutting down X!
+;;used in my ion C-F2 key binding. run before shutting down X!
 (defun my:delete-all-x-frames ()
   (mapcar (lambda (frame)
             (if (eq 'x (frame-live-p frame))
@@ -160,11 +160,10 @@
 (defun my:make-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
-  (make-frame '((name . "emacs secondary")))
-  )
+  (make-frame '((name . "emacs secondary"))))
 
 ;;file transform
-(defun my:dos2unix (buffer)
+(defun my:dos2unix-1 (buffer)
   "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
@@ -172,7 +171,7 @@
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
 
-(defun my:dos2unix-1 ()
+(defun my:dos2unix ()
   "Automate M-% C-q C-m RET RET !"
   (interactive)
   (set-buffer-file-coding-system 'unix))

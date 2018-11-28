@@ -148,8 +148,8 @@
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
     [M-f12]           'lgrep
-    (kbd "C-x <f12>") 'untabify
-    (kbd "C-c <f12>") 'tabify
+    (kbd "C-x <f12>") 'my:untabify-buffer
+    (kbd "C-c <f12>") 'my:tabify-buffer
     )
 
 

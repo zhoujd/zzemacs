@@ -150,7 +150,7 @@
     (interactive)
     (recenter 0))
 
-;;used in my ion C-F2 key binding. run before shutting down X!
+;;run before shutting down X!
 (defun my:delete-all-x-frames ()
   (mapcar (lambda (frame)
             (if (eq 'x (frame-live-p frame))

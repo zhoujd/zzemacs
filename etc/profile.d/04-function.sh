@@ -38,7 +38,7 @@ up() {
     cd "$dir"
 }
 
-empty () {
+empty() {
     pushd ~/.Trash > /dev/null
     tmp=$(rm -rfv * | wc -l | sed -e 's/^[ \t]*//')
     if [ $tmp == "1" ]; then
@@ -49,16 +49,23 @@ empty () {
     pushd > /dev/null
 }
 
-LS () {
+LS() {
     echo "YOU TYPED 'LS' INSTEAD OF 'ls'!"
     echo "Guess I can list it anyways..."
     ls --color=auto $*
 }
 
-sl () {
+sl() {
     echo "YOU TYPED 'sl' INSTEAD OF 'ls'!"
     echo "Guess I can list it anyways..."
     ls --color=auto $*
+}
+
+fawk() {
+    first="awk '{print "
+    last="}'"
+    cmd="${first}\$${1}${last}"
+    eval $cmd
 }
 
 ## delete or list invalite soft link

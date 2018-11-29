@@ -2,11 +2,17 @@
 
 (zz-load-path "site-lisp/slime")
 
-;;Common Lisp indentation
+;;common lisp indentation
 (load-library "cl-indent")
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)
+            ))
+
+;;emacs mode
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (put 'if 'lisp-indent-function nil)
             ))
 
 ;;add common lisp configure file mode alias

@@ -25,15 +25,6 @@
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
 ;;ssh-copy-id user1@123.123.123.123
 
-;;;Waring on 24.5+ so need temp disable git-emacs
-;;http://files.taesoo.org/git-emacs/git-emacs.html
-;;https://github.com/tsgates/git-emacs
-;(zz-load-path "site-lisp/git-emacs")
-;(require 'git-emacs)
-
-;;git show
-(require 'git-show)
-
 ;;mercurial support
 (require 'mercurial)
 (require 'mq)
@@ -45,12 +36,15 @@
 ;;magit
 (zz-load-path "site-lisp/git-modes")
 (zz-load-path "site-lisp/magit")
-
 (require 'magit)
+
+;;git show
+(require 'git-show)
 
 ;;diffstat
 (require 'diffstat)
 (add-hook 'diff-mode-hook (lambda () (local-set-key "\C-c\C-l" 'diffstat)))
+
 
 (provide 'vc-setting)
 

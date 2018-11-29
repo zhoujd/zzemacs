@@ -4,9 +4,11 @@
 ;;add path to env name
 (defun my:add-os-env (path name)
   (when (file-exists-p path)
-    (unless (string-match path (getenv name))
-      (setenv name (concat path path-separator (getenv name)))
-      )))
+    (let ((env (getenv name)))
+      (when (or (not env)
+                (not (string-match path env)))
+        (setenv name (concat path path-separator env))
+        ))))
 
 ;;add path to PATH
 (defun my:add-os-path (path)

@@ -7,6 +7,11 @@
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)
+            (put 'when 'lisp-indent-function 1)
+            (put 'unless 'lisp-indent-function 1)
+            (put 'do 'lisp-indent-function 2)
+            (put 'do* 'lisp-indent-function 2)
+            (put 'defcommand 'lisp-indent-function 3)
             ))
 
 ;;emacs mode

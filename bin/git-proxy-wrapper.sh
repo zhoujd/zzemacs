@@ -8,21 +8,18 @@
 # http://www.taiyo.co.jp/~gotoh/ssh/connect.c
 
 # Configuration.
-_proxy=proxy-prc.intel.com
-#_proxy=proxy-shz.intel.com
-#_proxy=proxy-ir.intel.com
+proxy_host=child-prc.intel.com
+proxy_port=1080
 
-_proxyport=1080
-
-_connect_flag="y"
+connect_flag="y"
 
 echo $1 | grep -E "\.intel\.com|\.kernel\.org" > /dev/null 2>&1
 if [ $? -eq 0 ] ; then
     exec connect $@
 else
-    if [ $_connect_flag = "y" ] ; then
-        exec connect -S $_proxy:$_proxyport $@
+    if [ $connect_flag = "y" ] ; then
+        exec connect -S $proxy_host:$proxy_port $@
     else
-        exec socat STDIO SOCKS4:$_proxy:$1:$2,socksport=$_proxyport
+        exec socat STDIO SOCKS4:$proxy_host:$1:$2,socksport=$proxy_port
     fi
 fi

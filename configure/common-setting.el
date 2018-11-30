@@ -2,8 +2,8 @@
 ;;
 
 ;;tell me if there's something wrong
-;(setq debug-on-error t) ;; goes into debug mode on errors
-;(setq debug-on-quit t)  ;; goes into debug mode when C-g is entered
+;(setq debug-on-error t) ; goes into debug mode on errors
+;(setq debug-on-quit t)  ; goes into debug mode when C-g is entered
 
 (zz-load-path "site-lisp")
 

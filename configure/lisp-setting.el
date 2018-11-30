@@ -3,7 +3,7 @@
 (zz-load-path "site-lisp/slime")
 
 ;;common lisp indentation
-(load-library "cl-indent")
+(autoload 'common-lisp-indent-function "cl-indent")
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)

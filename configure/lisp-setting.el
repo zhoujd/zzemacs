@@ -23,14 +23,14 @@
 ;;add common lisp configure file mode alias
 (setq auto-mode-alist
    (append
-    (list (cons "\\.sbclrc$"    'lisp-mode))  ;;sbcl configure file
-    (list (cons "\\.clisprc$"   'lisp-mode))  ;;clisp configure file
-    (list (cons "\\.eclrc$"     'lisp-mode))  ;;ecl configure file
-    (list (cons "\\.stumpwmrc$" 'lisp-mode))  ;;stumpwm configure file
-    (list (cons "\\.clfswmrc$"  'lisp-mode))  ;;clfswm configure file
+    (list (cons "\\.sbclrc$"    'lisp-mode))  ; sbcl configure file
+    (list (cons "\\.clisprc$"   'lisp-mode))  ; clisp configure file
+    (list (cons "\\.eclrc$"     'lisp-mode))  ; ecl configure file
+    (list (cons "\\.stumpwmrc$" 'lisp-mode))  ; stumpwm configure file
+    (list (cons "\\.clfswmrc$"  'lisp-mode))  ; clfswm configure file
     auto-mode-alist))
 
-;;(setq inferior-lisp-program "sbcl --noinform") ;; your Lisp system
+;;(setq inferior-lisp-program "sbcl --noinform")
 (setq slime-lisp-implementations
       (if-ms-windows
        '(

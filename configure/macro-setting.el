@@ -40,12 +40,6 @@
      ,@body
      (set-language-environment curr-lang)))
 
-;;marcro for start-process
-(defmacro zz:execute-key (fn-name args)
-  `(defun ,fn-name ()
-     (interactive)
-     (apply 'start-process "execute-key" nil ,args)))
-
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")
 ;;  ((kbd "M-2") "zhoujd"))
@@ -55,6 +49,16 @@
                (cons 'define-key (cons map k)))
              keys))) 
     `(progn ,@ks)))
+
+;;lisp indent
+(defmacro defindent (operator indentation)
+  `(put ',operator 'lisp-indent-function ,indentation))
+
+;;marcro for start-process
+(defmacro zz:execute-key (fn-name args)
+  `(defun ,fn-name ()
+     (interactive)
+     (apply 'start-process "execute-key" nil ,args)))
 
 ;;run command macro
 (defmacro zz:run-command (cmd)

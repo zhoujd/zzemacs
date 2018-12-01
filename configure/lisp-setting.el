@@ -93,11 +93,11 @@
 
 ;;adjust parens
 ;(require 'adjust-parens)
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (defkeys-map help-map
-              ((kbd "TAB")       'lisp-indent-adjust-parens)
-              ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
+;(add-hook 'lisp-mode-hook
+;          (lambda ()
+;            (defkeys-map help-map
+;              ((kbd "TAB")       'lisp-indent-adjust-parens)
+;              ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 
 ;;slime with auto-complete
 (defvar my:slime-ac-flag t "flag for slime with auto complete cowork")
@@ -111,11 +111,8 @@
                      (add-to-list 'ac-modes 'slime-mode)
                      )))
 
-;; sawfish mode settings
-;; load the first sawfish.el or sawfish.elc file found in the load-path
+;;sawfish mode settings
 (require 'sawfish)
-;; this tells emacs to automatically activate the sawfish-mode whenever open
-;; file with "sawfishrc" or "jl" (John Lisp) suffix
 (add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
@@ -134,10 +131,10 @@
                      ((kbd "<M-up>")   nil)
                      ((kbd "<M-down>") nil))))
 
-;;Provide a face for parens in lisp modes
+;;provide a face for parens in lisp modes
 (require 'parenface)
 
-;;Bridge process filter
+;;bridge process filter
 (require 'bridge)
 (autoload 'install-bridge "bridge" "Install a process bridge." t)
 (setq bridge-hook 

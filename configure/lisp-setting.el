@@ -7,6 +7,7 @@
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)
+            (zz:indent if nil)
             (zz:indent when 1)
             (zz:indent unless 1)
             (zz:indent do 2)

@@ -51,7 +51,7 @@
     `(progn ,@ks)))
 
 ;;lisp indent
-(defmacro zz:lisp-indent (operator indentation)
+(defmacro zz:indent (operator indentation)
   `(put ',operator 'lisp-indent-function ,indentation))
 
 ;;marcro for start-process

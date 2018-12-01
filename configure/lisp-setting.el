@@ -7,17 +7,17 @@
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)
-            (defindent when 1)
-            (defindent unless 1)
-            (defindent do 2)
-            (defindent do* 2)
-            (defindent defcommand 3)
+            (zz:lisp-indent when 1)
+            (zz:lisp-indent unless 1)
+            (zz:lisp-indent do 2)
+            (zz:lisp-indent do* 2)
+            (zz:lisp-indent defcommand 3)
             ))
 
 ;;emacs mode
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (defindent if nil)
+            (zz:lisp-indent if nil)
             ))
 
 ;;add common lisp configure file mode alias

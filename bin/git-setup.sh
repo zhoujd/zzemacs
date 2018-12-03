@@ -26,11 +26,11 @@
 echo git global setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
-    GIT_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
-    ZZ_MISC_ROOT=$(cd $GIT_SETUP_HOME/../misc && pwd -W)
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
+    MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd -W)
 else
-    GIT_SETUP_HOME=$(cd $(dirname $0) && pwd)
-    ZZ_MISC_ROOT=$(cd $GIT_SETUP_HOME/../misc && pwd)
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+    MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
 fi
 
 ## clear ~/.gitconfig
@@ -48,8 +48,8 @@ cat <<EOF > ~/.gitconfig
 EOF
 
 ## set git proxy
-git config --global core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
-git config --global core.editor    $GIT_SETUP_HOME/git-editor.sh
+git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
+git config --global core.editor    $SCRIPT_ROOT/git-editor.sh
 
 ## setup git configure
 git config --global user.name   "Zachary Zhou"
@@ -92,39 +92,29 @@ git config --global alias.cat   "cat-file -p"
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 git config --global https.proxy $http_proxy
-git config --global http.sslcainfo $ZZ_MISC_ROOT/ca-bundle.crt
+git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 if [ "$OS" = "Windows_NT" ] ; then
     git config --global credential.helper wincred
 else
-    git config --global credential.helper cache
+    git config --global credential.helper "cache --timeout=3600"
 fi
-
-### fatal: index-pack failed for win7
-#git config --global pack.windowMemory  10m
-#git config --global pack.packSizeLimit 20m
-
-### win7 git server (gitblit)
-### http://code.google.com/p/gitblit/downloads/detail?name=gitblit-1.0.0.zip
-### error: RPC failed; result=18, HTTP code = 0
-#git config --global http.postBuffer 524288000
 
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode
 
 ## git default diff using external
-#chmod +x $GIT_SETUP_HOME/git-diff-default.sh
-#git config --global diff.external $GIT_SETUP_HOME/git-diff-default.sh
+#git config --global diff.external $SCRIPT_ROOT/git-diff-default.sh
 
 ## git difftool setting
 git config --global diff.tool extdiff
-git config --global difftool.extdiff.cmd "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config --global difftool.extdiff.cmd "$SCRIPT_ROOT/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config --global difftool.prompt false
 
 ## setup merge setting
 git config --global merge.tool extmerge
-git config --global mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode true
 git config --global mergetool.keepBackup false
 
@@ -136,6 +126,5 @@ if [ "$OS" = "Windows_NT" ] ; then
         cp -f ~/.gitconfig $USERPROFILE
     fi
 fi
-
 
 echo git global setup end ...

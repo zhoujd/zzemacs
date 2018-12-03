@@ -5,14 +5,14 @@
 echo git local setup start ...
 
 if [ "$OS" = "Windows_NT" ] ; then
-    GIT_SETUP_HOME=$(cd $(dirname $0) && pwd -W)
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
 else
-    GIT_SETUP_HOME=$(cd $(dirname $0) && pwd)
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 fi
 
 ## set git proxy
-git config core.gitproxy  $GIT_SETUP_HOME/git-proxy-wrapper.sh
-git config core.editor    $GIT_SETUP_HOME/git-editor.sh
+git config core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
+git config core.editor    $SCRIPT_ROOT/git-editor.sh
 
 ## setup git configure
 git config user.name   "Zachary Zhou"
@@ -44,12 +44,12 @@ git config alias.cat   "cat-file -p"
 
 ## git difftool setting
 git config diff.tool extdiff
-git config difftool.extdiff.cmd "$GIT_SETUP_HOME/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+git config difftool.extdiff.cmd "$SCRIPT_ROOT/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config difftool.prompt false
 
 ## setup merge setting
 git config merge.tool extmerge
-git config mergetool.extmerge.cmd "$GIT_SETUP_HOME/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config mergetool.extmerge.trustExitCode true
 git config mergetool.keepBackup false
 

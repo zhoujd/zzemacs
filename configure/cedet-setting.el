@@ -8,19 +8,13 @@
 (setq semantic-idle-scheduler-work-idle-time  60)
 
 (setq semantic-default-submodes
-      '(global-semantic-idle-scheduler-mode
-        global-semanticdb-minor-mode
+      '(global-semanticdb-minor-mode
+        global-semantic-idle-scheduler-mode
         global-semantic-idle-summary-mode
         global-semantic-idle-breadcrumbs-mode
         global-semantic-mru-bookmark-mode))
 
-(mapc
- (lambda (mode)
-   (add-hook mode 'semantic-mode))
- '(c-mode-hook
-   c++-mode-hook
-   python-mode-hook
-   ))
+(semantic-mode t)
 
 (setq semantic-idle-scheduler-function (lambda () t))
 

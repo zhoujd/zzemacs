@@ -26,7 +26,7 @@ Syntax: bp LOCATION
 | Or else you can use directly the break command (break [NSControl stringValue])
 end
 
-define bpc 
+define bpc
     if $argc != 1
         help bpc
     else
@@ -126,27 +126,11 @@ Syntax: argv
 end
 
 define stack
-    if $argc == 0
-        info stack
-    end
-    if $argc == 1
-        info stack $arg0
-    end
-    if $argc > 1
-        help stack
-    end
-end
-document stack
-Syntax: stack <COUNT>
-| Print backtrace of the call stack, or innermost COUNT frames.
-end
-
-define frame
     info frame
     info args
     info locals
 end
-document frame
+document stack
 Syntax: frame
 | Print stack frame.
 end
@@ -165,6 +149,18 @@ end
 document threads
 Syntax: threads
 | Print threads in target.
+end
+
+define ls
+    shell ls
+end
+
+define argv
+    show args
+end
+document argv
+Syntax: argv
+| Print program arguments
 end
 
 ## print to echo line for struct members

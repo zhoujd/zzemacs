@@ -112,8 +112,8 @@
     [S-f8]            'zz:gud-kill
     [C-f8]            'zz:gud-restore
     [M-f8]            'gdb-many-windows
-    (kbd "C-x <f8>")  'gud-tooltip-mode
-    (kbd "C-c <f8>")  'gud-break-main
+    (kbd "C-x <f8>")  'gud-refresh
+    (kbd "C-c <f8>")  'gud-tooltip-mode
     )
 
 (define-fn-key (gethash "f9" fn-key-table)

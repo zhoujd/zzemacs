@@ -77,7 +77,6 @@ Syntax: bpt LOCATION
 | LOCATION may be a line number, function name, or "*" and an address.
 end
 
-
 define bpm
     if $argc != 1
         help bpm
@@ -116,7 +115,6 @@ Usage: bht LOCATION
 | This breakpoint will be automatically deleted when hit!
 | LOCATION may be a line number, function name, or "*" and an address.
 end
-
 
 ## process aliases
 define argv

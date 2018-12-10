@@ -77,6 +77,9 @@ install_others() {
 
     ##link zzemacs/etc/terminfo
     ln -sf ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
+
+    ##link zzemacs/etc/gdbinit
+    ln -sf ${ZZEMACS_ROOT}/etc/gdbinit ~/.gdbinit
 }
 
 ##install thirdparty

@@ -2,7 +2,7 @@
 ;;;
 
 ;;my unicad enable/disable switch
-(defun my:unicad-switch ()
+(defun zz:unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
   (if (eq t unicad-global-enable)
@@ -12,75 +12,75 @@
            (message "unicad is enabled"))))
 
 ;;using spaces repalce tabs
-(defun my:untabify-buffer ()
+(defun zz:untabify-buffer ()
   "untabify whole buffer"
   (interactive)
   (untabify (point-min) (point-max))
   (save-buffer))
 
 ;;using tabs repalce spaces
-(defun my:tabify-buffer ()
+(defun zz:tabify-buffer ()
   "tabify whole buffer"
   (interactive)
   (tabify (point-min) (point-max))
   (save-buffer))
 
-(defun my:cleanup-buffer ()
+(defun zz:cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
   (indent-buffer)
-  (my:untabify-buffer)
+  (zz:untabify-buffer)
   (delete-trailing-whitespace))
 
 ;;File coding for Unix Dos Mac switcher
-(defvar my:os-flag 0)
-(defun my:os-file-switch ()
+(defvar zz:os-flag 0)
+(defun zz:os-file-switch ()
     "for unix dos max"
     (interactive)
-    (if (> my:os-flag 2)
-      (setq my:os-flag 0))
-    (cond ((eq my:os-flag 0)
+    (if (> zz:os-flag 2)
+      (setq zz:os-flag 0))
+    (cond ((eq zz:os-flag 0)
            (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
-          ((eq my:os-flag 1)
+          ((eq zz:os-flag 1)
            (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
-          ((eq my:os-flag 2)
+          ((eq zz:os-flag 2)
            (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
-    (setq my:os-flag (+ my:os-flag 1)))
+    (setq zz:os-flag (+ zz:os-flag 1)))
 
 ;;; Maximum Windows Frame
-(defvar my:fullscreen-p t "Check if fullscreen is on or off")
-(defun my:sub-fullscreen ()
+(defvar zz:fullscreen-p t "Check if fullscreen is on or off")
+(defun zz:sub-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen)
                            nil
                            'fullboth)))
 
-(defun my:non-fullscreen ()
+(defun zz:non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND restore #xf120
 	  (w32-send-sys-command 61728)
-      (run-with-idle-timer 0.1 nil 'my:sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
 
-(defun my:fullscreen ()
+(defun zz:fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
 	  ;; WM_SYSCOMMAND maximaze #xf030
 	  (w32-send-sys-command 61488)
-      (run-with-idle-timer 0.1 nil 'my:sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
 
-(defun my:toggle-fullscreen ()
+(defun zz:toggle-fullscreen ()
   (interactive)
-  (setq my:fullscreen-p (not my:fullscreen-p))
-  (if my:fullscreen-p
-	  (my:non-fullscreen)
-	(my:fullscreen)))
+  (setq zz:fullscreen-p (not zz:fullscreen-p))
+  (if zz:fullscreen-p
+	  (zz:non-fullscreen)
+	(zz:fullscreen)))
 
-(defun my:toggle-maxframe ()
+(defun zz:toggle-maxframe ()
   (interactive)
   (if-ms-windows
    (progn
@@ -91,38 +91,38 @@
    ))
 
 ;;display current buffer name
-(defun my:display-buffer-name ()
+(defun zz:display-buffer-name ()
   (interactive)
   (message (buffer-file-name (current-buffer))))
 
 ;;set file to utf-8
-(defun my:utf-8 ()
+(defun zz:utf-8 ()
   (interactive)
   (set-buffer-file-coding-system 'utf-8)
   (save-buffer)
   (message "this file to utf-8 ok!"))
 
-(defun my:switch-to-scratch ()
+(defun zz:switch-to-scratch ()
   "switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun my:switch-to-compilation ()
+(defun zz:switch-to-compilation ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun my:open-with-gvim()
+(defun zz:open-with-gvim()
   "Edit current buffer file with gvim"
   (interactive)
   (start-process  "gvim"
                   nil
                   "gvim"
-                  (my:display-buffer-name)))
+                  (zz:display-buffer-name)))
 
-(defun my:open-with-terminal()
+(defun zz:open-with-terminal()
   "Open terminal to current dired"
   (interactive)
   (start-process  "gnome-terminal"
@@ -131,7 +131,7 @@
                   ""
                   ))
 
-(defun my:open-with-nautilus()
+(defun zz:open-with-nautilus()
   "Open nautilus on current dired"
   (interactive)
   (start-process  "nautilus"
@@ -142,28 +142,28 @@
                   ))
 
 ;;go to last buffer
-(defun my:last-buffer-go ()
+(defun zz:last-buffer-go ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
-(defun my:line-to-top-of-window ()
+(defun zz:line-to-top-of-window ()
     (interactive)
     (recenter 0))
 
 ;;run before shutting down X!
-(defun my:delete-all-x-frames ()
+(defun zz:delete-all-x-frames ()
   (mapcar (lambda (frame)
             (if (eq 'x (frame-live-p frame))
                 (delete-frame frame)))
           (frame-list)))
 
-(defun my:make-frames ()
+(defun zz:make-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary"))))
 
 ;;file transform
-(defun my:dos2unix-1 (buffer)
+(defun zz:dos2unix-1 (buffer)
   "Automate M-% C-q C-m RET RET !" 
   (interactive "*b") 
   (save-excursion 
@@ -171,18 +171,18 @@
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
 
-(defun my:dos2unix ()
+(defun zz:dos2unix ()
   "Automate M-% C-q C-m RET RET !"
   (interactive)
   (set-buffer-file-coding-system 'unix))
 
-(defun my:unix2dos ()
+(defun zz:unix2dos ()
   "Automate M-% C-q C-j RET C-q C-m C-q C-j RET !"
   (interactive)
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun my:occur-at-point (&optional arg)
+(defun zz:occur-at-point (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.
@@ -195,16 +195,16 @@
              (if (listp arg) 0 arg))))
 
 ;;emacs with sudo
-(defun my:sudo-find-file (file dir)
+(defun zz:sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
 ;;open special info file
-(defun my:open-info-file (dir-name)
+(defun zz:open-info-file (dir-name)
   "Create tags file."
   (interactive "FInfo file: ")
   (info dir-name))
 
-(defun my:insert-numbers (arg)
+(defun zz:insert-numbers (arg)
   "insert number into a file, starting with 1   -mdf"
   (interactive "NHow many numbers to insert: ")
   (setq i 0)
@@ -217,14 +217,14 @@
     )
   )
 
-(defun my:trans-path-sep (path origin-sep target-sep)
+(defun zz:trans-path-sep (path origin-sep target-sep)
   (let ((tmp ""))
     (dolist (item (split-string path origin-sep))
       (setq tmp (concat tmp item target-sep)))
     (setq tmp (substring tmp 0 -2))
     tmp))
 
-(defun my:google ()
+(defun zz:google ()
   "Google the selected region if any, display a query prompt otherwise."
   (interactive)
   (browse-url
@@ -234,7 +234,7 @@
          (buffer-substring (region-beginning) (region-end))
        (read-string "Google: "))))))
 
-(defun my:baidu ()
+(defun zz:baidu ()
   "baidu the selected region if any, display a query prompt otherwise."
   (interactive)
   (browse-url
@@ -245,7 +245,7 @@
        (read-string "Baidu: "))))))
 
 ;;delete the current file
-(defun my:delete-this-file ()
+(defun zz:delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
   (or (buffer-file-name) (error "No file is currently being edited"))
@@ -255,7 +255,7 @@
     (kill-this-buffer)))
 
 ;;rename the current file
-(defun my:rename-this-file-and-buffer (new-name)
+(defun zz:rename-this-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "sNew name: ")
   (let ((name (buffer-name))
@@ -272,7 +272,7 @@
         (set-buffer-modified-p nil)))))
 
 ;;browse current HTML file
-(defun my:browse-current-file ()
+(defun zz:browse-current-file ()
   "Open the current file as a URL using `browse-url'."
   (interactive)
   (let ((file-name (buffer-file-name)))

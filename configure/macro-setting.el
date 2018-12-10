@@ -70,7 +70,7 @@
 (defmacro zz:quick-shell (fn-name buf-name)
   `(defun ,fn-name ()
      (interactive)
-     (my:start-shell ,buf-name)))
+     (zz:start-shell ,buf-name)))
 
 ;;start terminator
 (defmacro zz:quick-termintor (fn-name type)

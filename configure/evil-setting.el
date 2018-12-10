@@ -10,7 +10,7 @@
 (require 'evil)
 
 ;;toggle evil mode
-(defun my:toggle-evil-mode ()
+(defun zz:toggle-evil-mode ()
   (interactive)
   (if (bound-and-true-p evil-local-mode)
       (progn

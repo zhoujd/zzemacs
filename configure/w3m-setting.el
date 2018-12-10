@@ -7,7 +7,7 @@
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
-(defun my:w3m-build-in-emacs ()
+(defun zz:w3m-build-in-emacs ()
   "compile emacs-w3m"
   (interactive)
   (apply
@@ -40,7 +40,7 @@
 (setq w3m-home-page "http://www.google.com/")
 (setq w3m-view-this-url-new-session-in-background t)
 
-(defun my:remove-w3m-output-garbages ()
+(defun zz:remove-w3m-output-garbages ()
       (interactive)
       (let ((buffer-read-only))
         (setf (point) (point-min))
@@ -49,7 +49,7 @@
         (set-buffer-multibyte t))
       (set-buffer-modified-p nil)) 
 
-(add-hook 'w3m-fontify-after-hook 'my:remove-w3m-output-garbages)
+(add-hook 'w3m-fontify-after-hook 'zz:remove-w3m-output-garbages)
 
 ;;(setq w3m-command-arguments
 ;;              (nconc w3m-command-arguments

@@ -71,23 +71,23 @@
 (setq slime-startup-animation nil)
 
 ;;my slime-repl-mode setting
-(defun my:slime-repl-mode-hook ()
+(defun zz:slime-repl-mode-hook ()
   (defkeys-map slime-repl-mode-map
     ((kbd "C-c ;") 'slime-insert-balanced-comments)
     ))
 
-(add-hook 'slime-repl-mode-hook 'my:slime-repl-mode-hook)
+(add-hook 'slime-repl-mode-hook 'zz:slime-repl-mode-hook)
 
 ;;hpperspec.el
 (require 'hyperspec)
 (setq common-lisp-hyperspec-root (concat zzemacs-path "/doc/hyperspec/"))
 
 ;;eldoc
-(defun my:turn-on-eldoc-mode ()
+(defun zz:turn-on-eldoc-mode ()
   (eldoc-mode t))
 (require 'eldoc-extension)
-(add-hook 'emacs-lisp-mode-hook 'my:turn-on-eldoc-mode)
-(add-hook 'lisp-inteeraction-mode-hook 'my:turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'zz:turn-on-eldoc-mode)
+(add-hook 'lisp-inteeraction-mode-hook 'zz:turn-on-eldoc-mode)
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
 
@@ -100,8 +100,8 @@
 ;              ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 
 ;;slime with auto-complete
-(defvar my:slime-ac-flag t "flag for slime with auto complete cowork")
-(when my:slime-ac-flag
+(defvar zz:slime-ac-flag t "flag for slime with auto complete cowork")
+(when zz:slime-ac-flag
   (require 'ac-slime)
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
   (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
@@ -117,7 +117,7 @@
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
 ;;connect stumpwm slime swank
-(defun my:slime-connect-stumpwm ()
+(defun zz:slime-connect-stumpwm ()
   (interactive)
   (slime-connect "127.0.0.1" 4405))
 

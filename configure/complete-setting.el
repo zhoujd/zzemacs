@@ -25,7 +25,7 @@
         try-complete-file-name
         try-expand-all-abbrevs))
 
-(defun my:expand-file-name-at-point ()
+(defun zz:expand-file-name-at-point ()
   "Use hippie-expand to expand the filename"
   (interactive)
   (let ((hippie-expand-try-functions-list '(try-complete-file-name-partially
@@ -33,9 +33,9 @@
     (call-interactively 'hippie-expand)))
 
 (defkeys-map global-map
-  ((kbd "C-M-/") 'my:expand-file-name-at-point))
+  ((kbd "C-M-/") 'zz:expand-file-name-at-point))
 
-(defun my:indent-or-complete ()
+(defun zz:indent-or-complete ()
    "complete if point is at end of a word, otherwise indent line"
    (interactive)
    (if (looking-at "\\>")

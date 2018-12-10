@@ -44,16 +44,16 @@
             (defkeys-map dired-mode-map
               ("s"   dired-sort-map))            
             (defkeys-map dired-sort-map
-              ("s"   (zz:dired-sort my:dired-sort-size     "S"))
-              ("x"   (zz:dired-sort my:dired-sort-extend   "X"))
-              ("t"   (zz:dired-sort my:dired-sort-time     "t"))
-              ("n"   (zz:dired-sort my:dired-sort-name     ""))
-              ("g"   (zz:dired-sort my:dired-sort-no-group "G"))
-              ("h"   (zz:dired-sort my:dired-sort-human    "h"))
+              ("s"   (zz:dired-sort zz:dired-sort-size     "S"))
+              ("x"   (zz:dired-sort zz:dired-sort-extend   "X"))
+              ("t"   (zz:dired-sort zz:dired-sort-time     "t"))
+              ("n"   (zz:dired-sort zz:dired-sort-name     ""))
+              ("g"   (zz:dired-sort zz:dired-sort-no-group "G"))
+              ("h"   (zz:dired-sort zz:dired-sort-human    "h"))
               )))
 
 ;;dir first
-(defun my:dired-dir-first ()
+(defun zz:dired-dir-first ()
   "Dired sort hook to list directories first."
   (save-excursion
     (let (buffer-read-only)
@@ -63,7 +63,7 @@
        (fboundp 'dired-insert-set-properties)
        (dired-insert-set-properties (point-min) (point-max)))
   (set-buffer-modified-p nil))
-(add-hook 'dired-after-readin-hook 'my:dired-dir-first)
+(add-hook 'dired-after-readin-hook 'zz:dired-dir-first)
 
 (setq dired-guess-shell-alist-user
       (list

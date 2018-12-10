@@ -29,7 +29,7 @@
 
 ;;;auto-complete-clang
 ;;sudo apt install clang
-(defun my:get-include-dirs ()
+(defun zz:get-include-dirs ()
   (let* ((command-result (shell-command-to-string "echo \"\" | g++ -v -x c++ -E -"))
          (start-string "#include <...> search starts here:\n")
          (end-string "End of search list.\n")
@@ -43,41 +43,41 @@
 ;;sudo pacman -S clang llvm
 ;;(executable-find "clang++")
 ;;https://www.hiroom2.com/2016/10/31/emacs-auto-complete-clang-async-package
-(defvar my:clang-async-p  t "flag for use clang async")
-(defun my:ac-clang-init ()
+(defvar zz:clang-async-p  t "flag for use clang async")
+(defun zz:ac-clang-init ()
   (require 'auto-complete-clang)
   (setq ac-clang-complete-executable "clang++")
   (setq ac-clang-flags
         (mapcar (lambda (item)
                   (concat "-I" item))
-                (my:get-include-dirs)))
+                (zz:get-include-dirs)))
   (add-to-list 'ac-sources 'ac-source-clang))
 
-(defun my:ac-clang-async-init ()
+(defun zz:ac-clang-async-init ()
   (require 'auto-complete-clang-async)
   (setq ac-clang-complete-executable "clang-complete")
   (setq ac-clang-flags
         (mapcar (lambda (item)
                   (concat "-I" item))
-                (my:get-include-dirs)))
+                (zz:get-include-dirs)))
   (add-to-list 'ac-sources 'ac-source-clang-async)
   (ac-clang-launch-completion-process))
 
-(if my:clang-async-p
-    (add-hook 'c-mode-common-hook 'my:ac-clang-async-init)
-    (add-hook 'c-mode-common-hook 'my:ac-clang-init))
+(if zz:clang-async-p
+    (add-hook 'c-mode-common-hook 'zz:ac-clang-async-init)
+    (add-hook 'c-mode-common-hook 'zz:ac-clang-init))
 
 ;;auto complete c header
-(defun my:ac-c-header-init ()
+(defun zz:ac-c-header-init ()
   (require 'auto-complete-c-headers)
   (add-to-list 'ac-sources 'ac-source-c-headers)
   (mapc
    (lambda (inc)
      (add-to-list 'achead:include-directories inc))
-   (my:get-include-dirs)))
+   (zz:get-include-dirs)))
 
-(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-(add-hook 'c-mode-hook 'my:ac-c-header-init)
+(add-hook 'c++-mode-hook 'zz:ac-c-header-init)
+(add-hook 'c-mode-hook 'zz:ac-c-header-init)
 
 ;;add linux kernel style
 (c-add-style "kernel"
@@ -135,7 +135,7 @@
                ))
 
 ;; my c setting hook
-(defun my:c-mode-common-hook()
+(defun zz:c-mode-common-hook()
   (setq tab-width 4 indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
     ((kbd "M-o")     'eassist-switch-h-cpp)
@@ -149,22 +149,22 @@
   (abbrev-mode t)
   (hide-ifdef-mode t))
 
-(add-hook 'c-mode-common-hook 'my:c-mode-common-hook)
+(add-hook 'c-mode-common-hook 'zz:c-mode-common-hook)
 
 ;; my c setting
-(defun my:c-mode-hook()
+(defun zz:c-mode-hook()
   (c-set-style "ffmpeg"))
 
-(add-hook 'c-mode-hook 'my:c-mode-hook)
+(add-hook 'c-mode-hook 'zz:c-mode-hook)
 
 ;; my c++ setting
-(defun my:c++-mode-hook()
+(defun zz:c++-mode-hook()
   (c-set-style "stroustrup"))
 
-(add-hook 'c++-mode-hook 'my:c++-mode-hook)
+(add-hook 'c++-mode-hook 'zz:c++-mode-hook)
 
 ;; switch c and c++ mode
-(defun my:c-c++-toggle ()
+(defun zz:c-c++-toggle ()
   "toggles between c-mode and c++-mode"
   (interactive)
   (cond ((string= major-mode "c-mode")

@@ -8,14 +8,14 @@
 (setq grep-find-use-xargs t)
 
 ;;develop setting for tags path etc.
-(defvar my:dev-set-file (format "%s/.emacs.d/temp-setting.el"
+(defvar zz:dev-set-file (format "%s/.emacs.d/temp-setting.el"
                                 (getenv "HOME"))
   "temp project setting")
-(when (file-exists-p my:dev-set-file)
-  (load-file my:dev-set-file))
+(when (file-exists-p zz:dev-set-file)
+  (load-file zz:dev-set-file))
 
 ;;generate temp-setting.el
-(defun my:create-file (fpath content)
+(defun zz:create-file (fpath content)
   "Process the file at path FPATH ..."
   (let ((tmp-buf-name (file-name-nondirectory fpath)))
     (set-buffer (get-buffer-create tmp-buf-name))  
@@ -27,15 +27,15 @@
     (kill-buffer tmp-buf-name)))
 
 ;;project list
-(defvar my:proj-list (list zzemacs-path) "project directory list")
+(defvar zz:proj-list (list zzemacs-path) "project directory list")
 
 ;;temp setting template
-(defconst my:temp-template
+(defconst zz:temp-template
   '(
     ";;;; temp-setting.el --- program temp file"
     ""
     ";; set project direcitory list"
-    "(setq my:proj-list '("
+    "(setq zz:proj-list '("
     "                     \"/usr/include\""
     "                     \"/opt/zach/include\""
     "                     ))"
@@ -49,40 +49,40 @@
     "(setq cscope-initial-directory \"~/work/tag\")"
     ""
     ";; create etags & cscope"
-    ";(my:create-proj-etags)"
-    ";(my:create-proj-cscope)"
+    ";(zz:create-proj-etags)"
+    ";(zz:create-proj-cscope)"
     ""
-    "(mapc #'my:add-os-path"
+    "(mapc #'zz:add-os-path"
     "      '("
     "        \"~/work/script\""
     "        ))"
     ""
-    "(mapc #'my:add-lib-path"
+    "(mapc #'zz:add-lib-path"
     "      '("
     "        \"~/work/lib\""
     "        ))"
     ""
     ";; project key setting"
-    ";(zz:execute-key f4-p-map \"f\" my:firefox '(\"firefox\" \"http://www.baidu.com\"))"
+    ";(zz:execute-key f4-p-map \"f\" zz:firefox '(\"firefox\" \"http://www.baidu.com\"))"
     ))
 
-(defun my:temp-setting ()
+(defun zz:temp-setting ()
   "Create ~/.emacs.d/temp-setting.el"
   (interactive)
-  (let ((path my:dev-set-file))
+  (let ((path zz:dev-set-file))
     (if (file-exists-p path)
         (progn
          (find-file path)
          (message "open %s successful." path))
         (progn
-         (my:create-file path my:temp-template)
+         (zz:create-file path zz:temp-template)
          (message "create %s successful." path))
       )))
 
-(defun my:temp-delete ()
+(defun zz:temp-delete ()
   "delte ~/.emacs.d/temp-setting.el"
   (interactive)
-  (let ((path my:dev-set-file))
+  (let ((path zz:dev-set-file))
     (when (file-exists-p path)
       (delete-file path)
       (message "delete %s successful." path))
@@ -101,7 +101,7 @@
           'emacs-lisp-mode-hook))
   (add-hook hook 'hs-minor-mode))
 
-(defun my:newline-indents ()
+(defun zz:newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent)
   (local-set-key [ret] 'newline-and-indent))
@@ -118,7 +118,7 @@
           'perl-mode-hook
           'python-mode-hook
           'php-mode-hook))
-  (add-hook hook (function my:newline-indents)))
+  (add-hook hook (function zz:newline-indents)))
 
 ;;sr-speedbar
 (require 'sr-speedbar)
@@ -135,80 +135,80 @@
 (require 'etags-stack)
 
 ;;make ctags
-(defun my:gen-ctags-cmd (dir-name)
+(defun zz:gen-ctags-cmd (dir-name)
   (format "ctags %s -f %s/TAGS -e -R %s"
           dir-name (directory-file-name dir-name)))
 
-(defun my:create-ctags (dir-name)
+(defun zz:create-ctags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
-  (zz:run-command (my:gen-ctags-cmd dir-name)))
+  (zz:run-command (zz:gen-ctags-cmd dir-name)))
 
 ;;make etags
-(defvar my:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
+(defvar zz:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
 
-(defun my:gen-find-parts (file-name)
-  (setq my:find-parts "")
+(defun zz:gen-find-parts (file-name)
+  (setq zz:find-parts "")
   (dolist (cell (split-string file-name))
-    (setq my:find-parts (concat my:find-parts "-name \"" cell "\" -o ")))
-  (setq my:find-parts (substring my:find-parts 0 -4)))
+    (setq zz:find-parts (concat zz:find-parts "-name \"" cell "\" -o ")))
+  (setq zz:find-parts (substring zz:find-parts 0 -4)))
 
-;(setq my:c/c++-file-regex
+;(setq zz:c/c++-file-regex
 ;      (concat "-type f -name \"*.[hcHC]\" -print -or "
 ;              "-type f -name \"*.[hc]pp\" -print -or "
 ;              "-type f -name \"*.[hc]++\" -print -or "
 ;              "-type f -name \"*.[hc]xx\" -print "
 ;              ))
 
-(defun my:gen-etags-cmd (dir-name)
+(defun zz:gen-etags-cmd (dir-name)
   (format "%s %s -type f \\( %s \\) -print | etags -"
           find-program
           dir-name
-          (my:gen-find-parts my:find-regex)))
+          (zz:gen-find-parts zz:find-regex)))
 
-(defun my:create-etags (dir-name)
+(defun zz:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
   (if (executable-find "etags")
-      (zz:run-command (my:gen-etags-cmd dir-name))
+      (zz:run-command (zz:gen-etags-cmd dir-name))
       (message "no etags, please install it")))
 
 ;;make cscope
 ; #!/bin/bash  
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
-(defun my:gen-cscope-cmd (dir-name)
+(defun zz:gen-cscope-cmd (dir-name)
   (let ((files-path (concat default-directory "cscope.files")))
     (concat
      (format "%s %s -type f \\( %s \\) -print > %s;"
              find-program
              dir-name
-             (my:gen-find-parts my:find-regex)
+             (zz:gen-find-parts zz:find-regex)
              files-path)
      (format "cscope -b -R -q -i %s" files-path)
      )))
 
-(defun my:create-cscope (dir-name)
+(defun zz:create-cscope (dir-name)
   "Create cscope file."
   (interactive "DDirectory: ")
   (if (executable-find "cscope")
-      (zz:run-command (my:gen-cscope-cmd dir-name))
+      (zz:run-command (zz:gen-cscope-cmd dir-name))
       (message "no cscope, please install it")))
 
 ;;creast etags/cscope for multi project
-(defun my:gen-proj-find-path (proj-list)
+(defun zz:gen-proj-find-path (proj-list)
   (let ((proj-path-parts ""))
     (dolist (cell proj-list)
       (setq proj-path-parts (concat proj-path-parts cell " ")))
     (substring proj-path-parts 0 -1)))
 
-(defun my:create-proj-etags ()
+(defun zz:create-proj-etags ()
   (interactive)
-  (my:create-etags (my:gen-proj-find-path my:proj-list)))
+  (zz:create-etags (zz:gen-proj-find-path zz:proj-list)))
 
-(defun my:create-proj-cscope ()
+(defun zz:create-proj-cscope ()
   (interactive)
-  (my:create-cscope (my:gen-proj-find-path my:proj-list)))
+  (zz:create-cscope (zz:gen-proj-find-path zz:proj-list)))
 
 ;;add  mode support
 (setq auto-mode-alist
@@ -245,12 +245,12 @@
 (add-hook 'sql-mode-hook 'font-lock-mode)
 
 ;;rgrep for c/c++
-(defvar my:rgrep-c-file-regex "*.[hc]")
-(defun my:rgrep-c (term &optional dir)
+(defvar zz:rgrep-c-file-regex "*.[hc]")
+(defun zz:rgrep-c (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
   (grep-compute-defaults) 
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term my:rgrep-c-file-regex dir)))
+    (rgrep term zz:rgrep-c-file-regex dir)))
 
 ;;javascript mode
 (require 'js2-mode)
@@ -266,7 +266,7 @@
               auto-mode-alist))
 
 ;;Add code review note
-(defun my:add-code-review-note ()
+(defun zz:add-code-review-note ()
   "Add note for current file and line number"
   (interactive)
   (let ((file-name (buffer-file-name))

@@ -2,7 +2,7 @@
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 
-(defun my:gud-break-remove ()
+(defun zz:gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
   (save-excursion
@@ -10,7 +10,7 @@
        (gud-remove nil)
        (gud-break nil))))
 
-(defun my:gud-kill ()
+(defun zz:gud-kill ()
   "Kill gdb process."
   (interactive)
   (with-current-buffer gud-comint-buffer (comint-skip-input))
@@ -33,9 +33,9 @@
 ;;Symbol Server (Microsoft): srv*c:\mss*http://msdl.microsoft.com/download/symbols
 ;(when-ms-windows  
 ; (load-library "cdb-gud.el")
-; (defun my:cdb-mode-hook ()
+; (defun zz:cdb-mode-hook ()
 ;   (gud-def cdb-bc  "bc * "  nil "Breakpoint clean all."))
-; (add-hook 'cdb-mode-hook 'my:cdb-mode-hook))
+; (add-hook 'cdb-mode-hook 'zz:cdb-mode-hook))
 
 
 (provide 'gdb-setting)

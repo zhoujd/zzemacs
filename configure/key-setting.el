@@ -42,31 +42,31 @@
   (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
   (kbd "SPC")     'er/expand-region
 
-  (kbd "`")       'my:switch-to-term
-  (kbd "1")       (zz:quick-buffer my:term-1 "*terminal<1>*")
-  (kbd "2")       (zz:quick-buffer my:term-2 "*terminal<2>*")
-  (kbd "3")       (zz:quick-buffer my:term-3 "*terminal<3>*")
-  (kbd "4")       (zz:quick-buffer my:term-4 "*terminal<4>*")
-  (kbd "5")       (zz:quick-buffer my:term-5 "*terminal<5>*")
-  (kbd "6")       (zz:quick-buffer my:term-6 "*terminal<6>*")
-  (kbd "7")       (zz:quick-buffer my:term-7 "*terminal<7>*")
-  (kbd "8")       (zz:quick-buffer my:term-8 "*terminal<8>*")
-  (kbd "9")       (zz:quick-buffer my:term-9 "*terminal<9>*")
+  (kbd "`")       'zz:switch-to-term
+  (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")
+  (kbd "2")       (zz:quick-buffer zz:term-2 "*terminal<2>*")
+  (kbd "3")       (zz:quick-buffer zz:term-3 "*terminal<3>*")
+  (kbd "4")       (zz:quick-buffer zz:term-4 "*terminal<4>*")
+  (kbd "5")       (zz:quick-buffer zz:term-5 "*terminal<5>*")
+  (kbd "6")       (zz:quick-buffer zz:term-6 "*terminal<6>*")
+  (kbd "7")       (zz:quick-buffer zz:term-7 "*terminal<7>*")
+  (kbd "8")       (zz:quick-buffer zz:term-8 "*terminal<8>*")
+  (kbd "9")       (zz:quick-buffer zz:term-9 "*terminal<9>*")
   ))
 
 (apply-keys-to-map
  global-map
  (list
-  (kbd "M-] `")   'my:switch-to-shell
-  (kbd "M-] 1")   (zz:quick-buffer my:shell-1 "*shell<1>*")
-  (kbd "M-] 2")   (zz:quick-buffer my:shell-2 "*shell<2>*")
-  (kbd "M-] 3")   (zz:quick-buffer my:shell-3 "*shell<3>*")
-  (kbd "M-] 4")   (zz:quick-buffer my:shell-4 "*shell<4>*")
-  (kbd "M-] 5")   (zz:quick-buffer my:shell-5 "*shell<5>*")
-  (kbd "M-] 6")   (zz:quick-buffer my:shell-6 "*shell<6>*")
-  (kbd "M-] 7")   (zz:quick-buffer my:shell-7 "*shell<7>*")
-  (kbd "M-] 8")   (zz:quick-buffer my:shell-8 "*shell<8>*")
-  (kbd "M-] 9")   (zz:quick-buffer my:shell-9 "*shell<9>*")
+  (kbd "M-] `")   'zz:switch-to-shell
+  (kbd "M-] 1")   (zz:quick-buffer zz:shell-1 "*shell<1>*")
+  (kbd "M-] 2")   (zz:quick-buffer zz:shell-2 "*shell<2>*")
+  (kbd "M-] 3")   (zz:quick-buffer zz:shell-3 "*shell<3>*")
+  (kbd "M-] 4")   (zz:quick-buffer zz:shell-4 "*shell<4>*")
+  (kbd "M-] 5")   (zz:quick-buffer zz:shell-5 "*shell<5>*")
+  (kbd "M-] 6")   (zz:quick-buffer zz:shell-6 "*shell<6>*")
+  (kbd "M-] 7")   (zz:quick-buffer zz:shell-7 "*shell<7>*")
+  (kbd "M-] 8")   (zz:quick-buffer zz:shell-8 "*shell<8>*")
+  (kbd "M-] 9")   (zz:quick-buffer zz:shell-9 "*shell<9>*")
   ))
 
 (apply-keys-to-map
@@ -75,7 +75,7 @@
   (kbd "C-1")     'delete-window
   (kbd "C-2")     'delete-frame
   (kbd "C-3")     'other-frame
-  (kbd "C-4")     'my:undo-kill-buffer
+  (kbd "C-4")     'zz:undo-kill-buffer
   (kbd "C-5")     'gud-until
   (kbd "C-6")     'gud-remove
   (kbd "C-7")     'gud-finish
@@ -115,7 +115,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-command-prefix
-  (kbd "%")       'my:match-paren
+  (kbd "%")       'zz:match-paren
 
   [backspace]     'delete-backward-char
   [delete]        'delete-char
@@ -169,37 +169,37 @@
  (list
   (kbd "<f4>")    'kill-this-buffer
 
-  (kbd "<f5>")    (zz:quick-termintor my:terminator-0 0)
-  (kbd "<f6>")    (zz:quick-termintor my:terminator-1 1)
-  (kbd "<f7>")    (zz:quick-termintor my:terminator-2 2)
-  (kbd "<f8>")    (zz:quick-termintor my:terminator-3 3)
+  (kbd "<f5>")    (zz:quick-termintor zz:terminator-0 0)
+  (kbd "<f6>")    (zz:quick-termintor zz:terminator-1 1)
+  (kbd "<f7>")    (zz:quick-termintor zz:terminator-2 2)
+  (kbd "<f8>")    (zz:quick-termintor zz:terminator-3 3)
 
-  (kbd "<f9>")    (zz:quick-shell my:shell-f9  "*shell-f9*")
-  (kbd "<f10>")   (zz:quick-shell my:shell-f10 "*shell-f10*")
-  (kbd "<f11>")   (zz:quick-shell my:shell-f11 "*shell-f11*")
-  (kbd "<f12>")   (zz:quick-shell my:shell-f12 "*shell-f12*")
+  (kbd "<f9>")    (zz:quick-shell zz:shell-f9  "*shell-f9*")
+  (kbd "<f10>")   (zz:quick-shell zz:shell-f10 "*shell-f10*")
+  (kbd "<f11>")   (zz:quick-shell zz:shell-f11 "*shell-f11*")
+  (kbd "<f12>")   (zz:quick-shell zz:shell-f12 "*shell-f12*")
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows
-                   (zz:execute-key my:explorer '("explorer" "."))
-                   (zz:execute-key my:thunar '("thunar")))
+                   (zz:execute-key zz:explorer '("explorer" "."))
+                   (zz:execute-key zz:thunar '("thunar")))
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
-  (kbd "C-r")     'my:add-code-review-note
-  (kbd "C-s")     (if-not-ms-windows 'my:slime-connect-stumpwm)
-  (kbd "C-t")     (unless-ms-windows 'my:open-with-terminal)
+  (kbd "C-r")     'zz:add-code-review-note
+  (kbd "C-s")     (if-not-ms-windows 'zz:slime-connect-stumpwm)
+  (kbd "C-t")     (unless-ms-windows 'zz:open-with-terminal)
 
-  (kbd "C-f")     'my:secondary-x-font
-  (kbd "M-f")     'my:primary-x-font
+  (kbd "C-f")     'zz:secondary-x-font
+  (kbd "M-f")     'zz:primary-x-font
 
   (kbd "M-r")     (if-not-ms-windows
-                   (zz:execute-key my:rofi-run '("rofi" "-show" "run")))
+                   (zz:execute-key zz:rofi-run '("rofi" "-show" "run")))
   (kbd "M-w")     (if-not-ms-windows
-                   (zz:execute-key my:rofi-window '("rofi" "-show" "window")))
+                   (zz:execute-key zz:rofi-window '("rofi" "-show" "window")))
   (kbd "M-s")     (if-not-ms-windows
-                   (zz:execute-key my:rofi-ssh '("rofi" "-show" "ssh")))
+                   (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh")))
   (kbd "M-d")     (if-not-ms-windows
-                   (zz:execute-key my:rofi-drun '("rofi" "-show" "drun")))
+                   (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun")))
   ))
 
 (apply-keys-to-map
@@ -234,21 +234,21 @@
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
 
   (kbd "c")       (if-not-ms-windows
-                   (zz:execute-key my:urxvt '("urxvt")))
+                   (zz:execute-key zz:urxvt '("urxvt")))
   (kbd "d")       (if-not-ms-windows
-                   (zz:execute-key my:meld '("meld")))
+                   (zz:execute-key zz:meld '("meld")))
   (kbd "v")       (if-not-ms-windows
-                   (zz:execute-key my:evince '("evince")))
+                   (zz:execute-key zz:evince '("evince")))
   (kbd "f")       (if-not-ms-windows
-                   (zz:execute-key my:firefox '("firefox")))
+                   (zz:execute-key zz:firefox '("firefox")))
   (kbd "m")       (if-not-ms-windows
-                   (zz:execute-key my:taskmanager '("xfce4-taskmanager")))
+                   (zz:execute-key zz:taskmanager '("xfce4-taskmanager")))
   (kbd "h")       (if-not-ms-windows
-                   (zz:execute-key my:thunar '("thunar")))
+                   (zz:execute-key zz:thunar '("thunar")))
   (kbd "r")       (if-not-ms-windows
-                   (zz:execute-key my:remmina '("remmina")))
+                   (zz:execute-key zz:remmina '("remmina")))
   (kbd "t")       (if-not-ms-windows
-                   (zz:execute-key my:tmux '("urxvt" "-e" "tmux")))
+                   (zz:execute-key zz:tmux '("urxvt" "-e" "tmux")))
   ))
 
 (apply-keys-to-map

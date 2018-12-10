@@ -46,7 +46,7 @@
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
     [f1]              nil
-    [S-f1]            'my:toggle-evil-mode
+    [S-f1]            'zz:toggle-evil-mode
     [C-f1]            'magit-status
     [M-f1]            'monky-status
     (kbd "C-x <f1>")  nil
@@ -63,7 +63,7 @@
     )
 
 (define-fn-key (gethash "f3" fn-key-table)
-    [f3]              'my:last-buffer-go
+    [f3]              'zz:last-buffer-go
     [S-f3]            'bookmark-bmenu-list
     [C-f3]            'bc-local-next
     [M-f3]            'bc-local-previous
@@ -73,11 +73,11 @@
 
 (define-fn-key (gethash "f4" fn-key-table)
     [f4]              f4-map
-    [S-f4]            'my:undo-kill-buffer
+    [S-f4]            'zz:undo-kill-buffer
     [C-f4]            'helm-find
     [M-f4]            'helm-do-grep-ag
     (kbd "C-x <f4>")  'helm-recentf
-    (kbd "C-c <f4>")  'my:recentf-open-files-compl
+    (kbd "C-c <f4>")  'zz:recentf-open-files-compl
     )
 
 (define-fn-key (gethash "f5" fn-key-table)
@@ -90,17 +90,17 @@
     )
 
 (define-fn-key (gethash "f6" fn-key-table)
-    [f6]              (if-ms-windows 'my:get-local-shell 'my:get-term)
-    [S-f6]            (if-ms-windows 'my:get-local-curr-shell 'multi-term-dedicated-toggle)
+    [f6]              (if-ms-windows 'zz:get-local-shell 'zz:get-term)
+    [S-f6]            (if-ms-windows 'zz:get-local-curr-shell 'multi-term-dedicated-toggle)
     [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-    (kbd "C-x <f6>")  (if-ms-windows 'my:switch-to-shell 'my:switch-to-term)
-    (kbd "C-c <f6>")  (if-ms-windows 'my:get-local-shell 'ansi-term)
+    (kbd "C-x <f6>")  (if-ms-windows 'zz:switch-to-shell 'zz:switch-to-term)
+    (kbd "C-c <f6>")  (if-ms-windows 'zz:get-local-shell 'ansi-term)
     )
 
 (define-fn-key (gethash "f7" fn-key-table)
     [f7]              'compile
-    [S-f7]            'my:switch-to-compilation
+    [S-f7]            'zz:switch-to-compilation
     [C-f7]            'next-error
     [M-f7]            'previous-error
     (kbd "C-x <f7>")  'toggle-case-fold-search
@@ -109,7 +109,7 @@
 
 (define-fn-key (gethash "f8" fn-key-table)
     [f8]              'gdb
-    [S-f8]            'my:gud-kill
+    [S-f8]            'zz:gud-kill
     [C-f8]            'gdb-restore-windows
     [M-f8]            'gdb-many-windows
     (kbd "C-x <f8>")  'gud-tooltip-mode
@@ -117,12 +117,12 @@
     )
 
 (define-fn-key (gethash "f9" fn-key-table)
-    [f9]              (lambda () (interactive) (my:start-shell "*shell*"))
-    [S-f9]            (if-ms-windows 'my:get-linux-shell 'my:get-local-shell)
-    [C-f9]            'my:switch-to-scratch
-    [M-f9]            'my:popup-term
-    (kbd "C-x <f9>")  'my:switch-to-shell
-    (kbd "C-c <f9>")  (if-ms-windows 'eshell 'my:remote-shell)
+    [f9]              (lambda () (interactive) (zz:start-shell "*shell*"))
+    [S-f9]            (if-ms-windows 'zz:get-linux-shell 'zz:get-local-shell)
+    [C-f9]            'zz:switch-to-scratch
+    [M-f9]            'zz:popup-term
+    (kbd "C-x <f9>")  'zz:switch-to-shell
+    (kbd "C-c <f9>")  (if-ms-windows 'eshell 'zz:remote-shell)
     )
 
 (define-fn-key (gethash "f10" fn-key-table)
@@ -148,8 +148,8 @@
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
     [M-f12]           'lgrep
-    (kbd "C-x <f12>") 'my:untabify-buffer
-    (kbd "C-c <f12>") 'my:tabify-buffer
+    (kbd "C-x <f12>") 'zz:untabify-buffer
+    (kbd "C-c <f12>") 'zz:tabify-buffer
     )
 
 

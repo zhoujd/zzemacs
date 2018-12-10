@@ -5,11 +5,11 @@
 (require 'ajc-java-complete-config)
 (setq ajc-tag-file  (concat zzemacs-path  "/site-lisp/ajc/java_base.tag"))
 
-(defun my:java-mode-hook ()
+(defun zz:java-mode-hook ()
   (ajc-java-complete-mode)
   (hide-ifdef-mode -1))
 
-(add-hook 'java-mode-hook 'my:java-mode-hook)
+(add-hook 'java-mode-hook 'zz:java-mode-hook)
 (add-hook 'find-file-hook 'ajc-4-jsp-find-file-hook)
 
 ;;android-mode

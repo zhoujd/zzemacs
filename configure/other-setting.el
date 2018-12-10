@@ -24,22 +24,22 @@
         (desktop-remove)
         (setq desktop-dirname desktop-dirname-tmp)))
 
-(defun my:saved-session ()
+(defun zz:saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
 
 ;; restore the desktop manually
-(defun my:session-restore ()
+(defun zz:session-restore ()
   "Restore a saved emacs session."
   (interactive)
-  (if (my:saved-session)
+  (if (zz:saved-session)
       (desktop-read)
     (message "No desktop found.")))
 
 ;; use session-save to save the desktop manually
-(defun my:session-save ()
+(defun zz:session-save ()
   "Save an emacs session."
   (interactive)
-  (if (my:saved-session)
+  (if (zz:saved-session)
       (if (y-or-n-p "Overwrite existing desktop? ")
       (desktop-save-in-desktop-dir)
     (message "Session not saved."))
@@ -48,12 +48,12 @@
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
           (lambda ()
-            (if (my:saved-session)
+            (if (zz:saved-session)
                 (if (y-or-n-p "Restore desktop? ")
-                    (my:session-restore)))))
+                    (zz:session-restore)))))
 
 ;;save desktop when exit
-;(add-hook 'kill-emacs-hook (lambda () (my:session-save)))
+;(add-hook 'kill-emacs-hook (lambda () (zz:session-save)))
 
 ;;Filecode Autoprocess
 ;;distct with mpg123
@@ -112,14 +112,14 @@
 (setq fci-rule-color "gray30")
 
 ;;paren switch
-(defun my:match-paren (arg)
+(defun zz:match-paren (arg)
   "Go to the matching paren if on a paren; otherwise insert %."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;(defun my:kill-buffer-when-exit ()
+;(defun zz:kill-buffer-when-exit ()
 ;  "Close assotiated buffer when a process exited"
 ;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
 ;    (when current-process
@@ -128,8 +128,8 @@
 ;                               (when (string-match "//(finished//|exited//)" change-state)
 ;                                (kill-buffer (process-buffer watch-process))))))))
 
-;(add-hook 'gdb-mode-hook 'my:kill-buffer-when-exit)
-;(add-hook 'shell-mode-hook 'my:kill-buffer-when-exit)
+;(add-hook 'gdb-mode-hook 'zz:kill-buffer-when-exit)
+;(add-hook 'shell-mode-hook 'zz:kill-buffer-when-exit)
 
 ;;;tramp setting
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET

@@ -17,7 +17,7 @@
 (add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
-(defun my:set-language-chinese ()
+(defun zz:set-language-chinese ()
   "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
@@ -25,7 +25,7 @@
   (message "This is for chinese"))
 
 ;; -*- Japanese -*-
-(defun my:set-language-japanese ()
+(defun zz:set-language-japanese ()
   "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
@@ -33,7 +33,7 @@
   (message "This is for japanese"))
 
 ;; -*- utf-8 -*-
-(defun my:set-language-utf-8 ()
+(defun zz:set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
@@ -42,16 +42,16 @@
 
 ;; -*- Language switch -*-
 (cond
-  ;;((string-match "j[ap].*" (getenv "LANG")) (my:set-language-japanese))
-  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (my:set-language-chinese))
-  (t (my:set-language-utf-8)))
+  ;;((string-match "j[ap].*" (getenv "LANG")) (zz:set-language-japanese))
+  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz:set-language-chinese))
+  (t (zz:set-language-utf-8)))
 
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
-(setq my:en-font-list '(
+(setq zz:en-font-list '(
                         "Consolas 14"
                         "Consolas 16"
                         "Consolas 24"
@@ -59,20 +59,20 @@
                         "Anonymous Pro 16"
                         "Anonymous Pro 24"
                         ))
-(setq my:cn-font-list '(
+(setq zz:cn-font-list '(
                         "Microsoft YaHei Mono 14"
                         "Microsoft YaHei Mono 16"
                         "Microsoft YaHei Mono 24"
                         ))
 
-(defun my:font-name (name)
+(defun zz:font-name (name)
   (when (string-match ".*[ ]" name)
-    (setq my:cn-name (substring (match-string 0 name) 0 -1))))
+    (setq zz:cn-name (substring (match-string 0 name) 0 -1))))
 
-(defun my:font-size (name)
+(defun zz:font-size (name)
   (string-to-number (car (last (split-string name)))))
 
-(defun my:frame-font (font-en-name font-cn-name)
+(defun zz:frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
@@ -80,33 +80,33 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family (my:font-name font-cn-name)
-                                 :size   (my:font-size font-cn-name)))))
+                      (font-spec :family (zz:font-name font-cn-name)
+                                 :size   (zz:font-size font-cn-name)))))
 
-(defun my:console-font (font-console-name)
+(defun zz:console-font (font-console-name)
   "my console font setting"
   (when (member font-console-name (font-family-list))
     (add-to-list 'default-frame-alist
                  '(font . font-console-name))))
 
-(defun my:primary-x-font ()
+(defun zz:primary-x-font ()
   (interactive)
   (if-ms-windows
-   (my:frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))
-   (my:frame-font (nth 0 my:en-font-list) (nth 0 my:cn-font-list))))
+   (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
+   (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))))
 
-(defun my:secondary-x-font ()
+(defun zz:secondary-x-font ()
   (interactive)
   (if-ms-windows
-   (my:frame-font (nth 1 my:en-font-list) (nth 1 my:cn-font-list))
-   (my:frame-font (nth 2 my:en-font-list) (nth 2 my:cn-font-list))))
+   (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))
+   (zz:frame-font (nth 2 zz:en-font-list) (nth 2 zz:cn-font-list))))
 
 ;;console font setting
 (if window-system
-    (my:primary-x-font)
-    (my:console-font (nth 0 my:cn-font-list)))
+    (zz:primary-x-font)
+    (zz:console-font (nth 0 zz:cn-font-list)))
 
-(defun my:use-server-mode ()
+(defun zz:use-server-mode ()
   ;;server-mode
   ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
   ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
@@ -131,7 +131,7 @@
   (message "start emacs server..."))
 
 (when-ms-windows
- (defun my:use-gnusvr ()
+ (defun zz:use-gnusvr ()
    ;; start gnuserv on Windows
    (progn
      (require 'gnuserv)
@@ -144,9 +144,9 @@
 (if-ms-windows
  (let ((use-gnusvr-flag nil))
    (if use-gnusvr-flag
-       (my:use-gnusvr)
-       (my:use-server-mode)))
- (my:use-server-mode))
+       (zz:use-gnusvr)
+       (zz:use-server-mode)))
+ (zz:use-server-mode))
 
 ;;color theme
 (zz-load-path "site-lisp/color-theme")
@@ -222,7 +222,7 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun my:insert-time-stamp ()
+(defun zz:insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
@@ -309,7 +309,7 @@
 (winner-mode t)
 
 ;;buffer name in title
-(defun my:fname-title-string ()
+(defun zz:fname-title-string ()
   "Return the file name of current buffer, using ~ if under home directory"
   (let ((fname (or (buffer-file-name (current-buffer))
                    (buffer-name))))
@@ -319,7 +319,7 @@
 
 (setq frame-title-format
       '(:eval (concat (user-login-name) "@" (system-name) "[Emacs"
-                      (nth 2 (split-string (version))) "]  " (my:fname-title-string))))
+                      (nth 2 (split-string (version))) "]  " (zz:fname-title-string))))
 
 ;suppress GUI features
 (setq use-file-dialog nil)
@@ -427,7 +427,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun my:undo-kill-buffer (arg)
+(defun zz:undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -443,7 +443,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
-(defun my:recentf-open-files-compl ()
+(defun zz:recentf-open-files-compl ()
   (interactive)
    (let* ((all-files recentf-list)
           (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))
@@ -459,7 +459,7 @@
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 ;;manpath
-(defun my:woman-at-point ()
+(defun zz:woman-at-point ()
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))

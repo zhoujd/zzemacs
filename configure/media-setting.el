@@ -15,7 +15,7 @@
 (setq mpg123-lazy-slider t)
 (setq mpg123-display-slider nil)
 
-(defun my:mpg123-format-name-function (artist album title tracknum filename)
+(defun zz:mpg123-format-name-function (artist album title tracknum filename)
   (concat (if (or mpg123-omit-id3-artist
                   (string= artist ""))
               ""
@@ -24,7 +24,7 @@
               title
               filename)))
 
-(setq mpg123-format-name-function 'my:mpg123-format-name-function)
+(setq mpg123-format-name-function 'zz:mpg123-format-name-function)
 
 
 (provide 'media-setting)

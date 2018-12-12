@@ -6,7 +6,7 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
-;; emacs proxy
+;;emacs proxy
 ;(setq url-proxy-services
 ;   '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
 ;     ("http" . "proxy.com:8080")

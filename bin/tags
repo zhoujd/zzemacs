@@ -11,7 +11,7 @@ projects=(
 )
 
 create_etags() {
-    echo "create etags ..."
+    echo "create etags to $TAG_ROOT..."
     pushd $TAG_ROOT > /dev/null
     find ${projects[*]} $* -type f    \
          \( -name "*.[chCH]"  \
@@ -26,7 +26,7 @@ create_etags() {
 }
 
 create_cscope() {
-    echo "create cscope ..."
+    echo "create cscope to $TAG_ROOT..."
     pushd $TAG_ROOT > /dev/null
     find ${projects[*]} $* -type f    \
          \( -name "*.[chCH]"  \

@@ -1,0 +1,46 @@
+#!/bin/bash
+#set -x
+
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+TAG_ROOT=$HOME/work/tag
+mkdir -p $TAG_ROOT
+
+projects=(
+    $HOME/work/mdk-dev
+    $HOME/work/mdk-mola
+)
+
+create_etags() {
+    echo "create etags ..."
+    pushd $TAG_ROOT > /dev/null
+    find ${projects[*]} $* -type f    \
+         \( -name "*.[chCH]"  \
+         -o -name "*.cc"      \
+         -o -name "*.[ch]xx"  \
+         -o -name "*.[ch]pp"  \
+         -o -name "*.CC"      \
+         -o -name "*.HH"      \
+         -o -name "*.[ch]++"  \
+         \) -print | etags -
+    popd > /dev/null
+}
+
+create_cscope() {
+    echo "create cscope ..."
+    pushd $TAG_ROOT > /dev/null
+    find ${projects[*]} $* -type f    \
+         \( -name "*.[chCH]"  \
+         -o -name "*.cc"      \
+         -o -name "*.[ch]xx"  \
+         -o -name "*.[ch]pp"  \
+         -o -name "*.CC"      \
+         -o -name "*.HH"      \
+         -o -name "*.[ch]++"  \
+         \) -print > cscope.files;
+
+    cscope -b -R -q -i cscope.files
+    popd > /dev/null
+}
+
+create_etags
+create_cscope

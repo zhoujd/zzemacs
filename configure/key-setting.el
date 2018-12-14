@@ -39,8 +39,9 @@
  ctl-z-map
  (list
   (kbd "C-s")     'slime-selector
-  (kbd "C-z")     (lookup-key ctl-x-map "\C-z")
   (kbd "SPC")     'er/expand-region
+  (kbd "C-z")     (unless (display-graphic-p)
+                    (lookup-key ctl-x-map "\C-z"))
 
   (kbd "`")       'zz:switch-to-term
   (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")
@@ -57,16 +58,16 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "M-] `")   'zz:switch-to-shell
-  (kbd "M-] 1")   (zz:quick-buffer zz:shell-1 "*shell<1>*")
-  (kbd "M-] 2")   (zz:quick-buffer zz:shell-2 "*shell<2>*")
-  (kbd "M-] 3")   (zz:quick-buffer zz:shell-3 "*shell<3>*")
-  (kbd "M-] 4")   (zz:quick-buffer zz:shell-4 "*shell<4>*")
-  (kbd "M-] 5")   (zz:quick-buffer zz:shell-5 "*shell<5>*")
-  (kbd "M-] 6")   (zz:quick-buffer zz:shell-6 "*shell<6>*")
-  (kbd "M-] 7")   (zz:quick-buffer zz:shell-7 "*shell<7>*")
-  (kbd "M-] 8")   (zz:quick-buffer zz:shell-8 "*shell<8>*")
-  (kbd "M-] 9")   (zz:quick-buffer zz:shell-9 "*shell<9>*")
+  (kbd "C-c `")   'zz:switch-to-shell
+  (kbd "C-c 1")   (zz:quick-buffer zz:shell-1 "*shell<1>*")
+  (kbd "C-c 2")   (zz:quick-buffer zz:shell-2 "*shell<2>*")
+  (kbd "C-c 3")   (zz:quick-buffer zz:shell-3 "*shell<3>*")
+  (kbd "C-c 4")   (zz:quick-buffer zz:shell-4 "*shell<4>*")
+  (kbd "C-c 5")   (zz:quick-buffer zz:shell-5 "*shell<5>*")
+  (kbd "C-c 6")   (zz:quick-buffer zz:shell-6 "*shell<6>*")
+  (kbd "C-c 7")   (zz:quick-buffer zz:shell-7 "*shell<7>*")
+  (kbd "C-c 8")   (zz:quick-buffer zz:shell-8 "*shell<8>*")
+  (kbd "C-c 9")   (zz:quick-buffer zz:shell-9 "*shell<9>*")
   ))
 
 (apply-keys-to-map

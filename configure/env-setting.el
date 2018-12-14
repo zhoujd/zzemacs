@@ -26,6 +26,14 @@
   (interactive "DDirectory: ")
   (zz:add-os-env path "PKG_CONFIG_PATH"))
 
+;;add url proxy
+(defun zz:add-os-proxy (proxy)
+  (interactive "sProxy: ")
+    (setq url-proxy-services
+          '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+            ("http" . proxy)
+            ("https" . proxy))))
+
 ;;add path for excute files
 (defvar zz:env-path
   (if-ms-windows

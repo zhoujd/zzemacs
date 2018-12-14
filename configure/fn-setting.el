@@ -117,7 +117,7 @@
     )
 
 (define-fn-key (gethash "f9" fn-key-table)
-    [f9]              (lambda () (interactive) (zz:start-shell "*shell*"))
+    [f9]              (zz:quick-shell zz:shell "*shell*")
     [S-f9]            (if-ms-windows 'zz:get-linux-shell 'zz:get-local-shell)
     [C-f9]            'zz:switch-to-scratch
     [M-f9]            'zz:popup-term

@@ -184,13 +184,7 @@ HSPLIT and VSPLIT."
   ;; |-------------|
   ;; |             |
   ;; |-------------|
-  (terminator-add-template  1 2)
-
-  (define-key terminator-mode-map (kbd "C-c t 1") (lambda () (interactive) (terminator-open-template 0)))
-  (define-key terminator-mode-map (kbd "C-c t 2") (lambda () (interactive) (terminator-open-template 1)))
-  (define-key terminator-mode-map (kbd "C-c t 3") (lambda () (interactive) (terminator-open-template 2)))
-  (define-key terminator-mode-map (kbd "C-c t 4") (lambda () (interactive) (terminator-open-template 3))))
-
+  (terminator-add-template  1 2))
 
 ;; This will do all the magic we need. After each split
 ;; balance-windows should be applied so we can use all the available

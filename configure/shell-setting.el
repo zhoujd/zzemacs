@@ -155,7 +155,14 @@ Dmitriy Igrishin's patched version of comint.el."
  ;;terminator setting
  (require 'terminator)
  (terminator-global-mode t)
- (terminator-basic-setup))
+ (terminator-basic-setup)
+ (defkeys-map terminator-mode-map
+  ((kbd "C-c t 1") (zz:quick-termintor zz:terminator-0 0))
+  ((kbd "C-c t 2") (zz:quick-termintor zz:terminator-1 1))
+  ((kbd "C-c t 3") (zz:quick-termintor zz:terminator-2 2))
+  ((kbd "C-c t 4") (zz:quick-termintor zz:terminator-3 3))
+  ))
+
 
 ;;set term buffer size to unlimited
 (add-hook 'term-mode-hook

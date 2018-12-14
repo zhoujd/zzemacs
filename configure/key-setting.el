@@ -170,10 +170,10 @@
  (list
   (kbd "<f4>")    'kill-this-buffer
 
-  (kbd "<f5>")    (zz:quick-termintor zz:terminator-0 0)
-  (kbd "<f6>")    (zz:quick-termintor zz:terminator-1 1)
-  (kbd "<f7>")    (zz:quick-termintor zz:terminator-2 2)
-  (kbd "<f8>")    (zz:quick-termintor zz:terminator-3 3)
+  (kbd "<f5>")    'zz:terminator-0
+  (kbd "<f6>")    'zz:terminator-1
+  (kbd "<f7>")    'zz:terminator-2
+  (kbd "<f8>")    'zz:terminator-3
 
   (kbd "<f9>")    (zz:quick-shell zz:shell-f9  "*shell-f9*")
   (kbd "<f10>")   (zz:quick-shell zz:shell-f10 "*shell-f10*")

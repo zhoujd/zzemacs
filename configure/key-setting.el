@@ -42,7 +42,45 @@
   (kbd "SPC")     'er/expand-region
   (kbd "C-z")     (unless (display-graphic-p)
                     (lookup-key ctl-x-map "\C-z"))
+  ))
 
+(apply-keys-to-map
+ ctl-z-map
+ (list
+  (kbd "1")       'gdb-display-io-buffer
+  (kbd "2")       'gdb-display-locals-for-thread
+  (kbd "3")       'gdb-display-stack-for-thread
+  (kbd "4")       'gdb-display-registers-for-thread
+  (kbd "5")       'gdb-display-stack-buffer
+  (kbd "6")       'gdb-display-breakpoints-buffer
+  (kbd "7")       'gdb-display-assembler-buffer
+  (kbd "8")       'gdb-display-memory-buffer
+  (kbd "9")       'gdb-display-locals-buffer
+  (kbd "0")       'gdb-display-gdb-buffer
+  (kbd "-")       'gud-up
+  (kbd "=")       'gud-down
+  ))
+
+(apply-keys-to-map
+ f4-map
+ (list
+  (kbd "1")       'gdb-frame-io-buffer
+  (kbd "2")       'gdb-frame-locals-for-thread
+  (kbd "3")       'gdb-frame-stack-for-thread
+  (kbd "4")       'gdb-frame-registers-for-thread
+  (kbd "5")       'gdb-frame-stack-buffer
+  (kbd "6")       'gdb-frame-breakpoints-buffer
+  (kbd "7")       'gdb-frame-assembler-buffer
+  (kbd "8")       'gdb-frame-memory-buffer
+  (kbd "9")       'gdb-frame-locals-buffer
+  (kbd "0")       'gdb-frame-gdb-buffer
+  (kbd "-")       'gud-up
+  (kbd "=")       'gud-down
+  ))
+
+(apply-keys-to-map
+ help-map
+ (list
   (kbd "`")       'zz:switch-to-term
   (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")
   (kbd "2")       (zz:quick-buffer zz:term-2 "*terminal<2>*")
@@ -203,23 +241,6 @@
                    (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun")))
   ))
 
-(apply-keys-to-map
- f4-map
- (list
-  (kbd "1")       'gdb-display-io-buffer
-  (kbd "2")       'gdb-display-locals-for-thread
-  (kbd "3")       'gdb-display-stack-for-thread
-  (kbd "4")       'gdb-display-registers-for-thread
-  (kbd "5")       'gdb-display-stack-buffer
-  (kbd "6")       'gdb-display-breakpoints-buffer
-  (kbd "7")       'gdb-display-assembler-buffer
-  (kbd "8")       'gdb-display-memory-buffer
-  (kbd "9")       'gdb-display-locals-buffer
-  (kbd "0")       'gdb-display-gdb-buffer
-  (kbd "-")       'gud-up
-  (kbd "=")       'gud-down
-  ))
-
 ;;execute start-process key
 (apply-keys-to-map
  f4-e-map
@@ -250,23 +271,6 @@
                    (zz:execute-key zz:remmina '("remmina")))
   (kbd "t")       (if-not-ms-windows
                    (zz:execute-key zz:tmux '("urxvt" "-e" "tmux")))
-  ))
-
-(apply-keys-to-map
- help-map
- (list
-  (kbd "1")       'gdb-frame-io-buffer
-  (kbd "2")       'gdb-frame-locals-for-thread
-  (kbd "3")       'gdb-frame-stack-for-thread
-  (kbd "4")       'gdb-frame-registers-for-thread
-  (kbd "5")       'gdb-frame-stack-buffer
-  (kbd "6")       'gdb-frame-breakpoints-buffer
-  (kbd "7")       'gdb-frame-assembler-buffer
-  (kbd "8")       'gdb-frame-memory-buffer
-  (kbd "9")       'gdb-frame-locals-buffer
-  (kbd "0")       'gdb-frame-gdb-buffer
-  (kbd "-")       'gud-up
-  (kbd "=")       'gud-down
   ))
 
 ;;helm key setting

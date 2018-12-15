@@ -43,28 +43,6 @@
   [f4]          f4-map
   ))
 
-;;fn-key entry access
-(apply-keys-to-map
- help-map
- (list
-  ;;self f4-map
-  (kbd "$")     f4-map
-
-  ;;self f4-e-map/f4-p-map
-  [f5]          f4-e-map
-  [f6]          f4-p-map
-
-  ;;self ctl-x/ctl-c
-  [f7]          ctrl-x-fn-map
-  [f8]          ctrl-c-fn-map
-
-  ;;self fn relative
-  [f9]          fn-map
-  [f10]         shift-fn-map
-  [f11]         ctrl-fn-map
-  [f12]         meta-fn-map
-  ))
-
 (apply-keys-to-map
  ctl-z-map
  (list

@@ -20,7 +20,7 @@
 ;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
 
 ;;;;function key setting on console
-;;Ctl-z map
+;;suspend-frame ctrl-x ctrl-z
 (defvar ctl-z-map        (make-sparse-keymap) "ctl-z-map for self functions.")
 (defvar ctrl-x-fn-map    (make-sparse-keymap) "ctrl-x f1/f12")
 (defvar ctrl-c-fn-map    (make-sparse-keymap) "ctrl-c f1/f12")

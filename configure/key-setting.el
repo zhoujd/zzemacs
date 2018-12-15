@@ -21,7 +21,6 @@
   (kbd "M-] h")  'event-apply-hyper-modifier
   (kbd "M-] a")  'event-apply-alt-modifier
   (kbd "M-] s")  'event-apply-super-modifier
-
   (kbd "M-] c")  'event-apply-control-modifier
   (kbd "M-] m")  'event-apply-meta-modifier
   (kbd "M-] S")  'event-apply-shift-modifier
@@ -39,9 +38,8 @@
  ctl-z-map
  (list
   (kbd "C-s")     'slime-selector
+  (kbd "C-z")     'find-file
   (kbd "SPC")     'er/expand-region
-  (kbd "C-z")     (unless (display-graphic-p)
-                    (lookup-key ctl-x-map "\C-z"))
   ))
 
 (apply-keys-to-map

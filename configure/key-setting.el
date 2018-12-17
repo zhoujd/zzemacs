@@ -276,8 +276,8 @@
  global-map
  (list
   (kbd "C-x b")   'helm-buffers-list
-  (kbd "C-x C-f") 'helm-find-files
-  (kbd "C-x f")   'helm-projectile-find-file
+  (kbd "C-x f")   'helm-find-files
+  (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-M-z")   'helm-resume
   (kbd "M-x")     'helm-M-x
 

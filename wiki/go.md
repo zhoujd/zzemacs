@@ -41,3 +41,8 @@ GO Lang
         
         $ ./vikas.go
         Hello World
+
+5. Init Go project
+
+        $ mkdir -p api build cmd deployments docs internal pkg scripts test third-party tools vendor
+        $ touch Makefile README.md

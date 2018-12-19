@@ -1,0 +1,6 @@
+#!/bin/bash
+
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+ZZEMACS_HOME=$(cd $SCRIPT_ROOT/.. && pwd)
+
+. $ZZEMACS_HOME/misc/swap-caps-ctrl.sh

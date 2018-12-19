@@ -14,18 +14,22 @@ install_package() {
         sudo zypper install -y texinfo
         sudo zypper install -y git-core
         sudo zypper install -y gitk
+        sudo zypper install -y git-email
     elif [ "$OS_DISTRO" = "Ubuntu" ]; then
         sudo apt-get install -y texinfo
         sudo apt-get install -y git-core
         sudo apt-get install -y gitk
+        sudo apt-get install -y git-email
     elif [ "$OS_DISTRO" = "CentOS" ]; then
         sudo yum install -y texinfo
         sudo yum install -y git-core
         sudo yum install -y gitk
+        sudo yum install -y git-email
     elif [ "$OS_DISTRO" = "Fedora" ]; then
         sudo dnf install -y texinfo
         sudo dnf install -y git-core
         sudo dnf install -y gitk
+        sudo yum install -y git-email
     else
         echo "You are about to install on a non supported linux distribution."
     fi        
@@ -38,8 +42,7 @@ install_tools() {
     
     if [ -d $INS_PATH ] ; then
         echo "Install git tools on $INS_PATH"
-        sudo ln -sf $ZZEMACS_ROOT/libexec/git-ediff   $INS_PATH
-        sudo ln -sf $ZZEMACS_ROOT/libexec/git-flow/*  $INS_PATH
+        sudo ln -sf $ZZEMACS_ROOT/libexec/git-ediff $INS_PATH
     else
         echo "Not git install on system"
     fi

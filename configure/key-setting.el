@@ -43,7 +43,7 @@
   ))
 
 (apply-keys-to-map
- ctl-z-map
+ f4-map
  (list
   (kbd "1")       'gdb-display-io-buffer
   (kbd "2")       'gdb-display-locals-for-thread
@@ -60,24 +60,7 @@
   ))
 
 (apply-keys-to-map
- f4-map
- (list
-  (kbd "1")       'gdb-frame-io-buffer
-  (kbd "2")       'gdb-frame-locals-for-thread
-  (kbd "3")       'gdb-frame-stack-for-thread
-  (kbd "4")       'gdb-frame-registers-for-thread
-  (kbd "5")       'gdb-frame-stack-buffer
-  (kbd "6")       'gdb-frame-breakpoints-buffer
-  (kbd "7")       'gdb-frame-assembler-buffer
-  (kbd "8")       'gdb-frame-memory-buffer
-  (kbd "9")       'gdb-frame-locals-buffer
-  (kbd "0")       'gdb-frame-gdb-buffer
-  (kbd "-")       'gud-up
-  (kbd "=")       'gud-down
-  ))
-
-(apply-keys-to-map
- help-map
+ ctl-z-map
  (list
   (kbd "`")       'zz:switch-to-term
   (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")

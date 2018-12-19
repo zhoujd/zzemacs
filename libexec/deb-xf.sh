@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# != 1 ]; then
-    echo "Usage: $0 <1.deb>"
+    echo "Usage: `basename $0` <1.deb>"
     exit 1
 fi
 

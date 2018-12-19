@@ -38,7 +38,6 @@
  ctl-z-map
  (list
   (kbd "C-s")     'slime-selector
-  (kbd "C-z")     'find-file
   (kbd "SPC")     'er/expand-region
   ))
 

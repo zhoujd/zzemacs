@@ -63,3 +63,9 @@ Git error and solutions
         ## 1. remove projects from .gitmodules
         ## 2. git rm --cached projects/<name>
 
+8. Rename branch
+
+        $ git branch -m new-name
+        $ git branch -m old-name new-name
+        $ git push origin :old-name new-name
+        $ git push origin -u new-name

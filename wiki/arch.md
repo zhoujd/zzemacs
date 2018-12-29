@@ -19,3 +19,8 @@ Arch setting
         $ sudo grub-mkconfig -o /boot/grub/grub.cfg
         $ sudo reboot
         $ uname -r
+
+2. Default boot
+
+        $ sudo grep menuentry /boot/grub/grug.cfg
+        $ sudo grub-set-default "1>2"

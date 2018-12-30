@@ -31,6 +31,6 @@ add-pkgpath() {
 }
 
 add-path \
-    $HOME/local/bin       \
-    $ZZEMACS_HOME/bin     \
+    $HOME/local/bin \
+    $ZZEMACS_HOME/bin \
     $ZZEMACS_HOME/libexec

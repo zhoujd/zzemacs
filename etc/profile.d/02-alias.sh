@@ -22,9 +22,6 @@ alias dir='dir --color=auto'
 alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'"
 alias tree='tree -Csu'             # another better way for 'ls'
 alias which='type -all'
-alias path='echo -e ${PATH//:/\\n}'
-alias ldpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
-alias pkgpath='echo -e ${PKG_CONFIG_PATH//:/\\n}'
 alias du='du -kh'
 alias df='df -kTh'
 alias h='history'
@@ -39,6 +36,11 @@ alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias usage='du -h --max-depth=1'
 alias sudo='sudo '
+
+## path alias
+alias path='echo -e ${PATH//:/\\n}'
+alias ldpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+alias pkgpath='echo -e ${PKG_CONFIG_PATH//:/\\n}'
 
 ## date alias
 alias date='date -R'

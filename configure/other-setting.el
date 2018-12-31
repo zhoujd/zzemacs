@@ -137,6 +137,7 @@
 ;;http://www.emacswiki.org/emacs/TrampMode
 ;;http://lifegoo.pluskid.org/wiki/EmacsTRAMP.html
 ;;http://stackoverflow.com/questions/1134149/emacs-remote-shell
+;;https://www.gnu.org/software/emacs/manual/html_node/tramp/Remote-processes.html
 (when (require 'tramp nil 'noerror)            ;;run if tramp exists && not loaded yet.
   (setq tramp-shell-prompt-pattern             ;;to work with zsh prompt
         "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")

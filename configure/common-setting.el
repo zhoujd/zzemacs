@@ -2,15 +2,13 @@
 ;;
 
 ;;tell me if there's something wrong
-;(setq debug-on-error t) ; goes into debug mode on errors
-;(setq debug-on-quit t)  ; goes into debug mode when C-g is entered
+;;(setq debug-on-error t)       ; goes into debug mode on errors
+;;(setq debug-on-quit t)        ; goes into debug mode when C-g is entered
+;;(setq inhibit-default-init t) ; disable loading of "default.el" at startup
 
 (zz-load-path "site-lisp")
 
-;;disable loading of "default.el" at startup
-;(setq inhibit-default-init t)
-;(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to DEL
-;(keyboard-translate ?\C-? ?\C-h)  ; translate DEL to `C-h'.
+(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to Backspace
 
 ;;the current frame to make it transparent
 (set-frame-parameter (selected-frame) 'alpha '(95 70))

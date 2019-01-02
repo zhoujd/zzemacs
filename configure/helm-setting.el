@@ -43,6 +43,7 @@
 ;;https://github.com/emacs-helm/helm-descbinds
 ;;C-h b
 (require 'helm-descbinds)
+(require 'multi-web-mode)
 (helm-descbinds-mode)
 
 ;;https://github.com/ShingoFukuyama/helm-swoop

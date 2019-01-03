@@ -22,6 +22,7 @@ git config color.ui    "true"
 ## alias
 git config alias.st    "status"
 git config alias.ci    "commit"
+git config alias.cae   "commit --amend"
 git config alias.ca    "commit --amend --no-edit"
 git config alias.br    "branch"
 git config alias.co    "checkout"

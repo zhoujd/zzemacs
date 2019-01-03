@@ -10,6 +10,7 @@ add-path() {
             PATH="$ARG${PATH:+":$PATH"}"
         fi
     done
+    export PATH
 }
 
 add-ldpath() {
@@ -19,6 +20,7 @@ add-ldpath() {
             LD_LIBRARY_PATH="$ARG${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}"
         fi
     done
+    export LD_LIBRARY_PATH
 }
 
 add-pkgpath() {
@@ -28,6 +30,7 @@ add-pkgpath() {
             PKG_CONFIG_PATH="$ARG${PKG_CONFIG_PATH:+":$PKG_CONFIG_PATH"}"
         fi
     done
+    export PKG_CONFIG_PATH
 }
 
 add-path \

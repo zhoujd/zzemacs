@@ -36,7 +36,7 @@ install_package() {
         "Arch" | "Manjaro" )
             sudo pacman -S tk cscope w3m
             ;;
-        t )
+        * )
             echo "You are about to install on a non supported linux distribution."
             ;;
     esac

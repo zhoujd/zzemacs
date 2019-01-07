@@ -110,7 +110,7 @@ install_package() {
         "Arch" | "Manjaro" )
             sudo pacman -S libjpeg libtiff giflib imagemagick
             ;;
-        t )
+        * )
             echo "You are about to install on a non supported linux distribution."
             ;;
     esac

@@ -67,48 +67,53 @@ install_libungif() {
 
 install_package() {
     # dectect OS version
-    if [ "$OS_DISTRO" = "SUSE" ]; then
-        sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
-    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get install -y automake
-        sudo apt-get install -y build-essential
-        sudo apt-get install -y libxft-dev libotf-dev libgpm-dev imagemagick
-        sudo apt-get install -y libxpm-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev
-        sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libgconf2-dev
-        sudo apt-get install -y libm17n-dev libgnutls28-dev libselinux1-dev libdbus-1-dev 
-    elif [ "$OS_DISTRO" = "CentOS" ]; then
-        sudo yum -y groupinstall "Development Tools"
-        sudo yum install -y gtk+-devel gtk2-devel
-        sudo yum install -y libXpm-devel
-        sudo yum install -y libpng-devel
-        sudo yum install -y giflib-devel
-        sudo yum install -y libtiff-devel libjpeg-devel
-        sudo yum install -y ncurses-devel
-        sudo yum install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
-        sudo yum install -y GConf2-devel pkgconfig
-        sudo yum install -y libXft-devel
-        sudo yum install -y git-core
-        sudo yum install -y gitk
-    elif [ "$OS_DISTRO" = "Fedora" ]; then
-        sudo dnf -y groupinstall "Development Tools"
-        sudo dnf install -y gtk+-devel gtk2-devel
-        sudo dnf install -y libXpm-devel
-        sudo dnf install -y libpng-devel
-        sudo dnf install -y giflib-devel
-        sudo dnf install -y libtiff-devel libjpeg-devel
-        sudo dnf install -y ncurses-devel
-        sudo dnf install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
-        sudo dnf install -y GConf2-devel pkgconfig
-        sudo dnf install -y libXft-devel
-        sudo dnf install -y git-core
-        sudo dnf install -y gitk
-    elif [ "$OS_DISTRO" = "Arch" ]; then        
-        sudo pacman -S libjpeg libtiff giflib imagemagick
-    elif [ "$OS_DISTRO" = "Manjaro" ]; then        
-        sudo pacman -S libjpeg libtiff giflib imagemagick
-    else
-        echo "You are about to install on a non supported linux distribution."
-    fi
+    case "$OS_DISTRO" in
+        "SUSE" )
+            sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
+            ;;
+        "Ubuntu" )
+            sudo apt-get install -y automake
+            sudo apt-get install -y build-essential
+            sudo apt-get install -y libxft-dev libotf-dev libgpm-dev imagemagick
+            sudo apt-get install -y libxpm-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev
+            sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libgconf2-dev
+            sudo apt-get install -y libm17n-dev libgnutls28-dev libselinux1-dev libdbus-1-dev
+            ;;
+        "CentOS" )
+            sudo yum -y groupinstall "Development Tools"
+            sudo yum install -y gtk+-devel gtk2-devel
+            sudo yum install -y libXpm-devel
+            sudo yum install -y libpng-devel
+            sudo yum install -y giflib-devel
+            sudo yum install -y libtiff-devel libjpeg-devel
+            sudo yum install -y ncurses-devel
+            sudo yum install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
+            sudo yum install -y GConf2-devel pkgconfig
+            sudo yum install -y libXft-devel
+            sudo yum install -y git-core
+            sudo yum install -y gitk
+            ;;
+        "Fedora" )
+            sudo dnf -y groupinstall "Development Tools"
+            sudo dnf install -y gtk+-devel gtk2-devel
+            sudo dnf install -y libXpm-devel
+            sudo dnf install -y libpng-devel
+            sudo dnf install -y giflib-devel
+            sudo dnf install -y libtiff-devel libjpeg-devel
+            sudo dnf install -y ncurses-devel
+            sudo dnf install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
+            sudo dnf install -y GConf2-devel pkgconfig
+            sudo dnf install -y libXft-devel
+            sudo dnf install -y git-core
+            sudo dnf install -y gitk
+            ;;
+        "Arch" | "Manjaro" )
+            sudo pacman -S libjpeg libtiff giflib imagemagick
+            ;;
+        t )
+            echo "You are about to install on a non supported linux distribution."
+            ;;
+    esac
 }
 
 echo -n "Do you need install packages? (y/N): "

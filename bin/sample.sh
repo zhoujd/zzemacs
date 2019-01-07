@@ -61,6 +61,10 @@ linux_issue_check() {
         OS_DISTRO="CentOS"
     elif [ ! -z "$(cat /etc/issue | grep 'SUSE')" ]; then
         OS_DISTRO="SUSE"
+    elif [ ! -z "$(cat /etc/issue | grep 'Arch')" ]; then
+        OS_DISTRO="Arch"
+    elif [ ! -z "$(cat /etc/issue | grep 'Manjaro')" ]; then
+        OS_DISTRO="Manjaro"
     else
         false
     fi

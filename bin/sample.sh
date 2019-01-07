@@ -84,6 +84,9 @@ linux_lsb_check() {
         "Arch" )
             OS_DISTRO="Arch"
             ;;
+        "ManjaroLinux" )
+            OS_DISTRO="Manjaro"
+            ;;
         * )
             false
             ;;

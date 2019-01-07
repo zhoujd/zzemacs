@@ -87,7 +87,6 @@ install_package() {
         sudo yum install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
         sudo yum install -y GConf2-devel pkgconfig
         sudo yum install -y libXft-devel
-
         sudo yum install -y git-core
         sudo yum install -y gitk
     elif [ "$OS_DISTRO" = "Fedora" ]; then
@@ -101,10 +100,11 @@ install_package() {
         sudo dnf install -y gpm-devel dbus-devel dbus-glib-devel dbus-python
         sudo dnf install -y GConf2-devel pkgconfig
         sudo dnf install -y libXft-devel
-
         sudo dnf install -y git-core
         sudo dnf install -y gitk
     elif [ "$OS_DISTRO" = "Arch" ]; then        
+        sudo pacman -S libjpeg libtiff giflib imagemagick
+    elif [ "$OS_DISTRO" = "Manjaro" ]; then        
         sudo pacman -S libjpeg libtiff giflib imagemagick
     else
         echo "You are about to install on a non supported linux distribution."

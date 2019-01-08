@@ -11,26 +11,33 @@ echo "hg setup start ..."
 ##http://hgbook.red-bean.com/ (Mercurial: The Definitive Guide)
 
 install_package() {
-    # dectect OS version
-    if [ "$OS_DISTRO" = "SUSE" ]; then
-        sudo zypper install -y mercurial
-        sudo zypper install -y python-devel
-        sudo zypper install -y python-docutils
-    elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-        sudo apt-get install -y mercurial
-        sudo apt-get install -y python-devel
-        sudo apt-get install -y python-docutils
-    elif [ "$OS_DISTRO" = "CentOS" ]; then
-        sudo yum install -y mercurial
-        sudo yum install -y python-devel
-        sudo yum install -y python-docutils
-    elif [ "$OS_DISTRO" = "Fedora" ]; then
-        sudo dnf install -y mercurial
-        sudo dnf install -y python-devel
-        sudo dnf install -y python-docutils
-    else
-        echo "You are about to install on a non supported linux distribution."
-    fi
+    case "$OS_DISTRO" in
+        "SUSE" )
+            sudo zypper install -y mercurial
+            sudo zypper install -y python-devel
+            sudo zypper install -y python-docutils
+            ;;
+        "Ubuntu" )
+            sudo apt-get install -y mercurial
+            sudo apt-get install -y python-devel
+            sudo apt-get install -y python-docutils
+            ;;
+        "CentOS" )
+            sudo yum install -y mercurial
+            sudo yum install -y python-devel
+            sudo yum install -y python-docutils
+            ;;
+        "Fedora" )
+            sudo dnf install -y mercurial
+            sudo dnf install -y python-devel
+            sudo dnf install -y python-docutils
+            ;;
+        "Arch" | "Manjaro" )
+            sudo pacman -S mercurial
+        * )
+            echo "You are about to install on a non supported linux distribution."
+            ;;
+    esac
 }
 
 ##setup packages

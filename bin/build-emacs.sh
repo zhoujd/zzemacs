@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ### wget https://ftp.gnu.org/gnu/emacs/emacs-25.2.tar.xz
-### wget https://ftp.gnu.org/gnu/emacs/emacs-24.3.tar.xz
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -31,12 +30,6 @@ build_source() {
 
     build_started=`date`
     echo "//Starting build: $build_started"
-    
-    ## compile emacs
-    if [ "$EMACS_SRC" = "emacs-24.3" ]; then
-        patch -p1 < $SCRIPT_ROOT/../misc/$EMACS_SRC.patch 
-        autoconf
-    fi
 
     ./configure --prefix=/usr
     make
@@ -48,20 +41,6 @@ build_source() {
     echo
     echo "//build finished: $build_finished"
 
-    popd
-}
-
-install_libungif() {
-    if [ ! -f libungif-4.1.4.tar.gz ]; then
-        wget https://sourceforge.net/projects/giflib/files/libungif-4.x/libungif-4.1.4/libungif-4.1.4.tar.gz
-    fi
-    
-    tar xf libungif-4.1.4.tar.gz
-
-    pushd libungif-4.1.4
-    ./configure --prefix=/usr
-    make
-    sudo make install
     popd
 }
 
@@ -121,10 +100,6 @@ read answer
 case "$answer" in
     "Y" | "y" )
         run_cmd install_package
-
-        if [ "$EMACS_SRC" = "emacs-24.3" ]; then
-            run_cmd install_libungif
-        fi
         ;;
 esac
 

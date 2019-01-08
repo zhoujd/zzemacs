@@ -1,9 +1,9 @@
 #!/bin/sh
 
-LINUX_DEV_TOOL_ROOT=`pwd`
+SCRIPT_ROOT=`pwd`
 
 ##Import vars and functions
-. $LINUX_DEV_TOOL_ROOT/sample.sh
+. $SCRIPT_ROOT/sample.sh
 
 echo "Install linux-dev-tool begin..."
 
@@ -52,16 +52,22 @@ install_package_fedora() {
 }
 
 # dectect OS version
-if [ "$OS_DISTRO" = "SUSE" ]; then
-    run_cmd install_package_suse
-elif [ "$OS_DISTRO" = "Ubuntu" ]; then
-    run_cmd install_package_ubuntu
-elif [ "$OS_DISTRO" = "CentOS" ]; then
-    run_cmd install_package_centos
-elif [ "$OS_DISTRO" = "Fedora" ]; then
-    run_cmd install_package_fedora
-else
-    echo "You are about to install on a non supported linux distribution."
-fi
+case "$OS_DISTRO" in
+    "SUSE" )
+        run_cmd install_package_suse
+        ;;
+    "Ubuntu" )
+        run_cmd install_package_ubuntu
+        ;;
+    "CentOS" )
+        run_cmd install_package_centos
+        ;;
+    "Fedora" )
+        run_cmd install_package_fedora
+        ;;
+    * )
+        echo "You are about to install on a non supported linux distribution."
+        ;;
+esac
 
 echo "Install linux-dev-tool end..."

@@ -14,9 +14,17 @@
         global-semantic-idle-breadcrumbs-mode
         global-semantic-mru-bookmark-mode))
 
+(setq semantic-idle-scheduler-function (lambda () t))
+
 (semantic-mode t)
 
-(setq semantic-idle-scheduler-function (lambda () t))
+(mapc
+ (lambda (mode)
+   (add-hook mode 'semantic-mode))
+ '(c-mode-hook
+   c++-mode-hook
+   python-mode-hook
+   ))
 
 (provide 'cedet-setting)
 

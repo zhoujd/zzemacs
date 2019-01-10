@@ -7,6 +7,7 @@
 (zz-load-path "site-lisp/evil-plugin")
 
 ;;evil-evil
+(setq evil-toggle-key "C-|")
 (require 'evil)
 
 ;;toggle evil mode

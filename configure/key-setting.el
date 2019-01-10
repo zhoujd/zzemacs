@@ -166,30 +166,30 @@
  fn-map
  (list
   ;;quick move other windows
-  (kbd "k")       (lookup-key global-map [up])
-  (kbd "j")       (lookup-key global-map [down])
-  (kbd "h")       (lookup-key global-map [left])
-  (kbd "l")       (lookup-key global-map [right])
+  (kbd "p")       (lookup-key global-map [up])
+  (kbd "n")       (lookup-key global-map [down])
+  (kbd "b")       (lookup-key global-map [left])
+  (kbd "f")       (lookup-key global-map [right])
   ))
 
 (apply-keys-to-map
  meta-fn-map
  (list
   ;;quick move other windows
-  (kbd "k")       (lookup-key global-map [M-up])
-  (kbd "j")       (lookup-key global-map [M-down])
-  (kbd "h")       (lookup-key global-map [M-left])
-  (kbd "l")       (lookup-key global-map [M-right])
+  (kbd "p")       (lookup-key global-map [M-up])
+  (kbd "n")       (lookup-key global-map [M-down])
+  (kbd "b")       (lookup-key global-map [M-left])
+  (kbd "f")       (lookup-key global-map [M-right])
   ))
 
 (apply-keys-to-map
  shift-fn-map
  (list
   ;;window size change
-  (kbd "k")       (lookup-key global-map [S-up])
-  (kbd "j")       (lookup-key global-map [S-down])
-  (kbd "h")       (lookup-key global-map [S-left])
-  (kbd "l")       (lookup-key global-map [S-right])
+  (kbd "p")       (lookup-key global-map [S-up])
+  (kbd "n")       (lookup-key global-map [S-down])
+  (kbd "b")       (lookup-key global-map [S-left])
+  (kbd "f")       (lookup-key global-map [S-right])
   ))
 
 ;;switch to shells

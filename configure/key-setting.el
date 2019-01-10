@@ -163,6 +163,16 @@
   ))
 
 (apply-keys-to-map
+ fn-map
+ (list
+  ;;quick move other windows
+  (kbd "k")       (lookup-key global-map [up])
+  (kbd "j")       (lookup-key global-map [down])
+  (kbd "h")       (lookup-key global-map [left])
+  (kbd "l")       (lookup-key global-map [right])
+  ))
+
+(apply-keys-to-map
  meta-fn-map
  (list
   ;;quick move other windows

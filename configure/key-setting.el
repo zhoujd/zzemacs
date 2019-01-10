@@ -163,23 +163,23 @@
   ))
 
 (apply-keys-to-map
- esc-map
+ meta-fn-map
  (list
   ;;quick move other windows
-  [up]            (lookup-key global-map [M-up])
-  [down]          (lookup-key global-map [M-down])
-  [left]          (lookup-key global-map [M-left])
-  [right]         (lookup-key global-map [M-right])
+  (kbd "k")       (lookup-key global-map [M-up])
+  (kbd "j")       (lookup-key global-map [M-down])
+  (kbd "h")       (lookup-key global-map [M-left])
+  (kbd "l")       (lookup-key global-map [M-right])
   ))
 
 (apply-keys-to-map
  shift-fn-map
  (list
   ;;window size change
-  [up]            (lookup-key global-map [S-up])
-  [down]          (lookup-key global-map [S-down])
-  [left]          (lookup-key global-map [S-left])
-  [right]         (lookup-key global-map [S-right])
+  (kbd "k")       (lookup-key global-map [S-up])
+  (kbd "j")       (lookup-key global-map [S-down])
+  (kbd "h")       (lookup-key global-map [S-left])
+  (kbd "l")       (lookup-key global-map [S-right])
   ))
 
 ;;switch to shells

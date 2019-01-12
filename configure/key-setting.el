@@ -62,30 +62,34 @@
  ctrl-z-map
  (list
   (kbd "`")       'zz:switch-to-term
-  (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")
-  (kbd "2")       (zz:quick-buffer zz:term-2 "*terminal<2>*")
-  (kbd "3")       (zz:quick-buffer zz:term-3 "*terminal<3>*")
-  (kbd "4")       (zz:quick-buffer zz:term-4 "*terminal<4>*")
-  (kbd "5")       (zz:quick-buffer zz:term-5 "*terminal<5>*")
-  (kbd "6")       (zz:quick-buffer zz:term-6 "*terminal<6>*")
-  (kbd "7")       (zz:quick-buffer zz:term-7 "*terminal<7>*")
-  (kbd "8")       (zz:quick-buffer zz:term-8 "*terminal<8>*")
-  (kbd "9")       (zz:quick-buffer zz:term-9 "*terminal<9>*")
+  (kbd "1")       (zz:quick-buffer zz:term-1  "*terminal<1>*")
+  (kbd "2")       (zz:quick-buffer zz:term-2  "*terminal<2>*")
+  (kbd "3")       (zz:quick-buffer zz:term-3  "*terminal<3>*")
+  (kbd "4")       (zz:quick-buffer zz:term-4  "*terminal<4>*")
+  (kbd "5")       (zz:quick-buffer zz:term-5  "*terminal<5>*")
+  (kbd "6")       (zz:quick-buffer zz:term-6  "*terminal<6>*")
+  (kbd "7")       (zz:quick-buffer zz:term-7  "*terminal<7>*")
+  (kbd "8")       (zz:quick-buffer zz:term-8  "*terminal<8>*")
+  (kbd "9")       (zz:quick-buffer zz:term-9  "*terminal<9>*")
+  (kbd "0")       (zz:quick-buffer zz:term-10 "*terminal<10>*")
   ))
 
 (apply-keys-to-map
  mode-specific-map
  (list
   (kbd "`")       'zz:switch-to-shell
-  (kbd "1")       (zz:quick-buffer zz:shell-1 "*shell<1>*")
-  (kbd "2")       (zz:quick-buffer zz:shell-2 "*shell<2>*")
-  (kbd "3")       (zz:quick-buffer zz:shell-3 "*shell<3>*")
-  (kbd "4")       (zz:quick-buffer zz:shell-4 "*shell<4>*")
-  (kbd "5")       (zz:quick-buffer zz:shell-5 "*shell<5>*")
-  (kbd "6")       (zz:quick-buffer zz:shell-6 "*shell<6>*")
-  (kbd "7")       (zz:quick-buffer zz:shell-7 "*shell<7>*")
-  (kbd "8")       (zz:quick-buffer zz:shell-8 "*shell<8>*")
-  (kbd "9")       (zz:quick-buffer zz:shell-9 "*shell<9>*")
+  (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
+  (kbd "2")       (zz:quick-buffer zz:shell-2  "*shell<2>*")
+  (kbd "3")       (zz:quick-buffer zz:shell-3  "*shell<3>*")
+  (kbd "4")       (zz:quick-buffer zz:shell-4  "*shell<4>*")
+  (kbd "5")       (zz:quick-buffer zz:shell-5  "*shell<5>*")
+  (kbd "6")       (zz:quick-buffer zz:shell-6  "*shell<6>*")
+  (kbd "7")       (zz:quick-buffer zz:shell-7  "*shell<7>*")
+  (kbd "8")       (zz:quick-buffer zz:shell-8  "*shell<8>*")
+  (kbd "9")       (zz:quick-buffer zz:shell-9  "*shell<9>*")
+  (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
+  (kbd "-")       'zz:local-shell
+  (kbd "=")       'zz:remote-shell
   ))
 
 (apply-keys-to-map

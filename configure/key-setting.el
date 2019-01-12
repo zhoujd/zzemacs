@@ -35,7 +35,7 @@
      (terminal-init-xterm)))
 
 (apply-keys-to-map
- ctl-z-map
+ ctrl-z-map
  (list
   (kbd "C-s")     'slime-selector
   (kbd "SPC")     'er/expand-region
@@ -59,7 +59,7 @@
   ))
 
 (apply-keys-to-map
- ctl-z-map
+ ctrl-z-map
  (list
   (kbd "`")       'zz:switch-to-term
   (kbd "1")       (zz:quick-buffer zz:term-1 "*terminal<1>*")
@@ -74,18 +74,18 @@
   ))
 
 (apply-keys-to-map
- global-map
+ mode-specific-map
  (list
-  (kbd "C-c `")   'zz:switch-to-shell
-  (kbd "C-c 1")   (zz:quick-buffer zz:shell-1 "*shell<1>*")
-  (kbd "C-c 2")   (zz:quick-buffer zz:shell-2 "*shell<2>*")
-  (kbd "C-c 3")   (zz:quick-buffer zz:shell-3 "*shell<3>*")
-  (kbd "C-c 4")   (zz:quick-buffer zz:shell-4 "*shell<4>*")
-  (kbd "C-c 5")   (zz:quick-buffer zz:shell-5 "*shell<5>*")
-  (kbd "C-c 6")   (zz:quick-buffer zz:shell-6 "*shell<6>*")
-  (kbd "C-c 7")   (zz:quick-buffer zz:shell-7 "*shell<7>*")
-  (kbd "C-c 8")   (zz:quick-buffer zz:shell-8 "*shell<8>*")
-  (kbd "C-c 9")   (zz:quick-buffer zz:shell-9 "*shell<9>*")
+  (kbd "`")       'zz:switch-to-shell
+  (kbd "1")       (zz:quick-buffer zz:shell-1 "*shell<1>*")
+  (kbd "2")       (zz:quick-buffer zz:shell-2 "*shell<2>*")
+  (kbd "3")       (zz:quick-buffer zz:shell-3 "*shell<3>*")
+  (kbd "4")       (zz:quick-buffer zz:shell-4 "*shell<4>*")
+  (kbd "5")       (zz:quick-buffer zz:shell-5 "*shell<5>*")
+  (kbd "6")       (zz:quick-buffer zz:shell-6 "*shell<6>*")
+  (kbd "7")       (zz:quick-buffer zz:shell-7 "*shell<7>*")
+  (kbd "8")       (zz:quick-buffer zz:shell-8 "*shell<8>*")
+  (kbd "9")       (zz:quick-buffer zz:shell-9 "*shell<9>*")
   ))
 
 (apply-keys-to-map

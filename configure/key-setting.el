@@ -90,6 +90,7 @@
   (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
   (kbd "-")       'zz:local-shell
   (kbd "=")       'zz:remote-shell
+  (kbd "\\")      (lookup-key global-map [S-f9])
   ))
 
 (apply-keys-to-map

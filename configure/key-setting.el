@@ -38,6 +38,7 @@
  ctrl-z-map
  (list
   (kbd "C-s")     'slime-selector
+  (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
   ))
 

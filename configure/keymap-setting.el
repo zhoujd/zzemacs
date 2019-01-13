@@ -54,10 +54,10 @@
   (kbd "f")     fn-map
   (kbd "s")     shift-fn-map
   (kbd "c")     ctrl-fn-map
-  (kbd "m")     meta-fn-map
+  (kbd "x")     meta-fn-map
 
   ;;self f4-map
-  (kbd "$")     f4-map
+  (kbd "z")     f4-map
   (kbd "e")     f4-e-map
   (kbd "p")     f4-p-map
   ))

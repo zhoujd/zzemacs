@@ -73,6 +73,9 @@
   (kbd "8")       (zz:quick-buffer zz:term-8  "*terminal<8>*")
   (kbd "9")       (zz:quick-buffer zz:term-9  "*terminal<9>*")
   (kbd "0")       (zz:quick-buffer zz:term-10 "*terminal<10>*")
+  (kbd "-")       'eshell
+  (kbd "=")       'zz:popup-term
+  (kbd "\\")      'multi-term
   ))
 
 (apply-keys-to-map

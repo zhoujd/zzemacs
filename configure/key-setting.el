@@ -45,7 +45,7 @@
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "`")       'gdb-many-windows
+  (kbd "`")       'zz:gud-restore
   (kbd "1")       'gdb-display-io-buffer
   (kbd "2")       'gdb-display-locals-for-thread
   (kbd "3")       'gdb-display-stack-for-thread
@@ -58,7 +58,7 @@
   (kbd "0")       'gdb-display-gdb-buffer
   (kbd "-")       'gud-up
   (kbd "=")       'gud-down
-  (kbd "\\")      'zz:gud-restore
+  (kbd "\\")      'gdb-many-windows
   ))
 
 (apply-keys-to-map

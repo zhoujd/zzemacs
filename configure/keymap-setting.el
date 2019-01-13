@@ -57,7 +57,6 @@
   (kbd "m")     meta-fn-map
 
   ;;self f4-map
-  (kbd "z")     f4-map
   (kbd "e")     f4-e-map
   (kbd "p")     f4-p-map
   ))

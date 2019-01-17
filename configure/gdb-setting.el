@@ -27,27 +27,6 @@
  '(lambda ()
     (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
 
-;;GDB through TRAMP
-(defadvice find-file-noselect (before ad-find-file-noselect)
-  (set 'filename (if (file-exists-p filename) (expand-file-name filename)
-                   (gud-file-name filename))))
-
-(defadvice gdb-get-location (around ad-gdb-get-location activate)
-  (let ()
-    (ad-activate 'find-file-noselect) ad-do-it
-    (ad-deactivate 'find-file-noselect)))
-
-(defadvice gdb-info-breakpoints-custom
-  (around ad-gdb-info-breakpoints-custom activate)
-  (let ()
-    (ad-activate 'find-file-noselect) ad-do-it
-    (ad-deactivate 'find-file-noselect)))
-
-(defadvice gdb-goto-breakpoint (around ad-gdb-goto-breakpoint activate)
-  (let ()
-    (ad-activate 'find-file-noselect) ad-do-it
-    (ad-deactivate 'find-file-noselect)))
-
 
 (provide 'gdb-setting)
 

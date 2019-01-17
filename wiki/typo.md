@@ -11,6 +11,7 @@ Linux type practice
 
 2. speedpad on Ubuntu Linux
 
+    $ sudo apt install fortune-mod
     $ sudo apt install speedpad
 
 3. cowsay on Linux

@@ -1,9 +1,0 @@
-!
-! Caps_Lock into Control_L
-! xmodmap -pk | grep -i caps
-!
-
-clear lock
-clear control
-keycode 66 = Control_L
-add control = Control_L

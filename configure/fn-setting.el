@@ -109,11 +109,11 @@
 
 (define-fn-key (gethash "f8" fn-key-table)
     [f8]              'gdb
-    [S-f8]            'gud-refresh
+    [S-f8]            'gud-stop-subjob
     [C-f8]            'gdb-restore-windows
-    [M-f8]            'gdb-many-windows
-    (kbd "C-x <f8>")  'zz:gud-kill
-    (kbd "C-c <f8>")  'zz:gud-restore
+    [M-f8]            'gud-refresh
+    (kbd "C-x <f8>")  'gdb-many-windows
+    (kbd "C-c <f8>")  'gud-tooltip-mode
     )
 
 (define-fn-key (gethash "f9" fn-key-table)

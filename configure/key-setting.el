@@ -64,7 +64,6 @@
 (apply-keys-to-map
  ctrl-z-map
  (list
-  (kbd "`")       'zz:switch-to-term
   (kbd "1")       (zz:quick-buffer zz:term-1  "*terminal<1>*")
   (kbd "2")       (zz:quick-buffer zz:term-2  "*terminal<2>*")
   (kbd "3")       (zz:quick-buffer zz:term-3  "*terminal<3>*")
@@ -78,12 +77,12 @@
   (kbd "-")       'eshell
   (kbd "=")       'zz:popup-term
   (kbd "\\")      'multi-term
+  (kbd "`")       'zz:switch-to-term
   ))
 
 (apply-keys-to-map
  mode-specific-map
  (list
-  (kbd "`")       'zz:switch-to-shell
   (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
   (kbd "2")       (zz:quick-buffer zz:shell-2  "*shell<2>*")
   (kbd "3")       (zz:quick-buffer zz:shell-3  "*shell<3>*")
@@ -97,6 +96,7 @@
   (kbd "-")       'zz:local-shell
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      (lookup-key global-map [S-f9])
+  (kbd "`")       'zz:switch-to-shell
   ))
 
 (apply-keys-to-map
@@ -247,7 +247,6 @@
  f4-e-map
  (list
   ;;quick terminal and shell buffer
-  (kbd "`")       (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
   (kbd "1")       'zz:popup-term
   (kbd "2")       'multi-term
   (kbd "3")       'zz:local-shell
@@ -261,6 +260,7 @@
   (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
   (kbd "\\")      (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
+  (kbd "`")       (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
   
   (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
   (kbd "d")       (zz:execute-key zz:meld    '("meld"))

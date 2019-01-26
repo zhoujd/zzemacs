@@ -18,12 +18,12 @@
 (apply-keys-to-map
  key-translation-map
  (list
-  (kbd "M-] h")  'event-apply-hyper-modifier
-  (kbd "M-] a")  'event-apply-alt-modifier
-  (kbd "M-] s")  'event-apply-super-modifier
-  (kbd "M-] c")  'event-apply-control-modifier
-  (kbd "M-] m")  'event-apply-meta-modifier
-  (kbd "M-] S")  'event-apply-shift-modifier
+  (kbd "M-] h")   'event-apply-hyper-modifier
+  (kbd "M-] a")   'event-apply-alt-modifier
+  (kbd "M-] s")   'event-apply-super-modifier
+  (kbd "M-] c")   'event-apply-control-modifier
+  (kbd "M-] m")   'event-apply-meta-modifier
+  (kbd "M-] S")   'event-apply-shift-modifier
   ))
 
 ;;all of these sequences are translated from term/xterm.el .
@@ -220,9 +220,8 @@
   (kbd "<f12>")   (zz:quick-shell zz:shell-f12 "*shell-f12*")
 
   (kbd "C-b")     'browse-url
-  (kbd "C-d")     (if-ms-windows
-                   (zz:execute-key zz:explorer '("explorer" "."))
-                   (zz:execute-key zz:thunar '("thunar")))
+  (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
+                                 (zz:execute-key zz:thunar '("thunar")))
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-r")     'zz:add-code-review-note

@@ -247,6 +247,7 @@
  f4-e-map
  (list
   ;;quick terminal and shell buffer
+  (kbd "`")       (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
   (kbd "1")       'zz:popup-term
   (kbd "2")       'multi-term
   (kbd "3")       'zz:local-shell
@@ -259,23 +260,15 @@
   (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
   (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
-
-  (kbd "c")       (if-not-ms-windows
-                   (zz:execute-key zz:urxvt '("urxvt")))
-  (kbd "d")       (if-not-ms-windows
-                   (zz:execute-key zz:meld '("meld")))
-  (kbd "v")       (if-not-ms-windows
-                   (zz:execute-key zz:evince '("evince")))
-  (kbd "f")       (if-not-ms-windows
-                   (zz:execute-key zz:firefox '("firefox")))
-  (kbd "m")       (if-not-ms-windows
-                   (zz:execute-key zz:taskmanager '("xfce4-taskmanager")))
-  (kbd "h")       (if-not-ms-windows
-                   (zz:execute-key zz:thunar '("thunar")))
-  (kbd "r")       (if-not-ms-windows
-                   (zz:execute-key zz:remmina '("remmina")))
-  (kbd "t")       (if-not-ms-windows
-                   (zz:execute-key zz:tmux '("urxvt" "-e" "tmux")))
+  (kbd "\\")      (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
+  
+  (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
+  (kbd "d")       (zz:execute-key zz:meld    '("meld"))
+  (kbd "v")       (zz:execute-key zz:evince  '("evince"))
+  (kbd "f")       (zz:execute-key zz:firefox '("firefox"))
+  (kbd "h")       (zz:execute-key zz:thunar  '("thunar"))
+  (kbd "r")       (zz:execute-key zz:remmina '("remmina"))
+  (kbd "t")       (zz:execute-key zz:tmux    '("urxvt" "-e" "tmux"))
   ))
 
 ;;helm key setting

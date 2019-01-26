@@ -323,6 +323,23 @@
   (kbd "M-P")     'helm-previous-source
   ))
 
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-M-1")   (lookup-key global-map [C-f1])
+  (kbd "C-M-2")   (lookup-key global-map [C-f2])
+  (kbd "C-M-3")   (lookup-key global-map [C-f3])
+  (kbd "C-M-4")   (lookup-key global-map [C-f4])
+  (kbd "C-M-5")   (lookup-key global-map [C-f5])
+  (kbd "C-M-6")   (lookup-key global-map [C-f6])
+  (kbd "C-M-7")   (lookup-key global-map [C-f7])
+  (kbd "C-M-8")   (lookup-key global-map [C-f8])
+  (kbd "C-M-9")   (lookup-key global-map [C-f9])
+  (kbd "C-M-0")   (lookup-key global-map [C-f10])
+  (kbd "C-M--")   (lookup-key global-map [C-f11])
+  (kbd "C-M-=")   (lookup-key global-map [C-f12])
+  ))
+
 
 (provide 'key-setting)
 

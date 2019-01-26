@@ -247,6 +247,10 @@
  f4-e-map
  (list
   ;;quick terminal and shell buffer
+  (kbd "1")       'zz:popup-term
+  (kbd "2")       'multi-term
+  (kbd "3")       'zz:local-shell
+  (kbd "4")       'zz:remote-shell
   (kbd "5")       (lookup-key f4-map (kbd "<f5>"))
   (kbd "6")       (lookup-key f4-map (kbd "<f6>"))
   (kbd "7")       (lookup-key f4-map (kbd "<f7>"))

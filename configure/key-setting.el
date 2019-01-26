@@ -78,45 +78,6 @@
   (kbd "=")       'zz:popup-term
   (kbd "\\")      'multi-term
   (kbd "`")       'zz:switch-to-term
-
-  (kbd "C-1")     (lookup-key global-map [C-f1])
-  (kbd "C-2")     (lookup-key global-map [C-f2])
-  (kbd "C-3")     (lookup-key global-map [C-f3])
-  (kbd "C-4")     (lookup-key global-map [C-f4])
-  (kbd "C-5")     (lookup-key global-map [C-f5])
-  (kbd "C-6")     (lookup-key global-map [C-f6])
-  (kbd "C-7")     (lookup-key global-map [C-f7])
-  (kbd "C-8")     (lookup-key global-map [C-f8])
-  (kbd "C-9")     (lookup-key global-map [C-f9])
-  (kbd "C-0")     (lookup-key global-map [C-f10])
-  (kbd "C--")     (lookup-key global-map [C-f11])
-  (kbd "C-=")     (lookup-key global-map [C-f12])
-
-  (kbd "M-1")     (lookup-key global-map [M-f1])
-  (kbd "M-2")     (lookup-key global-map [M-f2])
-  (kbd "M-3")     (lookup-key global-map [M-f3])
-  (kbd "M-4")     (lookup-key global-map [M-f4])
-  (kbd "M-5")     (lookup-key global-map [M-f5])
-  (kbd "M-6")     (lookup-key global-map [M-f6])
-  (kbd "M-7")     (lookup-key global-map [M-f7])
-  (kbd "M-8")     (lookup-key global-map [M-f8])
-  (kbd "M-9")     (lookup-key global-map [M-f9])
-  (kbd "M-0")     (lookup-key global-map [M-f10])
-  (kbd "M--")     (lookup-key global-map [M-f11])
-  (kbd "M-=")     (lookup-key global-map [M-f12])
-
-  (kbd "!")       (lookup-key global-map [S-f1])
-  (kbd "@")       (lookup-key global-map [S-f2])
-  (kbd "#")       (lookup-key global-map [S-f3])
-  (kbd "$")       (lookup-key global-map [S-f4])
-  (kbd "%")       (lookup-key global-map [S-f5])
-  (kbd "^")       (lookup-key global-map [S-f6])
-  (kbd "&")       (lookup-key global-map [S-f7])
-  (kbd "*")       (lookup-key global-map [S-f8])
-  (kbd "(")       (lookup-key global-map [S-f9])
-  (kbd ")")       (lookup-key global-map [S-f10])
-  (kbd "_")       (lookup-key global-map [S-f11])
-  (kbd "+")       (lookup-key global-map [S-f12])
   ))
 
 (apply-keys-to-map
@@ -355,6 +316,49 @@
   (kbd "M-P")     'helm-previous-source
   ))
 
+(apply-keys-to-map
+ ctrl-z-map
+ (list
+  (kbd "C-1")     (lookup-key global-map [C-f1])
+  (kbd "C-2")     (lookup-key global-map [C-f2])
+  (kbd "C-3")     (lookup-key global-map [C-f3])
+  (kbd "C-4")     (lookup-key global-map [C-f4])
+  (kbd "C-5")     (lookup-key global-map [C-f5])
+  (kbd "C-6")     (lookup-key global-map [C-f6])
+  (kbd "C-7")     (lookup-key global-map [C-f7])
+  (kbd "C-8")     (lookup-key global-map [C-f8])
+  (kbd "C-9")     (lookup-key global-map [C-f9])
+  (kbd "C-0")     (lookup-key global-map [C-f10])
+  (kbd "C--")     (lookup-key global-map [C-f11])
+  (kbd "C-=")     (lookup-key global-map [C-f12])
+
+  (kbd "M-1")     (lookup-key global-map [M-f1])
+  (kbd "M-2")     (lookup-key global-map [M-f2])
+  (kbd "M-3")     (lookup-key global-map [M-f3])
+  (kbd "M-4")     (lookup-key global-map [M-f4])
+  (kbd "M-5")     (lookup-key global-map [M-f5])
+  (kbd "M-6")     (lookup-key global-map [M-f6])
+  (kbd "M-7")     (lookup-key global-map [M-f7])
+  (kbd "M-8")     (lookup-key global-map [M-f8])
+  (kbd "M-9")     (lookup-key global-map [M-f9])
+  (kbd "M-0")     (lookup-key global-map [M-f10])
+  (kbd "M--")     (lookup-key global-map [M-f11])
+  (kbd "M-=")     (lookup-key global-map [M-f12])
+
+  (kbd "!")       (lookup-key global-map [S-f1])
+  (kbd "@")       (lookup-key global-map [S-f2])
+  (kbd "#")       (lookup-key global-map [S-f3])
+  (kbd "$")       (lookup-key global-map [S-f4])
+  (kbd "%")       (lookup-key global-map [S-f5])
+  (kbd "^")       (lookup-key global-map [S-f6])
+  (kbd "&")       (lookup-key global-map [S-f7])
+  (kbd "*")       (lookup-key global-map [S-f8])
+  (kbd "(")       (lookup-key global-map [S-f9])
+  (kbd ")")       (lookup-key global-map [S-f10])
+  (kbd "_")       (lookup-key global-map [S-f11])
+  (kbd "+")       (lookup-key global-map [S-f12])
+  ))
+  
 (apply-keys-to-map
  global-map
  (list

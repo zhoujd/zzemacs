@@ -260,7 +260,7 @@
   (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
   (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
-  (kbd "\\")      (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
+  (kbd "\\")      (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
   
   (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
   (kbd "d")       (zz:execute-key zz:meld    '("meld"))

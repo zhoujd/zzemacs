@@ -45,7 +45,6 @@
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "`")       'zz:gud-restore
   (kbd "1")       'gdb-display-io-buffer
   (kbd "2")       'gdb-display-locals-for-thread
   (kbd "3")       'gdb-display-stack-for-thread
@@ -58,7 +57,8 @@
   (kbd "0")       'gdb-display-gdb-buffer
   (kbd "-")       'gud-up
   (kbd "=")       'gud-down
-  (kbd "\\")      'gdb-many-windows
+  (kbd "\\")      'gud-refresh
+  (kbd "`")       'gdb-restore-windows
   ))
 
 (apply-keys-to-map
@@ -226,20 +226,16 @@
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-r")     'zz:add-code-review-note
-  (kbd "C-s")     (if-not-ms-windows 'zz:slime-connect-stumpwm)
-  (kbd "C-t")     (unless-ms-windows 'zz:open-with-terminal)
+  (kbd "C-s")     'zz:slime-connect-stumpwm
+  (kbd "C-t")     'zz:open-with-terminal
 
   (kbd "C-f")     'zz:secondary-x-font
   (kbd "M-f")     'zz:primary-x-font
 
-  (kbd "M-r")     (if-not-ms-windows
-                   (zz:execute-key zz:rofi-run '("rofi" "-show" "run")))
-  (kbd "M-w")     (if-not-ms-windows
-                   (zz:execute-key zz:rofi-window '("rofi" "-show" "window")))
-  (kbd "M-s")     (if-not-ms-windows
-                   (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh")))
-  (kbd "M-d")     (if-not-ms-windows
-                   (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun")))
+  (kbd "M-r")     (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
+  (kbd "M-w")     (zz:execute-key zz:rofi-window '("rofi" "-show" "window"))
+  (kbd "M-s")     (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
+  (kbd "M-d")     (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
   ))
 
 ;;execute start-process key
@@ -248,7 +244,7 @@
  (list
   ;;quick terminal and shell buffer
   (kbd "1")       'zz:popup-term
-  (kbd "2")       'multi-term
+  (kbd "2")       'zz:get-term
   (kbd "3")       'zz:local-shell
   (kbd "4")       'zz:remote-shell
   (kbd "5")       (lookup-key f4-map (kbd "<f5>"))
@@ -259,8 +255,8 @@
   (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
   (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
-  (kbd "\\")      (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
-  (kbd "`")       (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
+  (kbd "\\")      'zz:baidu
+  (kbd "`")       'zz:google
   
   (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
   (kbd "d")       (zz:execute-key zz:meld    '("meld"))

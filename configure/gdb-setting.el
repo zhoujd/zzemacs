@@ -16,12 +16,6 @@
   (with-current-buffer gud-comint-buffer (comint-skip-input))
   (kill-process (get-buffer-process gud-comint-buffer)))
 
-(defun zz:gud-restore ()
-  "Retore and refresh"
-  (interactive)
-  (gdb-restore-windows)
-  (gud-refresh))
-
 (add-hook
  'gdb-mode-hook
  '(lambda ()

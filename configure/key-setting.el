@@ -62,25 +62,6 @@
   ))
 
 (apply-keys-to-map
- ctrl-z-map
- (list
-  (kbd "1")       (zz:quick-buffer zz:term-1  "*terminal<1>*")
-  (kbd "2")       (zz:quick-buffer zz:term-2  "*terminal<2>*")
-  (kbd "3")       (zz:quick-buffer zz:term-3  "*terminal<3>*")
-  (kbd "4")       (zz:quick-buffer zz:term-4  "*terminal<4>*")
-  (kbd "5")       (zz:quick-buffer zz:term-5  "*terminal<5>*")
-  (kbd "6")       (zz:quick-buffer zz:term-6  "*terminal<6>*")
-  (kbd "7")       (zz:quick-buffer zz:term-7  "*terminal<7>*")
-  (kbd "8")       (zz:quick-buffer zz:term-8  "*terminal<8>*")
-  (kbd "9")       (zz:quick-buffer zz:term-9  "*terminal<9>*")
-  (kbd "0")       (zz:quick-buffer zz:term-10 "*terminal<10>*")
-  (kbd "-")       'eshell
-  (kbd "=")       'zz:popup-term
-  (kbd "\\")      'multi-term
-  (kbd "`")       'zz:switch-to-term
-  ))
-
-(apply-keys-to-map
  mode-specific-map
  (list
   (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
@@ -97,6 +78,21 @@
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      (lookup-key global-map [S-f9])
   (kbd "`")       'zz:switch-to-shell
+
+  (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
+  (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
+  (kbd "M-3")     (zz:quick-buffer zz:term-3  "*terminal<3>*")
+  (kbd "M-4")     (zz:quick-buffer zz:term-4  "*terminal<4>*")
+  (kbd "M-5")     (zz:quick-buffer zz:term-5  "*terminal<5>*")
+  (kbd "M-6")     (zz:quick-buffer zz:term-6  "*terminal<6>*")
+  (kbd "M-7")     (zz:quick-buffer zz:term-7  "*terminal<7>*")
+  (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
+  (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
+  (kbd "M-0")     (zz:quick-buffer zz:term-10 "*terminal<10>*")
+  (kbd "M--")     'eshell
+  (kbd "M-=")     'zz:popup-term
+  (kbd "M-\\")    'multi-term
+  (kbd "M-`")     'zz:switch-to-term
   ))
 
 (apply-keys-to-map
@@ -318,6 +314,19 @@
 (apply-keys-to-map
  ctrl-z-map
  (list
+  (kbd "1")       (lookup-key global-map [f1])
+  (kbd "2")       (lookup-key global-map [f2])
+  (kbd "3")       (lookup-key global-map [f3])
+  (kbd "4")       (lookup-key global-map [f4])
+  (kbd "5")       (lookup-key global-map [f5])
+  (kbd "6")       (lookup-key global-map [f6])
+  (kbd "7")       (lookup-key global-map [f7])
+  (kbd "8")       (lookup-key global-map [f8])
+  (kbd "9")       (lookup-key global-map [f9])
+  (kbd "0")       (lookup-key global-map [f10])
+  (kbd "-")       (lookup-key global-map [f11])
+  (kbd "=")       (lookup-key global-map [f12])
+
   (kbd "C-1")     (lookup-key global-map [C-f1])
   (kbd "C-2")     (lookup-key global-map [C-f2])
   (kbd "C-3")     (lookup-key global-map [C-f3])

@@ -22,6 +22,6 @@ Arch setting
 
 2. Default boot kernel
 
-        $ sudo grep menuentry /boot/grub/grug.cfg
+        $ sudo grep menuentry /boot/grub/grub.cfg
         $ sudo vim /etc/default/grub
           GRUB_DEFAULT="1>2"

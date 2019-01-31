@@ -13,11 +13,12 @@ install_package() {
             sudo zypper install -y texinfo
             ;;
         "Ubuntu" )
-            sudo apt-get install -y cscope
-            sudo apt-get install -y texinfo
-            sudo apt-get install -y markdown
-            sudo apt-get install -y w3m
-            sudo apt-get install -y silversearcher-ag
+            sudo apt install -y cscope
+            sudo apt install -y texinfo
+            sudo apt install -y markdown
+            sudo apt install -y w3m
+            sudo apt install -y silversearcher-ag
+            sudo apt install -y socat
             ;;
         "CentOS" )
             sudo yum install -y cscope
@@ -26,8 +27,6 @@ install_package() {
         "Fedora" )
             sudo dnf install -y cscope
             sudo dnf install -y texinfo
-            ## If want to install emacs with dnf tool
-            #sudo dnf install -y emacs emacs-auto-complete emacs-auto-complete-el
             ;;
         "FreeBSD" )
             sudo pkg_add -r w3m
@@ -35,6 +34,7 @@ install_package() {
             ;;
         "Arch" | "Manjaro" )
             sudo pacman -S tk cscope w3m
+            sudo pacman -S socat
             ;;
         * )
             echo "You are about to install on a non supported linux distribution."

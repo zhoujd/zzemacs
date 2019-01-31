@@ -112,7 +112,7 @@
   ;;undo/redo
   (kbd "C--")     'redo
   (kbd "C-_")     'undo
-  
+
   (kbd "C-,")     'winner-undo
   (kbd "C-.")     'winner-redo
   ))
@@ -199,6 +199,15 @@
   (kbd "f")       (lookup-key global-map [S-right])
   ))
 
+(apply-keys-to-map
+ ctrl-fn-map
+ (list
+  (kbd "p")       (lookup-key global-map [C-up])
+  (kbd "n")       (lookup-key global-map [C-down])
+  (kbd "b")       (lookup-key global-map [C-left])
+  (kbd "f")       (lookup-key global-map [C-right])
+  ))
+
 ;;switch to shells
 (apply-keys-to-map
  f4-map
@@ -252,7 +261,7 @@
   (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
   (kbd "\\")      'zz:baidu
   (kbd "`")       'zz:google
-  
+
   (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
   (kbd "d")       (zz:execute-key zz:meld    '("meld"))
   (kbd "v")       (zz:execute-key zz:evince  '("evince"))
@@ -365,8 +374,23 @@
   (kbd "M-0")     (lookup-key global-map [M-f10])
   (kbd "M--")     (lookup-key global-map [M-f11])
   (kbd "M-=")     (lookup-key global-map [M-f12])
+
+  (kbd "B")       (lookup-key global-map [S-left])
+  (kbd "F")       (lookup-key global-map [S-right])
+  (kbd "N")       (lookup-key global-map [S-down])
+  (kbd "P")       (lookup-key global-map [S-up])
+
+  (kbd "C-b")     (lookup-key global-map [C-left])
+  (kbd "C-f")     (lookup-key global-map [C-right])
+  (kbd "C-n")     (lookup-key global-map [C-down])
+  (kbd "C-p")     (lookup-key global-map [C-up])
+
+  (kbd "M-b")     (lookup-key global-map [M-left])
+  (kbd "M-f")     (lookup-key global-map [M-right])
+  (kbd "M-n")     (lookup-key global-map [M-down])
+  (kbd "M-p")     (lookup-key global-map [M-up])
   ))
-  
+
 (apply-keys-to-map
  global-map
  (list

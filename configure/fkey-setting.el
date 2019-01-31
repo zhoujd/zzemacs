@@ -1,99 +1,8 @@
-
-;;;; keyz-setting.el --- Ctrl-z f4 key config file
+;;;; fkey-setting.el --- key config file
 ;;;
 
 (zz-load-path "elisp")
 (require 'apply-keys)
-
-(apply-keys-to-map
- ctrl-z-map
- (list
-  (kbd "C-s")     'slime-selector
-  (kbd "C-z")     'repeat
-  (kbd "SPC")     'er/expand-region
-  ))
-
-(apply-keys-to-map
- f4-map
- (list
-  (kbd "1")       'gdb-display-io-buffer
-  (kbd "2")       'gdb-display-locals-for-thread
-  (kbd "3")       'gdb-display-stack-for-thread
-  (kbd "4")       'gdb-display-registers-for-thread
-  (kbd "5")       'gdb-display-stack-buffer
-  (kbd "6")       'gdb-display-breakpoints-buffer
-  (kbd "7")       'gdb-display-assembler-buffer
-  (kbd "8")       'gdb-display-memory-buffer
-  (kbd "9")       'gdb-display-locals-buffer
-  (kbd "0")       'gdb-display-gdb-buffer
-  (kbd "-")       'gud-up
-  (kbd "=")       'gud-down
-  (kbd "\\")      'gud-refresh
-  (kbd "`")       'gdb-restore-windows
-  ))
-
-;;switch to shells
-(apply-keys-to-map
- f4-map
- (list
-  (kbd "<f4>")    'kill-this-buffer
-
-  (kbd "<f5>")    'zz:terminator-0
-  (kbd "<f6>")    'zz:terminator-1
-  (kbd "<f7>")    'zz:terminator-2
-  (kbd "<f8>")    'zz:terminator-3
-
-  (kbd "<f9>")    (zz:quick-shell zz:shell-f9  "*shell-f9*")
-  (kbd "<f10>")   (zz:quick-shell zz:shell-f10 "*shell-f10*")
-  (kbd "<f11>")   (zz:quick-shell zz:shell-f11 "*shell-f11*")
-  (kbd "<f12>")   (zz:quick-shell zz:shell-f12 "*shell-f12*")
-
-  (kbd "C-b")     'browse-url
-  (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
-                                 (zz:execute-key zz:thunar '("thunar")))
-  (kbd "C-h")     'sourcepair-jump-to-headerfile
-  (kbd "C-l")     'command-history
-  (kbd "C-r")     'zz:add-code-review-note
-  (kbd "C-s")     'zz:slime-connect-stumpwm
-  (kbd "C-t")     'zz:open-with-terminal
-
-  (kbd "C-f")     'zz:secondary-x-font
-  (kbd "M-f")     'zz:primary-x-font
-
-  (kbd "M-r")     (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
-  (kbd "M-w")     (zz:execute-key zz:rofi-window '("rofi" "-show" "window"))
-  (kbd "M-s")     (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
-  (kbd "M-d")     (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
-  ))
-
-;;execute start-process key
-(apply-keys-to-map
- f4-e-map
- (list
-  ;;quick terminal and shell buffer
-  (kbd "1")       'zz:popup-term
-  (kbd "2")       'zz:get-term
-  (kbd "3")       'zz:local-shell
-  (kbd "4")       'zz:remote-shell
-  (kbd "5")       (lookup-key f4-map (kbd "<f5>"))
-  (kbd "6")       (lookup-key f4-map (kbd "<f6>"))
-  (kbd "7")       (lookup-key f4-map (kbd "<f7>"))
-  (kbd "8")       (lookup-key f4-map (kbd "<f8>"))
-  (kbd "9")       (lookup-key f4-map (kbd "<f9>"))
-  (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
-  (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
-  (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
-  (kbd "\\")      'zz:baidu
-  (kbd "`")       'zz:google
-
-  (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
-  (kbd "d")       (zz:execute-key zz:meld    '("meld"))
-  (kbd "v")       (zz:execute-key zz:evince  '("evince"))
-  (kbd "f")       (zz:execute-key zz:firefox '("firefox"))
-  (kbd "h")       (zz:execute-key zz:thunar  '("thunar"))
-  (kbd "r")       (zz:execute-key zz:remmina '("remmina"))
-  (kbd "t")       (zz:execute-key zz:tmux    '("urxvt" "-e" "tmux"))
-  ))
 
 (apply-keys-to-map
  ctrl-z-map
@@ -149,6 +58,23 @@
   (kbd "M-0")     (lookup-key global-map [M-f10])
   (kbd "M--")     (lookup-key global-map [M-f11])
   (kbd "M-=")     (lookup-key global-map [M-f12])
+  ))
+
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-M-1")   (lookup-key global-map [C-f1])
+  (kbd "C-M-2")   (lookup-key global-map [C-f2])
+  (kbd "C-M-3")   (lookup-key global-map [C-f3])
+  (kbd "C-M-4")   (lookup-key global-map [C-f4])
+  (kbd "C-M-5")   (lookup-key global-map [C-f5])
+  (kbd "C-M-6")   (lookup-key global-map [C-f6])
+  (kbd "C-M-7")   (lookup-key global-map [C-f7])
+  (kbd "C-M-8")   (lookup-key global-map [C-f8])
+  (kbd "C-M-9")   (lookup-key global-map [C-f9])
+  (kbd "C-M-0")   (lookup-key global-map [C-f10])
+  (kbd "C-M--")   (lookup-key global-map [C-f11])
+  (kbd "C-M-=")   (lookup-key global-map [C-f12])
   ))
 
 (apply-keys-to-map
@@ -210,6 +136,6 @@
   ))
 
 
-(provide 'keyz-setting)
+(provide 'fkey-setting)
 
-;;; keyz-setting.el ends here
+;;; fkey-setting.el ends here

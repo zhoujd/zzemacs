@@ -9,6 +9,10 @@ fi
 
 echo "Setup proxy start ..."
 
+host=$1
+http_port=$2
+socks_port=1080
+
 ## check run os
 if [ "$OS" = "Windows_NT" ] ; then
     PROXY_SCRIPT=$HOME/.bashrc.d/99-proxy.sh
@@ -21,14 +25,13 @@ else
 fi
 
 cat <<EOF > $PROXY_SCRIPT
-## This is for bash proxy
-export http_proxy=http://$1:$2/
+## This is for proxy configure
+export http_proxy=http://$host:$http_port/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
-export no_proxy="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16"
-
-export socks_host=$1
-export socks_port=1080
+export no_proxy=localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
+export socks_host=$host
+export socks_port=$socks_port
 EOF
 
 echo "Setup proxy end ..."

@@ -2,7 +2,6 @@
 #
 # Use socat/connect to proxy git through a SOCKS proxy
 # to access git repositories outside Network
-#
 
 # http://www.dest-unreach.org/socat/
 # http://www.taiyo.co.jp/~gotoh/ssh/connect.c

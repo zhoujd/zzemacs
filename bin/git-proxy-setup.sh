@@ -5,5 +5,9 @@ if [ $# != 2 ] ; then
     exit 1
 fi
 
-git config --global http.proxy http://$1:$2
-git config --global https.proxy https://$1:$2
+proxy_url=http://$1:$2/
+
+git config --global http.proxy  $proxy_url
+git config --global https.proxy $proxy_url
+
+git config --global --list | grep -E https?.proxy

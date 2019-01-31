@@ -55,6 +55,7 @@
         keymap-setting
         fn-setting
         key-setting
+        keyz-setting
         ))
 
 ;;;; .emacs end here

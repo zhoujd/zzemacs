@@ -1,26 +1,36 @@
 #!/bin/bash
 #set -x
 
-if [ $# != 2 ] ; then
-    echo "Usage: `basename $0` host port"
-    echo "Usage: no prefix-http/ftp"
-    exit 1
-fi
-
-echo "Setup proxy start ..."
-
-host=$1
-http_port=$2
-socks_port=1080
+## check arguments
+case $# in
+    2 )
+        host=$1
+        http_port=$2
+        socks_port=1080
+        ;;
+    3 )
+        host=$1
+        http_port=$2
+        socks_port=$3
+        ;;
+    * )
+        echo "Usage: `basename $0` host port [socks_port]"
+        echo "Usage: no prefix-http/ftp"
+        exit 1
+        ;;
+esac
 
 ## check run os
 if [ "$OS" = "Windows_NT" ] ; then
+    echo "Setup proxy on Windows"
     PROXY_SCRIPT=$HOME/.bashrc.d/99-proxy.sh
 else
+    echo "Setup proxy on Linux"
     if [ $EUID -ne 0 ]; then
         echo "You must be a root user" 2>&1
         exit 1
     fi
+
     PROXY_SCRIPT=/etc/profile.d/zz-proxy.sh
 fi
 
@@ -33,5 +43,3 @@ export no_proxy=localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
 export socks_host=$host
 export socks_port=$socks_port
 EOF
-
-echo "Setup proxy end ..."

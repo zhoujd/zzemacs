@@ -7,9 +7,9 @@
 # http://www.dest-unreach.org/socat/
 # http://www.taiyo.co.jp/~gotoh/ssh/connect.c
 
-# Configuration.
-proxy_host=child-prc.intel.com
-proxy_port=1080
+# Check host and port in /etc/profild.d/zz-proxy.sh
+proxy_host=$socks_host
+proxy_port=$socks_port
 
 connect_flag="y"
 

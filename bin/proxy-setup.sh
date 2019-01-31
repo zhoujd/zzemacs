@@ -1,15 +1,8 @@
 #!/bin/bash
+#set -x
 
-## /etc/yum.conf
-# proxy=http://username:password@yourproxy:8080
-
-## /etc/apt/apt.conf on Ubuntu 16.04
-# Acquire::http::proxy "http://127.0.0.1:8000";  
-# Acquire::ftp::proxy "ftp://127.0.0.1:8000";  
-# Acquire::https::proxy "https://127.0.0.1:8000";
-
-if [ $# != 1 ] ; then
-    echo "Usage: `basename $0` [host:port]"
+if [ $# != 2 ] ; then
+    echo "Usage: `basename $0` host port"
     echo "Usage: no prefix-http/ftp"
     exit 1
 fi
@@ -29,10 +22,13 @@ fi
 
 cat <<EOF > $PROXY_SCRIPT
 ## This is for bash proxy
-export http_proxy=http://$1/
+export http_proxy=http://$1:$2/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
 export no_proxy="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16"
+
+export socks_host=$1
+export socks_port=1080
 EOF
 
 echo "Setup proxy end ..."

@@ -7,5 +7,3 @@ fi
 
 git config --global http.proxy http://$1:$2
 git config --global https.proxy https://$1:$2
-
-

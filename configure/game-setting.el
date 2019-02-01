@@ -10,6 +10,12 @@
 ;;auto play tetris
 (require 'autotetris-mode)
 
+;;typing practice
+(require 'typing-practice)
+
+;;typing
+(require 'typing)
+
 
 (provide 'game-setting)
 

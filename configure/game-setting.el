@@ -2,9 +2,10 @@
 ;;;
 
 (zz-load-path "site-lisp/game")
+(defvar zz-game-path (concat zzemacs-path "/site-lisp/game"))
 
 ;;sokoban setting
-(setq sokoban-level-file (concat zzemacs-path "/site-lisp/game/sokoban.levels"))
+(setq sokoban-level-file (concat zz-game-path "/sokoban.levels"))
 (require 'sokoban)
 
 ;;auto play tetris

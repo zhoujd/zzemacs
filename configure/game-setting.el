@@ -1,10 +1,15 @@
 ;;;; game-setting.el --- game setting file
 ;;;
 
+(zz-load-path "site-lisp/game")
+
 ;;sokoban setting
-(zz-load-path "site-lisp/sokoban")
-(setq sokoban-level-file (concat zzemacs-path "/site-lisp/sokoban/sokoban.levels"))
+(setq sokoban-level-file (concat zzemacs-path "/site-lisp/game/sokoban.levels"))
 (require 'sokoban)
+
+;;auto play tetris
+(require 'autotetris-mode)
+
 
 (provide 'game-setting)
 

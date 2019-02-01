@@ -29,8 +29,9 @@
 (defvar ctrl-fn-map      (make-sparse-keymap) "C-f1/f12")
 (defvar meta-fn-map      (make-sparse-keymap) "M-f1/f12")
 
-(defvar f4-map           (make-sparse-keymap) "f4 map for self functions.")
+(defvar f4-map           (make-sparse-keymap) "f4 for self functions.")
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
+(defvar f4-g-map         (make-sparse-keymap) "f4-g for game functions.")
 (defvar f4-p-map         (make-sparse-keymap) "f4-p for execute functions, in temp-setting.el.")
 
 ;;keymap setting
@@ -58,6 +59,7 @@
 
   ;;self f4-map
   (kbd "e")     f4-e-map
+  (kbd "g")     f4-g-map
   (kbd "p")     f4-p-map
   ))
 
@@ -65,6 +67,7 @@
  f4-map
  (list
   (kbd "e")     f4-e-map
+  (kbd "g")     f4-g-map
   (kbd "p")     f4-p-map
   ))
 

@@ -281,6 +281,15 @@
   (kbd "M-P")     'helm-previous-source
   ))
 
+(apply-keys-to-map
+ f4-g-map
+ (list
+  (kbd "a")       'autotetris
+  (kbd "p")       'practice-words
+  (kbd "s")       'sokoban
+  (kbd "t")       'typing-of-emacs
+  ))
+
 
 (provide 'key-setting)
 

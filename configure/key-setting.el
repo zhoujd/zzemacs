@@ -286,7 +286,8 @@
  (list
   (kbd "a")       'autotetris
   (kbd "p")       'practice-words
-  (kbd "s")       'sokoban
+  (kbd "s")       'snake
+  (kbd "C-s")     'sokoban
   (kbd "t")       'typing-of-emacs
   ))
 

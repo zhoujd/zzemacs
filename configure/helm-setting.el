@@ -22,7 +22,7 @@
       helm-candidate-number-limit       100
       helm-input-idle-delay             0
       helm-tramp-verbose                0
-      helm-move-to-line-cycle-in-source t
+      helm-move-to-line-cycle-in-source nil
       helm-mini-default-sources         '(helm-source-buffers-list
                                           helm-source-recentf
                                           helm-source-bookmarks

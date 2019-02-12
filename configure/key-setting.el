@@ -2,18 +2,15 @@
 ;;;
 
 ;;;emacs default setting
-;;C-x @ S        event-apply-shift-modifier
-;;C-x @ a        event-apply-alt-modifier
-;;C-x @ c        event-apply-control-modifier
-;;C-x @ h        event-apply-hyper-modifier
-;;C-x @ m        event-apply-meta-modifier
-;;C-x @ s        event-apply-super-modifier
+;;C-x @ S         event-apply-shift-modifier
+;;C-x @ a         event-apply-alt-modifier
+;;C-x @ c         event-apply-control-modifier
+;;C-x @ h         event-apply-hyper-modifier
+;;C-x @ m         event-apply-meta-modifier
+;;C-x @ s         event-apply-super-modifier
 
 (zz-load-path "elisp")
 (require 'apply-keys)
-
-(defvar zz-apps-key (if-ms-windows [apps] [menu])
-  "zz-apps-key")
 
 (apply-keys-to-map
  key-translation-map
@@ -228,8 +225,7 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;zz-apps-key for M-x
-  zz-apps-key     'smex
+  ;;smex
   (kbd "M-X")     'smex-major-mode-commands
   (kbd "C-x M-x") 'execute-extended-command
   ))

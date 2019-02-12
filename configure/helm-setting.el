@@ -99,6 +99,23 @@
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))
 
+(defvar helm-source-term-buffers-list
+  (helm-make-source "Term Buffers" 'helm-source-buffers
+    :buffer-list
+    (lambda ()
+      (mapcar #'buffer-name
+              (cl-remove-if-not
+               (lambda (buf)
+                 (with-current-buffer buf
+                   (eq major-mode 'term-mode)))
+               (buffer-list))))))
+
+(defun helm-term-buffers-list ()
+  (interactive)
+  (helm :sources helm-source-term-buffers-list
+        :keymap helm-buffer-map
+        :truncate-lines helm-buffers-truncate-lines))
+
 
 (provide 'helm-setting)
 

@@ -204,6 +204,8 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
   (kbd "C-c h")   'helm-command-prefix
+  (kbd "C-c b")   'helm-shell-buffers-list
+  (kbd "C-c M-b") 'helm-term-buffers-list
   (kbd "%")       'zz:match-paren
 
   [backspace]     'delete-backward-char

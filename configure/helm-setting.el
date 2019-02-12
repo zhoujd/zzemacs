@@ -81,6 +81,24 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
+;;helm with shell buffers
+(defvar helm-source-shell-buffers-list
+  (helm-make-source "Shell Buffers" 'helm-source-buffers
+    :buffer-list
+    (lambda ()
+      (mapcar #'buffer-name
+              (cl-remove-if-not
+               (lambda (buf)
+                 (with-current-buffer buf
+                   (eq major-mode 'shell-mode)))
+               (buffer-list))))))
+
+(defun helm-shell-buffers-list ()
+  (interactive)
+  (helm :sources helm-source-shell-buffers-list
+        :keymap helm-buffer-map
+        :truncate-lines helm-buffers-truncate-lines))
+
 
 (provide 'helm-setting)
 

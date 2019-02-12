@@ -180,6 +180,7 @@
 
 ;;ibuffer setting
 (setq ibuffer-show-empty-filter-groups nil)
+(setq ibuffer-default-sorting-mode 'major-mode)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Dired" (mode . dired-mode))

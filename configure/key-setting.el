@@ -200,9 +200,6 @@
  (list
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-c w")   'compare-windows
-  (kbd "C-c h")   'helm-command-prefix
-  (kbd "C-c b")   'helm-shell-buffers-list
-  (kbd "C-c M-b") 'helm-term-buffers-list
   (kbd "%")       'zz:match-paren
 
   [backspace]     'delete-backward-char
@@ -226,15 +223,19 @@
   [S-left]        'shrink-window-horizontally
 
   ;;smex
-  (kbd "M-X")     'smex-major-mode-commands
+  (kbd "M-X")     'smex
   (kbd "C-x M-x") 'execute-extended-command
+  (kbd "C-c M-x") 'smex-major-mode-commands
   ))
 
 ;;helm key setting
 (apply-keys-to-map
  global-map
  (list
+  (kbd "C-c h")   'helm-command-prefix
   (kbd "C-x b")   'helm-buffers-list
+  (kbd "C-c b")   'helm-shell-buffers-list
+  (kbd "C-c M-b") 'helm-term-buffers-list
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-M-z")   'helm-resume

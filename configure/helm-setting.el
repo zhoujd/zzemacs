@@ -96,6 +96,7 @@
 (defun helm-shell-buffers-list ()
   (interactive)
   (helm :sources helm-source-shell-buffers-list
+        :buffer "*helm shell*"
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))
 
@@ -113,6 +114,7 @@
 (defun helm-term-buffers-list ()
   (interactive)
   (helm :sources helm-source-term-buffers-list
+        :buffer "*helm term*"
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))
 

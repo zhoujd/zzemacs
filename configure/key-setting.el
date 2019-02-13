@@ -237,6 +237,7 @@
   (kbd "C-c b")   'helm-shell-buffers-list
   (kbd "C-c M-b") 'helm-term-buffers-list
   (kbd "C-x f")   'helm-find-files
+  (kbd "C-x M-f") 'helm-mini
   (kbd "C-c f")   'helm-recentf
   (kbd "C-c M-f") 'helm-projectile-find-file
   (kbd "C-M-z")   'helm-resume
@@ -262,12 +263,6 @@
   (kbd "M-g")     'helm-grep-do-git-grep
   (kbd "M-m")     'helm-man-woman
   (kbd "SPC")     'helm-all-mark-rings
-  ))
-
-(apply-keys-to-map
- helm-command-map
- (list
-  (kbd "C-b")     'helm-mini
   ))
 
 (apply-keys-to-map

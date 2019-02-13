@@ -96,20 +96,23 @@
                             (eq major-mode 'shell-mode)))
                         (buffer-list))))
         :action '(("Switch to buffer" . (lambda (select)
-                                          (switch-to-buffer (car (split-string select)))))
-                  )))
+                                          (switch-to-buffer (car (split-string select))))))))
 
 (setq helm-source-term-list
       (helm-build-sync-source "Multi-term buffers"
-        :candidates
-        (lambda ()
-          (mapcar #'buffer-name
-                  (cl-remove-if-not
-                   (lambda (buf)
-                     (with-current-buffer buf
-                       (eq major-mode 'term-mode)))
-                   (buffer-list))))
-        :action '(("Switch to buffer" . switch-to-buffer))))
+        :candidates (lambda ()
+                      (mapcar (lambda (buf)
+                                (format "%-20s %s"
+                                        (buffer-name buf)
+                                        (with-current-buffer (buffer-name buf)
+                                          default-directory)))
+                              (cl-remove-if-not
+                               (lambda (buf)
+                                 (with-current-buffer buf
+                                   (eq major-mode 'term-mode)))
+                               (buffer-list))))
+        :action '(("Switch to buffer" . (lambda (select)
+                                          (switch-to-buffer (car (split-string select))))))))
 
 (defun helm-shell-buffers-list ()
   (interactive)

@@ -81,35 +81,37 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
-;;helm with shell buffers
-(defvar helm-source-shell-buffers-list
-  (helm-make-source "Shell Buffers" 'helm-source-buffers
-    :buffer-list
-    (lambda ()
-      (mapcar #'buffer-name
-              (cl-remove-if-not
-               (lambda (buf)
-                 (with-current-buffer buf
-                   (eq major-mode 'shell-mode)))
-               (buffer-list))))))
+(setq helm-source-shell-list
+      (helm-build-sync-source "Shell buffers"
+        :candidates
+        (lambda ()
+          (mapcar #'buffer-name
+                  (cl-remove-if-not
+                   (lambda (buf)
+                     (with-current-buffer buf
+                       (eq major-mode 'shell-mode)))
+                   (buffer-list))))
+        :action '(("Switch to buffer" . switch-to-buffer))))
 
-(defvar helm-source-term-buffers-list
-  (helm-make-source "Term Buffers" 'helm-source-buffers
-    :buffer-list
-    (lambda ()
-      (mapcar #'buffer-name
-              (cl-remove-if-not
-               (lambda (buf)
-                 (with-current-buffer buf
-                   (eq major-mode 'term-mode)))
-               (buffer-list))))))
+(setq helm-source-term-list
+      (helm-build-sync-source "Multi-term buffers"
+        :candidates
+        (lambda ()
+          (mapcar #'buffer-name
+                  (cl-remove-if-not
+                   (lambda (buf)
+                     (with-current-buffer buf
+                       (eq major-mode 'term-mode)))
+                   (buffer-list))))
+        :action '(("Switch to buffer" . switch-to-buffer))))
 
 (defun helm-shell-buffers-list ()
   (interactive)
-  (helm :sources '(helm-source-shell-buffers-list helm-source-term-buffers-list)
+  (helm :sources '(helm-source-shell-list
+                   helm-source-term-list)
         :buffer "*helm shell*"
-        :keymap helm-buffer-map
-        :truncate-lines helm-buffers-truncate-lines))
+        :truncate-lines helm-buffers-truncate-lines
+        ))
 
 (defvar helm-source-dired-buffers-list
   (helm-make-source "Dired Buffers" 'helm-source-buffers

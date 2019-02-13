@@ -236,7 +236,6 @@
   (kbd "C-x b")   'helm-buffers-list
   (kbd "C-x M-b") 'helm-mini
   (kbd "C-c b")   'helm-shell-buffers-list
-  (kbd "C-c C-b") 'helm-term-buffers-list
   (kbd "C-c M-b") 'helm-dired-buffers-list
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file

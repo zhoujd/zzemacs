@@ -93,13 +93,6 @@
                    (eq major-mode 'shell-mode)))
                (buffer-list))))))
 
-(defun helm-shell-buffers-list ()
-  (interactive)
-  (helm :sources helm-source-shell-buffers-list
-        :buffer "*helm shell*"
-        :keymap helm-buffer-map
-        :truncate-lines helm-buffers-truncate-lines))
-
 (defvar helm-source-term-buffers-list
   (helm-make-source "Term Buffers" 'helm-source-buffers
     :buffer-list
@@ -111,10 +104,10 @@
                    (eq major-mode 'term-mode)))
                (buffer-list))))))
 
-(defun helm-term-buffers-list ()
+(defun helm-shell-buffers-list ()
   (interactive)
-  (helm :sources helm-source-term-buffers-list
-        :buffer "*helm term*"
+  (helm :sources '(helm-source-shell-buffers-list helm-source-term-buffers-list)
+        :buffer "*helm shell*"
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))
 

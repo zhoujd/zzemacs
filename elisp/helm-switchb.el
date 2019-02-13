@@ -1,6 +1,8 @@
 ;;;; helm-switchb.el --- helm switch buffer
 ;;;
 
+(require 'helm)
+
 (defvar helm-source-shell-list
   (helm-build-sync-source "Shell buffers"
     :candidates (lambda ()

@@ -235,7 +235,8 @@
   (kbd "C-c h")   'helm-command-prefix
   (kbd "C-x b")   'helm-buffers-list
   (kbd "C-c b")   'helm-shell-buffers-list
-  (kbd "C-c M-b") 'helm-term-buffers-list
+  (kbd "C-c C-b") 'helm-term-buffers-list
+  (kbd "C-c M-b") 'helm-dired-buffers-list
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-mini
   (kbd "C-c f")   'helm-recentf

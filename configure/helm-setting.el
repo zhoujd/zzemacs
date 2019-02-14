@@ -84,16 +84,19 @@
 (zz-load-path "elisp")
 (require 'helm-switchb)
 
+(setq helm-completing-read-handlers-alist nil)
+
 (require 'helm-find)
 (defun zz:helm-find ()
   (interactive)
   (helm-find-1 (file-name-as-directory
-                (read-directory-name "Directory: "))))
+                (ido-read-directory-name "Directory: "))))
 
 (require 'helm-grep)
-(defun zz:helm-grep-ag (dir)
-  (interactive "DDirectory: ")
-  (helm-grep-ag-1 dir))
+(defun zz:helm-grep-ag ()
+  (interactive)
+  (helm-grep-ag-1 (file-name-as-directory
+                   (ido-read-directory-name "Directory: "))))
 
 
 (provide 'helm-setting)

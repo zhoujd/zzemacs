@@ -85,10 +85,12 @@
 (require 'helm-switchb)
 
 (require 'helm-find)
-(defun zz:helm-find (dir)
-  (interactive "DDirectory: ")
-  (helm-find-1 dir))
+(defun zz:helm-find ()
+  (interactive)
+  (helm-find-1 (file-name-as-directory
+                (read-directory-name "Directory: "))))
 
+(require 'helm-grep)
 (defun zz:helm-grep-ag (dir)
   (interactive "DDirectory: ")
   (helm-grep-ag-1 dir))

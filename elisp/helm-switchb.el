@@ -5,12 +5,11 @@
 (require 'multi-term)
 (require 'multi-shell)
 
-(defvar helm-switchb-candiate-format "%-30s %s")
 (defmacro helm-switchb-candidate (mode)
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format helm-switchb-candiate-format
+        (format "%-30s %s"
                 (buffer-name buf)
                 (with-current-buffer (buffer-name buf)
                   default-directory)))

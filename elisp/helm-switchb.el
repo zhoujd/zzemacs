@@ -2,8 +2,6 @@
 ;;;
 
 (require 'helm)
-(require 'multi-term)
-(require 'multi-shell)
 
 (defmacro helm-switchb-candidate (mode)
   `(lambda ()

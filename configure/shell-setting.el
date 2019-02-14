@@ -376,13 +376,15 @@ Dmitriy Igrishin's patched version of comint.el."
       (zz:get-shell)
       )))
 
-(defun zz:cd-shell (dir)
+(defun zz:cd-shell ()
   "Open a cd shell"
-  (interactive "DDirectory: ")
-  (with-temp-buffer
-    (cd dir)
-    (zz:get-shell)
-    ))
+  (interactive)
+  (let ((dir (file-name-as-directory
+              (ido-read-directory-name "Directory: "))))
+    (with-temp-buffer
+      (cd dir)
+      (zz:get-shell)
+      )))
 
 (defun zz:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")

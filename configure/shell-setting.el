@@ -97,7 +97,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (when-ms-windows
  (setq multi-shell-command "cmdproxy"))
 
-(defun zz:get-local-shell ()
+(defun zz:get-shell ()
   (interactive)
   (cond
     ;;((string-match "j[ap].*" (getenv "LANG"))
@@ -108,7 +108,7 @@ Dmitriy Igrishin's patched version of comint.el."
      (multi-shell-new))
     ))
 
-(defun zz:get-local-curr-shell ()
+(defun zz:get-current-shell ()
   (interactive)
   (cond
     ;;((string-match "j[ap].*" (getenv "LANG"))
@@ -381,7 +381,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive "DDirectory: ")
   (with-temp-buffer
     (cd dir)
-    (zz:get-local-shell)
+    (zz:get-shell)
     ))
 
 (defun zz:shell-directory (name dir)

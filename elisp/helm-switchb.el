@@ -2,13 +2,15 @@
 ;;;
 
 (require 'helm)
+(require 'multi-term)
+(require 'multi-shell)
 
-(defvar helm-source-shell-list
+(defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (lambda ()
                   (mapcar 
                    (lambda (buf)
-                     (format "%-20s %s"
+                     (format "%-30s %s"
                              (buffer-name buf)
                              (with-current-buffer (buffer-name buf)
                                default-directory)))
@@ -20,11 +22,11 @@
     :action '(("Switch to buffer" . (lambda (select)
                                       (switch-to-buffer (car (split-string select))))))))
 
-(defvar helm-source-term-list
+(defvar helm-switchb-term-source
   (helm-build-sync-source "Multi-term buffers"
     :candidates (lambda ()
                   (mapcar (lambda (buf)
-                            (format "%-20s %s"
+                            (format "%-30s %s"
                                     (buffer-name buf)
                                     (with-current-buffer (buffer-name buf)
                                       default-directory)))
@@ -36,15 +38,15 @@
     :action '(("Switch to buffer" . (lambda (select)
                                       (switch-to-buffer (car (split-string select))))))))
 
-(defun helm-shell-buffers-list ()
+(defun helm-switchb-shell-list ()
   (interactive)
-  (helm :sources '(helm-source-shell-list
-                   helm-source-term-list)
+  (helm :sources '(helm-switchb-shell-source
+                   helm-switchb-term-source)
         :buffer "*helm shell*"
         :truncate-lines helm-buffers-truncate-lines
         ))
 
-(defvar helm-source-dired-buffers-list
+(defvar helm-switchb-dired-source
   (helm-make-source "Dired Buffers" 'helm-source-buffers
     :buffer-list
     (lambda ()
@@ -55,9 +57,9 @@
                    (eq major-mode 'dired-mode)))
                (buffer-list))))))
 
-(defun helm-dired-buffers-list ()
+(defun helm-switchb-dired-list ()
   (interactive)
-  (helm :sources helm-source-dired-buffers-list
+  (helm :sources helm-switchb-dired-source
         :buffer "*helm dired*"
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))

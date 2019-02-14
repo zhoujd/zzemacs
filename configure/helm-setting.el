@@ -84,6 +84,14 @@
 (zz-load-path "elisp")
 (require 'helm-switchb)
 
+(defun zz:helm-find-file (dir)
+  (interactive "DDirectory: ")
+  (helm-find-1 dir))
+
+(defun zz:helm-grep-ag (dir)
+  (interactive "DDirectory: ")
+  (helm-grep-ag-1 dir))
+
 
 (provide 'helm-setting)
 

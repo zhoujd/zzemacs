@@ -367,8 +367,8 @@ Dmitriy Igrishin's patched version of comint.el."
                 (eshell/pwd) " % ")))
 
 ;;M-x cd /hostname:/current/path/in/the/shell
-(defun zz:remote-shell (&optional host)
-  "Open a remote shell to a host."
+(defun zz:remote-shell (host)
+  "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
     (let ((host (if host host (read-string "Host: "))))
@@ -376,14 +376,13 @@ Dmitriy Igrishin's patched version of comint.el."
       (zz:get-local-shell)
       )))
 
-(defun zz:local-shell (&optional dir)
-  "Open a remote shell to a host."
+(defun zz:cd-shell (dir)
+  "Open a cd shell"
   (interactive "DDirectory: ")
   (with-temp-buffer
-    (let ((dir (if dir dir (read-string "Dir: "))))
-      (cd dir)
-      (zz:get-local-shell)
-      )))
+    (cd dir)
+    (zz:get-local-shell)
+    ))
 
 (defun zz:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")

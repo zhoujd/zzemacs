@@ -71,7 +71,7 @@
   (kbd "8")       (zz:quick-buffer zz:shell-8  "*shell<8>*")
   (kbd "9")       (zz:quick-buffer zz:shell-9  "*shell<9>*")
   (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
-  (kbd "-")       'zz:local-shell
+  (kbd "-")       'zz:cd-shell
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      (lookup-key global-map [S-f9])
   (kbd "`")       'zz:switch-to-shell

@@ -367,13 +367,13 @@ Dmitriy Igrishin's patched version of comint.el."
                 (eshell/pwd) " % ")))
 
 ;;M-x cd /hostname:/current/path/in/the/shell
-(defun zz:remote-shell (host)
+(defun zz:remote-shell (&optional host)
   "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
     (let ((host (if host host (read-string "Host: "))))
       (cd (concat "/" tramp-default-method ":" host ":"))
-      (zz:get-local-shell)
+      (zz:get-shell)
       )))
 
 (defun zz:cd-shell (dir)

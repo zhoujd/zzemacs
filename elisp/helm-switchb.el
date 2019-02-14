@@ -7,7 +7,7 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%-30s %s"
+        (format "%-20s %s"
                 (buffer-name buf)
                 (with-current-buffer (buffer-name buf)
                   default-directory)))

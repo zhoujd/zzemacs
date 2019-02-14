@@ -378,7 +378,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz:local-shell (&optional dir)
   "Open a remote shell to a host."
-  (interactive)
+  (interactive "DDirectory: ")
   (with-temp-buffer
     (let ((dir (if dir dir (read-string "Dir: "))))
       (cd dir)

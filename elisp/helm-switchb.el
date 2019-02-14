@@ -5,38 +5,35 @@
 (require 'multi-term)
 (require 'multi-shell)
 
+(defvar helm-switchb-candiate-format "%-30s %s")
+(defmacro helm-switchb-candidate (mode)
+  `(lambda ()
+     (mapcar
+      (lambda (buf)
+        (format helm-switchb-candiate-format
+                (buffer-name buf)
+                (with-current-buffer (buffer-name buf)
+                  default-directory)))
+      (cl-remove-if-not
+       (lambda (buf)
+         (with-current-buffer buf
+           (eq major-mode ,mode)))
+       (buffer-list)))))
+
+(defun helm-switchb-select (candidate)
+     (switch-to-buffer (car (split-string candidate))))
+
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
-    :candidates (lambda ()
-                  (mapcar 
-                   (lambda (buf)
-                     (format "%-30s %s"
-                             (buffer-name buf)
-                             (with-current-buffer (buffer-name buf)
-                               default-directory)))
-                   (cl-remove-if-not
-                    (lambda (buf)
-                      (with-current-buffer buf
-                        (eq major-mode 'shell-mode)))
-                    (buffer-list))))
-    :action '(("Switch to buffer" . (lambda (select)
-                                      (switch-to-buffer (car (split-string select))))))))
+    :candidates (helm-switchb-candidate 'shell-mode)
+    :action '(("Switch to buffer" . helm-switchb-select))
+    ))
 
 (defvar helm-switchb-term-source
   (helm-build-sync-source "Multi-term buffers"
-    :candidates (lambda ()
-                  (mapcar (lambda (buf)
-                            (format "%-30s %s"
-                                    (buffer-name buf)
-                                    (with-current-buffer (buffer-name buf)
-                                      default-directory)))
-                          (cl-remove-if-not
-                           (lambda (buf)
-                             (with-current-buffer buf
-                               (eq major-mode 'term-mode)))
-                           (buffer-list))))
-    :action '(("Switch to buffer" . (lambda (select)
-                                      (switch-to-buffer (car (split-string select))))))))
+    :candidates (helm-switchb-candidate 'term-mode)
+    :action '(("Switch to buffer" . helm-switchb-select))
+    ))
 
 (defun helm-switchb-shell-list ()
   (interactive)

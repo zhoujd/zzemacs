@@ -84,8 +84,6 @@
 (zz-load-path "elisp")
 (require 'helm-switchb)
 
-(setq helm-completing-read-handlers-alist nil)
-
 (require 'helm-find)
 (defun zz:helm-find ()
   (interactive)

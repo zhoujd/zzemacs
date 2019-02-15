@@ -90,23 +90,23 @@
 (require 'helm-switchb)
 
 (require 'helm-find)
-(defun zz:helm-find (dir)
+(defun zz:helm-find-1 (dir)
   "up level: C-l, down-level: C-j"
   (interactive "DDirectory: ")
   (helm-find-1 dir))
 
-(defun zz:helm-find-ido ()
+(defun zz:helm-find ()
   (interactive)
   (helm-find-1 (file-name-as-directory
                 (ido-read-directory-name "Directory: "))))
 
 (require 'helm-grep)
-(defun zz:helm-grep-ag (dir)
+(defun zz:helm-grep-ag-1 (dir)
   "up level: C-l, down-level: C-j"
   (interactive "DDirectory: ")
   (helm-grep-ag-1 dir))
 
-(defun zz:helm-grep-ag-ido ()
+(defun zz:helm-grep-ag ()
   (interactive)
   (helm-grep-ag-1 (file-name-as-directory
                    (ido-read-directory-name "Directory: "))))

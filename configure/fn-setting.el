@@ -72,10 +72,10 @@
     )
 
 (define-fn-key (gethash "f4" fn-key-table)
-    [f4]              f4-map
+    [f4]              nil
     [S-f4]            'zz:undo-kill-buffer
-    [C-f4]            'helm-find
-    [M-f4]            'helm-do-grep-ag
+    [C-f4]            'zz:helm-find
+    [M-f4]            'zz:helm-grep-ag
     (kbd "C-x <f4>")  'helm-recentf
     (kbd "C-c <f4>")  'zz:recentf-open-files-compl
     )
@@ -144,10 +144,10 @@
     )
 
 (define-fn-key (gethash "f12" fn-key-table)
-    [f12]             'find-grep
+    [f12]             'zz:helm-find
     [S-f12]           'find-name-dired
-    [C-f12]           'zz:helm-find
-    [M-f12]           'zz:helm-grep-ag
+    [C-f12]           'rgrep
+    [M-f12]           'lgrep
     (kbd "C-x <f12>") 'zz:untabify-buffer
     (kbd "C-c <f12>") 'zz:tabify-buffer
     )

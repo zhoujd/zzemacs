@@ -53,7 +53,8 @@
 
 (defun helm-switchb-dired-list ()
   (interactive)
-  (helm :sources helm-switchb-dired-source
+  (helm :sources '(helm-switchb-dired-source
+                   helm-tramp--source)
         :buffer "*helm dired*"
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))

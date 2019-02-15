@@ -101,6 +101,8 @@
   (helm-grep-ag-1 (file-name-as-directory
                    (ido-read-directory-name "Directory: "))))
 
+(require 'helm-tramp)
+
 
 (provide 'helm-setting)
 

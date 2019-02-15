@@ -144,7 +144,7 @@
     )
 
 (define-fn-key (gethash "f12" fn-key-table)
-    [f12]             'zz:helm-find
+    [f12]             'zz:helm-find-1
     [S-f12]           'find-name-dired
     [C-f12]           'rgrep
     [M-f12]           'lgrep

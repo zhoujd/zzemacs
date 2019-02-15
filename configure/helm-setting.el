@@ -9,12 +9,9 @@
 (helm-mode t)
 
 ;;no completion
-(mapc
- (lambda (mode)
-   (add-to-list 'helm-mode-no-completion-in-region-in-modes mode))
- '(shell-mode
-   gdb-mode
-   ))
+(mapc (lambda (mode)
+        (add-to-list 'helm-mode-no-completion-in-region-in-modes mode))
+      '(shell-mode))
 
 (setq helm-autoresize-min-height 20)
 (helm-autoresize-mode t)

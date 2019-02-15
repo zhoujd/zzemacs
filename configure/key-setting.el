@@ -86,8 +86,8 @@
   (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
   (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
   (kbd "M-0")     (zz:quick-buffer zz:term-10 "*terminal<10>*")
-  (kbd "M--")     'eshell
-  (kbd "M-=")     'zz:popup-term
+  (kbd "M--")     'zz:popup-term
+  (kbd "M-=")     'zz:remote-shell
   (kbd "M-\\")    'multi-term
   (kbd "M-`")     'zz:switch-to-term
   ))

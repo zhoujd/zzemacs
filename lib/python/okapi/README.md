@@ -24,7 +24,7 @@ zzokapi
         
             common.setcoredir(coredirname)
             workdir = common.getworkdir()
-            print "Work directory: %s" % (workdir)
+            print("Work directory: %s" % workdir)
         
             dispatcher = dispatch.Dispatch(workdir, srcdir, sys.argv);
             dispatcher.run()
@@ -33,7 +33,7 @@ zzokapi
             try:
                 main()
             except KeyboardInterrupt:
-                print "\nUser Press Ctrl+C, exit\n"
+                print("\nUser Press Ctrl+C, exit\n")
 
 2. Create core folder for sub commands
 

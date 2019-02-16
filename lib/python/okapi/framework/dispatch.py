@@ -2,7 +2,7 @@
 
 import glob
 import os
-import config
+import framework.config as config
 
 class Dispatch:
     def __init__(self, workdir, srcdir, argv):
@@ -51,19 +51,19 @@ class Dispatch:
                     match = True;
                     
             if app == None and match == False:
-                print "Can't find %s to usaged\n" % cmd
-                print "Try to run '%s help' to get help\n" % self.entryname
+                print("Can't find %s to usaged\n" % cmd)
+                print("Try to run '%s help' to get help\n" % self.entryname)
             else:
                 if config.verbose == True:
-                    print app
+                    print(app)
                     
                 cmdline = "%s %s" % (" ".join(app), args)
-                print "cmdline: %s\n" % cmdline
+                print("cmdline: %s\n" % cmdline)
                 os.system(cmdline)
         
     def usage(self):
         for key, value in sorted(self.appmap.items()):
-            print "Use: %s %s [argv]" % (self.entryname, key.replace("-", " "))
+            print("Use: %s %s [argv]" % (self.entryname, key.replace("-", " ")))
         
     def findapp(self, app):
         if app in self.appmap.keys():
@@ -77,9 +77,9 @@ class Dispatch:
         
         for (dirname, subdir, subfile) in os.walk(appdir):
             if config.verbose == True:
-                print 'Dirname: %s' % dirname
-                print 'Subdir: %s'  % subdir
-                print 'Subfile: %s' % subfile
+                print('Dirname: %s' % dirname)
+                print('Subdir: %s'  % subdir)
+                print('Subfile: %s' % subfile)
 
             for f in subfile:
                 applist.append(f)
@@ -105,4 +105,4 @@ class Dispatch:
             self.appmap[appname] = appinfo
             
         if config.verbose == True:
-            print self.appmap
+            print(self.appmap)

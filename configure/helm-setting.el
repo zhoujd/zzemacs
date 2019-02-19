@@ -99,6 +99,7 @@
                    (ido-read-directory-name "Directory: "))))
 
 (require 'helm-tramp)
+(require 'helm-cscope)
 
 
 (provide 'helm-setting)

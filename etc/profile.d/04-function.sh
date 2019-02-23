@@ -3,24 +3,6 @@
 ## useful function like alias
 ipaddr() { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()    { cd "$@";  l; }
-rpmxf()  { [ "$1" != "" ] && (rpm2cpio "$1" | cpio -idmv); }
-
-## init rpmbuild fold
-rpminit() {     
-    mkdir -p ~/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-    echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
-    echo "~/rpmbuild is exist now"
-}
-
-## chomod directory recursivly
-chmoddr() {
-    if [ -d "$1" ]; then
-        echo "error: please use the mode first, then the directory"
-        return 1
-    elif [ -d "$2" ]; then
-        find $2 -type d -print0 | xargs -0 chmod $1
-    fi
-}
 
 ## e.g. up -> go up 1 directory
 ## up 4 -> go up 4 directories
@@ -46,7 +28,7 @@ empty() {
     else
         echo "$tmp files were removed."
     fi
-    pushd > /dev/null
+    popd > /dev/null
 }
 
 LS() {

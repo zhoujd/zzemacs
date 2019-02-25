@@ -40,7 +40,7 @@
   ))
 
 (apply-keys-to-map
- f4-map
+ help-map
  (list
   (kbd "1")       'gdb-display-io-buffer
   (kbd "2")       'gdb-display-locals-for-thread
@@ -73,7 +73,7 @@
   (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
   (kbd "-")       'zz:cd-shell
   (kbd "=")       'zz:remote-shell
-  (kbd "\\")      (lookup-key global-map [S-f9])
+  (kbd "\\")      'zz:get-shell
   (kbd "`")       'zz:switch-to-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
@@ -93,7 +93,7 @@
   ))
 
 (apply-keys-to-map
- help-map
+ f4-map
  (list
   (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
   (kbd "2")       (zz:quick-buffer zz:shell-2  "*shell<2>*")

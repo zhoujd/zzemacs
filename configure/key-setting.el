@@ -52,11 +52,6 @@
   (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
   (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
   (kbd "0")       (zz:quick-shell zz:shell-f10 "*shell<f10>*")
-
-  (kbd "M-1")     'zz:terminator-0
-  (kbd "M-2")     'zz:terminator-1
-  (kbd "M-3")     'zz:terminator-2
-  (kbd "M-4")     'zz:terminator-3
   ))
 
 (apply-keys-to-map

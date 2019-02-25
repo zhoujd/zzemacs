@@ -163,7 +163,6 @@ Dmitriy Igrishin's patched version of comint.el."
   ((kbd "C-c t 4") (zz:quick-termintor zz:terminator-3 3))
   ))
 
-
 ;;set term buffer size to unlimited
 (add-hook 'term-mode-hook
           (lambda ()

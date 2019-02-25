@@ -107,7 +107,7 @@
   (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
   (kbd "-")       'zz:cd-shell
   (kbd "=")       'zz:remote-shell
-  (kbd "\\")      (lookup-key global-map [S-f9])
+  (kbd "\\")      'zz:get-shell
   (kbd "`")       'zz:switch-to-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")

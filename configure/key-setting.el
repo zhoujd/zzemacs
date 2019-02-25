@@ -42,54 +42,21 @@
 (apply-keys-to-map
  help-map
  (list
-  (kbd "1")       'gdb-display-io-buffer
-  (kbd "2")       'gdb-display-locals-for-thread
-  (kbd "3")       'gdb-display-stack-for-thread
-  (kbd "4")       'gdb-display-registers-for-thread
-  (kbd "5")       'gdb-display-stack-buffer
-  (kbd "6")       'gdb-display-breakpoints-buffer
-  (kbd "7")       'gdb-display-assembler-buffer
-  (kbd "8")       'gdb-display-memory-buffer
-  (kbd "9")       'gdb-display-locals-buffer
-  (kbd "0")       'gdb-display-gdb-buffer
-  (kbd "-")       'gud-up
-  (kbd "=")       'gud-down
-  (kbd "\\")      'gud-refresh
-  (kbd "`")       'gdb-restore-windows
-  ))
+  (kbd "1")       (zz:quick-shell zz:shell-f1  "*shell<f1>*")
+  (kbd "2")       (zz:quick-shell zz:shell-f2  "*shell<f2>*")
+  (kbd "3")       (zz:quick-shell zz:shell-f3  "*shell<f3>*")
+  (kbd "4")       (zz:quick-shell zz:shell-f4  "*shell<f4>*")
+  (kbd "5")       (zz:quick-shell zz:shell-f5  "*shell<f5>*")
+  (kbd "6")       (zz:quick-shell zz:shell-f6  "*shell<f6>*")
+  (kbd "7")       (zz:quick-shell zz:shell-f7  "*shell<f7>*")
+  (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
+  (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
+  (kbd "0")       (zz:quick-shell zz:shell-f10 "*shell<f10>*")
 
-(apply-keys-to-map
- mode-specific-map
- (list
-  (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
-  (kbd "2")       (zz:quick-buffer zz:shell-2  "*shell<2>*")
-  (kbd "3")       (zz:quick-buffer zz:shell-3  "*shell<3>*")
-  (kbd "4")       (zz:quick-buffer zz:shell-4  "*shell<4>*")
-  (kbd "5")       (zz:quick-buffer zz:shell-5  "*shell<5>*")
-  (kbd "6")       (zz:quick-buffer zz:shell-6  "*shell<6>*")
-  (kbd "7")       (zz:quick-buffer zz:shell-7  "*shell<7>*")
-  (kbd "8")       (zz:quick-buffer zz:shell-8  "*shell<8>*")
-  (kbd "9")       (zz:quick-buffer zz:shell-9  "*shell<9>*")
-  (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
-  (kbd "-")       'zz:cd-shell
-  (kbd "=")       'zz:remote-shell
-  (kbd "\\")      'zz:get-shell
-  (kbd "`")       'zz:switch-to-shell
-
-  (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
-  (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
-  (kbd "M-3")     (zz:quick-buffer zz:term-3  "*terminal<3>*")
-  (kbd "M-4")     (zz:quick-buffer zz:term-4  "*terminal<4>*")
-  (kbd "M-5")     (zz:quick-buffer zz:term-5  "*terminal<5>*")
-  (kbd "M-6")     (zz:quick-buffer zz:term-6  "*terminal<6>*")
-  (kbd "M-7")     (zz:quick-buffer zz:term-7  "*terminal<7>*")
-  (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
-  (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
-  (kbd "M-0")     (zz:quick-buffer zz:term-10 "*terminal<10>*")
-  (kbd "M--")     'zz:cd-shell
-  (kbd "M-=")     'zz:remote-shell
-  (kbd "M-\\")    'multi-term
-  (kbd "M-`")     'zz:switch-to-term
+  (kbd "M-1")     'zz:terminator-0
+  (kbd "M-2")     'zz:terminator-1
+  (kbd "M-3")     'zz:terminator-2
+  (kbd "M-4")     'zz:terminator-3
   ))
 
 (apply-keys-to-map
@@ -132,16 +99,6 @@
  (list
   (kbd "<f4>")    'kill-this-buffer
 
-  (kbd "<f5>")    'zz:terminator-0
-  (kbd "<f6>")    'zz:terminator-1
-  (kbd "<f7>")    'zz:terminator-2
-  (kbd "<f8>")    'zz:terminator-3
-
-  (kbd "<f9>")    (zz:quick-shell zz:shell-f9  "*shell-f9*")
-  (kbd "<f10>")   (zz:quick-shell zz:shell-f10 "*shell-f10*")
-  (kbd "<f11>")   (zz:quick-shell zz:shell-f11 "*shell-f11*")
-  (kbd "<f12>")   (zz:quick-shell zz:shell-f12 "*shell-f12*")
-
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
                                  (zz:execute-key zz:thunar '("thunar")))
@@ -164,19 +121,6 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  ;;quick terminal and shell buffer
-  (kbd "1")       'zz:popup-term
-  (kbd "2")       'zz:get-term
-  (kbd "3")       'zz:local-shell
-  (kbd "4")       'zz:remote-shell
-  (kbd "5")       (lookup-key f4-map (kbd "<f5>"))
-  (kbd "6")       (lookup-key f4-map (kbd "<f6>"))
-  (kbd "7")       (lookup-key f4-map (kbd "<f7>"))
-  (kbd "8")       (lookup-key f4-map (kbd "<f8>"))
-  (kbd "9")       (lookup-key f4-map (kbd "<f9>"))
-  (kbd "0")       (lookup-key f4-map (kbd "<f10>"))
-  (kbd "-")       (lookup-key f4-map (kbd "<f11>"))
-  (kbd "=")       (lookup-key f4-map (kbd "<f12>"))
   (kbd "\\")      'zz:baidu
   (kbd "`")       'zz:google
 
@@ -223,7 +167,7 @@
   (kbd "M-7")     'gud-next
   (kbd "M-8")     'gud-step
   (kbd "M-9")     'gud-print
-  (kbd "M-0")     'gud-watch
+  (kbd "M-0")     'gdb-restore-windows
 
   (kbd "M-#")     'query-replace-regexp
   (kbd "M-+")     'smartparens-mode
@@ -313,11 +257,12 @@
 (apply-keys-to-map
  f4-g-map
  (list
-  (kbd "a")       'autotetris
   (kbd "p")       'practice-words
+  (kbd "C-p")     'typing-of-emacs
   (kbd "s")       'snake
   (kbd "C-s")     'sokoban
-  (kbd "t")       'typing-of-emacs
+  (kbd "C-t")     'tetris
+  (kbd "M-t")     'autotetris
   ))
 
 

@@ -20,16 +20,21 @@
 (defun helm-switchb-select (candidate)
      (switch-to-buffer (car (split-string candidate))))
 
+(defun helm-switchb-kill (candidate)
+     (kill-buffer (car (split-string candidate))))
+
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
-    :action '(("Switch to buffer" . helm-switchb-select))
+    :action '(("Switch to buffer" . helm-switchb-select)
+              ("Kill buffer" . helm-switchb-kill))
     ))
 
 (defvar helm-switchb-term-source
   (helm-build-sync-source "Multi-term buffers"
     :candidates (helm-switchb-candidate 'term-mode)
-    :action '(("Switch to buffer" . helm-switchb-select))
+    :action '(("Switch to buffer" . helm-switchb-select)
+              ("Kill buffer" . helm-switchb-kill))
     ))
 
 (defun helm-switchb-shell-list ()

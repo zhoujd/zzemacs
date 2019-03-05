@@ -31,3 +31,9 @@ Ubuntu setting
         OR
         $ sudo apt-get update
 
+3. Maintain enter ro single
+
+        - press e grub menu
+        - change linuz command line add to 'ro single'
+            root=/dev/mapper/olddebian-root ro single
+        - enter root passwd enter single mode

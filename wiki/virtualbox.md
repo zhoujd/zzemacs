@@ -32,3 +32,7 @@ VirtualBox
         $ sudo pacman -S virtualbox-guest-utils virtualbox-host-dkms
         $ VBoxClient --clipboard --draganddrop --seamless --display --checkhostversion
         $ VBoxClient-all
+
+5. VM in virtualbox is already locked for a session (or being unlocked)
+
+        vboxmanage startvm <vm-uuid> --type emergencystop

@@ -23,18 +23,26 @@
 (defun helm-switchb-kill (candidate)
      (kill-buffer (car (split-string candidate))))
 
+(defun helm-switchb-shell-new (candidate)
+     (multi-shell-new))
+
+(defun helm-switchb-term-new (candidate)
+     (multi-term))
+
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
-              ("Kill buffer" . helm-switchb-kill))
+              ("Kill buffer" . helm-switchb-kill)
+              ("New shell" . helm-switchb-shell-new))
     ))
 
 (defvar helm-switchb-term-source
   (helm-build-sync-source "Multi-term buffers"
     :candidates (helm-switchb-candidate 'term-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
-              ("Kill buffer" . helm-switchb-kill))
+              ("Kill buffer" . helm-switchb-kill)
+              ("New terminal" . helm-switchb-term-new))
     ))
 
 (defun helm-switchb-shell-list ()

@@ -155,16 +155,8 @@ define ls
     shell ls
 end
 
-define argv
-    show args
-end
-document argv
-Syntax: argv
-| Print program arguments
-end
-
 ## print to echo line for struct members
 set print pretty on
 
 ## lib path for mdk-dev
-set solib-search-path /opt/zach/lib:/opt/zach/lib/dri:/opt/zach/ffmpeg/lib
+set solib-search-path /opt/zach/lib:/opt/zach/ffmpeg/lib:/opt/zach/mediasdk/lib

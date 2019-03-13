@@ -54,19 +54,19 @@
     )
 
 (define-fn-key (gethash "f2" fn-key-table)
-    [f2]              'bc-set
-    [S-f2]            'bc-list
-    [C-f2]            'bc-next
-    [M-f2]            'bc-previous
-    (kbd "C-x <f2>")  'sr-speedbar-toggle
-    (kbd "C-c <f2>")  'etags-stack-show
+    [f2]              'bm-toggle
+    [S-f2]            'bm-show-all
+    [C-f2]            'bm-next
+    [M-f2]            'bm-previous
+    (kbd "C-x <f2>")  'bm-remove-all-all-buffers
+    (kbd "C-c <f2>")  'bm-remove-all-current-buffer
     )
 
 (define-fn-key (gethash "f3" fn-key-table)
     [f3]              'zz:last-buffer-go
     [S-f3]            'bookmark-bmenu-list
-    [C-f3]            'bc-local-next
-    [M-f3]            'bc-local-previous
+    [C-f3]            'helm-projectile-find-file
+    [M-f3]            'helm-projectile-grep
     (kbd "C-x <f3>")  'register-list
     (kbd "C-c <f3>")  'repeat-complex-command
     )

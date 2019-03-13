@@ -37,6 +37,8 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
+  (kbd "b")       'helm-bm
+  (kbd "C-b")     'helm-tramp
   ))
 
 (apply-keys-to-map

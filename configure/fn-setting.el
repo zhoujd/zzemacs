@@ -55,7 +55,7 @@
 
 (define-fn-key (gethash "f2" fn-key-table)
     [f2]              'bm-toggle
-    [S-f2]            'bm-show-all
+    [S-f2]            'zz:bm-menu-show
     [C-f2]            'bm-next
     [M-f2]            'bm-previous
     (kbd "C-x <f2>")  'bm-remove-all-all-buffers

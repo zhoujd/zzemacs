@@ -154,18 +154,15 @@
 ;(require 'moccur-edit)
 
 ;;bookmark setting
-;(require 'bm)
-;(setq bm-marker 'bm-marker-left)
-;(setq bm-highlight-style 'bm-highlight-only-fringe)
+(require 'bm)
+(setq bm-marker 'bm-marker-left)
+(setq bm-highlight-style 'bm-highlight-only-fringe)
 
-;;show *bm-bookmarks* buffer
-;(defun bm-menu-show ()
-;  (interactive)
-;  (bm-show-all)
-;  (delete-other-windows))
-
-;;bookmark in file setting
-(require 'breadcrumb)
+;show *bm-bookmarks* buffer
+(defun zz:bm-menu-show ()
+  (interactive)
+  (bm-show-all)
+  (delete-other-windows))
 
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)

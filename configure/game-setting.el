@@ -17,9 +17,6 @@
 ;;typing
 (require 'typing)
 
-;;maces game
-(require 'maces-game)
-
 
 (provide 'game-setting)
 

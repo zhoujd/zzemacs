@@ -46,7 +46,6 @@
 (add-hook 'diff-mode-hook (lambda () (local-set-key "\C-c\C-l" 'diffstat)))
 
 ;;github pull request
-(zz-load-path "site-lisp/dash")
 (require 'github-pullrequest)
 
 ;;gitlab ci mode

@@ -225,10 +225,6 @@
 (zz-load-path "site-lisp/expand-region")
 (require 'expand-region)
 
-;;a modern list operater
-(zz-load-path "site-lisp/dash")
-(require 'dash)
-
 ;;smartparens
 (zz-load-path "site-lisp/smartparens")
 (require 'smartparens-config)

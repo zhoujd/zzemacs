@@ -100,6 +100,7 @@
 
 (require 'helm-tramp)
 (require 'helm-cscope)
+(require 'helm-ag)
 
 
 (provide 'helm-setting)

@@ -92,6 +92,7 @@
   (helm-find-1 (file-name-as-directory
                 (ido-read-directory-name "Directory: "))))
 
+(require 'helm-ag)
 (require 'helm-grep)
 (defun zz:helm-grep-ag ()
   (interactive)
@@ -100,7 +101,7 @@
 
 (require 'helm-tramp)
 (require 'helm-cscope)
-(require 'helm-ag)
+(require 'helm-bm)
 
 
 (provide 'helm-setting)

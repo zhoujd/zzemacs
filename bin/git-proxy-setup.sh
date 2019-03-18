@@ -5,9 +5,19 @@ if [ $# != 2 ] ; then
     exit 1
 fi
 
+if [ "$OS" = "Windows_NT" ] ; then
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
+else
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+fi
+
 proxy_url=http://$1:$2/
 
 git config --global http.proxy  $proxy_url
 git config --global https.proxy $proxy_url
+git config --global core.gitproxy $SCRIPT_ROOT/git-proxy-wrapper.sh
 
 git config --global --list | grep -E https?.proxy
+git config --global --list | grep -E core.gitproxy
+
+echo "git proxy setup done"

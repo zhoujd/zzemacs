@@ -17,3 +17,5 @@ case "$OS" in
         rm -f /etc/profile.d/zz-proxy.sh
         ;;
 esac
+
+echo "please reboot"

@@ -20,4 +20,3 @@ sshfs
 
         $ sudo nano /etc/fstab
           sshfs#root@xxx.xxx.xxx.xxx:/ /mnt/droplet
-

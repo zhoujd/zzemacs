@@ -37,3 +37,12 @@ Ubuntu setting
         - change linuz command line add to 'ro single'
             root=/dev/mapper/olddebian-root ro single
         - enter root passwd enter single mode
+
+4. Install and uninstall xfce4
+
+        $ sudo apt install xfce4
+        $ sudo apt remove xfce4
+        $ sudo apt remove xfce4*
+        $ sudo apt purge xfconf xfce4-utils xfwm4 xfce4-session thunar xfdesktop4 exo-utils xfce4-panel xfce4-terminal libxfce4util-common scim xscreensaver
+        $ sudo apt autoremove
+

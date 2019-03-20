@@ -6,10 +6,12 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-cat > /etc/sudoers.d/${USER} <<EOF
-## ${USER}
+USER_NAME=zhoujd
+
+cat > /etc/sudoers.d/${USER_NAME} <<EOF
+## ${USER_NAME}
 Defaults env_keep+="http_proxy https_proxy ftp_proxy no_proxy"
-${USER} ALL=(ALL) ALL
+%wheel ALL=(ALL) ALL
 EOF
 
 echo "please reboot"

@@ -49,4 +49,5 @@ export socks_host=$host
 export socks_port=$socks_port
 EOF
 
+echo "setup proxy done"
 echo "please reboot"

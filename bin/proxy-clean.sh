@@ -18,4 +18,5 @@ case "$OS" in
         ;;
 esac
 
+echo "remove proxy done."
 echo "please reboot"

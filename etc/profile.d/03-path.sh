@@ -3,7 +3,7 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
 
-add_path() {
+addpath() {
     for ARG in "$@"
     do
         if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
@@ -13,7 +13,7 @@ add_path() {
     export PATH
 }
 
-add_ldpath() {
+addldpath() {
     for ARG in "$@"
     do
         if [ -d "$ARG" ] && [[ ":$LD_LIBRARY_PATH:" != *":$ARG:"* ]]; then
@@ -23,7 +23,7 @@ add_ldpath() {
     export LD_LIBRARY_PATH
 }
 
-add_pkgpath() {
+addpkgpath() {
     for ARG in "$@"
     do
         if [ -d "$ARG" ] && [[ ":$PKG_CONFIG_PATH:" != *":$ARG:"* ]]; then
@@ -33,7 +33,7 @@ add_pkgpath() {
     export PKG_CONFIG_PATH
 }
 
-add_path \
+addpath \
     $HOME/local/bin \
     $ZZEMACS_HOME/bin \
     $ZZEMACS_HOME/libexec

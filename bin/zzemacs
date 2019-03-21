@@ -14,7 +14,7 @@ else
             [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
             DIR=$(cd -P "$(dirname "$SOURCE")" && pwd)
         done
-        DIR=$(cd -P "$( dirname "$SOURCE")" && pwd)
+        DIR=$(cd -P "$(dirname "$SOURCE")" && pwd)
         echo $DIR
     }
 

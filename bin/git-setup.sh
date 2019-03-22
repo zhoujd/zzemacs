@@ -100,7 +100,6 @@ git config --global alias.hlog  "log --graph --pretty=format:'%Cred%h%Creset %C(
 
 ## set http/https proxy
 git config --global http.proxy $http_proxy
-git config --global https.proxy $http_proxy
 git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command

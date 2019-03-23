@@ -7,7 +7,7 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-PROXY_CONF_PATH=/etc/apt/apt.conf.d/proxy.conf
+PROXY_CONF_PATH=/etc/apt/apt.conf.d/zz-proxy.conf
 rm -f $PROXY_CONF_PATH
 
 echo "remove apt proxy done"

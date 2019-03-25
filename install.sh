@@ -72,10 +72,6 @@ install_others() {
 
     esac
 
-    ##link zzemacs/etc/profile
-    rm -rf ~/.bash_zzemacs
-    ln -sf ${ZZEMACS_ROOT}/etc/profile ~/.bash_zzemacs
-
     ##link zzemacs/etc/terminfo
     rm -rf ~/.terminfo
     ln -sf ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo

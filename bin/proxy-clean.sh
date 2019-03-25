@@ -14,7 +14,7 @@ case "$OS" in
             exit 1
         fi
 
-        rm -f $HOME/.bashrc.d/zz-proxy.sh
+        rm -f /etc/profile.d/zz-proxy.sh
         ;;
 esac
 

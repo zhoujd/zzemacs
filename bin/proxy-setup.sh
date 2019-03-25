@@ -24,11 +24,18 @@ esac
 case "$OS" in
     "Windows_NT" )
         echo "Setup proxy on Windows"
+        
         PROXY_SCRIPT=$HOME/.bashrc.d/99-proxy.sh
         ;;
     * )
         echo "Setup proxy on Linux"
-        PROXY_SCRIPT=$HOME/.bashrc.d/zz-proxy.sh
+        
+        if [ $EUID -ne 0 ]; then
+            echo "You must be a root user" 2>&1
+            exit 1
+        fi
+
+        PROXY_SCRIPT=/etc/profile.d/zz-proxy.sh
         ;;
 esac
 

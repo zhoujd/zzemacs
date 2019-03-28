@@ -46,7 +46,7 @@ Ubuntu setting
         $ sudo apt purge xfconf xfce4-utils xfwm4 xfce4-session thunar xfdesktop4 exo-utils xfce4-panel xfce4-terminal libxfce4util-common scim xscreensaver
         $ sudo apt autoremove
 
-5. Fix “system program problem detected” error in Ubuntu
+5. Fix "system program problem detected" error in Ubuntu
 
         $ sudo rm /var/crash/*
         $ sudo vim /etc/default/apport

@@ -11,3 +11,16 @@ Laptop setting
         $ echo 'HandleLidSwitch=lock' >> /etc/systemd/logind.conf >/dev/null 1&>2
 
         $ sudo systemctl restart systemd-logind
+
+2. How to disable touchpad using command line.
+
+        ## To turn off the touch pad
+        $ synclient TouchpadOff=1
+        ## To turn on the touch pad
+        $ synclient TouchpadOff=0
+
+3. Clock format
+
+        ## Fri 16 Jul 10 04:22 PM 
+        ## %a %d %b %y  %I:%M %p
+

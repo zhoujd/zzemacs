@@ -31,7 +31,7 @@ install_fonts() {
             sudo ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
             sudo ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
 
-            sudo fc-cache
+            sudo fc-cache -f
             ;;
         "user" )
             FONT_TARGET=~/.fonts/truetype
@@ -41,7 +41,7 @@ install_fonts() {
             ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
             ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
 
-            fc-cache
+            fc-cache -f
             ;;
         * )
             echo "unknown $TARGET_TYPE"

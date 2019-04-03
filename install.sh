@@ -62,14 +62,14 @@ install_others() {
             sudo ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
             ;;
         "user" )
-            BIN_TARGET=~/.local/bin
+            BIN_TARGET=~/local/bin
+            mkdir -p $BIN_TARGET
             ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
             ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
             ;;
         * )
             echo "unknown $TARGET_TYPE"
             ;;
-
     esac
 
     ##link zzemacs/etc/terminfo

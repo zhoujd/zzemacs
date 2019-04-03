@@ -51,7 +51,6 @@
      ))
    (progn
     (list
-     (format "%s/local/bin" (getenv "HOME"))
      (format "%s/bin" zzemacs-path)
      (format "%s/libexec" zzemacs-path)
      )))

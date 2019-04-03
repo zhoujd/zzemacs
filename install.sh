@@ -62,7 +62,7 @@ install_others() {
             sudo ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
             ;;
         "user" )
-            BIN_TARGET=~/local/bin
+            BIN_TARGET=~/.local/bin
             ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
             ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
             ;;

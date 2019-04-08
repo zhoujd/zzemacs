@@ -151,6 +151,7 @@
   (kbd "-")       (lookup-key f4-map (kbd "-"))
   (kbd "=")       (lookup-key f4-map (kbd "="))
   (kbd "\\")      (lookup-key f4-map (kbd "\\"))
+  (kbd "DEL")     (lookup-key f4-map (kbd "DEL"))
   (kbd "`")       (lookup-key f4-map (kbd "`"))
 
   (kbd "M-1")     (lookup-key f4-map (kbd "M-1"))
@@ -166,6 +167,7 @@
   (kbd "M--")     (lookup-key f4-map (kbd "M--"))
   (kbd "M-=")     (lookup-key f4-map (kbd "M-="))
   (kbd "M-\\")    (lookup-key f4-map (kbd "M-\\"))
+  (kbd "M-DEL")   (lookup-key f4-map (kbd "M-DEL"))
   (kbd "M-`")     (lookup-key f4-map (kbd "M-`"))
   ))
 

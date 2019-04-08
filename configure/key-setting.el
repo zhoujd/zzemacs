@@ -70,6 +70,7 @@
   (kbd "-")       'zz:cd-shell
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
+  (kbd "DEL")     'zz:get-shell
   (kbd "`")       'zz:switch-to-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
@@ -85,6 +86,7 @@
   (kbd "M--")     'zz:cd-shell
   (kbd "M-=")     'zz:remote-shell
   (kbd "M-\\")    'multi-term
+  (kbd "M-DEL")   'multi-term
   (kbd "M-`")     'zz:switch-to-term
   ))
 

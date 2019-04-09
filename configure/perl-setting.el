@@ -1,5 +1,7 @@
 ;;;;perl programe setting
 ;;;http://emacswiki.org/cgi-bin/wiki/PerlLanguage
+;;debug perl: "alt-x perldb" "perl -d myscript.pl"
+;;https://harding.edu/gfoust/reference/perldb.html
 
 ;;use cperl-mode instead of the default perl-mode
 (add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))

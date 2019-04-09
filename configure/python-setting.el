@@ -49,11 +49,6 @@
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
 
-;;pydb setup
-;;sudo apt install pydb
-(zz-load-path "site-lisp/pydb")
-(require 'pydb)
-
 
 (provide 'python-setting)
 

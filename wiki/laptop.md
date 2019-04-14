@@ -18,6 +18,11 @@ Laptop setting
         $ synclient TouchpadOff=1
         ## To turn on the touch pad
         $ synclient TouchpadOff=0
+        
+        ## Disable tap to click
+        $ synclient TapButton1=0
+        ## Enable tap to click
+        $ synclient TapButton1=1
 
 3. Clock format
 

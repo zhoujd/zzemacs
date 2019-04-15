@@ -1,24 +1,24 @@
 #!/bin/sh
 
 rc_local_install() {
-    if [ -f /etc/rc.local ]; then
-        echo "/etc/rc.local already exist"
-        exit 1
-    else
-        sudo tee /etc/rc.local <<EOF
+    sudo tee /etc/rc.local <<EOF
+#!/bin/sh -e
 ## rc.local run as root during boot up
 # run script in /etc/rc.local.d
+
+rc_local_log=/root/rc.local.log
+rm -f \$rc_local_log
 for i in /etc/rc.local.d/* ; do
     if [ -x "\$i" ]; then
        "\$i"
+       echo "\$(date) \$i [\$?]" >> \$rc_local_log
     fi
 done
 
 exit 0
 EOF
-        sudo chmod +x /etc/rc.local
-        sudo mkdir -p /etc/rc.local.d
-    fi
+    sudo chmod +x /etc/rc.local
+    sudo mkdir -p /etc/rc.local.d
 }
 
 rc_local_uninstall() {
@@ -37,5 +37,3 @@ case $1 in
         echo "$(basename $0) {install|uninstall}"
         ;;
 esac
-
-        

@@ -6,7 +6,7 @@ rc_local_install() {
 ## rc.local run as root during boot up
 # run script in /etc/rc.local.d
 
-rc_local_log=/root/rc.local.log
+rc_local_log=/var/log/zz-rc.log
 rm -f \$rc_local_log
 for i in /etc/rc.local.d/* ; do
     if [ -x "\$i" ]; then

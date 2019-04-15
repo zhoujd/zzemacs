@@ -32,6 +32,5 @@ Laptop setting
 
 4. Disable laptop internal key board
 
-        $ fireforx
-        https://github.com/zma/usefulscripts/tree/master/script/laptopkb
-        
+        $ firefox https://github.com/zma/usefulscripts/tree/master/script/laptopkb
+

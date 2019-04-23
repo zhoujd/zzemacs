@@ -44,7 +44,7 @@ cat <<EOF > $PROXY_SCRIPT
 export http_proxy=http://$host:$http_port/
 export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
-export socks_proxy=http://$host:$socks_port/
+export socks_proxy=socks://$host:$socks_port/
 export no_proxy=localhost,.intel.com,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
 export socks_host=$host
 export socks_port=$socks_port

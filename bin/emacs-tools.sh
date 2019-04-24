@@ -12,7 +12,7 @@ install_package() {
             sudo zypper install -y cscope
             sudo zypper install -y texinfo
             ;;
-        "Ubuntu" )
+        "Ubuntu" | "LinuxMint" )
             sudo apt install -y cscope
             sudo apt install -y texinfo
             sudo apt install -y markdown

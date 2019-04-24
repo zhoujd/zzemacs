@@ -65,6 +65,8 @@ linux_issue_check() {
         OS_DISTRO="Arch"
     elif [ ! -z "$(cat /etc/issue | grep 'Manjaro')" ]; then
         OS_DISTRO="Manjaro"
+    elif [ ! -z "$(cat /etc/issue | grep 'Mint')" ]; then
+        OS_DISTRO="LinuxMint"
     else
         false
     fi
@@ -78,6 +80,9 @@ linux_lsb_check() {
             ;;
         "Ubuntu" )
             OS_DISTRO="Ubuntu"
+            ;;
+        "LinuxMint" )
+            OS_DISTRO="LinuxMint"
             ;;
         "CentOS" )
             OS_DISTRO="CentOS"

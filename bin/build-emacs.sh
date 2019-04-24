@@ -50,7 +50,7 @@ install_package() {
         "SUSE" )
             sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
             ;;
-        "Ubuntu" )
+        "Ubuntu" | "LinuxMint" )
             sudo apt-get install -y automake
             sudo apt-get install -y build-essential
             sudo apt-get install -y libxft-dev libotf-dev libgpm-dev imagemagick

@@ -1,6 +1,5 @@
 ;;;; docker-setting.el
 
-
 ;;https://github.com/Silex/docker.el
 (zz-load-path "site-lisp/docker")
 (require 'docker)
@@ -9,12 +8,10 @@
 (require 'docker-tramp)
 ;;open files in Docker containers like so: /docker:drunk_bardeen:/etc/passwd
 (push
- (cons
-  "docker"
-  '((tramp-login-program "docker")
-    (tramp-login-args (("exec" "-it") ("%h") ("/bin/bash")))
-    (tramp-remote-shell "/bin/sh")
-    (tramp-remote-shell-args ("-i") ("-c"))))
+ (cons "docker" '((tramp-login-program "docker")
+                  (tramp-login-args (("exec" "-it") ("%h") ("/bin/bash")))
+                  (tramp-remote-shell "/bin/sh")
+                  (tramp-remote-shell-args ("-i") ("-c"))))
  tramp-methods)
 
 (defadvice tramp-completion-handle-file-name-all-completions
@@ -44,6 +41,7 @@ while(<>) {
 ;;dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
 
 (provide 'docker-setting)
 

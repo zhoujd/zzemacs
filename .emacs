@@ -47,6 +47,7 @@
         perl-setting
         python-setting
         go-setting
+        docker-setting
         ;;media-setting
         ;;matlab-setting
         ;;spell-setting

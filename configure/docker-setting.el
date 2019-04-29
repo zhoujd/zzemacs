@@ -1,9 +1,5 @@
 ;;;; docker-setting.el
 
-;;https://github.com/Silex/docker.el
-(zz-load-path "site-lisp/docker")
-(require 'docker)
-
 ;;docker-tramp
 (require 'docker-tramp)
 ;;open files in Docker containers like so: /docker:drunk_bardeen:/etc/passwd
@@ -41,6 +37,10 @@ while(<>) {
 ;;dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+;;https://github.com/Silex/docker.el
+(zz-load-path "site-lisp/docker")
+(require 'docker)
 
 
 (provide 'docker-setting)

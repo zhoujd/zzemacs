@@ -84,28 +84,28 @@ Kill all remote buffers."
         (hosts (if file '() helm-tramp-custom-connections)))
     (dolist (host source)
       (when (string-match "[H\\|h]ost +\\(.+?\\)$" host)
-	(setq host (match-string 1 host))
-	(if (string-match "[ \t\n\r]+\\'" host)
-	    (replace-match "" t t host))
-	(if (string-match "\\`[ \t\n\r]+" host)
-	    (replace-match "" t t host))
+        (setq host (match-string 1 host))
+        (if (string-match "[ \t\n\r]+\\'" host)
+            (replace-match "" t t host))
+        (if (string-match "\\`[ \t\n\r]+" host)
+            (replace-match "" t t host))
         (unless (string= host "*")
-	  (if (string-match "[ ]+" host)
-	      (let ((result (split-string host " ")))
-		(while result
-		  (push
-		   (concat "/" tramp-default-method ":" (car result) ":")
-		   hosts)
-		  (push
-		   (concat "/ssh:" (car result) "|sudo:root@" (car result) ":/")
-		   hosts)
-		  (pop result)))
-	    (push
-	     (concat "/" tramp-default-method ":" host ":")
-	     hosts)
-	    (push
-	     (concat "/ssh:" host "|sudo:" host ":/")
-	     hosts))))
+          (if (string-match "[ ]+" host)
+              (let ((result (split-string host " ")))
+                (while result
+                  (push
+                   (concat "/" tramp-default-method ":" (car result) ":")
+                   hosts)
+                  (push
+                   (concat "/ssh:" (car result) "|sudo:root@" (car result) ":/")
+                   hosts)
+                  (pop result)))
+              (push
+               (concat "/" tramp-default-method ":" host ":")
+               hosts)
+              (push
+               (concat "/ssh:" host "|sudo:" host ":/")
+               hosts))))
       (when (string-match "Include +\\(.+\\)$" host)
         (setq include-file (match-string 1 host))
         (when (not (file-name-absolute-p include-file))
@@ -114,26 +114,26 @@ Kill all remote buffers."
           (setq hosts (append hosts (helm-tramp--candidates include-file))))))
     (when (require 'docker-tramp nil t)
       (cl-loop for line in (cdr (ignore-errors (apply #'process-lines "docker" (list "ps"))))
-	       for info = (reverse (split-string line "[[:space:]]+" t))
-	       collect (progn (push
-			       (concat "/docker:" (car info) ":/")
-			       hosts)
-			      (when helm-tramp-docker-user
-				(if (listp helm-tramp-docker-user)
-				    (let ((docker-user helm-tramp-docker-user))
-				      (while docker-user
-					(push
-					 (concat "/docker:" (car docker-user) "@" (car info) ":/")
-					 hosts)
-					(pop docker-user)))
-				  (push
-				   (concat "/docker:" helm-tramp-docker-user "@" (car info) ":/")
-				   hosts))))))
+               for info = (reverse (split-string line "[[:space:]]+" t))
+               collect (progn (push
+                               (concat "/docker:" (car info) ":/")
+                               hosts)
+                              (when helm-tramp-docker-user
+                                (if (listp helm-tramp-docker-user)
+                                    (let ((docker-user helm-tramp-docker-user))
+                                      (while docker-user
+                                        (push
+                                         (concat "/docker:" (car docker-user) "@" (car info) ":/")
+                                         hosts)
+                                        (pop docker-user)))
+                                    (push
+                                     (concat "/docker:" helm-tramp-docker-user "@" (car info) ":/")
+                                     hosts))))))
     (when (require 'vagrant-tramp nil t)
       (cl-loop for box-name in (map 'list 'cadr (vagrant-tramp--completions))
-	       do (progn
-		    (push (concat "/vagrant:" box-name ":/") hosts)
-		    (push (concat "/vagrant:" box-name "|sudo:" box-name ":/") hosts))))
+               do (progn
+                    (push (concat "/vagrant:" box-name ":/") hosts)
+                    (push (concat "/vagrant:" box-name "|sudo:" box-name ":/") hosts))))
     (push (concat "/sudo:root@localhost:" helm-tramp-localhost-directory) hosts)
     (reverse hosts)))
 
@@ -159,14 +159,6 @@ Kill all remote buffers."
   "Open your ~/.ssh/config with helm interface.
 You can connect your server with tramp"
   (interactive)
-  (unless (file-exists-p "~/.ssh/config")
-    (error "There is no ~/.ssh/config"))
-  (when (require 'docker-tramp nil t)
-    (unless (executable-find "docker")
-      (error "'docker' is not installed")))
-  (when (require 'vagrant-tramp nil t)
-    (unless (executable-find "vagrant")
-      (error "'vagrant' is not installed")))
   (run-hooks 'helm-tramp-pre-command-hook)
   (helm :sources '(helm-tramp--source) :buffer "*helm tramp*")
   (run-hooks 'helm-tramp-post-command-hook))

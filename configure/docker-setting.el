@@ -7,7 +7,6 @@
 
 ;;docker-tramp
 (require 'docker-tramp)
-(require 'docker-tramp-compat)
 ;;open files in Docker containers like so: /docker:drunk_bardeen:/etc/passwd
 (push
  (cons

@@ -98,8 +98,6 @@
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "t")       'helm-tramp
-
-  [f4]            'kill-this-buffer
   
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))

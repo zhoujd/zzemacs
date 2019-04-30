@@ -37,6 +37,7 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
+  (kbd "\\")      'text-scale-adjust
   ))
 
 (apply-keys-to-map
@@ -95,10 +96,11 @@
  f4-map
  (list
   (kbd "b")       'helm-bm
+  (kbd "d")       'docker
   (kbd "t")       'helm-tramp
 
-  (kbd "<f4>")    'kill-this-buffer
-
+  [f4]            'kill-this-buffer
+  
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
                                  (zz:execute-key zz:thunar '("thunar")))
@@ -182,11 +184,6 @@
 
   [backspace]     'delete-backward-char
   [delete]        'delete-char
-
-  [C-wheel-up]    (when-ms-windows 'text-scale-increase)
-  [C-wheel-down]  (when-ms-windows 'text-scale-decrease)
-  [C-mouse-4]     (unless-ms-windows 'text-scale-increase)
-  [C-mouse-5]     (unless-ms-windows 'text-scale-decrease)
 
   ;;quick move other windows
   [M-up]          'windmove-up

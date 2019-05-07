@@ -20,13 +20,7 @@ install_bashrc() {
 
 # load script in ~/.bashrc.d
 for i in ~/.bashrc.d/*.sh ; do
-    if [ -r "\$i" ]; then
-        if [ "\${-#*i}" != "\$-" ]; then
-            . "\$i"
-        else
-            . "\$i" >/dev/null 2>&1
-        fi
-    fi
+    test -r "\$i" && . "\$i" >/dev/null 2>&1
 done
 EOF
 }

@@ -32,6 +32,7 @@
 (require 'helm)
 (require 'tramp)
 (require 'cl-lib)
+(require 'multi-shell)
 
 (defgroup helm-tramp nil
   "Tramp with helm interface for ssh, docker, vagrant"
@@ -144,7 +145,7 @@ Kill all remote buffers."
 (defun helm-tramp-open-shell (path)
   "Tramp open shell at PATH."
   (let ((default-directory path))
-    (shell (concat "* Helm tramp shell - " path))))
+    (multi-shell-new)))
 
 (defvar helm-tramp--source
   (helm-build-sync-source "Tramp"

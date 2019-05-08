@@ -19,6 +19,7 @@ install_package_ubuntu() {
     sudo apt install -y openssh-server
     sudo apt install -y tree
     sudo apt install -y tmux byobu
+    sudo apt install -y wireless-tools
 }
 
 ##package for centos

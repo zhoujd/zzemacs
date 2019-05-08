@@ -51,3 +51,9 @@ Ubuntu setting
         $ sudo rm /var/crash/*
         $ sudo vim /etc/default/apport
           enable=0
+
+6. Server network configure
+
+        $ sudo lshw -C network
+        $ ethtool -h
+        $ ethtool -s eth1 speed 1000 duplex full

@@ -24,8 +24,9 @@ case $# in
         ;;
 esac
 
-PROXY_CONF_PATH=/etc/apt/apt.conf.d/zz-proxy.conf
-cat <<EOF > $PROXY_CONF_PATH
+TARGET_DIR=/etc/apt/apt.conf.d
+mkdir -p $TARGET_DIR
+cat <<EOF > $TARGET_DIR/zz-proxy.conf
 ## This is for apt proxy
 Acquire::http::Proxy "http://$host:$http_port/";
 Acquire::https::Proxy "http://$host:$http_port/";

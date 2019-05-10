@@ -18,7 +18,7 @@ install_package_ubuntu() {
     sudo apt install -y rxvt-unicode
     sudo apt install -y openssh-server
     sudo apt install -y tree
-    sudo apt install -y tmux byobu
+    sudo apt install -y tmux byobu vim
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
 }

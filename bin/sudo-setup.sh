@@ -11,7 +11,7 @@ USER_NAME=zhoujd
 cat > /etc/sudoers.d/${USER_NAME} <<EOF
 ## ${USER_NAME}
 Defaults env_keep+="http_proxy https_proxy ftp_proxy no_proxy socks_proxy"
-%wheel ALL=(ALL) ALL
+${USER_NAME} ALL=(ALL) ALL
 EOF
 
 echo "please reboot"

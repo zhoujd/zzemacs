@@ -33,6 +33,9 @@
     (list (cons "\\.bashrc$"       'shell-script-mode))
     auto-mode-alist))
 
+;;disable undo warning
+(add-to-list 'warning-suppress-types '(undo discard-info))
+
 ;;interpret and use ansi color codes in shell output windows
 (when (fboundp 'ansi-color-for-comint-mode-on)
   ;;escape sequence

@@ -31,9 +31,6 @@
 
 (defun zz:cperl-mode-hook ()
   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
-  (setq cperl-indent-level 4)
-  (setq cperl-continued-statement-offset 0)
-  (setq cperl-extra-newline-before-brace t)
   (defkeys-map cperl-mode-map
     ((kbd "C-c C-c") 'zz:perl-eval-buffer)))
 
@@ -58,7 +55,7 @@
 ;;perl completing
 (add-hook  'cperl-mode-hook
            (lambda ()
-             (when (require 'auto-complete nil t ) ; no error whatever auto-complete.el is not installed.
+             (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
                (require 'perl-completion nil t)
                (auto-complete-mode t)
                (perl-completion-mode t)

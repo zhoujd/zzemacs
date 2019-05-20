@@ -34,6 +34,7 @@
     auto-mode-alist))
 
 ;;disable undo warning
+(require 'warnings)
 (add-to-list 'warning-suppress-types '(undo discard-info))
 
 ;;interpret and use ansi color codes in shell output windows

@@ -13,10 +13,6 @@ case $# in
         host=$1
         http_port=$2
         ;;
-    3 )
-        host=$1
-        http_port=$2
-        ;;
     * )
         echo "Usage: `basename $0` host port"
         echo "Usage: no prefix-http/ftp"

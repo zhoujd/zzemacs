@@ -19,6 +19,7 @@ install_package_ubuntu() {
     sudo apt install -y openssh-server
     sudo apt install -y tree
     sudo apt install -y tmux byobu vim
+    sudo apt install -y sbcl
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
 }
@@ -30,7 +31,12 @@ install_package_centos() {
 
 ##package for fedora
 install_package_fedora() {
-    sudo dnf install dos2unix
+    sudo dnf install -y dos2unix
+    sudo dnf install -y openssh-server
+    sudo dnf install -y tmux vim
+    sudo dnf install -y sbcl
+    sudo dnf install -y rofi
+    sudo dnf install -y rxvt-unicode
 }
 
 # dectect OS version

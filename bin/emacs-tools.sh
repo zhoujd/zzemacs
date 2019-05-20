@@ -27,6 +27,9 @@ install_package() {
         "Fedora" )
             sudo dnf install -y cscope
             sudo dnf install -y texinfo
+            sudo dnf install -y w3m
+            sudo dnf install -y socat
+            sudo dnf install -y the_silver_searcher
             ;;
         "FreeBSD" )
             sudo pkg_add -r w3m

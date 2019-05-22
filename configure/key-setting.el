@@ -38,6 +38,7 @@
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
   (kbd "\\")      'text-scale-adjust
+  (kbd "DEL")     'text-scale-adjust
   ))
 
 (apply-keys-to-map
@@ -53,6 +54,8 @@
   (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
   (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
   (kbd "0")       (zz:quick-shell zz:shell-f10 "*shell<f10>*")
+  (kbd "-")       'ielm
+  (kbd "=")       'eshell
   ))
 
 (apply-keys-to-map
@@ -126,13 +129,16 @@
   (kbd "\\")      'zz:baidu
   (kbd "`")       'zz:google
 
-  (kbd "c")       (zz:execute-key zz:urxvt   '("urxvt"))
-  (kbd "d")       (zz:execute-key zz:meld    '("meld"))
-  (kbd "v")       (zz:execute-key zz:evince  '("evince"))
-  (kbd "f")       (zz:execute-key zz:firefox '("firefox"))
-  (kbd "h")       (zz:execute-key zz:thunar  '("thunar"))
-  (kbd "r")       (zz:execute-key zz:remmina '("remmina"))
-  (kbd "t")       (zz:execute-key zz:tmux    '("urxvt" "-e" "tmux"))
+  (kbd "c")       (zz:execute-key zz:urxvt     '("urxvt"))
+  (kbd "f")       (zz:execute-key zz:firefox   '("firefox"))
+  (kbd "h")       (zz:execute-key zz:thunar    '("thunar"))
+  (kbd "m")       (zz:execute-key zz:meld      '("meld"))
+  (kbd "v")       (zz:execute-key zz:vim       '("urxvt" "-e" "vim"))
+  (kbd "t")       (zz:execute-key zz:tmux      '("urxvt" "-e" "tmux"))
+  (kbd "d")       (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
+  (kbd "r")       (zz:execute-key zz:rofi-run  '("rofi" "-show" "run"))
+  (kbd "s")       (zz:execute-key zz:rofi-ssh  '("rofi" "-show" "ssh"))
+  (kbd "w")       (zz:execute-key zz:rofi-win  '("rofi" "-show" "window"))
   ))
 
 (apply-keys-to-map

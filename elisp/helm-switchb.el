@@ -2,6 +2,7 @@
 ;;;
 
 (require 'helm)
+(require 'multi-shell)
 
 (defmacro helm-switchb-candidate (mode)
   `(lambda ()
@@ -18,16 +19,18 @@
        (buffer-list)))))
 
 (defun helm-switchb-select (candidate)
-     (switch-to-buffer (car (split-string candidate))))
+  (switch-to-buffer (car (split-string candidate))))
 
 (defun helm-switchb-kill (candidate)
-     (kill-buffer (car (split-string candidate))))
+  (loop for cand in (helm-marked-candidates)
+        do
+        (kill-buffer (car (split-string cand)))))
 
 (defun helm-switchb-shell-new (candidate)
-     (multi-shell-new))
+  (multi-shell-new))
 
 (defun helm-switchb-term-new (candidate)
-     (multi-term))
+  (multi-term))
 
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"

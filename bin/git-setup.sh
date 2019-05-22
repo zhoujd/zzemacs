@@ -99,6 +99,10 @@ git config --global alias.last  "log -1 HEAD"
 git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 git config --global alias.hlog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -10"
 
+## git daemon
+git config --global alias.serve '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
+git config --global alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
+
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt

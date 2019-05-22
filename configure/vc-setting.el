@@ -20,6 +20,7 @@
 ;;$ssh -T git@github.com
 ;;;=>SSH authorized each other
 ;;$ssh-keygen -t rsa
+;;$ssh-keygen -p -f ~/.ssh/id_rsa
 ;;$touch ~/.ssh/authorized_keys
 ;;$chmod 644 ~/.ssh/authorized_keys
 ;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys

@@ -95,6 +95,8 @@
 (apply-keys-to-map
  f4-map
  (list
+  [f4]            'kill-this-buffer
+  
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "t")       'helm-tramp

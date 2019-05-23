@@ -1,6 +1,7 @@
 ;;;; docker-setting.el
 
 ;;docker-tramp
+;;C-x C-f /ssh:user@host|docker:
 (require 'docker-tramp)
 (defadvice tramp-completion-handle-file-name-all-completions
     (around dotemacs-completion-docker activate)

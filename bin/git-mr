@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# != 2 ]; then
+    echo "git mr <remote-url> <merge-request-id>"
+    echo "git mr origin 5"
+    exit 1;
+fi
+
+git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2

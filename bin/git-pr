@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# != 2 ]; then
+    echo "git pr <remote-url> <merge-request-id>"
+    echo "git pr origin 5"
+    exit 1;
+fi
+
+git fetch $1 pull/$2/head:pr-$2
+git checkout pr-$1-$2

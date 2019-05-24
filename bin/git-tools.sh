@@ -9,7 +9,7 @@ ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 
 ## Install package for git
 install_package() {
-    case "OS_DISTRO" in
+    case "$OS_DISTRO" in
         "SUSE" )
             sudo zypper install -y git-core
             sudo zypper install -y gitk

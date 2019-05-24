@@ -1,3 +1,3 @@
 #!/bin/sh
 
-emacsclient -t -e "(sudo-find-file \"$1\" \"$PWD\")"
+emacsclient -t -e "(find-file (concat \"/sudo:localhost:\" (expand-file-name \"$1\" \"$PWD\")))"

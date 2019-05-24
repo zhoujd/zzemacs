@@ -63,7 +63,7 @@
                (make-variable-buffer-local 'ac-sources)
                (setq ac-sources
                      '(
-                       ;;ac-source-perl-completion
+                       ac-source-perl-completion
                        ac-source-yasnippet
                        ac-source-abbrev
                        ac-source-words-in-buffer

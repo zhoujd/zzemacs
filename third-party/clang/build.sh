@@ -8,7 +8,7 @@ ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
 echo "install clang-complete start ..."
 
 case "$OS_DISTRO" in
-    "Ubuntu" )
+    "Ubuntu" | "LinuxMint" )
         sudo apt install -y llvm-dev libclang-dev
         ;;
     "Arch" | "Manjaro" )

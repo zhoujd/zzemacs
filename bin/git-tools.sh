@@ -11,25 +11,22 @@ ZZEMACS_ROOT=$(cd $GIT_TOOLS_ROOT/.. && pwd)
 install_package() {
     case "OS_DISTRO" in
         "SUSE" )
-            sudo zypper install -y texinfo
             sudo zypper install -y git-core
             sudo zypper install -y gitk
             sudo zypper install -y git-email
             ;;
-        "Ubuntu" )
-            sudo apt-get install -y texinfo
+        "Ubuntu" | "LinuxMint" )
             sudo apt-get install -y git-core
             sudo apt-get install -y gitk
             sudo apt-get install -y git-email
+            sudo apt-get install -y tig
             ;;
         "CentOS" )
-            sudo yum install -y texinfo
             sudo yum install -y git-core
             sudo yum install -y gitk
             sudo yum install -y git-email
             ;;
         "Fedora" )
-            sudo dnf install -y texinfo
             sudo dnf install -y git-core
             sudo dnf install -y gitk
             sudo yum install -y git-email

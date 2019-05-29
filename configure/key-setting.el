@@ -37,8 +37,6 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
-  (kbd "\\")      'text-scale-adjust
-  (kbd "DEL")     'text-scale-adjust
   ))
 
 (apply-keys-to-map

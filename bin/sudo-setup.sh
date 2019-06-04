@@ -6,7 +6,12 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-USER_NAME=zhoujd
+if [ $# -ne 1 ]; then
+   echo "Usage: `basename $0` <user>"
+   exit 1
+fi
+
+USER_NAME=$1
 
 cat > /etc/sudoers.d/${USER_NAME} <<EOF
 ## ${USER_NAME}

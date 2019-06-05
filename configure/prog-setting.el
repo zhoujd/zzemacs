@@ -265,6 +265,9 @@
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
 
+;;meson mode
+(require 'meson-mode)
+
 ;;Add code review note
 (defun zz:add-code-review-note ()
   "Add note for current file and line number"

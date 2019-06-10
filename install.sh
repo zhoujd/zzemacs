@@ -53,6 +53,7 @@ install_fonts() {
 install_others() {
     ##create ~/.emacs.d folder
     mkdir -p ~/.emacs.d
+    mkdir -p ~/.zach/bin
 
     echo "install others to $TARGET_TYPE"
     case "$TARGET_TYPE" in

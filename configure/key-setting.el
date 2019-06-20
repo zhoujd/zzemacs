@@ -37,6 +37,8 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
+  (kbd "b")       'helm-bm
+  (kbd "d")       'docker
   ))
 
 (apply-keys-to-map
@@ -98,8 +100,8 @@
  (list
   [f4]            'kill-this-buffer
   
-  (kbd "b")       'helm-bm
-  (kbd "d")       'docker
+  (kbd "b")       'helm-switchb-shell-list
+  (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   
   (kbd "C-b")     'browse-url
@@ -215,7 +217,7 @@
   (kbd "C-x b")   'helm-buffers-list
   (kbd "C-x M-b") 'helm-mini
   (kbd "C-c b")   'helm-switchb-shell-list
-  (kbd "C-c M-b") 'helm-switchb-dired-list
+  (kbd "C-c d")   'helm-switchb-dired-list
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf

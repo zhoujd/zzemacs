@@ -43,7 +43,6 @@ alias ldpath='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 alias pkgpath='echo -e ${PKG_CONFIG_PATH//:/\\n}'
 
 ## date alias
-alias date='date -R'
 alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'

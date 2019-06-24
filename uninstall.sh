@@ -15,6 +15,7 @@ $sudo_rm_app /usr/share/fonts/zzemacs
 
 echo "remove .emacs.d ..."
 $rm_app ~/.emacs.d
+$rm_app ~/.zach
 
 echo "remove others ..."
 $sudo_rm_app /usr/bin/zz{emacs,run}

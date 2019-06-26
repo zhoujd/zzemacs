@@ -57,3 +57,7 @@ Ubuntu setting
         $ sudo lshw -C network
         $ ethtool -h
         $ ethtool -s eth1 speed 1000 duplex full
+
+7. Setup xscreensaver
+
+        

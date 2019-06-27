@@ -60,4 +60,15 @@ Ubuntu setting
 
 7. Setup xscreensaver
 
+        $ sudo apt remove gnome-screensaver
+        $ sudo apt install xscreensaver xscreensaver-gl-extra xscreensaver-data-extra
         
+        $ mkdir -p ~/.config/systemd/user/
+        $ nano ~/.config/systemd/user/xscreensaver.service
+         [Unit]
+         Description=XScreenSaver
+         [Service]
+         ExecStart=/usr/bin/xscreensaver -nosplash
+         [Install]
+         WantedBy=default.target
+        $ systemctl --user enable xscreensaver

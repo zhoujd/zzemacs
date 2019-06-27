@@ -280,6 +280,23 @@
         (error "Cannot open tramp file")
       (browse-url (concat "file://" file-name)))))
 
+;;enabling iimage-mode automatically
+;;http://shallowsky.com/blog/linux/editors/graphics-in-emacs.html
+(defun zz:enable-iimage()
+  "Enable iimage mode"
+  (interactive)
+  (turn-on-iimage-mode)
+  (iimage-mode-buffer t))
+
+;;refresh iimages
+(defun zz:refresh-iimages ()
+  "Only way I've found to refresh iimages (without also recentering)"
+  (interactive)
+  (clear-image-cache nil)
+  (iimage-mode nil)
+  (iimage-mode t)
+  (message "Refreshed images"))
+
 
 (provide 'sample-setting)
 

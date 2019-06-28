@@ -116,10 +116,10 @@
   (kbd "C-f")     'zz:secondary-x-font
   (kbd "M-f")     'zz:primary-x-font
 
-  (kbd "M-r")     (zz:execute-key zz:rofi-run '("rofi" "-show" "run"))
-  (kbd "M-w")     (zz:execute-key zz:rofi-window '("rofi" "-show" "window"))
-  (kbd "M-s")     (zz:execute-key zz:rofi-ssh '("rofi" "-show" "ssh"))
-  (kbd "M-d")     (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
+  (kbd "M-d")     (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
+  (kbd "M-r")     (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
+  (kbd "M-s")     (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
+  (kbd "M-w")     (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
   ))
 
 ;;execute start-process key
@@ -129,16 +129,21 @@
   (kbd "\\")      'zz:baidu
   (kbd "`")       'zz:google
 
-  (kbd "c")       (zz:execute-key zz:urxvt     '("urxvt"))
-  (kbd "f")       (zz:execute-key zz:firefox   '("firefox"))
-  (kbd "h")       (zz:execute-key zz:thunar    '("thunar"))
-  (kbd "m")       (zz:execute-key zz:meld      '("meld"))
-  (kbd "v")       (zz:execute-key zz:vim       '("urxvt" "-e" "vim"))
-  (kbd "t")       (zz:execute-key zz:tmux      '("urxvt" "-e" "tmux"))
-  (kbd "d")       (zz:execute-key zz:rofi-drun '("rofi" "-show" "drun"))
-  (kbd "r")       (zz:execute-key zz:rofi-run  '("rofi" "-show" "run"))
-  (kbd "s")       (zz:execute-key zz:rofi-ssh  '("rofi" "-show" "ssh"))
-  (kbd "w")       (zz:execute-key zz:rofi-win  '("rofi" "-show" "window"))
+  (kbd "c")       (zz:execute-key zz:urxvt       '("urxvt"))
+  (kbd "f")       (zz:execute-key zz:firefox     '("firefox"))
+  (kbd "g")       (zz:execute-key zz:chrome      '("google-chrome"))
+  (kbd "m")       (zz:execute-key zz:thunderbird '("thunderbird"))
+  
+  (kbd "h")       (zz:execute-key zz:thunar      '("thunar"))
+  (kbd "v")       (zz:execute-key zz:vim         '("urxvt" "-e" "vim"))
+  (kbd "t")       (zz:execute-key zz:tmux        '("urxvt" "-e" "tmux"))
+                                                 
+  (kbd "d")       (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
+  (kbd "r")       (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
+  (kbd "s")       (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
+  (kbd "w")       (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
+                                                 
+  (kbd "M-m")     (zz:execute-key zz:meld        '("meld"))
   ))
 
 (apply-keys-to-map

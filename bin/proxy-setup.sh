@@ -46,7 +46,7 @@ export https_proxy=\$http_proxy
 export ftp_proxy=\$http_proxy
 export socks_proxy=socks://$host:$socks_port/
 export all_proxy=\$socks_proxy
-export no_proxy=localhost,.intel.com,intel.com,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
+export no_proxy=localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
 export socks_host=$host
 export socks_port=$socks_port
 EOF

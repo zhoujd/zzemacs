@@ -69,6 +69,7 @@ Grub2 more
         }
 
 4. grub2 setup
+
         https://help.ubuntu.com/community/Grub2/Setup#Configuring_GRUB_2
         http://www.dedoimedo.com/computers/grub-2.html
 
@@ -81,6 +82,8 @@ Grub2 more
 
         sudo gedit /etc/default/grub
         #GRUB_HIDDEN_TIMEOUT=0                  ##place a "#" symbol at the start of line  for show menu
+        #GRUB_TIMEOUT_STYLE=hidden              ##place a "#" symbol at the start of line  for show menu
+        
         GRUB_DISABLE_OS_PROBER=true             ##disable proble os (maybe it is danger)
         GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
         #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.

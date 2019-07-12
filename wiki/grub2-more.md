@@ -80,7 +80,7 @@ Grub2 more
         sudo update-grub
 
         sudo gedit /etc/default/grub
-        #GRUB_HIDDEN_TIMEOUT=0                  ##uncomment for show menu
+        #GRUB_HIDDEN_TIMEOUT=0                  ##place a "#" symbol at the start of line  for show menu
         GRUB_DISABLE_OS_PROBER=true             ##disable proble os (maybe it is danger)
         GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
         #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.

@@ -16,6 +16,8 @@ Go to Utilities. Open the Terminal application and type:
 3. Linux
 Open a shell and type:
 
+        sudo pacman -S dmidecode
+        sudo apt install dmidecode
         sudo dmidecode -t system | grep Serial
 
 Note: The user will need to have root access to the system.

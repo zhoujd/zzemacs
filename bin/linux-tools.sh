@@ -22,6 +22,7 @@ install_package_ubuntu() {
     sudo apt install -y sbcl
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
+    sudo apt install -y cups-pdf
 }
 
 ##package for centos

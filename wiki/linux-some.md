@@ -229,3 +229,45 @@ Linux something
     $ readelf -s a.so
     $ readelf -a a.so
     $ objdump -x a.so unamed.a
+
+23. Change or Rename User Name and UID (user-id)
+    Task: View current user and group membership for user named tom
+        $ id tom
+        $ grep '^tom:' /etc/passwd
+        $ grep 'tom' /etc/group
+        $ groups tom
+        $ ls -ld /home/tom/
+        $ ps aux | grep tom
+        $ ps -u tom
+        
+    Task: Change username from tom to jerry on Linux
+        # id tom
+        # usermod -l jerry tom
+        ## Verify ###
+        # id tom
+        # id jerry
+        # ls -ld /home/tom
+        
+       A NOTE ABOUT RUNNING PROCESS
+        # usermod -l jerry tom
+          usermod: user tom is currently used by process 6886
+        # pkill -u tom pid
+        # pkill -9 -u tom
+        # usermod -l jerry tom
+        
+    Task: Change primary groupname from tom to jerry
+        # id tom
+        # groupmod -n jerry tom
+        ## Verify it ###
+        # id tom
+        # ls -ld /home/tom
+        
+    How to change user home directory from /home/tom/ to /home/jerry
+        # usermod -d /home/jerry -m jerry
+        # id jerry
+        # ls -ld /home/jerry
+        
+    How to change user tom UID from 5001 to 10000
+        # id tom
+        # usermod -u 10000 tom
+        # id tom

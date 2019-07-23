@@ -1,4 +1,4 @@
-Grub2 more
+Grub more
 ===================
 
 1. recover boot sector

@@ -5,6 +5,7 @@
 ;;https://afsmnghr.github.io/emacs/tramp-with-ssh-and-docker/
 ;;sudo apt install docker-runc
 ;;C-x C-f /docker:container:/etc/passwd RET ;; simple use
+;;C-x C-f /docker:user@container:/path/to/file
 ;;C-x C-f /ssh:user@remotehost|docker:user@container:/etc/passwd RET
 (require 'docker-tramp)
 (push (cons "docker"

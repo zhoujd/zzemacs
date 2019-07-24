@@ -271,3 +271,7 @@ Linux something
         # id tom
         # usermod -u 10000 tom
         # id tom
+
+    Blueman: configured directory for incoming file does not exist
+        $ gsettings get org.blueman.transfer shared-path
+        $ gsettings set org.blueman.transfer shared-path '/home/your_user_name/Downloads'

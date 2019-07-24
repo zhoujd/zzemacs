@@ -264,6 +264,7 @@ Linux something
         
     How to change user home directory from /home/tom/ to /home/jerry
         # usermod -d /home/jerry -m jerry
+        # usermod -c "jerry" jerry
         # id jerry
         # ls -ld /home/jerry
         
@@ -275,3 +276,12 @@ Linux something
     Blueman: configured directory for incoming file does not exist
         $ gsettings get org.blueman.transfer shared-path
         $ gsettings set org.blueman.transfer shared-path '/home/your_user_name/Downloads'
+
+    Summary command lines
+        # killall -u old
+        # id old
+        # usermod -l new old
+        # groupmod -n new old
+        # usermod -d /home/new -m new
+        # usermod -c "New Real Name" new
+        # id new

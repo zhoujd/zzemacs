@@ -77,3 +77,8 @@ network
         $ ip link set eth1 down
         ## Showing your routing using ip
         $ ip route show
+
+5. How can I renew or release an IP in Linux for eth0
+
+        $ sudo dhclient -v -r eth0
+        $ sudo dhclient -v eth0

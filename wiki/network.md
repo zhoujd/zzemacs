@@ -57,7 +57,7 @@ network
         $ sudo systemctl restart networking
         $ sudo /etc/init.d/networking restart
         $ sudo systemctl restart network-manager
-        $ sudo systemctl restart system-networkd
+        $ sudo systemctl restart systemd-networkd
 
 4. How to Manually Set Your IP
 

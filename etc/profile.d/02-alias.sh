@@ -23,6 +23,7 @@ alias dirtree="ls -R | grep :*/ | grep ':$' | sed -e 's/:$//' -e 's/[^-][^\/]*\/
 alias tree='tree -Csu'             # another better way for 'ls'
 alias which='type -all'
 alias du='du -kh'
+alias duc='du -sh'
 alias df='df -kTh'
 alias h='history'
 alias j='jobs -l'

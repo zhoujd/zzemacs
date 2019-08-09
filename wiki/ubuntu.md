@@ -2,7 +2,7 @@ Ubuntu setting
 ==============
 
 1. English date etc.
-   
+
         System settings -> Language support -> Regional format
         => English(United States)
         Reboot
@@ -62,7 +62,7 @@ Ubuntu setting
 
         $ sudo apt remove gnome-screensaver
         $ sudo apt install xscreensaver xscreensaver-gl-extra xscreensaver-data-extra
-        
+
         $ mkdir -p ~/.config/systemd/user/
         $ nano ~/.config/systemd/user/xscreensaver.service
          [Unit]
@@ -72,3 +72,23 @@ Ubuntu setting
          [Install]
          WantedBy=default.target
         $ systemctl --user enable xscreensaver
+
+8. Setup locale
+
+   - Edit the locale file(s) in /var/lib/locales/supported.d/, and remove all unneeded locales (one locale per line)
+   - Create and edit /etc/default/locale (see above for an example)
+   - Delete all generated locale data: rm -rfv /usr/lib/locale/*
+   - Re-generate new locales: locale-gen
+
+        $ locale ... list the current locale configuration
+        $ locale -a ... lists all all locales that were generated on your system
+        $ locale -a -v ... list all locales and show useful additional information (such as directory names that contain the locale information data files)
+
+        ## generate the missing locale and reconfigure locales
+        $ sudo locale-gen "en_US.UTF-8"
+        $ sudo dpkg-reconfigure locales
+
+        ## removing locales and locale related files
+        $ sudo apt-get install localepurge
+        $ dpkg --configure localepurge
+        $ sudo localepurge

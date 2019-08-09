@@ -92,3 +92,13 @@ Ubuntu setting
         $ sudo apt-get install localepurge
         $ dpkg --configure localepurge
         $ sudo localepurge
+
+9. Change The Hostname On Ubuntu 18.04 LTS Server
+
+        $ cat /etc/hostname
+        $ cat /etc/hosts
+        
+        ## false -> true
+        $ sudo nano /etc/cloud/cloud.cfg
+        preserve_hostname: true
+

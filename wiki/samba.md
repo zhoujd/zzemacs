@@ -1,5 +1,5 @@
-samba
-=====
+Samba Server
+============
 
 1. Installing Samba on Ubuntu
 
@@ -32,7 +32,7 @@ samba
         $ sudo apt install smbclient
         $ sudo yum install samba-client
         
-        $ smbclient //samba_hostname_or_server_ip/share_name -U username smbclient //192.168.121.118/josh -U josh
+        $ smbclient //samba_hostname_or_server_ip/share_name -U username
         $ smbclient //192.168.121.118/josh -U josh
         
         

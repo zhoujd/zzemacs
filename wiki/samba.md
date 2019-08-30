@@ -5,6 +5,7 @@ Samba Server
 
         $ sudo apt update
         $ sudo apt install samba
+        $ sudo apt install smbclient
 
 2. Setting up Samba
 
@@ -17,9 +18,12 @@ Samba Server
              path = /home/username/sambashare
              read only = no
              browsable = yes
-             
+             valid users = jiandon
+        
+        $ sudo smbpasswd -a jiandon
+        $ smbclient -L localhost
+        
         $ sudo ufw allow 'Samba'
-             
         $ sudo service smbd restart
 
 3. Setting up User Accounts and Connecting to Share

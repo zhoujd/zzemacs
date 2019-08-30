@@ -285,3 +285,14 @@ Linux something
         # usermod -d /home/new -m new
         # usermod -c "New Real Name" new
         # id new
+
+
+24. 7 Methods To Identify Disk Partition/FileSystem UUID
+     
+    # blkid
+    # lsblk -o name,mountpoint,size,uuid
+    # ls -lh /dev/disk/by-uuid/
+    # hwinfo --block | grep by-uuid | awk '{print $3,$7}'
+    # udevadm info -q all -n /dev/sdc1 | grep -i by-uuid | head -1
+    # tune2fs -l /dev/sdc1 | grep UUID
+    # dumpe2fs /dev/sdc1 | grep UUID

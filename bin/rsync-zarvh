@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 2 ] ; then
+    echo "Usage: `basename $0` <source> <target>"
+    exit 1
+fi
+
+rsync -zarvh $1 $2

@@ -102,3 +102,11 @@ Ubuntu setting
         $ sudo nano /etc/cloud/cloud.cfg
         preserve_hostname: true
 
+10. Setup snap proxy
+
+        $ sudo snap set core proxy.http=http://host:port/
+        $ sudo snap set core proxy.https=http://host:port/
+        $ sudo snap get core proxy
+        $ sudo snap install foolbar2000
+        
+ 

@@ -1,9 +1,15 @@
 #!/bin/bash
 
-SOURCE=//u18-kbl-zz/zach
-TARGET=/zach/share
+if [ -z "$SMB_SOURCE" ] || [ -z "$SMB_TARGET" ] ; then
+    echo "please set following"
+    echo "export SMB_SOURCE="
+    echo "export SMB_TARGET="
+    exit 1
+fi
 
-USER=jiandon
+SOURCE=$SMB_SOURCE
+TARGET=$SMB_TARGET
+USER=$USER
 
 start() {
     echo "mount $SOURCE -> $TARGET"

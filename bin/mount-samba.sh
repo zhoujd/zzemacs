@@ -13,7 +13,7 @@ USER=$USER
 
 start() {
     echo "mount $SOURCE -> $TARGET"
-    sudo mount -t cifs -o user=$USER,uid=`id -u $USER`,gid=`id -g $USER`,iocharset=utf8,file_mode=0777,dir_mode=0777,noperm \
+    sudo mount -t cifs -o user=$USER,uid=`id -u $USER`,gid=`id -g $USER`,iocharset=utf8,file_mode=0644,dir_mode=0644,noperm \
          $SOURCE \
          $TARGET
 }

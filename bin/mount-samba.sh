@@ -9,7 +9,6 @@ fi
 
 SOURCE=$SMB_SOURCE
 TARGET=$SMB_TARGET
-USER=$USER
 
 start() {
     echo "mount $SOURCE -> $TARGET"

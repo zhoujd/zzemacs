@@ -111,3 +111,4 @@ alias bks='byobu kill-session -t'
 ## nano
 alias nano='nano -w'
 alias scrot='scrot ~/Pictures/screenshots/%b%d::%H%M%S.png'
+alias thunarpwd='thunar $PWD'

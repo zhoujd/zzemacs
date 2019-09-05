@@ -28,7 +28,7 @@ diff_extern() {
         DIFF_TOOL_2="p4merge $*"
         DIFF_TOOL_3="vim -d $*"
 
-        DIFF_SELECT=$DIFF_TOOL_1
+        DIFF_SELECT=$DIFF_TOOL_2
     fi
 
     $DIFF_SELECT

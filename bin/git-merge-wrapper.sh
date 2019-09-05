@@ -27,7 +27,7 @@ merge_extern() {
         MERGE_TOOL_2="p4merge $*"
         MERGE_TOOL_3="vimmerge $*"
 
-        MERGE_SELECT=$MERGE_TOOL_1
+        MERGE_SELECT=$MERGE_TOOL_2
     fi
 
     $MERGE_SELECT

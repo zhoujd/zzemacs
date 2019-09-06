@@ -5,8 +5,8 @@ rc_local_install() {
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          rc.local
-# Required-Start:    $all
-# Required-Stop:     $all
+# Required-Start:    \$all
+# Required-Stop:     \$all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Run /etc/rc.local if it exist
@@ -39,19 +39,19 @@ do_stop() {
     done
 }
 
-case "$1" in
+case "\$1" in
     start)
-	do_start
+    	do_start
         ;;
     restart|reload|force-reload)
-        echo "Error: argument '$1' not supported" >&2
+        echo "Error: argument '\$1' not supported" >&2
         exit 3
         ;;
     stop)
         do_stop
         ;;
     *)
-        echo "Usage: $0 start|stop" >&2
+        echo "Usage: \$0 {start|stop}" >&2
         exit 3
         ;;
 esac

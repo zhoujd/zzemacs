@@ -9,7 +9,7 @@ rc_zach_install() {
 # Required-Stop:     \$all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Run /etc/rc.local if it exist
+# Short-Description: Run /etc/rc.zach if it exist
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin

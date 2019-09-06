@@ -1,15 +1,15 @@
 #!/bin/sh
 
 rc_zach_install() {
-    sudo tee /etc/init.d/rc.zach <<EOF
+    sudo tee /etc/init.d/rc-zach <<EOF
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          rc.zach
+# Provides:          rc-zach
 # Required-Start:    \$all
 # Required-Stop:     \$all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Run /etc/rc.zach if it exist
+# Short-Description: Run /etc/rc-zach if it exist
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
@@ -56,14 +56,14 @@ case "\$1" in
         ;;
 esac
 EOF
-    sudo chmod +x /etc/init.d/rc.zach
-    sudo ln -sf /etc/init.d/rc.zach /etc/rc.local
+    sudo chmod +x /etc/init.d/rc-zach
+    sudo ln -sf /etc/init.d/rc-zach /etc/rc.local
     sudo mkdir -p /etc/rc.zach.d
 }
 
 rc_zach_uninstall() {
     sudo rm -rfv /etc/rc.zach.d
-    sudo rm -rfv /etc/rc.zach
+    sudo rm -rfv /etc/rc-zach
 }
 
 case $1 in

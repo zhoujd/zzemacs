@@ -22,7 +22,7 @@ do_start() {
     rm -f \$rc_local_log
     for i in /etc/rc.local.d/* ; do
         if [ -x "\$i" ]; then
-           "\$i start"
+           "\$i" start
            echo "\$(date) \$i $* [\$?]" >> \$rc_local_log
         fi
     done
@@ -33,7 +33,7 @@ do_stop() {
     rm -f \$rc_local_log
     for i in /etc/rc.local.d/* ; do
         if [ -x "\$i" ]; then
-           "\$i stop"
+           "\$i" stop
            echo "\$(date) \$i $* [\$?]" >> \$rc_local_log
         fi
     done

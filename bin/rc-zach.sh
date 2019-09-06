@@ -1,10 +1,10 @@
 #!/bin/sh
 
-rc_local_install() {
-    sudo tee /etc/rc.local <<EOF
+rc_zach_install() {
+    sudo tee /etc/init.d/rc.zach <<EOF
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          rc.local
+# Provides:          rc.zach
 # Required-Start:    \$all
 # Required-Stop:     \$all
 # Default-Start:     2 3 4 5
@@ -18,23 +18,23 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 . /lib/lsb/init-functions
 
 do_start() {
-    rc_local_log=/var/log/zz-rc.log
-    rm -f \$rc_local_log
-    for i in /etc/rc.local.d/* ; do
+    rc_zach_log=/var/log/zz-rc.log
+    rm -f \$rc_zach_log
+    for i in /etc/rc.zach.d/* ; do
         if [ -x "\$i" ]; then
            "\$i" start
-           echo "\$(date) \$i $* [\$?]" >> \$rc_local_log
+           echo "\$(date) \$i $* [\$?]" >> \$rc_zach_log
         fi
     done
 }
 
 do_stop() {
-    rc_local_log=/var/log/zz-rc.log
-    rm -f \$rc_local_log
-    for i in /etc/rc.local.d/* ; do
+    rc_zach_log=/var/log/zz-rc.log
+    rm -f \$rc_zach_log
+    for i in /etc/rc.zach.d/* ; do
         if [ -x "\$i" ]; then
            "\$i" stop
-           echo "\$(date) \$i $* [\$?]" >> \$rc_local_log
+           echo "\$(date) \$i $* [\$?]" >> \$rc_zach_log
         fi
     done
 }
@@ -56,21 +56,22 @@ case "\$1" in
         ;;
 esac
 EOF
-    sudo chmod +x /etc/rc.local
-    sudo mkdir -p /etc/rc.local.d
+    sudo chmod +x /etc/init.d/rc.zach
+    sudo ln -sf /etc/init.d/rc.zach /etc/rc.local
+    sudo mkdir -p /etc/rc.zach.d
 }
 
-rc_local_uninstall() {
-    sudo rm -rfv /etc/rc.local.d
-    sudo rm -rfv /etc/rc.local
+rc_zach_uninstall() {
+    sudo rm -rfv /etc/rc.zach.d
+    sudo rm -rfv /etc/rc.zach
 }
 
 case $1 in
     install )
-        rc_local_install
+        rc_zach_install
         ;;
     uninstall )
-        rc_local_uninstall
+        rc_zach_uninstall
         ;;
     * )
         echo "$(basename $0) {install|uninstall}"

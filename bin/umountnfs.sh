@@ -4,6 +4,12 @@
 #
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
+# Run with root
+if [ `whoami` != root ]; then
+    echo "You must be a root user" 2>&1
+    exit 0
+fi
+
 # Write a reboot record to /var/log/wtmp before unmounting
 halt -w
 

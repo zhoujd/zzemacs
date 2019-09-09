@@ -45,23 +45,32 @@
 ;;https://www.hiroom2.com/2016/10/31/emacs-auto-complete-clang-async-package
 (defvar zz:clang-async-p  t "flag for use clang async")
 (defun zz:ac-clang-init ()
-  (require 'auto-complete-clang)
-  (setq ac-clang-complete-executable "clang++")
-  (setq ac-clang-flags
-        (mapcar (lambda (item)
-                  (concat "-I" item))
-                (zz:get-include-dirs)))
-  (add-to-list 'ac-sources 'ac-source-clang))
+  (if (executable-find "clang++")
+      (progn
+        (require 'auto-complete-clang)
+        (setq ac-clang-complete-executable "clang++")
+        (setq ac-clang-flags
+              (mapcar (lambda (item)
+                        (concat "-I" item))
+                      (zz:get-include-dirs)))
+        (add-to-list 'ac-sources 'ac-source-clang))
+      (progn
+        (message "clang++ is not find"))))
+
 
 (defun zz:ac-clang-async-init ()
-  (require 'auto-complete-clang-async)
-  (setq ac-clang-complete-executable "clang-complete")
-  (setq ac-clang-flags
-        (mapcar (lambda (item)
-                  (concat "-I" item))
-                (zz:get-include-dirs)))
-  (add-to-list 'ac-sources 'ac-source-clang-async)
-  (ac-clang-launch-completion-process))
+  (if (executable-find "clang-complete")
+      (progn
+        (require 'auto-complete-clang-async)
+        (setq ac-clang-complete-executable "clang-complete")
+        (setq ac-clang-flags
+              (mapcar (lambda (item)
+                        (concat "-I" item))
+                      (zz:get-include-dirs)))
+        (add-to-list 'ac-sources 'ac-source-clang-async)
+        (ac-clang-launch-completion-process))
+      (progn
+        (message "clang-complete is not find"))))
 
 (if zz:clang-async-p
     (add-hook 'c-mode-common-hook 'zz:ac-clang-async-init)

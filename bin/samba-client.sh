@@ -6,12 +6,13 @@ if [ -z "$SMB_SOURCE" ] || [ -z "$SMB_TARGET" ] ; then
     echo "export SMB_TARGET="
     echo "export SMB_USER="
     echo "export SMB_PASSWD="
+    echo "export MNT_USER="
     exit 1
 fi
 
 start() {
     echo "mount $SMB_SOURCE -> $SMB_TARGET"
-    sudo mount -t cifs -o user=$SMB_USER,password=$SMB_PASSWD,uid=`id -u $SMB_USER`,gid=`id -g $SMB_USER`,iocharset=utf8,file_mode=0644,dir_mode=0644,noperm \
+    sudo mount -t cifs -o user=$SMB_USER,password=$SMB_PASSWD,uid=`id -u $MNT_USER`,gid=`id -g $MNT_USER`,iocharset=utf8,file_mode=0644,dir_mode=0644,noperm \
          $SMB_SOURCE \
          $SMB_TARGET
 }

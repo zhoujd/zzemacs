@@ -23,6 +23,7 @@ install_package_ubuntu() {
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
     sudo apt install -y cups-pdf
+    sudo apt install -y git-email
 }
 
 ##package for centos

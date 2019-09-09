@@ -20,21 +20,21 @@ echo "Unmounting remote filesystems..."
 # that given by /proc/mounts (otherwise it may not work).
 #
 unmount() {
-local dev mp type opts
-if read dev mp type opts
-then
-# recurse - unmount later items
-unmount
-# skip /, /proc and /dev
-case "$mp" in
-/|/proc)return 0;;
-/dev) return 0;;
-esac
-# then unmount this, if nfs
-case "$type" in
-nfs|smbfs|ncpfs|cifs) umount -f "$mp";;
-esac
-fi
+    local dev mp type opts
+    if read dev mp type opts
+    then
+        # recurse - unmount later items
+        unmount
+        # skip /, /proc and /dev
+        case "$mp" in
+            /|/proc)return 0;;
+            /dev) return 0;;
+        esac
+        # then unmount this, if nfs
+        case "$type" in
+            nfs|smbfs|ncpfs|cifs) umount -f "$mp";;
+        esac
+    fi
 }
 
 unmount </proc/mounts

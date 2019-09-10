@@ -1,0 +1,13 @@
+#!/bin/sh
+
+### https://www.linuxtechi.com/rsync-command-examples-linux/
+## Local Sync: # rsync {options} {Source} {Destination}
+## Remote Sync pull: # rsync {options} <User_Name>@<Remote-Host>:<Source-Files-Dir> <Destination>
+## Remote Sync Push: # rsync {options} <Source-Files-Dir> <User_Name>@<Remote-Host>:<Destination>
+
+if [ $# != 2 ] ; then
+    echo "Usage: `basename $0` <source> <target>"
+    exit 1
+fi
+
+rsync -vaa --info=all4 --delete $1 $2

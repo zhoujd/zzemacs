@@ -24,15 +24,15 @@ install_fonts() {
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
-            FONT_TARGET=/usr/share/fonts
+            FONT_TARGET=/usr/share/fonts/zach
             sudo mkdir -p $FONT_TARGET
-            sudo ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+            sudo ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET
             sudo fc-cache -f
             ;;
         "user" )
-            FONT_TARGET=~/.fonts
+            FONT_TARGET=~/.fonts/zach
             mkdir -p $FONT_TARGET
-            ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+            ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET
             fc-cache -f
             ;;
         * )

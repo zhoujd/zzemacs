@@ -24,23 +24,15 @@ install_fonts() {
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
-            FONT_TARGET=/usr/share/fonts/truetype
+            FONT_TARGET=/usr/share/fonts
             sudo mkdir -p $FONT_TARGET
-
-            sudo ln -sf ${ZZEMACS_ROOT}/font/consola       $FONT_TARGET
-            sudo ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
-            sudo ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
-
+            sudo ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
             sudo fc-cache -f
             ;;
         "user" )
-            FONT_TARGET=~/.fonts/truetype
+            FONT_TARGET=~/.fonts
             mkdir -p $FONT_TARGET
-
-            ln -sf ${ZZEMACS_ROOT}/font/consola       $FONT_TARGET
-            ln -sf ${ZZEMACS_ROOT}/font/AnonymousPro  $FONT_TARGET
-            ln -sf ${ZZEMACS_ROOT}/font/MSYHMONO      $FONT_TARGET
-
+            ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
             fc-cache -f
             ;;
         * )

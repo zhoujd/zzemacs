@@ -268,9 +268,11 @@ Linux something
         # id jerry
         # ls -ld /home/jerry
         
-    How to change user tom UID from 5001 to 10000
+    How to change user tom UID/GID from 5001 to 10000
         # id tom
         # usermod -u 10000 tom
+        # id tom
+        # groupmod -g 10000 tom
         # id tom
 
     Blueman: configured directory for incoming file does not exist

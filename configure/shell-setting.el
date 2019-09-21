@@ -17,7 +17,7 @@
  '(comint-completion-autolist t)        ; show completion list when ambiguous
  '(comint-input-ignoredups t)           ; no duplicates in command history
  '(comint-completion-addsuffix t)       ; insert space/slash after file completion
- '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command
+ '(comint-prompt-read-only t)           ; if this is t, it breaks shell-command
  )
 
 (set-face-foreground 'minibuffer-prompt       "green")

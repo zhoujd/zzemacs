@@ -51,6 +51,7 @@
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
                         "SF Mono 13"
+                        "SF Mono 23"
                         "Consolas 14"
                         "Consolas 24"
                         "Anonymous Pro 14"
@@ -95,7 +96,7 @@
   (interactive)
   (if-ms-windows
    (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))
-   (zz:frame-font (nth 2 zz:en-font-list) (nth 2 zz:cn-font-list))))
+   (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))))
 
 ;;console font setting
 (if window-system

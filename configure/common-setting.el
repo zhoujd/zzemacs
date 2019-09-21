@@ -44,6 +44,9 @@
   ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz:set-language-chinese))
   (t (zz:set-language-utf-8)))
 
+;; -*- Input method -*-
+(setq default-input-method "chinese-py")
+
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;M-x menu-set-font

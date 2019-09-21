@@ -36,6 +36,7 @@
   (interactive)
   (set-language-environment 'utf-8)
   (set-buffer-file-coding-system 'utf-8)
+  (setq default-input-method "chinese-py")
   (message "This is for utf-8"))
 
 ;; -*- Language switch -*-
@@ -43,9 +44,6 @@
   ;;((string-match "j[ap].*" (getenv "LANG")) (zz:set-language-japanese))
   ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz:set-language-chinese))
   (t (zz:set-language-utf-8)))
-
-;; -*- Input method -*-
-(setq default-input-method "chinese-py")
 
 ;;font setting
 ;;tools: xlsfonts or xfontsel

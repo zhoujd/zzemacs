@@ -50,14 +50,14 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
-                        "SF Mono 12"
+                        "SF Mono 13"
                         "Consolas 14"
                         "Consolas 24"
                         "Anonymous Pro 14"
                         "Anonymous Pro 24"
                         ))
 (setq zz:cn-font-list '(
-                        "Microsoft YaHei Mono 12"
+                        "Microsoft YaHei Mono 13"
                         "Microsoft YaHei Mono 14"
                         "Microsoft YaHei Mono 24"
                         ))

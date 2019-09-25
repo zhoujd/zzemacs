@@ -110,3 +110,7 @@ Ubuntu setting
         $ sudo snap install foolbar2000
         
  
+11. Install Microsoft fonts
+
+        $ sudo apt install ttf-mscorefonts-installer
+

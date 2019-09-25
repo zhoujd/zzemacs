@@ -87,4 +87,5 @@ network
 
         $ nano /etc/cloud/cloud.cfg
         # This will cause the set+update hostname module to not operate (if true)
+        # For change the hostname, from "false" to "true"
         preserve_hostname: true

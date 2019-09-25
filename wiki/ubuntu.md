@@ -114,3 +114,7 @@ Ubuntu setting
 
         $ sudo apt install ttf-mscorefonts-installer
 
+12. Install microcode
+
+        $ sudo apt install intel-microcode
+        $ sudo apt install amd64-microcode

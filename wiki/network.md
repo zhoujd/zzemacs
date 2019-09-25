@@ -82,3 +82,9 @@ network
 
         $ sudo dhclient -v -r eth0
         $ sudo dhclient -v eth0
+
+6. Change hostname on Ubuntu server
+
+        $ nano /etc/cloud/cloud.cfg
+        # This will cause the set+update hostname module to not operate (if true)
+        preserve_hostname: true

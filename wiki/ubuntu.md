@@ -8,12 +8,14 @@ Ubuntu setting
         Reboot
 
 2. Firewall
+        
+        $ sudo apt install gufw
 
-        telnet 192.168.1.103 80
-        sudo ufw status
-        sudo ufw allow 80
-        sudo ufw enable
-        sudo ufw reload
+        $ telnet 192.168.1.103 80
+        $ sudo ufw status
+        $ sudo ufw allow 80
+        $ sudo ufw enable
+        $ sudo ufw reload
 
 3. Could not get lock /var/lib/dpkg/lock
 

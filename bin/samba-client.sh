@@ -12,9 +12,12 @@ fi
 
 start() {
     echo "mount $SMB_SOURCE -> $SMB_TARGET"
-    sudo mount -t cifs -o user=$SMB_USER,password=$SMB_PASSWD,uid=`id -u $MNT_USER`,gid=`id -g $MNT_USER`,iocharset=utf8,file_mode=0644,dir_mode=0644,noperm \
-         $SMB_SOURCE \
-         $SMB_TARGET
+    MNT_UID=$(id -u $MNT_USER)
+    MNT_GID=$(id -g $MNT_USER)
+    sudo mount -t cifs \
+               -o user=$SMB_USER,password=$SMB_PASSWD,uid=$MNT_UID,gid=$MNT_UID,iocharset=utf8,file_mode=0644,dir_mode=0644,noperm \
+               $SMB_SOURCE \
+               $SMB_TARGET
 }
 
 stop() {

@@ -120,3 +120,8 @@ Ubuntu setting
 
         $ sudo apt install intel-microcode
         $ sudo apt install amd64-microcode
+
+13. Xfce auto run
+
+        $ ls /etc/xdg/autostart/
+        $ ls ~/.config/autostart/

@@ -1,3 +1,9 @@
 #!/bin/bash
 
-git ls-remote origin | grep merge
+if [ $# != 1 ]; then
+    echo "git lmr <remote-url>"
+    echo "git lmr origin"
+    exit 1;
+fi
+
+git ls-remote $1 | grep merge

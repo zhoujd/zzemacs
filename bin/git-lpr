@@ -1,3 +1,9 @@
 #!/bin/bash
 
-git ls-remote origin | grep pull
+if [ $# != 1 ]; then
+    echo "git lpr <remote-url>"
+    echo "git lpr origin"
+    exit 1;
+fi
+
+git ls-remote $1 | grep pull

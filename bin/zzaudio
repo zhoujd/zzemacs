@@ -2,6 +2,9 @@
 
 echo "please unplugin headphone first."
 echo "reload audio force"
-pulseaudio --kill
+
+pulseaudio -k
+sudo alsa force-reload
 pulseaudio --start
+
 echo "reset audio end"

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo "please unplugin headphone first."
-echo "reload audio force"
+echo "reset audio start"
 
 pulseaudio -k
 sudo alsa force-reload

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "please replug in the headset if it connecting"
 echo "reset audio start"
 
 pulseaudio -k

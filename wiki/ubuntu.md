@@ -125,3 +125,16 @@ Ubuntu setting
 
         $ ls /etc/xdg/autostart/
         $ ls ~/.config/autostart/
+
+14. How To Delete A Repository And GPG Key In Ubuntu
+
+        ## Delete A Repository In Ubuntu
+        $ sudo nano /etc/apt/sources.list
+        $ sudo add-apt-repository -r ppa:nemh/systemback
+        $ sudo apt update
+        
+        ## Delete Repository keys
+        $ sudo apt-key list
+        $ sudo apt-key del "3820 03C2 C8B7 B4AB 813E 915B 14E4 9429 73C6 2A1B"
+        $ sudo apt-key del 73C62A1B    # specify the last 8 characters only
+        $ sudo apt update

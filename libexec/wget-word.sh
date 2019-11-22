@@ -3,16 +3,7 @@
 ### https://www.techvigil.com/tips-tricks/347/mp3-pronunciation-files
 
 if [ $# != 1 ] ; then
-    echo "Usage: `basename $0` [logfile]"
-    cat <<EOF
-## Example file
-$ cat logfile
-Welcome
-to
-thegeekstuff
-Linux
-Unix
-EOF
+    echo "Usage: `basename $0` [word]"
     exit 1
 fi
 
@@ -46,13 +37,6 @@ syllable() {
     WORD_URL="$url_base/${word}${url_sf}.${AUDIO_EXT}"
 }
 
-WORDBANK=(`cat $1 | tr -d '\\r' | sed 's/\ //g'`)
-
-for t in "${WORDBANK[@]}"
-do
-    if [ "${t:0:1}" != "#" ] && [ -n $t  ] ; then
-        syllable ${t}
-        echo "Download $WORD_URL"
-        wget -O ${t}.${AUDIO_EXT} $WORD_URL
-    fi
-done
+echo "Download $WORD_URL"
+oxford_us ${1}
+wget -O ${1}.${AUDIO_EXT} $WORD_URL

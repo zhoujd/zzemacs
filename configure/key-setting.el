@@ -40,6 +40,7 @@
   (kbd "RET")     'sudo-edit-current-file
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
+  (kbd "TAB")     'zz:insert-file-name
   ))
 
 (apply-keys-to-map

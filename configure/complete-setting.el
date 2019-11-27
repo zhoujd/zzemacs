@@ -49,8 +49,8 @@
 
 ;; bind it
 (defkeys-map global-map
-  ((kbd "C-z /") 'zz:insert-file-name)
-  ((kbd "C-M-/") 'zz:expand-file-name-at-point))
+  ((kbd "C-c C-i") 'zz:insert-file-name)
+  ((kbd "C-M-/")   'zz:expand-file-name-at-point))
 
 (defun zz:indent-or-complete ()
    "complete if point is at end of a word, otherwise indent line"

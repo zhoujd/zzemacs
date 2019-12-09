@@ -20,7 +20,7 @@ xrandr --delmode $INF "$MODE"
 ## delete the mode
 xrandr --rmmode "$MODE"
 
-## create the mode, you need to compute the actual mode line using the `gtf`
+## create the mode, you need to compute the actual mode line using the gtf`or cvt
 ## program which computes VESA GTF mode lines from size and refresh rates
 gtf $X $Y $R | grep Modeline | sed 's/ *Modeline *//' | xargs xrandr --newmode
 

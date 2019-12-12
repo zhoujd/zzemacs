@@ -24,6 +24,9 @@ install_package_ubuntu() {
     sudo apt install -y connect-proxy
     sudo apt install -y cups-pdf
     sudo apt install -y git-email
+    sudo apt install -y meld
+    sudo apt install -y evolution-ews
+    sudo apt install -y dos2unix
 }
 
 ##package for centos

@@ -35,7 +35,6 @@
 (setq monky-process-type 'cmdserver)
 
 ;;magit
-(zz-load-path "site-lisp/git-modes")
 (zz-load-path "site-lisp/magit/lisp")
 (require 'magit)
 

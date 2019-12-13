@@ -36,7 +36,7 @@
 
 ;;magit
 (zz-load-path "site-lisp/git-modes")
-(zz-load-path "site-lisp/magit")
+(zz-load-path "site-lisp/magit/lisp")
 (require 'magit)
 
 ;;git show

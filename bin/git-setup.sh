@@ -53,7 +53,7 @@ git config --global core.editor    $SCRIPT_ROOT/git-editor.sh
 
 ## setup git configure
 git config --global user.name   "Zachary Zhou"
-git config --global user.email  "zachary.zhou@hotmail.com"
+git config --global user.email  "zchrzhou@gmail.com"
 
 ## output color
 git config --global color.ui    "true"

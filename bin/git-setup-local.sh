@@ -16,7 +16,7 @@ git config core.editor    $SCRIPT_ROOT/git-editor.sh
 
 ## setup git configure
 git config user.name   "Zachary Zhou"
-git config user.email  "zachary.zhou@hotmail.com"
+git config user.email  "zchrzhou@gmail.com"
 git config color.ui    "true"
 
 ## alias

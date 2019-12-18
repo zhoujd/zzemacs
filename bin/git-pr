@@ -7,4 +7,4 @@ if [ $# != 2 ]; then
 fi
 
 git fetch $1 pull/$2/head:pr-$2
-git checkout pr-$1-$2
+git checkout pr-$2

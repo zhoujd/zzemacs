@@ -52,6 +52,7 @@ git config alias.last  "log -1 HEAD"
 git config alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
 git config alias.hlog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -10"
 git config alias.rb    "rebase"
+git config alias.addp  "add -p"
 
 ## git difftool setting
 git config diff.tool extdiff

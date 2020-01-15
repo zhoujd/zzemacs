@@ -1,5 +1,0 @@
-repo: 7b04fb13f231d4861a807398299b78e2ed071e65
-node: 91d0e7b0e5ae546282ddc7cab713b0dd36d03abd
-branch: trunk
-latesttag: 0.2
-latesttagdistance: 2

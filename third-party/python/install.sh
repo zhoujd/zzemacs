@@ -12,35 +12,20 @@ CURRENT_ROOT=`pwd`
 
 echo "for python develop start ..."
 
-echo "==>1 install pymacs"
-cd $CURRENT_ROOT/pymacs
-python pppp -C ppppconfig.py pppp.rst.in pymacs.el.in pymacs.rst.in Pymacs.py.in contrib tests
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
+# virtualenv
+pip install virtualenv epc
 
-echo "==>2 install rope"
-cd $CURRENT_ROOT/rope
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
+# Either of these
+pip install rope
+pip install jedi
+# flake8 for code checks
+pip install flake8
+# importmagic for automatic imports
+pip install importmagic
+# and autopep8 for automatic PEP8 formatting
+pip install autopep8
+# and yapf for code formatting
+pip install yapf
 
-echo "==>3 install ropemode"
-cd $CURRENT_ROOT/ropemode
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
-
-echo "==>4 install ropemacs"
-cd $CURRENT_ROOT/ropemacs
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
-
-echo "==>5 install pyreadline"
-cd $CURRENT_ROOT/pyreadline
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
-
-echo "==>6 install pycomplete"
-cd $CURRENT_ROOT/pycomplete
-python setup.py install --record setup.log
-cd $CURRENT_ROOT
 
 echo "for python develop end ..."

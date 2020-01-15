@@ -9,32 +9,21 @@ set CURRENT_ROOT=%CD%
 
 echo for python develop start ...
 
-cd %CURRENT_ROOT%\pymacs
-python pppp -C ppppconfig.py pppp.rst.in pymacs.el.in pymacs.rst.in Pymacs.py.in contrib tests
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
+# virtualenv
+python -m pip install virtualenv epc
 
-cd %CURRENT_ROOT%\rope
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
+# Either of these
+python -m pip install rope
+python -m pip install jedi
+# flake8 for code checks
+python -m pip install flake8
+# importmagic for automatic imports
+python -m pip install importmagic
+# and autopep8 for automatic PEP8 formatting
+python -m pip install autopep8
+# and yapf for code formatting
+python -m pip install yapf
 
-cd %CURRENT_ROOT%\ropemode
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
-
-cd %CURRENT_ROOT%\ropemacs
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
-
-cd %CURRENT_ROOT%\pyreadline
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
-
-rem not support pydb use pdb instead
-
-cd %CURRENT_ROOT%\pycomplete
-python setup.py install --record setup.log
-cd %CURRENT_ROOT%
 
 echo for python develop end   ...
 set CURRENT_ROOT=

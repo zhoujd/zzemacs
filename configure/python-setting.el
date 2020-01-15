@@ -38,6 +38,10 @@
 (setq py-python-command "python3")
 (setq python-shell-interpreter "python3")
 
+;;remove warning: "Can't guess python-indent-offset"
+(setq  python-indent-guess-indent-offset-verbose nil)
+
+
 (provide 'python-setting)
 
 ;;; python-setting.el end here

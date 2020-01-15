@@ -407,6 +407,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (require 'eterm-256color)
 (add-hook 'term-mode-hook #'eterm-256color-mode)
 
+;;shell-mode use company-mode
+(add-hook 'shell-mode-hook 'company-mode)
+
 
 (provide 'shell-setting)
 

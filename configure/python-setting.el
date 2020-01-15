@@ -37,6 +37,7 @@
 
 (setq py-python-command "python3")
 (setq python-shell-interpreter "python3")
+(setq elpy-rpc-python-command "python3")
 
 ;;remove warning: "Can't guess python-indent-offset"
 (setq  python-indent-guess-indent-offset-verbose nil)

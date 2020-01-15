@@ -4,7 +4,6 @@
 ;;company-mode <ctrl+tab> to open complete menu
 (zz-load-path "site-lisp/company-mode")
 (require 'company)
-(global-company-mode t)
 (setq company-idle-delay 0) ;; nil for not auto popup
 (setq company-show-numbers t)
 (setq company-minimum-prefix-length 1)

@@ -15,9 +15,7 @@
   ((kbd "TAB") 'company-complete-selection))
 
 (defkeys-map global-map
-  ([(control tab)] 'company-complete)
-  ([tab]           'company-complete-common))
-
+  ([(control tab)] 'company-complete))
 
 (require 'color)
 (let ((bg (face-attribute 'default :background)))

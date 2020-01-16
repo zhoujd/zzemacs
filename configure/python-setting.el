@@ -22,6 +22,7 @@
 (zz-load-path "site-lisp/jedi-core")
 (require 'company-jedi)
 (add-to-list 'company-backends 'company-jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
 
 ;;remove warning
 (setq python-shell-completion-native-enable nil)

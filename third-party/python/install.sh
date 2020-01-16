@@ -1,46 +1,23 @@
-#!/bin/sh
+#!/bin/bash
+
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 ##http://www.python.org/
 ##http://www.ipython.org/
 ##http://archive.ipython.org/release/
 ##https://pypi.python.org/pypi/pyreadline
 
-CURRENT_ROOT=`pwd`
+PIP_PAR="--timeout 60"
 
-echo "for python develop start ..."
+echo "For python develop start ..."
 
 py2_deps() {
-    # virtualenv
-    pip install virtualenv
-    pip install epc
-    # Either of these
-    pip install rope
-    pip install jedi
-    # flake8 for code checks
-    pip install flake8
-    # importmagic for automatic imports
-    pip install importmagic
-    # and autopep8 for automatic PEP8 formatting
-    pip install autopep8
-    # and yapf for code formatting
-    pip install yapf
+    pip install $PIP_PAR -r $SCRIPT_ROOT/py2.txt
 }
 
 py3_deps() {
-    # virtualenv
-    pip3 install virtualenv
-    pip3 install epc
-    # Either of these
-    pip3 install rope
-    pip3 install jedi
-    # flake8 for code checks
-    pip3 install flake8
-    # importmagic for automatic imports
-    pip3 install importmagic
-    # and autopep8 for automatic PEP8 formatting
-    pip3 install autopep8
-    # and yapf for code formatting
-    pip3 install yapf
+    sudo apt install -y python3-venv
+    pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 
 case $1 in
@@ -52,4 +29,4 @@ case $1 in
         ;;
 esac
 
-echo "for python develop end ..."
+echo "For python develop end ..."

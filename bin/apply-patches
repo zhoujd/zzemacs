@@ -8,20 +8,20 @@ import sys
 import glob
 
 if len(sys.argv) < 2:
-    print "Using example: %s <patches folder>" % sys.argv[0]
-    sys.exit(1)
+  print "Using example: %s <patches folder>" % sys.argv[0]
+  sys.exit(1)
 
 patchdir = sys.argv[1]
 patchext = "patch"
 
 
 def main():
-    patches = sorted(glob.glob("{}/*.{}".format(patchdir, patchext)))
+  patches = sorted(glob.glob("{}/*.{}".format(patchdir, patchext)))
     for f in patches:
-        cmd = "patch -p1 < {}".format(f)
-        print(cmd)
-        os.system(cmd)
+      cmd = "patch -p1 < {}".format(f)
+      print(cmd)
+      os.system(cmd)
 
 
 if __name__ == '__main__':
-    main()
+  main()

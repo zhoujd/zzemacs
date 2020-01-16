@@ -26,6 +26,8 @@
 
 ;;remove warning
 (setq python-shell-completion-native-enable nil)
+;;remove warning: "Can't guess python-indent-offset"
+(setq python-indent-guess-indent-offset-verbose nil)
 
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python -i -m pdb <file-name.py>
@@ -36,12 +38,15 @@
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
 
+;;python3
 (setq py-python-command "python3")
 (setq python-shell-interpreter "python3")
 (setq elpy-rpc-python-command "python3")
 
-;;remove warning: "Can't guess python-indent-offset"
-(setq  python-indent-guess-indent-offset-verbose nil)
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq python-indent 2)
+            ))
 
 
 (provide 'python-setting)

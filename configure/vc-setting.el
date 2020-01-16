@@ -37,6 +37,9 @@
 ;;magit
 (zz-load-path "site-lisp/magit/lisp")
 (require 'magit)
+(defkeys-map global-map
+  ((kbd "M-g M-s") 'magit-status)
+  ((kbd "M-g M-c") 'magit-checkout))
 
 ;;git show
 (require 'git-show)

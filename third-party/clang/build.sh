@@ -9,6 +9,7 @@ echo "install clang-complete start ..."
 
 case "$OS_DISTRO" in
     "Ubuntu" | "LinuxMint" )
+        sudo apt install -y clang
         sudo apt install -y llvm-dev libclang-dev
         ;;
     "Arch" | "Manjaro" )

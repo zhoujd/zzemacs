@@ -42,12 +42,13 @@
      (format "%s/bin" (getenv "EMACS_DIR"))
      (format "%s/bin" zzemacs-path)
      (format "%s/libexec" zzemacs-path)
-     "C:/aspell/bin"
      "C:/strawberry/perl/bin"
      "C:/strawberry/c/bin"
      "C:/lisp/ecl"
      "C:/lisp/SBCL"
      "C:/lisp/clisp"
+     "C:/Git/bin"
+     "C:/Git/usr/bin"
      ))
    (progn
     (list

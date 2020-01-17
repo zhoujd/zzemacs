@@ -95,8 +95,12 @@
 ;;perl mode
 ;;Ubuntu: sudo apt install plsense
 (require 'company-plsense)
-(company-plsense-setup)
-(company-plsense-restart-server)
+(if (executable-find "plsense")
+    (progn
+      (company-plsense-setup)
+      (company-plsense-restart-server))
+    (progn
+      (message "cannot find plsense for company-plsense")))
 
 
 (provide 'perl-setting)

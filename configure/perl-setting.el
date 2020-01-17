@@ -100,7 +100,7 @@
       (company-plsense-setup)
       (company-plsense-restart-server))
     (progn
-      (message "cannot find plsense for company-plsense")))
+      (message "warning: cannot find plsense for company-plsense")))
 
 
 (provide 'perl-setting)

@@ -27,7 +27,6 @@
         env-setting
         cedet-setting
         complete-setting
-        ac-setting
         company-setting
         prog-setting
         helm-setting

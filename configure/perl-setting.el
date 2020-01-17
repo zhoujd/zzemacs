@@ -92,11 +92,6 @@
              (cperl-set-style "MYPerlStyle")))
 
 
-;;plsense
-(require 'plsense)
-(plsense-config-default)
-
-
 (provide 'perl-setting)
 
 ;;;; perl-setting.el end here

@@ -1,9 +1,11 @@
 ;;;; company-setting.el --- company mode file
 ;;https://www.emacswiki.org/emacs/CompanyMode#toc1
+;;https://melpa.org/#/company
 
 ;;company-mode <ctrl+tab> to open complete menu
 (zz-load-path "site-lisp/company-mode")
 (require 'company)
+(global-company-mode t)
 (setq company-idle-delay 0) ;; nil for not auto popup
 (setq company-show-numbers t)
 (setq company-minimum-prefix-length 1)
@@ -25,6 +27,9 @@
   `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
+
+;;perl mode
+(require 'company-plsense)
 
 
 (provide 'company-setting)

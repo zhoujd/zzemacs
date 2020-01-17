@@ -99,18 +99,6 @@
 ;              ((kbd "TAB")       'lisp-indent-adjust-parens)
 ;              ((kbd "<backtab>") 'lisp-dedent-adjust-parens))))
 
-;;slime with auto-complete
-(defvar zz:slime-ac-flag t "flag for slime with auto complete cowork")
-(when zz:slime-ac-flag
-  (require 'ac-slime)
-  (add-hook 'slime-mode-hook 'set-up-slime-ac)
-  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-  (eval-after-load "auto-complete"
-                   '(progn
-                     (add-to-list 'ac-modes 'slime-repl-mode)
-                     (add-to-list 'ac-modes 'slime-mode)
-                     )))
-
 ;;sawfish mode settings
 (require 'sawfish)
 (add-to-list 'auto-mode-alist '(".*sawfishrc\\'" . sawfish-mode ))

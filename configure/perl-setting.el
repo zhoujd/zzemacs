@@ -93,6 +93,7 @@
 
 
 ;;perl mode
+;;Ubuntu: sudo apt install plsense
 (require 'company-plsense)
 (company-plsense-setup)
 (company-plsense-restart-server)

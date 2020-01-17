@@ -410,6 +410,9 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;shell-mode use company-mode
 (add-hook 'shell-mode-hook 'company-mode)
 
+;;shell mode
+(require 'company-shell)
+
 
 (provide 'shell-setting)
 

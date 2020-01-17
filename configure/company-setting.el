@@ -10,15 +10,7 @@
 (setq company-show-numbers t)
 (setq company-minimum-prefix-length 1)
 
-(defkeys-map company-active-map
-  ([return]    nil)
-  ((kbd "RET") nil)
-  ([tab]       'company-complete-selection)
-  ((kbd "TAB") 'company-complete-selection))
-
-(defkeys-map global-map
-  ([(control tab)] 'company-complete))
-
+;;menu color
 (require 'color)
 (let ((bg (face-attribute 'default :background)))
  (custom-set-faces
@@ -28,8 +20,15 @@
   `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
   `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
 
-;;perl mode
-(require 'company-plsense)
+;;keys
+(defkeys-map company-active-map
+  ([return]    nil)
+  ((kbd "RET") nil)
+  ([tab]       'company-complete-selection)
+  ((kbd "TAB") 'company-complete-selection))
+
+(defkeys-map global-map
+  ([(control tab)] 'company-complete))
 
 
 (provide 'company-setting)

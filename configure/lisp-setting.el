@@ -63,6 +63,7 @@
                slime-fancy
                slime-repl
                slime-autodoc
+               slime-company
                ))
 (fset 'run-lisp 'slime)
 

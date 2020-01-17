@@ -120,6 +120,10 @@
         ((string= major-mode "c++-mode")
          (c-mode))))
 
+;;c headers
+(require 'company-c-headers)
+(add-to-list 'company-backends 'company-c-headers)
+
 
 (provide 'c-setting)
 

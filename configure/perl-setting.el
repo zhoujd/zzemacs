@@ -97,7 +97,6 @@
 (require 'company-plsense)
 (company-plsense-setup)
 (company-plsense-restart-server)
-(add-to-list 'company-backends 'company-plsense)
 
 
 (provide 'perl-setting)

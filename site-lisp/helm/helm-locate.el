@@ -1,6 +1,6 @@
 ;;; helm-locate.el --- helm interface for locate. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -127,37 +127,11 @@ help for more infos."
   :group 'helm-files)
 
 
-(defvar helm-generic-files-map
+(defvar helm-locate-map
   (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-]")     'helm-ff-run-toggle-basename)
-    (define-key map (kbd "C-s")     'helm-ff-run-grep)
-    (define-key map (kbd "M-g s")   'helm-ff-run-grep)
-    (define-key map (kbd "M-g z")   'helm-ff-run-zgrep)
-    (define-key map (kbd "M-g p")   'helm-ff-run-pdfgrep)
-    (define-key map (kbd "C-c g")   'helm-ff-run-gid)
-    (define-key map (kbd "M-R")     'helm-ff-run-rename-file)
-    (define-key map (kbd "M-C")     'helm-ff-run-copy-file)
-    (define-key map (kbd "M-B")     'helm-ff-run-byte-compile-file)
-    (define-key map (kbd "M-L")     'helm-ff-run-load-file)
-    (define-key map (kbd "M-S")     'helm-ff-run-symlink-file)
-    (define-key map (kbd "M-H")     'helm-ff-run-hardlink-file)
-    (define-key map (kbd "M-D")     'helm-ff-run-delete-file)
-    (define-key map (kbd "C-=")     'helm-ff-run-ediff-file)
-    (define-key map (kbd "C-c =")   'helm-ff-run-ediff-merge-file)
-    (define-key map (kbd "C-c o")   'helm-ff-run-switch-other-window)
-    (define-key map (kbd "C-c r")   'helm-ff-run-find-file-as-root)
-    (define-key map (kbd "C-c C-o") 'helm-ff-run-switch-other-frame)
-    (define-key map (kbd "M-i")     'helm-ff-properties-persistent)
-    (define-key map (kbd "C-c C-x") 'helm-ff-run-open-file-externally)
-    (define-key map (kbd "C-c X")   'helm-ff-run-open-file-with-default-tool)
-    (define-key map (kbd "M-.")     'helm-ff-run-etags)
-    (define-key map (kbd "C-c @")   'helm-ff-run-insert-org-link)
-    (define-key map (kbd "C-x C-q") 'helm-ff-run-marked-files-in-dired)
-    (define-key map (kbd "C-c C-a") 'helm-ff-run-mail-attach-files)
-    map)
-  "Generic Keymap for files.")
-
+    (set-keymap-parent map helm-generic-files-map)
+    (define-key map (kbd "DEL") 'helm-delete-backward-no-update)
+    map))
 
 (defface helm-locate-finish
     '((t (:foreground "Green")))
@@ -288,6 +262,21 @@ See also `helm-locate'."
           :default default
           :history 'helm-file-name-history)))
 
+(defun helm-locate-update-mode-line (process-name)
+  "Update mode-line with PROCESS-NAME status information."
+  (with-helm-window
+    (setq mode-line-format
+          `(" " mode-line-buffer-identification " "
+            (:eval (format "L%s" (helm-candidate-number-at-point))) " "
+            (:eval (propertize
+                    (format "[%s process finished - (%s results)]"
+                            (max (1- (count-lines
+                                      (point-min) (point-max)))
+                                 0)
+                            ,process-name)
+                    'face 'helm-locate-finish))))
+    (force-mode-line-update)))
+
 (defun helm-locate-init ()
   "Initialize async locate process for `helm-source-locate'."
   (let* ((locate-is-es (string-match "\\`es" helm-locate-command))
@@ -305,12 +294,14 @@ See also `helm-locate'."
                         (t (if helm-locate-case-fold-search
                                ignore-case-flag
                                case-sensitive-flag)))
-                      (concat
-                       ;; The pattern itself.
-                       (shell-quote-argument (car args)) " "
-                       ;; Possible locate args added
-                       ;; after pattern, don't quote them.
-                       (mapconcat 'identity (cdr args) " "))))
+                      (helm-aif (cdr args)
+                          (concat
+                           ;; The pattern itself.
+                           (shell-quote-argument (car args)) " "
+                           ;; Possible locate args added
+                           ;; after pattern, don't quote them.
+                           (mapconcat 'identity it " "))
+                        (shell-quote-argument (car args)))))
          (default-directory (if (file-directory-p default-directory)
                                 default-directory "/")))
     (helm-log "Starting helm-locate process")
@@ -335,17 +326,7 @@ See also `helm-locate'."
                   (when (and helm-locate-fuzzy-match
                              (not (string-match-p "\\s-" helm-pattern)))
                     (helm-redisplay-buffer))
-                  (with-helm-window
-                    (setq mode-line-format
-                          '(" " mode-line-buffer-identification " "
-                            (:eval (format "L%s" (helm-candidate-number-at-point))) " "
-                            (:eval (propertize
-                                    (format "[Locate process finished - (%s results)]"
-                                            (max (1- (count-lines
-                                                      (point-min) (point-max)))
-                                                 0))
-                                    'face 'helm-locate-finish))))
-                    (force-mode-line-update)))
+                  (helm-locate-update-mode-line "Locate"))
                  (t
                   (helm-log "Error: Locate %s"
                             (replace-regexp-in-string "\n" "" event))))))))))
@@ -355,7 +336,9 @@ See also `helm-locate'."
 Sort is done on basename of CANDIDATES."
   (helm-fuzzy-matching-default-sort-fn-1 candidates nil t))
 
-(defclass helm-locate-source (helm-source-async helm-type-file)
+(defclass helm-locate-override-inheritor (helm-type-file) ())
+
+(defclass helm-locate-source (helm-source-async helm-locate-override-inheritor)
   ((init :initform 'helm-locate-initial-setup)
    (candidates-process :initform 'helm-locate-init)
    (requires-pattern :initform 3)
@@ -364,6 +347,10 @@ Sort is done on basename of CANDIDATES."
    (candidate-number-limit :initform 9999)
    (redisplay :initform (progn helm-locate-fuzzy-sort-fn))
    (group :initform 'helm-locate)))
+
+;; Override helm-type-file class keymap.
+(defmethod helm--setup-source :after ((source helm-locate-override-inheritor))
+  (setf (slot-value source 'keymap) helm-locate-map))
 
 (defvar helm-source-locate
   (helm-make-source "Locate" 'helm-locate-source

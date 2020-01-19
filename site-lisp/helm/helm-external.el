@@ -1,6 +1,6 @@
 ;;; helm-external.el --- Run Externals commands within Emacs with helm completion. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
 
 (defgroup helm-external nil
-  "External related Applications and libraries for Helm." 
+  "External related Applications and libraries for Helm."
   :group 'helm)
 
 (defcustom helm-raise-command nil

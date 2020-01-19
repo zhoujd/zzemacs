@@ -1,7 +1,7 @@
 ;;; helm-semantic.el --- Helm interface for Semantic -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2012 ~ 2017 Daniel Hackney <dan@haxney.org>
-;;               2012 ~ 2018  Thierry Volpiatto<thierry.volpiatto@gmail.com>
+;;               2012 ~ 2019  Thierry Volpiatto<thierry.volpiatto@gmail.com>
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 
@@ -35,11 +35,6 @@
   "Semantic tags related libraries and applications for helm."
   :group 'helm)
 
-(defcustom helm-semantic-lynx-style-map t
-  "Use Arrow keys to jump to occurences."
-  :group 'helm-semantic
-  :type  'boolean)
-
 (defcustom helm-semantic-display-style
   '((python-mode . semantic-format-tag-summarize)
     (c-mode . semantic-format-tag-concise-prototype-c-mode)
@@ -64,10 +59,20 @@ you have completion on these functions with `C-M i' in the customize interface."
 (defvar helm-semantic-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (when helm-semantic-lynx-style-map
-      (define-key map (kbd "<left>")  'helm-maybe-exit-minibuffer)
-      (define-key map (kbd "<right>") 'helm-execute-persistent-action))
-    (delq nil map)))
+    map))
+
+(defcustom helm-semantic-lynx-style-map nil
+  "Use Arrow keys to jump to occurences."
+  :group 'helm-semantic
+  :type  'boolean
+  :set (lambda (var val)
+         (set var val)
+         (if val
+             (progn
+               (define-key helm-semantic-map (kbd "<right>")  'helm-execute-persistent-action)
+               (define-key helm-semantic-map (kbd "<left>")   'helm-maybe-exit-minibuffer))
+           (define-key helm-semantic-map (kbd "<right>") nil)
+           (define-key helm-semantic-map (kbd "<left>")  nil))))
 
 ;; Internals vars
 (defvar helm-semantic--tags-cache nil)
@@ -118,7 +123,7 @@ you have completion on these functions with `C-M i' in the customize interface."
   (with-current-buffer helm-buffer
     (when (looking-at " ")
       (goto-char (next-single-property-change
-                  (point-at-bol) 'semantic-tag nil (point-at-eol)))) 
+                  (point-at-bol) 'semantic-tag nil (point-at-eol))))
     (let ((tag (get-text-property (point) 'semantic-tag)))
       (semantic-go-to-tag tag)
       (unless persistent

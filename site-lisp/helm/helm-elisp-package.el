@@ -1,6 +1,6 @@
 ;;; helm-elisp-package.el --- helm interface for package.el -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -51,25 +51,27 @@
 (declare-function async-byte-recompile-directory "ext:async-bytecomp.el")
 
 (defun helm-el-package--init ()
+  ;; In emacs-27 package-show-package-list returns an empty buffer
+  ;; until package-initialize have been called.
+  (unless (or package--initialized
+              (null (boundp 'package-quickstart)))
+    (package-initialize))
   (let (package-menu-async
         (inhibit-read-only t))
     (when (null package-alist)
       (setq helm-el-package--show-only 'all))
-    (when (and (fboundp 'package--removable-packages)
-               (setq helm-el-package--removable-packages
-                     (package--removable-packages))
-               (fboundp 'package-autoremove))
+    (when (setq helm-el-package--removable-packages
+                (package--removable-packages))
       (package-autoremove))
     (unwind-protect
          (progn
            (save-selected-window
-             (if (and helm-el-package--initialized-p
-                      (fboundp 'package-show-package-list))
+             (if helm-el-package--initialized-p
                  ;; Use this as `list-packages' doesn't work
                  ;; properly (empty buffer) when called from lisp
                  ;; with 'no-fetch (emacs-25 WA).
                  (package-show-package-list)
-               (when helm--force-updating-p (message "Refreshing packages list..."))  
+               (when helm--force-updating-p (message "Refreshing packages list..."))
                (list-packages helm-el-package--initialized-p))
              (setq helm-el-package--initialized-p t)
              (message nil))
@@ -79,6 +81,9 @@
                (setq helm-el-package--tabulated-list tabulated-list-entries)
                (remove-text-properties (point-min) (point-max)
                                        '(read-only button follow-link category))
+               (goto-char (point-min))
+               (while (re-search-forward "^[ \t]+" nil t)
+                 (replace-match ""))
                (buffer-string)))
            (setq helm-el-package--upgrades (helm-el-package-menu--find-upgrades))
            (if helm--force-updating-p
@@ -93,14 +98,11 @@
 
 (defun helm-el-package-describe (candidate)
   (let ((id (get-text-property 0 'tabulated-list-id candidate)))
-    (describe-package (if (fboundp 'package-desc-name)
-                          (package-desc-name id)
-                        (car id)))))
+    (describe-package (package-desc-name id))))
 
 (defun helm-el-package-visit-homepage (candidate)
   (let* ((id (get-text-property 0 'tabulated-list-id candidate))
-         (pkg (if (fboundp 'package-desc-name) (package-desc-name id)
-                (car id)))
+         (pkg (package-desc-name id))
          (desc (cadr (assoc pkg package-archive-contents)))
          (extras (package-desc-extras desc))
          (url (and (listp extras) (cdr-safe (assoc :url extras)))))
@@ -116,22 +118,28 @@
     (helm-exit-and-execute-action 'helm-el-package-visit-homepage)))
 (put 'helm-el-run-visit-homepage 'helm-only t)
 
+(defun helm-elisp-package--pkg-name (pkg)
+  (if (package-desc-p pkg)
+      (package-desc-name pkg)
+    pkg))
+
 (defun helm-el-package-install-1 (pkg-list)
   (cl-loop with mkd = pkg-list
            for p in mkd
            for id = (get-text-property 0 'tabulated-list-id p)
-           do (package-install
-               (if (fboundp 'package-desc-name) id (car id)))
-           collect (if (fboundp 'package-desc-full-name) id (car id))
-           into installed-list
-           finally do (if (fboundp 'package-desc-full-name)
-                          (message (format "%d packages installed:\n(%s)"
-                                           (length installed-list)
-                                           (mapconcat #'package-desc-full-name
-                                                      installed-list ", ")))
-                          (message (format "%d packages installed:\n(%s)"
-                                           (length installed-list)
-                                           (mapconcat 'symbol-name installed-list ", "))))))
+           for name = (helm-elisp-package--pkg-name id)
+           do (package-install id t)
+           when (helm-aand (assq name package-alist)
+                           (package-desc-dir (cadr it))
+                           (file-exists-p it))
+           collect id into installed-list and
+           do (unless (package--user-selected-p name)
+                (package--save-selected-packages
+                 (cons name package-selected-packages)))
+           finally do (message (format "%d packages installed:\n(%s)"
+                                       (length installed-list)
+                                       (mapconcat #'package-desc-full-name
+                                                  installed-list ", ")))))
 
 (defun helm-el-package-install (_candidate)
   (helm-el-package-install-1 (helm-marked-candidates)))
@@ -148,45 +156,19 @@
         for id = (get-text-property 0 'tabulated-list-id p)
         do
         (condition-case-unless-debug err
-            (with-no-warnings
-              (if (fboundp 'package-desc-full-name)
-                  ;; emacs 24.4
-                  (condition-case nil
-                      (package-delete id force)
-                    (wrong-number-of-arguments
-                     (package-delete id)))
-                ;; emacs 24.3
-                (package-delete (symbol-name (car id))
-                                (package-version-join (cdr id)))))
+            (package-delete id force)
           (error (message (cadr err))))
         ;; Seems like package-descs are symbols with props instead of
         ;; vectors in emacs-27, use package-desc-name to ensure
         ;; compatibility in all emacs versions.
         unless (assoc (package-desc-name id) package-alist)
-        collect (if (fboundp 'package-desc-full-name)
-                        id
-                      (cons (symbol-name (car id))
-                            (package-version-join (cdr id))))
-        into delete-list
+        collect id into delete-list
         finally do (if delete-list
-                       (if (fboundp 'package-desc-full-name)
-                           ;; emacs 24.4
-                           (message (format "%d packages deleted:\n(%s)"
-                                            (length delete-list)
-                                            (mapconcat #'package-desc-full-name
-                                                       delete-list ", ")))
-                           ;; emacs 24.3
-                           (message (format "%d packages deleted:\n(%s)"
-                                            (length delete-list)
-                                            (mapconcat (lambda (x)
-                                                         (concat (car x) "-" (cdr x)))
-                                                       delete-list ", ")))
-                           ;; emacs 24.3 doesn't update
-                           ;; its `package-alist' after deleting.
-                           (cl-loop for p in package-alist
-                                    when (assq (symbol-name (car p)) delete-list)
-                                    do (setq package-alist (delete p package-alist))))
-                       "No package deleted")))
+                       (message (format "%d packages deleted:\n(%s)"
+                                        (length delete-list)
+                                        (mapconcat #'package-desc-full-name
+                                                   delete-list ", ")))
+                     "No package deleted")))
 
 (defun helm-el-package-uninstall (_candidate)
   (helm-el-package-uninstall-1 (helm-marked-candidates) helm-current-prefix-arg))
@@ -201,41 +183,60 @@
   (cl-loop for entry in helm-el-package--tabulated-list
            for pkg-desc = (car entry)
            for status = (package-desc-status pkg-desc)
-           when (member status '("installed" "unsigned" "dependency"))
-           collect pkg-desc
-           into installed
+           ;; A dependency.
+           when (string= status "dependency")
+           collect pkg-desc into dependencies
+           ;; An installed package used as dependency (user have
+           ;; installed this package explicitely).
+           when (package--used-elsewhere-p pkg-desc)
+           collect pkg-desc into installed-as-dep
+           ;; An installed package.
+           when (member status '("installed" "unsigned"))
+           collect pkg-desc into installed
            when (member status '("available" "new"))
-           collect (cons (package-desc-name pkg-desc) pkg-desc)
-           into available
+           collect (cons (package-desc-name pkg-desc) pkg-desc) into available
            finally return
-           (cl-loop for pkg in installed
-                    for avail-pkg = (assq (package-desc-name pkg) available)
+           ;; Always try to upgrade dependencies before installed.
+           (cl-loop with all = (append dependencies installed-as-dep installed)
+                    for pkg in all
+                    for name = (package-desc-name pkg)
+                    for avail-pkg = (assq name available)
                     when (and avail-pkg
-                              (version-list-< (package-desc-version pkg)
-                                              (package-desc-version
-                                               (cdr avail-pkg))))
+                              (version-list-<
+                               (package-desc-version pkg)
+                               (package-desc-version (cdr avail-pkg))))
                     collect avail-pkg)))
+
+(defun helm-el-package--user-installed-p (package)
+  "Return non-nil if PACKAGE is a user-installed package."
+  (let* ((assoc (assq package package-alist))
+         (pkg-desc (and assoc (cadr assoc)))
+         (dir (and pkg-desc (package-desc-dir pkg-desc))))
+    (when dir
+      (file-in-directory-p dir package-user-dir))))
 
 (defun helm-el-package-upgrade-1 (pkg-list)
   (cl-loop for p in pkg-list
            for pkg-desc = (car p)
-           for upgrade = (cdr (assq (package-desc-name pkg-desc)
+           for pkg-name = (package-desc-name pkg-desc)
+           for upgrade = (cdr (assq pkg-name
                                     helm-el-package--upgrades))
            do
-           (cond ((null upgrade)
+           (cond (;; Install.
+                  (equal pkg-desc upgrade)
+                  (message "Installing package `%s'" pkg-name)
+                  (package-install pkg-desc t))
+                 (;; Do nothing.
+                  (or (null upgrade)
+                      ;; This may happen when a Elpa version of pkg
+                      ;; is installed and need upgrade and pkg is as
+                      ;; well a builtin package.
+                      (package-built-in-p pkg-name))
                   (ignore))
-                 ((equal pkg-desc upgrade)
-                  ;;Install.
-                  (with-no-warnings
-                    (if (boundp 'package-selected-packages)
-                        (package-install pkg-desc t)
-                        (package-install pkg-desc))))
-                 (t
-                  ;; Delete.
-                  (if (boundp 'package-selected-packages)
-                      (with-no-warnings
-                        (package-delete pkg-desc t t))
-                      (package-delete pkg-desc))))))
+                 (;; Delete.
+                  t
+                  (message "Deleting package `%s'" pkg-name)
+                  (package-delete pkg-desc t t)))))
 
 (defun helm-el-package-upgrade (_candidate)
   (helm-el-package-upgrade-1
@@ -254,8 +255,10 @@
 (defun helm-el-package-upgrade-all ()
   (if helm-el-package--upgrades
       (with-helm-display-marked-candidates
-        helm-marked-buffer-name (mapcar (lambda (x) (symbol-name (car x)))
-                                        helm-el-package--upgrades)
+        helm-marked-buffer-name (helm-fast-remove-dups
+                                 (mapcar (lambda (x) (symbol-name (car x)))
+                                         helm-el-package--upgrades)
+                                 :test 'equal)
         (when (y-or-n-p "Upgrade all packages? ")
           (helm-el-package-upgrade-1 helm-el-package--tabulated-list)))
       (message "No packages to upgrade actually!")))
@@ -271,25 +274,27 @@
 
 (defun helm-el-package--transformer (candidates _source)
   (cl-loop for c in candidates
+           for disp = (concat "  " c)
            for id = (get-text-property 0 'tabulated-list-id c)
-           for name = (if (fboundp 'package-desc-name)
-                          (and id (package-desc-name id))
-                          (car id))
+           for name = (and id (package-desc-name id))
            for desc = (package-desc-status id)
            for built-in-p = (and (package-built-in-p name)
                                  (not (member desc '("available" "new"
                                                      "installed" "dependency"))))
            for installed-p = (member desc '("installed" "dependency"))
            for upgrade-p = (assq name helm-el-package--upgrades)
-           for user-installed-p = (and (boundp 'package-selected-packages)
-                                       (memq name package-selected-packages))
-           do (when user-installed-p (put-text-property 0 2 'display "S " c))
-           do (when (memq name helm-el-package--removable-packages)
-                (put-text-property 0 2 'display "U " c)
+           for user-installed-p = (memq name package-selected-packages)
+           do (when (and user-installed-p (not upgrade-p))
+                (put-text-property 0 2 'display "S " disp))
+           do (when (or (memq name helm-el-package--removable-packages)
+                        (and upgrade-p installed-p))
+                (put-text-property 0 2 'display "U " disp)
                 (put-text-property
                  2 (+ (length (symbol-name name)) 2)
-                 'face 'font-lock-variable-name-face c))
-           for cand = (cons c (car (split-string c)))
+                 'face 'font-lock-variable-name-face disp))
+           do (when (and upgrade-p (not installed-p) (not built-in-p))
+                (put-text-property 0 2 'display "I " disp))
+           for cand = (cons disp (car (split-string disp)))
            when (or (and built-in-p
                          (eq helm-el-package--show-only 'built-in))
                     (and upgrade-p
@@ -404,34 +409,32 @@
 
 (defun helm-el-package-recompile (_pkg)
   (cl-loop for p in (helm-marked-candidates)
-           for pkg-desc = (get-text-property 0 'tabulated-list-id p)
-           for name = (package-desc-name pkg-desc) 
-           for dir = (package-desc-dir pkg-desc)
-           do (if (fboundp 'async-byte-recompile-directory)
-                  (async-byte-recompile-directory dir)
-                  (when (y-or-n-p (format "Really recompile `%s' while already loaded ?" name))
-                    (byte-recompile-directory dir 0 t)))))
+           do (helm-el-package-recompile-1 p)))
+
+(defun helm-el-package-recompile-1 (pkg)
+  (let* ((pkg-desc (get-text-property 0 'tabulated-list-id pkg))
+         (dir (package-desc-dir pkg-desc)))
+    (async-byte-recompile-directory dir)))
 
 (defun helm-el-package-reinstall (_pkg)
   (cl-loop for p in (helm-marked-candidates)
            for pkg-desc = (get-text-property 0 'tabulated-list-id p)
-           for name = (package-desc-name pkg-desc)
-           do (if (boundp 'package-selected-packages)
-                  (with-no-warnings
-                    (package-delete pkg-desc 'force 'nosave)
-                    ;; pkg-desc contain the description
-                    ;; of the installed package just removed
-                    ;; and is BTW no more valid.
-                    ;; Use the entry in package-archive-content
-                    ;; which is the non--installed package entry.
-                    ;; For some reason `package-install'
-                    ;; need a pkg-desc (package-desc-p) for the build-in
-                    ;; packages already installed, the name (as symbol)
-                    ;; fails with such packages.
-                    (package-install
-                     (cadr (assq name package-archive-contents)) t))
-                  (package-delete pkg-desc)
-                  (package-install name))))
+           do (helm-el-package-reinstall-1 pkg-desc)))
+
+(defun helm-el-package-reinstall-1 (pkg-desc)
+  (let ((name (package-desc-name pkg-desc)))
+    (package-delete pkg-desc 'force 'nosave)
+    ;; pkg-desc contain the description
+    ;; of the installed package just removed
+    ;; and is BTW no more valid.
+    ;; Use the entry in package-archive-content
+    ;; which is the non--installed package entry.
+    ;; For some reason `package-install'
+    ;; need a pkg-desc (package-desc-p) for the build-in
+    ;; packages already installed, the name (as symbol)
+    ;; fails with such packages.
+    (package-install
+     (cadr (assq name package-archive-contents)) t)))
 
 (defun helm-el-run-package-reinstall ()
   (interactive)

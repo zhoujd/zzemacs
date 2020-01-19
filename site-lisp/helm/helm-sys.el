@@ -1,6 +1,6 @@
 ;;; helm-sys.el --- System related functions for helm. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -427,15 +427,13 @@ Show actions only on line starting by a PID."
   "Preconfigured `helm' for top command."
   (interactive)
   (add-hook 'helm-after-update-hook 'helm-top--skip-top-line)
-  (save-window-excursion
-    (unless helm-alive-p (delete-other-windows))
-    (unwind-protect
-         (helm :sources 'helm-source-top
-               :buffer "*helm top*" :full-frame t
-               :candidate-number-limit 9999
-               :preselect "^\\s-*[0-9]+"
-               :truncate-lines helm-show-action-window-other-window)
-      (remove-hook 'helm-after-update-hook 'helm-top--skip-top-line))))
+  (unwind-protect
+       (helm :sources 'helm-source-top
+             :buffer "*helm top*" :full-frame t
+             :candidate-number-limit 9999
+             :preselect "^\\s-*[0-9]+"
+             :truncate-lines helm-show-action-window-other-window)
+    (remove-hook 'helm-after-update-hook 'helm-top--skip-top-line)))
 
 ;;;###autoload
 (defun helm-list-emacs-process ()

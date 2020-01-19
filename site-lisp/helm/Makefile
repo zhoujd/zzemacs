@@ -25,7 +25,7 @@
 # Emacs invocation
 EMACS_COMMAND   := emacs
 
-# Use -q to have /usr/local/share/emacs/site-lisp and subdirs in load-path 
+# Use -q to have /usr/local/share/emacs/site-lisp and subdirs in load-path
 EMACS		:= $(EMACS_COMMAND) -q -batch
 
 EVAL := $(EMACS) --eval
@@ -70,18 +70,20 @@ clean:
 
 # Make autoloads file
 autoloads:
-	$(EVAL) "(let ((generated-autoload-file (expand-file-name \"helm-autoloads.el\" \"$(PKGDIR)\")) \
-(backup-inhibited t)) (update-directory-autoloads \"$(PKGDIR)\"))"
+	$(EVAL) "(progn (setq generated-autoload-file (expand-file-name \"helm-autoloads.el\" \"$(PKGDIR)\")) \
+(setq backup-inhibited t) (update-directory-autoloads \"$(PKGDIR)\"))"
 
 PREFIX=/usr/local/
 BIN=${PREFIX}bin/
 DESTDIR=${PREFIX}share/emacs/site-lisp/helm/
 install:
 	test -d ${DESTDIR} || mkdir ${DESTDIR}
-	cp -vf *.el $(DESTDIR)
-	cp -vf *.elc $(DESTDIR)
-	cp -vf helm-autoloads.el $(DESTDIR)
-	cp -vf emacs-helm.sh $(DESTDIR)
+	rm -f ${DESTDIR}*.el
+	rm -f ${DESTDIR}*.elc
+	cp -f *.el $(DESTDIR)
+	cp -f *.elc $(DESTDIR)
+	cp -f helm-autoloads.el $(DESTDIR)
+	cp -f emacs-helm.sh $(DESTDIR)
 	ln -fs ${DESTDIR}emacs-helm.sh ${BIN}helm
 uninstall:
 	rm -vf ${DESTDIR}*.elc

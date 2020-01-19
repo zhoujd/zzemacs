@@ -3,7 +3,7 @@
 ;; Original Author: Tamas Patrovics
 
 ;; Copyright (C) 2007 Tamas Patrovics
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -179,8 +179,9 @@ Returns nil if `helm-adaptive-history-file' doesn't exist."
       (insert
        ";; -*- mode: emacs-lisp -*-\n"
        ";; History entries used for helm adaptive display.\n")
-      (prin1 `(setq helm-adaptive-history ',helm-adaptive-history)
-             (current-buffer))
+      (let (print-length print-level)
+        (prin1 `(setq helm-adaptive-history ',helm-adaptive-history)
+               (current-buffer)))
       (insert ?\n)
       (write-region (point-min) (point-max) helm-adaptive-history-file nil
                     (unless arg 'quiet)))))

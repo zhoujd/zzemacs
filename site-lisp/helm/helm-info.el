@@ -1,6 +1,6 @@
 ;;; helm-info.el --- Browse info index with helm -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -149,6 +149,7 @@ Elements of the list are strings of Info file names without
 extensions (e.g. \"emacs\" for file \"emacs.info.gz\"). Info
 files are found by searching directories in
 `Info-directory-list'."
+  (info-initialize) ; Build Info-directory-list from INFOPATH (Issue #2118)
   (let ((files (cl-loop for d in (or Info-directory-list
                                      Info-default-directory-list)
                         when (file-directory-p d)

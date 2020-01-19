@@ -1,6 +1,6 @@
 ;;; helm-types.el --- Helm types classes and methods. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2018  Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2019  Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; Author: Thierry Volpiatto <thierry.volpiatto@gmail.com>
 ;; URL: http://github.com/emacs-helm/helm
@@ -36,6 +36,37 @@
   (let ((source (make-instance 'helm-type-file)))
     (helm--setup-source source)
     (helm-source-get-action-from-type source)))
+
+(defvar helm-generic-files-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map helm-map)
+    (define-key map (kbd "C-]")     'helm-ff-run-toggle-basename)
+    (define-key map (kbd "C-s")     'helm-ff-run-grep)
+    (define-key map (kbd "M-g s")   'helm-ff-run-grep)
+    (define-key map (kbd "M-g z")   'helm-ff-run-zgrep)
+    (define-key map (kbd "M-g p")   'helm-ff-run-pdfgrep)
+    (define-key map (kbd "C-c g")   'helm-ff-run-gid)
+    (define-key map (kbd "M-R")     'helm-ff-run-rename-file)
+    (define-key map (kbd "M-C")     'helm-ff-run-copy-file)
+    (define-key map (kbd "M-B")     'helm-ff-run-byte-compile-file)
+    (define-key map (kbd "M-L")     'helm-ff-run-load-file)
+    (define-key map (kbd "M-S")     'helm-ff-run-symlink-file)
+    (define-key map (kbd "M-H")     'helm-ff-run-hardlink-file)
+    (define-key map (kbd "M-D")     'helm-ff-run-delete-file)
+    (define-key map (kbd "C-=")     'helm-ff-run-ediff-file)
+    (define-key map (kbd "C-c =")   'helm-ff-run-ediff-merge-file)
+    (define-key map (kbd "C-c o")   'helm-ff-run-switch-other-window)
+    (define-key map (kbd "C-c r")   'helm-ff-run-find-file-as-root)
+    (define-key map (kbd "C-c C-o") 'helm-ff-run-switch-other-frame)
+    (define-key map (kbd "M-i")     'helm-ff-properties-persistent)
+    (define-key map (kbd "C-c C-x") 'helm-ff-run-open-file-externally)
+    (define-key map (kbd "C-c X")   'helm-ff-run-open-file-with-default-tool)
+    (define-key map (kbd "M-.")     'helm-ff-run-etags)
+    (define-key map (kbd "C-c @")   'helm-ff-run-insert-org-link)
+    (define-key map (kbd "C-x C-q") 'helm-ff-run-marked-files-in-dired)
+    (define-key map (kbd "C-c C-a") 'helm-ff-run-mail-attach-files)
+    map)
+  "Generic Keymap for files.")
 
 (defcustom helm-type-file-actions
   (helm-make-actions
@@ -98,6 +129,7 @@
   (helm-make-actions
    "Jump to bookmark" 'helm-bookmark-jump
    "Jump to BM other window" 'helm-bookmark-jump-other-window
+   "Jump to BM other frame" 'helm-bookmark-jump-other-frame
    "Bookmark edit annotation" 'bookmark-edit-annotation
    "Bookmark show annotation" 'bookmark-show-annotation
    "Delete bookmark(s)" 'helm-delete-marked-bookmarks
@@ -135,18 +167,22 @@
    'helm-buffer-switch-buffers-other-window
    "Switch to buffer other frame `C-c C-o'"
    'switch-to-buffer-other-frame
-   "Browse project from buffer"
+   (lambda () (and (fboundp 'tab-bar-mode)
+                   "Switch to buffer other tab `C-c C-t'"))
+   'switch-to-buffer-other-tab
+   "Browse project `C-x C-d'"
    'helm-buffers-browse-project
    "Query replace regexp `C-M-%'"
    'helm-buffer-query-replace-regexp
    "Query replace `M-%'" 'helm-buffer-query-replace
    "View buffer" 'view-buffer
    "Display buffer" 'display-buffer
-   "Rename buffer" 'helm-buffers-rename-buffer
-   "Grep buffers `M-g s' (C-u grep all buffers)"
+   "Rename buffer `M-R'" 'helm-buffers-rename-buffer
+   "Grep buffer(s) `M-g s' (C-u grep all buffers)"
    'helm-zgrep-buffers
-   "Multi occur buffer(s) `C-s'" 'helm-multi-occur-as-action
-   "Revert buffer(s) `M-U'" 'helm-revert-marked-buffers
+   "Multi occur buffer(s) `C-s (C-u search also in current)'"
+   'helm-multi-occur-as-action
+   "Revert buffer(s) `M-G'" 'helm-revert-marked-buffers
    "Insert buffer" 'insert-buffer
    "Kill buffer(s) `M-D'" 'helm-kill-marked-buffers
    "Diff with file `C-='" 'diff-buffer-with-file
@@ -179,9 +215,9 @@
 
 (defcustom helm-type-function-actions
   (helm-make-actions
-   "Describe command" 'describe-function
-   "Add command to kill ring" 'helm-kill-new
+   "Describe command" 'helm-describe-function
    "Go to command's definition" 'find-function
+   "Info lookup" 'helm-info-lookup-symbol
    "Debug on entry" 'debug-on-entry
    "Cancel debug on entry" 'cancel-debug-on-entry
    "Trace function" 'trace-function
@@ -189,7 +225,9 @@
    "Untrace function" 'untrace-function)
     "Default actions for type functions."
   :group 'helm-elisp
-  :type '(alist :key-type string :value-type function))
+  ;; Use symbol as value type because some functions may not be
+  ;; autoloaded (like untrace-function).
+  :type '(alist :key-type string :value-type symbol))
 
 (defmethod helm-source-get-action-from-type ((object helm-type-function))
   (slot-value object 'action))
@@ -221,18 +259,20 @@
 
 (defcustom helm-type-command-actions
   (append (helm-make-actions
-           "Call interactively" 'helm-call-interactively)
-          (helm-actions-from-type-function))
+           "Execute command" 'helm-M-x-execute-command)
+          (symbol-value
+           (helm-actions-from-type-function)))
   "Default actions for type command."
   :group 'helm-command
-  :type '(alist :key-type string :value-type function))
+  :type '(alist :key-type string :value-type symbol))
 
 (defmethod helm--setup-source :primary ((_source helm-type-command)))
 
 (defmethod helm--setup-source :before ((source helm-type-command))
   (setf (slot-value source 'action) 'helm-type-command-actions)
   (setf (slot-value source 'coerce) 'helm-symbolify)
-  (setf (slot-value source 'persistent-action) 'describe-function)
+  (setf (slot-value source 'persistent-action) 'helm-M-x-persistent-action)
+  (setf (slot-value source 'persistent-help) "Describe this command")
   (setf (slot-value source 'group) 'helm-command))
 
 ;; Timers

@@ -1,6 +1,6 @@
 ;;; helm-tags.el --- Helm for Etags. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -329,9 +329,12 @@ Create with etags shell command, or visit with `find-tag' or `visit-tags-table'.
                 (helm-etags-build-source)))
         (helm :sources 'helm-source-etags-select
               :keymap helm-etags-map
-              :default (if helm-etags-fuzzy-match
-                           str
-                           (list (concat "\\_<" str "\\_>") str))
+              :default (and (stringp str)
+                            (if (or helm-etags-fuzzy-match
+                                    (and (eq major-mode 'haskell-mode)
+                                         (string-match "[']\\'" str)))
+                                str
+                              (list (concat "\\_<" str "\\_>") str)))
               :buffer "*helm etags*"))))
 
 (provide 'helm-tags)

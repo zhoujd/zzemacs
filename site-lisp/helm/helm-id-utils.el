@@ -1,6 +1,6 @@
 ;;; helm-id-utils.el --- Helm interface for id-utils. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ MacPorts to install id-utils, it should be `gid32'."
                         '(" " mode-line-buffer-identification " "
                           (:eval (format "L%s" (helm-candidate-number-at-point))) " "
                           (:eval (propertize
-                                  (format "[Helm Gid process finished - (%s results)]" 
+                                  (format "[Helm Gid process finished - (%s results)]"
                                           (max (1- (count-lines
                                                     (point-min) (point-max)))
                                                0))

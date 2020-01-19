@@ -1,6 +1,6 @@
 ;;; helm-grep.el --- Helm Incremental Grep. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2018 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 (declare-function helm-buffer-list "helm-buffers")
 (declare-function View-quit "view")
 (declare-function doc-view-goto-page "doc-view" (page))
+(declare-function pdf-view-goto-page "pdf-view" (page &optional window))
 (declare-function helm-mm-split-pattern "helm-multi-match")
 (declare-function helm--ansi-color-apply "helm-lib")
 (defvar helm--ansi-color-regexp)
@@ -133,11 +134,6 @@ when used matchs will be highlighted according to GREP_COLORS env var."
   :group 'helm-grep
   :type  'string)
 
-(defcustom helm-grep-use-ioccur-style-keys t
-  "Use Arrow keys to jump to occurences."
-  :group 'helm-grep
-  :type  'boolean)
-
 (defcustom helm-pdfgrep-default-read-command nil
   "Default command to read pdf files from pdfgrep.
 Where '%f' format spec is filename and '%p' is page number.
@@ -145,7 +141,8 @@ e.g In Ubuntu you can set it to:
 
     \"evince --page-label=%p '%f'\"
 
-If set to nil `doc-view-mode' will be used instead of an external command."
+If set to nil either `doc-view-mode' or `pdf-view-mode' will be used
+instead of an external command."
   :group 'helm-grep
   :type  'string)
 
@@ -224,7 +221,7 @@ Here are the commands where you may want to add switches:
 
 You probably don't need to use this unless you know what you are doing."
   :group 'helm-grep
-  :type 'string)
+  :type '(repeat string))
 
 (defcustom helm-grep-ag-pipe-cmd-switches nil
   "A list of additional parameters to pass to grep-ag pipe command.
@@ -233,8 +230,14 @@ Use parameters compatibles with the backend you are using
 
 You probably don't need to use this unless you know what you are doing."
   :group 'helm-grep
-  :type 'string)
+  :type '(repeat string))
 
+(defcustom helm-grep-input-idle-delay 0.6
+  "Same as `helm-input-idle-delay' but for grep commands.
+It have a higher value than `helm-input-idle-delay' to avoid
+flickering when updating."
+  :group 'helm-grep
+  :type 'float)
 
 ;;; Faces
 ;;
@@ -285,17 +288,31 @@ Have no effect when grep backend use \"--color=\"."
     (define-key map (kbd "C-c o")    'helm-grep-run-other-window-action)
     (define-key map (kbd "C-c C-o")  'helm-grep-run-other-frame-action)
     (define-key map (kbd "C-x C-s")  'helm-grep-run-save-buffer)
-    (when helm-grep-use-ioccur-style-keys
-      (define-key map (kbd "<right>")  'helm-execute-persistent-action)
-      (define-key map (kbd "<left>")  'helm-grep-run-default-action))
-    (delq nil map))
+    (define-key map (kbd "DEL")      'helm-delete-backward-no-update)
+    map)
   "Keymap used in Grep sources.")
+
+(defcustom helm-grep-use-ioccur-style-keys t
+  "Use Arrow keys to jump to occurences.
+Note that if you define this variable with `setq' your change will
+have no effect, use customize instead."
+  :group 'helm-grep
+  :type  'boolean
+  :set (lambda (var val)
+         (set var val)
+         (if val
+             (progn
+               (define-key helm-grep-map (kbd "<right>")  'helm-execute-persistent-action)
+               (define-key helm-grep-map (kbd "<left>")   'helm-grep-run-default-action))
+           (define-key helm-grep-map (kbd "<right>") nil)
+           (define-key helm-grep-map (kbd "<left>")  nil))))
 
 (defvar helm-pdfgrep-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
     (define-key map (kbd "M-<down>") 'helm-goto-next-file)
     (define-key map (kbd "M-<up>")   'helm-goto-precedent-file)
+    (define-key map (kbd "DEL")      'helm-delete-backward-no-update)
     map)
   "Keymap used in pdfgrep.")
 
@@ -568,7 +585,7 @@ It is intended to use as a let-bound variable, DON'T set this globaly.")
                                        (helm-get-candidate-number))
                                       'face 'helm-grep-finish))))
                       (force-mode-line-update)
-                      (when helm-allow-mouse
+                      (when (and helm-allow-mouse helm-selection-point)
                         (helm--bind-mouse-for-selection helm-selection-point))))
                    ;; Catch error output in log.
                    (t (helm-log
@@ -614,7 +631,9 @@ WHERE can be one of other-window, other-frame."
       (grep         (helm-grep-save-results-1))
       (pdf          (if helm-pdfgrep-default-read-command
                         (helm-pdfgrep-action-1 split lineno (car split))
-                      (find-file (car split)) (doc-view-goto-page lineno)))
+                      (find-file (car split)) (if (derived-mode-p 'pdf-view-mode)
+                                                  (pdf-view-goto-page lineno)
+                                                (doc-view-goto-page lineno))))
       (t            (find-file fname)))
     (unless (or (eq where 'grep) (eq where 'pdf))
       (helm-goto-line lineno))
@@ -659,7 +678,8 @@ With a prefix arg record CANDIDATE in `mark-ring'."
   "Go to next or precedent candidate file in helm grep/etags buffers.
 If N is positive go forward otherwise go backward."
   (let* ((allow-mode (or (eq major-mode 'helm-grep-mode)
-                         (eq major-mode 'helm-moccur-mode)))
+                         (eq major-mode 'helm-moccur-mode)
+                         (eq major-mode 'helm-occur-mode)))
          (sel (if allow-mode
                   (buffer-substring (point-at-bol) (point-at-eol))
                 (helm-get-selection nil t)))
@@ -849,6 +869,8 @@ Special commands:
                                ;; needed for wgrep.
                                'helm-realvalue line)
                               "\n"))))
+      (when (fboundp 'wgrep-cleanup-overlays)
+        (wgrep-cleanup-overlays (point-min) (point-max)))
       (message "Reverting buffer done"))))
 
 (defun helm-gm-next-file ()
@@ -866,23 +888,25 @@ Special commands:
   (helm-match-line-cleanup-pulse))
 
 (defun helm-grep-mode-jump-other-window-1 (arg)
-  (let ((candidate (buffer-substring (point-at-bol) (point-at-eol))))
-    (condition-case nil
-        (progn
-          (save-selected-window
-            (helm-grep-action candidate 'other-window)
-            (helm-match-line-cleanup-pulse)
-            (recenter))
+  (condition-case nil
+      (progn
+        (when (or (eq last-command 'helm-grep-mode-jump-other-window-forward)
+                  (eq last-command 'helm-grep-mode-jump-other-window-backward))
           (forward-line arg))
-      (error nil))))
+        (save-selected-window
+          (helm-grep-action (buffer-substring (point-at-bol) (point-at-eol))
+                            'other-window)
+          (helm-match-line-cleanup-pulse)
+          (recenter)))
+    (error nil)))
 
-(defun helm-grep-mode-jump-other-window-forward ()
-  (interactive)
-  (helm-grep-mode-jump-other-window-1 1))
+(defun helm-grep-mode-jump-other-window-forward (arg)
+  (interactive "p")
+  (helm-grep-mode-jump-other-window-1 arg))
 
-(defun helm-grep-mode-jump-other-window-backward ()
-  (interactive)
-  (helm-grep-mode-jump-other-window-1 -1))
+(defun helm-grep-mode-jump-other-window-backward (arg)
+  (interactive "p")
+  (helm-grep-mode-jump-other-window-1 (- arg)))
 
 (defun helm-grep-mode-jump-other-window ()
   (interactive)
@@ -1101,6 +1125,7 @@ in recurse, and ignore EXTS, search being made recursively on files matching
      'helm-grep-in-recurse recurse
      'helm-grep-use-zgrep (eq backend 'zgrep)
      'helm-grep-default-command com
+     'helm-input-idle-delay helm-grep-input-idle-delay
      'default-directory helm-ff-default-directory) ;; [1]
     ;; Setup the source.
     (set source (helm-make-source src-name 'helm-grep-class
@@ -1224,7 +1249,7 @@ in recurse, and ignore EXTS, search being made recursively on files matching
                                (> (- (setq end (match-end 0))
                                      (setq beg (match-beginning 0))) 0))
                      (helm-add-face-text-properties beg end 'helm-grep-match))
-                   do (goto-char (point-min))) 
+                   do (goto-char (point-min)))
           (buffer-string))
       (error nil))))
 
@@ -1418,7 +1443,7 @@ Ripgrep (rg) types are also supported if this backend is used."
     (let* ((com (helm-grep--ag-command))
            (ripgrep (string= com "rg"))
            (regex (if ripgrep "^\\(.*\\):" "^ *\\(--[a-z]*\\)"))
-           (prefix (if ripgrep "-t" "")))
+           (prefix (if ripgrep "-t " "")))
       (when (equal (call-process com
                                  nil t nil
                                  (if ripgrep
@@ -1434,10 +1459,10 @@ When TYPE is specified it is one of what returns `helm-grep-ag-get-types'
 if available with current AG version."
   (let* ((patterns (helm-mm-split-pattern pattern t))
          (pipe-switches (mapconcat 'identity helm-grep-ag-pipe-cmd-switches " "))
-         (pipe-cmd (pcase (helm-grep--ag-command)
-                     ((and com (or "ag" "pt"))
-                      (format "%s -S --color%s" com (concat " " pipe-switches)))
-                     (`"rg" (format "rg -N -S --color=always%s"
+         (pipe-cmd (helm-acase (helm-grep--ag-command)
+                     (("ag" "pt")
+                      (format "%s -S --color%s" it (concat " " pipe-switches)))
+                     ("rg" (format "rg -N -S --color=always%s"
                                     (concat " " pipe-switches)))))
          (cmd (format helm-grep-ag-command
                       (mapconcat 'identity type " ")
@@ -1547,6 +1572,7 @@ if available with current AG version."
                                  name (abbreviate-file-name directory)))
           :candidates-process
           (lambda () (helm-grep-ag-init directory type))))
+  (helm-set-local-variable 'helm-input-idle-delay helm-grep-input-idle-delay)
   (helm :sources 'helm-source-grep-ag
         :keymap helm-grep-map
         :history 'helm-grep-ag-history

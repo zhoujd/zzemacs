@@ -1,6 +1,6 @@
 ;;; w3m-namazu.el --- The add-on program to search files with Namazu.
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2007, 2009
+;; Copyright (C) 2001-2005, 2007, 2009, 2017, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -47,9 +47,6 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 (require 'w3m)
 
 (eval-and-compile
@@ -61,37 +58,37 @@
   :prefix "w3m-namazu-")
 
 (defcustom w3m-namazu-command "namazu"
-  "*Name of the executable file of Namazu."
+  "Name of the executable file of Namazu."
   :group 'w3m-namazu
-  :type '(string :size 0))
+  :type 'string)
 
 (defcustom w3m-namazu-arguments
   '("-h"			; print in HTML format.
     "-H"			; print further result links.
     "-n" w3m-namazu-page-max	; set number of documents shown to NUM.
     "-w" whence)		; set first number of documents shown to NUM.
-  "*Arguments of Namazu."
+  "Arguments of Namazu."
   :group 'w3m-namazu
   :type '(repeat
-	  (restricted-sexp :format "Argument: %v\n"
+	  (restricted-sexp :format "Argument: %v"
 			   :match-alternatives
-			   (stringp 'w3m-namazu-page-max 'whence)
-			   :size 0)))
+			   (stringp 'w3m-namazu-page-max 'whence))))
 
 (defcustom w3m-namazu-page-max
   (if (boundp 'namazu-search-num)
       (symbol-value 'namazu-search-num)
     30)
-  "*A maximum number of documents which are retrieved by one-time search."
+  "A maximum number of documents which are retrieved by one-time search."
   :group 'w3m-namazu
-  :type '(integer :size 0))
+  :type 'integer)
 
 (defconst w3m-namazu-default-index-customize-spec
   '`(choice
+     :format "%{%t%}:\n%[Value Menu%] %v"
      (const :tag "No default index" nil)
      ,@(mapcar (lambda (x) (list 'const (car x)))
 	       w3m-namazu-index-alist)
-     (directory :format "Index directory: %v\n" :size 0)))
+     (directory :format "Index directory: %v")))
 
 (defcustom w3m-namazu-index-alist
   (when (boundp 'namazu-dir-alist)
@@ -99,16 +96,14 @@
 	      (cons (car pair)
 		    (split-string (cdr pair))))
 	    (symbol-value 'namazu-dir-alist)))
-  "*Alist of alias and index directories."
+  "Alist of alias and index directories."
   :group 'w3m-namazu
   :type '(repeat
-	  (group
-	   :indent 0 :inline t
-	   (cons :format "%v"
-		 (string :format "Alias: %v\n" :size 0)
+	   (cons :format "%v" :indent 0
+		 (string :format "Alias: %v")
 		 (repeat
-		  :format "%v%i\n" :indent 8
-		  (directory :format "Index directory: %v\n" :size 0)))))
+		  :format "  Index directories:\n%v%i\n" :indent 2
+		  (directory :format "%v"))))
   :set (lambda (symbol value)
 	 (custom-set-default symbol value)
 	 (put 'w3m-namazu-default-index 'custom-type
@@ -119,7 +114,7 @@
 	       (symbol-value 'namazu-always-query-index-directory))
     (when (boundp 'namazu-default-dir)
       (symbol-value 'namazu-default-dir)))
-  "*Alias or directory of the default index.
+  "Alias or directory of the default index.
 If this variable equals nil, it is required to input an index path
 whenever `w3m-namazu' is called interactively without prefix
 argument."
@@ -132,17 +127,17 @@ argument."
     (if (memq system-type '(OS/2 emx windows-nt))
 	'shift_jis-dos
       'euc-japan-unix))
-  "*Coding system for namazu process."
+  "Coding system for namazu process."
   :group 'w3m-namazu
-  :type '(coding-system :size 0))
+  :type 'coding-system)
 
 (defcustom w3m-namazu-input-coding-system
   (if (boundp 'namazu-cs-read)
       (symbol-value 'namazu-cs-read)
     'undecided)
-  "*Coding system for namazu process."
+  "Coding system for namazu process."
   :group 'w3m-namazu
-  :type '(coding-system :size 0))
+  :type 'coding-system)
 
 
 (defun w3m-namazu-call-process (index query whence)

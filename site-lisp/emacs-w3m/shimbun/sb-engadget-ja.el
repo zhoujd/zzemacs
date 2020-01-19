@@ -1,4 +1,4 @@
-;;; sb-engadget-ja.el --- shimbun backend for japanese.engadget.com -*- coding: iso-2022-7bit; -*-
+;;; sb-engadget-ja.el --- shimbun backend for japanese.engadget.com
 
 ;; Copyright (C) 2005, 2006, 2007 Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
 
@@ -38,13 +38,13 @@
 (defvar shimbun-engadget-ja-content-start
   (eval-when-compile
     (regexp-opt '("<div id=\"incontent\">"
-		"<div id=\"content\">"))))
+		  "<div id=\"content\">"))))
 (defvar shimbun-engadget-ja-content-end
   (eval-when-compile
     (regexp-opt '("<h3>Recent Posts</h3>"
-		"<h3 id=\"recentheadlines\">Recent Posts</h3>"
-		"<h3 id=\"recentheadlines\">$B:G6a$N5-;v(B</h3>"
-		"<a name=\"comments\"></a>"))))
+		  "<h3 id=\"recentheadlines\">Recent Posts</h3>"
+		  "<h3 id=\"recentheadlines\">最近の記事</h3>"
+		  "<a name=\"comments\"></a>"))))
 
 (luna-define-method shimbun-groups ((shimbun shimbun-engadget-ja))
   (mapcar 'car shimbun-engadget-ja-group-alist))

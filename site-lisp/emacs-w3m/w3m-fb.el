@@ -1,9 +1,9 @@
-;;; w3m-fb.el --- frame-local buffers support for Emacs-w3m
+;;; w3m-fb.el --- frame-local buffers support for emacs-w3m
 
-;;; Copyright (C) 2005, 2006 Matthew P. Hodges
+;;; Copyright (C) 2005, 2006, 2018, 2019 Matthew P. Hodges
 
 ;; Author: Matthew P. Hodges <MPHodges@member.fsf.org>
-;; Version: $Id: w3m-fb.el,v 1.4 2006-09-20 09:26:42 yamaoka Exp $
+;; Version: $Id$
 
 ;; w3m-fb.el is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published
@@ -17,11 +17,15 @@
 
 ;;; Commentary:
 ;;
+;; This mode handles the DEDICATED-FRAMES and TABBED-DEDICATED-FRAMES
+;; display options, set in variable `w3m-display-mode' as 'frames or
+;; 'tabbed-frames.
+;;
 ;; With this mode switched on, W3M buffers are associated with the
-;; frame on which they were created.  Only tabs for the current
-;; frame's W3M buffers are shown (with non-nil w3m-use-tab); other
-;; affected commands are w3m-next-buffer w3m-previous-buffer,
-;; w3m-select-buffer and w3m-quit.
+;; frame on which they were created. For TABBED-DEDICATED-FRAMES, only
+;; tabs for the current frame's W3M buffers are shown; other affected
+;; commands are w3m-next-buffer w3m-previous-buffer, w3m-select-buffer
+;; and w3m-quit.
 ;;
 ;; Switch the mode on programmatically with:
 ;;
@@ -34,31 +38,10 @@
 (defconst w3m-fb-version "1.0.0"
   "Version number of this package.")
 
-(eval-when-compile
-  (autoload 'w3m-delete-buffer "w3m" nil t)
-  (autoload 'w3m-list-buffers "w3m-util")
-  (autoload 'w3m-next-buffer "w3m" nil t)
-  (defvar w3m-pop-up-frames))
-
-(eval-and-compile
-  (defalias 'w3m-fb-frame-parameter
-    (cond
-     ((fboundp 'frame-parameter)
-      'frame-parameter)
-     ((fboundp 'frame-property)
-      'frame-property)
-     (t
-      (error "No frame parameter/property function")))))
-
-(defvar w3m-fb-delete-frame-functions
-  (cond
-   ((boundp 'delete-frame-functions)
-    'delete-frame-functions)
-   ((boundp 'delete-frame-hook)
-    'delete-frame-hook)
-   (t
-    (error "No delete-frame hook/functions variable found")))
-  "Symbol associated with `delete-frame' hooks.")
+(declare-function w3m-delete-buffer "w3m" (&optional force))
+(declare-function w3m-list-buffers "w3m-util" (&optional nosort))
+(declare-function w3m-next-buffer "w3m" (arg &optional buffer))
+(defvar w3m-pop-up-frames)
 
 (defvar w3m-fb-list-buffers-frame nil
   "Frame to list buffers for in `w3m-list-buffers'.
@@ -68,7 +51,7 @@ selected frame are required.")
 ;; Customizable variables
 
 (defgroup w3m-fb nil
-  "Frame local buffers for Emacs-w3m."
+  "Frame local buffers for emacs-w3m."
   :group 'w3m)
 
 (defcustom w3m-fb-delete-frame-kill-buffers t
@@ -79,9 +62,9 @@ selected frame are required.")
 	 (set sym val)
 	 (when (boundp 'w3m-fb-mode)
 	   (if w3m-fb-mode
-	       (add-hook w3m-fb-delete-frame-functions
+	       (add-hook 'delete-frame-functions
 			 'w3m-fb-delete-frame-buffers)
-	     (remove-hook w3m-fb-delete-frame-functions
+	     (remove-hook 'delete-frame-functions
 			  'w3m-fb-delete-frame-buffers)))))
 
 ;; Internal variables
@@ -103,10 +86,8 @@ selected frame are required.")
 	 ;; to other frames.
 	 (w3m-fb-mode nil)
 	 (w3m-fb-inhibit-buffer-selection t))
-    (save-window-excursion
-      (dolist (b buffers)
-	(with-current-buffer b
-	  (w3m-delete-buffer))))))
+    (dolist (b buffers)
+      (kill-buffer b))))
 
 ;; Could use set-frame-parameter here, but it isn't portable
 (defun w3m-fb-set-frame-parameter (frame parameter value)
@@ -115,7 +96,7 @@ selected frame are required.")
 
 (defun w3m-fb-add ()
   "Add current buffer to `w3m-fb-buffer-list'."
-  (let ((val (w3m-fb-frame-parameter nil 'w3m-fb-buffer-list)))
+  (let ((val (frame-parameter nil 'w3m-fb-buffer-list)))
     (w3m-fb-set-frame-parameter
      nil 'w3m-fb-buffer-list (nconc val (list (current-buffer))))))
 
@@ -125,7 +106,7 @@ Applies to all frames."
   (when (eq major-mode 'w3m-mode)
     (let (val)
       (dolist (f (frame-list))
-	(setq val (w3m-fb-frame-parameter f 'w3m-fb-buffer-list))
+	(setq val (frame-parameter f 'w3m-fb-buffer-list))
 	(w3m-fb-set-frame-parameter
 	 f 'w3m-fb-buffer-list (delq (current-buffer) val))))))
 
@@ -150,7 +131,7 @@ Applies to all frames."
     (when rest
       (w3m-fb-set-frame-parameter
        nil 'w3m-fb-buffer-list
-       (nconc (w3m-fb-frame-parameter nil 'w3m-fb-buffer-list) rest)))))
+       (nconc (frame-parameter nil 'w3m-fb-buffer-list) rest)))))
 
 (defun w3m-fb-dissociate ()
   "Disassociate `w3m-mode' buffers from frames."
@@ -170,8 +151,7 @@ Applies to all frames."
    (t
     ;; If no w3m buffers belong to frame, don't display any w3m buffer
     (while (eq major-mode 'w3m-mode)
-;;      (assert (eq (current-buffer)
-;;		  (window-buffer (selected-window))))
+      ;; (assert (eq (current-buffer) (window-buffer (selected-window))))
       (bury-buffer)))))
 
 ;; Minor mode setup
@@ -188,19 +168,18 @@ This allows frame-local lists of buffers (tabs)."
 	       (prog1
 		   (setq w3m-fb-mode nil)
 		 (message "\
-W3M Frame Buffer mode not activated (non-nil w3m-pop-up-frames)")
+W3M Frame Buffer mode not activated (Hint: `M-x w3m-display-mode').")
 		 (sit-for 2))
 	     t))
       (progn
 	(add-hook 'w3m-mode-hook 'w3m-fb-add)
 	(add-hook 'kill-buffer-hook 'w3m-fb-remove)
 	(when w3m-fb-delete-frame-kill-buffers
-	  (add-hook w3m-fb-delete-frame-functions
-		    'w3m-fb-delete-frame-buffers))
+	  (add-hook 'delete-frame-functions 'w3m-fb-delete-frame-buffers))
 	(w3m-fb-associate))
     (remove-hook 'w3m-mode-hook 'w3m-fb-add)
     (remove-hook 'kill-buffer-hook 'w3m-fb-remove)
-    (remove-hook w3m-fb-delete-frame-functions 'w3m-fb-delete-frame-buffers)
+    (remove-hook 'delete-frame-functions 'w3m-fb-delete-frame-buffers)
     (w3m-fb-dissociate)))
 
 (provide 'w3m-fb)

@@ -1,6 +1,7 @@
-;;; shimbun.el --- interfacing with web newspapers -*- coding: iso-2022-7bit; -*-
+;;; shimbun.el --- interfacing with web newspapers
 
-;; Copyright (C) 2001-2014 Yuuichi Teranishi <teranisi@gohome.org>
+;; Copyright (C) 2001-2014, 2017, 2018, 2019
+;; Yuuichi Teranishi <teranisi@gohome.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;         Akihiro Arisawa    <ari@mbf.sphere.ne.jp>,
@@ -70,16 +71,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-(eval-when-compile (require 'static))
-
-;; Make edebug work for the static-* macros in Emacs 24.4+.
-(def-edebug-spec static-cond (&rest (&rest def-form)))
-(def-edebug-spec static-defconst (&define name def-body [&optional def-body]))
-(def-edebug-spec static-if (&rest def-form))
-(def-edebug-spec static-unless (&rest def-form))
-(def-edebug-spec static-when (&rest def-form))
-
 (require 'mcharset)
 (require 'eword-encode)
 (require 'luna)
@@ -116,30 +107,32 @@
   "X-Face: @Q+y!*#)K`rvKfSQnCK.Q\\{T0qs@?plqxVu<=@H-y\
 22NlKSprlFiND7{\"{]&Ddg1=P6{Ze|\n xbW2L1p5ofS\\&u~28A\
 dJrT4Cd<Ls?U!G4}0S%FA~KegR;YZWieoc%`|$4M\\\"i*2avWm?"
-  "*Default X-Face field for shimbun."
+  "Default X-Face field for shimbun."
   :group 'shimbun
-  :type '(string :format "%{%t%}:\n%v" :size 0))
+  :type '(string :format "%{%t%}:\n%v"))
 
 (defcustom shimbun-server-additional-path nil
-  "*List of additional directories to search for shimbun servers."
+  "List of additional directories to search for shimbun servers."
   :group 'shimbun
-  :type '(repeat (directory :format "%t: %v\n" :size 0)))
+  :type '(repeat (directory :format "%t: %v")))
 
 (defcustom shimbun-checking-new-news-format "Checking new news on #S for #g"
-  "*Format string used to show a progress message while chacking new news.
+  "Format string used to show a progress message while chacking new news.
 See `shimbun-message' for the special format specifiers."
   :group 'shimbun
-  :type '(string :format "%{%t%}:\n%v" :size 0))
+  :type '(string :format "%{%t%}:\n%v"))
 
 (defcustom shimbun-verbose t
-  "*Flag controls whether shimbun should be verbose.
-If it is non-nil, the `w3m-verbose' variable will be bound to nil
-while shimbun is waiting for a server's response."
+  "If non-nil, `shimbun-message' will display echo messages.
+If it is nil, messages will be neither displayed nor logged into the
+\"Messages*\" buffer.  Note that the meaning of this variable differs
+from `w3m-verbose'.  See also `shimbun-message-enable-logging'."
   :group 'shimbun
   :type 'boolean)
 
 (defcustom shimbun-message-enable-logging nil
-  "*Non-nil means preserve echo messages in the *Message* buffer."
+  "If non-nil, `shimbun-message' logs echo messages in *Messages* buffer.
+See also `shimbun-verbose'."
   :group 'shimbun
   :type 'boolean)
 
@@ -247,13 +240,14 @@ Default is the value of `w3m-default-save-directory'."
 (defalias 'shimbun-find-coding-system 'w3m-find-coding-system)
 (defalias 'shimbun-flet 'w3m-flet)
 (defalias 'shimbun-interactive-p 'w3m-interactive-p)
-(defalias 'shimbun-replace-in-string 'w3m-replace-in-string)
 (defalias 'shimbun-url-encode-string 'w3m-url-encode-string)
 
 (defun shimbun-retrieve-url (url &optional no-cache no-decode referer)
   "Rertrieve URL contents and insert to current buffer.
 Return content-type of URL as string when retrieval succeeded."
-  (let (type charset fname)
+  (let ((w3m-message-silent (not shimbun-verbose))
+	(w3m-verbose shimbun-message-enable-logging)
+	type charset fname)
     (if (and url
 	     shimbun-use-local
 	     shimbun-local-path
@@ -268,16 +262,29 @@ Return content-type of URL as string when retrieval succeeded."
 	    (insert-file-contents fname))
 	  (when (re-search-forward "^$" nil t)
 	    (let ((pos (match-beginning 0)))
-	      (re-search-backward
-	       "^Content-Type: \\(.*?\\)\\(?:[ ;]+\\|$\\)\\(charset=\\(.*\\)\\)?"
-	       nil t)
+	      (re-search-backward "\
+^Content-Type: \\(.*?\\)\\(?:[ ;]+\\|$\\)\\(charset=\\(.*\\)\\)?" nil t)
 	      (setq type (match-string 1)
 		    charset (match-string 3))
 	      (delete-region (point-min) pos))))
       ;; retrieve URL
       (when url
-	(setq type (w3m-retrieve (w3m-url-transfer-encode-string url)
-				 nil no-cache nil referer))))
+	(if (string-match "\\`https://www\\.sankei\\.com" url)
+	    ;; FIXME: Why is this necessary?  --- ky
+	    ;; To make Sankei work, it is necessary to display some
+	    ;; extra buffer while retrieving headers.
+	    (let ((buf (get-buffer-create "*Messages*"))
+		  (cur (current-buffer)))
+	      (save-window-excursion
+		(split-window-vertically)
+		(switch-to-buffer-other-window buf)
+		(shrink-window (max (- (window-height) 3) 0))
+		(set-window-start nil (point-max))
+		(set-buffer cur)
+		(setq type (w3m-retrieve (w3m-url-transfer-encode-string url)
+					 nil no-cache nil referer))))
+	  (setq type (w3m-retrieve (w3m-url-transfer-encode-string url)
+				   nil no-cache nil referer)))))
     (if type
 	(progn
 	  (unless no-decode
@@ -352,10 +359,10 @@ Return content-type of URL as string when retrieval succeeded."
 	  (unless keep-angle-brackets
 	    (shimbun-remove-markup))
 	  (shimbun-decode-entities)
-	  (subst-char-in-region (point-min) (point-max) ?\t ?\  t)
-	  (subst-char-in-region (point-min) (point-max) ?\r ?\  t)
-	  (subst-char-in-region (point-min) (point-max) ?\f ?\  t)
-	  (subst-char-in-region (point-min) (point-max) ?\n ?\  t)
+	  (subst-char-in-region (point-min) (point-max) ?\t ?  t)
+	  (subst-char-in-region (point-min) (point-max) ?\r ?  t)
+	  (subst-char-in-region (point-min) (point-max) ?\f ?  t)
+	  (subst-char-in-region (point-min) (point-max) ?\n ?  t)
 	  (goto-char (point-min))
 	  (skip-chars-forward " ")
 	  (buffer-substring (point)
@@ -486,7 +493,7 @@ instead of this function."
   (shimbun-article-base-url shimbun header))
 
 (defcustom shimbun-encapsulate-images t
-  "*If non-nil, inline images will be encapsulated in the articles.
+  "If non-nil, inline images will be encapsulated in the articles.
 Generated article have a multipart/related content-type."
   :group 'shimbun
   :type 'boolean)
@@ -506,7 +513,7 @@ Generated article have a multipart/related content-type."
 
 (defun shimbun-entity-set-cid (entity cid)
   (shimbun-entity-set-cid-internal entity cid))
-(defsetf shimbun-entity-cid shimbun-entity-set-cid)
+(gv-define-simple-setter shimbun-entity-cid shimbun-entity-set-cid)
 
 (luna-define-generic shimbun-entity-insert (entity)
   "Insert ENTITY as a MIME part.")
@@ -529,7 +536,7 @@ Generated article have a multipart/related content-type."
   (shimbun-multipart-entity-set-boundary-internal
    entity
    (apply 'format "===shimbun_%d_%d_%d_%d==="
-	  (incf shimbun-multipart-entity-counter)
+	  (cl-incf shimbun-multipart-entity-counter)
 	  (current-time))))
 
 (defun shimbun-make-multipart-entity (&optional type cid)
@@ -753,12 +760,8 @@ content-type if `shimbun-encapsulate-images' is non-nil."
       (insert "MIME-Version: 1.0\n")
       (shimbun-entity-insert body))))
 
-(defcustom shimbun-x-face-database-function
-  (if (boundp 'shimbun-use-bbdb-for-x-face)
-      (cdr (assq (symbol-value 'shimbun-use-bbdb-for-x-face)
-		 '((t . shimbun-bbdb-get-x-face)
-		   (never . never)))))
-  "*Function to get faces from a favorite database.
+(defcustom shimbun-x-face-database-function nil
+  "Function to get faces from a favorite database.
 When its initial value is nil and BBDB or LSDB is loaded, it will be
 set to an appropriate default value.  You can set this to `never' if
 you want to use no database."
@@ -768,7 +771,7 @@ you want to use no database."
 	  (const :tag "Use no database" never)
 	  (const :tag "Use BBDB" shimbun-bbdb-get-x-face)
 	  (const :tag "Use LSDB" shimbun-lsdb-get-x-face)
-	  (function :format "User defined function: %v\n" :size 0)))
+	  (function :format "User defined function: %v")))
 
 (defun shimbun-header-insert (shimbun header)
   (let ((from (shimbun-header-from header))
@@ -780,8 +783,7 @@ you want to use no database."
        ;; Make sure the temp buffer's multibyteness is true.  It is
        ;; needed to make `encode-mime-charset-string' (which is
        ;; employed by `eword-encode-string') encode non-ascii text.
-       (static-unless (featurep 'xemacs)
-	 (set-buffer-multibyte t))
+       (set-buffer-multibyte t)
        (insert "Subject: " (or (eword-encode-string
 				(shimbun-header-subject header t))
 			       "(none)")
@@ -1001,7 +1003,8 @@ Bind it to nil per shimbun if the refresh brings unwanted page.")
   (shimbun-message shimbun (concat shimbun-checking-new-news-format "..."))
   (prog1
       (with-temp-buffer
-	(let ((w3m-verbose (if shimbun-verbose nil w3m-verbose))
+	(let ((w3m-message-silent (not shimbun-verbose))
+	      (w3m-verbose shimbun-message-enable-logging)
 	      headers)
 	  (shimbun-headers-1 shimbun (shimbun-index-url shimbun))
 	  (setq headers (shimbun-get-headers shimbun range))
@@ -1241,17 +1244,17 @@ integer n:    Retrieve n pages of header indices.")
 (luna-define-method shimbun-footer ((shimbun shimbun-japanese-newspaper) header
 				    &optional html)
   (if html
-      (concat "<div align=\"left\">\n--&nbsp;<br>\n$B$3$N5-;v$NCx:n8"$O!"(B"
+      (concat "<div align=\"left\">\n--&nbsp;<br>\nこの記事の著作権は、"
 	      (shimbun-server-name shimbun)
-	      "$B<R$K5"B0$7$^$9!#(B<br>\n$B86J*$O(B <a href=\""
+	      "社に帰属します。<br>\n原物は <a href=\""
 	      (shimbun-article-base-url shimbun header) "\">&lt;"
 	      (shimbun-article-base-url shimbun header)
-	      "&gt;</a> $B$G8x3+$5$l$F$$$^$9!#(B\n</div>\n")
-    (concat "-- \n$B$3$N5-;v$NCx:n8"$O!"(B"
+	      "&gt;</a> で公開されています。\n</div>\n")
+    (concat "-- \nこの記事の著作権は、"
 	    (shimbun-server-name shimbun)
-	    "$B<R$K5"B0$7$^$9!#(B\n$B86J*$O(B <"
+	    "社に帰属します。\n原物は <"
 	    (shimbun-article-base-url shimbun header)
-	    "> $B$G8x3+$5$l$F$$$^$9!#(B\n")))
+	    "> で公開されています。\n")))
 
 ;;; Misc Functions
 (defun shimbun-header-insert-and-buffer-string (shimbun header
@@ -1285,8 +1288,7 @@ that the content type is text/html, otherwise text/plain."
 	  ;; Make sure the temp buffer's multibyteness is true.  It is
 	  ;; needed to make `encode-mime-charset-string' (which is
 	  ;; employed by `eword-encode-string') encode non-ascii text.
-	  (static-unless (featurep 'xemacs)
-	    (set-buffer-multibyte t))
+	  (set-buffer-multibyte t)
 	  (mapconcat
 	   #'identity
 	   (split-string (or (eword-encode-string
@@ -1335,7 +1337,7 @@ seconds ahead of UTC (east of Greenwich), the return value expresses
 the local time of the zone that the value indicates.  For instance,
 the following form returns the present time of Japan, wherever you are.
 
-\(shimbun-decode-time nil 32400)"
+(shimbun-decode-time nil 32400)"
   (if specified-zone
       (let* ((tz (- (car (current-time-zone)) specified-zone))
 	     (ct (or specified-time (current-time)))
@@ -1438,22 +1440,6 @@ STRING is like the inside of a \"\\\\(...\\\\)\" in a regular expression."
   (while (search-backward "\r\n" nil t)
     (delete-char 1)))
 
-(if (fboundp 'subst-char-in-string)
-    (defalias 'shimbun-subst-char-in-string 'subst-char-in-string)
-  (defun shimbun-subst-char-in-string (fromchar tochar string
-						&optional inplace)
-    "Replace characters in STRING from FROMCHAR to TOCHAR.
-Unless optional argument INPLACE is non-nil, return a new string."
-    (let ((string (if inplace string (copy-sequence string)))
-	  (len (length string))
-	  (idx 0))
-      ;; Replace all occurrences of FROMCHAR with TOCHAR.
-      (while (< idx len)
-	(when (= (aref string idx) fromchar)
-	  (aset string idx tochar))
-	(setq idx (1+ idx)))
-      string)))
-
 (defun shimbun-message (shimbun fmt &rest args)
   "Function equivalent to `message' enabling to handle special formats.
 SHIMBUN is a shimbun entity object.  FMT and ARGS are the same as the
@@ -1466,12 +1452,11 @@ format specifiers:
 
 Use ## to put a single # into the output.  If `shimbun-verbose' is nil,
 it will run silently.  The `shimbun-message-enable-logging' variable
-controls whether this function should preserve a message in the
-*Messages* buffer."
+controls whether this function should log messages in the \"*Messages*\"
+buffer."
   (let (specifier)
     (with-temp-buffer
-      (static-unless (featurep 'xemacs)
-	(set-buffer-multibyte t))
+      (set-buffer-multibyte t)
       (insert fmt)
       (goto-char (point-min))
       (while (search-forward "#" nil t)
@@ -1488,42 +1473,11 @@ controls whether this function should preserve a message in the
 			   (shimbun-server-internal shimbun))))))
       (setq fmt (buffer-string))))
   (if shimbun-verbose
-      (static-if (featurep 'xemacs)
-	  (let ((string (apply 'format fmt args)))
-	    (if shimbun-message-enable-logging
-		(display-message 'message string)
-	      (display-message 'no-log string))
-	    string)
-	(if shimbun-message-enable-logging
-	    (apply 'message fmt args)
-	  (let (message-log-max)
-	    (apply 'message fmt args))))
+      (if shimbun-message-enable-logging
+	  (apply 'message fmt args)
+	(let (message-log-max)
+	  (apply 'message fmt args)))
     (apply 'format fmt args)))
-
-(defun shimbun-break-long-japanese-lines (&optional shimbun)
-  "Break long Japanese lines in an article.
-Article should be charset decoded html data.  If SHIMBUN is given,
-this function will narrow the buffer to just an article using the
-shimbun class variables `content-start' and `content-end'.  Otherwise,
-it considers the buffer has already been narrowed to an article."
-  (save-restriction
-    (when shimbun
-      (goto-char (point-min))
-      (let ((case-fold-search t)
-	    start)
-	(when (and (re-search-forward (shimbun-content-start shimbun) nil t)
-		   (setq start (point))
-		   (re-search-forward (shimbun-content-end shimbun) nil t))
-	  (narrow-to-region start (match-beginning 0)))))
-    (goto-char (point-min))
-    (while (re-search-forward
-	    "<p[\t\n ]+[^>]*>\\|</p>\\|\\([$B!"!#!K!W(B]+\\)\\(\\cj\\)?"
-	    nil t)
-      (if (match-beginning 2)
-	  (replace-match "\\1\n\\2")
-	(unless (eolp)
-	  (insert "\n")))))
-  (goto-char (point-min)))
 
 (defmacro shimbun-with-narrowed-article (shimbun &rest forms)
   "Narrow to the article in the buffer and evaluate FORMS."
@@ -1545,11 +1499,9 @@ it considers the buffer has already been narrowed to an article."
 	   (widen))
 	 (goto-char (point-min))))))
 
-(static-if (featurep 'xemacs)
-    (defalias 'shimbun-char-category-list 'char-category-list)
-  (defun shimbun-char-category-list (char)
-    "Return a list of category mnemonics for CHAR."
-    (append (category-set-mnemonics (char-category-set char)) nil)))
+(defun shimbun-char-category-list (char)
+  "Return a list of category mnemonics for CHAR."
+  (append (category-set-mnemonics (char-category-set char)) nil))
 
 (eval-when-compile
   (defsubst shimbun-japanese-hankaku-region-1 (start end quote)
@@ -1557,23 +1509,23 @@ it considers the buffer has already been narrowed to an article."
       (narrow-to-region start end)
       (goto-char start)
       (when quote
-	(while (re-search-forward "$B!c(B\\(?:[ $B!!(B]\\|&nbsp;\\)?" nil t)
+	(while (re-search-forward "＜\\(?:[ 　]\\|&nbsp;\\)?" nil t)
 	  (replace-match "&lt;"))
 	(goto-char start)
-	(while (re-search-forward "\\(?:[ $B!!(B]\\|&nbsp;\\)?$B!d(B" nil t)
+	(while (re-search-forward "\\(?:[ 　]\\|&nbsp;\\)?＞" nil t)
 	  (replace-match "&gt;"))
 	(goto-char start)
-	(while (search-forward "$B!u(B" nil t)
+	(while (search-forward "＆" nil t)
 	  (replace-match "&amp;"))
 	(goto-char start))
       (while (re-search-forward "\
-\\(?:[$B#F#f(B][$B#I#i(B][$B#L#l(B][$B#E#e(B]\\|[$B#F#f(B][$B#T#t(B][$B#P#p(B]\
-\\|[$B#H#h(B][$B#T#t(B][$B#T#t(B][$B#P#p(B][$B#S#s(B]?\\|[$B#M#m(B][$B#A#a(B][$B#I#i(B][$B#L#l(B][$B#T#t(B][$B#O#o(B]\\)\
-$B!'(B\\cj+"
+\\(?:[Ｆｆ][Ｉｉ][Ｌｌ][Ｅｅ]\\|[Ｆｆ][Ｔｔ][Ｐｐ]\
+\\|[Ｈｈ][Ｔｔ][Ｔｔ][Ｐｐ][Ｓｓ]?\\|[Ｍｍ][Ａａ][Ｉｉ][Ｌｌ][Ｔｔ][Ｏｏ]\\)\
+：\\cj+"
 				nil t)
 	(japanese-hankaku-region (match-beginning 0) (match-end 0) t))
       (goto-char start)
-      (while (re-search-forward "\\([^0-9$B#0(B-$B#9(B]\\)$B!'(B\\|$B!'(B\\([^ 0-9$B!!#0(B-$B#9(B]\\)"
+      (while (re-search-forward "\\([^0-9０-９]\\)：\\|：\\([^ 0-9　０-９]\\)"
 				nil t)
 	(if (match-beginning 1)
 	    (replace-match "\\1:")
@@ -1582,63 +1534,63 @@ it considers the buffer has already been narrowed to an article."
 	(unless (looking-at "&nbsp;")
 	  (insert " ")))
       (goto-char start)
-      (while (search-forward "$B!((B" nil t)
+      (while (search-forward "；" nil t)
 	(replace-match ";")
-	(unless (looking-at "[ $B!!(B]\\|&nbsp;")
+	(unless (looking-at "[ 　]\\|&nbsp;")
 	  (insert " ")))
       (goto-char start)
-      ;; $B#Z!w#Z(B -> $B#Z(B@$B#Z(B
-      ;; where $B#Z(B is a zenkaku alphanumeric, $B!w(B is a zenkaku symbol.
-      (while (re-search-forward "\\cA[$B!%!-!.!0!2!=!>!?!@!C!G!w(B]\\cA" nil t)
+      ;; Ｚ＠Ｚ -> Ｚ@Ｚ
+      ;; where Ｚ is a zenkaku alphanumeric, ＠ is a zenkaku symbol.
+      (while (re-search-forward "\\cA[．´｀＾＿—‐／＼｜’＠]\\cA" nil t)
 	(backward-char 2)
 	(insert (prog1
 		    (cdr (assq (char-after)
-			       '((?$B!%(B . ?.) (?$B!-(B . ?') (?$B!.(B . ?`)
-				 (?$B!0(B . ?^) (?$B!2(B . ?_) (?$B!=(B . ?-)
-				 (?$B!>(B . ?-) (?$B!?(B . ?/) (?$B!@(B . ?\\)
-				 (?$B!C(B . ?|) (?$B!G(B . ?') (?$B!w(B . ?@))))
+			       '((?． . ?.) (?´ . ?') (?｀ . ?`)
+				 (?＾ . ?^) (?＿ . ?_) (?— . ?-)
+				 (?‐ . ?-) (?／ . ?/) (?＼ . ?\\)
+				 (?｜ . ?|) (?’ . ?') (?＠ . ?@))))
 		  (delete-char 1))))
       (goto-char start)
-      ;; Replace Chinese hyphen with "$B!](B".
+      ;; Replace Chinese hyphen with "−".
       (condition-case nil
 	  (let ((regexp (concat "[" (list (make-char 'chinese-gb2312 35 45)
 					  (make-char 'chinese-big5-1 34 49))
 				"]")))
 	    (while (re-search-forward regexp nil t)
-	      (replace-match "$B!](B")))
+	      (replace-match "−")))
 	(error))
       (goto-char start)
       (while (re-search-forward
-	      "[^$B!!!"!#!$!%!2!<!=!>!A!A!F!G!H!I!J!K!N!O!P!Q!R!S!a!l!m!o(B]+"
+	      "[^　、。，．＿ー—‐〜〜‘’“”（）［］｛｝〈〉＝′″￥]+"
 	      nil t)
 	(japanese-hankaku-region (match-beginning 0) (match-end 0) t))
       (goto-char start)
-      ;; Exclude ">$B!!(B" in order not to break paragraph start.
-      (while (re-search-forward "\\([!-=?-~]\\)$B!!(B\\|$B!!(B\\([!-~]\\)" nil t)
+      ;; Exclude ">　" in order not to break paragraph start.
+      (while (re-search-forward "\\([!-=?-~]\\)　\\|　\\([!-~]\\)" nil t)
 	(if (match-beginning 1)
 	    (replace-match "\\1 ")
 	  (unless (memq (char-before (match-beginning 0)) '(nil ?\n ?>))
 	    (replace-match " \\2"))
 	  (backward-char 1)))
       (goto-char start)
-      (while (re-search-forward "\\([!-~]\\)$B!"(B[ $B!!(B]*\\([!-~]\\)" nil t)
+      (while (re-search-forward "\\([!-~]\\)、[ 　]*\\([!-~]\\)" nil t)
 	(replace-match "\\1, \\2")
 	(backward-char 1))
       (goto-char start)
-      (while (re-search-forward "$B!$(B\\(\\cj\\)" nil t)
-	(replace-match "$B!"(B\\1")
+      (while (re-search-forward "，\\(\\cj\\)" nil t)
+	(replace-match "、\\1")
 	(backward-char 1))
       (goto-char start)
-      (while (re-search-forward "\\(\\cj\\)$B!$(B" nil t)
-	(replace-match "\\1$B!"(B"))
+      (while (re-search-forward "\\(\\cj\\)，" nil t)
+	(replace-match "\\1、"))
       (goto-char start)
-      (while (re-search-forward "\\([0-9]\\)$B!$(B\\([0-9][0-9][0-9][^0-9]\\)"
+      (while (re-search-forward "\\([0-9]\\)，\\([0-9][0-9][0-9][^0-9]\\)"
 				nil t)
 	(replace-match "\\1,\\2")
 	(backward-char 2))
       (goto-char start)
       (while (re-search-forward "\
-\\([0-9]\\)\\(?:\\($B!%(B\\)\\|\\($B!2(B\\)\\|\\($B!=(B\\)\\|\\($B!>(B\\)\\)\\([0-9]\\)"
+\\([0-9]\\)\\(?:\\(．\\)\\|\\(＿\\)\\|\\(—\\)\\|\\(‐\\)\\)\\([0-9]\\)"
 				nil t)
 	(replace-match (cond ((match-beginning 2)
 			      "\\1.\\6")
@@ -1649,9 +1601,9 @@ it considers the buffer has already been narrowed to an article."
 	(backward-char 1))
       (when (eq w3m-output-coding-system 'utf-8)
 	(goto-char start)
-	(while (re-search-forward "\\([$A!.!0$B!F!H(B]\\)\\|[$A!c$B!G!I!k!l!m(B]" nil t)
+	(while (re-search-forward "\\([‘“‘“]\\)\\|[°’”°′″]" nil t)
 	  (if (match-beginning 1)
-	      (or (memq (char-before (match-beginning 1)) '(?  ?$B!!(B))
+	      (or (memq (char-before (match-beginning 1)) '(?  ?　))
 		  (string-equal (buffer-substring
 				 (match-beginning 1)
 				 (max (- (match-beginning 1) 6)
@@ -1661,19 +1613,19 @@ it considers the buffer has already been narrowed to an article."
 		    (backward-char 1)
 		    (insert " ")
 		    (forward-char 1)))
-	    (unless (looking-at "?:[ $B!!(B]\\|&nbsp;")
+	    (unless (looking-at "?:[ 　]\\|&nbsp;")
 	      (insert " ")))))
 
       ;; Do wakachi-gaki.
-      ;; FIXME:$B!H2V$NCf(B 3$B%H%j%*!I!H%Y%9%H(B 8$B?J=P!I(B
+      ;; FIXME:“花の中 3トリオ”“ベスト 8進出”
       (goto-char start)
       (while (re-search-forward
-	      "\\(\\cj\\)\\(?:[ $B!!(B]\\|&nbsp;\\)\\([])>}]\
+	      "\\(\\cj\\)\\(?:[ 　]\\|&nbsp;\\)\\([])>}]\
 \\|&#\\(?:62\\|187\\|8217\\|8221\\|8250\\|8969\\|8971\\|9002\\);\
 \\|&\\(?:gt\\|raquo\\|rsquo\\|rdquo\\|rsaquo\\|rceil\\|rfloor\\|rang\\);\\)\
 \\|\\([(<[{]\\|&#\\(?:60\\|171\\|8216\\|8220\\|8249\\|8968\\|8970\\|9001\\);\
 \\|&\\(?:lt\\|laquo\\|lsquo\\|ldquo\\|lsaquo\\|lceil\\|lfloor\\|lang\\);\\)\
-\\(?:[ $B!!(B]\\|&nbsp;\\)\\(\\cj\\)"
+\\(?:[ 　]\\|&nbsp;\\)\\(\\cj\\)"
 	      nil t)
 	(replace-match (if (match-beginning 1) "\\1\\2" "\\3\\4"))
 	(backward-char 1))
@@ -1695,14 +1647,14 @@ it considers the buffer has already been narrowed to an article."
 	 ((match-beginning 1)
 	  (unless (or
 		   (and (member (match-string 1)
-				'("$BL@<#(B" "$BBg@5(B" "$B><OB(B" "$BJ?@.(B"))
-			(eq (char-before) ?$BG/(B))
-		   (and (member (match-string 1) '("$B8aA0(B" "$B8a8e(B"))
-			(eq (char-before) ?$B;~(B))
+				'("明治" "大正" "昭和" "平成"))
+			(eq (char-before) ?年))
+		   (and (member (match-string 1) '("午前" "午後"))
+			(eq (char-before) ?時))
 		   (memq (char-before (match-end 1))
-			 '(?$B!!(B ?$B!\(B ?$B!](B ?$B!^(B ?$B!_(B ?$B!`(B ?$B!a(B ?$B!b(B ?$B!e(B ?$B!f(B ?$B-p(B
-			       ?$B"c(B ?$B"d(B))
-		   (and (memq (char-before (match-end 1)) '(?$BBh(B ?$BLs(B))
+			 '(?　 ?＋ ?− ?± ?× ?÷ ?＝ ?≠ ?≦ ?≧ ?≒
+			       ?≪ ?≫))
+		   (and (memq (char-before (match-end 1)) '(?第 ?約))
 			(memq ?j
 			      (shimbun-char-category-list (char-before)))))
 	    (replace-match "\\1 \\2"))
@@ -1711,11 +1663,11 @@ it considers the buffer has already been narrowed to an article."
 	  (replace-match "\\3 \\4")
 	  (goto-char (match-end 3)))
 	 ((match-beginning 5)
-	  (unless (memq (char-after (match-beginning 6)) '(?$B$D(B))
+	  (unless (memq (char-after (match-beginning 6)) '(?つ))
 	    (replace-match "\\5 \\6"))
 	  (goto-char (match-end 5)))
 	 ((match-beginning 7)
-	  (unless (eq (char-after (match-beginning 7)) ?$B!!(B)
+	  (unless (eq (char-after (match-beginning 7)) ?　)
 	    (replace-match "\\7 \\8"))
 	  (goto-char (match-end 7)))
 	 (t
@@ -1733,29 +1685,29 @@ it considers the buffer has already been narrowed to an article."
 	       "\\(\\cg\\)\\(\\cj\\)\\|\\(\\cj\\)\\(\\cg\\)")))
 	(while (re-search-forward regexp nil t)
 	  (if (match-beginning 1)
-	      (unless (eq (char-before) ?$B!!(B)
+	      (unless (eq (char-before) ?　)
 		(replace-match "\\1 \\2"))
-	    (unless (eq (char-after (match-beginning 3)) ?$B!!(B)
+	    (unless (eq (char-after (match-beginning 3)) ?　)
 	      (replace-match "\\3 \\4")))
 	  (backward-char 1)))
 
       ;; Finally strip useless space.
       (goto-char start)
-      (while (re-search-forward "\\($B"((B\\) \\([0-9]\\)" nil t)
+      (while (re-search-forward "\\(※\\) \\([0-9]\\)" nil t)
 	(replace-match "\\1\\2"))
       (goto-char start)
       (let ((regexp
 	     (if (eq w3m-output-coding-system 'utf-8)
 		 (eval-when-compile
-		   (let ((chars "$A!2!4!6!8!:!<!>$B|~$A#($B!"!#!$!%!&!+!,!1!3!4!5!6!7(B\
-$B!A!J!K!L!M!N!O!P!Q!R!S!T!U!V!W!X!Y!Z![(B"))
-		     (concat "\\(?:[ $B!!(B]\\|&nbsp;\\)\\([" chars "$A!f$B!9!n(B]\\)"
-			     "\\|\\([" chars "]\\)\\(?:[ $B!!(B]\\|&nbsp;\\)")))
+		   (let ((chars "〔〈《「『〖【＂（、。，．・゛゜￣ヽヾゝゞ〃\
+〜（）〔〕［］｛｝〈〉《》「」『』【】"))
+		     (concat "\\(?:[ 　]\\|&nbsp;\\)\\([" chars "℃々℃]\\)"
+			     "\\|\\([" chars "]\\)\\(?:[ 　]\\|&nbsp;\\)")))
 	       (eval-when-compile
-		 (let ((chars "$A!.!0!2!4!6!8!:!<!>!c!d!e!l$B|~$A#($B!"!#!$!%!&!+!,!/(B\
-$B!1!3!4!5!6!7!A!B!D!E!F!G!H!I!J!K!L!M!N!O!P!Q!R!S!T!U!V!W!X!Y!Z![!k!l!m!x(B"))
-		   (concat "\\(?:[ $B!!(B]\\|&nbsp;\\)\\([" chars "$A!f$B!9!n(B]\\)"
-			   "\\|\\([" chars "]\\)\\(?:[ $B!!(B]\\|&nbsp;\\)"))))))
+		 (let ((chars "‘“〔〈《「『〖【°′″§＂（、。，．・゛゜¨\
+￣ヽヾゝゞ〃〜‖…‥‘’“”（）〔〕［］｛｝〈〉《》「」『』【】°′″§"))
+		   (concat "\\(?:[ 　]\\|&nbsp;\\)\\([" chars "℃々℃]\\)"
+			   "\\|\\([" chars "]\\)\\(?:[ 　]\\|&nbsp;\\)"))))))
 	(while (re-search-forward regexp nil t)
 	  (goto-char (match-beginning 0))
 	  (if (match-beginning 1)
@@ -1774,7 +1726,7 @@ it considers the buffer has already been narrowed to an article."
 (defun shimbun-japanese-hankaku-region (start end &optional quote)
   "Convert Japanese zenkaku ASCII chars between START and END into hankaku.
 There are exceptions; some chars and the ones in links aren't converted,
-and \"$B!c(B\", \"$B!d(B\" and \"$B!u(B\" are quoted if QUOTE is non-nil."
+and \"＜\", \"＞\" and \"＆\" are quoted if QUOTE is non-nil."
   (setq end (set-marker (make-marker) end))
   (while start
     (goto-char start)
@@ -1796,8 +1748,8 @@ and \"$B!c(B\", \"$B!d(B\" and \"$B!u(B\" are quoted if QUOTE is non-nil."
 (defun shimbun-japanese-hankaku-buffer (&optional quote)
   "Convert Japanese zenkaku ASCII chars in the current buffer into hankaku.
 Sections surrounded by the <pre>...</pre> tags are not processed.
-There are exceptions; some chars aren't converted, and \"$B!c(B\", \"$B!d(B\" and
-\"$B!u(B\" are quoted if QUOTE is non-nil."
+There are exceptions; some chars aren't converted, and \"＜\", \"＞\" and
+\"＆\" are quoted if QUOTE is non-nil."
   (let ((start (goto-char (point-min))))
     (while (search-forward "<pre>" nil t)
       (when (> (match-beginning 0) start)
@@ -1808,18 +1760,18 @@ There are exceptions; some chars aren't converted, and \"$B!c(B\", \"$B!d(B\
     (unless (eobp)
       (shimbun-japanese-hankaku-region start (point-max) quote))))
 
-;; Silence XEmacs's byte compiler.
-(eval-when-compile
-  (if (fboundp 'libxml-parse-xml-region) nil
-    (defalias 'libxml-parse-xml-region 'ignore)))
+(declare-function libxml-available-p "xml.c")
+(declare-function libxml-parse-xml-region "xml.c"
+		  (start end &optional base-url))
 
 (defun shimbun-xml-parse-buffer ()
   "Calls (lib)xml-parse-region on the whole buffer.
 This is a wrapper for `xml-parse-region', which will resort to
 using `libxml-parse-xml-region' if available, since it is much
 faster."
-  (if (and (fboundp 'libxml-parse-xml-region)
-	   (not (eq (symbol-function 'libxml-parse-xml-region) 'ignore)))
+  (if (or (and (fboundp 'libxml-available-p) (libxml-available-p))
+	  ;; Emacs <=26
+	  (fboundp 'libxml-parse-xml-region))
       (save-excursion
 	(goto-char (point-min))
 	(let ((xml (when (search-forward "<" nil t)

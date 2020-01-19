@@ -1,6 +1,7 @@
 ;;; w3m-lnum.el --- Operations using link numbers
 
-;; Copyright (C) 2004-2013 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2004-2014, 2016, 2017, 2019
+;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 ;;          Andrey Kotlarski <m00naticus@gmail.com>
@@ -58,7 +59,7 @@
   :group 'w3m-face)
 
 (defface w3m-lnum-minibuffer-prompt
-  '((((class color) (background light) (type tty))
+  '((((class color) (background light) (type nil))
      (:foreground "blue"))
     (((class color) (background dark)) (:foreground "cyan"))
     (t (:foreground "medium blue")))
@@ -66,9 +67,9 @@
   :group 'w3m-face)
 
 (defface w3m-lnum-match
-  '((((class color) (background light) (type tty))
+  '((((class color) (background light) (type nil))
      (:background "yellow" :foreground "black"))
-    (((class color) (background dark) (type tty))
+    (((class color) (background dark) (type nil))
      (:background "blue" :foreground "white"))
     (((class color) (background light)) (:background "yellow1"))
     (((class color) (background dark)) (:background "RoyalBlue3"))
@@ -94,15 +95,15 @@
 
 (defcustom w3m-lnum-context-alist
   '(("news.ycombinator.com" . 2) ("reddit.com" . 1))
-  "Alist specifying number of additional items to be numbered after \
+  "Alist specifying number of additional items to be numbered after
 filtering over an url being matched by the car."
   :group 'w3m
-  :type 'alist)
+  :type '(repeat (cons :format "%v" :indent 5 (string :tag "Url") integer)))
 
 (defvar w3m-lnum-actions-custom-type
   '(repeat (choice :format "%[Value Menu%] %v"
 		   (string :tag "Information line")
-		   (group :tag "Keycode and Action" :indent 2
+		   (group :tag "Keycode and Action" :format "\n  %v" :indent 2
 			  (character :tag "Key")
 			  function
 			  (string :tag "Prompt")))))
@@ -120,7 +121,7 @@ filtering over an url being matched by the car."
     (?t (lambda (info) (goto-char (cadr info))
 	  (w3m-toggle-inline-image)) "Goto image and toggle it")
     (?T (lambda (info) (save-excursion (goto-char (cadr info))
-				  (w3m-toggle-inline-image)))
+				       (w3m-toggle-inline-image)))
 	"Toggle")
     (?O (lambda (info) (w3m-external-view (nth 2 info))) "View externally")
     (?S (lambda (info) (w3m-download (nth 2 info))) "Save")
@@ -134,18 +135,18 @@ filtering over an url being matched by the car."
 (defcustom w3m-lnum-actions-link-alist
   '("----  Link   ----"
     (?g (lambda (info) (w3m-lnum-visit info)) "Visit")
-    (?G (lambda (info) (setq mode-line-format original-mode-line-format)
-	  (w3m-lnum-remove-overlays)
-	  (w3m-lnum-visit info t)) "Visit in new session")
+    (?G (lambda (info) (w3m-lnum-visit info t)) "Visit in new session")
+    (?B (lambda (info) (w3m-lnum-visit info :background))
+	"Visit in background")
     (?v (lambda (info) (w3m-lnum-visit info nil t)) "Edit and visit")
-    (?V (lambda (info) (setq mode-line-format original-mode-line-format)
-	  (w3m-lnum-remove-overlays)
-	  (w3m-lnum-visit info t t))
+    (?V (lambda (info) (w3m-lnum-visit info t t))
 	"Edit and visit in new session")
+    (?& (lambda (info) (w3m-lnum-visit info :background t))
+	"Edit url and visit in background")
     (?e (lambda (info) (w3m-edit-url (car info))) "Edit page")
     (?s (lambda (info) (save-excursion
-		    (goto-char (cadr info))
-		    (w3m-download-this-url))) "Download")
+			 (goto-char (cadr info))
+			 (w3m-download-this-url))) "Download")
     (?b (lambda (info)
 	  (w3m-bookmark-add
 	   (car info)
@@ -207,9 +208,10 @@ filtering over an url being matched by the car."
   "Keymap used when command `w3m-lnum-mode' is active.")
 (unless w3m-lnum-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "f" 'w3m-lnum-follow)
-    (define-key map "F" 'w3m-lnum-goto)
-    (define-key map "w" 'w3m-lnum-universal)
+    ;; Use `L'-prefixed keys for those commands.
+    ;; (define-key map "f" 'w3m-lnum-follow)
+    ;; (define-key map "F" 'w3m-lnum-goto)
+    ;; (define-key map "w" 'w3m-lnum-universal)
     (w3m-substitute-key-definitions
      map w3m-mode-map
      'w3m-view-image 'w3m-lnum-view-image
@@ -236,8 +238,12 @@ filtering over an url being matched by the car."
 (defun w3m-lnum-remove-overlays (&optional start end)
   "Remove numbering and match overlays between START and END points.
 If missing, clear the current visible window."
-  (let ((start (or start (max (1- (window-start)) (point-min))))
-	(end (or end (min (window-end) (point-max)))))
+  (let* ((start-pos (window-start))
+	 (window-size (- (window-end) start-pos))
+	 (start (or start (max (- start-pos window-size)
+			       (point-min))))
+	 (end (or end (min (+ start-pos (* 2 window-size))
+			   (point-max)))))
     (dolist (overlay (overlays-in start end))
       (if (or (overlay-get overlay 'w3m-lnum-overlay)
 	      (overlay-get overlay 'w3m-lnum-match))
@@ -281,10 +287,8 @@ enable them.  With no prefix ARG - toggle."
   `(let ((overlay (make-overlay ,pos (1+ ,pos))))
      (let ((num (format "[%d]" (setq ,index (1+ ,index)))))
        (overlay-put overlay 'before-string num)
-       (w3m-static-if (featurep 'xemacs)
-	   (set-glyph-face (extent-begin-glyph overlay) 'w3m-lnum)
-	 (w3m-add-face-property 0 (length num) 'w3m-lnum num)
-	 (overlay-put overlay 'evaporate t)))
+       (w3m-add-face-property 0 (length num) 'w3m-lnum num)
+       (overlay-put overlay 'evaporate t))
      (overlay-put overlay 'w3m-lnum-overlay ,index)
      (let ((hseq (get-char-property ,pos 'w3m-anchor-sequence))
 	   (pos2 ,pos))
@@ -310,19 +314,68 @@ DONT-CLEAR-P determines whether previous numbering has to be cleared."
 	     "\\$" "\\\\$")
 	  "")
 	next-func (or next-func 'w3m-goto-next-anchor-or-image))
+  (or dont-clear-p
+      (w3m-lnum-remove-overlays))
   (let ((pos (max (1- (window-start)) (point-min)))
-	(pmax (min (window-end) (point-max))))
-    (unless dont-clear-p
-      (dolist (overlay (overlays-in pos pmax))
-	(if (overlay-get overlay 'w3m-lnum-overlay)
-	    (delete-overlay overlay))))
-    (let ((index 0)
-	  (context (or (assoc-default w3m-current-url
-				      w3m-lnum-context-alist
-				      'w3m-string-match-p)
-		       0)))
-      (while (and pos
-		  (setq pos (funcall next-func pos))
+	(pmax (min (window-end) (point-max)))
+	(index 0)
+	(context (or (assoc-default w3m-current-url
+				    w3m-lnum-context-alist
+				    #'string-match-p)
+		     0)))
+    (while (and pos
+		(setq pos (funcall next-func pos))
+		(< pos pmax))
+      (let ((str ""))
+	(let ((hseq (get-char-property pos 'w3m-anchor-sequence)))
+	  (if hseq			; multiline anchors
+	      (let ((pos2 (next-single-property-change
+			   pos 'w3m-anchor-sequence)))
+		(while (and pos2
+			    (setq pos2 (text-property-any
+					pos2 pmax
+					'w3m-anchor-sequence hseq)))
+		  (let ((pos3 pos2))
+		    (if (setq pos2 (next-single-property-change
+				    pos2 'w3m-anchor-sequence))
+			(setq str
+			      (concat str
+				      (buffer-substring-no-properties
+				       pos3 pos2)))))))))
+	(when (string-match-p reg
+			      (concat
+			       (buffer-substring-no-properties
+				pos
+				(next-single-property-change
+				 pos
+				 (cond ((w3m-anchor-sequence pos)
+					'w3m-anchor-sequence)
+				       ((w3m-image pos)
+					'w3m-image))))
+			       str))
+	  (w3m-lnum-set-overlay pos index pmax)
+	  (let ((counter context))
+	    (while (and (>= (setq counter (1- counter)) 0)
+			(setq pos (funcall next-func pos))
+			(< pos pmax))
+	      (w3m-lnum-set-overlay pos index pmax))))))
+    index))
+
+(defun w3m-lnum-next-filter (type filter pmin pmax)
+  "Search next element according to TYPE and FILTER.
+Do this in region between points PMIN and PMAX.
+If such element is found, return its position.  Nil otherwise."
+  (setq filter
+	(w3m-replace-regexps-in-string	; escape special characters
+	 filter "\\?" "\\\\?" "\\!" "\\\\!" "\\[" "\\\\["
+	 "\\*" "\\\\*" "\\+" "\\\\+" "\\." "\\\\." "\\^" "\\\\^"
+	 "\\$" "\\\\$"))
+  (let ((pos pmin)
+	(next-func (cond ((= type 1) 'w3m-goto-next-link)
+			 ((= type 2) 'w3m-goto-next-image2)
+			 (t 'w3m-goto-next-anchor-or-image))))
+    (catch 'found
+      (while (and pos (setq pos (funcall next-func pos))
 		  (< pos pmax))
 	(let ((str ""))
 	  (let ((hseq (get-char-property pos 'w3m-anchor-sequence)))
@@ -340,24 +393,18 @@ DONT-CLEAR-P determines whether previous numbering has to be cleared."
 				(concat str
 					(buffer-substring-no-properties
 					 pos3 pos2)))))))))
-	  (when (w3m-string-match-p reg
-				    (concat
-				     (buffer-substring-no-properties
-				      pos
-				      (next-single-property-change
-				       pos
-				       (cond ((w3m-anchor-sequence pos)
-					      'w3m-anchor-sequence)
-					     ((w3m-image pos)
-					      'w3m-image))))
-				     str))
-	    (w3m-lnum-set-overlay pos index pmax)
-	    (let ((counter context))
-	      (while (and (>= (setq counter (1- counter)) 0)
-			  (setq pos (funcall next-func pos))
-			  (< pos pmax))
-		(w3m-lnum-set-overlay pos index pmax))))))
-      index)))
+	  (if (string-match-p filter
+			      (concat
+			       (buffer-substring-no-properties
+				pos
+				(next-single-property-change
+				 pos
+				 (cond ((w3m-anchor-sequence pos)
+					'w3m-anchor-sequence)
+				       ((w3m-image pos)
+					'w3m-image))))
+			       str))
+	      (throw 'found pos)))))))
 
 (defun w3m-lnum (arg &optional filter dont-clear-p)
   "Make overlays that display link numbers.  Return last used index.
@@ -392,24 +439,6 @@ SHOW-NUM if specified replaces NUM."
 			   'face 'w3m-lnum-minibuffer-prompt))
 	     " " ,filter anchor)))
 
-(defmacro w3m-read-event (prompt key)
-  "Read event with PROMPT and return keycode.
-KEY is what XEmacs gives for event-key."
-  (w3m-static-if (featurep 'xemacs)
-      `(progn
-	 (display-message 'no-log ,prompt)
-	 (let ((event (next-command-event)))
-	   (if (key-press-event-p event)
-	       (or (event-to-character event)
-		   (characterp
-		    (setq ,key (event-key event)))
-		   ,key))))
-    `(read-event ,prompt t)))
-
-(eval-when-compile
-  (if (fboundp 'redisplay) nil
-    (defalias 'redisplay 'ignore)))
-
 (defun w3m-lnum-read-interactive (prompt fun type last-index &optional
 					 def-anchor filter def-num)
   "Interactively read a valid integer from minubuffer with PROMPT.
@@ -438,19 +467,16 @@ Return list of selected number and last applied filter."
 						def-anchor filter
 						(if auto-num ""))))
 	  (while (not (memq		; while not return or escape
-		       (setq ch (w3m-read-event temp-prompt key))
+		       (setq ch (read-event temp-prompt t))
 		       '(return 10 13 ?\n ?\r ?\C-g escape 27 ?\e)))
 	    (cond
 	     ((memq ch '(backspace 8 127 ?\C-h))
 	      (if auto-num
 		  (unless (string-equal filter "") ; delete last filter character
 		    (setq num 1
-			  last-index
-			  (w3m-lnum
-			   type (setq filter
-				      (w3m-substring-no-properties
-				       filter 0
-				       (1- (length filter)))))
+			  filter (substring-no-properties
+				  filter 0 (1- (length filter)))
+			  last-index (w3m-lnum type filter)
 			  temp-prompt
 			  (w3m-lnum-prompt-str num fun prompt
 					       def-anchor filter "")))
@@ -463,15 +489,11 @@ Return list of selected number and last applied filter."
 					   def-anchor filter
 					   (if auto-num "")))))
 	     ;; scroll options
-	     ((memq ch '(32 ?\ ))		; scroll down
+	     ((eq ch ? )		; scroll down
 	      (w3m-lnum-remove-overlays (point-min) (point-max))
-	      (ignore-errors
-		(w3m-scroll-up)
-		;; scroll-up sets wrongly window-start/end
-		(if (and (fboundp 'redisplay)
-			 (not (eq (symbol-function 'redisplay) 'ignore)))
-		    (redisplay)
-		  (sit-for 0)))
+	      (w3m-scroll-up)
+	      ;; scroll-up sets wrongly window-start/end
+	      (redisplay)
 	      #1=
 	      (setq last-index (w3m-lnum type filter t)
 		    num (if (zerop last-index) 0 1)
@@ -501,9 +523,7 @@ Return list of selected number and last applied filter."
 		    temp-prompt
 		    (w3m-lnum-prompt-str num fun prompt def-anchor
 					 filter "")))
-	     ((and (w3m-static-if (featurep 'xemacs) ; digit
-		       (characterp ch)
-		     (numberp ch))
+	     ((and (numberp ch) ; digit
 		   (< 47 ch) (< ch 58))
 	      (if auto-num
 		  (if (= ch 48) (throw 'select (setq num 0))
@@ -521,32 +541,34 @@ Return list of selected number and last applied filter."
 	      (setq temp-prompt
 		    (w3m-lnum-prompt-str num fun prompt def-anchor
 					 filter (if auto-num ""))))
-	     (t (setq ch (string (w3m-static-if (featurep 'xemacs)
-				     (cond
-				      ((eq ch t) key)
-				      ((= ch ?\^@) ?\ ) ;<ctrl>+SPACE
-				      (t ch))
-				   (cond
-				    ((= ch 67108896) 32) ;<ctrl>+SPACE
-				    ((and (< 67108911 ch) ;treat <ctrl>+DIGIT
-					  (< ch 67108922))
-				     (- ch 67108864)) ; as DIGIT
-				    (t ch)))))
-		(setq last-index (w3m-lnum type
-					   (setq filter
-						 (concat filter ch))))
+	     (t (setq ch (string (cond
+				  ((= ch 67108896) 32) ;<ctrl>+SPACE
+				  ((and (< 67108911 ch) ;treat <ctrl>+DIGIT
+					(< ch 67108922))
+				   (- ch 67108864)) ; as DIGIT
+				  (t ch)))
+		      filter (concat filter ch)
+		      last-index (w3m-lnum type filter))
 		(if (and (= last-index 1)
 			 (memq w3m-lnum-quick-browsing
 			       '(quick-all quick-filter)))
 		    (throw 'select (setq num 1))
-		  (if (zerop last-index) ; filter left nothing, remove new char
-		      (setq last-index
-			    (w3m-lnum
-			     type
-			     (setq filter (w3m-substring-no-properties
-					   filter 0
-					   (1- (length filter))))
-			     t)))
+		  (when (zerop last-index) ; filter left nothing
+		    (let* ((pmax (point-max))
+			   (pos (or (w3m-lnum-next-filter ;search below
+				     type filter
+				     (min (window-end) pmax) pmax)
+				    (w3m-lnum-next-filter ;search above
+				     type filter
+				     (point-min) (window-start)))))
+		      (when pos
+			(goto-char pos)
+			(redisplay)
+			(setq last-index (w3m-lnum type filter t))))
+		    (if (zerop last-index) ; search found nothing, remove new char
+			(setq filter (substring-no-properties
+				      filter 0 (1- (length filter)))
+			      last-index (w3m-lnum type filter t))))
 		  (setq num 1
 			auto-num t
 			temp-prompt
@@ -561,18 +583,20 @@ Return list of selected number and last applied filter."
 Types are: 0 no numbering, 1 links, 2 images, otherwise all anchors.
 Then clear numbering overlays.  Within BODY, `last-index' is bound to
 the last used index number."
-  `(let ((original-mode-line-format mode-line-format))
+  `(let ((original-mode-line-format mode-line-format)
+	 (buffer (current-buffer)))
      (unwind-protect (progn
 		       (setq mode-line-format
 			     "RET: select | BACKSPACE: correction | \
 chars, C-digit, C-SPACE: add chars, digits or space to string \
 filter | arrows: move selection | SPACE,DEL,<,>: scroll | \
 ESC, C-g: quit")
-		       (w3m-force-mode-line-update)
+		       (force-mode-line-update)
 		       (let ((last-index (w3m-lnum ,type ,filter)))
 			 ,@body))
-       (setq mode-line-format original-mode-line-format)
-       (w3m-lnum-remove-overlays))))
+       (with-current-buffer buffer
+	 (setq mode-line-format original-mode-line-format)
+	 (w3m-lnum-remove-overlays (point-min) (point-max))))))
 
 (defun w3m-lnum-highlight-anchor (arg)
   "Highlight specified by ARG number anchor.
@@ -642,7 +666,7 @@ Input 0 corresponds to location url."
    type ""
    (if (and (= type 2)			; image lack of selection
 	    (= last-index 1))
-       (if (y-or-n-p "Single image found. Select it?")
+       (if (y-or-n-p "Single image found.  Select it? ")
 	   (w3m-lnum-get-anchor-info 1))
      (if (and (zerop last-index)
 	      (not (= type 2)))
@@ -670,22 +694,28 @@ Input 0 corresponds to location url."
 		    (goto-char (cadr info)))
       (w3m-message "No valid anchor selected"))))
 
-(defmacro w3m-lnum-visit (info &optional new-session edit)
+(defun w3m-lnum-visit (info &optional new-session edit)
   "Visit URL determined with selection INFO.
-If NEW-SESSION, visit in new buffer.
+If NEW-SESSION, visit in new buffer, optionally in `:background'.
 If EDIT, edit URL before visiting."
-  (if new-session
-      `(w3m-goto-url-new-session
-	,(if edit `(read-string "Visit url in new session: "
-				(car ,info))
-	   `(car ,info)))
-    `(progn (push-mark (point))
-	    (goto-char (cadr ,info))
-	    (w3m-history-store-position)
-	    (w3m-goto-url
-	     ,(if edit `(read-string "Visit url: "
-				     (car ,info))
-		`(car ,info))))))
+  (cond ((eq new-session :background)
+	 (save-window-excursion
+	   (w3m-goto-url-new-session
+	    (if edit (read-string "Visit url in new session: "
+				  (car info))
+	      (car info)))))
+	(new-session
+	 (w3m-goto-url-new-session
+	  (if edit (read-string "Visit url in new session: "
+				(car info))
+	    (car info))))
+	(t (push-mark (point))
+	   (goto-char (cadr info))
+	   (w3m-history-store-position)
+	   (w3m-goto-url
+	    (if edit (read-string "Visit url: "
+				  (car info))
+	      (car info))))))
 
 ;;;###autoload
 (defun w3m-lnum-follow (arg)
@@ -694,8 +724,8 @@ If link - visit it, when button - press, when input - activate it,
 If image - toggle it.
 With prefix ARG visit link in new session or don't move over
 field/button/image on activation/push/toggle.
-With `-' ARG, for link image - go to it and toggle it.
-With -4 ARG, for link image - toggle it.
+With `-' ARG, for link image - go to it and toggle it, if link,
+visit in background.  With -4 ARG, for link image - toggle it.
 With double prefix ARG, prompt for url to visit.
 With triple prefix ARG, prompt for url to visit in new session."
   (interactive "p")
@@ -713,20 +743,23 @@ With triple prefix ARG, prompt for url to visit in new session."
 		((stringp action)	; url
 		 (cond ((or (= arg 1) (and (= arg -1) ; visit
 					   (not (nth 2 info))))
-			(w3m-lnum-visit info))
+			(w3m-lnum-visit info (if (= arg -1)
+						 :background)))
 		       ((= arg -1)	; goto image and toggle it
 			(goto-char (cadr info))
 			(w3m-toggle-inline-image))
-		       ((or (= arg 4) (and (= arg -4) ; new session
-					   (not (nth 2 info))))
+		       ((= arg 4)	; new session
 			(w3m-lnum-visit info t))
-		       ((= arg -4) (save-excursion ; toggle image
-				     (goto-char (cadr info))
-				     (w3m-toggle-inline-image)))
+		       ((and (= arg -4) (nth 2 info))
+			(save-excursion ; toggle image
+			  (goto-char (cadr info))
+			  (w3m-toggle-inline-image)))
 		       ((= arg 16)	; prompt for url
 			(w3m-lnum-visit info nil t))
 		       ((= arg 64)    ; prompt for url for new session
-			(w3m-lnum-visit info t t))))
+			(w3m-lnum-visit info t t))
+		       ((= arg -4) ; prompt for url and open in background
+			(w3m-lnum-visit info :background t))))
 		((eq (car action) 'w3m-form-submit) ; button
 		 (when (= arg 1)
 		   (push-mark (point))
@@ -769,7 +802,7 @@ Function has to take one argument that is selection info."
 	      (setq mode-line-format "RET, left click: select | \
 <down>,TAB/<up>,BACKTAB: move to next/previous action"
 		    buffer-read-only nil)
-	      (w3m-force-mode-line-update)
+	      (force-mode-line-update)
 	      (mapc (lambda (option)
 		      (if (consp option)
 			  (insert
@@ -792,13 +825,12 @@ Function has to take one argument that is selection info."
 	      (while (not (get-text-property (point) 'action))
 		(forward-line))		; go over first action
 	      (pop-to-buffer selection-buffer)
-	      (setq char (w3m-read-event
+	      (setq char (read-event
 			  (concat
-			   (propertize
-			    "Select action: " 'face
-			    'w3m-lnum-minibuffer-prompt)
+			   (propertize "Select action: "
+				       'face 'w3m-lnum-minibuffer-prompt)
 			   "[" label "]")
-			  key))
+			  t))
 	      (while (and (not selection-made)
 			  (or (consp char)
 			      (memq char '(up down tab backtab
@@ -826,12 +858,12 @@ Function has to take one argument that is selection info."
 							  'action)))
 			   (if action (setq selection-made action))))))
 		(unless selection-made
-		  (setq char (w3m-read-event
+		  (setq char (read-event
 			      (concat (propertize
 				       "Select action: " 'face
 				       'w3m-lnum-minibuffer-prompt)
 				      "[" label "]")
-			      key)))))
+			      t)))))
 	  (setq mode-line-format original-mode-line-format)
 	  (kill-buffer (current-buffer)))))
     (unless (memq char '(?\C-g escape 27 ?\e))
@@ -944,7 +976,7 @@ image."
 ;;;###autoload
 (defun w3m-lnum-save-image ()
   "Save the image under point to a file.
-If no image at poing, turn on image numbers and save selected.
+If no image at point, turn on image numbers and save selected.
 The default name will be the original name of the image."
   (interactive)
   (let ((im (w3m-url-valid (w3m-image))))
@@ -961,7 +993,7 @@ variable.  If no image under point, activate numbering and ask
 for one, then interactively resize.
 If IN zoom in, otherwise zoom out."
   `(progn
-     (or (w3m-display-graphic-p)
+     (or (display-images-p)
 	 (error "Can't display images in this environment"))
      (or (w3m-imagick-convert-program-available-p)
 	 (error "ImageMagick's `convert' program is required"))
@@ -1089,7 +1121,8 @@ If no link under point, activate numbering and ask for one."
 
 
 ;;; add link action for generic browser
-(if browse-url-generic-program
+(if (and (boundp 'browse-url-generic-program)
+	 (symbol-value 'browse-url-generic-program))
     (setq w3m-lnum-actions-link-alist
 	  (append w3m-lnum-actions-link-alist
 		  `((?m (lambda (info) (browse-url-generic (car info)))

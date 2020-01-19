@@ -1,6 +1,6 @@
-;;; sb-rakuten.el --- shimbun backend for rakuten diary -*- coding: iso-2022-7bit; -*-
+;;; sb-rakuten.el --- shimbun backend for rakuten diary
 
-;; Copyright (C) 2003, 2004, 2006 NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003, 2004, 2006, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
@@ -34,7 +34,7 @@
 
 (defcustom shimbun-rakuten-group-alist
   nil ;; '((rakuten-id . email-address))
-  "*List of subscribing diaries served by Rakuten."
+  "List of subscribing diaries served by Rakuten."
   :group 'shimbun
   :type '(repeat (cons
 		  :format "%v" :indent 2
@@ -78,12 +78,12 @@
   (save-excursion
     (let ((string
 	   (format
-	    ">$B46A[$r=q$/(B</a>$B("(B\
-<a href=\"http://plaza.rakuten.co.jp/%s/bbs/\">$B7G<(HD$X(B</a>$B("(B"
+	    ">感想を書く</a>│\
+<a href=\"http://plaza.rakuten.co.jp/%s/bbs/\">掲示板へ</a>│"
 	    (shimbun-current-group-internal shimbun))))
-      (subst-char-in-region (point-min) (point-max) ?\t ?\  t)
-      (while (re-search-forward ">$B46A[$r=q$/(B<\\/a>$B("(B" nil t nil)
-	  (replace-match string)))))
+      (subst-char-in-region (point-min) (point-max) ?\t ?  t)
+      (while (re-search-forward ">感想を書く<\\/a>│" nil t nil)
+	(replace-match string)))))
 
 (provide 'sb-rakuten)
 

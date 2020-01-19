@@ -1,6 +1,6 @@
-;;; sb-slashdot-jp.el --- shimbun backend for slashdot.jp -*- coding: iso-2022-7bit; -*-
+;;; sb-slashdot-jp.el --- shimbun backend for slashdot.jp
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2010
+;; Copyright (C) 2003-2007, 2010, 2017, 2019
 ;; NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
@@ -52,7 +52,7 @@
   '((threshold . 1)
     (mode . nested)
     (commentsort . 0))
-  "*Arguments to view comment pages."
+  "Arguments to view comment pages."
   :group 'shimbun
   :type '(list
 	  (cons :tag "Score threshold" :format "%t: %v"
@@ -88,12 +88,12 @@
     ("hardware"    . "http://slashdot.jp/hardware.rss")
     ("diary.oliver" .
      "http://slashdot.jp/~Oliver/journal/rss"))
-  "*Alist of slashdot groups and their RSS feeds."
+  "Alist of slashdot groups and their RSS feeds."
   :group 'shimbun
   :type '(repeat
 	  (cons :format "%v" :indent 4
-		(string :format "Group name: %v\n" :size 0)
-		(string :format "        RSS URL: %v\n" :size 0))))
+		(string :format "Group name: %v")
+		(string :format "        RSS URL: %v"))))
 
 (luna-define-class shimbun-slashdot-jp (shimbun-rss) ())
 
@@ -195,7 +195,7 @@
     (let ((url (shimbun-slashdot-jp-comment-url (shimbun-header-xref header))))
       (when url
 	(goto-char (point-max))
-	(insert "\n<p align=left>[<a href=\"" url "\">$B$b$C$HFI$`!D(B</a>]</p>")))
+	(insert "\n<p align=left>[<a href=\"" url "\">もっと読む…</a>]</p>")))
     t))
 
 (provide 'sb-slashdot-jp)

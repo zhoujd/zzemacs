@@ -1,6 +1,6 @@
-;;; w3m-bug.el --- command to report emacs-w3m bugs -*- coding: euc-japan -*-
+;;; w3m-bug.el --- command to report emacs-w3m bugs
 
-;; Copyright (C) 2002, 2003, 2005, 2007, 2010
+;; Copyright (C) 2002, 2003, 2005, 2007, 2010, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
@@ -38,19 +38,16 @@
 
 (defconst report-emacs-w3m-bug-system-informations
   (eval
-   '`(emacs-w3m-version
+   '`(emacs-w3m-git-revision
+      emacs-w3m-version
       emacs-version
-      ,@(if (or (boundp 'mule-version)
-		(functionp 'mule-version))
+      ;; The form ,@(if (boundp 'foo) '(foo)) used here is
+      ;; meant to generate nothing if `foo' is not bound.
+      ,@(if (boundp 'mule-version)
 	    '(mule-version))
-      ,@(cond ((featurep 'xemacs)
-	       '((featurep 'mule)
-		 (featurep 'file-coding)))
-	      ((or (boundp 'Meadow-version)
-		   (functionp 'Meadow-version))
-	       '(Meadow-version)))
       system-type
       (featurep 'gtk)
+      (featurep 'w3m-load)
       w3m-version
       w3m-type
       w3m-compile-options
@@ -59,8 +56,7 @@
       w3m-command-arguments-alist
       w3m-command-environment
       w3m-input-coding-system
-      w3m-output-coding-system
-      w3m-use-mule-ucs))
+      w3m-output-coding-system))
   "List of the system informations.  Users should NEVER modify the value."
   ;; For the developers:
   ;; It is possible that it would be a security hole.  To prevent those
@@ -69,9 +65,7 @@
   ;; a Lisp function with no argument or any Lisp form to be evaluated.
   )
 
-(eval-when-compile
-  (require 'cl))
-
+;;;###autoload
 (defun report-emacs-w3m-bug (topic &optional buffer)
   "Report a bug in emacs-w3m.
 Prompts for bug subject.  Leaves you in a mail buffer."
@@ -100,6 +94,7 @@ Prompts for bug subject.  Leaves you in a mail buffer."
 	     (setq buffer nil)))))
      (list (read-string "Bug Subject: ") buffer)))
   (let (after-load-alist)
+    (load "w3m-load" t t)
     ;; See the comment for `report-emacs-w3m-bug-system-informations'.
     (load "w3m-bug"))
   (compose-mail report-emacs-w3m-bug-address topic nil 'new)
@@ -110,7 +105,7 @@ Prompts for bug subject.  Leaves you in a mail buffer."
     (insert
      (if (and (boundp 'w3m-language)
 	      (equal (symbol-value 'w3m-language) "Japanese"))
-	 "¤â¤·²ÄÇ½¤Ê¤é emacs-w3m ¤òµ¯Æ°¤·¤Æ¤«¤é¤ä¤êÄ¾¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+	 "ã‚‚ã—å¯èƒ½ãªã‚‰ emacs-w3m ã‚’èµ·å‹•ã—ã¦ã‹ã‚‰ã‚„ã‚Šç›´ã—ã¦ãã ã•ã„ã€‚\n"
        "It is if possible, please redo after starting emacs-w3m.\n")
      "\
 ================================================================\n"))
@@ -119,19 +114,19 @@ Prompts for bug subject.  Leaves you in a mail buffer."
     (if (and (boundp 'w3m-language)
 	     (equal (symbol-value 'w3m-language) "Japanese"))
 	(progn
-	  (insert "¤³¤Î¥Ğ¥°¥ê¥İ¡¼¥È¤Ï emacs-w3m ³«È¯¥Á¡¼¥à¤ËÁ÷¤é¤ì¤Ş¤¹¡£\n")
+	  (insert "ã“ã®ãƒã‚°ãƒªãƒãƒ¼ãƒˆã¯ emacs-w3m é–‹ç™ºãƒãƒ¼ãƒ ã«é€ã‚‰ã‚Œã¾ã™ã€‚\n")
 	  (put-text-property (point)
 			     (progn
 			       (insert "\
-¤¢¤Ê¤¿¤Î¥í¡¼¥«¥ë¥µ¥¤¥È¤Î´ÉÍı¼Ô°¸¤Æ¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó!!")
+ã‚ãªãŸã®ãƒ­ãƒ¼ã‚«ãƒ«ã‚µã‚¤ãƒˆã®ç®¡ç†è€…å®›ã¦ã§ã¯ã‚ã‚Šã¾ã›ã‚“!!")
 			       (point))
 			     'face 'underline)
-	  (insert "\n\n¤Ç¤­¤ë¤À¤±´Ê·é¤Ë½Ò¤Ù¤Æ¤¯¤À¤µ¤¤:
-\t- ²¿¤¬µ¯¤­¤Ş¤·¤¿¤«?
-\t- ËÜÅö¤Ï¤É¤¦¤Ê¤ë¤Ù¤­¤À¤Ã¤¿¤È»×¤¤¤Ş¤¹¤«?
-\t- ¤½¤Î¤È¤­²¿¤ò¤·¤Ş¤·¤¿¤«? (Àµ³Î¤Ë)
+	  (insert "\n\nã§ãã‚‹ã ã‘ç°¡æ½”ã«è¿°ã¹ã¦ãã ã•ã„:
+\t- ä½•ãŒèµ·ãã¾ã—ãŸã‹?
+\t- æœ¬å½“ã¯ã©ã†ãªã‚‹ã¹ãã ã£ãŸã¨æ€ã„ã¾ã™ã‹?
+\t- ãã®ã¨ãä½•ã‚’ã—ã¾ã—ãŸã‹? (æ­£ç¢ºã«)
 
-¤â¤· Lisp ¤Î¥Ğ¥Ã¥¯¥È¥ì¡¼¥¹¤¬¤¢¤ì¤ĞÅºÉÕ¤·¤Æ¤¯¤À¤µ¤¤¡£\n"))
+ã‚‚ã— Lisp ã®ãƒãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹ãŒã‚ã‚Œã°æ·»ä»˜ã—ã¦ãã ã•ã„ã€‚\n"))
       (insert "\
 This bug report will be sent to the emacs-w3m development team,\n")
       (put-text-property (point)
@@ -187,6 +182,7 @@ System Info to help track down your bug:
 	      infos)
 	(push "\n" infos)))
     (apply 'insert (nreverse infos))
-    (goto-char user-point)))
+    (goto-char user-point)
+    (set-buffer-modified-p nil)))
 
 ;;; w3m-bug.el ends here

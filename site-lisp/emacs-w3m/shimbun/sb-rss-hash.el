@@ -1,4 +1,4 @@
-;;; sb-rss-hash.el --- shimbun backend for rss description -*- coding: iso-2022-7bit -*-
+;;; sb-rss-hash.el --- shimbun backend for rss description -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2006, 2009, 2011 Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
 
@@ -55,7 +55,7 @@
 (luna-define-method content-hash-update-items-impl
   ((content-hash rss-content-hash) shimbun)
   (let (xml dc-ns rss-ns content-ns
-	(buf-str (buffer-string)))
+	    (buf-str (buffer-string)))
     (with-temp-buffer
       (erase-buffer)
       (set-buffer-multibyte t)
@@ -72,7 +72,7 @@
 	(setq dc-ns (shimbun-rss-get-namespace-prefix
 		     xml "http://purl.org/dc/elements/1.1/")
 	      content-ns (shimbun-rss-get-namespace-prefix
-		     xml "http://purl.org/rss/1.0/modules/content/")
+			  xml "http://purl.org/rss/1.0/modules/content/")
 	      rss-ns (shimbun-rss-get-namespace-prefix
 		      xml "http://purl.org/rss/1.0/"))
 	(dolist (item (shimbun-rss-find-el
@@ -117,16 +117,16 @@
   (content-hash-update-items-impl (luna-slot-value shimbun 'content) shimbun))
 
 (luna-define-method shimbun-make-contents ((shimbun shimbun-rss-hash) header)
-    (if (nth 2 (assoc (shimbun-current-group-internal shimbun)
-		      shimbun-rss-hash-group-path-alist))
-	(shimbun-make-html-contents shimbun header)
-      (shimbun-make-text-contents shimbun header)))
+  (if (nth 2 (assoc (shimbun-current-group-internal shimbun)
+		    shimbun-rss-hash-group-path-alist))
+      (shimbun-make-html-contents shimbun header)
+    (shimbun-make-text-contents shimbun header)))
 
 (luna-define-method shimbun-clear-contents ((shimbun shimbun-rss-hash) header)
   (let ((start (nth 3 (assoc (shimbun-current-group-internal shimbun)
 			     shimbun-rss-hash-group-path-alist)))
 	(end (nth 4 (assoc (shimbun-current-group-internal shimbun)
-			     shimbun-rss-hash-group-path-alist)))
+			   shimbun-rss-hash-group-path-alist)))
 	(case-fold-search t))
     (goto-char (point-min))
     (when (and (stringp start)

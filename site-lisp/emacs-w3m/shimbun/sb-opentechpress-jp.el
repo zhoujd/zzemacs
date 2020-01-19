@@ -1,6 +1,6 @@
-;;; sb-opentechpress-jp.el --- shimbun backend for japan.linux.com -*- coding: iso-2022-7bit -*-
+;;; sb-opentechpress-jp.el --- shimbun backend for japan.linux.com -*- coding: utf-8 -*-
 
-;; Copyright (C) 2006, 2007, 2009, 2010
+;; Copyright (C) 2006, 2007, 2009, 2010, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -47,7 +47,7 @@
 (defvar shimbun-opentechpress-jp-content-end
   "</div><!-- end: class=\"article\" -->")
 
-(defvar shimbun-opentechpress-jp-ignored-subject "^PR:")
+(defvar shimbun-opentechpress-jp-ignored-subject "\\`PR:")
 
 (luna-define-method initialize-instance :after ((shimbun
 						 shimbun-opentechpress-jp)
@@ -74,7 +74,7 @@
 (luna-define-method shimbun-multi-next-url ((shimbun shimbun-opentechpress-jp)
 					    header url)
   (goto-char (point-min))
-  (when (re-search-forward "<a href=\"\\([^\"]+\\)\" title=\"$B<!$N%Z!<%8(B\""
+  (when (re-search-forward "<a href=\"\\([^\"]+\\)\" title=\"次のページ\""
 			   nil t)
     (shimbun-expand-url (shimbun-decode-entities-string (match-string 1))
 			url)))

@@ -1,6 +1,6 @@
-;;; sb-ibm-dev.el --- shimbun backend for www-6.ibm.com/ja/developerworks -*- coding: iso-2022-7bit; -*-
+;;; sb-ibm-dev.el --- shimbun backend for www-6.ibm.com/ja/developerworks
 
-;; Copyright (C) 2001, 2003, 2005, 2007, 2010
+;; Copyright (C) 2001, 2003, 2005, 2007, 2010, 2019
 ;; NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
@@ -26,9 +26,6 @@
 ;;; Commentary:
 
 ;;; Code:
-
-(eval-when-compile
-  (require 'cl))
 
 (require 'shimbun)
 
@@ -60,7 +57,7 @@
 	(while (when (or (not pages)
 			 (< (length indexes) pages))
 		 (re-search-forward "<a +class=\"[^\"]+\" +\
-href=\"\\(library[0-9]*\\.s?html\\)\">[0-9]+$BG/(B</a>" nil t))
+href=\"\\(library[0-9]*\\.s?html\\)\">[0-9]+年</a>" nil t))
 	  (push (shimbun-expand-url (match-string 1) base) indexes)))
       (let ((pattern (format "/jp/developerworks/%s/"
 			     (regexp-quote (shimbun-current-group shimbun)))))

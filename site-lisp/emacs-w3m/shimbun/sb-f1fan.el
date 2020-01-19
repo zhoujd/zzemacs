@@ -1,4 +1,4 @@
-;;; sb-f1fan.el --- shimbun backend for www.ksky.ne.jp/~tahara/f1/  -*- coding: iso-2022-7bit -*-
+;;; sb-f1fan.el --- shimbun backend for www.ksky.ne.jp/~tahara/f1/  -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2001, 2002, 2003, 2004, 2005
 ;; MIYOSHI Masanori <miyoshi@meadowy.org>
@@ -38,7 +38,7 @@
 (luna-define-class shimbun-f1fan (shimbun) ())
 
 (defvar shimbun-f1fan-url "http://www.ksky.ne.jp/~tahara/f1/")
-(defvar shimbun-f1fan-server-name "F1$B%U%!%s(B")
+(defvar shimbun-f1fan-server-name "F1ファン")
 (defvar shimbun-f1fan-groups '("news"))
 (defvar shimbun-f1fan-from-address "tahara@ps.ksky.ne.jp")
 (defvar shimbun-f1fan-content-start "<blockquote>")
@@ -62,17 +62,17 @@
 	    (id (match-string 3))
 	    (subject (match-string 4)))
 	(setq id (format "<%s.%s.tahara@ps.ksky.ne.jp>"
-			id (shimbun-current-group-internal shimbun)))
+			 id (shimbun-current-group-internal shimbun)))
 	(push (shimbun-create-header
 	       0
 	       subject
 	       (shimbun-from-address shimbun)
 	       nil
 	       id "" 0 0 (concat
-			       (shimbun-url-internal shimbun)
-			       "News"
-			       (format-time-string "%Y")
-			       url))
+			  (shimbun-url-internal shimbun)
+			  "News"
+			  (format-time-string "%Y")
+			  url))
 	      headers)))
     headers))
 

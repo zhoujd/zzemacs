@@ -1,6 +1,6 @@
 ;;; nnshimbun.el --- interfacing with web newspapers
 
-;; Copyright (C) 2000-2012 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2000-2012, 2016-2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          ARISAWA Akihiro    <ari@mbf.sphere.ne.jp>,
@@ -39,55 +39,40 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-(eval-when-compile (require 'static))
-
 (require 'nnoo)
 (require 'nnheader)
 (require 'nnmail)
-
-;; In some platforms, to load gnus-bcklg.el might fail because of the
-;; reason `shell-file-name' has been set mistakenly or the reason the
-;; uncompface program is not available.  That is due to the code which
-;; determines the default value of `gnus-article-compface-xbm'.  See
-;; gnus-ems.el which has been distributed with Emacs 21.1-21.4.  So,
-;; we take the following countermeasure to load gnus-bcklg.el safely.
-(eval-and-compile
-  (condition-case err
-      (require 'gnus-bcklg)
-    (error
-     (if (fboundp 'shell-command-to-string)
-	 (let ((fn (symbol-function 'shell-command-to-string)))
-	   (fset 'shell-command-to-string (lambda (command) ""))
-	   (unwind-protect
-	       (require 'gnus-bcklg)
-	     (fset 'shell-command-to-string fn)))
-       (signal (car err) (cdr err))))))
-
 (require 'shimbun)
 
-(eval-and-compile
-  (autoload 'gnus-declare-backend "gnus-start")
-  (autoload 'gnus-ephemeral-group-p "gnus")
-  (autoload 'gnus-group-change-level "gnus-start")
-  (autoload 'gnus-group-goto-group "gnus-group")
-  (autoload 'gnus-group-group-level "gnus-group")
-  (autoload 'gnus-group-insert-group-line-info "gnus-group")
-  (autoload 'gnus-group-make-group "gnus-group")
-  (autoload 'gnus-group-prefixed-name "gnus")
-  (autoload 'gnus-group-read-ephemeral-group "gnus-group")
-  (autoload 'gnus-group-remove-mark "gnus-group")
-  (autoload 'gnus-group-short-name "gnus")
-  (autoload 'gnus-group-update-group-line "gnus-group")
-  (autoload 'gnus-kill-ephemeral-group "gnus")
-  (autoload 'gnus-summary-refer-article "gnus-sum")
-  (autoload 'message-make-date "message")
-  (autoload 'parse-time-string "parse-time"))
+(declare-function gnus-backlog-remove-article "gnus-bcklg" (group number))
+(declare-function gnus-declare-backend "gnus-start" (name &rest abilities))
+(declare-function gnus-ephemeral-group-p "gnus" (group))
+(declare-function gnus-group-change-level "gnus-start"
+		  (entry level &optional oldlevel previous fromkilled))
+(declare-function gnus-group-goto-group "gnus-group"
+		  (group &optional far test-marked))
+(declare-function gnus-group-group-level "gnus-group")
+(declare-function gnus-group-insert-group-line-info "gnus-group" (group))
+(declare-function gnus-group-make-group "gnus-group"
+		  (name &optional method address args))
+(declare-function gnus-group-prefixed-name "gnus"
+		  (group method &optional full))
+(declare-function gnus-group-read-ephemeral-group "gnus-group"
+		  (group method &optional activate quit-config request-only
+			 select-articles parameters number))
+(declare-function gnus-group-remove-mark "gnus-group"
+		  (group &optional test-marked))
+(declare-function gnus-group-short-name "gnus" (group))
+(declare-function gnus-group-update-group-line "gnus-group")
+(declare-function gnus-kill-ephemeral-group "gnus" (group))
+(declare-function gnus-summary-refer-article "gnus-sum" (message-id))
+(declare-function message-make-date "message" (&optional now))
+(declare-function parse-time-string "parse-time" (string))
 
-(eval-when-compile
-  (defvar gnus-level-default-subscribed)
-  (defvar gnus-level-killed)
-  (defvar gnus-level-subscribed))
+(defvar gnus-backlog-articles)
+(defvar gnus-level-default-subscribed)
+(defvar gnus-level-killed)
+(defvar gnus-level-subscribed)
 
 (defgroup nnshimbun nil
   "Reading web contents with Gnus."
@@ -96,25 +81,8 @@
 
 ;; Customizable variables:
 
-(defcustom nnshimbun-keep-backlog 300
-  "*If non-nil, nnshimbun will keep read articles for later re-retrieval.
-If it is a number N, then nnshimbun will keep only the last N articles
-read.  If it is neither nil nor a number, nnshimbun will keep all read
-articles.  That is not a good idea, though.
-
-Note that smaller values may spoil the `prefetch-articles' feature,
-since nnshimbun uses the backlog to keep the prefetched articles."
-  :group 'nnshimbun
-  :type '(choice (const :tag "Off" nil)
-		 (integer :format "%t: %v\n"
-			  :size 0)
-		 (sexp :format "All\n"
-		       :match (lambda (widget value)
-				(and value (not (numberp value))))
-		       :value t)))
-
 (defcustom nnshimbun-keep-unparsable-dated-articles t "\
-*If non-nil, nnshimbun won't expire the articles of which the date is unknown."
+If non-nil, nnshimbun won't expire the articles of which the date is unknown."
   :group 'nnshimbun
   :type 'boolean)
 
@@ -164,49 +132,6 @@ the value of `gnus-level-default-subscribed' will be used."
 		       (sexp :tag "Value"))))
   "A type definition for customizing the nnshimbun group parameters.")
 
-(eval-and-compile
-  (defconst nnshimbun-is-compiled-for-modern-gnus
-    (eval-when-compile
-      ;; The `gnus-define-group-parameter' macro isn't available in old Gnusae,
-      ;; e.g. installed Emacs 21 may contain Gnus v5.9 which is the old Gnus.
-      (and (fboundp 'gnus-define-group-parameter)
-	   (condition-case nil
-	       (macroexpand '(gnus-define-group-parameter PARAM))
-	     (error nil))
-	   t))
-    "Non-nil means the nnshimbun.elc file is compiled for the modern Gnus.
-Users should never modify the value."))
-
-(eval-and-compile
-  (let ((flag (if nnshimbun-is-compiled-for-modern-gnus
-		  (if (fboundp 'gnus-define-group-parameter)
-		      nil
-		    (message "\
-Warning: nnshimbun.elc is compiled for the newer Gnus,\
- you should recompile it")
-		    (sit-for 1)
-		    nil)
-		(if (fboundp 'gnus-define-group-parameter)
-		    (progn
-		      (message "\
-Warning: nnshimbun.elc is compiled for the old Gnus,\
- you should recompile it")
-		      (sit-for 1)
-		      '(nil . t))
-		  '(t . t)))))
-    (when (car flag)
-      (defmacro gnus-define-group-parameter (&rest args) nil))
-    (when (cdr flag)
-      (defun nnshimbun-find-group-parameters (name)
-	"Return an nnshimbun GROUP's group parameters."
-	(when name
-	  (or (gnus-group-find-parameter name 'nnshimbun-group-parameters t)
-	      (assoc-default
-	       name
-	       (when (boundp 'nnshimbun-group-parameters-alist)
-		 (symbol-value 'nnshimbun-group-parameters-alist))
-	       (function string-match))))))))
-
 (gnus-define-group-parameter
  ;; This definition provides the `nnshimbun-group-parameters' group
  ;; parameter, the `nnshimbun-group-parameters-alist' variable and the
@@ -223,7 +148,7 @@ Alist of nnshimbun group parameters.
 Each element should be a cons of a regexp matching group names and a
 plist which contains keyword-value pairs, like the following:
 
-'(\"^nnshimbun\\\\+asahi:\" index-range all prefetch-articles off
+'(\"\\\\`nnshimbun\\\\+asahi:\" index-range all prefetch-articles off
   encapsulate-images on expiry-wait 6)
 
 `index-range' specifies the number of indices that should be checked
@@ -242,7 +167,7 @@ shimbun articles.
 `expiry-wait' overrides the parameter of the same name in Gnus."
  :variable-group nnshimbun
  :variable-type `(repeat (cons :format "%v" (regexp :tag "Group name regexp"
-						    :value "^nnshimbun\\+")
+						    :value "\\`nnshimbun\\+")
 			       ,nnshimbun-group-parameters-custom))
  :parameter-type nnshimbun-group-parameters-custom
  :parameter-document "\
@@ -270,28 +195,28 @@ shimbun articles.
 (nnoo-declare nnshimbun)
 
 (defvoo nnshimbun-directory (nnheader-concat gnus-directory "shimbun/")
-  "*Directory where nnshimbun will store NOV files.
+  "Directory where nnshimbun will store NOV files.
 Actually, you can find those files in the SERVER/GROUP/ subdirectory.")
 
 (defvoo nnshimbun-nov-is-evil nil
-  "*If non-nil, nnshimbun won't use the NOV databases to retrieve headers.")
+  "If non-nil, nnshimbun won't use the NOV databases to retrieve headers.")
 
 (defvoo nnshimbun-nov-file-name ".overview")
 
 (defvoo nnshimbun-pre-fetch-article 'off
-  "*If it is neither `off' nor nil, nnshimbun will pre-fetch articles.
+  "If it is neither `off' nor nil, nnshimbun will pre-fetch articles.
 It is done when scanning the group.  This simply provides a default
 value for all the nnshimbun groups.  You can use the
 `prefecth-articles' nnshimbun group parameter for each nnshimbun group.")
 
 (defvoo nnshimbun-encapsulate-images shimbun-encapsulate-images
-  "*If neither `off' or nil, nnshimbun will embed inline images in articles.
+  "If neither `off' or nil, nnshimbun will embed inline images in articles.
 This simply provides a default value for all the nnshimbun groups.
 You can use the `encapsulate-images' nnshimbun group parameter for
 each nnshimbun group.")
 
 (defvoo nnshimbun-index-range 2
-  "*The number of indices that should be checked to detect new articles.
+  "The number of indices that should be checked to detect new articles.
 `all' or nil is for all indices, `last' is for the last index, and an
 integer N is for the last N pages of indices.  This simply provides a
 default value for all the nnshimbun groups.  You can use the
@@ -302,8 +227,6 @@ default value for all the nnshimbun groups.  You can use the
 (defvoo nnshimbun-shimbun nil)
 
 (defvoo nnshimbun-status-string "")
-(defvoo nnshimbun-backlog-articles nil)
-(defvoo nnshimbun-backlog-hashtb nil)
 
 (defmacro nnshimbun-current-server ()
   '(nnoo-current-server 'nnshimbun))
@@ -319,19 +242,6 @@ default value for all the nnshimbun groups.  You can use the
 (defun nnshimbun-group-ephemeral-p (group)
   (gnus-ephemeral-group-p (nnshimbun-group-prefixed-name
 			   group (shimbun-server nnshimbun-shimbun))))
-
-(defmacro nnshimbun-backlog (&rest form)
-  `(let ((gnus-keep-backlog nnshimbun-keep-backlog)
-	 (gnus-backlog-buffer
-	  (format " *nnshimbun backlog %s*" (nnshimbun-current-server)))
-	 (gnus-backlog-articles nnshimbun-backlog-articles)
-	 (gnus-backlog-hashtb nnshimbun-backlog-hashtb))
-     (unwind-protect
-	 (progn ,@form)
-       (setq nnshimbun-backlog-articles gnus-backlog-articles
-	     nnshimbun-backlog-hashtb gnus-backlog-hashtb))))
-(put 'nnshimbun-backlog 'lisp-indent-function 0)
-(put 'nnshimbun-backlog 'edebug-form-spec t)
 
 (defmacro nnshimbun-find-parameter (group symbol &optional full-name-p)
   "Return GROUP's nnshimbun group parameter corresponding to SYMBOL.
@@ -370,8 +280,8 @@ If FULL-NAME-P is non-nil, it assumes that GROUP is a full name."
 	   `(plist-get (nnshimbun-find-group-parameters ,name) ,symbol)))))
 
 (defun nnshimbun-decode-group-name (group)
-  (if (and group (mm-coding-system-p 'utf-8))
-      (mm-decode-coding-string group 'utf-8)
+  (if (and group (coding-system-p 'utf-8))
+      (decode-coding-string group 'utf-8)
     group))
 
 (defun nnshimbun-nov-buffer-name (&optional group)
@@ -416,14 +326,24 @@ If FULL-NAME-P is non-nil, it assumes that GROUP is a full name."
 			      (cons (list 'nnshimbun-shimbun shimbun) defs))
 	  t))))
 
-(deffoo nnshimbun-close-server (&optional server)
+(deffoo nnshimbun-close-server (&optional server _defs)
   (when (nnshimbun-server-opened server)
     (when nnshimbun-shimbun
       (dolist (group (shimbun-groups nnshimbun-shimbun))
 	(when (buffer-live-p (nnshimbun-nov-buffer-name group))
 	  (nnshimbun-write-nov group t)))
       (shimbun-close nnshimbun-shimbun)))
-  (nnshimbun-backlog (gnus-backlog-shutdown))
+  (when (and server (boundp 'gnus-backlog-articles))
+    (ignore-errors
+      (let ((regexp (concat "\\`\\(" (regexp-quote
+				      (nnshimbun-group-prefixed-name
+				       "" server))
+			    "[^:]+\\):\\([0-9]+\\)\\'")))
+	(dolist (group-art gnus-backlog-articles)
+	  (when (string-match regexp group-art)
+	    (gnus-backlog-remove-article
+	     (match-string 1 group-art)
+	     (string-to-number (match-string 2 group-art))))))))
   (nnoo-close-server 'nnshimbun server)
   t)
 
@@ -438,35 +358,29 @@ If FULL-NAME-P is non-nil, it assumes that GROUP is a full name."
 	"Replace ARTICLE's date header with HEADER."
 	(let ((x (gnus-summary-article-header article)))
 	  (when x
-	    (mail-header-set-date x (shimbun-header-date header)))))))
+	    (setf (mail-header-date x) (shimbun-header-date header)))))))
   (funcall 'nnshimbun-replace-date-header article header))
 
 (defun nnshimbun-request-article-1 (article &optional group server to-buffer)
-  (if (nnshimbun-backlog
-	(gnus-backlog-request-article
-	 group article (or to-buffer nntp-server-buffer)))
-      (cons group article)
-    (let ((header (with-current-buffer (nnshimbun-open-nov group)
-		    (and (nnheader-find-nov-line article)
-			 (nnshimbun-parse-nov))))
-	  original-id)
-      (when header
-	(setq original-id (shimbun-header-id header))
-	(with-current-buffer (or to-buffer nntp-server-buffer)
-	  (erase-buffer)
-	  (let ((shimbun-encapsulate-images
-		 (nnshimbun-find-parameter group 'encapsulate-images)))
-	    (shimbun-article nnshimbun-shimbun header))
-	  (when (> (buffer-size) 0)
-	    ;; Replace the date string in the `gnus-newsgroup-data' variable
-	    ;; with the newly retrieved article's one.  It may be kludge.
-	    (nnshimbun-replace-date-header article header)
-	    (nnshimbun-replace-nov-entry group article header original-id)
-	    (nnshimbun-backlog
-	      (gnus-backlog-enter-article group article (current-buffer)))
-	    (nnheader-report 'nnshimbun "Article %s retrieved"
-			     (shimbun-header-id header))
-	    (cons group article)))))))
+  (let ((header (with-current-buffer (nnshimbun-open-nov group)
+		  (and (nnheader-find-nov-line article)
+		       (nnshimbun-parse-nov))))
+	original-id)
+    (when header
+      (setq original-id (shimbun-header-id header))
+      (with-current-buffer (or to-buffer nntp-server-buffer)
+	(erase-buffer)
+	(let ((shimbun-encapsulate-images
+	       (nnshimbun-find-parameter group 'encapsulate-images)))
+	  (shimbun-article nnshimbun-shimbun header))
+	(when (> (buffer-size) 0)
+	  ;; Replace the date string in the `gnus-newsgroup-data' variable
+	  ;; with the newly retrieved article's one.  It may be kludge.
+	  (nnshimbun-replace-date-header article header)
+	  (nnshimbun-replace-nov-entry group article header original-id)
+	  (nnheader-report 'nnshimbun "Article %s retrieved"
+			   (shimbun-header-id header))
+	  (cons group article))))))
 
 (deffoo nnshimbun-request-article (article &optional group server to-buffer)
   (setq group (nnshimbun-decode-group-name group))
@@ -749,8 +663,8 @@ allowed for each string."
 		 (when (let ((dir (nnshimbun-group-pathname group)))
 			 (or (file-directory-p dir)
 			     (ignore-errors
-			      (make-directory dir t)
-			      (file-directory-p dir))))
+			       (make-directory dir t)
+			       (file-directory-p dir))))
 		   (let ((nov (nnshimbun-group-pathname
 			       group nnshimbun-nov-file-name)))
 		     (with-current-buffer buffer
@@ -826,7 +740,7 @@ Other files in the directory are also deleted."
 	  files file subdir)
       (when (file-directory-p dir)
 	(setq files (directory-files
-		     dir  t "^\\([^.]\\|\\.\\([^.]\\|\\..\\)\\).*"))
+		     dir  t "\\`\\([^.]\\|\\.\\([^.]\\|\\..\\)\\).*"))
 	(while files
 	  (setq file (pop files))
 	  (if (eq t (car (file-attributes file)))
@@ -839,7 +753,7 @@ Other files in the directory are also deleted."
       (setq dir (expand-file-name ".." dir))
       (when (and (file-directory-p dir)
 		 (not (directory-files
-		       dir t "^\\([^.]\\|\\.\\([^.]\\|\\..\\)\\).*")))
+		       dir t "\\`\\([^.]\\|\\.\\([^.]\\|\\..\\)\\).*")))
 	(delete-directory dir))
       (when (gnus-buffer-live-p nov)
 	(kill-buffer nov)))
@@ -918,17 +832,15 @@ shimbun group."
 		   alist nil t
 		   (car (delete "" nnshimbun-server-history))
 		   'nnshimbun-server-history))
-     (static-unless (featurep 'xemacs)
-       (setq server (string-as-unibyte server)))
      (if (assoc server alist)
 	 (let ((shimbun (shimbun-open server)))
 	   (setq group (completing-read
 			"Group name [Hit TAB to see candidates]: "
 			(mapcar 'list (shimbun-groups shimbun))))
 	   ;; Unify non-ASCII text.
-	   (when (mm-coding-system-p 'utf-8)
-	     (setq group (mm-decode-coding-string
-			  (mm-encode-coding-string group 'utf-8) 'utf-8)))
+	   (when (coding-system-p 'utf-8)
+	     (setq group (decode-coding-string
+			  (encode-coding-string group 'utf-8) 'utf-8)))
 	   (unless (shimbun-group-p shimbun group)
 	     (setq group nil)))
        (setq server nil))
@@ -937,8 +849,8 @@ shimbun group."
       (let (nname)
 	(setq server (list 'nnshimbun server)
 	      nname (gnus-group-prefixed-name
-		     (if (mm-coding-system-p 'utf-8)
-			 (mm-encode-coding-string group 'utf-8)
+		     (if (coding-system-p 'utf-8)
+			 (encode-coding-string group 'utf-8)
 		       group)
 		     server))
 	(if ephemeral

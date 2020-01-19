@@ -38,7 +38,7 @@
 (luna-define-class shimbun-msports-nifty (shimbun) ())
 
 (defvar shimbun-msports-nifty-url "http://forum.nifty.com/fmotor/")
-(defvar shimbun-msports-nifty-server-name "@nifty:$B%b!<%?!<%9%]!<%D(B")
+(defvar shimbun-msports-nifty-server-name "@nifty:モータースポーツ")
 (defvar shimbun-msports-nifty-group-alist
   '(("F1" . "f1")
     ("IRL" . "cart")
@@ -63,7 +63,7 @@
   (let ((case-fold-search t) headers)
     (goto-char (point-min))
     (while (re-search-forward
-	    "<A HREF=\"\\(http://.*/\\([0-9]+\\)/[0-9][0-9]\\([0-9][0-9]\\)\\([0-9][0-9]\\)_\\(.*\\)\.htm\\)\"[^>]*>$B!y!!(B\\([^<]+\\)<" nil t)
+	    "<A HREF=\"\\(http://.*/\\([0-9]+\\)/[0-9][0-9]\\([0-9][0-9]\\)\\([0-9][0-9]\\)_\\(.*\\)\.htm\\)\"[^>]*>☆　\\([^<]+\\)<" nil t)
       (let ((url (match-string 1))
 	    (year (match-string 2))
 	    (month (match-string 3))

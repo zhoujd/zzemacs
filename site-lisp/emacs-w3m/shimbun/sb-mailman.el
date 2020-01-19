@@ -1,8 +1,8 @@
-;;; sb-mailman.el --- shimbun backend class for mailman archiver -*- coding: iso-2022-7bit; -*-
+;;; sb-mailman.el --- shimbun backend class for mailman archiver
 
-;; Copyright (C) 2002, 2003 NAKAJIMA Mikio <minakaji@namazu.org>
-;; Copyright (C) 2002, 2008 Katsumi Yamaoka <yamaoka@jpl.org>
-;; Copyright (C) 2005       Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
+;; Copyright (C) 2002, 2003, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2002, 2008, 2019 Katsumi Yamaoka <yamaoka@jpl.org>
+;; Copyright (C) 2005,       2019 Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
 
 ;; Authors: NAKAJIMA Mikio  <minakaji@namazu.org>,
 ;;          Katsumi Yamaoka <yamaoka@jpl.org>,
@@ -33,15 +33,13 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
+(eval-when-compile (require 'cl-lib)) ;; cl-incf
 (require 'shimbun)
 
 (luna-define-class shimbun-mailman (shimbun) ())
 
 (defun shimbun-mailman-make-contents (shimbun header)
-  (subst-char-in-region (point-min) (point-max) ?\t ?\  t)
+  (subst-char-in-region (point-min) (point-max) ?\t ?  t)
   (goto-char (point-min))
   (let ((end (search-forward "<!--beginarticle-->"))
 	name address)
@@ -92,7 +90,7 @@
   (with-temp-buffer
     (let* ((index-url (shimbun-index-url shimbun))
 	   (group (shimbun-current-group-internal shimbun))
-	   (suffix (if (string-match "^http://\\([^/]+\\)/" index-url)
+	   (suffix (if (string-match "\\`http://\\([^/]+\\)/" index-url)
 		       (match-string 1 index-url)
 		     index-url))
 	   auxs aux id url subject from headers)
@@ -101,7 +99,7 @@
       (setq case-fold-search t)
       (let ((pages (shimbun-header-index-pages range))
 	    (count 0))
-	(while (and (if pages (<= (incf count) pages) t)
+	(while (and (if pages (<= (cl-incf count) pages) t)
 		    (re-search-forward "\
 <a href=\"\\(20[0-9][0-9]\\(?:q[1-4]\\)?\
 \\|20[0-9][0-9]-\\(?:January\\|February\\|March\\|April\\|May\\|June\
@@ -117,7 +115,7 @@
 				 (concat (setq aux (car auxs)) "/date.html")
 				 index-url)
 				'reload)
-	  (subst-char-in-region (point-min) (point-max) ?\t ?\  t)
+	  (subst-char-in-region (point-min) (point-max) ?\t ?  t)
 	  (goto-char (point-max))
 	  (while (re-search-backward "<LI><A HREF=\"\\(\\([0-9]+\\)\\.html\\)\
 \">\\([^\n]+\\)\n</A><A NAME=\"[0-9]+\">&nbsp;</A>\n *<I>\\([^\n]+\\)\n</I>"
@@ -154,7 +152,7 @@
 (luna-define-class shimbun-mailman-ja (shimbun-mailman) ())
 
 (defun shimbun-mailman-ja-make-contents (shimbun header)
-  (subst-char-in-region (point-min) (point-max) ?\t ?\  t)
+  (subst-char-in-region (point-min) (point-max) ?\t ?  t)
   (goto-char (point-min))
   (let ((end (search-forward "<!--beginarticle-->"))
 	name address date)
@@ -169,12 +167,12 @@
 			     end t nil)
       (setq name (match-string 1)
 	    address (match-string 3))
-      ;; Yoshiki.Ohshima $B!w(B acm.org
-      (when (string-match " \\($B!w(B\\|at\\) " name)
+      ;; Yoshiki.Ohshima ＠ acm.org
+      (when (string-match " \\(＠\\|at\\) " name)
 	(setq name (concat (substring name 0 (match-beginning 0))
 			   "@"
 			   (substring name (match-end 0)))))
-      (when (string-match " \\($B!w(B\\|at\\) " address)
+      (when (string-match " \\(＠\\|at\\) " address)
 	(setq address (concat (substring address 0 (match-beginning 0))
 			      "@"
 			      (substring address (match-end 0)))))
@@ -182,15 +180,15 @@
        header
        (shimbun-mime-encode-string (concat name " <" address ">")))
 
-      (when (re-search-forward "<I>\\([0-9][0-9][0-9][0-9]\\)$BG/(B\
- *\\([0-9][0-9]*\\)$B7n(B\
- *\\([0-9][0-9]*\\)$BF|(B\
- (\\($B7n(B\\|$B2P(B\\|$B?e(B\\|$BLZ(B\\|$B6b(B\\|$BEZ(B\\|$BF|(B\\))\
+      (when (re-search-forward "<I>\\([0-9][0-9][0-9][0-9]\\)年\
+ *\\([0-9][0-9]*\\)月\
+ *\\([0-9][0-9]*\\)日\
+ (\\(月\\|火\\|水\\|木\\|金\\|土\\|日\\))\
  \\([:0-9]+\\)\
  \\([A-Z]+\\)</I>"
 			       end t nil)
 	;; <I>Sat, 12 Apr 2003 17:29:51 +0900 (JST)</I> ;; mailman original
-	;; <I>2003$BG/(B 4$B7n(B 11$BF|(B ($B6b(B) 02:43:25 CEST</I> ;; squeak-ja
+	;; <I>2003年 4月 11日 (金) 02:43:25 CEST</I> ;; squeak-ja
 	(setq date (shimbun-make-date-string
 		    (string-to-number (match-string-no-properties 1))
 		    (string-to-number (match-string-no-properties 2))
@@ -205,7 +203,7 @@
       (let ((case-fold-search t))
 	(goto-char (point-min))
 	(while (re-search-forward "\
-<a +href=[^>]+>\\([^<]+\\) \\(?:$B!w(B\\|at\\) \\([^<]+\\)</a>" nil t)
+<a +href=[^>]+>\\([^<]+\\) \\(?:＠\\|at\\) \\([^<]+\\)</a>" nil t)
 	  (replace-match "\\1@\\2")))
       (shimbun-header-insert-and-buffer-string shimbun header nil t))))
 

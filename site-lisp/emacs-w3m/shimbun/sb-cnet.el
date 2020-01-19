@@ -1,6 +1,6 @@
 ;;; sb-cnet.el --- shimbun backend for CNET
 
-;; Copyright (C) 2004, 2006, 2009, 2010
+;; Copyright (C) 2004, 2006, 2009, 2010, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -38,16 +38,10 @@
 
 ;;; Code:
 
+(require 'cl-lib) ;; cl-decf, cl-incf, cl-multiple-value-bind, cl-values-list
+
 (require 'shimbun)
 (require 'sb-rss)
-(eval-when-compile
-  (require 'cl)
-  ;; `multiple-value-bind' requires the 2nd argument to be multiple-value,
-  ;; not a list, in particular for XEmacs 21.5.  `values-list' does it,
-  ;; but is a run-time cl function in XEmacs 21.4 and Emacs 21.
-  (when (eq 'identity (symbol-function 'values-list))
-    (define-compiler-macro values-list (arg)
-      arg)))
 
 (luna-define-class shimbun-cnet (shimbun-rss shimbun) ())
 
@@ -78,8 +72,8 @@ _=ro*?]4:|n>]ZiLZ2LEo^2nr('C<+`lO~/!R[lH'N'4X&%\\I}8T!wt")))
 
 (luna-define-method shimbun-rss-process-date ((shimbun shimbun-cnet) string)
   "Convert a slightly corrupted date string to a date string in right format."
-  (multiple-value-bind (sec min hour day month year dow dst zone)
-      (values-list (decode-time (shimbun-time-parse-string string)))
+  (cl-multiple-value-bind (sec min hour day month year dow dst zone)
+      (cl-values-list (decode-time (shimbun-time-parse-string string)))
     (setq zone (/ zone 60))
     (shimbun-make-date-string year month day
 			      (format "%02d:%02d" hour min)
@@ -100,8 +94,8 @@ body."
 	    (level 1))
 	(while (re-search-forward "<\\(div\\|\\(/div>\\)\\)" nil t)
 	  (if (match-beginning 2)
-	      (decf level)
-	    (incf level))
+	      (cl-decf level)
+	    (cl-incf level))
 	  (when (zerop level)
 	    (delete-region (point) (point-max))
 	    (delete-region (point-min) start)
@@ -118,10 +112,10 @@ following part."
   (let ((level 0))
     (while (re-search-backward "<\\(div\\|\\(/div>\\)\\)" nil t)
       (if (match-beginning 2)
-	  (decf level)
-	(incf level)))
+	  (cl-decf level)
+	(cl-incf level)))
     (goto-char (point-max))
-    (while (>= (decf level) 0)
+    (while (>= (cl-decf level) 0)
       (insert "</div>\n"))))
 
 (defun shimbun-cnet-remove-useless-tags ()

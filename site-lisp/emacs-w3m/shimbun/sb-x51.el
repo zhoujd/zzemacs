@@ -1,6 +1,6 @@
-;;; sb-x51.el --- shimbun backend for x51.org -*- coding: iso-2022-7bit; -*-
+;;; sb-x51.el --- shimbun backend for x51.org
 
-;; Copyright (C) 2004, 2005, 2006, 2010 Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
+;; Copyright (C) 2004-2006, 2010, 2019 Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
 
 ;; Author: Tsuyoshi CHO <tsuyoshi_cho@ybb.ne.jp>
 ;; Keywords: news blog
@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib)) ;; cl-incf
 (require 'shimbun)
 (require 'sb-rss)
 
@@ -120,7 +120,7 @@
 			   nil t))
 		;; push linked for page 2-end
 		(push (format "%s%s%d" url "?page=" count) indexes)
-		(incf count)))
+		(cl-incf count)))
 	    (widen)))
 	(setq indexes (nreverse indexes))
 	(catch 'stop
@@ -175,12 +175,12 @@
 		   (prog1
 		       (match-beginning 0)
 		     (goto-char start)))))
-    ;; Posted by : X51 | 2004&#24180;05&#26376;22&#26085; 23:15 $BG/7nF|(B
+    ;; Posted by : X51 | 2004&#24180;05&#26376;22&#26085; 23:15 年月日
     (when (re-search-forward
 	   "Posted by[^|]*\|\
- ?\\([0-9]*\\)\\(&#24180;\\|$BG/(B\\)\
-\\([0-9]*\\)\\(&#26376;\\|$B7n(B\\)\
-\\([0-9]*\\)\\(&#26085;\\|$BF|(B\\)\
+ ?\\([0-9]*\\)\\(&#24180;\\|年\\)\
+\\([0-9]*\\)\\(&#26376;\\|月\\)\
+\\([0-9]*\\)\\(&#26085;\\|日\\)\
  ?\\([012][0-9]:[0-5][0-9]\\)"
 	   end t)
       (shimbun-header-set-date

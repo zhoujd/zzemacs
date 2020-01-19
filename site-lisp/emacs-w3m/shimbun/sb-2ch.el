@@ -1,6 +1,6 @@
-;;; sb-2ch.el --- shimbun backend for 2ch.net -*- coding: iso-2022-7bit; -*-
+;;; sb-2ch.el --- shimbun backend for 2ch.net
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005 by (not 1)
+;; Copyright (C) 2001-2005, 2019 (not 1)
 
 ;; Author: (not 1)
 ;; Keywords: 2ch
@@ -28,10 +28,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl)
-  (require 'static))
-
+(eval-when-compile (require 'cl-lib)) ;; cl-incf
 (require 'shimbun)
 
 (eval-and-compile
@@ -39,7 +36,7 @@
   (luna-define-internal-accessors 'shimbun-2ch))
 
 (defcustom shimbun-2ch-group-alist nil
-  "*An alist of groups and their URLs."
+  "An alist of groups and their URLs."
   :group 'shimbun
   :type '(repeat
 	  (cons :format "%v" :indent 4
@@ -76,7 +73,7 @@ If optional NO-BREAK is non-nil, don't stop even when header found."
 	num uname uaddr uid subject date id
 	references body st point from)
     (goto-char (point-max))
-    (while (re-search-backward "<dt>\\([0-9]+\\) $B!'(B" nil t)
+    (while (re-search-backward "<dt>\\([0-9]+\\) ：" nil t)
       (goto-char (match-end 0))
       (setq point (match-beginning 0)
 	    num (string-to-number (match-string 1)))
@@ -89,7 +86,7 @@ If optional NO-BREAK is non-nil, don't stop even when header found."
        ((looking-at "<b>\\([^<]+\\)<")
 	(setq uaddr (match-string 1))))
       (when (re-search-forward "\
-$B!'(B\\([0-9]+\\)/\\([0-9]+\\)/\\([0-9]+\\)\\(\([^\)]\)\\)? \\([0-9]+:[0-9]+\\)"
+：\\([0-9]+\\)/\\([0-9]+\\)/\\([0-9]+\\)\\(([^)])\\)? \\([0-9]+:[0-9]+\\)"
 			       nil t)
 	(setq date (shimbun-make-date-string (string-to-number
 					      (match-string 1))
@@ -124,7 +121,7 @@ If optional NO-BREAK is non-nil, don't stop even when header found."
 		(when (or (re-search-forward "<a href=\\([0-9]+\\)" nil t)
 			  (re-search-forward ">>\\([0-9]+\\)[^0-9]" nil t)
 			  (re-search-forward "[^a-z]>\\([0-9]+\\)[^0-9]" nil t)
-			  (re-search-forward "$B!d(B\\([0-9]+\\)[^0-9]" nil t)
+			  (re-search-forward "＞\\([0-9]+\\)[^0-9]" nil t)
 			  (re-search-forward "&gt;\\([0-9]+\\)[^0-9]" nil t))
 		  (setq references
 			(format "<%s.%s@%s.2ch.net>"
@@ -135,11 +132,8 @@ If optional NO-BREAK is non-nil, don't stop even when header found."
 		(while (re-search-forward "</?[A-Za-z_][^>]*>" nil t)
 		  (delete-region (match-beginning 0) (match-end 0)))
 		(shimbun-mime-encode-string
-		 (static-if (fboundp 'truncate-string-to-width)
-		     (truncate-string-to-width (buffer-string)
-					       (- 80 (length "subject: ")))
-		   (truncate-string (buffer-string)
-				    (- 80 (length "subject: ")))))))
+		 (truncate-string-to-width (buffer-string)
+					   (- 80 (length "subject: "))))))
 	(when (if (eq num 1) (if last t) t)
 	  (push (shimbun-make-header
 		 num
@@ -170,7 +164,7 @@ If optional NO-BREAK is non-nil, don't stop even when header found."
 Unfortunately, the url name format might have been changed in 2ch"))
       (shimbun-2ch-parse-page shimbun
 			      (save-match-data
-				(string-match "^1-" index))
+				(string-match "\\`1-" index))
 			      (match-string 1 url);; ita
 			      (match-string 2 url);; sure
 			      nil 'no-break))))
@@ -206,7 +200,7 @@ Unfortunately, the url name format might have been changed in 2ch"))
 	    (setq ita (match-string 1 url)
 		  sure (match-string 2 url)))
 	  (setq headers (shimbun-2ch-parse-page shimbun
-						(string-match "^1-"
+						(string-match "\\`1-"
 							      (car indices))
 						ita sure
 						headers))
@@ -222,7 +216,7 @@ Unfortunately, the url name format might have been changed in 2ch"))
 			    indices))))
 	    (setq indices (nreverse indices))))
 	(when (and range
-		   (eq (incf count) range))
+		   (eq (cl-incf count) range))
 	  (setq indices nil))
 	(setq indices (cdr indices)))
       headers)))

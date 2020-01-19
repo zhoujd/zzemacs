@@ -1,11 +1,11 @@
-;;; sb-pocketgames.el --- shimbun backend class for www.pocketgames.jp. -*- coding: iso-2022-7bit; -*-
+;;; sb-pocketgames.el --- shimbun backend class for www.pocketgames.jp.
 
-;; Copyright (C) 2003, 2004, 2005, 2008 NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003-2005, 2008, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
-;; Version: $Id: sb-pocketgames.el,v 1.18 2008-01-17 23:38:36 yamaoka Exp $
-;; Last Modified: $Date: 2008-01-17 23:38:36 $
+;; Version: $Id: sb-pocketgames.el,v 1.18 2008/01/17 23:38:36 yamaoka Exp $
+;; Last Modified: $Date: 2008/01/17 23:38:36 $
 
 ;; This file is a part of shimbun.
 
@@ -36,7 +36,7 @@
 (defvar shimbun-pocketgames-groups '("news"))
 (defvar shimbun-pocketgames-coding-system 'shift_jis)
 (defvar shimbun-pocketgames-content-start
-  "<a class=\"pn-normal\" href=\"modules.php\\?op=modload\&amp;name=Search\\&amp;file=index\\&amp;action=search\\&amp;overview=1\\&amp;active_stories=[0-9]+\\&amp;stories_topics\[[0-9]+\]=\"><b>[^<]+</b></a>")
+  "<a class=\"pn-normal\" href=\"modules.php\\?op=modload\&amp;name=Search\\&amp;file=index\\&amp;action=search\\&amp;overview=1\\&amp;active_stories=[0-9]+\\&amp;stories_topics\\[[0-9]+\\]=\"><b>[^<]+</b></a>")
 (defvar shimbun-pocketgames-content-end
   "</body>")
 
@@ -63,7 +63,7 @@
 	(goto-char start)
 	(unless
 	    (re-search-forward
-	     "Posted by: \\(.+\\) on \\([0-9]+\\)/\\([0-9]+\\)/\\([0-9]+\\) (\\($B7n(B\\|$B2P(B\\|$B?e(B\\|$BLZ(B\\|$B6b(B\\|$BEZ(B\\|$BF|(B\\))  - \\([0-9][0-9]:[0-9][0-9]\\) JST <\/font>"
+	     "Posted by: \\(.+\\) on \\([0-9]+\\)/\\([0-9]+\\)/\\([0-9]+\\) (\\(月\\|火\\|水\\|木\\|金\\|土\\|日\\))  - \\([0-9][0-9]:[0-9][0-9]\\) JST <\/font>"
 	     end t nil)
 	  (throw 'quit nil))
 	(setq from (shimbun-mime-encode-string (match-string 1))

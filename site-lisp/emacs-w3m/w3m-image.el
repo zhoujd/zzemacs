@@ -1,6 +1,6 @@
-;;; w3m-image.el --- Image conversion routines.
+;;; w3m-image.el --- Image conversion routines -*- lexical-binding: t -*-
 
-;; Copyright (C) 2001, 2002, 2003, 2005, 2007, 2008
+;; Copyright (C) 2001-2003, 2005, 2007-2009, 2016-2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Yuuichi Teranishi  <teranisi@gohome.org>
@@ -38,59 +38,38 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 (require 'w3m-util)
 (require 'w3m-proc)
 
-(eval-when-compile
-  (if (not (fboundp 'defcustom))
-      (require 'pcustom)))
+;; Variables which should be defined in the other module at run-time.
+(defvar w3m-async-exec)
+(defvar w3m-current-url)
+(defvar w3m-profile-directory)
+(defvar w3m-work-buffer-name)
+(defvar w3m-work-buffer-list)
 
-;; Functions and variables which should be defined in the other module
-;; at run-time.
-(eval-when-compile
-  (defvar w3m-async-exec)
-  (defvar w3m-current-url)
-  (defvar w3m-profile-directory)
-  (defvar w3m-work-buffer-name)
-  (defvar w3m-work-buffer-list))
-
-(defcustom w3m-imagick-convert-program (if noninteractive
-					   nil
-					 (w3m-which-command "convert"))
-  "*Program name of ImageMagick's `convert'."
+(defcustom w3m-imagick-convert-program (w3m-which-command "convert")
+  "Program name of ImageMagick's `convert'."
   :group 'w3m
-  :set (lambda (symbol value)
-	 (custom-set-default symbol (if (and (not noninteractive)
-					     value)
-					(if (file-name-absolute-p value)
-					    (if (file-executable-p value)
-						value)
-					  (w3m-which-command value)))))
-  :type 'file)
+  :type '(file :match (lambda (_widget value)
+			(or (not value) (stringp value)))
+	       :value-to-internal (lambda (_widget value) (or value "nil"))
+	       :value-to-external (lambda (_widget value)
+				    (unless (equal value "nil") value))))
 
-(defcustom w3m-imagick-identify-program (if noninteractive
-					    nil
-					  (w3m-which-command "identify"))
-  "*Program name of ImageMagick's `identify'."
+(defcustom w3m-imagick-identify-program (w3m-which-command "identify")
+  "Program name of ImageMagick's `identify'."
   :group 'w3m
-  :set (lambda (symbol value)
-	 (custom-set-default symbol (if (and (not noninteractive)
-					     value)
-					(if (file-name-absolute-p value)
-					    (if (file-executable-p value)
-						value)
-					  (w3m-which-command value)))))
-  :type 'file)
+  :type '(file :match (lambda (_widget value)
+			(or (not value) (stringp value)))
+	       :value-to-internal (lambda (_widget value) (or value "nil"))
+	       :value-to-external (lambda (_widget value)
+				    (unless (equal value "nil") value))))
 
 ;;; Image handling functions.
 (defcustom w3m-resize-images (and w3m-imagick-convert-program t)
-  "*If non-nil, resize images to the specified width and height."
+  "If non-nil, resize images to the specified width and height."
   :group 'w3m
-  :set (lambda (symbol value)
-	 (custom-set-default symbol (and w3m-imagick-convert-program value)))
   :type 'boolean)
 
 (put 'w3m-imagick-convert-program 'available-p 'unknown)
@@ -99,7 +78,8 @@
   "Return non-nil if ImageMagick's `convert' program is available.
 If not, `w3m-imagick-convert-program' and `w3m-resize-images' are made
 nil forcibly."
-  (cond ((eq (get 'w3m-imagick-convert-program 'available-p) 'yes)
+  (cond (noninteractive nil)
+	((eq (get 'w3m-imagick-convert-program 'available-p) 'yes)
 	 t)
 	((eq (get 'w3m-imagick-convert-program 'available-p) 'no)
 	 nil)
@@ -108,18 +88,16 @@ nil forcibly."
 	 (put 'w3m-imagick-convert-program 'available-p 'yes)
 	 ;; Check whether convert supports png32.
 	 (put 'w3m-imagick-convert-program 'png32
-	      (unless (or (featurep 'xemacs)
-			  (< emacs-major-version 22))
-		(with-temp-buffer
-		  (set-buffer-multibyte nil)
-		  (insert "P1 1 1 1")
-		  (condition-case nil
-		      (call-process-region (point-min) (point-max)
-					   w3m-imagick-convert-program
-					   t t nil "pbm:-" "png32:-")
-		    (error))
-		  (goto-char (point-min))
-		  (looking-at "\211PNG\r\n"))))
+	      (with-temp-buffer
+		(set-buffer-multibyte nil)
+		(insert "P1 1 1 1")
+		(condition-case nil
+		    (call-process-region (point-min) (point-max)
+					 w3m-imagick-convert-program
+					 t t nil "pbm:-" "png32:-")
+		  (error))
+		(goto-char (point-min))
+		(looking-at "\211PNG\r\n")))
 	 t)
 	(t
 	 (when w3m-imagick-convert-program
@@ -139,6 +117,7 @@ nil forcibly."
 	   (coding-system-for-read 'binary)
 	   (coding-system-for-write 'binary)
 	   (default-process-coding-system (cons 'binary 'binary))
+	   (process-environment (cons "LC_ALL=C" process-environment))
 	   return)
       (write-region (point-min) (point-max) in-file nil 'nomsg)
       (erase-buffer)
@@ -162,10 +141,7 @@ nil forcibly."
       (if (and (numberp return)
 	       (zerop return))
 	  t
-	(message "Image conversion failed (code `%s')"
-		 (if (stringp return)
-		     (string-as-multibyte return)
-		   return))
+	(message "Image conversion failed (code `%s')" return)
 	nil))))
 
 (defun w3m-imagick-convert-data (data from-type to-type &rest args)
@@ -190,9 +166,9 @@ nil forcibly."
 	(buffer-string))))
 
 (defun w3m-imagick-start-convert-buffer (handler from-type to-type &rest args)
-  (lexical-let ((in-file (make-temp-name
-			  (expand-file-name "w3mel" w3m-profile-directory)))
-		(out-buffer (current-buffer)))
+  (let ((in-file (make-temp-name
+		  (expand-file-name "w3mel" w3m-profile-directory)))
+	(out-buffer (current-buffer)))
     (setq w3m-current-url "non-existent")
     (let ((coding-system-for-write 'binary)
 	  (buffer-file-coding-system 'binary)
@@ -259,7 +235,7 @@ a large number of bits per pixel."
 			  0 255 255 255 0 0 0 0 0 0)
 		  "ico" "xpm")
 	       (error nil))))
-    (and xpm (string-match "\"2 1 2 1\"" xpm) t)))
+    (and xpm (string-match "\" *2 +1 +2 +1 *\"" xpm) t)))
 
 (provide 'w3m-image)
 

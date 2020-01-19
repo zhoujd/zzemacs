@@ -1,7 +1,6 @@
-;;; sb-cnet-jp.el --- shimbun backend for CNET Japan -*- coding: iso-2022-7bit -*-
+;;; sb-cnet-jp.el --- shimbun backend for CNET Japan -*- coding: utf-8 -*-
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2010
-;; NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003-2007, 2010, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio     <minakaji@namazu.org>,
 ;;         TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -69,7 +68,7 @@
   "<div class=\"\\(?:leaf\\|article\\)_body\\(?: \\(?:article\\|leaf\\)_body\\)?\">")
 (defvar shimbun-cnet-jp-content-end
   "\\(<div \\(class=\"article_footer\"\\|id=\"bubble_tooltip\"\\)>\\|\
-<!--h3>$B%H%i%C%/%P%C%/0lMw(B</h3-->\\)")
+<!--h3>トラックバック一覧</h3-->\\)")
 (defvar shimbun-cnet-jp-x-face-alist
   '(("default" . "X-Face: 0p7.+XId>z%:!$ahe?x%+AEm37Abvn]n\
 *GGh+>v=;[3`a{1lqO[$,~3C3xU_ri>[JwJ!9l0\n ~Y`b*eXAQ:*q=bBI\
@@ -125,10 +124,10 @@ _=ro*?]4:|n>]ZiLZ2LEo^2nr('C<+`lO~/!R[lH'N'4X&%\\I}8T!wt")))
   (when (re-search-forward "\\(s.prop2=\"\\([^\"]+\\)\"\\|\
 <dt +class=\"author\">\\([^\n]+\\)</dt>\\)" nil t)
     (let ((from (or (match-string 2) (match-string 3))))
-      (setq from (shimbun-replace-in-string from "$BJ8!'(B" ""))
-      (setq from (shimbun-replace-in-string from "$BK]Lu9;@5!'(B*" ""))
-      (setq from (shimbun-replace-in-string from " *<br */?> *" ", "))
-      (setq from (shimbun-replace-in-string from "$B!"(B" ", "))
+      (setq from (replace-regexp-in-string "文：" "" from))
+      (setq from (replace-regexp-in-string "翻訳校正：*" "" from))
+      (setq from (replace-regexp-in-string " *<br */?> *" ", " from))
+      (setq from (replace-regexp-in-string "、" ", " from))
       (shimbun-header-set-from header from))))
 
 (provide 'sb-cnet-jp)

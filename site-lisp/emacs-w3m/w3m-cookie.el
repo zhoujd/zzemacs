@@ -1,6 +1,6 @@
 ;;; w3m-cookie.el --- Functions for cookie processing
 
-;; Copyright (C) 2002, 2003, 2005, 2006, 2008, 2009, 2010
+;; Copyright (C) 2002, 2003, 2005, 2006, 2008-2010, 2017, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Teranishi Yuuichi  <teranisi@gohome.org>
@@ -38,33 +38,23 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 (require 'w3m-util)
 (require 'w3m)
+(require 'url-domsuf)
 
 (defvar w3m-cookies nil
   "A list of cookie elements.
 Currently only browser local cookies are stored.")
 
-(defconst w3m-cookie-two-dot-domains-regexp
-  (concat "\\.\\(?:"
-	  (mapconcat 'identity (list "com" "edu" "net" "org" "gov" "mil" "int")
-		     "\\|")
-	  "\\)$")
-  "A regular expression of top-level domains that only require two matching
-'.'s in the domain name in order to set a cookie.")
-
 (defcustom w3m-cookie-accept-domains nil
   "A list of trusted domain name string."
   :group 'w3m
-  :type '(repeat (string :format "Domain name: %v\n" :size 0)))
+  :type '(repeat (string :format "Domain name: %v")))
 
 (defcustom w3m-cookie-reject-domains nil
   "A list of untrusted domain name string."
   :group 'w3m
-  :type '(repeat (string :format "Domain name: %v\n" :size 0)))
+  :type '(repeat (string :format "Domain name: %v")))
 
 (defcustom w3m-cookie-accept-bad-cookies nil
   "If nil, don't accept bad cookies.
@@ -77,7 +67,7 @@ If ask, ask user whether accept bad cookies or not."
 	  (const :tag "Always accept bad cookies" t)))
 
 (defcustom w3m-cookie-save-cookies t
-  "*Non-nil means save cookies when emacs-w3m cookie system shutdown."
+  "Non-nil means save cookies when emacs-w3m cookie system shutdown."
   :group 'w3m
   :type 'boolean)
 
@@ -85,26 +75,35 @@ If ask, ask user whether accept bad cookies or not."
   (expand-file-name ".cookie" w3m-profile-directory)
   "File in which cookies are kept."
   :group 'w3m
-  :type '(file :size 0))
+  :type 'file)
 
 ;;; Cookie accessor.
 (defmacro w3m-cookie-url (cookie)
+  "Return the url of COOKIE."
   `(aref ,cookie 0))
 (defmacro w3m-cookie-domain (cookie)
+  "Return the domain of COOKIE."
   `(aref ,cookie 1))
 (defmacro w3m-cookie-secure (cookie)
+  "Return whether COOKIE is secure."
   `(aref ,cookie 2))
 (defmacro w3m-cookie-name (cookie)
+  "Return the name of COOKIE."
   `(aref ,cookie 3))
 (defmacro w3m-cookie-value (cookie)
+  "Return the value of COOKIE."
   `(aref ,cookie 4))
 (defmacro w3m-cookie-path (cookie)
+  "Return the relative file path of COOKIE."
   `(aref ,cookie 5))
 (defmacro w3m-cookie-version (cookie)
+  "Return a version information of COOKIE."
   `(aref ,cookie 6))
 (defmacro w3m-cookie-expires (cookie)
+  "Return when COOKIE will expire."
   `(aref ,cookie 7))
 (defmacro w3m-cookie-ignore (cookie)
+  "Return t if COOKIE is marked to be ignored by emacs-w3m."
   `(aref ,cookie 8))
 
 (defun w3m-cookie-create (&rest args)
@@ -164,10 +163,10 @@ If ask, ask user whether accept bad cookies or not."
 		    ;; A special case that domain name is ".hostname".
 		    (string= (concat "." host) (w3m-cookie-domain c))
 		    (string-match (concat
-				   (regexp-quote (w3m-cookie-domain c)) "$")
+				   (regexp-quote (w3m-cookie-domain c)) "\\'")
 				  host))
 		   (string-match (concat
-				  "^" (regexp-quote (w3m-cookie-path c)))
+				  "\\`" (regexp-quote (w3m-cookie-path c)))
 				 path))
 	  (if (w3m-cookie-secure c)
 	      (if secure
@@ -261,7 +260,7 @@ If ask, ask user whether accept bad cookies or not."
 				      (point)))))))
 	(push (cons name value) results)
 	(skip-chars-forward "; \n\t"))
-      results)))
+      (nreverse results))))
 
 (defun w3m-cookie-trusted-host-p (host)
   "Returns non-nil when the HOST is specified as trusted by user."
@@ -274,10 +273,10 @@ If ask, ask user whether accept bad cookies or not."
        ((string= (car accept) ".")
 	(setq regexp ".*"))
        ((string= (car accept) ".local")
-	(setq regexp "^[^\\.]+$"))
+	(setq regexp "\\`[^\\.]+\\'"))
        ((eq (string-to-char (car accept)) ?.)
-	(setq regexp (concat (regexp-quote (car accept)) "$")))
-       (t (setq regexp (concat "^" (regexp-quote (car accept)) "$"))))
+	(setq regexp (concat (regexp-quote (car accept)) "\\'")))
+       (t (setq regexp (concat "\\`" (regexp-quote (car accept)) "\\'"))))
       (when (string-match regexp host)
 	(setq tlen (length (car accept))
 	      accept nil))
@@ -287,10 +286,10 @@ If ask, ask user whether accept bad cookies or not."
        ((string= (car reject) ".")
 	(setq regexp ".*"))
        ((string= (car reject) ".local")
-	(setq regexp "^[^\\.]+$"))
+	(setq regexp "\\`[^\\.]+\\'"))
        ((eq (string-to-char (car reject)) ?.)
-	(setq regexp (concat (regexp-quote (car reject)) "$")))
-       (t (setq regexp (concat "^" (regexp-quote (car reject)) "$"))))
+	(setq regexp (concat (regexp-quote (car reject)) "\\'")))
+       (t (setq regexp (concat "\\`" (regexp-quote (car reject)) "\\'"))))
       (when (string-match regexp host)
 	(setq rlen (length (car reject))
 	      reject nil))
@@ -305,46 +304,40 @@ If ask, ask user whether accept bad cookies or not."
 
 ;;; Version 0 cookie.
 (defun w3m-cookie-1-acceptable-p (host domain)
-  (let ((numdots 0)
-	(last nil)
-	(case-fold-search t)
-	(mindots 3))
-    (while (setq last (string-match "\\." domain last))
-      (setq numdots (1+ numdots)
-	    last (1+ last)))
-    (if (string-match w3m-cookie-two-dot-domains-regexp domain)
-	(setq mindots 2))
-    (cond
-     ((string= host domain)		; Apparently netscape lets you do this
-      t)
-     ;; A special case that domain name is ".hostname".
-     ((string= (concat "." host) domain)
-      t)
-     ((>= numdots mindots)		; We have enough dots in domain name
-      ;; Need to check and make sure the host is actually _in_ the
-      ;; domain it wants to set a cookie for though.
-      (string-match (concat (regexp-quote domain) "$") host))
-     (t
-      nil))))
+  (cond
+   ((string= host domain)		; Apparently netscape lets you do this
+    t)
+   ;; A special case that domain name is ".hostname".
+   ((string= (concat "." host) domain)
+    t)
+   (t
+    (url-domsuf-cookie-allowed-p (if (eq (aref domain 0) ?.)
+				     (substring domain 1)
+				   domain)))))
 
 (defun w3m-cookie-1-set (url &rest args)
   ;; Set-Cookie:, version 0 cookie.
   (let ((http-url (w3m-parse-http-url url))
 	(case-fold-search t)
-	secure domain expires path rest)
+	secure domain expires max-age path cookie)
     (when http-url
       (setq secure (and (w3m-assoc-ignore-case "secure" args) t)
 	    domain (or (cdr-safe (w3m-assoc-ignore-case "domain" args))
 		       (w3m-http-url-host http-url))
 	    expires (cdr-safe (w3m-assoc-ignore-case "expires" args))
+	    max-age (cdr-safe (w3m-assoc-ignore-case "max-age" args))
 	    path (or (cdr-safe (w3m-assoc-ignore-case "path" args))
 		     (file-name-directory
-		      (w3m-http-url-path http-url))))
-      (while args
-	(if (not (member (downcase (car (car args)))
-			 '("secure" "domain" "expires" "path")))
-	    (setq rest (cons (car args) rest)))
-	(setq args (cdr args)))
+		      (w3m-http-url-path http-url)))
+	    cookie (car args))
+      ;; Convert Max-Age to Expires
+      (and max-age
+	   (setq max-age
+		 (ignore-errors
+		   (format-time-string "%a %b %d %H:%M:%S %Y GMT"
+				       (time-add nil (read max-age))
+				       t)))
+	   (setq expires max-age))
       (cond
        ((not (w3m-cookie-trusted-host-p (w3m-http-url-host http-url)))
 	;; The site was explicity marked as untrusted by the user
@@ -355,22 +348,22 @@ If ask, ask user whether accept bad cookies or not."
 		 (y-or-n-p (format "Accept bad cookie from %s for %s? "
 				   (w3m-http-url-host http-url) domain))))
 	;; Cookie is accepted by the user, and passes our security checks
-	(dolist (elem rest)
-	  ;; If a CGI script wishes to delete a cookie, it can do so by
-	  ;; returning a cookie with the same name, and an expires time
-	  ;; which is in the past.
-	  (when (and expires
-		     (w3m-time-newer-p (current-time)
-				       (w3m-time-parse-string expires)))
-	    (w3m-cookie-remove domain path (car elem)))
-	  (w3m-cookie-store
-	   (w3m-cookie-create :url url
-			      :domain domain
-			      :name (car elem)
-			      :value (cdr elem)
-			      :path path
-			      :expires expires
-			      :secure secure))))
+
+	;; If a CGI script wishes to delete a cookie, it can do so by
+	;; returning a cookie with the same name, and an expires time
+	;; which is in the past.
+	(when (and expires
+		   (w3m-time-newer-p (current-time)
+				     (w3m-time-parse-string expires)))
+	  (w3m-cookie-remove domain path (car cookie)))
+	(w3m-cookie-store
+	 (w3m-cookie-create :url url
+			    :domain domain
+			    :name (car cookie)
+			    :value (cdr cookie)
+			    :path path
+			    :expires expires
+			    :secure secure)))
        (t
 	(message "%s tried to set a cookie for domain %s - rejected."
 		 (w3m-http-url-host http-url) domain))))))
@@ -410,7 +403,14 @@ If ask, ask user whether accept bad cookies or not."
 
 (defun w3m-cookie-clear ()
   "Clear cookie list."
-  (setq w3m-cookies nil))
+  (interactive)
+  (setq w3m-cookies nil)
+  (dolist (buffer (w3m-list-buffers t))
+    (with-current-buffer buffer
+      (when (equal w3m-current-url "about://cookie/")
+	(let ((w3m-message-silent t))
+	  (w3m-history-remove-properties '(:forms nil :post-data nil))
+	  (w3m-reload-this-page nil t))))))
 
 (defun w3m-cookie-save (&optional domain)
   "Save cookies.
@@ -449,15 +449,27 @@ When DOMAIN is non-nil, only save cookies whose domains match it."
     (setq w3m-cookie-init t)))
 
 ;;;###autoload
-(defun w3m-cookie-shutdown ()
+(defun w3m-cookie-shutdown (&optional interactive-p)
   "Save cookies, and reset cookies' data."
-  (interactive)
-  (when w3m-cookie-save-cookies
-    (w3m-cookie-save))
-  (setq w3m-cookie-init nil)
-  (w3m-cookie-clear)
-  (if (get-buffer " *w3m-cookie-parse-temp*")
-      (kill-buffer (get-buffer " *w3m-cookie-parse-temp*"))))
+  (interactive (list t))
+  ;; Don't error out no matter what happens
+  ;; since `kill-emacs-hook' runs this function.
+  (condition-case err
+      (progn
+	(when w3m-cookie-save-cookies
+	  (w3m-cookie-save))
+	(setq w3m-cookie-init nil)
+	(w3m-cookie-clear)
+        (let ((buf (get-buffer " *w3m-cookie-parse-temp*")))
+          (when buf
+            (kill-buffer buf))))
+    (error
+     (if interactive-p
+	 (signal (car err) (cdr err))
+       (message "Error while running w3m-cookie-shutdown: %s"
+		(error-message-string err))))))
+
+(add-hook 'kill-emacs-hook 'w3m-cookie-shutdown)
 
 ;;;###autoload
 (defun w3m-cookie-set (url beg end)
@@ -477,7 +489,7 @@ BEG and END should be an HTTP response header region on current buffer."
 	  (if (match-beginning 1)
 	      (setq version 1))
 	  (apply
-	   (case version
+	   (pcase version
 	     (0 'w3m-cookie-1-set)
 	     (1 'w3m-cookie-2-set))
 	   url (w3m-cookie-parse-args data 'nodowncase)))))))
@@ -490,7 +502,8 @@ BEG and END should be an HTTP response header region on current buffer."
 	 (cookies (and http-url
 		       (w3m-cookie-retrieve (w3m-http-url-host http-url)
 					    (w3m-http-url-path http-url)
-					    (w3m-http-url-secure http-url)))))
+					    (w3m-http-url-secure http-url))))
+	 value)
     ;; When sending cookies to a server, all cookies with a more specific path
     ;; mapping should be sent before cookies with less specific path mappings.
     (setq cookies (sort cookies
@@ -499,8 +512,9 @@ BEG and END should be an HTTP response header region on current buffer."
 			     (length (w3m-cookie-path y))))))
     (when cookies
       (mapconcat (lambda (cookie)
-		   (concat (w3m-cookie-name cookie)
-			   "=" (w3m-cookie-value cookie)))
+		   (if (setq value (w3m-cookie-value cookie))
+		       (concat (w3m-cookie-name cookie) "=" value)
+		     (w3m-cookie-name cookie)))
 		 cookies
 		 "; "))))
 
@@ -508,67 +522,127 @@ BEG and END should be an HTTP response header region on current buffer."
 (defun w3m-cookie (&optional no-cache)
   "Display cookies and enable you to manage them."
   (interactive "P")
-  (w3m-goto-url "about://cookie/" no-cache))
+  (unless w3m-use-cookies
+    (when (y-or-n-p "Use of cookies is currently disable.  Enable? ")
+      (setq w3m-use-cookies t)))
+  (when w3m-use-cookies
+    (w3m-goto-url-new-session "about://cookie/" no-cache)
+    (w3m-history-minimize)))
 
 ;;;###autoload
 (defun w3m-about-cookie (url &optional no-decode no-cache post-data &rest args)
-  "Make the html contents to display and to enable you to manage cookies."
-  (unless w3m-use-cookies (error "You must enable emacs-w3m to use cookies."))
+  "Make the html contents to display and to enable you to manage cookies.
+To delete all cookies associated with amazon.com for example, do it in
+the following two steps:
+
+1. Mark them `unused' (type `C-c C-c' or press any OK button).
+
+Limit to [amazon.com          ] <= [ ]regexp  [OK]
+( )Noop  ( )Use all  (*)Unuse all  ( )Delete unused all  [OK]
+
+2. Delete cookies that are marked `unused'.
+
+Limit to [amazon.com          ] <= [ ]regexp  [OK]
+( )Noop  ( )Use all  ( )Unuse all  (*)Delete unused all  [OK]
+
+You can mark cookies on the one-by-one basis of course.  The `Limit-to'
+string is case insensitive and allows a regular expression."
   (w3m-cookie-setup)
-  (let ((pos 0))
+  (let ((case-fold-search t)
+	(pos 0)
+	;; The car is a string used to limit cookies to the ones matching,
+	;; and the cdr is a boolean flag that specifies whether the string
+	;; is a regexp or not.
+	(match '(nil . nil))
+	delete dels cookies regexp)
     (when post-data
       (dolist (pair (split-string post-data "&"))
 	(setq pair (split-string pair "="))
-	(setf (w3m-cookie-ignore
-	       (nth (string-to-number (car pair)) w3m-cookies))
-	      (eq (string-to-number (cadr pair)) 0))))
+	(pcase (car pair)
+	  ("delete" (setq delete (cadr pair)))
+	  ("re-search" (setcdr match t))
+	  ("search" (setcar match (replace-regexp-in-string
+				   "[\n\r].*" ""
+				   (w3m-url-decode-string (cadr pair)))))
+	  (_ (when (equal (cadr pair) "0")
+	       (push (string-to-number (car pair)) dels))))))
+    (if (zerop (length (car match)))
+	(setq match nil
+	      cookies w3m-cookies)
+      (setq regexp (car match))
+      (unless (cdr match)
+	(setq regexp (regexp-quote regexp)))
+      (dolist (cookie w3m-cookies)
+	(when (string-match regexp (w3m-cookie-url cookie))
+	  (push cookie cookies)))
+      (setq cookies (nreverse cookies)))
+    (pcase delete
+      ("0" (dolist (del dels)
+	     (setf (w3m-cookie-ignore (nth del cookies)) t)))
+      ("1" (dolist (cookie cookies)
+	     (setf (w3m-cookie-ignore cookie) nil)))
+      ("2" (dolist (cookie cookies)
+	     (setf (w3m-cookie-ignore cookie) t)))
+      ("3" (progn
+	     (dolist (del dels)
+	       (setf (w3m-cookie-ignore (nth del cookies)) t))
+	     (dolist (cookie cookies)
+	       (when (w3m-cookie-ignore cookie)
+		 (setq cookies (delq cookie cookies)
+		       w3m-cookies (delq cookie w3m-cookies)))))))
     (insert
-     (concat
-      "\
-<html><head><title>Cookies</title></head>
+     (concat ;; Allow nil values in operand.
+      "<html><head><title>Cookies</title></head>
 <body><center><b>Cookies</b></center>
-<p><form method=\"post\" action=\"about://cookie/\">
+<form method=\"post\" action=\"about://cookie/\">
+<p><table><tr><td>Limit to <input type=\"text\" name=\"search\" value=\""
+      (car match)
+      "\">&nbsp;&lt;=&nbsp;<input type=checkbox name=\"re-search\""
+      (when (cdr match) " checked")
+      ">regexp&nbsp;<input type=submit value=\"OK\"></td></tr>
+<tr><td><input type=radio name=\"delete\" value=0 checked>Noop&nbsp;
+<input type=radio name=\"delete\" value=1>Use all&nbsp;
+<input type=radio name=\"delete\" value=2>Unuse all&nbsp;
+<input type=radio name=\"delete\" value=3>Delete unused all&nbsp;
+<input type=submit value=\"OK\"></td></tr></table></p>
 <ol>"))
-    (dolist (cookie w3m-cookies)
+    (dolist (cookie cookies)
       (insert
-       (concat
-	"<li><h1><a href=\""
+       (concat ;; Allow nil values in operand.
+	"<p><li><h1><a href=\""
 	(w3m-cookie-url cookie)
 	"\">"
 	(w3m-cookie-url cookie)
 	"</a></h1>"
 	"<table cellpadding=0>"
-	"<tr><td width=\"80\"><b>Cookie:</b></td><td>"
-	(w3m-cookie-name cookie) "=" (w3m-cookie-value cookie)
-	"</td></tr>"
+	"<tr><td width=\"80\"><b>Cookie:</b></td><td><nobr>"
+	(w3m-cookie-name cookie) "=" (or (w3m-cookie-value cookie) "(no value)")
+	"</nobr></td></tr>"
 	(when (w3m-cookie-expires cookie)
-	  (concat
-	   "<tr><td width=\"80\"><b>Expires:</b></td><td>"
-	   (w3m-cookie-expires cookie)
-	   "</td></tr>"))
+	  (concat "<tr><td width=\"80\"><b>Expires:</b></td><td>"
+		  (w3m-cookie-expires cookie)
+		  "</td></tr>"))
 	"<tr><td width=\"80\"><b>Version:</b></td><td>"
 	(number-to-string (w3m-cookie-version cookie))
 	"</td></tr>"
 	(when (w3m-cookie-domain cookie)
-	  (concat
-	   "<tr><td width=\"80\"><b>Domain:</b></td><td>"
-	   (w3m-cookie-domain cookie)
-	   "</td></tr>"))
+	  (concat "<tr><td width=\"80\"><b>Domain:</b></td><td>"
+		  (w3m-cookie-domain cookie)
+		  "</td></tr>"))
 	(when (w3m-cookie-path cookie)
-	  (concat
-	   "<tr><td width=\"80\"><b>Path:</b></td><td>"
-	   (w3m-cookie-path cookie)
-	   "</td></tr>"))
+	  (concat "<tr><td width=\"80\"><b>Path:</b></td><td>"
+		  (w3m-cookie-path cookie)
+		  "</td></tr>"))
 	"<tr><td width=\"80\"><b>Secure:</b></td><td>"
 	(if (w3m-cookie-secure cookie) "Yes" "No")
-	"</td></tr><tr><td>"
-	"<tr><td width=\"80\"><b>Use:</b></td><td>"
+	"</td></tr><tr><td width=\"80\"><b>Use:</b></td><td>"
 	(format "<input type=radio name=\"%d\" value=1%s>Yes"
 		pos (if (w3m-cookie-ignore cookie) "" " checked"))
 	"&nbsp;&nbsp;"
 	(format "<input type=radio name=\"%d\" value=0%s>No"
 		pos (if (w3m-cookie-ignore cookie) " checked" ""))
-	"</td></tr><tr><td><input type=submit value=\"OK\"></table><p>"))
+	"&nbsp;&nbsp;"
+	"<input type=submit value=\"OK\"></td></tr></table>"))
       (setq pos (1+ pos)))
     (insert "</ol></form></body></html>")
     "text/html"))

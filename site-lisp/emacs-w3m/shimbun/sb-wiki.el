@@ -1,6 +1,6 @@
 ;;; sb-wiki.el --- shimbun backend for wiki
 
-;; Copyright (C) 2003, 2004, 2006 NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003, 2004, 2006, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
@@ -48,9 +48,9 @@
      nil
      "<div class=\"section\">"
      "<div class=\"sidebar\">"))
-  "*An alist of Wiki shimbun group definition.
+  "An alist of Wiki shimbun group definition.
 Each element is a list such as
-   \(NAME URL ADDRESS X-FACE CONTENT-START CONTENT-END\).
+   (NAME URL ADDRESS X-FACE CONTENT-START CONTENT-END).
 NAME is a shimbun group name.
 URL is the URL for Wiki access point of the group.
 Note that sb-wiki.el supports only RSS version 1.0 (0.91 does not
@@ -63,7 +63,8 @@ Optional CONTENT-END is a regexp string that represents content
 start of each article."
   :group 'shimbun
   :type '(repeat
-	  (group (string :tag "Group name")
+	  (group :format "%v" :indent 4
+		 (string :tag "Group name")
 		 (string :tag "URL")
 		 (string :tag "Site owner's mail address")
 		 (choice (string :tag "X-Face")
@@ -106,7 +107,7 @@ start of each article."
 			   (match-string-no-properties 3 date)
 			   (match-string-no-properties 4 date)
 			   (match-string-no-properties 5 date)))
-  (format "<%s%%%s@%s>" datedesc page host)))
+    (format "<%s%%%s@%s>" datedesc page host)))
 
 (luna-define-method shimbun-index-url ((shimbun shimbun-wiki))
   (cadr (assoc (shimbun-current-group-internal shimbun)

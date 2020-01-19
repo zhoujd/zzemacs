@@ -1,6 +1,6 @@
-;;; sb-kantei.el --- shimbun backend for kantei blog backnumber -*- coding: iso-2022-7bit; -*-
+;;; sb-kantei.el --- shimbun backend for kantei blog backnumber
 
-;; Copyright (C) 2001-2012 Yuuichi Teranishi <teranisi@gohome.org>
+;; Copyright (C) 2001-2012, 2019 Yuuichi Teranishi <teranisi@gohome.org>
 
 ;; Author: Yuuichi Teranishi <teranisi@gohome.org>
 ;; Keywords: news
@@ -149,39 +149,39 @@ jp/m-magazine/backnumber/hukuda.html")
     (cond ((string-equal group "blog-en")
 	   "Yoshihiko Noda")
 	  ((string-equal group "blog-ja")
-	   "$BLnED2BI'(B")
+	   "野田佳彦")
 	  ((string-equal group "blog-en.kan")
 	   "Naoto Kan")
 	  ((string-equal group "blog-ja.kan")
-	   "$B?{D>?M(B")
+	   "菅直人")
 	  ((string-equal group "m-magazine-cn.hatoyama")
-	   "$Ap/$B;3M3$A<M$BIW(B")
+	   "鸠山由纪夫")
 	  ((string-equal group "m-magazine-kr.hatoyama")
-	   "$(CGOEd>_86(B $(C@/E0?@(B")
+	   "하토야마 유키오")
 	  ((string-equal group "m-magazine-en.hatoyama")
 	   "Yukio Hatoyama")
 	  ((string-equal group "m-magazine-ja.hatoyama")
-	   "$BH7;3M35*IW(B")
+	   "鳩山由紀夫")
 	  ((string-equal group "m-magazine-en.aso")
 	   "Taro Aso")
 	  ((string-equal group "m-magazine-ja.aso")
-	   "$BKc@8B@O:(B")
+	   "麻生太郎")
 	  ((string-equal group "m-magazine-en.fukuda")
 	   "Yasuo Fukuda")
 	  ((string-equal group "m-magazine-ja.fukuda")
-	   "$BJ!ED9/IW(B")
+	   "福田康夫")
 	  ((string-equal group "m-magazine-en.abe")
 	   "Shinzo Abe")
 	  ((string-equal group "m-magazine-ja.abe")
-	   "$B0BG\?8;0(B")
+	   "安倍晋三")
 	  ((string-equal group "m-magazine-en.koizumi")
 	   "Junichiro Koizumi")
 	  ((string-equal group "m-magazine-ja.koizumi")
-	   "$B>.@t=c0lO:(B")
+	   "小泉純一郎")
 	  ((string-equal group "m-magazine") ;; Backward compatibility.
-	   "$B>.@t=c0lO:(B")
+	   "小泉純一郎")
 	  (t
-	   "$BLnED2BI'(B"))))
+	   "野田佳彦"))))
 
 (luna-define-method shimbun-get-headers ((shimbun shimbun-kantei)
 					 &optional range)
@@ -292,7 +292,7 @@ jp/m-magazine/backnumber/hukuda.html")
 		      ;; 5. revision e.g., 2005/0602b.html
 		      "\\([^.]+\\)?"
 		      "\\.html\\)"
-		      "\"[^>]*>[\t\n ]*$B!Z(B[^$B![(B]+$B![(B[\t\n ]*"
+		      "\"[^>]*>[\t\n ]*【[^】]+】[\t\n ]*"
 		      ;; 6. subject
 		      "\\([^<]+\\)")))))
 	 (parent (shimbun-index-url shimbun))
@@ -320,8 +320,8 @@ jp/m-magazine/backnumber/hukuda.html")
 		  month (string-to-number (match-string 3))
 		  mday (string-to-number (match-string 4))
 		  url (match-string 1)
-		  subject (shimbun-replace-in-string (match-string 6)
-						     "[\t\n $B!!(B]+" " ")
+		  subject (replace-regexp-in-string "[\t\n 　]+" " "
+						    (match-string 6))
 		  rev (match-string 5))
 	    (if (and (member group '("blog-en" "blog-ja"))
 		     (prog2
@@ -406,8 +406,8 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 	       (progn
 		 (setq section (regexp-quote (match-string 1))
 		       start (match-end 0))
-		 (re-search-forward (concat "\[\t\n ]*<!--/" section
-					    "\\(?:$B$+$i(B\\)?-->")
+		 (re-search-forward (concat "[\t\n ]*<!--/" section
+					    "\\(?:から\\)?-->")
 				    nil t)))
 	  (progn
 	    (setq end (match-beginning 0))
@@ -415,8 +415,8 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 		     (setq section (regexp-quote (match-string 1)))
 		     (delete-region end (match-end 0))
 		     (insert "\n&#012;\n")
-		     (and (re-search-forward (concat "\[\t\n ]*<!--/" section
-						     "\\(?:$B$+$i(B\\)?-->")
+		     (and (re-search-forward (concat "[\t\n ]*<!--/" section
+						     "\\(?:から\\)?-->")
 					     nil t)
 			  (setq end (match-beginning 0)))))
 	    (if (and (re-search-forward "\
@@ -442,7 +442,7 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 	(replace-match "<br>\n"))
       (goto-char (point-min))
       (while (re-search-forward "\
-\[\t\n ]*</?\\(?:hr\\|span\\|table\\|td\\|tr\\)\\(?:[\t\n ]+[^>]+\\)?>[\t\n ]*"
+[\t\n ]*</?\\(?:hr\\|span\\|table\\|td\\|tr\\)\\(?:[\t\n ]+[^>]+\\)?>[\t\n ]*"
 				nil t)
 	(replace-match "\n"))
       (goto-char (point-min))
@@ -452,7 +452,7 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
       (while (re-search-forward "[\t\n ]*<![^>]+>[\t\n ]*" nil t)
 	(replace-match "\n"))
       (goto-char (point-min))
-      (while (re-search-forward "^[\t $B!!(B]+\n" nil t)
+      (while (re-search-forward "^[\t 　]+\n" nil t)
 	(delete-region (match-beginning 0) (match-end 0)))
       (goto-char (point-min))
       (while (re-search-forward "\\([\t\n ]*<br\\(?:[\t\n ]+[^>]*\\)?>\\)\
@@ -469,11 +469,8 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 <img[\t\n ]+[^>]+>\\(?:[\t\n ]*<[^/][>]+>\\)*\\)[\t\n ]*" nil t)
 	(replace-match "<br>\n\\1<br>\n"))
       ;; Shrink boundary lines.
-      (let ((limit (w3m-static-if (featurep 'xemacs)
-		       (when (device-on-window-system-p)
-			 (font-width (face-font 'default)))
-		     (when window-system
-		       (frame-char-width)))))
+      (let ((limit (when (display-graphic-p)
+		     (frame-char-width))))
 	(when limit
 	  (setq limit (* limit (1- (window-width))))
 	  (goto-char (point-min))
@@ -510,7 +507,7 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 	       (delete-region (point-min) (match-beginning 2))
 	       (goto-char (point-min))
 	       (while (re-search-forward "\
-\[\t\n $B!!(B]*<p>\\(?:[\t\n $B!!(B]*\\|[\t\n ]*&nbsp;[\t\n ]*\\)</p>[\t\n $B!!(B]*"
+[\t\n 　]*<p>\\(?:[\t\n 　]*\\|[\t\n ]*&nbsp;[\t\n ]*\\)</p>[\t\n 　]*"
 					 nil t)
 		 (replace-match "")))))
       ;; Zenkaku ASCII -> Hankaku
@@ -528,24 +525,24 @@ go[\t\n ]+to[\t\n ]+top[\t\n ]+of[\t\n ]+the[\t\n ]+page[\t\n ]*</a>\
 		   `(lambda (ignore)
 		      ,(cdr (nth
 			     (cond ((member from '("Naoto Kan"
-						   "$B?{D>?M(B"))
+						   "菅直人"))
 				    1)
 				   ((member from '("Yukio Hatoyama"
-						   "$BH7;3M35*IW(B"
-						   "$Ap/$B;3M3$A<M$BIW(B"
-						   "$(CGOEd>_86(B $(C@/E0?@(B"))
+						   "鳩山由紀夫"
+						   "鸠山由纪夫"
+						   "하토야마 유키오"))
 				    2)
 				   ((member from '("Taro Aso"
-						   "$BKc@8B@O:(B"))
+						   "麻生太郎"))
 				    3)
 				   ((member from '("Yasuo Fukuda"
-						   "$BJ!ED9/IW(B"))
+						   "福田康夫"))
 				    4)
 				   ((member from '("Shinzo Abe"
-						   "$B0BG\?8;0(B"))
+						   "安倍晋三"))
 				    5)
 				   ((member from '("Junichiro Koizumi"
-						   "$B>.@t=c0lO:(B"))
+						   "小泉純一郎"))
 				    6)
 				   (t
 				    0))

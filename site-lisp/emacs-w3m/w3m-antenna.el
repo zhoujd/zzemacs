@@ -1,6 +1,6 @@
-;;; w3m-antenna.el --- Utility to detect changes of WEB
+;;; w3m-antenna.el --- Utility to detect changes of WEB -*- lexical-binding: t -*-
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2007
+;; Copyright (C) 2001-2005, 2007, 2017, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -43,7 +43,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(require 'cl-lib) ;; cl-incf
+
 (require 'w3m-util)
 (require 'w3m-rss)
 (require 'w3m)
@@ -72,27 +73,6 @@ with :value-from."
 		      (setq value ""))
 		    value)))
   (widget-default-create widget))
-
-(eval-when-compile
-  ;; Compiler warning in Emacs 19.
-  (autoload 'widget-default-get "wid-edit"))
-
-(apply 'define-widget 'w3m-antenna-function 'function
-       "Bug-fixed version of the `function' widget.
-In Emacs 20.7 through 21.4 and XEmacs, it doesn't represent a value as
-a string internally, converts it into a string in the customization
-buffer, and provides the default value as `ignore'."
-       (if (and (fboundp 'widget-default-get)
-		(widget-default-get
-		 '(function :value-to-external ignore :value foo)))
-	   '(:value-create
-	     (lambda (widget)
-	       (widget-put widget :value
-			   (widget-sexp-value-to-internal widget value))
-	       (widget-field-value-create widget))
-	     :value-to-internal
-	     (lambda (widget value) value)
-	     :value ignore)))
 
 (defvar w3m-antenna-alist nil
   "A list of site information (internal variable).  nil means that
@@ -126,7 +106,7 @@ that consists of:
   (expand-file-name ".antenna" w3m-profile-directory)
   "File which has list of antenna URLs."
   :group 'w3m-antenna
-  :type '(file :size 0))
+  :type 'file)
 
 (defcustom w3m-antenna-refresh-interval nil
   "Interval time to update (to refresh) the antenna page automatically.
@@ -134,8 +114,8 @@ The value should be a positive integer in seconds, or nil which means
 not to update the page."
   :group 'w3m-antenna
   :type '(choice
-	  (const :tag "Not reload." nil)
-	  (integer :tag "Interval second.")))
+	  (const :tag "Not reload" nil)
+	  (integer :tag "Interval seconds")))
 
 (defcustom w3m-antenna-sites
   (unless noninteractive
@@ -148,10 +128,10 @@ not to update the page."
   :group 'w3m-antenna
   :type `(repeat
 	  (group
-	   :indent 7
-	   (w3m-antenna-string :format "URL: %v\n" :size 0
+	   :indent 2
+	   (w3m-antenna-string :format "URL: %v"
 			       :value-from w3m-antenna-tmp-url)
-	   (w3m-antenna-string :format "Title: %v\n" :size 0
+	   (w3m-antenna-string :format "Title: %v"
 			       :value-from w3m-antenna-tmp-title)
 	   (choice
 	    :tag "Procedure"
@@ -160,17 +140,21 @@ not to update the page."
 	    (const :tag "Check its current date provided by Hyper Nikki System"
 		   hns)
 	    (list :tag "Check RSS"
+		  :indent 4
 		  (function-item :format "" w3m-antenna-check-rss)
-		  (string :format "URL: %v\n" :value ""))
+		  (string :format "URL: %v" :value ""))
 	    (list :tag "Check the another changelog page"
+		  :indent 4
 		  (function-item :format "" w3m-antenna-check-another-page)
-		  (string :format "URL: %v\n" :value ""))
+		  (string :format "URL: %v" :value ""))
 	    (list :tag "Check the page linked by the anchor that matches"
+		  :indent 4
 		  (function-item :format "" w3m-antenna-check-anchor)
 		  (regexp :value "")
 		  (integer :value 0))
 	    (cons :tag "Check with a user defined function"
-		  (w3m-antenna-function
+		  :indent 4
+		  (function
 		   :match (lambda (widget value)
 			    (and (functionp value)
 				 (not (memq value
@@ -197,10 +181,11 @@ not to update the page."
   :group 'w3m-antenna
   :type '(choice
 	  :format "%{%t%}:\n %[Value Menu%] %v"
-	  (function-item :tag "Simple style." w3m-antenna-make-summary)
-	  (function-item :tag "Natsumican style."
-			 w3m-antenna-make-summary-like-natsumican)
-	  (function :format "User function: %v\n" :size 0)))
+	  (function-item :tag "Simple style" :format "%t"
+			 w3m-antenna-make-summary)
+	  (function-item :tag "Natsumican style" :format "%t"
+		 w3m-antenna-make-summary-like-natsumican)
+	  (function :format "User function: %v" :size 8)))
 
 (defcustom w3m-antenna-sort-changed-sites-function
   'w3m-antenna-sort-sites-by-time
@@ -208,11 +193,12 @@ not to update the page."
   :group 'w3m-antenna
   :type '(choice
 	  :format "%{%t%}:\n %[Value Menu%] %v"
-	  (function-item :tag "Sort by last modification time."
+	  (function-item :tag "Sort by last modification time" :format "%t"
 			 w3m-antenna-sort-sites-by-time)
-	  (function-item :tag "Sort by title." w3m-antenna-sort-sites-by-title)
-	  (function-item :tag "Do nothing." identity)
-	  (function :format "User function: %v\n" :size 0)))
+	  (function-item :tag "Sort by title" :format "%t"
+			 w3m-antenna-sort-sites-by-title)
+	  (function-item :tag "Do nothing" :format "%t" identity)
+	  (function :format "User function: %v" :size 8)))
 
 (defcustom w3m-antenna-sort-unchanged-sites-function
   'w3m-antenna-sort-sites-by-time
@@ -220,11 +206,12 @@ not to update the page."
   :group 'w3m-antenna
   :type '(choice
 	  :format "%{%t%}:\n %[Value Menu%] %v"
-	  (function-item :tag "Sort by last modification time."
+	  (function-item :tag "Sort by last modification time" :format "%t"
 			 w3m-antenna-sort-sites-by-time)
-	  (function-item :tag "Sort by title." w3m-antenna-sort-sites-by-title)
-	  (function-item :tag "Do nothing." identity)
-	  (function :format "User function: %v\n" :size 0)))
+	  (function-item :tag "Sort by title" :format "%t"
+			 w3m-antenna-sort-sites-by-title)
+	  (function-item :tag "Do nothing" :format "%t" identity)
+	  (function :format "User function: %v" :size 8)))
 
 (defun w3m-antenna-alist ()
   (let ((alist (w3m-load-list w3m-antenna-file)))
@@ -270,69 +257,66 @@ not to update the page."
 
 (defun w3m-antenna-check-hns (site handler)
   "Check the page served by HNS (Hyper Nikki System) asynchronously."
-  (lexical-let ((site site))
-    (w3m-process-do
-	(time
-	 (w3m-antenna-hns-last-modified (w3m-antenna-site-key site) handler))
-      (if time
-	  (w3m-antenna-site-update site (w3m-antenna-site-key site) time nil)
-	(w3m-antenna-check-page site handler)))))
+  (w3m-process-do
+      (time
+       (w3m-antenna-hns-last-modified (w3m-antenna-site-key site) handler))
+    (if time
+	(w3m-antenna-site-update site (w3m-antenna-site-key site) time nil)
+      (w3m-antenna-check-page site handler))))
 
 (defun w3m-antenna-check-rss (site handler url)
   "Check RSS to detect change of SITE asynchronously.
 In order to use this function, `xml.el' is required."
-  (lexical-let ((url url)
-		(site site))
-    (w3m-process-do-with-temp-buffer
-	(type (w3m-retrieve url nil t nil nil handler))
-      (let (link date dates)
-	(when type
-	  (w3m-decode-buffer url)
-	  (let* ((xml (ignore-errors
-			(xml-parse-region (point-min) (point-max))))
-		 (dc-ns (w3m-rss-get-namespace-prefix
-			 xml "http://purl.org/dc/elements/1.1/"))
-		 (rss-ns (w3m-rss-get-namespace-prefix
-			  xml "http://purl.org/rss/1.0/"))
-		 (channel (car (w3m-rss-find-el
-				(intern (concat rss-ns "channel"))
-				xml)))
-		 (items (w3m-rss-find-el
-			 (intern (concat rss-ns "item"))
-			 xml)))
-	    (setq link (nth 2 (car (w3m-rss-find-el
-				    (intern (concat rss-ns "link"))
-				    channel))))
-	    (setq dates (append
-			 (w3m-rss-find-el
-			  (intern (concat dc-ns "date"))
-			  channel)
-			 (w3m-rss-find-el
-			  (intern (concat dc-ns "date"))
-			  items)
-			 (w3m-rss-find-el 'pubDate channel)
-			 (w3m-rss-find-el 'pubDate items)))
-	    (when dates
-	      ;; Ignore future entries to display site announcements.
-	      (let ((now (current-time)))
-		(let ((low (+ (nth 1 now) 3600))) ; 3600 = clock skew margin
-		  (setq now
-			(if (>= low 65536)
-			    (list (1+ (car now))
-				  (- low 65536)
-				  (nth 2 now))
-			  (list (car now)
-				low
-				(nth 2 now)))))
-		(setq date '(0 0))
-		(dolist (tmp dates)
-		  (setq tmp (w3m-rss-parse-date-string (nth 2 tmp)))
-		  (and (w3m-time-newer-p tmp date)
-		       (w3m-time-newer-p now tmp)
-		       (setq date tmp)))))))
-	(if (and link date)
-	    (w3m-antenna-site-update site link date nil)
-	  (w3m-antenna-check-page site handler))))))
+  (w3m-process-do-with-temp-buffer
+      (type (w3m-retrieve url nil t nil nil handler))
+    (let (link date dates)
+      (when type
+	(w3m-decode-buffer url)
+	(let* ((xml (ignore-errors
+		      (xml-parse-region (point-min) (point-max))))
+	       (dc-ns (w3m-rss-get-namespace-prefix
+		       xml "http://purl.org/dc/elements/1.1/"))
+	       (rss-ns (w3m-rss-get-namespace-prefix
+			xml "http://purl.org/rss/1.0/"))
+	       (channel (car (w3m-rss-find-el
+			      (intern (concat rss-ns "channel"))
+			      xml)))
+	       (items (w3m-rss-find-el
+		       (intern (concat rss-ns "item"))
+		       xml)))
+	  (setq link (nth 2 (car (w3m-rss-find-el
+				  (intern (concat rss-ns "link"))
+				  channel))))
+	  (setq dates (append
+		       (w3m-rss-find-el
+			(intern (concat dc-ns "date"))
+			channel)
+		       (w3m-rss-find-el
+			(intern (concat dc-ns "date"))
+			items)
+		       (w3m-rss-find-el 'pubDate channel)
+		       (w3m-rss-find-el 'pubDate items)))
+	  (when dates
+	    ;; Ignore future entries to display site announcements.
+	    (let ((now (current-time)))
+	      (let ((low (+ (nth 1 now) 3600))) ; 3600 = clock skew margin
+		(setq now
+		      (if (>= low 65536)
+			  (list (1+ (car now))
+				(- low 65536)
+				(nth 2 now))
+			(list (car now)
+			      low
+			      (nth 2 now)))))
+	      (setq date '(0 0))
+	      (dolist (tmp dates)
+		(setq tmp (w3m-rss-parse-date-string (nth 2 tmp)))
+		(and (w3m-time-newer-p tmp date)
+		     (w3m-time-newer-p now tmp)
+		     (setq date tmp)))))))
+      (if (and link date)
+	  (w3m-antenna-site-update site link date nil)
+	(w3m-antenna-check-page site handler)))))
 
 (defun w3m-antenna-check-another-page (site handler url)
   "Check the another page to detect change of SITE asynchronously.
@@ -340,32 +324,29 @@ This function checks the another page specified by the URL before
 checking the SITE itself.  This function is useful when the SITE's
 owner either maintains the page which describes the change of the
 SITE."
-  (lexical-let ((site site))
-    (w3m-process-do-with-temp-buffer
-	(time (w3m-last-modified url t handler))
-      (if time
-	  (w3m-antenna-site-update site (w3m-antenna-site-key site) time nil)
-	(w3m-antenna-check-page site handler)))))
+  (w3m-process-do-with-temp-buffer
+      (time (w3m-last-modified url t handler))
+    (if time
+	(w3m-antenna-site-update site (w3m-antenna-site-key site) time nil)
+      (w3m-antenna-check-page site handler))))
 
 (defun w3m-antenna-check-anchor (site handler regexp number)
   "Check the page linked from SITE asynchronously.
 This function checks the page linked by an anchor that matches REGEXP
 from the page that is specified by SITE's key attribute."
-  (lexical-let ((site site)
-		(regexp regexp)
-		(number (or number 0)))
-    (w3m-process-do-with-temp-buffer
-	(type (w3m-retrieve (w3m-antenna-site-key site)
-			    nil nil nil nil handler))
-      (w3m-antenna-check-page site
-			      handler
-			      (when type
-				(w3m-decode-buffer (w3m-antenna-site-key site))
-				(goto-char (point-min))
-				(when (re-search-forward regexp nil t)
-				  (w3m-expand-url
-				   (match-string number)
-				   (w3m-antenna-site-key site))))))))
+  (or number (setq number 0))
+  (w3m-process-do-with-temp-buffer
+      (type (w3m-retrieve (w3m-antenna-site-key site)
+			  nil nil nil nil handler))
+    (w3m-antenna-check-page site
+			    handler
+			    (when type
+			      (w3m-decode-buffer (w3m-antenna-site-key site))
+			      (goto-char (point-min))
+			      (when (re-search-forward regexp nil t)
+				(w3m-expand-url
+				 (match-string number)
+				 (w3m-antenna-site-key site)))))))
 
 ;; To avoid byte-compile warning.
 (eval-and-compile
@@ -374,31 +355,29 @@ from the page that is specified by SITE's key attribute."
 (defun w3m-antenna-check-page (site handler &optional url)
   "Check SITE with the generic procedure.
 It consists of 3 steps:
-\(1\) Check the time when the SITE was last modified with HEAD request.
-\(2\) Check the size of the SITE with HEAD request.
-\(3\) Get the real content of the SITE, and check its size.
+(1) Check the time when the SITE was last modified with HEAD request.
+(2) Check the size of the SITE with HEAD request.
+(3) Get the real content of the SITE, and check its size.
 "
-  (lexical-let ((site site)
-		(url (or url
-			 (w3m-antenna-site-url site)
-			 (w3m-antenna-site-key site))))
-    (w3m-process-do
-	(attr (w3m-attributes url t handler))
-      (when attr
-	(if (nth 4 attr)	; Use the value of Last-modified header.
-	    (w3m-antenna-site-update site url (nth 4 attr) (nth 2 attr))
-	  (unless (eq 'time (w3m-antenna-site-class site))
-	    (if (nth 2 attr)	; Use the value of Content-Length header.
-		(w3m-antenna-site-update site url nil (nth 2 attr))
-	      ;; Get the real content of the SITE, and calculate its size.
-	      (w3m-process-do-with-temp-buffer
-		  (type (w3m-retrieve url nil t nil nil handler))
-		(when type
-		  (w3m-decode-buffer url nil type)
-		  (w3m-remove-comments)
-		  (when w3m-use-filter
-		    (w3m-filter url))
-		  (w3m-antenna-site-update site url nil (buffer-size)))))))))))
+  (or url (setq url (or (w3m-antenna-site-url site)
+			(w3m-antenna-site-key site))))
+  (w3m-process-do
+      (attr (w3m-attributes url t handler))
+    (when attr
+      (if (nth 4 attr)	; Use the value of Last-modified header.
+	  (w3m-antenna-site-update site url (nth 4 attr) (nth 2 attr))
+	(unless (eq 'time (w3m-antenna-site-class site))
+	  (if (nth 2 attr)	; Use the value of Content-Length header.
+	      (w3m-antenna-site-update site url nil (nth 2 attr))
+	    ;; Get the real content of the SITE, and calculate its size.
+	    (w3m-process-do-with-temp-buffer
+		(type (w3m-retrieve url nil t nil nil handler))
+	      (when type
+		(w3m-decode-buffer url nil type)
+		(w3m-remove-comments)
+		(when w3m-use-filter
+		  (w3m-filter url))
+		(w3m-antenna-site-update site url nil (buffer-size))))))))))
 
 (defun w3m-antenna-site-update (site url time size)
   "Update SITE's status information with specified TIME and SIZE."
@@ -445,7 +424,7 @@ a list of the results."
     (set buffer (current-buffer))
     (dolist (element sequence)
       (aset (symbol-value table)
-	    (incf index)
+	    (cl-incf index)
 	    (funcall function
 		     element
 		     (cons `(lambda (x)
@@ -461,7 +440,7 @@ results for the further handler functions.  Otherwise, return an
 asynchronous process that has not finished yet."
   (or (catch 'found-proces
 	(let ((index -1))
-	  (while (< (incf index) (length result))
+	  (while (< (cl-incf index) (length result))
 	    (when (w3m-process-p (aref result index))
 	      (throw 'found-proces (aref result index))))))
       (progn
@@ -476,7 +455,7 @@ asynchronous process that has not finished yet."
       (w3m-process-with-wait-handler
 	(w3m-antenna-check-all-sites handler))
     (w3m-process-do
-	(result
+	(nil
 	 (w3m-antenna-mapcar 'w3m-antenna-check-site
 			     w3m-antenna-alist
 			     handler))
@@ -560,8 +539,8 @@ asynchronous process that has not finished yet."
 			    w3m-antenna-refresh-interval)))))))))
 
 ;;;###autoload
-(defun w3m-about-antenna (url &optional no-decode no-cache
-			      post-data referer handler)
+(defun w3m-about-antenna (_url &optional _no-decode no-cache
+			       _post-data _referer handler)
   (w3m-process-do
       (alist (if no-cache
 		 (w3m-antenna-check-all-sites handler)
@@ -596,7 +575,9 @@ asynchronous process that has not finished yet."
   "Add link of current page to antenna.
 With prefix, ask new url to add instead of current page."
   (interactive "P")
-  (w3m-antenna-add (if arg (w3m-input-url) w3m-current-url)
+  (w3m-antenna-add (if arg
+		       (w3m-canonicalize-url (w3m-input-url))
+		     w3m-current-url)
 		   (w3m-encode-specials-string w3m-current-title)))
 
 (defun w3m-antenna-add (url &optional title)
@@ -642,11 +623,11 @@ Minor mode to edit antenna.
 (defun w3m-antenna-mode-setter (url)
   "Activate `w3m-antenna-mode', when visiting page shows antenna."
   (w3m-antenna-mode (if (string-match "\\`about://antenna/" url)
-			 (progn
-			   (setq default-directory
-				 (file-name-directory w3m-antenna-file))
-			   1)
-		       0)))
+			(progn
+			  (setq default-directory
+				(file-name-directory w3m-antenna-file))
+			  1)
+		      0)))
 (add-hook 'w3m-display-functions 'w3m-antenna-mode-setter)
 
 (defun w3m-antenna-edit ()

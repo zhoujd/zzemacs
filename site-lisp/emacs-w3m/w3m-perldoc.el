@@ -1,6 +1,6 @@
 ;;; w3m-perldoc.el --- The add-on program to view Perl documents.
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2007
+;; Copyright (C) 2001-2005, 2007, 2017, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -39,29 +39,35 @@
   :group 'w3m
   :prefix "w3m-perldoc-")
 
-(defcustom w3m-perldoc-command "perldoc"
-  "*Name of the executable file of perldoc."
+(defcustom w3m-perldoc-base-url "https://perldoc.perl.org/"
+  "The URL domain base to lookup the perldoc with."
   :group 'w3m-perldoc
-  :type '(string :size 0))
+  :type 'string)
+
+(defcustom w3m-perldoc-command "perldoc"
+  "Name of the executable file of perldoc."
+  :group 'w3m-perldoc
+  :type 'string)
 
 (defcustom w3m-perldoc-pod2html-command "pod2html"
-  "*Name of the executable file of pod2html."
+  "Name of the executable file of pod2html."
   :group 'w3m-perldoc
-  :type '(string :size 0))
+  :type 'string)
 
 (defcustom w3m-perldoc-pod2html-arguments
   '("--noindex")
-  "*Arguments of pod2html."
+  "Arguments passed to pod2html."
   :group 'w3m-perldoc
-  :type '(repeat (string :format "Argument: %v\n" :size 0))
-  :get (lambda (symbol)
-	 (delq nil (delete "" (mapcar (lambda (x) (if (stringp x) x))
-				      (default-value symbol)))))
-  :set (lambda (symbol value)
-	 (custom-set-default
-	  symbol
-	  (delq nil (delete "" (mapcar (lambda (x) (if (stringp x) x))
-				       value))))))
+  :type '(repeat
+	  :value-to-internal
+	  (lambda (_widget value)
+	    (delq nil (delete ""
+			      (mapcar (lambda (x) (if (stringp x) x)) value))))
+	  :value-to-external
+	  (lambda (_widget value)
+	    (delq nil (delete ""
+			      (mapcar (lambda (x) (if (stringp x) x)) value))))
+	  (string :format "Argument: %v")))
 
 (defcustom w3m-perldoc-input-coding-system
   (if (string= "Japanese" w3m-language)
@@ -69,15 +75,15 @@
     (if (w3m-find-coding-system 'utf-8)
 	'utf-8
       'iso-latin-1))
-  "*Coding system used when writing to `w3m-perldoc-command'."
+  "Coding system used when writing to `w3m-perldoc-command'."
   :group 'w3m-perldoc
-  :type '(coding-system :size 0))
+  :type 'coding-system)
 
 (defcustom w3m-perldoc-output-coding-system
   'undecided
-  "*Coding system used when reading from `w3m-perldoc-command'."
+  "Coding system used when reading from `w3m-perldoc-command'."
   :group 'w3m-perldoc
-  :type '(coding-system :size 0))
+  :type 'coding-system)
 
 ;;;###autoload
 (defun w3m-about-perldoc (url &optional no-decode no-cache &rest args)
@@ -85,10 +91,10 @@
     (let ((docname (if (= (length url) (match-end 0))
 		       "perl"
 		     (w3m-url-decode-string (substring url (match-end 0)))))
-	  (default-directory w3m-profile-directory)
+	  (default-directory (expand-file-name w3m-profile-directory))
 	  (process-environment (copy-sequence process-environment)))
       ;; To specify the place in which pod2html generates its cache files.
-      (setenv "HOME" (expand-file-name w3m-profile-directory))
+      (setenv "HOME" default-directory)
       (and (let ((coding-system-for-read w3m-perldoc-output-coding-system))
 	     (zerop (call-process w3m-perldoc-command
 				  nil t nil "-u" docname)))
@@ -113,11 +119,32 @@
 		 (goto-char (point-max))))
 	     "text/html")))))
 
+;; For recursive funcall by itself.
+(declare-function swap "w3m-perldoc" (old new string))
+
+(defun w3m-perldoc-pretty (string)
+  "Make a string more likely to find a perldoc page."
+  (w3m-flet ((swap (old new string)
+		   (let ((loc (string-match old string)))
+		     (if loc
+			 (concat (substring string 0 loc)
+				 new
+				 (swap old new (substring
+						string
+						(+ (length old) loc))))
+		       string))))
+    (concat (swap " " "/" (swap "::" "/" string))
+	    (if (not (string= "" string))
+		".html"
+	      "")
+	    "#perl_version")))
+
 ;;;###autoload
 (defun w3m-perldoc (docname)
   "View Perl documents."
   (interactive "sDocument: ")
-  (w3m-goto-url (concat "about://perldoc/" (w3m-url-encode-string docname))))
+  (w3m-goto-url (concat (w3m-ensure-slash w3m-perldoc-base-url)
+			(w3m-perldoc-pretty docname))))
 
 (provide 'w3m-perldoc)
 

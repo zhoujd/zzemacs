@@ -1,6 +1,6 @@
-;;; sb-lotusex.el --- shimbun backend for http://tsuruo.dominohosting.biz -*- coding: iso-2022-7bit; -*-
+;;; sb-lotusex.el --- shimbun backend for http://tsuruo.dominohosting.biz
 
-;; Copyright (C) 2003, 2004 NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003, 2004, 2019 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
@@ -36,21 +36,21 @@
 (defvar shimbun-lotusex-groups-alist
   '(
     ("news" . "notes/nhome.nsf/PlainAllPage!OpenPage")
-    ;;$B%N!<%D%G!<%?%Y!<%9DDNs<<(B
+    ;;ノーツデータベース陳列室
     ("library" . "notes/nhome.nsf/LiblaryPage!OpenPage")
-    ;; $B%N!<%DA`:n<<(B
+    ;; ノーツ操作室
     ("operation" . "notes/nhome.nsf/OperatePage!OpenPage")
-    ;; $B%N!<%D%G!<%?%Y!<%9:n@.D6F~Lg9V:B(B
+    ;; ノーツデータベース作成超入門講座
     ("primer" . "notes/nhome.nsf/PrimerPage!OpenPage")
-    ;; $B%N!<%D5;=Q<<(B
+    ;; ノーツ技術室
     ("tips" . "notes/nhome.nsf/TipsPage!OpenPage")
-    ;;  $B%N!<%D3hMQ8&5f<<(B
+    ;;  ノーツ活用研究室
     ("practical" . "notes/nhome.nsf/PracticalPage!OpenPage")
-    ;;  $B%N!<%DDDNs4[<ALd<<(B
+    ;;  ノーツ陳列館質問室
     ("qanda" . "notes/nhome.nsf/QuestionPage!OpenPage")
-    ;; $B%N!<%DDDNs4[5Y7F<<(B
+    ;; ノーツ陳列館休憩室
     ("lounge" . "notes/nhome.nsf/RestPage!OpenPage")
-    ;; $B%N!<%DDDNs4[30JI!J%I%_%N(BWEB$BHG!K(B
+    ;; ノーツ陳列館外壁（ドミノWEB版）
     ("bbs")
     ))
 
@@ -93,17 +93,17 @@
 
 (defun shimbun-lotusex-bbs-headers (shimbun)
   (let (url from date subject end time ampm id headers
-	     case-fold-search)
+	    case-fold-search)
     (subst-char-in-region (point-min) (point-max) ?\t ?  t)
     (goto-char (point-min))
     (catch 'exit
       (while (re-search-forward
-	      "<SPAN STYLE=\"font-size: 12px\">\\([0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]\\)(\\($B7n(B\\|$B2P(B\\|$B?e(B\\|$BLZ(B\\|$B6b(B\\|$BEZ(B\\|$BF|(B\\))</SPAN>"
+	      "<SPAN STYLE=\"font-size: 12px\">\\([0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]\\)(\\(月\\|火\\|水\\|木\\|金\\|土\\|日\\))</SPAN>"
 	      nil t nil)
 	(setq date (match-string-no-properties 1))
 	(save-excursion
 	  (setq end (or (re-search-forward
-			 "<SPAN STYLE=\"font-size: 12px\">\\([0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]\\)(\\($B7n(B\\|$B2P(B\\|$B?e(B\\|$BLZ(B\\|$B6b(B\\|$BEZ(B\\|$BF|(B\\))</SPAN>"
+			 "<SPAN STYLE=\"font-size: 12px\">\\([0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]\\)(\\(月\\|火\\|水\\|木\\|金\\|土\\|日\\))</SPAN>"
 			 nil t nil)
 			(point-max))))
 	(while (re-search-forward
@@ -129,13 +129,13 @@
 			(+ (string-to-number (substring time 0 (match-beginning 0)))
 			   12)
 			(substring time (match-end 0)))))
-	  (when (string-match "^ +\\(.+\\)" subject)
+	  (when (string-match "\\` +\\(.+\\)" subject)
 	    (setq subject (match-string 1 subject)))
-	  (when (string-match "^\\(.+\\) +$" subject)
+	  (when (string-match "\\`\\(.+\\) +\\'" subject)
 	    (setq subject (match-string 1 subject)))
-	  (when (string-match "^ +\\(.+\\)" from)
+	  (when (string-match "\\` +\\(.+\\)" from)
 	    (setq from (match-string 1 from)))
-	  (when (string-match "^\\(.+\\) +$" from)
+	  (when (string-match "\\`\\(.+\\) +\\'" from)
 	    (setq from (match-string 1 from)))
 	  (push (shimbun-make-header
 		 0 (shimbun-mime-encode-string subject)
@@ -147,12 +147,12 @@
 
 (defun shimbun-lotusex-headers (shimbun group)
   (let (url from date subject id headers
-	     case-fold-search)
+	    case-fold-search)
     (subst-char-in-region (point-min) (point-max) ?\t ?  t)
     (goto-char (point-min))
     (catch 'exit
       (while (re-search-forward
-	      "<a href=\"/members/tsuruo/\\(notes/nhome\\.nsf/[/a-zA-Z0-9]+!OpenDocument\\)\".+>[0-9A-Z]+\\(.+\\)(\\([0-9]+/[0-9]+/[0-9]+\\)) *\\(- $B!Z(B.+$B![(B\\)?</SPAN>"
+	      "<a href=\"/members/tsuruo/\\(notes/nhome\\.nsf/[/a-zA-Z0-9]+!OpenDocument\\)\".+>[0-9A-Z]+\\(.+\\)(\\([0-9]+/[0-9]+/[0-9]+\\)) *\\(- 【.+】\\)?</SPAN>"
 	      nil t nil)
 	(setq url (match-string-no-properties 1)
 	      subject (match-string-no-properties 2)
@@ -168,13 +168,13 @@
 	  (throw 'exit nil))
 	(setq date (shimbun-lotusex-make-date-string date)
 	      url (concat shimbun-lotusex-url url))
-	(when (string-match "^ +\\(.+\\)" subject)
+	(when (string-match "\\` +\\(.+\\)" subject)
 	  (setq subject (match-string 1 subject)))
-	(when (string-match "^\\(.+\\) +$" subject)
+	(when (string-match "\\`\\(.+\\) +\\'" subject)
 	  (setq subject (match-string 1 subject)))
-	(when (string-match "^ +\\(.+\\)" from)
+	(when (string-match "\\` +\\(.+\\)" from)
 	  (setq from (match-string 1 from)))
-	(when (string-match "^\\(.+\\) +$" from)
+	(when (string-match "\\`\\(.+\\) +\\'" from)
 	  (setq from (match-string 1 from)))
 	(push (shimbun-make-header
 	       0 (shimbun-mime-encode-string subject)

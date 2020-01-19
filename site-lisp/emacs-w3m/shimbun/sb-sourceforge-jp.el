@@ -1,6 +1,6 @@
 ;;; sb-sourceforge-jp.el --- shimbun backend for lists.sourceforge.jp
 
-;; Copyright (C) 2003, 2004, 2005, 2007
+;; Copyright (C) 2003, 2004, 2005, 2007, 2017, 2019
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -44,16 +44,16 @@
     ("macemacsjp-users")
     ("macemacsjp-english")
     ("ntemacsjp-users"))
-  "*List of mailing lists serverd by SourceForge-JP."
+  "List of mailing lists serverd by SourceForge-JP."
   :group 'shimbun
   :type '(repeat
 	  (cons
 	   :format "%v" :indent 2
-	   (string :format "Group Name: %v\n" :size 0)
+	   (string :format "Group Name: %v")
 	   (radio
 	    :format "Mailing List Name: %v"
 	    (const :format "Same as Group Name " nil)
-	    (string :format "%t: %v\n" :size 0)))))
+	    (string :format "%t: %v")))))
 
 (defconst shimbun-sourceforge-jp-base-url
   "http://lists.sourceforge.jp/pipermail/"

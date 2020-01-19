@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ## https://github.com/aki2o/plsense
+## ps -ef | grep perl | grep plsense
 
 echo "For perl develop start ..."
 

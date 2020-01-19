@@ -1,8 +1,6 @@
 ;;;; w3m-setting.el --- w3m setting file
 ;;;http://emacs-w3m.namazu.org/index-en.html
-;;;% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot login
-;;;CVS password: # No password is set.  Just hit Enter/Return key.
-;;;% cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m
+;;;https://github.com/emacs-w3m/emacs-w3m
 
 (zz-load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
@@ -32,7 +30,7 @@
 (setq w3m-use-toolbar t)  
 (setq w3m-use-cookies t)
 
-;;;show images
+;;;show images: Press "T"
 (setq w3m-toggle-inline-image t)
 
 (setq w3m-tab-width 4)
@@ -50,11 +48,6 @@
       (set-buffer-modified-p nil)) 
 
 (add-hook 'w3m-fontify-after-hook 'zz:remove-w3m-output-garbages)
-
-;;(setq w3m-command-arguments
-;;              (nconc w3m-command-arguments
-;;                     '("-o" "http_proxy=http://proxy-prc.*****.com:911/")))
-;;(setq w3m-no-proxy-domains '("local.com" "neighbor.com"))
 
 
 (provide 'w3m-setting)

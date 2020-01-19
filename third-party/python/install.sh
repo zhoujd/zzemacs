@@ -20,12 +20,22 @@ py3_deps() {
     pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 
+setup_flake8() {
+    echo "Setup flake8 configure"
+    ln -sf $SCRIPT_ROOT/flake8 ~/.config/flake8
+}
+
 case $1 in
     py3 )
         py3_deps
+        setup_flake8
+        ;;
+    flake8 )
+        setup_flake8
         ;;
     * )
         py2_deps
+        setup_flake8       
         ;;
 esac
 

@@ -107,7 +107,10 @@
 (require 'helm-shell)
 (add-hook 'comint-mode-hook
           (lambda ()
-            (define-key comint-mode-map (kbd "M-s f") 'helm-comint-prompts-all)))
+            (defkeys-map comint-mode-map
+              ((kbd "M-s f") 'helm-comint-prompts-all)
+              ((kbd "M-s M-f") 'helm-comint-prompts)
+              )))
 
 
 (provide 'helm-setting)

@@ -45,6 +45,9 @@
 
 (add-hook 'python-mode-hook
           (lambda ()
+            (setq tab-width 2)
+            (setq python-shift-right 2)
+            (setq python-shift-left 2)
             (setq python-indent 2)
             ))
 

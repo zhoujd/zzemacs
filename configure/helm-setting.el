@@ -1,5 +1,6 @@
 ;;;; helm-setting.el --- helm setting file
-;;;
+;; https://github.com/emacs-helm/helm
+;; https://github.com/emacs-helm/helm/wiki
 
 (zz-load-path "site-lisp/emacs-async")
 (zz-load-path "site-lisp/helm")
@@ -102,6 +103,11 @@
 (require 'helm-tramp)
 (require 'helm-cscope)
 (require 'helm-bm)
+
+(require 'helm-shell)
+(add-hook 'comint-mode-hook
+          (lambda ()
+            (define-key comint-mode-map (kbd "M-s f") 'helm-comint-prompts-all)))
 
 
 (provide 'helm-setting)

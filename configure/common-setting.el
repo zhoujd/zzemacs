@@ -59,7 +59,7 @@
                         "Anonymous Pro 24"
                         ))
 (setq zz:cn-font-list '(
-                        "Microsoft YaHei Mono 14"
+                        "Microsoft YaHei Mono 16"
                         "Microsoft YaHei Mono 24"
                         ))
 

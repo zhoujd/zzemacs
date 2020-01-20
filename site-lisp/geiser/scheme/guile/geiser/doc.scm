@@ -1,6 +1,6 @@
 ;;; doc.scm -- procedures providing documentation on scheme objects
 
-;; Copyright (C) 2009, 2010 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2018 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -17,6 +17,7 @@
   #:use-module (geiser utils)
   #:use-module (geiser modules)
   #:use-module (system vm program)
+  #:use-module (system vm debug)
   #:use-module (ice-9 session)
   #:use-module (ice-9 documentation)
   #:use-module (ice-9 regex)
@@ -75,11 +76,13 @@
         ((macro? obj) default-macro-args)
         (else 'variable)))
 
+(define (program-arities prog)
+  (let ((addrs (program-address-range prog)))
+    (when (pair? addrs) (find-program-arities (car addrs)))))
+
 (define (arguments proc)
   (define (p-args prog)
-    (let ((as (map (lambda (a)
-                     ((@@ (system vm program) arity->arguments-alist) prog a))
-                     (or (program-arities prog) '()))))
+    (let ((as (map arity-arguments-alist (or (program-arities prog) '()))))
       (and (not (null? as)) as)))
   (define (clist f) (lambda (x) (let ((y (f x))) (and y (list y)))))
   (cond ((is-a? proc <generic>) (generic-args proc))
@@ -129,8 +132,11 @@
     (rest . ,(car (cddddr arglist)))))
 
 (define (doc->args proc)
-  (define proc-rx "-- Scheme Procedure: ([^[\n]+)\n")
-  (define proc-rx2 "-- Scheme Procedure: ([^[\n]+\\[[^\n]*(\n[^\n]+\\]+)?)")
+  ;; Guile 2.0.9+ uses the (texinfo ...) modules to produce
+  ;; `guile-procedures.txt', and the output has a single hyphen, whereas
+  ;; `makeinfo' produces two hyphens.
+  (define proc-rx "--? Scheme Procedure: ([^[\n]+)\n")
+  (define proc-rx2 "--? Scheme Procedure: ([^[\n]+\\[[^\n]*(\n[^\n]+\\]+)?)")
   (let ((doc (object-documentation proc)))
     (and doc
          (let ((match (or (string-match proc-rx doc)

@@ -1,6 +1,6 @@
 ;;; evaluation.scm -- evaluation, compilation and macro-expansion
 
-;; Copyright (C) 2009, 2010, 2011 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2009, 2010, 2011, 2013, 2015 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -9,22 +9,42 @@
 
 ;; Start date: Mon Mar 02, 2009 02:46
 
-(define-module (geiser evaluation)
-  #:export (ge:compile
-            ge:eval
-            ge:macroexpand
-            ge:compile-file
-            ge:load-file
-            ge:set-warnings
-            ge:add-to-load-path)
-  #:use-module (geiser modules)
-  #:use-module (srfi srfi-1)
-  #:use-module (language tree-il)
-  #:use-module (system base compile)
-  #:use-module (system base message)
-  #:use-module (system base pmatch)
-  #:use-module (system vm program)
-  #:use-module (ice-9 pretty-print))
+(cond-expand
+  (guile-2.2
+   (define-module (geiser evaluation)
+     #:export (ge:compile
+               ge:eval
+               ge:macroexpand
+               ge:compile-file
+               ge:load-file
+               ge:set-warnings
+               ge:add-to-load-path)
+     #:use-module (geiser modules)
+     #:use-module (srfi srfi-1)
+     #:use-module (language tree-il)
+     #:use-module (system base compile)
+     #:use-module (system base message)
+     #:use-module (system base pmatch)
+     #:use-module (system vm program)
+     #:use-module (ice-9 pretty-print)
+     #:use-module (system vm loader)))
+  (else
+   (define-module (geiser evaluation)
+     #:export (ge:compile
+               ge:eval
+               ge:macroexpand
+               ge:compile-file
+               ge:load-file
+               ge:set-warnings
+               ge:add-to-load-path)
+     #:use-module (geiser modules)
+     #:use-module (srfi srfi-1)
+     #:use-module (language tree-il)
+     #:use-module (system base compile)
+     #:use-module (system base message)
+     #:use-module (system base pmatch)
+     #:use-module (system vm program)
+     #:use-module (ice-9 pretty-print))))
 
 
 (define compile-opts '())
@@ -49,10 +69,6 @@
 
 (ge:set-warnings 'none)
 
-(define (write-result result output)
-  (write (list (cons 'result result) (cons 'output output)))
-  (newline))
-
 (define (call-with-result thunk)
   (letrec* ((result #f)
             (output
@@ -61,8 +77,10 @@
                  (with-fluids ((*current-warning-port* (current-output-port))
                                (*current-warning-prefix* ""))
                    (with-error-to-port (current-output-port)
-                     (lambda () (set! result (thunk)))))))))
-    (write-result result output)))
+                     (lambda () (set! result
+                                  (map object->string (thunk))))))))))
+    (write `((result ,@result) (output . ,output)))
+    (newline)))
 
 (define (ge:compile form module)
   (compile* form module compile-opts))
@@ -72,14 +90,18 @@
          (ev (lambda ()
                (call-with-values
                    (lambda ()
-                     (let* ((o (compile form
-                                        #:to 'objcode
+                     (let* ((to (cond-expand (guile-2.2 'bytecode)
+                                             (else 'objcode)))
+                            (cf (cond-expand (guile-2.2 load-thunk-from-memory)
+                                             (else make-program)))
+                            (o (compile form
+                                        #:to to
                                         #:env module
                                         #:opts opts))
-                            (thunk (make-program o)))
+                            (thunk (cf o)))
                        (start-stack 'geiser-evaluation-stack
                                     (eval `(,thunk) module))))
-                 (lambda vs (map object->string vs))))))
+                 (lambda vs vs)))))
     (call-with-result ev)))
 
 (define (ge:eval form module-name)
@@ -87,7 +109,7 @@
          (ev (lambda ()
                (call-with-values
                    (lambda () (eval form module))
-                 (lambda vs (map object->string vs))))))
+                 (lambda vs vs)))))
     (call-with-result ev)))
 
 (define (ge:compile-file path)
@@ -108,8 +130,15 @@
       (lambda ()
         (pretty-print (tree-il->scheme (macroexpand form)))))))
 
+(define (add-to-list lst dir)
+  (and (not (member dir lst))))
+
 (define (ge:add-to-load-path dir)
   (and (file-is-directory? dir)
-       (not (member dir %load-path))
-       (begin (set! %load-path (cons dir %load-path))
-              #t)))
+       (let ((in-lp (member dir %load-path))
+             (in-clp (member dir %load-compiled-path)))
+         (when (not in-lp)
+           (set! %load-path (cons dir %load-path)))
+         (when (not in-clp)
+           (set! %load-compiled-path (cons dir %load-compiled-path)))
+         (or in-lp in-clp))))

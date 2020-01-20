@@ -1,6 +1,6 @@
 ;;; enter.rkt -- custom module loaders
 
-;; Copyright (C) 2010, 2012 Jose Antonio Ortega Ruiz
+;; Copyright (C) 2010, 2012, 2013, 2014 Jose Antonio Ortega Ruiz
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the Modified BSD License. You should
@@ -15,9 +15,9 @@
          (for-syntax racket/base)
          racket/path)
 
-(provide get-namespace enter-module module-loader module-loaded?)
+(provide get-namespace visit-module module-loader)
 
-(struct mod (name load-path timestamp depends))
+(struct mod (name load-path timestamp depends) #:transparent)
 
 (define (make-mod name path ts code)
   (let ([deps (if code
@@ -27,17 +27,17 @@
 
 (define loaded (make-hash))
 
-(define (module-loaded? path)
+(define (mod->path mod)
   (with-handlers ([exn? (lambda (_) #f)])
-    (let ([rp (module-path-index-resolve (module-path-index-join path #f))])
-      (hash-has-key? loaded (resolved-module-path-name rp)))))
+    (let ([rp (module-path-index-resolve (module-path-index-join mod #f))])
+      (resolved-module-path-name rp))))
 
-(define (enter-module mod)
+(define (visit-module mod)
   (dynamic-require mod #f)
   (check-latest mod))
 
 (define (module-loader orig)
-  (enter-load/use-compiled orig #f))
+  (make-loader orig #f))
 
 (define inhibit-eval (make-parameter #f))
 
@@ -84,25 +84,36 @@
 (define (notify re? path)
   (when re? (fprintf (current-error-port) " [re-loading ~a]\n" path)))
 
-(define ((enter-load/use-compiled orig re?) path name)
+(define (module-name? name)
+  (and name (not (and (pair? name) (not (car name))))))
+
+(define (module-code re? name path)
+  (get-module-code path
+                   "compiled"
+                   (lambda (e)
+                     (parameterize ([compile-enforce-module-constants #f])
+                       (compile-syntax e)))
+                   (lambda (ext loader?) (load-extension ext) #f)
+                   #:notify (lambda (chosen) (notify re? chosen))))
+
+(define ((make-loader orig re?) path name)
   (when (inhibit-eval)
     (raise (make-exn:fail "namespace not found" (current-continuation-marks))))
-  ;; (printf "Loading ~s: ~s~%" name path)
-  (if (and name (not (list? name)))
+  (if (module-name? name)
       ;; Module load:
-      (let* ([code (get-module-code
-                    path "compiled"
-                    (lambda (e)
-                      (parameterize ([compile-enforce-module-constants #f])
-                        (compile e)))
-                    (lambda (ext loader?) (load-extension ext) #f)
-                    #:notify (lambda (chosen) (notify re? chosen)))]
-             [dir (or (current-load-relative-directory) (current-directory))]
-             [path (path->complete-path path dir)]
-             [path (normal-case-path (simplify-path path))])
-        (define-values (ts real-path) (get-timestamp path))
-        (add-paths! (make-mod name path ts code) (resolve-paths path))
-        (parameterize ([current-module-declare-source real-path]) (eval code)))
+      (with-handlers ([(lambda (exn)
+                         (and (pair? name) (exn:get-module-code? exn)))
+                       ;; Load-handler protocol: quiet failure when a
+                       ;; submodule is not found
+                       (lambda (exn) (void))])
+        (let* ([code (module-code re? name path)]
+               [dir (or (current-load-relative-directory) (current-directory))]
+               [path (path->complete-path path dir)]
+               [path (normal-case-path (simplify-path path))])
+          (define-values (ts real-path) (get-timestamp path))
+          (add-paths! (make-mod name path ts code) (resolve-paths path))
+          (parameterize ([current-module-declare-source real-path])
+            (eval code))))
       ;; Not a module:
       (begin (notify re? path) (orig path name))))
 
@@ -120,27 +131,25 @@
                   (values -inf.0 path)))
             (values -inf.0 path)))))
 
-(define orig (current-load/use-compiled))
-
 (define (check-latest mod)
   (define mpi (module-path-index-join mod #f))
   (define done (make-hash))
   (let loop ([mpi mpi])
-    (define rpath (module-path-index-resolve mpi))
-    (define path (let ([p (resolved-module-path-name rpath)])
-                   (if (pair? p) (car p) p)))
+    (define rindex (module-path-index-resolve mpi))
+    (define rpath (resolved-module-path-name rindex))
+    (define path (if (pair? rpath) (car rpath) rpath))
     (when (path? path)
       (define npath (normal-case-path path))
       (unless (hash-ref done npath #f)
         (hash-set! done npath #t)
-        (define mod (hash-ref loaded npath #f))
+        (define mod (hash-ref loaded rpath #f))
         (when mod
           (for-each loop (mod-depends mod))
           (define-values (ts actual-path) (get-timestamp npath))
-          (when (ts . > . (mod-timestamp mod))
+          (when (> ts (mod-timestamp mod))
             (define orig (current-load/use-compiled))
             (parameterize ([current-load/use-compiled
-                            (enter-load/use-compiled orig #f)]
-                           [current-module-declare-name rpath]
+                            (make-loader orig #f)]
+                           [current-module-declare-name rindex]
                            [current-module-declare-source actual-path])
-              ((enter-load/use-compiled orig #t) npath (mod-name mod)))))))))
+              ((make-loader orig #f) npath (mod-name mod)))))))))

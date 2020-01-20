@@ -36,7 +36,7 @@
             (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;geiser for scheme
-(zz-load-path "site-lisp/geiser/elisp")
+(zz-load-path "site-lisp/geiser")
 (require 'geiser)
 (setq geiser-active-implementations '(racket))
 

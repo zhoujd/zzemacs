@@ -293,6 +293,11 @@
              (defkeys-map yaml-mode-map
                ("\C-m" 'newline-and-indent))))
 
+;;nginx-mode
+(require 'nginx-mode)
+(add-hook 'nginx-mode-hook #'company-nginx-keywords)
+
+
 (provide 'prog-setting)
 
 ;;; prog-setting.el ends here

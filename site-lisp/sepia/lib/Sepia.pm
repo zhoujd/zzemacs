@@ -39,12 +39,6 @@ BEGIN {
     if ($] >= 5.012) {
         # eval 'no warnings "deprecated"'; # undo some of the 5.12 suck.
     }
-    if ($] > 5.012003) {
-        warn <<EOS;
-Perl $] (newer than 5.12.3) may break Sepia.  Please let the author
-(seano\@cpan.org) know what happens.
-EOS
-    }
     # Not as useful as I had hoped...
     sub track_requires
     {
@@ -1714,7 +1708,6 @@ sub print_warnings
 sub repl_banner
 {
     print <<EOS;
-I need user feedback!  Please send questions or comments to seano\@cpan.org.
 Sepia version $Sepia::VERSION.
 Type ",h" for help, or ",q" to quit.
 EOS

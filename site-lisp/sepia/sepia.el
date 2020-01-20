@@ -358,7 +358,7 @@ Interactive users should call `sepia-view-pod'."
 (defvar sepia-repl-mode-map
   (let ((map (copy-keymap sepia-shared-map)))
     (set-keymap-parent map gud-mode-map)
-    (define-key map (kbd "<tab>") 'comint-dynamic-complete)
+    (define-key map (kbd "<tab>") 'completion-at-point)
     (define-key map "\C-a" 'comint-bol)
     (define-key map "\C-c\C-r" 'sepia-cont-or-restart)
     map)

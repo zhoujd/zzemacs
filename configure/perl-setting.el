@@ -98,7 +98,7 @@
 (if (executable-find "plsense")
     (progn
       (company-plsense-setup)
-      (company-plsense-restart-server))
+      (company-plsense-restart-server-quiet))
     (progn
       (message "warning: cannot find plsense for company-plsense")))
 

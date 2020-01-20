@@ -257,6 +257,24 @@ Every file must be loaded once per session."
               (message "plsense server started"))))
        (message "plsense server already running")))))
 
+(defun company-plsense-start-server-quiet ()
+  "Start the PlSense server if it is not already running."
+  (interactive)
+  (message "Starting plsense server...")
+  (company-plsense--server-request
+   "serverstatus"
+   (lambda (resp)
+     (if (< 0 (s-count-matches "Not" resp))
+         (company-plsense--server-request
+          "serverstart"
+          (lambda (resp)
+            (setq company-plsense--opened-files '())
+            (setq company-plsense--changed-regions nil)
+            (company-plsense--reset-location)
+            (when (string-match company-plsense--done-re resp)
+              (message "Plsense server started"))))
+       (message "Plsense server already running")))))
+
 (defun company-plsense-stop-server ()
   "Attempt to stop the PlSense server.
 If it takes longer then 5 seconds, force kill it."
@@ -268,6 +286,14 @@ If it takes longer then 5 seconds, force kill it."
   (message "plsense server stopped")
   t)
 
+(defun company-plsense-stop-server-quiet ()
+  "Attempt to stop the PlSense server.
+If it takes longer then 5 seconds, force kill it."
+  (when (company-plsense--process-running-p)
+    (company-plsense--sync-request "serverstop" 5))
+  (company-plsense--kill-process)
+  t)
+
 (defun company-plsense-restart-server ()
   "Restart PlSense server.
 Use this command when either the server failed
@@ -277,6 +303,16 @@ reveals that not all work servers are running."
   (company-plsense-stop-server)
   (sleep-for 1)
   (company-plsense-start-server))
+
+(defun company-plsense-restart-server-quiet ()
+  "Restart PlSense server.
+Use this command when either the server failed
+to start or when `company-plsense-server-status'
+reveals that not all work servers are running."
+  (interactive)
+  (company-plsense-stop-server-quiet)
+  (sleep-for 1)
+  (company-plsense-start-server-quiet))
 
 
 ;;; Functions to monitor the current file and update the server.

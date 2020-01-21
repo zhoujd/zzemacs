@@ -41,7 +41,6 @@
 ;;http://repo.or.cz/w/sepia.git
 (zz-load-path "site-lisp/sepia")
 (setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
-(defalias 'perl-mode 'sepia-mode)
 (defalias 'sepia     'sepia-repl)
 (defalias 'run-perl  'sepia-repl)
 (require 'sepia)
@@ -51,25 +50,6 @@
     ([(tab)] 'sepia-indent-or-complete)))
 
 (add-hook 'sepia-mode-hook 'zz:sepia-mode-hook t)
-
-;;perl completing
-(add-hook  'cperl-mode-hook
-           (lambda ()
-             (when (require 'auto-complete nil t) ; no error whatever auto-complete.el is not installed.
-               (require 'perl-completion nil t)
-               (auto-complete-mode t)
-               (perl-completion-mode t)
-               (hs-minor-mode t)
-               (make-variable-buffer-local 'ac-sources)
-               (setq ac-sources
-                     '(
-                       ac-source-perl-completion
-                       ac-source-yasnippet
-                       ac-source-abbrev
-                       ac-source-words-in-buffer
-                       ac-source-files-in-current-dir
-                       ac-source-filename
-                       )))))
 
 ;;perl code style
 (add-hook  'cperl-mode-hook

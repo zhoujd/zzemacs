@@ -37,7 +37,7 @@ sub repl
     # } elsif (grep -x "$_/rlwrap", split ':', $ENV{PATH}) {
     #     warn "Sepia::ReadLine: Falling back to rlwrap.\n";
     } else {
-        warn "Sepia::ReadLine: No completion with $rl.\n";
+    #     warn "Sepia::ReadLine: No completion with $rl.\n";
     }
     $Sepia::READLINE = sub { $TERM->readline(Sepia::prompt()) };
     goto &Sepia::repl;

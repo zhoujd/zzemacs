@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+ZZEMACS_HOME=$(cd $SCRIPT_ROOT/.. && pwd)
+SEPIA_ROOT=$ZZEMACS_HOME/site-lisp/sepia
+
+pushd $SEPIA_ROOT > /dev/null
+perl -Ilib sepl
+popd > /dev/null

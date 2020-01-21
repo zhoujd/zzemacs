@@ -1,6 +1,6 @@
 ;;; company-template.el --- utility library for template expansion
 
-;; Copyright (C) 2009, 2010, 2014-2016 Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2010, 2014-2017 Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -27,12 +27,26 @@
   '((((background dark)) (:background "yellow" :foreground "black"))
     (((background light)) (:background "orange" :foreground "black")))
   "Face used for editable text in template fields."
-  :group 'company)
+  :group 'company-faces)
+
+(defvar company-template-forward-field-item
+  '(menu-item "" company-template-forward-field
+              :filter company-template--keymap-filter))
 
 (defvar company-template-nav-map
   (let ((keymap (make-sparse-keymap)))
-    (define-key keymap [tab] 'company-template-forward-field)
-    (define-key keymap (kbd "TAB") 'company-template-forward-field)
+    (define-key keymap [tab] company-template-forward-field-item)
+    (define-key keymap (kbd "TAB") company-template-forward-field-item)
+    keymap))
+
+(defvar company-template-clear-field-item
+  '(menu-item "" company-template-clear-field
+              :filter company-template--keymap-filter))
+
+(defvar company-template-field-map
+  (let ((keymap (make-sparse-keymap)))
+    (set-keymap-parent keymap company-template-nav-map)
+    (define-key keymap (kbd "C-d") company-template-clear-field-item)
     keymap))
 
 (defvar-local company-template--buffer-templates nil)
@@ -55,19 +69,56 @@
 
 (defun company-template-forward-field ()
   (interactive)
+  (let ((start (point))
+        (next-field-start (company-template-find-next-field)))
+    (push-mark)
+    (goto-char next-field-start)
+    (company-template-remove-field (company-template-field-at start))))
+
+(defun company-template-clear-field ()
+  "Clear the field at point."
+  (interactive)
+  (let ((ovl (company-template-field-at (point))))
+    (when ovl
+      (company-template-remove-field ovl t)
+      (let ((after-clear-fn
+             (overlay-get ovl 'company-template-after-clear)))
+        (when (functionp after-clear-fn)
+          (funcall after-clear-fn))))))
+
+(defun company-template--keymap-filter (cmd)
+  (unless (run-hook-with-args-until-success 'yas-keymap-disable-hook)
+    cmd))
+
+(defun company-template--after-clear-c-like-field ()
+  "Function that can be called after deleting a field of a c-like template.
+For c-like templates it is set as `after-post-fn' property on fields in
+`company-template-add-field'.  If there is a next field, delete everything
+from point to it.  If there is no field after point, remove preceding comma
+if present."
+  (let* ((pos (point))
+         (next-field-start (company-template-find-next-field))
+         (last-field-p (not (company-template-field-at next-field-start))))
+    (cond ((and (not last-field-p)
+                (< pos next-field-start)
+                (string-match "^[ ]*,+[ ]*$" (buffer-substring-no-properties
+                                              pos next-field-start)))
+           (delete-region pos next-field-start))
+          ((and last-field-p
+                (looking-back ",+[ ]*" (line-beginning-position)))
+           (delete-region (match-beginning 0) pos)))))
+
+(defun company-template-find-next-field ()
   (let* ((start (point))
-         (templates (company-template-templates-at (point)))
+         (templates (company-template-templates-at start))
          (minimum (apply 'max (mapcar 'overlay-end templates)))
          (fields (cl-loop for templ in templates
                           append (overlay-get templ 'company-template-fields))))
-    (dolist (pos (mapcar 'overlay-start fields))
+    (dolist (pos (mapcar 'overlay-start fields) minimum)
       (and pos
-           (> pos (point))
+           (> pos start)
            (< pos minimum)
-           (setq minimum pos)))
-    (push-mark)
-    (goto-char minimum)
-    (company-template-remove-field (company-template-field-at start))))
+           (setq minimum pos)))))
 
 (defun company-template-field-at (&optional point)
   (cl-loop for ovl in (overlays-at (or point (point)))
@@ -93,10 +144,12 @@
         (delq templ company-template--buffer-templates))
   (delete-overlay templ))
 
-(defun company-template-add-field (templ beg end &optional display)
+(defun company-template-add-field (templ beg end &optional display after-clear-fn)
   "Add new field to template TEMPL spanning from BEG to END.
 When DISPLAY is non-nil, set the respective property on the overlay.
-Leave point at the end of the field."
+Leave point at the end of the field.
+AFTER-CLEAR-FN is a function that can be used to apply custom behavior
+after deleting a field in `company-template-remove-field'."
   (cl-assert templ)
   (when (> end (overlay-end templ))
     (move-overlay templ (overlay-start templ) end))
@@ -109,6 +162,10 @@ Leave point at the end of the field."
       (overlay-put ov 'display display))
     (overlay-put ov 'company-template-parent templ)
     (overlay-put ov 'insert-in-front-hooks '(company-template-insert-hook))
+    (when after-clear-fn
+      (overlay-put ov 'company-template-after-clear after-clear-fn))
+    (overlay-put ov 'keymap company-template-field-map)
+    (overlay-put ov 'priority 101)
     (push ov siblings)
     (overlay-put templ 'company-template-fields siblings)))
 
@@ -179,7 +236,8 @@ Leave point at the end of the field."
   (let ((last-pos (point)))
     (while (re-search-forward "\\([^,]+\\),?" end 'move)
       (when (zerop (car (parse-partial-sexp last-pos (point))))
-        (company-template-add-field templ last-pos (match-end 1))
+        (company-template-add-field templ last-pos (match-end 1) nil
+                                    #'company-template--after-clear-c-like-field)
         (skip-chars-forward " ")
         (setq last-pos (point))))))
 

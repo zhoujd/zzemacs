@@ -3,7 +3,7 @@
 ;;https://melpa.org/#/company
 
 ;;company-mode <ctrl+tab> to open complete menu
-(zz-load-path "site-lisp/company-mode")
+(zz-load-path "site-lisp/company")
 (require 'company)
 (global-company-mode t)
 (setq company-idle-delay 0) ;; nil for not auto popup

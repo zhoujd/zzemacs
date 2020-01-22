@@ -6,6 +6,9 @@
 ;;(setq debug-on-quit t)        ; goes into debug mode when C-g is entered
 ;;(setq inhibit-default-init t) ; disable loading of "default.el" at startup
 
+;;enable debug
+;;M-x toggle-debug-on-error
+
 (zz-load-path "site-lisp")
 
 (keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to Backspace

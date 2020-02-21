@@ -114,3 +114,8 @@ network
         rc-manager=resolvconf
 
         $ sudo service Networkmanager restart
+
+8. NetworkManager
+
+        https://wiki.archlinux.org/index.php/NetworkManager
+

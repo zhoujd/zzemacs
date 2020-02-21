@@ -27,6 +27,8 @@ install_package_ubuntu() {
     sudo apt install -y meld
     sudo apt install -y evolution-ews
     sudo apt install -y dos2unix
+    sudo apt install -y xchm
+    sudo apt install -y djview4
 }
 
 ##package for centos

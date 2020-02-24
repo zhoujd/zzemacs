@@ -2,7 +2,7 @@
 # ln -sf flake8 ~/.config/flake8
 
 [flake8]
-ignore = E226,E302,E41, E111, W191
+ignore = E226,E302,E41, E111, W191, E121
 max-line-length = 160
 exclude = .git,__pycache__,docs/source/conf.py,old,build,dist
 max-complexity = 10

@@ -9,3 +9,8 @@ chrome
 2. Disable check default browser
 
     $ google-chrome -no-default-browser-check
+
+3. Disable GPU
+
+    Setting -> Advance -> System -> Disable  HW accelerate
+    $ google-chrome --disable-gpu

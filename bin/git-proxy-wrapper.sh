@@ -7,8 +7,8 @@
 # http://www.taiyo.co.jp/~gotoh/ssh/connect.c
 
 # Check host and port in $SOCKS_PROXY
-proxy_host=$(echo $SOCKS_PROXY | awk -F'/' '{print $3}' | awk -F':' '{print $1}')
-proxy_port=$(echo $SOCKS_PROXY | awk -F'/' '{print $3}' | awk -F':' '{print $2}')
+proxy_host=$(echo $SOCKS_PROXY | cut -d '/' -f 3 | awk -F':' '{print $1}')
+proxy_port=$(echo $SOCKS_PROXY | cut -d '/' -f 3 | awk -F':' '{print $2}')
 
 connect_flag="y"
 

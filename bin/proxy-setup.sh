@@ -4,14 +4,14 @@
 ## check arguments
 case $# in
     2 )
-        host=$1
-        http_port=$2
-        socks_port=1080
+        HOST=$1
+        PORT=$2
+        SOCKS_PORT=1080
         ;;
     3 )
-        host=$1
-        http_port=$2
-        socks_port=$3
+        HOST=$1
+        PORT=$2
+        SOCKS_PORT=$3
         ;;
     * )
         echo "Usage: `basename $0` host port [socks_port]"
@@ -24,12 +24,10 @@ esac
 case "$OS" in
     "Windows_NT" )
         echo "Setup proxy on Windows"
-        
         PROXY_SCRIPT=$HOME/.bashrc.d/99-proxy.sh
         ;;
     * )
         echo "Setup proxy on Linux"
-        
         if [ $EUID -ne 0 ]; then
             echo "You must be a root user" 2>&1
             exit 1
@@ -39,16 +37,27 @@ case "$OS" in
         ;;
 esac
 
-cat <<EOF > $PROXY_SCRIPT
-## This is for proxy configure
-export http_proxy=http://$host:$http_port/
+tee $PROXY_SCRIPT <<EOF
+#!/bin/sh
+
+HOST=$HOST
+PORT=$PORT
+SOCKS_PORT=$SOCKS_PORT
+
+export http_proxy=http://\$HOST:\$PORT/
+export HTTP_PROXY=\$http_proxy
+
 export https_proxy=\$http_proxy
+export HTTPS_PROXY=\$https_proxy
+
 export ftp_proxy=\$http_proxy
-export socks_proxy=socks://$host:$socks_port/
-export all_proxy=\$socks_proxy
-export no_proxy=localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16
-export socks_host=$host
-export socks_port=$socks_port
+export FTP_PROXY=\$ftp_proxy
+
+export no_proxy=.intel.com,intel.com,localhost,127.0.0.1,10.0.0.0/8,192.168.1.0/24
+export NO_PROXY=\$no_proxy
+
+export all_proxy=socks://\$HOST:\$SOCKS_PORT/
+export ALL_PROXY=\$all_proxy
 EOF
 
 echo "setup proxy done"

@@ -66,6 +66,35 @@ rc_zach_uninstall() {
     sudo rm -rfv /etc/rc-zach
 }
 
+rc_zach_sample() {
+echo 'Put script under /etc/rc.zach.d
+
+#!/bin/bash
+
+do_start() {
+    echo "$0 start"
+}
+
+do_stop() {
+    echo "$0 stop"
+}
+
+case "$1" in
+    start)
+    	do_start
+        ;;
+    stop)
+        do_stop
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}" >&2
+        exit 3
+        ;;
+esac
+exit 0
+'
+}
+
 case $1 in
     install )
         rc_zach_install
@@ -73,7 +102,10 @@ case $1 in
     uninstall )
         rc_zach_uninstall
         ;;
+    sample )
+        rc_zach_sample
+        ;;
     * )
-        echo "$(basename $0) {install|uninstall}"
+        echo "$(basename $0) {install|uninstall|sample}"
         ;;
 esac

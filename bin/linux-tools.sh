@@ -47,7 +47,7 @@ install_package_fedora() {
 }
 
 # dectect OS version
-case "$OS_DISTRO" in 
+case "$OS_DISTRO" in
     "SUSE" )
         run_cmd install_package_suse
         ;;

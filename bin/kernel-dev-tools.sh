@@ -14,8 +14,9 @@ install_package_suse() {
 
 ##package for ubuntu
 install_package_ubuntu() {
-    sudo apt install -y flex bison
+    sudo apt install -y flex bison liblz4-tool
     sudo apt install -y libelf-dev libssl-dev
+    sudo apt install -y dpkg-dev
 }
 
 ##package for centos

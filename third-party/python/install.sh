@@ -10,6 +10,7 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 #pip install pip -U
 #pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+#pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
 PIP_PAR="--timeout 60"
 

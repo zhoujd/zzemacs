@@ -8,6 +8,7 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ##https://pypi.python.org/pypi/pyreadline
 
 #pip install pip -U
+#pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 PIP_PAR="--timeout 60"

@@ -27,7 +27,7 @@ if [ "$OS" = "Windows_NT" ] ; then
 
     # For cmd run
     if [ "$HOME" = "" ]; then
-        HOME="c:/zznix/home/zhoujd"
+        HOME="c:/zznix/home/jiandon"
     fi
 else
     SRC=`pwd`

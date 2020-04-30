@@ -6,7 +6,7 @@
 
 # Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
-    ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)/home/zhoujd/zzemacs
+    ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)/home/jiandon/zzemacs
 else
     ZZEMACS_ROOT=$(cd $(dirname $0)/.. && pwd)
 fi

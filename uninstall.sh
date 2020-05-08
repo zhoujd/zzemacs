@@ -11,7 +11,7 @@ $rm_app ~/.emacs
 
 echo "remove fonts ..."
 $rm_app ~/.fonts
-$sudo_rm_app /usr/share/fonts/zzemacs
+$sudo_rm_app /usr/share/fonts/zach
 
 echo "remove .emacs.d ..."
 $rm_app ~/.emacs.d

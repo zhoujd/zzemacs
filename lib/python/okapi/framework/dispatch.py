@@ -1,6 +1,6 @@
-### dispatch.py
+# dispatch.py
+# -*- coding: utf-8 -*-
 
-import glob
 import os
 import framework.config as config
 
@@ -11,9 +11,9 @@ class Dispatch:
         self.params = argv
         self.appmap = {}
         self.entryname = os.path.basename(argv[0])
+
     def run(self):
         self.getappmap()
-        
         if len(self.params) == 1:
             self.usage()
         else:
@@ -21,88 +21,75 @@ class Dispatch:
             args = ""
             app = None
             match = False
-            
-            if len(self.params) >= 5 and match == False:
-                cmd = "%s-%s-%s-%s" % (self.params[1], self.params[2], self.params[3], self.params[4])
-                args = " ".join(self.params[5:])
-                app = self.findapp(cmd)
-                if app != None:
-                    match = True;
-                
-            if len(self.params) >= 4 and match == False:
-                cmd = "%s-%s-%s" % (self.params[1], self.params[2], self.params[3])
-                args = " ".join(self.params[4:])
-                app = self.findapp(cmd)
-                if app != None:
-                    match = True;
 
-            if len(self.params) >= 3 and match == False:
-                cmd = "%s-%s" % (self.params[1], self.params[2])
-                args = " ".join(self.params[3:])
+            for num in range(config.maxmatch, 1, -1):
+              if len(self.params) >= num and match is False:
+                cmd = "-".join(self.params[1:num])
+                args = " ".join(self.params[num:])
+                if config.verbose is True:
+                    print("try cmd: %s to usaged\n" % cmd)
+                    print("try args: %s to usaged\n" % args)
                 app = self.findapp(cmd)
-                if app != None:
-                    match = True;
+                if app is not None:
+                    match = True
+                    break
 
-            if len(self.params) >= 2 and match == False:
-                cmd = "%s" % (self.params[1])
-                args = " ".join(self.params[2:])
-                app = self.findapp(cmd)
-                if app != None:
-                    match = True;
-                    
-            if app == None and match == False:
-                print("Can't find %s to usaged\n" % cmd)
+            if app is None and match is False:
+                print("Can't find cmd to usaged\n")
                 print("Try to run '%s help' to get help\n" % self.entryname)
             else:
-                if config.verbose == True:
+                if config.verbose is True:
                     print(app)
-                    
                 cmdline = "%s %s" % (" ".join(app), args)
                 print("cmdline: %s\n" % cmdline)
                 os.system(cmdline)
-        
+
     def usage(self):
         for key, value in sorted(self.appmap.items()):
             print("Use: %s %s [argv]" % (self.entryname, key.replace("-", " ")))
-        
+
     def findapp(self, app):
         if app in self.appmap.keys():
             return self.appmap[app]
         else:
             return None
-        
+
     def getappmap(self):
         appdir = "%s/%s" % (self.srcdir, config.appdirname)
         applist = []
-        
-        for (dirname, subdir, subfile) in os.walk(appdir):
-            if config.verbose == True:
-                print('Dirname: %s' % dirname)
-                print('Subdir: %s'  % subdir)
-                print('Subfile: %s' % subfile)
 
+        for (dirname, subdir, subfile) in os.walk(appdir):
+            if config.verbose is True:
+                print('Dirname: %s' % dirname)
+                print('Subdir: %s' % subdir)
+                print('Subfile: %s' % subfile)
             for f in subfile:
-                applist.append(f)
-        
+                filefullname = "%s/%s" % (dirname, f)
+                if os.access(filefullname, os.X_OK):
+                    applist.append(f)
+            if config.limitdept is True:
+                break
+
         for ignore in config.appignorefiles:
             try:
                 applist.remove(ignore)
-            except:
+            except Exception:
                 pass
 
         for app in applist:
             appinfo = []
             appname, appext = os.path.splitext(app)
+            apptype = None
 
-            if appext == "":
-                appinfo.append("")
-            elif appext in config.appnames:
-                appinfo.append(config.appnames[appext])
-            else:
-                continue
-                
-            appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
-            self.appmap[appname] = appinfo
-            
-        if config.verbose == True:
+            if appext in config.appnames:
+                apptype = config.appnames[appext]
+            elif appext == "" and config.supportnoext is True:
+                apptype = "unknown"
+
+            if apptype is not None:
+                appinfo.append(apptype)
+                appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
+                self.appmap[appname] = appinfo
+
+        if config.verbose is True:
             print(self.appmap)

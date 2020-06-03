@@ -43,27 +43,8 @@ install_fonts() {
 
 ##setup others
 install_others() {
-    ##create ~/.emacs.d folder
+    ##create ~/.emacs.d
     mkdir -p ~/.emacs.d
-    mkdir -p ~/.zach/bin
-
-    echo "install others to $TARGET_TYPE"
-    case "$TARGET_TYPE" in
-        "system" )
-            BIN_TARGET=/usr/bin
-            sudo ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
-            sudo ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
-            ;;
-        "user" )
-            BIN_TARGET=~/local/bin
-            mkdir -p $BIN_TARGET
-            ln -sf ${ZZEMACS_ROOT}/bin/zzemacs $BIN_TARGET
-            ln -sf ${ZZEMACS_ROOT}/bin/zzrun   $BIN_TARGET
-            ;;
-        * )
-            echo "unknown $TARGET_TYPE"
-            ;;
-    esac
 
     ##link zzemacs/etc/terminfo
     rm -rf ~/.terminfo

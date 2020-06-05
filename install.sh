@@ -33,7 +33,7 @@ install_fonts() {
         "user" )
             FONT_TARGET=~/.fonts
             mkdir -p $FONT_TARGET
-            ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+            ln -sf ${ZZEMACS_ROOT}/font/* $FONT_TARGET
             fc-cache -f
             ;;
         * )

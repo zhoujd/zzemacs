@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## rm parameter add -f for force remove
 rm_app="rm -ri $1"

@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
 ZZEMACS_ROOT=`pwd`
-TARGET_TYPE="system"   ##system/user
 
 ##source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
@@ -21,11 +20,13 @@ EOF
 
 ##setup font
 install_fonts() {
+    TARGET_TYPE="system"   ##system/user
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
             sudo mkdir -p $FONT_TARGET
+            sudo rm $FONT_TARGET/zach
             sudo ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
             sudo fc-cache -f
             ;;
@@ -58,33 +59,10 @@ install_others() {
 ##install thirdparty
 install_thirdparty() {
     echo "install third party to $TARGET_TYPE"
-    case "$TARGET_TYPE" in
-        "system" )
-            ##install pymacs
-            cd ${ZZEMACS_ROOT}/third-party/python
-            sudo sh ./install.sh py3
-            cd ${ZZEMACS_ROOT}
-
-            ##install EPL
-            cd ${ZZEMACS_ROOT}/third-party/perl
-            sudo sh ./install.sh
-            cd ${ZZEMACS_ROOT}
-            ;;
-        "user" )
-            ##install pymacs
-            cd ${ZZEMACS_ROOT}/third-party/python
-            sh ./install.sh
-            cd ${ZZEMACS_ROOT}
-
-            ##install EPL
-            cd ${ZZEMACS_ROOT}/third-party/perl
-            sh ./install.sh
-            cd ${ZZEMACS_ROOT}
-            ;;
-        * )
-            echo "unknown $TARGET_TYPE"
-            ;;
-    esac
+    ##install pymacs
+    ${ZZEMACS_ROOT}/third-party/python/install.sh py3
+    ##install EPL
+    ${ZZEMACS_ROOT}/third-party/perl/install.sh
 }
 
 main() {

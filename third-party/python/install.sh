@@ -21,7 +21,9 @@ py2_deps() {
 }
 
 py3_deps() {
+    sudo apt install -y python3-pip
     sudo apt install -y python3-venv
+    
     pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 
@@ -38,9 +40,12 @@ case $1 in
     flake8 )
         setup_flake8
         ;;
-    * )
+    py2 )
         py2_deps
         setup_flake8       
+        ;;
+    * )
+        echo "Usage: $0 {py3|py2|flake8}"
         ;;
 esac
 

@@ -62,7 +62,7 @@ install_thirdparty() {
         "system" )
             ##install pymacs
             cd ${ZZEMACS_ROOT}/third-party/python
-            sudo sh ./install.sh
+            sudo sh ./install.sh py3
             cd ${ZZEMACS_ROOT}
 
             ##install EPL

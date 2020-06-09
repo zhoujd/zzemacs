@@ -97,7 +97,7 @@ alias tat='tmux attach -t'
 alias trs='tmux rename-session -t'
 alias tks='tmux kill-session -t'
 
-##byobu
+## byobu
 alias bnews='byobu new-session -s'
 alias bls='byobu list-session'
 alias blw='byobu list-window'
@@ -108,7 +108,8 @@ alias bat='byobu attach -t'
 alias brs='byobu rename-session -t'
 alias bks='byobu kill-session -t'
 
-## nano
+## others
 alias nano='nano -w'
 alias scrot='scrot ~/Pictures/screenshots/%b%d::%H%M%S.png'
 alias thunarpwd='thunar $PWD'
+alias sakura='sakura -c 100 -r 30'

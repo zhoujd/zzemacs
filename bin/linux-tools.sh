@@ -29,6 +29,7 @@ install_package_ubuntu() {
     sudo apt install -y dos2unix
     sudo apt install -y xchm
     sudo apt install -y djview4
+    sudo apt install -y baobab
 }
 
 ##package for centos

@@ -1,6 +1,6 @@
-;;; smartparens-latex.el --- Additional configuration for (La)TeX based modes.
+;;; smartparens-latex.el --- Additional configuration for (La)TeX based modes.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2013 Matus Goljer
+;; Copyright (C) 2013-2016 Matus Goljer
 
 ;; Author: Matus Goljer <matus.goljer@gmail.com>
 ;; Maintainer: Matus Goljer <matus.goljer@gmail.com>
@@ -37,12 +37,6 @@
 ;; into your configuration.  You can use this in conjunction with the
 ;; default config or your own configuration.
 
-;; It is advised that you add `latex-mode' to the list
-;; `sp-navigate-consider-stringlike-sexp'.  This will tell
-;; smartparens to treat the $$ math blocks as sexps, and enable you
-;; to use all the sexp-based commands on them (such as
-;; `sp-down-sexp', `sp-up-sexp' etc.)
-
 ;; If you have good ideas about what should be added please file an
 ;; issue on the github tracker.
 
@@ -53,50 +47,143 @@
 
 (require 'smartparens)
 
-(defun sp-latex-insert-spaces-inside-pair (id action context)
+(defun sp-latex-insert-spaces-inside-pair (_id action _context)
+  "ID, ACTION, CONTEXT."
   (when (eq action 'insert)
     (insert "  ")
-    (backward-char 1)))
+    (backward-char 1))
+  (when (and (eq action 'wrap)
+             (save-excursion
+               (goto-char (sp-get sp-last-wrapped-region :beg-in))
+               (not (sp--looking-back-p "[[{(]"))))
+    (save-excursion
+      (goto-char (sp-get sp-last-wrapped-region :end-in))
+      (insert " ")
+      (goto-char (sp-get sp-last-wrapped-region :beg-in))
+      (insert " "))))
 
-(defun sp-latex-insert-quotes (_i action _c)
+(defun sp-latex-skip-match-apostrophe (ms _mb me)
+  "MS, MB, ME."
+  (when (equal ms "'")
+    (save-excursion
+      (goto-char me)
+      (looking-at-p "\\sw"))))
+
+(defun sp-latex-skip-double-quote (_id action _context)
+  "ID, ACTION, CONTEXT."
   (when (eq action 'insert)
-    (delete-char -1)
-    (insert "``")))
+    (when (looking-at-p "''''")
+      (delete-char -2)
+      (delete-char 2)
+      (forward-char 2))))
+
+(defun sp-latex-point-after-backslash (id action _context)
+  "Return t if point follows a backslash, nil otherwise.
+This predicate is only tested on \"insert\" action.
+ID, ACTION, CONTEXT."
+  (when (eq action 'insert)
+    (let ((trigger (sp-get-pair id :trigger)))
+      (looking-back (concat "\\\\" (regexp-quote (if trigger trigger id))) nil))))
+
+(add-to-list 'sp-navigate-skip-match
+             '((tex-mode plain-tex-mode latex-mode) . sp--backslash-skip-match))
 
 (sp-with-modes '(
                  tex-mode
                  plain-tex-mode
                  latex-mode
+                 LaTeX-mode
                  )
-  ;; disable useless pairs.  Maybe also remove " ' and \"?
-  (sp-local-pair "/*" nil :actions nil)
+  (sp-local-pair "`" "'"
+                 :actions '(:rem autoskip)
+                 :skip-match 'sp-latex-skip-match-apostrophe
+                 :unless '(sp-latex-point-after-backslash sp-in-math-p))
+  ;; math modes, yay.  The :actions are provided automatically if
+  ;; these pairs do not have global definitions.
+  (sp-local-pair "$" "$")
+  (sp-local-pair "\\[" "\\]"
+                 :unless '(sp-latex-point-after-backslash))
+
+  ;; disable useless pairs.
   (sp-local-pair "\\\\(" nil :actions nil)
   (sp-local-pair "'" nil :actions nil)
   (sp-local-pair "\\\"" nil :actions nil)
 
   ;; quote should insert ``'' instead of double quotes.  If we ever
   ;; need to insert ", C-q is our friend.
-  (sp-local-pair "\"" "''" :actions '(insert) :post-handlers '(sp-latex-insert-quotes))
+  (sp-local-pair "``" "''"
+                 :trigger "\""
+                 :unless '(sp-latex-point-after-backslash sp-in-math-p)
+                 :post-handlers '(sp-latex-skip-double-quote))
 
-  ;; add the prefix funciton sticking to {} pair
+  ;; add the prefix function sticking to {} pair
   (sp-local-pair "{" nil :prefix "\\\\\\(\\sw\\|\\s_\\)*")
+
+  ;; do not add more space when slurping
+  (sp-local-pair "{" "}")
+  (sp-local-pair "(" ")")
+  (sp-local-pair "[" "]")
 
   ;; pairs for big brackets.  Needs more research on what pairs are
   ;; useful to add here.  Post suggestions if you know some.
-  (sp-local-pair "\\left(" "\\right)" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\left{" "\\right}" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\big(" "\\big)" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\bigg(" "\\bigg)" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\Big(" "\\Big)" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\Bigg(" "\\Bigg)" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\big{" "\\big}" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\bigg{" "\\bigg}" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\Big{" "\\Big}" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\Bigg{" "\\Bigg}" :post-handlers '(sp-latex-insert-spaces-inside-pair))
-  (sp-local-pair "\\langle" "\\rangle" :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\left(" "\\right)"
+                 :trigger "\\l("
+                 :when '(sp-in-math-p)
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\left[" "\\right]"
+                 :trigger "\\l["
+                 :when '(sp-in-math-p)
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\left\\{" "\\right\\}"
+                 :trigger "\\l{"
+                 :when '(sp-in-math-p)
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\left|" "\\right|"
+                 :trigger "\\l|"
+                 :when '(sp-in-math-p)
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\bigl(" "\\bigr)"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\biggl(" "\\biggr)"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Bigl(" "\\Bigr)"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Biggl(" "\\Biggr)"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\bigl[" "\\bigr]"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\biggl[" "\\biggr]"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Bigl[" "\\Bigr]"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Biggl[" "\\Biggr]"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\bigl\\{" "\\bigr\\}"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\biggl\\{" "\\biggr\\}"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Bigl\\{" "\\Bigr\\}"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\Biggl\\{" "\\Biggr\\}"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\lfloor" "\\rfloor"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\lceil" "\\rceil"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair "\\langle" "\\rangle"
+                 :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair  "\\lVert" "\\rVert"
+          :when '(sp-in-math-p)
+          :trigger "\\lVert"
+          :post-handlers '(sp-latex-insert-spaces-inside-pair))
+  (sp-local-pair  "\\lvert" "\\rvert"
+          :when '(sp-in-math-p)
+          :trigger "\\lvert"
+          :post-handlers '(sp-latex-insert-spaces-inside-pair))
 
   ;; some common wrappings
   (sp-local-tag "\"" "``" "''" :actions '(wrap))
+  (sp-local-tag "\\b" "\\begin{_}" "\\end{_}")
   (sp-local-tag "bi" "\\begin{itemize}" "\\end{itemize}")
   (sp-local-tag "be" "\\begin{enumerate}" "\\end{enumerate}"))
 

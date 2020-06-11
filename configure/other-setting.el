@@ -255,10 +255,6 @@
 (require 'escreen)
 (escreen-install)
 
-;;winring
-(require 'winring)
-(winring-initialize)
-
 ;;grep+
 (require 'grep+)
 

@@ -30,6 +30,7 @@ install_package_ubuntu() {
     sudo apt install -y xchm
     sudo apt install -y djview4
     sudo apt install -y baobab
+    sudo apt install -y pidgin-sipe
 }
 
 ##package for centos

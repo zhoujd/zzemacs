@@ -110,6 +110,7 @@ git config --global http.proxy $http_proxy
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 if [ "$OS" = "Windows_NT" ] ; then
+    ## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/ca-bundle.crt
     git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
     git config --global credential.helper wincred
 else

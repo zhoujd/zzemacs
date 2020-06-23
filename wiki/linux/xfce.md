@@ -80,3 +80,7 @@ Xfce
 
         https://xubuntu.org/download
         https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/xubuntu/releases/18.04/release/
+
+12. XFCE4 desktop zooming with the keyboard
+
+        By default, holding the Alt key and scrolling up or down the mouse wheel

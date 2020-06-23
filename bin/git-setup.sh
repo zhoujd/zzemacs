@@ -108,14 +108,14 @@ git config --global alias.hub   '!git daemon --base-path=. --export-all --enable
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 
+## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/ca-bundle.crt
+git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
+
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 if [ "$OS" = "Windows_NT" ] ; then
-    ## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/ca-bundle.crt
-    git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
     git config --global credential.helper wincred
 else
     ## sudo apt install ca-certificates
-    git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
     git config --global credential.helper "cache --timeout=3600"
 fi
 

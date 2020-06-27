@@ -84,3 +84,12 @@ Xfce
 12. XFCE4 desktop zooming with the keyboard
 
         By default, holding the Alt key and scrolling up or down the mouse wheel
+
+
+13. Lightdm etc
+
+        Dezinstalare xscreensaver:
+        sudo apt-get purge xscreensaver*
+
+        Instalare LightDM, Light-Locker
+        sudo apt-get install lightdm lightdm-gtk-greeter light-locker light-locker-settings

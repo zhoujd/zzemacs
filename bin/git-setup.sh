@@ -13,10 +13,10 @@
 
 ### Build from source
 ## sudo apt-get install libssl-dev libcurl4-openssl-dev libexpat1-dev
-## sudo yum install openssl-devel libcurl-devel expat-devel
-## wget https://github.com/git/git/archive/v2.25.1.zip
-## unzip v2.25.1.zip
-## cd git-2.25.1
+## sudo yum install openssl-devel libcurl-devel expat-devel perl-devel
+## wget https://github.com/git/git/archive/v2.16.6.zip
+## unzip v2.16.6.zip
+## cd git-2.16.6
 ## make prefix=/opt/git all
 ## make prefix=/opt/git install
 ## echo /opt/git/bin >> /etc/environment # or others

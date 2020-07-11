@@ -300,9 +300,6 @@
 ;;plantum-mode
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-;(setq plantuml-default-exec-mode 'jar)
-;(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-;(setq display-images-p t)
 
 
 (provide 'prog-setting)

@@ -95,9 +95,9 @@ color_prompt() {
             ;;
         dumb* )
             if [ $(whoami) = 'root' ]; then
-                PS1="[\u@\h \W] # "
+                PS1="[\u@\h \W]# "
             else
-                PS1="[\u@\h \W] $ "
+                PS1="[\u@\h \W]$ "
             fi
             ;;
     esac

@@ -93,3 +93,11 @@ Xfce
 
         Instalare LightDM, Light-Locker
         sudo apt-get install lightdm lightdm-gtk-greeter light-locker light-locker-settings
+
+14. Disable zoon desktop
+
+        There is an easy way, without losing the moving windows feature.
+
+        Open Settings Editor
+        Go to Channel xfwm4
+        Disable Property zoom_desktop

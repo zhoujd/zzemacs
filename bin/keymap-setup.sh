@@ -2,7 +2,12 @@
 
 echo "Set capslk to ctrl"
 
-sudo sed -i 's/XKBOPTIONS=.*/XKBOPTIONS="ctrl:nocaps"/' /etc/default/keyboard 
-setxkbmap -option "ctrl:nocaps"
+keymap_ubuntu() {
+    echo "on Ubuntu"
+    sudo sed -i 's/XKBOPTIONS=.*/XKBOPTIONS="ctrl:nocaps"/' /etc/default/keyboard
+    sudo dpkg-reconfigure -phigh console-setup
+}
+
+keymap_ubuntu
 
 echo "Set capslk to ctrl done"

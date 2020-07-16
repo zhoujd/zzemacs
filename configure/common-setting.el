@@ -16,6 +16,7 @@
 ;;the current frame to make it transparent
 (set-frame-parameter (selected-frame) 'alpha '(95 70))
 (add-to-list 'default-frame-alist '(alpha 95 70))
+(add-to-list 'default-frame-alist '(font . "Consolas-14"))
 
 ;; -*- Chinese -*-
 (defun zz:set-language-chinese ()

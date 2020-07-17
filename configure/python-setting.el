@@ -43,13 +43,20 @@
 (setq python-shell-interpreter "python3")
 (setq elpy-rpc-python-command "python3")
 
+(defun zz:py-indent-4 ()
+  (setq tab-width 4)
+  (setq python-shift-right 4)
+  (setq python-shift-left 4)
+  (setq python-indent 4))
+
+(defun zz:py-indent-2 ()
+  (setq tab-width 2)
+  (setq python-shift-right 2)
+  (setq python-shift-left 2)
+  (setq python-indent 2))
+
 (add-hook 'python-mode-hook
-          (lambda ()
-            (setq tab-width 2)
-            (setq python-shift-right 2)
-            (setq python-shift-left 2)
-            (setq python-indent 2)
-            ))
+          'zz:py-indent-4)
 
 
 (provide 'python-setting)

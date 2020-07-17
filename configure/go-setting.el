@@ -1,6 +1,4 @@
 ;;;;go programe setting
-;;;
-
 ;; get the following packages ("M-x package-list-packages"):
 ;;     go-mode
 ;;     go-eldoc
@@ -34,7 +32,7 @@
 (defun zz:go-mode-hook ()
   ;; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
-  ;(local-set-key (kbd "C-c m") 'gofmt)
+  (local-set-key (kbd "C-c m") 'gofmt)
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "M-*") 'pop-tag-mark)
   (set (make-local-variable 'company-backends) '(company-go)))
@@ -42,6 +40,7 @@
 (add-hook 'go-mode-hook 'zz:go-mode-hook)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
 (add-hook 'go-mode-hook 'company-mode)
+
 
 (provide 'go-setting)
 

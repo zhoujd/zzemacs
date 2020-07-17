@@ -15,6 +15,9 @@
 (autoload 'go-mode "go-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 
+;; go-guru
+(require 'go-guru)
+
 ;; go-eldoc
 (zz-load-path "site-lisp/go-eldoc")
 (require 'go-eldoc)
@@ -49,6 +52,7 @@
 
 (add-hook 'go-mode-hook 'zz:go-mode-hook)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
+(add-hook 'go-mode-hook 'go-guru-hl-identifier-mode)
 (add-hook 'go-mode-hook 'company-mode)
 (add-hook 'go-mode-hook 'zz:go-indent4)
 

@@ -21,11 +21,20 @@
 (zz-load-path "site-lisp/go-eldoc")
 (require 'go-eldoc)
 
+;; godoc path
+(defvar zz:go-path
+  (list
+   (format "%s/go/bin" (getenv "HOME"))
+   ))
+(mapc #'zz:add-os-path zz:go-path)
+
 ;; company-go
 (require 'company-go)
 
 (defun zz:go-mode-hook ()
-  (local-set-key (kbd "C-c m") 'gofmt)
+  ;; Call Gofmt before saving                                                    
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  ;(local-set-key (kbd "C-c m") 'gofmt)
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "M-*") 'pop-tag-mark)
   (set (make-local-variable 'company-backends) '(company-go)))

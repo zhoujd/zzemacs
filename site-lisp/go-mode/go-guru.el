@@ -143,6 +143,8 @@
   (completing-read-multiple "guru-scope (comma-separated): "
                             (go-packages) nil nil nil 'go-guru--scope-history))
 
+(eval-when-compile (require 'subr-x))
+
 ;;;###autoload
 (defun go-guru-set-scope ()
   "Set the scope for the Go guru, prompting the user to edit the previous scope.
@@ -279,7 +281,7 @@ effective name of the current buffer."
 	 (cmd (append (list go-guru-command
 			    "-modified"
 			    "-scope" go-guru-scope
-			    (format "-tags=%s" (mapconcat 'identity go-guru-build-tags ",")))
+			    (format "-tags=%s" (mapconcat 'identity go-guru-build-tags " ")))
 		      flags
 		      (list mode
 			    posn))))

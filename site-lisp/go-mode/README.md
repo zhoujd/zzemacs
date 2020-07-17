@@ -34,6 +34,9 @@ the following extra features to provide an improved experience:
     (`go-import-add`, bound to `C-c C-a`)
   - A function for removing or commenting unused imports
     (`go-remove-unused-imports`)
+  - It is recommended that you use `goimports` or the
+    `organize-imports` feature of `gopls` to manage
+    adding/removing/organizing imports automatically.
 - Integration with godef
   - `godef-describe` (`C-c C-d`) to describe expressions
   - `godef-jump` (`C-c C-j`) and `godef-jump-other-window` (`C-x 4 C-c
@@ -99,6 +102,26 @@ Either evaluate the statements with `C-x C-e`, or restart Emacs.
 
 There are several third party extensions that can enhance the Go
 experience in Emacs.
+
+## Gopls integration
+
+[Gopls](https://github.com/golang/tools/blob/master/gopls/README.md)
+is the official language server protocol (lsp) implementation provided
+by the Go team. It is intended to replace the existing third party
+tools for code formatting (gofmt), automatic imports (goimports), code
+navigation (godef/guru), type and function descriptions (godoc/godef),
+error checking, auto completion (gocode), variable and type renaming
+(rename), and more. Once gopls is stable the older tools will no
+longer be supported.
+
+Gopls is a supported backend for
+[lsp-mode](https://github.com/emacs-lsp/lsp-mode). It will be used
+automatically by lsp-mode if `gopls` is found in your PATH. You can
+install gopls via: `go get golang.org/x/tools/gopls@latest`. To enable
+lsp-mode for go buffers:
+
+    (add-hook 'go-mode-hook 'lsp-deferred)
+
 
 ## Syntax/error checking
 

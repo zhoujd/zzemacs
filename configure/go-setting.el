@@ -30,11 +30,8 @@
 (require 'company-go)
 
 (defun zz:go-mode-hook ()
-  ;;(setq tab-width 8 indent-tabs-mode 1))
-  (setq-default) 
-  (setq tab-width 2) 
-  (setq standard-indent 2) 
-  (setq indent-tabs-mode nil)
+  (setq tab-width 4
+        indent-tabs-mode 1)
   ;; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
   (local-set-key (kbd "C-c m") 'gofmt)

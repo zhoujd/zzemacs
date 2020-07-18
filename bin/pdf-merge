@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# = 0 ]; then
+    echo "Usage: $0 <pdf1> ... <pdfn>"
+    echo "Usage: the output is output.pdf"
+    exit 1
+fi
+
+OUTPUT=output.pdf
+gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$OUTPUT $*
+
+echo "pdf merge done"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# sudo apt install poppler-utils
+# pdfunite $* $OUTPUT
+
 if [ $# = 0 ]; then
     echo "Usage: $0 <pdf1> ... <pdfn>"
     echo "Usage: the output is output.pdf"
@@ -8,5 +11,6 @@ fi
 
 OUTPUT=output.pdf
 gs -q -sPAPERSIZE=letter -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$OUTPUT $*
+
 
 echo "pdf merge done"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
 
 install_ca_org() {
     echo "install cacert.org"
@@ -15,7 +17,7 @@ install_ca_bundle() {
     echo "install bundle"
     local ca_bundle=/usr/local/share/ca-certificates
     sudo mkdir -p $ca_bundle
-    sudo cp ~/zzemacs/misc/ca-bundle.crt $ca_bundle
+    sudo cp $MISC_ROOT/ca-bundle.crt $ca_bundle
 }
 
 update_ca() {

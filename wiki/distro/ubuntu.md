@@ -139,7 +139,7 @@ Ubuntu setting
         $ sudo apt-key del 73C62A1B    # specify the last 8 characters only
         $ sudo apt update
 
-15. Modify login messages
+15. Modify login motd(Message of the Day)
 
         $ cd /etc/update-motd.d
         $ ls -l

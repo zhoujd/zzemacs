@@ -144,3 +144,9 @@ Ubuntu setting
         $ cd /etc/update-motd.d
         $ ls -l
 
+        $ vim /etc/default/motd-news
+          # Enable/disable the dynamic MOTD news service
+          # This is a useful way to provide dynamic, informative
+          # information pertinent to the users and administrators
+          # of the local system
+          ENABLED=0

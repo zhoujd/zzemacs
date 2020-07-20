@@ -138,3 +138,9 @@ Ubuntu setting
         $ sudo apt-key del "3820 03C2 C8B7 B4AB 813E 915B 14E4 9429 73C6 2A1B"
         $ sudo apt-key del 73C62A1B    # specify the last 8 characters only
         $ sudo apt update
+
+15. Modify login messages
+
+        $ cd /etc/update-motd.d
+        $ ls -l
+

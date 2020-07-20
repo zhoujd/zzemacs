@@ -150,3 +150,7 @@ Ubuntu setting
           # information pertinent to the users and administrators
           # of the local system
           ENABLED=0
+
+        ## add landscape-sysinfo
+        $ sudo apt install landscape-common
+        $ landscape-sysinfo

@@ -214,6 +214,7 @@
   (kbd "M-X")     'smex
   (kbd "C-x M-x") 'execute-extended-command
   (kbd "C-c M-x") 'smex-major-mode-commands
+  (kbd "C-h")     'delete-backward-char
   ))
 
 ;;helm key setting

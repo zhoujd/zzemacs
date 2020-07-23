@@ -301,6 +301,10 @@
 (require 'plantuml-mode)
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
+;;ztree
+(zz-load-path "site-lisp/ztree")
+(require 'ztree)
+
 
 (provide 'prog-setting)
 

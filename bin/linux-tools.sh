@@ -33,6 +33,7 @@ install_package_ubuntu() {
     sudo apt install -y pidgin-sipe
     sudo apt install -y sakura
     sudo apt install -y xautolock
+    sudo apt install -y synaptic
 }
 
 ##package for centos

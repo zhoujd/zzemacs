@@ -437,6 +437,7 @@
 ;(setq mouse-wheel-scroll-amount '(1))
 
 ;;when deleted a file goes to the OS's trash folder:
+;;Ubuntu system: .local/share/Trash/files
 (setq trash-directory "~/.Trash")
 (setq delete-by-moving-to-trash t)
 

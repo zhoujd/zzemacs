@@ -26,6 +26,7 @@ update_ca() {
     sudo update-ca-certificates
 
     echo "git ssl update"
+    git config --global http.sslverify true
     git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 }
 

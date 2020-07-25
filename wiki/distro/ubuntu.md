@@ -154,3 +154,7 @@ Ubuntu setting
         ## add landscape-sysinfo
         $ sudo apt install landscape-common
         $ landscape-sysinfo
+
+16. More package for Ubuntu
+
+        $ sudo apt install ubuntu-restricted-extras ubuntu-restricted-addons 

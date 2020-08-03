@@ -21,9 +21,6 @@ py2_deps() {
 }
 
 py3_deps() {
-    sudo apt install -y python3-pip
-    sudo apt install -y python3-venv
-    
     pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 

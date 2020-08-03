@@ -6,6 +6,7 @@
 echo "For perl develop start ..."
 
 echo "==>1 install plsense"
+#sudo yum install perl-Module-Install
 sudo apt install -y plsense
 
 echo "==>2 install \$HOME/.plsense"

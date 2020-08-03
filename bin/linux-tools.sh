@@ -38,7 +38,12 @@ install_package_ubuntu() {
 
 ##package for centos
 install_package_centos() {
-    sudo yum install dos2unix
+    sudo yum install -y dos2unix
+    sudo yum install -y net-tools
+    sudo yum install -y pciutils
+    sudo yum install -y vim
+    sudo yum install -y nano
+    sudo yum install -y git
 }
 
 ##package for fedora

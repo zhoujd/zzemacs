@@ -71,6 +71,7 @@ install_package() {
             sudo yum install -y libXft-devel
             sudo yum install -y git-core
             sudo yum install -y gitk
+            sudo yum install -y wget
             ;;
         "Fedora" )
             sudo dnf -y groupinstall "Development Tools"

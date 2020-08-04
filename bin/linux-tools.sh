@@ -48,6 +48,7 @@ install_package_centos() {
     sudo yum install -y python3 python3-pip python2-pip
     sudo yum install -y rxvt-unicode sakura
     sudo yum install -y alsa-tools alsa-utils
+    sudo yum isntall -y connect-proxy
 }
 
 ##package for fedora

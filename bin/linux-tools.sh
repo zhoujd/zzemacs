@@ -43,7 +43,7 @@ install_package_centos() {
     sudo yum install -y pciutils
     sudo yum install -y vim
     sudo yum install -y nano
-    sudo yum install -y git
+    sudo yum install -y git gitk
 }
 
 ##package for fedora

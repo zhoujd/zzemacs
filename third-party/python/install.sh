@@ -17,11 +17,11 @@ PIP_PAR="--timeout 60"
 echo "For python develop start ..."
 
 py2_deps() {
-    pip2 install $PIP_PAR -r $SCRIPT_ROOT/py2.txt
+    pip2 install --user $PIP_PAR -r $SCRIPT_ROOT/py2.txt
 }
 
 py3_deps() {
-    pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
+    pip3 install --user $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 
 setup_flake8() {

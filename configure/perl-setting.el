@@ -95,9 +95,7 @@
 (if (executable-find "plsense")
     (progn
       (company-plsense-setup)
-      (company-plsense-restart-server-quiet))
-    (progn
-      (message "warning: cannot find plsense for company-plsense")))
+      (company-plsense-restart-server-quiet)))
 
 
 (provide 'perl-setting)

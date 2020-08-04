@@ -14,6 +14,13 @@ case "$OS" in
             exit 1
         fi
 
+        unset http_proxy HTTP_PROXY
+        unset https_proxy HTTPS_PROXY
+        unset ftp_proxy FTP_PROXY
+        unset socks_proxy SOCKS_PROXY
+        unset all_proxy ALL_PROXY
+        unset no_proxy  NO_PROXY
+
         rm -f /etc/profile.d/zz-proxy.sh
         ;;
 esac

@@ -49,6 +49,7 @@ install_package_centos() {
     sudo yum install -y rxvt-unicode sakura
     sudo yum install -y alsa-tools alsa-utils
     sudo yum isntall -y connect-proxy
+    sudo yum install -y rfkill
 }
 
 ##package for fedora

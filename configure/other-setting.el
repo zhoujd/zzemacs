@@ -140,7 +140,7 @@
 (setq tramp-default-method (if-ms-windows "plink" "ssh"))
 
 ;;ange-ftp
-(setq ange-ftp-generate-anonymous-password "zachary.zhou@hotmail.com")
+(setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")
 (setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/

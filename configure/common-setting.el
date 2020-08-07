@@ -273,15 +273,17 @@
   "Return the file name of current buffer, using ~ if under home directory"
   (let ((fname (or (buffer-file-name (current-buffer))
                    (buffer-name))))
-    (when (string-match (getenv "HOME") fname)
-      (setq fname (replace-match "~" t t fname))        )
-    fname))
+      (replace-regexp-in-string (getenv "HOME") "~" fname)))
 
 (setq frame-title-format
-      '(:eval (concat (user-login-name) "@" (system-name) "[Emacs"
-                      (nth 2 (split-string (version))) "]  " (zz:fname-title-string))))
+      '(:eval
+	(format "%s@%s [Emacs%s] %s"
+		(user-login-name)
+		(system-name)
+		(nth 2 (split-string (version)))
+		(zz:fname-title-string))))
 
-;suppress GUI features
+;;suppress GUI features
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
 (setq inhibit-startup-message t)

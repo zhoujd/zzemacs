@@ -40,7 +40,7 @@ install_package_ubuntu() {
 install_package_centos() {
     sudo yum install -y dos2unix
     sudo yum install -y net-tools
-    sudo yum install -y pciutils
+    sudo yum install -y pciutils        ## lspci
     sudo yum install -y vim
     sudo yum install -y nano
     sudo yum install -y git gitk
@@ -50,6 +50,9 @@ install_package_centos() {
     sudo yum install -y alsa-tools alsa-utils
     sudo yum isntall -y connect-proxy
     sudo yum install -y rfkill
+    sudo yum install -y usbutils        ## lsusb
+    sudo yum install -y util-linux-ng   ## lsblk
+    sudo yum install -y lsscsi          ## lsscsi
 }
 
 ##package for fedora

@@ -462,6 +462,7 @@
 ;;Displaying ISO week numbers in CalendarMode
 (copy-face font-lock-constant-face 'calendar-iso-week-face)
 (set-face-attribute 'calendar-iso-week-face nil)
+(setq calendar-week-start-day 1)
 (setq calendar-intermonth-text
       '(propertize
         (format "%2d"

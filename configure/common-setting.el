@@ -473,7 +473,7 @@
 (copy-face 'default 'calendar-iso-week-header-face)
 (set-face-attribute 'calendar-iso-week-header-face nil)
 (setq calendar-intermonth-header
-      (propertize "WW"                  ; or e.g. "KW" in Germany
+      (propertize ""                  ; or e.g. "KW" in Germany
                   'font-lock-face 'calendar-iso-week-header-face))
 (set-face-attribute 'calendar-iso-week-face nil
                     :foreground "salmon")

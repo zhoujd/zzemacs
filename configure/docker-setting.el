@@ -37,6 +37,10 @@
 (zz-load-path "site-lisp/docker")
 (require 'docker)
 
+;;https://github.com/chrisbarrett/kubernetes-el
+(zz-load-path "site-lisp/kubernetes-el")
+(require 'kubernetes)
+
 
 (provide 'docker-setting)
 

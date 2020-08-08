@@ -1,0 +1,14 @@
+# Compiled
+*.elc
+kubernetes-autoloads.el
+
+# Packaging
+.cask
+
+# Backup files
+*~
+
+# Undo-tree save-files
+*.~undo-tree
+/dist
+/assets/project-deps.dot

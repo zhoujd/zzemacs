@@ -41,8 +41,8 @@
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "TAB")     'zz:insert-file-name
-  (kbd "`")       'ztree-diff
-  (kbd "M-`")     'ztree-dir
+  (kbd "`")       'ztree-diff-1
+  (kbd "M-`")     'ztree-dir-1
   ))
 
 (apply-keys-to-map

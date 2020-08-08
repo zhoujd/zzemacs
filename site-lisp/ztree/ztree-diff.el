@@ -609,8 +609,14 @@ Argument DIR2 right directory."
 
     (ztree-refresh-buffer)))
 
-
-
+(defun ztree-diff-1()
+  "ztree-diff use ido-mode"
+  (interactive)
+  (ztree-diff
+   (file-name-as-directory
+    (ido-read-directory-name "Left directory: "))
+   (file-name-as-directory
+    (ido-read-directory-name "Right directory: "))))
 
 
 

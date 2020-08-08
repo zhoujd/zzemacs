@@ -219,6 +219,14 @@ Otherwise open DIRED with the parent directory"
       (ztreedir-mode))))
 
 
+(defun ztree-dir-1()
+  "ztree-dir use ido-mode"
+  (interactive)
+  (ztree-dir
+   (file-name-as-directory
+    (ido-read-directory-name "Directory: "))))
+
+
 
 (provide 'ztree-dir)
 ;;; ztree-dir.el ends here

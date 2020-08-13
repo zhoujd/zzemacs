@@ -53,6 +53,7 @@ install_package_centos() {
     sudo yum install -y usbutils        ## lsusb
     sudo yum install -y util-linux-ng   ## lsblk
     sudo yum install -y lsscsi          ## lsscsi
+    sudo yum install -y bash-completion bash-completion-extras
 }
 
 ##package for fedora

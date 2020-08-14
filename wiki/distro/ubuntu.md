@@ -157,4 +157,12 @@ Ubuntu setting
 
 16. More package for Ubuntu
 
-        $ sudo apt install ubuntu-restricted-extras ubuntu-restricted-addons 
+        $ sudo apt install ubuntu-restricted-extras
+        ubuntu-restricted-addons 
+        
+        
+17. Tools
+
+        $ sudo apt install pinta
+        $ sudo apt install redshift
+        $ sudo apt install pdfchain

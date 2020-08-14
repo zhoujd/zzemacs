@@ -8,7 +8,7 @@ Ubuntu setting
         Reboot
 
 2. Firewall
-        
+
         $ sudo apt install gufw
 
         $ telnet 192.168.1.103 80
@@ -99,7 +99,7 @@ Ubuntu setting
 
         $ cat /etc/hostname
         $ cat /etc/hosts
-        
+
         ## false -> true
         $ sudo nano /etc/cloud/cloud.cfg
         preserve_hostname: true
@@ -110,8 +110,8 @@ Ubuntu setting
         $ sudo snap set core proxy.https=http://host:port/
         $ sudo snap get core proxy
         $ sudo snap install foolbar2000
-        
- 
+
+
 11. Install Microsoft fonts
 
         $ sudo apt install ttf-mscorefonts-installer
@@ -132,7 +132,7 @@ Ubuntu setting
         $ sudo nano /etc/apt/sources.list
         $ sudo add-apt-repository -r ppa:nemh/systemback
         $ sudo apt update
-        
+
         ## Delete Repository keys
         $ sudo apt-key list
         $ sudo apt-key del "3820 03C2 C8B7 B4AB 813E 915B 14E4 9429 73C6 2A1B"
@@ -158,11 +158,12 @@ Ubuntu setting
 16. More package for Ubuntu
 
         $ sudo apt install ubuntu-restricted-extras
-        ubuntu-restricted-addons 
-        
-        
+        ubuntu-restricted-addons
+
+
 17. Tools
 
         $ sudo apt install pinta
         $ sudo apt install redshift
         $ sudo apt install pdfchain
+        $ sudo apt install gparted

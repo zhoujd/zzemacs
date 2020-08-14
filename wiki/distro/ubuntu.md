@@ -166,4 +166,6 @@ Ubuntu setting
         $ sudo apt install pinta
         $ sudo apt install redshift
         $ sudo apt install pdfchain
+        
+        ## https://gparted.org/download.php
         $ sudo apt install gparted

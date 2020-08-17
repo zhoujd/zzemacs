@@ -1,13 +1,16 @@
-CentOS time sync
-==================================
+CentOS
+======
 
-1. shell> vim /etc/sysconfig/clock
+1. CentOS time sync
 
-         ZONE="Asia/Shanghai"  # Zone
-         UTC=false             # Close world time sync
-         ARC=false
+        $ vim /etc/sysconfig/clock
+          ZONE="Asia/Shanghai"  # Zone
+          UTC=false             # Close world time sync
+          ARC=false
+        
+        $ ntpdate pool.ntp.org    # sync time
+        $ /sbin/hwclock --systohc  # sync hardware time and system time
 
-   :wq!
+2. Resize parts
 
-2. shell> ntpdate pool.ntp.org    # sync time
-3. shell>/sbin/hwclock --systohc  # sync hardware time and system time
+        $ sudo yum install gparted

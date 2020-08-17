@@ -171,4 +171,9 @@ Ubuntu setting
         $ sudo apt install gparted
 
         ## camera & webcam
-        $ sudo apt install cheese
+        $ sudo apt install v4l-utils
+         $ v4l2-ctl --list-devices
+           EasyCamera: EasyCamera (usb-0000:00:14.0-4):
+               /dev/video0
+               /dev/video1
+         $ sudo apt install cheese

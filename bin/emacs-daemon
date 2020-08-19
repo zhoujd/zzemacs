@@ -74,7 +74,18 @@ stop() {
 
 start() {
     echo "Start emacs daemon"
-    systemctl start --user emacs
+    case $1 in
+        ubuntu )
+            systemctl start --user emacs
+            ;;
+        centos )
+            user=jiandon
+            systemctl start emacs@${user}
+            ;;
+        * )
+            echo "$0 start {ubuntu|centos}"
+            ;;
+    esac
 }
 
 restart() {

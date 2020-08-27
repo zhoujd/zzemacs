@@ -45,6 +45,6 @@ Samba Server
         $ sudo apt install cifs-utils
         $ sudo yum install cifs-utils
         
-        $ sudo mount -t cifs -o username=username //samba_hostname_or_server_ip/sharename /mnt/smbmount
-        $ sudo mount -t cifs -o username=josh //192.168.121.118/josh /mnt/smbmount
-        
+        ## Note: file_mode=0777,dir_mode=0777
+        $ sudo mount -t cifs -o username=username,password=password,noperm //samba_hostname_or_server_ip/sharename /mnt/smbmount
+        $ sudo mount -t cifs -o username=zach //192.168.121.118/sharename /mnt/smbmount

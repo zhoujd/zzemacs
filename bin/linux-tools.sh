@@ -34,6 +34,7 @@ install_package_ubuntu() {
     sudo apt install -y sakura
     sudo apt install -y xautolock
     sudo apt install -y synaptic
+    sudo apt install -y xdotool  ## control mouse
 }
 
 ##package for centos

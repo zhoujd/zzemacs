@@ -11,7 +11,7 @@
 ;;     go get github.com/nsf/gocode
 
 ;; go-mode
-(zz-load-path "site-lisp/go-mode")
+(zz:load-path "site-lisp/go-mode")
 (autoload 'go-mode "go-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 
@@ -19,7 +19,7 @@
 (require 'go-guru)
 
 ;; go-eldoc
-(zz-load-path "site-lisp/go-eldoc")
+(zz:load-path "site-lisp/go-eldoc")
 (require 'go-eldoc)
 
 ;; godoc path

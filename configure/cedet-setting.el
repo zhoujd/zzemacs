@@ -1,7 +1,7 @@
 ;;;; cedet-setting.el --- cedet common file
 
 
-(zz-load-path "site-lisp")
+(zz:load-path "site-lisp")
 
 (setq semantic-idle-work-update-headers-flag  t)
 (setq semantic-idle-scheduler-idle-time       10)

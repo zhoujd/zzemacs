@@ -1,6 +1,6 @@
 ;;;this muse setting
 
-(zz-load-path "site-lisp/muse/lisp")
+(zz:load-path "site-lisp/muse/lisp")
 
 (require 'muse-mode)
 
@@ -33,7 +33,7 @@
 
 ;;add planner support
 (setq planner-project "Plans")
-(zz-load-path "site-lisp/planner")
+(zz:load-path "site-lisp/planner")
 (require 'planner)
 (require 'planner-publish)
 

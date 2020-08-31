@@ -1,7 +1,7 @@
 ;;;; keymap-setting.el --- key function config file
 ;;;
 
-(zz-load-path "elisp")
+(zz:load-path "elisp")
 (require 'apply-keys)
 
 ;;;;some keymap define by emacs default

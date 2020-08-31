@@ -9,7 +9,7 @@
 ;;enable debug
 ;;M-x toggle-debug-on-error
 
-(zz-load-path "site-lisp")
+(zz:load-path "site-lisp")
 
 (keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to Backspace
 
@@ -109,7 +109,7 @@
     (zz:console-font (nth 0 zz:cn-font-list)))
 
 ;;color theme
-(zz-load-path "site-lisp/color-theme")
+(zz:load-path "site-lisp/color-theme")
 (require 'color-theme)
 (require 'color-theme-blackboard)
 (require 'color-theme-tango)

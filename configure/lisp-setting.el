@@ -1,6 +1,6 @@
 ;;Lisp programme setting
 
-(zz-load-path "site-lisp/slime")
+(zz:load-path "site-lisp/slime")
 
 ;;common lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")
@@ -111,7 +111,7 @@
   (slime-connect "127.0.0.1" 4405))
 
 ;;require paredit
-(zz-load-path "site-lisp/paredit")
+(zz:load-path "site-lisp/paredit")
 (require 'paredit)
 (eval-after-load 'paredit
                  '(progn

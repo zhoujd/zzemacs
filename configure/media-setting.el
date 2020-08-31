@@ -1,7 +1,7 @@
 ;;;; media-setting.el --- media setting file
 ;;
 
-(zz-load-path "site-lisp")
+(zz:load-path "site-lisp")
 
 ;; https://www.mpg123.de/download.shtml
 (require 'mpg123)

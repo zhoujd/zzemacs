@@ -30,12 +30,12 @@
 (require 'mercurial)
 (require 'mq)
 
-(zz-load-path "site-lisp/monky")
+(zz:load-path "site-lisp/monky")
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
 ;;magit
-(zz-load-path "site-lisp/magit/lisp")
+(zz:load-path "site-lisp/magit/lisp")
 (require 'magit)
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)

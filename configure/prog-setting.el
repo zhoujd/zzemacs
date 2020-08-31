@@ -1,6 +1,6 @@
 ;;;; prog-setting.el --- program common file
 
-(zz-load-path "site-lisp")
+(zz:load-path "site-lisp")
 
 ;;;$find -type f -name Makefile | xargs grep DIRVER_NAME
 ;;;$find -type f -name Makefile -exec grep -n DIRVER_NAME {} NUL;
@@ -302,7 +302,7 @@
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
 ;;ztree
-(zz-load-path "site-lisp/ztree")
+(zz:load-path "site-lisp/ztree")
 (require 'ztree)
 
 

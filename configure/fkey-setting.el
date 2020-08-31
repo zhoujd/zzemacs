@@ -1,7 +1,7 @@
 ;;;; fkey-setting.el --- key config file
 ;;;
 
-(zz-load-path "elisp")
+(zz:load-path "elisp")
 (require 'apply-keys)
 
 (apply-keys-to-map

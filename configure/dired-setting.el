@@ -92,7 +92,7 @@
   ((kbd "C-x C-j") 'direx:jump-to-directory))
 
 
-(zz-load-path "site-lisp/dired-hacks")
+(zz:load-path "site-lisp/dired-hacks")
 (require 'dired-filter)
 
 (add-hook 'dired-mode-hook

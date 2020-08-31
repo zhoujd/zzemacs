@@ -1,8 +1,8 @@
 ;;;; ac-setting.el --- auto complete file
 
 ;; auto complete
-(zz-load-path "site-lisp/auto-complete")
-(zz-load-path "site-lisp/popup")
+(zz:load-path "site-lisp/auto-complete")
+(zz:load-path "site-lisp/popup")
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories

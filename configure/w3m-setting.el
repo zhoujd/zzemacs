@@ -2,7 +2,7 @@
 ;;;http://emacs-w3m.namazu.org/index-en.html
 ;;;https://github.com/emacs-w3m/emacs-w3m
 
-(zz-load-path "site-lisp/emacs-w3m")
+(zz:load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
 (defun zz:w3m-build-in-emacs ()

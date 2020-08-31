@@ -1,8 +1,8 @@
 ;;;; other-setting.el --- other setting file
 ;;;
 
-(zz-load-path "site-lisp")
-(zz-load-path "elisp")
+(zz:load-path "site-lisp")
+(zz:load-path "elisp")
 
 ;;session + desktop
 (require 'session)
@@ -205,7 +205,7 @@
 (put 'scroll-left 'disabled nil)
 
 ;;eproject manage
-;(zz-load-path "site-lisp/eproject")
+;(zz:load-path "site-lisp/eproject")
 ;(require 'eproject)
 
 ;;http://nschum.de/src/emacs/highlight-symbol/
@@ -215,18 +215,18 @@
 ;(require 'maxframe)
 
 ;;bookmark+
-(zz-load-path "site-lisp/bookmarkplus")
+(zz:load-path "site-lisp/bookmarkplus")
 (require 'bookmark+)
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
 
 ;;expand-region
-(zz-load-path "site-lisp/expand-region")
+(zz:load-path "site-lisp/expand-region")
 (require 'expand-region)
 
 ;;smartparens
-(zz-load-path "site-lisp/smartparens")
+(zz:load-path "site-lisp/smartparens")
 (require 'smartparens-config)
 ;; when you press RET, the curly braces automatically
 ;; add another newline
@@ -263,7 +263,7 @@
 ;(set-face-attribute 'mode-line nil :background "#bdbdbd" :box nil)
 
 ;;iedit
-(zz-load-path "site-lisp/iedit")
+(zz:load-path "site-lisp/iedit")
 (require 'iedit)
 
 

@@ -2,7 +2,7 @@
 ;;
 
 ;;sokoban setting
-(zz-load-path "site-lisp/gnuplot-mode")
+(zz:load-path "site-lisp/gnuplot-mode")
 
 ;;; gnuplot-mode
 (autoload 'gnuplot-mode "gnuplot"

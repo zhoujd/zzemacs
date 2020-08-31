@@ -36,7 +36,7 @@
             (setq lisp-indent-function 'scheme-smart-indent-function)))
 
 ;;geiser for scheme
-(zz-load-path "site-lisp/geiser")
+(zz:load-path "site-lisp/geiser")
 (require 'geiser)
 (setq geiser-active-implementations '(racket))
 
@@ -61,7 +61,7 @@
 
 ;;racket mode
 ;;http://docs.racket-lang.org/guide/Emacs.html
-(zz-load-path "site-lisp/racket-mode")
+(zz:load-path "site-lisp/racket-mode")
 (require 'racket-mode)
 (add-hook 'racket-mode-hook
           (lambda ()

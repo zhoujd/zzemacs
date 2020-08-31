@@ -34,11 +34,11 @@
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
 ;;https://github.com/Silex/docker.el
-(zz-load-path "site-lisp/docker")
+(zz:load-path "site-lisp/docker")
 (require 'docker)
 
 ;;https://github.com/chrisbarrett/kubernetes-el
-(zz-load-path "site-lisp/kubernetes-el")
+(zz:load-path "site-lisp/kubernetes-el")
 (require 'kubernetes)
 
 

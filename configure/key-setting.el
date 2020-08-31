@@ -9,7 +9,7 @@
 ;;C-x @ m         event-apply-meta-modifier
 ;;C-x @ s         event-apply-super-modifier
 
-(zz-load-path "elisp")
+(zz:load-path "elisp")
 (require 'apply-keys)
 
 (apply-keys-to-map

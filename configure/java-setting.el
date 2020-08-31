@@ -1,6 +1,6 @@
 ;;;java programme setting
 
-(zz-load-path "site-lisp/ajc")
+(zz:load-path "site-lisp/ajc")
 
 (require 'ajc-java-complete-config)
 (setq ajc-tag-file  (concat zzemacs-path  "/site-lisp/ajc/java_base.tag"))

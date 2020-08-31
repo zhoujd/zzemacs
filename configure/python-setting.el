@@ -4,8 +4,8 @@
 ;;elpy pkg deps
 ;;pip install rope jedi flake8 importmagic
 ;;pip3 install rope jedi flake8 importmagic
-(zz-load-path "site-lisp/python-mode")
-(zz-load-path "site-lisp/elpy")
+(zz:load-path "site-lisp/python-mode")
+(zz:load-path "site-lisp/elpy")
 (load "elpy")
 (load "elpy-rpc")
 (load "elpy-shell")
@@ -17,9 +17,9 @@
 ;;pyenv-mode
 ;(require 'pyenv-mode)
 
-(zz-load-path "site-lisp/python-environment")
-(zz-load-path "site-lisp/epc")
-(zz-load-path "site-lisp/jedi-core")
+(zz:load-path "site-lisp/python-environment")
+(zz:load-path "site-lisp/epc")
+(zz:load-path "site-lisp/jedi-core")
 (require 'company-jedi)
 (add-to-list 'company-backends 'company-jedi)
 (add-hook 'python-mode-hook 'jedi:setup)

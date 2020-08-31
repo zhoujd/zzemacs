@@ -1,7 +1,7 @@
 ;;;; complete-setting.el --- complete common file
 
 
-(zz-load-path "site-lisp")
+(zz:load-path "site-lisp")
 
 ;; list methold in current buffer
 ;; switch buffer in h & cpp file
@@ -61,8 +61,8 @@
 
 ;;YASNIPPET
 ;;https://github.com/capitaomorte/yasnippet
-(zz-load-path "site-lisp/yasnippet")
-(zz-load-path "site-lisp/yasnippet-snippets")
+(zz:load-path "site-lisp/yasnippet")
+(zz:load-path "site-lisp/yasnippet-snippets")
 (require 'yasnippet-snippets)
 (yas-global-mode t)
 

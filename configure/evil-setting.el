@@ -2,9 +2,9 @@
 ;;;
 
 ;;http://emacswiki.org/emacs/Evil
-(zz-load-path "site-lisp/evil")
-(zz-load-path "site-lisp/evil/lib")
-(zz-load-path "site-lisp/evil-plugin")
+(zz:load-path "site-lisp/evil")
+(zz:load-path "site-lisp/evil/lib")
+(zz:load-path "site-lisp/evil-plugin")
 
 ;;evil-evil
 (setq evil-toggle-key "C-|")

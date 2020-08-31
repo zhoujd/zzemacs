@@ -2,8 +2,8 @@
 ;; https://github.com/emacs-helm/helm
 ;; https://github.com/emacs-helm/helm/wiki
 
-(zz-load-path "site-lisp/emacs-async")
-(zz-load-path "site-lisp/helm")
+(zz:load-path "site-lisp/emacs-async")
+(zz:load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)
 
@@ -84,7 +84,7 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
-(zz-load-path "elisp")
+(zz:load-path "elisp")
 (require 'helm-switchb)
 
 (require 'helm-find)

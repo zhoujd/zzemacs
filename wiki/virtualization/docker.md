@@ -16,3 +16,10 @@ case ${cmd} in
 esac
 EOF
 ```
+
+2. Redirecting command output in docker
+
+        $ docker run -it --log-driver=none -a stdin -a stdout -a stderr 
+
+        ## When command in background, need use 'wait' to background
+        process ending

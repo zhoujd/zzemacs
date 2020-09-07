@@ -119,3 +119,17 @@ network
 
         https://wiki.archlinux.org/index.php/NetworkManager
 
+
+9. tsocks
+
+        $ sudo apt install tsocks
+        ## config tsocks
+        $ cat /etc/tsocks.conf
+        $ cat ~/.tsocks.conf
+        ## tsocks.conf
+        local = 192.168.0.0/255.255.0.0
+        local = 134.134.0.0/255.255.0.0
+        local = 10.0.0.0/255.0.0.0
+        server = 10.109.19.69
+        server_type = 5
+        server_port = 1080

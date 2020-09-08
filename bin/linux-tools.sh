@@ -45,6 +45,7 @@ install_package_centos() {
     sudo yum install -y pciutils        ## lspci
     sudo yum install -y vim
     sudo yum install -y nano
+    sudo yum install -y tmux
     sudo yum install -y git gitk
     sudo yum install -y wireless-tools
     sudo yum install -y python3 python3-pip python2-pip

@@ -91,7 +91,7 @@ start() {
 restart() {
     echo "Restart emacs daemon"
     stop
-    start
+    start $1
 }
 
 status() {
@@ -103,14 +103,14 @@ case $1 in
         install $2
         ;;
     start )
-        start
+        start $2
         ;;
     stop )
         stop
         stop
         ;;
     restart )
-        restart
+        restart $2
         ;;
     status )
         status

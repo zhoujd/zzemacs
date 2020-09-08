@@ -2,7 +2,7 @@
 
 ## https://www.emacswiki.org/emacs/EmacsAsDaemon
 
-install() {
+install_ubuntu() {
     echo "Setup ~/.config/systemd/user/emacs.service"
     mkdir -p ~/.config/systemd/user
     tee ~/.config/systemd/user/emacs.service  <<EOF
@@ -24,6 +24,47 @@ EOF
     echo "Start emacs daemon"
     systemctl enable --user emacs
     systemctl start --user emacs
+}
+
+install_centos() {
+    user=jiandon
+    
+    echo "Setup /usr/lib/systemd/system/emacs@.service"
+    sudo tee /usr/lib/systemd/system/emacs@.service  <<EOF
+[Unit]
+Description=Emacs: the extensible, self-documenting text editor
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/emacs --daemon --user %u
+ExecStop=/usr/bin/emacsclient --eval "(progn (setq kill-emacs-hook 'nil) (kill-emacs))"
+Restart=always
+User=%i
+WorkingDirectory=%h
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    echo "Start emacs daemon"
+    systemctl daemon-reload 
+    systemctl enable emacs@${user}
+    systemctl start emacs@${user}
+}
+
+
+install() {
+    case $1 in
+        ubuntu )
+            install_ubuntu
+            ;;
+        centos )
+            install_centos
+            ;;
+        * )
+            echo "$0 install {ubuntu|centos}"
+            ;;
+    esac
 }
 
 stop() {
@@ -48,7 +89,7 @@ status() {
 
 case $1 in
     install )
-        install
+        install $2
         ;;
     start )
         start

@@ -21,6 +21,19 @@
 
 ;;markdown Table of Contents
 (require 'markdown-toc)
+(custom-set-variables
+ '(markdown-toc-header-toc-title "**Table of Contents**")
+ '(markdown-toc-header-toc-start "<!-- customized start-->")
+ '(markdown-toc-header-toc-end "<!-- customized end -->")
+ '(markdown-toc-indentation-space 2))
+
+(setq markdown-toc-mode-map
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "C-c m .") 'markdown-toc-follow-link-at-point)
+        (define-key map (kbd "C-c m t") 'markdown-toc-generate-or-refresh-toc)
+        (define-key map (kbd "C-c m d") 'markdown-toc-delete-toc)
+        (define-key map (kbd "C-c m v") 'markdown-toc-version)
+        map))
 
 ;;org-mode setting
 ;;http://orgmode.org/

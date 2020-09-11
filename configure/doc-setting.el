@@ -10,12 +10,14 @@
 
 ;;set markdow command
 (setq markdown-command
-       (if-ms-windows
-        (progn
-         (concat "markdown"))
-        (progn
-         (concat "perl " zzemacs-path "/libexec/markdown.pl | "
-                 "perl " zzemacs-path "/libexec/smartypants.pl"))))
+      (if (executable-find "markdown")
+          (concat "markdown")
+          (concat "perl " zzemacs-path "/libexec/markdown.pl | "
+                  "perl " zzemacs-path "/libexec/smartypants.pl")))
+
+;;github markdown preview
+(zz:load-path "site-lisp/github-markdown-preview")
+(require 'github-markdown-preview)
 
 ;;org-mode setting
 ;;http://orgmode.org/

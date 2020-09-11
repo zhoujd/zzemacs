@@ -35,6 +35,12 @@
         (define-key map (kbd "C-c m v") 'markdown-toc-version)
         map))
 
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (auto-fill-mode -1)
+            (markdown-toc-mode 1)
+            ))
+
 ;;org-mode setting
 ;;http://orgmode.org/
 (setq org-export-html-postamble nil)
@@ -71,6 +77,7 @@
 
 
 ;;pandoc mode
+;;apt install pandoc
 (zz:load-path "site-lisp/pandoc-mode")
 (zz:load-path "site-lisp/hydra")
 (require 'pandoc-mode)

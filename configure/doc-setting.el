@@ -19,6 +19,9 @@
 (zz:load-path "site-lisp/github-markdown-preview")
 (require 'github-markdown-preview)
 
+;;markdown Table of Contents
+(require 'markdown-toc)
+
 ;;org-mode setting
 ;;http://orgmode.org/
 (setq org-export-html-postamble nil)

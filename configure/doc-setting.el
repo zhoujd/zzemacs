@@ -70,6 +70,12 @@
 (setq org-src-fontify-natively t)
 
 
+;;pandoc mode
+(zz:load-path "site-lisp/pandoc-mode")
+(zz:load-path "site-lisp/hydra")
+(require 'pandoc-mode)
+
+
 (provide 'doc-setting)
 
 ;;; doc-setting.el

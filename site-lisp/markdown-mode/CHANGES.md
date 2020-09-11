@@ -1,20 +1,75 @@
-# Markdown Mode 2.4
+# Markdown Mode 2.5
 
 *Under development*
 
 *   **Breaking changes:**
 
-    -   GNU Emacs 24.4 or later is required.  Support for Emacs 24.3
-        has been dropped.
+*   New features:
+    -   Introduce `markdown-mouse-follow-link` variable [GH-290][]
+    -   Option to define a `markdown-link-make-text-function` function
+        to automatically define a default link text before prompting the user.
+    -   Option to inhibit the prompt for a tooltip text via
+        `markdown-disable-tooltip-prompt`.
+
+*   Improvements:
+    -   Cleanup test code
+    -   Strip query parameters from local file name at displaying inline images [GH-511][]
+    -   Improve forward/backward sentences which are wrapped markup characters [GH-517][]
+    -   Improve fontification for nested meta data [GH-476][]
+    -   `markdown-cycle` accepts universal-argument like org-cycle [GH-530][]
+    -   Improve mode check for derived modes [GH-532][]
+    -   Improve for file which contains many comments [GH-536][]
+    -   Improve for file which contains many pre blocks [GH-512][]
+
+*   Bug fixes:
+    -   Fix remaining flyspell overlay in code block or comment issue [GH-311][]
+    -   Fix inline URL regular expression which starts/ends with spaces [GH-514][]
+    -   Fix GFM italic fontification for one character [GH-524][]
+    -   Fix `markdown-table-forward-cell` at last column issue [GH-522][]
+    -   Fix GFM bold fontification with underscore issue [GH-525][]
+    -   Fix wrong fontification words between strong markups [GH-534][]
+
+  [gh-290]: https://github.com/jrblevin/markdown-mode/issues/290
+  [gh-311]: https://github.com/jrblevin/markdown-mode/issues/311
+  [gh-476]: https://github.com/jrblevin/markdown-mode/issues/476
+  [gh-511]: https://github.com/jrblevin/markdown-mode/issues/511
+  [gh-512]: https://github.com/jrblevin/markdown-mode/issues/512
+  [gh-514]: https://github.com/jrblevin/markdown-mode/issues/514
+  [gh-517]: https://github.com/jrblevin/markdown-mode/issues/517
+  [gh-522]: https://github.com/jrblevin/markdown-mode/issues/522
+  [gh-524]: https://github.com/jrblevin/markdown-mode/issues/524
+  [gh-525]: https://github.com/jrblevin/markdown-mode/issues/525
+  [gh-530]: https://github.com/jrblevin/markdown-mode/issues/530
+  [gh-532]: https://github.com/jrblevin/markdown-mode/issues/532
+  [gh-534]: https://github.com/jrblevin/markdown-mode/issues/534
+  [gh-536]: https://github.com/jrblevin/markdown-mode/issues/536
+
+# Markdown Mode 2.4
+
+*May 30, 2020*
+
+*   **Breaking changes:**
+
+    -   GNU Emacs 25.1 or later is required. And xemacs support has been dropped
     -   Face variables, such as `markdown-italic-face` are now
         obsolete.  Use face names directly in code and customizations.
         The face names themselves are unaffected, so this shouldn't
         affect most users.
+    -   Delete obsoleted aliases
     -   Internal variables `markdown-font-lock-keywords-basic` and
         `gfm-font-lock-keywords` are now obsolete.
         `markdown-font-lock-keywords` is now used instead, but users
         should use `font-lock-add-keywords` instead of modifying this
         variable.
+    -   `markdown-mode` now adds entries to the beginning of
+        `auto-mode-alist` rather than the end. If you were relying on
+        the previous behavior in order to override these entries, you
+        should fix the problem by following best practice and ensuring
+        that your user configuration is loaded after the autoloads for
+        `markdown-mode` are evaluated. ([GH-331][], [GH-335][])
+    -   Point at the end of fenced code blocks is no-longer considered
+        part of the code block ([GH-#349][]).
+    -   Enable `markdown-fontify-code-blocks-natively` in `gfm-view-mode`. ([GH-#451][])
 
 *   New features:
 
@@ -43,6 +98,15 @@
     -   Add custom variables `markdown-xhtml-body-preamble` and
         `markdown-xhtml-body-epilogue` for wrapping additional XHTML
         tags around the output.  ([GH-280][], [GH-281][])
+    -   Add `markdown-unused-refs` command to list and clean up unused
+        references (available via `C-c C-c u`).  ([GH-322][])
+    -   Add `markdown-insert-table` (`C-c C-s t`) for interactive
+        table insertion.  ([GH-369][])
+    -   Add `markdown-kill-outline` and `markdown-kill-block`
+        functions.
+    -   Added `markdown-display-remote-images` for viewing remote
+        images.  Thanks to Sean Allread for the patch.  ([GH-378][])
+    -   `markdown-back-to-heading` can be used as command ([GH-415][])
 
 *   Improvements:
 
@@ -73,9 +137,33 @@
         via `markdown-sub-superscript-display`.
     -   Several font-lock performance improvements.
     -   Support horizontal rules consisting of underscores.
+    -   Change default character encoding to UTF-8.
+        ([GH-340][], [GH-350][])
+    -   Support more markdown extensions same as Vim
+    -   Complete link text from link labels at inserting link. ([GH-421][])
+    -   Improve regular expression for inline attributes. ([GH-406][])
+    -   Allow relative CSS stylesheets paths. ([GH-389][])
+    -   Improve regular expression matching for inline attributes. ([GH-389][])
+    -   If user set `display-buffer-alist` then use `display-buffer`. ([GH-413][])
+    -   Add custom variable for opening image. ([GH-383][])
+    -   Improve default `markdown-command` setting
+    -   Use markdown-command directly instead of 'sh -c' ([GH-319][])
+    -   Use explicitly numbered group as possible for easy reading regexp
+    -   Support list of strings of `markdown-command`
+    -   Apply `markdown-translate-filename-function` for `markdown-display-inline-images`
+        ([GH-422][])
+    -   Implement own `filter-buffer-substring-function` for `markdown-view-mode` and
+        `gfm-view-mode` ([GH-493][])
+    -   Improve triple backtick behavior with `electric-pair-mode`
+    -   Update code block language list
 
 *   Bug fixes:
 
+    -   No longer treat code fragments that are delimited with three
+        backquotes on each side as the beginning of a code block.
+        ([GH-403][])
+    -   Fix infloop caused by incorrect detection of end of code
+        blocks ([GH-349][]).
     -   Remove GFM checkbox overlays when switching major modes.
         ([GH-238][], [GH-257][])
     -   Don't test the value of the `composition` property to avoid
@@ -101,12 +189,39 @@
     -   Fix precedence of inline code over inline links.
     -   Improve error reporting for `markdown` and `markdown-open`.
         ([GH-291][])
+    -   Fix M-RET binding for terminals. ([GH-317][])
+    -   Do not fail displaying inline images on empty links. ([GH-320][])
+    -   Fix off-by-one error in `markdown-inline-code-at-pos`.
+        ([GH-313][])
+    -   Fix bounds during inline comment syntax propertization. ([GH-327][])
+    -   Fix wrong metadata highlighting. ([GH-437][])
+    -   Fix wrong italic highlighting in HTML attributes. ([GH-410][])
+    -   Fix markdown-follow-thing-at-point issue for continuous links. ([GH-305][])
+    -   Fix wrong setting major-mode issue at following wiki link([GH-427][])
+    -   Fix not consider `markdown-list-indent-width` issue([GH-405][])
+    -   Fix URL open issue which contains end parentheses ([GH-408][])
+    -   Follow link even if it is in header([GH-430][])
+    -   Fix clean up list number issue([GH-392][])
+    -   Fix insert markup functions in consecutive case([GH-283][])
+    -   Fix hide markup issue in markdown/gfm-view-mode([GH-468][])
+    -   Fix bold regexp issue([GH-325][])
+    -   Fix italic and punctual character issue([GH-359][])
+    -   Fix table align issue when column contains escaped bar([GH-308][])
+    -   Fix nested block fill-paragraph issue([GH-366][])
+    -   Fix table transpose issue with wiki link
+    -   Fix indent-region for pre block([GH-228][])
+    -   Fix link highlight issue which contains escaped right bracket([GH-409][])
+    -   Fix math inline single/double highlight issue([GH-352][])
+    -   Fix markdown-table-forward-cell escaped vertical bar issue([GH-489][])
+    -   Fix markdown-table-backward-cell escaped vertical bar issue
+    -   Fix GFM italic markup issue([GH-448][])
 
   [gh-171]: https://github.com/jrblevin/markdown-mode/issues/171
   [gh-216]: https://github.com/jrblevin/markdown-mode/issues/216
   [gh-222]: https://github.com/jrblevin/markdown-mode/issues/222
   [gh-224]: https://github.com/jrblevin/markdown-mode/issues/224
   [gh-227]: https://github.com/jrblevin/markdown-mode/issues/227
+  [gh-228]: https://github.com/jrblevin/markdown-mode/issues/228
   [gh-229]: https://github.com/jrblevin/markdown-mode/pull/229
   [gh-235]: https://github.com/jrblevin/markdown-mode/issues/235
   [gh-238]: https://github.com/jrblevin/markdown-mode/issues/238
@@ -137,10 +252,52 @@
   [gh-277]: https://github.com/jrblevin/markdown-mode/pull/277
   [gh-280]: https://github.com/jrblevin/markdown-mode/issues/280
   [gh-281]: https://github.com/jrblevin/markdown-mode/pull/281
+  [gh-283]: https://github.com/jrblevin/markdown-mode/issues/283
   [gh-284]: https://github.com/jrblevin/markdown-mode/issues/284
   [gh-291]: https://github.com/jrblevin/markdown-mode/issues/291
   [gh-296]: https://github.com/jrblevin/markdown-mode/issues/296
   [gh-303]: https://github.com/jrblevin/markdown-mode/pull/303
+  [gh-305]: https://github.com/jrblevin/markdown-mode/issues/305
+  [gh-308]: https://github.com/jrblevin/markdown-mode/issues/308
+  [gh-313]: https://github.com/jrblevin/markdown-mode/issues/313
+  [gh-317]: https://github.com/jrblevin/markdown-mode/pull/317
+  [gh-319]: https://github.com/jrblevin/markdown-mode/issues/319
+  [gh-320]: https://github.com/jrblevin/markdown-mode/pull/320
+  [gh-322]: https://github.com/jrblevin/markdown-mode/pull/322
+  [gh-325]: https://github.com/jrblevin/markdown-mode/issues/325
+  [gh-327]: https://github.com/jrblevin/markdown-mode/issues/327
+  [gh-331]: https://github.com/jrblevin/markdown-mode/issues/331
+  [gh-335]: https://github.com/jrblevin/markdown-mode/pull/335
+  [gh-340]: https://github.com/jrblevin/markdown-mode/issues/340
+  [gh-349]: https://github.com/jrblevin/markdown-mode/issues/349
+  [gh-350]: https://github.com/jrblevin/markdown-mode/pull/350
+  [gh-352]: https://github.com/jrblevin/markdown-mode/issues/352
+  [gh-359]: https://github.com/jrblevin/markdown-mode/issues/359
+  [gh-366]: https://github.com/jrblevin/markdown-mode/issues/366
+  [gh-369]: https://github.com/jrblevin/markdown-mode/pull/369
+  [gh-378]: https://github.com/jrblevin/markdown-mode/pull/378
+  [gh-383]: https://github.com/jrblevin/markdown-mode/issues/383
+  [gh-389]: https://github.com/jrblevin/markdown-mode/pull/389
+  [gh-392]: https://github.com/jrblevin/markdown-mode/pull/392
+  [gh-403]: https://github.com/jrblevin/markdown-mode/issues/403
+  [gh-405]: https://github.com/jrblevin/markdown-mode/issues/405
+  [gh-406]: https://github.com/jrblevin/markdown-mode/issues/406
+  [gh-408]: https://github.com/jrblevin/markdown-mode/issues/408
+  [gh-409]: https://github.com/jrblevin/markdown-mode/issues/409
+  [gh-410]: https://github.com/jrblevin/markdown-mode/issues/410
+  [gh-413]: https://github.com/jrblevin/markdown-mode/issues/413
+  [gh-415]: https://github.com/jrblevin/markdown-mode/issues/415
+  [gh-421]: https://github.com/jrblevin/markdown-mode/issues/421
+  [gh-422]: https://github.com/jrblevin/markdown-mode/issues/422
+  [gh-427]: https://github.com/jrblevin/markdown-mode/issues/427
+  [gh-428]: https://github.com/jrblevin/markdown-mode/issues/428
+  [gh-430]: https://github.com/jrblevin/markdown-mode/issues/430
+  [gh-437]: https://github.com/jrblevin/markdown-mode/issues/437
+  [gh-448]: https://github.com/jrblevin/markdown-mode/issues/448
+  [gh-451]: https://github.com/jrblevin/markdown-mode/issues/451
+  [gh-468]: https://github.com/jrblevin/markdown-mode/issues/468
+  [gh-489]: https://github.com/jrblevin/markdown-mode/issues/489
+  [gh-493]: https://github.com/jrblevin/markdown-mode/pull/493
 
 # Markdown Mode 2.3
 

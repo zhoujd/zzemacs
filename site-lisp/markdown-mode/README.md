@@ -1,24 +1,24 @@
-# Emacs Markdown Mode [![MELPA badge][melpa-badge]][melpa-link] [![MELPA stable badge][melpa-stable-badge]][melpa-stable-link] [![Travis CI Build Status][travis-badge]][travis-link] [![Guide to Markdown Mode for Emacs][leanpub-badge]][leanpub-link]
+# Emacs Markdown Mode [![MELPA badge][melpa-badge]][melpa-link] [![MELPA stable badge][melpa-stable-badge]][melpa-stable-link] [![Github Actions Status][github-actions-badge]][github-actions-link] [![Guide to Markdown Mode for Emacs][leanpub-badge]][leanpub-link]
 
   [melpa-link]: https://melpa.org/#/markdown-mode
   [melpa-stable-link]: https://stable.melpa.org/#/markdown-mode
   [melpa-badge]: https://melpa.org/packages/markdown-mode-badge.svg
   [melpa-stable-badge]: https://stable.melpa.org/packages/markdown-mode-badge.svg
-  [travis-link]: https://travis-ci.org/jrblevin/markdown-mode
-  [travis-badge]: https://travis-ci.org/jrblevin/markdown-mode.svg?branch=master
+  [github-actions-link]: https://github.com/jrblevin/markdown-mode/actions
+  [github-actions-badge]: https://github.com/jrblevin/markdown-mode/workflows/CI/badge.svg
   [leanpub-link]: https://leanpub.com/markdown-mode
   [leanpub-badge]: https://img.shields.io/badge/leanpub-guide-orange.svg
 
 markdown-mode is a major mode for editing [Markdown][]-formatted
-text.  The latest stable version is markdown-mode 2.3, released on
-August 31, 2017.  See the [release notes][] for details.
+text.  The latest stable version is markdown-mode 2.4, released on
+May 30, 2020.  See the [release notes][] for details.
 markdown-mode is free software, licensed under the GNU GPL,
 version 3 or later.
 
 ![Markdown Mode Screenshot](https://jblevins.org/projects/markdown-mode/screenshots/20170818-001.png)
 
 [Markdown]: http://daringfireball.net/projects/markdown/
-[release notes]: https://jblevins.org/projects/markdown-mode/rev-2-3
+[release notes]: https://github.com/jrblevin/markdown-mode/releases/tag/v2.4
 
 ## Documentation
 
@@ -69,7 +69,7 @@ Then, after restarting Emacs or evaluating the above statements, issue
 the following command: <kbd>M-x package-install RET markdown-mode RET</kbd>.
 When installed this way, the major modes `markdown-mode` and `gfm-mode`
 will be autoloaded and `markdown-mode` will be used for file names
-ending in either `.md` or `.markdown`.
+ending in `.md`, `.markdown`, `.mkd`, `.mdown`, `.mkdn`, `.mdwn`.
 
 Alternatively, if you manage loading packages with [use-package][]
 then you can automatically install and configure `markdown-mode` by
@@ -99,8 +99,8 @@ to load automatically by adding the following to your init file:
 ```lisp
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist
+             '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode))
 
 (autoload 'gfm-mode "markdown-mode"
    "Major mode for editing GitHub Flavored Markdown files" t)
@@ -224,16 +224,25 @@ can obtain a list of all keybindings by pressing <kbd>C-c C-h</kbd>.
     reference will be inserted according to the value of
     `markdown-reference-location`.  If a title is given, it will be
     added to the end of the reference definition and will be used
-    to populate the title attribute when converted to HTML.
+    to populate the title attribute when converted to HTML.  In addition, it is
+    possible to have the `markdown-link-make-text-function` function, if
+    non-nil, define the default link text before prompting the user for it.
 
-    Local images associated with image links may be displayed
+    If `markdown-disable-tooltip-prompt` is non-nil, the user will not be
+    prompted to add or modify a tooltip text.
+
+    Images associated with image links may be displayed
     inline in the buffer by pressing <kbd>C-c C-x C-i</kbd>
     (`markdown-toggle-inline-images`).  This is a toggle command, so
-    pressing this once again will remove inline images.  Large
-    images may be scaled down to fit in the buffer using
-    `markdown-max-image-size`, a cons cell of the form
-    `(max-width . max-height)`.  Resizing requires Emacs to be
-    built with ImageMagick support.
+    pressing this once again will remove inline images.
+    By default, only local images are displayed.  However, remote
+    images will also be downloaded and displayed if
+    `markdown-display-remote-images` is non-nil.
+
+    Large images may be scaled down to fit in the buffer using
+    `markdown-max-image-size`, a cons cell of the form `(max-width
+    . max-height)`.  Resizing requires Emacs to be built with
+    ImageMagick support.
 
   * Text Styles: <kbd>C-c C-s</kbd>
 
@@ -355,6 +364,11 @@ can obtain a list of all keybindings by pressing <kbd>C-c C-h</kbd>.
     end of the buffer.  Similarly, selecting the line number will
     jump to the corresponding line.
 
+    <kbd>C-c C-c u</kbd> will check for unused references.  This will
+    also open a small buffer if any are found, similar to undefined
+    reference checking.  The buffer for unused references will contain
+    `X` buttons that remove unused references when selected.
+
     <kbd>C-c C-c n</kbd> renumbers any ordered lists in the buffer that are
     out of sequence.
 
@@ -460,7 +474,7 @@ can obtain a list of all keybindings by pressing <kbd>C-c C-h</kbd>.
     Press <kbd>C-c C-k</kbd> to kill the thing at point and add important
     text, without markup, to the kill ring.  Possible things to
     kill include (roughly in order of precedece): inline code,
-    headings, horizonal rules, links (add link text to kill ring),
+    headings, horizontal rules, links (add link text to kill ring),
     images (add alt text to kill ring), angle URIs, email
     addresses, bold, italics, reference definitions (add URI to
     kill ring), footnote markers and text (kill both marker and
@@ -574,6 +588,9 @@ can obtain a list of all keybindings by pressing <kbd>C-c C-h</kbd>.
     correctly when calculating column widths, however, columns
     containing hidden markup may not always be aligned properly.
 
+    <kbd>C-c C-s t</kbd> (`markdown-insert-table`) is a general command for inserting new table.
+    The command prompts for table size and column alignment and inserts an empty pipe table at point.
+
   * Viewing Modes:
 
     Read-only viewing modes, `markdown-view-mode` and `gfm-view-mode`
@@ -648,8 +665,10 @@ provides an interface to all of the possible customizations:
 
   * `markdown-command` - the command used to run Markdown (default:
     `markdown`).  This variable may be customized to pass
-    command-line options to your Markdown processor of choice.  It can
-    also be a function; in this case `markdown` will call it with three
+    command-line options to your Markdown processor of choice. We recommend
+    you to use list of strings if you want to set command line options like.
+    `'("pandoc" "--from=markdown" "--to=html5")`.  It can also be a
+    function; in this case `markdown` will call it with three
     arguments: the beginning and end of the region to process, and
     a buffer to write the output to.
 
@@ -673,6 +692,12 @@ provides an interface to all of the possible customizations:
     simple shell script](https://jblevins.org/log/marked-2-command).
     This variable can also be a function; in this case `markdown-open`
     will call it without arguments to preview the current buffer.
+
+  * `markdown-open-image-command` - the command used for opening image
+    link (default: `nil`) via `markdown-follow-*` commands. This variable
+    can also be a function, in this case it is called with a single argument,
+    image-link. If this value is `nil`, `markdown-mode` opens image links
+    by `find-file`.
 
   * `markdown-hr-strings` - list of strings to use when inserting
     horizontal rules.  Different strings will not be distinguished
@@ -742,21 +767,22 @@ provides an interface to all of the possible customizations:
     (default: `t`).
 
   * `markdown-css-paths` - CSS files to link to in XHTML output
-    (default: `nil`).
+    (default: `nil`). These can be either local files (relative or
+    absolute) or URLs.
 
-  * `markdown-content-type` - when set to a nonempty string, an
-    `http-equiv` attribute will be included in the XHTML `<head>`
-    block (default: `""`).  If needed, the suggested values are
-    `application/xhtml+xml` or `text/html`.  See also:
-    `markdown-coding-system`.
+  * `markdown-content-type` - used to set to the `http-equiv`
+    attribute to be included in the XHTML `<head>` block (default:
+    `"text/html"`).  Set to an alternate value `application/xhtml+xml`
+    if needed, or set to an empty string to remove the attribute.  See
+    also: `markdown-coding-system`.
 
   * `markdown-coding-system` - used for specifying the character
     set identifier in the `http-equiv` attribute when included
     (default: `nil`).  See `markdown-content-type`, which must
-    be set before this variable has any effect.  When set to `nil`,
+    be set for this variable to have any effect.  When set to `nil`,
     `buffer-file-coding-system` will be used to automatically
     determine the coding system string (falling back to
-    `iso-8859-1` when unavailable).  Common settings are `utf-8`
+    `utf-8` when unavailable).  Common settings are `iso-8859-1`
     and `iso-latin-1`.
 
   * `markdown-xhtml-header-content` - additional content to include
@@ -1025,7 +1051,7 @@ contributions!  See the [contributors graph][contrib] for details.
 ## Bugs
 
 markdown-mode is developed and tested primarily for compatibility
-with GNU Emacs 24.4 and later.  If you find any bugs in
+with GNU Emacs 25.1 and later.  If you find any bugs in
 markdown-mode, please construct a test case or a patch and open a
 ticket on the [GitHub issue tracker][issues].  See the
 contributing guidelines in `CONTRIBUTING.md` for details on
@@ -1052,6 +1078,7 @@ first version was released on May 24, 2007.
   * 2016-01-09: [Version 2.1][]
   * 2017-05-26: [Version 2.2][]
   * 2017-08-31: [Version 2.3][]
+  * 2020-05-30: [Version 2.4][]
 
 [Version 1.1]: https://jblevins.org/projects/markdown-mode/rev-1-1
 [Version 1.2]: https://jblevins.org/projects/markdown-mode/rev-1-2
@@ -1067,3 +1094,4 @@ first version was released on May 24, 2007.
 [Version 2.1]: https://jblevins.org/projects/markdown-mode/rev-2-1
 [Version 2.2]: https://jblevins.org/projects/markdown-mode/rev-2-2
 [Version 2.3]: https://jblevins.org/projects/markdown-mode/rev-2-3
+[Version 2.4]: https://github.com/jrblevin/markdown-mode/releases/tag/v2.4

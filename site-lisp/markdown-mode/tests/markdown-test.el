@@ -1,4 +1,4 @@
-;;;; markdown-test.el --- Tests for markdown-mode
+;;;; markdown-test.el --- Tests for markdown-mode  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2013-2017 Jason R. Blevins <jblevins@xbeta.org>
 ;; Copyright (C) 2013 Makoto Motohashi <mkt.motohashi@gmail.com>
@@ -32,6 +32,8 @@
 (require 'ert)
 (require 'cl-lib)
 
+(defvar electric-pair-pairs)
+
 (defconst markdown-test-dir
   (expand-file-name (file-name-directory
                      (or load-file-name buffer-file-name))))
@@ -48,9 +50,9 @@
          (with-temp-buffer
            (set-window-buffer win (current-buffer) t)
            (erase-buffer)
+           (insert ,string)
            (funcall ,mode)
            (setq-default indent-tabs-mode nil)
-           (insert ,string)
            (goto-char (point-min))
            (funcall markdown-test-font-lock-function)
            (prog1 ,@body (kill-buffer))))))
@@ -73,6 +75,12 @@
   `(markdown-test-string-mode 'markdown-mode ,string ,@body))
 (def-edebug-spec markdown-test-string (form body))
 
+(defmacro markdown-test-string-view (string &rest body)
+  "Run BODY in a temporary buffer containing STRING in `markdown-view-mode'."
+  (declare (indent 1))
+  `(markdown-test-string-mode 'markdown-view-mode ,string ,@body))
+(def-edebug-spec markdown-test-string-view (form body))
+
 (defmacro markdown-test-file (file &rest body)
   "Open FILE from `markdown-test-dir' in `markdown-mode' and execute BODY."
   (declare (indent 1))
@@ -84,6 +92,12 @@
   (declare (indent 1))
   `(markdown-test-string-mode 'gfm-mode ,string ,@body))
 (def-edebug-spec markdown-test-string-gfm (form body))
+
+(defmacro markdown-test-string-gfm-view (string &rest body)
+  "Run BODY in a temporary buffer containing STRING in `gfm-view-mode'."
+  (declare (indent 1))
+  `(markdown-test-string-mode 'gfm-view-mode ,string ,@body))
+(def-edebug-spec markdown-test-string-gfm-view (form body))
 
 (defmacro markdown-test-file-gfm (file &rest body)
   "Open FILE from `markdown-test-dir' in `gfm-mode' and execute BODY."
@@ -178,6 +192,17 @@ Extracts region from BEGIN to END and inserts in OUTPUT-BUFFER."
   "Run all defined test cases for `markdown-mode'."
   (interactive)
   (ert "markdown"))
+
+;;; major-mode tests:
+
+(ert-deftest test-markdown-major-mode ()
+  "Test auto-mode-alist setting."
+  (dolist (extension '(".md" ".markdown" ".mkd" ".mdown" ".mkdn" ".mdwn"))
+    (let ((file (make-temp-file "a" nil extension)))
+      (unwind-protect
+          (with-current-buffer (find-file-noselect file)
+            (should (eq major-mode 'markdown-mode)))
+        (delete-file file)))))
 
 ;;; Example tests:
 
@@ -391,26 +416,42 @@ Extracts region from BEGIN to END and inserts in OUTPUT-BUFFER."
 (ert-deftest test-markdown-insertion/toggle-bold ()
   "Test toggling functionality of `markdown-insert-bold'."
   (markdown-test-string "one **two** three"
-                        (forward-word 2)
-                        (markdown-insert-bold)
-                        (should (string-equal (buffer-string) "one two three"))
-                        (should (= (point) 8))
-                        (forward-word)
-                        (markdown-insert-bold)
-                        (should (= (point) 16))
-                        (should (string-equal (buffer-string) "one two **three**"))))
+    (forward-word 2)
+    (markdown-insert-bold)
+    (should (string-equal (buffer-string) "one two three"))
+    (should (= (point) 8))
+    (forward-word)
+    (markdown-insert-bold)
+    (should (= (point) 16))
+    (should (string-equal (buffer-string) "one two **three**"))))
+
+(ert-deftest test-markdown-insertion/toggle-bold-consecutive ()
+  "Test toggling functionality of consecutive bolds.
+Detail: https://github.com/jrblevin/markdown-mode/issues/283"
+  (markdown-test-string "one **two** **three**"
+    (search-forward "w")
+    (markdown-insert-bold)
+    (should (string-equal (buffer-string) "one two **three**"))))
 
 (ert-deftest test-markdown-insertion/toggle-italic ()
   "Test toggling functionality of `markdown-insert-italic'."
   (markdown-test-string "one *two* three"
-                        (forward-word 2)
-                        (markdown-insert-italic)
-                        (should (string-equal (buffer-string) "one two three"))
-                        (should (= (point) 8))
-                        (forward-word)
-                        (markdown-insert-italic)
-                        (should (string-equal (buffer-string) "one two *three*"))
-                        (should (= (point) 15))))
+    (forward-word 2)
+    (markdown-insert-italic)
+    (should (string-equal (buffer-string) "one two three"))
+    (should (= (point) 8))
+    (forward-word)
+    (markdown-insert-italic)
+    (should (string-equal (buffer-string) "one two *three*"))
+    (should (= (point) 15))))
+
+(ert-deftest test-markdown-insertion/toggle-italic-consecutive ()
+  "Test toggling functionality of consecutive italics.
+Detail: https://github.com/jrblevin/markdown-mode/issues/283"
+  (markdown-test-string "one *two* *three*"
+    (search-forward "w")
+    (markdown-insert-italic)
+    (should (string-equal (buffer-string) "one two *three*"))))
 
 (ert-deftest test-markdown-insertion/toggle-code ()
   "Test toggling functionality of `markdown-insert-code'."
@@ -1079,6 +1120,16 @@ Don't adjust spacing if tabs are used as whitespace."
     (call-interactively 'markdown-insert-list-item)
     (should (string-equal (buffer-string)  "9.\tfoo\n10.\t"))))
 
+(ert-deftest test-markdown-insertion/list-item-bound-keys ()
+  "Test that `markdown-insert-list-item' is bound to M-RET and equivalents."
+  (markdown-test-string "- foo"
+    (goto-char (point-max))
+    (execute-kbd-macro (read-kbd-macro "M-RET bar C-M-m baz"))
+    (should (string-equal (buffer-string) "- foo\n- bar\n- baz"))
+    (when (display-graphic-p)
+      (execute-kbd-macro (read-kbd-macro "M-<return> quux"))
+      (should (string-equal (buffer-string) "- foo\n- bar\n- baz\n- quux")))))
+
 (ert-deftest test-markdown-insertion/nested-list-marker ()
   "Test marker detection for `markdown-insert-list-item'."
   (markdown-test-string
@@ -1237,6 +1288,22 @@ Don't adjust spacing if tabs are used as whitespace."
       (should (string-equal (buffer-string) "[abc def](http://example.com/) ghi"))
       (should (= (point) 31))
       (transient-mark-mode tmm-orig))))
+
+(ert-deftest test-markdown-insertion/disable-tooltip-prompt ()
+  "Test `markdown-insert-link' with
+`markdown-disable-tooltip-prompt' option t."
+  (markdown-test-string "<https://www.gnu.org/>"
+    (let ((markdown-disable-tooltip-prompt t))
+      (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-link RET RET GNU RET"))
+      (should (string-equal (buffer-string) "[GNU](https://www.gnu.org/)")))))
+
+(ert-deftest test-markdown-insertion/link-make-text-function ()
+  "Test `markdown-insert-link' with custom
+`markdown-link-make-text-function'."
+  (markdown-test-string "<https://www.gnu.org/>"
+    (let ((markdown-link-make-text-function (lambda (url) (ignore url) "GNU")))
+      (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-link RET RET RET RET"))
+      (should (string-equal (buffer-string) "[GNU](https://www.gnu.org/)")))))
 
 ;;; Footnote tests:
 
@@ -1488,6 +1555,7 @@ the opening bracket of [^2], and then subsequent functions would kill [^2])."
       ;; thing at point, and then verify that the kill ring contains cdr.
       (markdown-test-string (car test)
                             (end-of-line)
+                            (forward-char -1)
                             (call-interactively 'markdown-kill-thing-at-point)
                             (should (string-equal (current-kill 0) (cdr test)))))))
 
@@ -1705,7 +1773,7 @@ Should not cause an infinite loop."
   ;; the buffer due to Emacs bug #19102:
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=19102
   ;; https://github.com/emacs-mirror/emacs/commit/b3910f
-  ;; That also corrects the type of the "Cannot move pase superior level" error
+  ;; That also corrects the type of the "Cannot move past superior level" error
   ;; from 'error to 'user-error.
   (markdown-test-string "# 1 #\n\n## 1.1 ##\n\n### 1.1.1 ###\n\n## 1.2 ##\n\n### 1.2.1 ###\n\n# 2 #\n# Extra\n"
                         (re-search-forward "^# 2")
@@ -1902,6 +1970,22 @@ Should not cause an infinite loop."
    (markdown-enter-key)
    (should (eq (point) 62))
    (should (looking-back "^    "))))
+
+(ert-deftest test-markdown-indentation/indent-region-function ()
+  "Test `indent-region'. Code block should not be indented.
+Detail: https://github.com/jrblevin/markdown-mode/issues/228"
+  (markdown-test-string
+   "Here follows a code sample:
+
+    #!/bin/bash
+    echo foobar
+
+Nice sample, isn't it ?"
+   (indent-region (point-min) (point-max))
+   (goto-char (point-min))
+   (forward-line 2)
+   (should (looking-at-p "    #!/bin/bash"))
+   (markdown-test-range-has-face (point) (line-end-position) 'markdown-pre-face)))
 
 (ert-deftest test-markdown-indentation/indent-hanging-line ()
   "Test `markdown-indent-line' with hanging indentation.
@@ -2225,6 +2309,12 @@ See GH-275."
    (markdown-test-range-has-face 1 30 'markdown-comment-face)
    (should-not (markdown-range-property-any 1 30 'face '(markdown-italic-face)))))
 
+(ert-deftest test-markdown-font-lock/italics-in-html-attribute ()
+  "Test not matching italics in HTML attributes."
+  (markdown-test-string
+   "<meta a=\"b_c\" d=\"e_f\">"
+   (should-not (markdown-range-property-any 12 18 'face '(markdown-italic-face)))))
+
 (ert-deftest test-markdown-font-lock/italics-after-bold ()
   "Test bold and italics on the same line.
 See GH-223."
@@ -2238,6 +2328,21 @@ See GH-223."
    (markdown-test-range-has-face 14 14 'markdown-markup-face)
    (markdown-test-range-has-face 15 17 'markdown-italic-face)
    (markdown-test-range-has-face 18 18 'markdown-markup-face)))
+
+(ert-deftest test-markdown-font-lock/italics-and-bold-and-punctual ()
+  "Test bold and italics and punctual character.
+Detail: https://github.com/jrblevin/markdown-mode/issues/359"
+  (markdown-test-string
+   "**Fat**, normal *italic*, normal **fat**"
+   (markdown-test-range-has-face 1 2 'markdown-markup-face)
+   (markdown-test-range-has-face 3 5 'markdown-bold-face)
+   (markdown-test-range-has-face 6 7 'markdown-markup-face)
+   (should-not
+    (markdown-range-property-any 10 15 'face '(markdown-italic-face)))
+   (markdown-test-range-has-face 18 23 'markdown-italic-face)
+   (should-not
+    (markdown-range-property-any 27 32 'face '(markdown-italic-face)))
+   (markdown-range-property-any 36 38 'face '(markdown-bold-face))))
 
 (ert-deftest test-markdown-font-lock/bold-1 ()
   "A simple bold test."
@@ -2330,6 +2435,14 @@ See GH-223."
    (markdown-test-range-has-face 14 18 'markdown-inline-code-face)
    (should-not (markdown-range-property-any
                 (point-min) (point-max) 'face '(markdown-bold-face)))))
+
+(ert-deftest test-markdown-font-lock/no-bold-asterisk-and-underscore ()
+  "string wrap with single asterisk and single underscore is not bold.
+Detail: https://github.com/jrblevin/markdown-mode/issues/325"
+  (markdown-test-string
+   "_*bold_* *_bold*_"
+   (should-not (markdown-range-property-any 3 6 'face '(markdown-bold-face)))
+   (should-not (markdown-range-property-any 11 14 'face '(markdown-bold-face)))))
 
 (ert-deftest test-markdown-font-lock/code-in-bold ()
   "Test inline code inside bold."
@@ -2514,6 +2627,27 @@ Test currently fails because this case isn't handled properly."
      (should (looking-at "[*+-]"))
      (markdown-test-range-has-face loc loc 'markdown-list-face))))
 
+(ert-deftest test-markdown-font-lock/lists-2 ()
+  "Test markdown-list-face with markdown-list-indent-width.
+See https://github.com/jrblevin/markdown-mode/issues/405 ."
+  (let ((markdown-list-indent-width 2))
+    (markdown-test-string "
+* level 1
+  * level 2
+    * level 3
+      * level 4
+        * level 5"
+      (markdown-test-range-has-face 62 62 'markdown-list-face)))
+
+  (let ((markdown-list-indent-width 4))
+    (markdown-test-string "
+* level 1
+  * level 2
+    * level 3
+      * level 4
+        * level 5"
+      (markdown-test-range-has-face 62 62 nil))))
+
 (ert-deftest test-markdown-font-lock/definition-list ()
   "A simple definition list marker font lock test."
   (markdown-test-file "definition-list.text"
@@ -2547,7 +2681,7 @@ Test currently fails because this case isn't handled properly."
   (markdown-test-string "It is interesting to see what happens when one queries
 `social upheaval` and `protopalatial era`.
 
-* `social upheaval`: the follwing queries have been tried:
+* `social upheaval`: the following queries have been tried:
 
     social upheaval subClassOf"
    (markdown-test-range-has-face 160 190 nil)))
@@ -2688,6 +2822,16 @@ See <https://github.com/jrblevin/markdown-mode/issues/170>."
       (markdown-test-range-has-face 7 17 'markdown-url-face)
       (markdown-test-range-has-face 18 18 'markdown-markup-face))))
 
+(ert-deftest test-markdown-font-lock/inline-links-with-escaped-bracket ()
+  "Test font lock for inline links with escaped bracket.
+Detail: https://github.com/jrblevin/markdown-mode/issues/409"
+  (markdown-test-string "[run(Class, String \\[\\])](http://foo.com)"
+    (markdown-test-range-has-face 1 1 'markdown-markup-face)
+    (markdown-test-range-has-face 2 24 'markdown-link-face)
+    (markdown-test-range-has-face 25 26 'markdown-markup-face)
+    (markdown-test-range-has-face 27 40 'markdown-url-face)
+    (markdown-test-range-has-face 41 41 'markdown-markup-face)))
+
 (ert-deftest test-markdown-font-lock/pre-comment ()
   "Test comments inside of a pre block."
   (markdown-test-string "    <!-- pre, not comment -->"
@@ -2799,6 +2943,14 @@ it is parsed."
    (markdown-test-range-has-face 42 67 nil)
    (markdown-test-range-has-face 69 88 nil)))
 
+(ert-deftest test-markdown-font-lock/mmd-not-metadata ()
+  "Don't treat as metadata if its line is not in header
+https://github.com/jrblevin/markdown-mode/issues/437"
+  (markdown-test-string "hello world
+foo bar baz: one two three
+"
+   (markdown-test-range-has-face 13 39 nil)))
+
 (ert-deftest test-markdown-font-lock/pandoc-metadata ()
   "Basic Pandoc metadata tests."
   (markdown-test-string "% title
@@ -2899,6 +3051,27 @@ date: 2015-08-13 11:35:25 EST
      (markdown-test-range-has-face 160 162 'markdown-markup-face)
      (markdown-test-range-has-face 164 213 'markdown-pre-face)
      (markdown-test-range-has-face 215 217 'markdown-markup-face))))
+
+(ert-deftest test-markdown-font-lock/yaml-metadata-nested ()
+  "Test font lock for metadata which has nested values
+Detail: https://github.com/jrblevin/markdown-mode/issues/476"
+  (markdown-test-string
+   "---
+references:
+- type: article-journal
+  author:
+  - family: Watson
+    given: J. D.
+---
+"
+   (markdown-test-range-has-face 5 14 'markdown-metadata-key-face)
+   (markdown-test-range-has-face 19 22 'markdown-metadata-key-face)
+   (markdown-test-range-has-face 25 39 'markdown-metadata-value-face)
+   (markdown-test-range-has-face 43 48 'markdown-metadata-key-face)
+   (markdown-test-range-has-face 55 60 'markdown-metadata-key-face)
+   (markdown-test-range-has-face 63 68 'markdown-metadata-value-face)
+   (markdown-test-range-has-face 74 78 'markdown-metadata-key-face)
+   (markdown-test-range-has-face 81 85 'markdown-metadata-value-face)))
 
 (ert-deftest test-markdown-font-lock/line-break ()
   "Basic line break tests."
@@ -3488,13 +3661,14 @@ echo hey
    (should (equal (markdown-code-block-at-pos 1) '(1 35)))
    (should (equal (markdown-code-block-at-pos 13) '(1 35)))
    (should (equal (markdown-code-block-at-pos 23) '(1 35)))
-   (should (equal (markdown-code-block-at-pos 35) '(1 35)))))
+   (should (equal (markdown-code-block-at-pos 34) '(1 35)))
+   (should (equal (markdown-code-block-at-pos 35) nil))))
 
 (ert-deftest test-markdown-parsing/code-block-at-pos-yaml-metadata ()
   "Ensure `markdown-code-block-at-pos' works in YAML metadata blocks."
   (let ((markdown-use-pandoc-style-yaml-metadata t))
     (markdown-test-string
-     "---
+      "---
 a: b
 ---
 
@@ -3509,7 +3683,7 @@ data: pandoc
      (should (equal (markdown-code-block-at-pos 15) '(15 35)))
      (should (equal (markdown-code-block-at-pos 19) '(15 35)))
      (should (equal (markdown-code-block-at-pos 34) '(15 35)))
-     (should (equal (markdown-code-block-at-pos 35) '(15 35))))))
+     (should (equal (markdown-code-block-at-pos 35) nil)))))
 
 (ert-deftest test-markdown-parsing/syntax-get-fenced-blocks ()
   "Test whether *-get-fenced-block-* functions work in the case where a block is
@@ -3605,7 +3779,15 @@ only partially propertized."
   "Test `markdown-get-defined-references'."
   (markdown-test-file "syntax.text"
    (should (equal (markdown-get-defined-references)
-                  '("src" "1" "2" "3" "4" "5" "6" "bq" "l"))))
+                  '(("src" . 37)
+                    ("1" . 55)
+                    ("2" . 56)
+                    ("3" . 57)
+                    ("4" . 58)
+                    ("5" . 59)
+                    ("6" . 60)
+                    ("bq" . 205)
+                    ("l" . 206)))))
   (markdown-test-file "outline.text"
    (should (equal (markdown-get-defined-references) nil)))
   (markdown-test-file "wiki-links.text"
@@ -3629,25 +3811,25 @@ only partially propertized."
     (goto-char loc)
     (should (markdown-inline-code-at-point))
     (should (equal (match-beginning 0) beg))
-    (should (equal (match-end 0) end))))
+    (should (equal (match-end 0) (1+ end)))))
 
 (ert-deftest test-markdown-parsing/inline-code-at-point ()
   "Test `markdown-inline-code-at-point'."
   (markdown-test-file "inline.text"
-    (markdown-test-test-region 45 51) ; Regular code span
-    (markdown-test-test-region 61 90) ; Code containing backticks
-    (markdown-test-test-region 228 240) ; Backquotes at beginning
-    (markdown-test-test-region 341 352) ; Backquotes at end
-    (markdown-test-test-region 460 469) ; Backslash as final character
-    (markdown-test-test-region 657 667) ; A code span crossing lines
-    (markdown-test-test-region 749 758) ; Three backquotes on same line
-    (markdown-test-test-region 806 815) ; Three backquotes across lines
+    (markdown-test-test-region 45 50) ; Regular code span
+    (markdown-test-test-region 61 89) ; Code containing backticks
+    (markdown-test-test-region 228 239) ; Backquotes at beginning
+    (markdown-test-test-region 341 351) ; Backquotes at end
+    (markdown-test-test-region 460 468) ; Backslash as final character
+    (markdown-test-test-region 657 666) ; A code span crossing lines
+    (markdown-test-test-region 749 757) ; Three backquotes on same line
+    (markdown-test-test-region 806 814) ; Three backquotes across lines
     ))
 
 (ert-deftest test-markdown-parsing/inline-code-at-point-one-space ()
   "Test `markdown-inline-code-at-point' with multiple code spans in a row."
   (markdown-test-string "`foo` `bar` `baz`"
-    (dolist (loc (number-sequence 1 6))
+    (dolist (loc (number-sequence 1 5)) ; `foo`
       (goto-char loc)
       ;; markdown-inline-code-at-point should set match data
       (should (markdown-inline-code-at-point))
@@ -3656,11 +3838,11 @@ only partially propertized."
       (set-match-data (list 1 2 3 4))
       (should (markdown-inline-code-at-point-p))
       (should (equal (match-data) (list 1 2 3 4))))
-    (dolist (loc (number-sequence 7 12))
+    (dolist (loc (number-sequence 7 11)) ; `bar`
       (goto-char loc)
       (should (markdown-inline-code-at-point))
       (should (equal (match-data) (list 7 12 7 8 8 11 11 12))))
-    (dolist (loc (number-sequence 13 18))
+    (dolist (loc (number-sequence 13 17)) ; `baz`
       (goto-char loc)
       (should (markdown-inline-code-at-point))
       (should (equal (match-data) (list 13 18 13 14 14 17 17 18))))))
@@ -3670,15 +3852,15 @@ only partially propertized."
   (markdown-test-string "a`foo`b`bar`c`baz`d"
     (goto-char 1)                       ; "a"
     (should-not (markdown-inline-code-at-point-p))
-    (dolist (loc (number-sequence 2 7)) ; "`foo`b"
+    (dolist (loc (number-sequence 2 6)) ; "`foo`"
       (goto-char loc)
       (should (markdown-inline-code-at-point))
       (should (equal (match-data) (list 2 7 2 3 3 6 6 7))))
-    (dolist (loc (number-sequence 8 13)) ; "`bar`c"
+    (dolist (loc (number-sequence 8 12)) ; "`bar`"
       (goto-char loc)
       (should (markdown-inline-code-at-point))
       (should (equal (match-data) (list 8 13 8 9 9 12 12 13))))
-    (dolist (loc (number-sequence 14 19)) ; "`baz`d"
+    (dolist (loc (number-sequence 14 18)) ; "`baz`"
       (goto-char loc)
       (should (markdown-inline-code-at-point))
       (should (equal (match-data) (list 14 19 14 15 15 18 18 19))))))
@@ -3825,6 +4007,19 @@ puts 'hello, world'
 
 ;;; Reference Checking:
 
+(ert-deftest test-markdown-references/get-unused-refs ()
+  "Test `markdown-get-unused-refs'."
+  (markdown-test-file "refs.text"
+   (should (equal (markdown-get-unused-refs)
+                  '(("logorrhea" . 8)
+                    ("orphan" . 11))))))
+
+(ert-deftest test-markdown-references/get-undefined-refs ()
+  "Test `markdown-get-undefined-refs'."
+  (markdown-test-file "refs.text"
+   (should (equal (markdown-get-undefined-refs)
+                  '(("problems" ("problems" . 3) ("controversy" . 5)))))))
+
 (ert-deftest test-markdown-references/goto-line-button ()
   "Create and test a goto line button."
   (markdown-test-string "line 1\nline 2\n"
@@ -3857,6 +4052,25 @@ puts 'hello, world'
      (should (equal (local-key-binding (kbd "TAB")) 'forward-button))
      (should (equal (local-key-binding (kbd "<backtab>")) 'backward-button))))))
 
+(ert-deftest test-markdown-references/undefined-refs-killing ()
+  "Test that buttons in unused references buffer delete lines when pushed."
+  (markdown-test-file "refs.text"
+   (let* ((target (buffer-name))
+          (check (replace-regexp-in-string
+                  "%buffer%" target
+                  markdown-unused-references-buffer))
+          (original-unused-refs (markdown-get-unused-refs)))
+   (markdown-unused-refs)
+   ;; Push X
+   (with-current-buffer (get-buffer check)
+     (forward-button 1)
+     (call-interactively 'push-button))
+   ;; The first orphan should now be gone with the rest of orphans
+   ;; moved up by one line
+   (should (equal (markdown-get-unused-refs)
+                  (mapcar (lambda (o) (cons (car o) (1- (cdr o))))
+                          (cdr original-unused-refs)))))))
+
 ;;; Lists:
 
 (ert-deftest test-markdown-lists/nested-list-file ()
@@ -3886,7 +4100,7 @@ puts 'hello, world'
      (cl-loop for (range . value) in values
            do (goto-char (point-min))
               (forward-line (1- (car range)))
-              (dotimes (n (- (cdr range) (car range)))
+              (dotimes (_ (- (cdr range) (car range)))
                 (should (equal (markdown-calculate-list-levels) value))
                 (forward-line))))))
 
@@ -3901,7 +4115,7 @@ puts 'hello, world'
      (cl-loop for (range . value) in values
            do (goto-char (point-min))
               (forward-line (1- (car range)))
-              (dotimes (n (- (cdr range) (car range)))
+              (dotimes (_ (- (cdr range) (car range)))
                 (should (equal (markdown-calculate-list-levels) value))
                 (forward-line))))))
 
@@ -4122,6 +4336,23 @@ puts 'hello, world'
     (should (string-equal (markdown-toggle-gfm-checkbox) "[x]"))
     (should (string-equal (buffer-string) "   -   [x] GFM task list item"))))
 
+(ert-deftest test-markdown-lists/clean-list-numbers ()
+  "Test for `markdown-cleanup-list-numbers'.
+Detail: https://github.com/jrblevin/markdown-mode/issues/392"
+  (markdown-test-string "Shortcuts
+---------
+  2. Horizontal rule: `C-c C-s -`
+  3. Underlined header `C-c C-s !`
+ 10. Convert to HTML: `C-c C-c m`
+"
+    (call-interactively #'markdown-cleanup-list-numbers)
+    (forward-line 2)
+    (should (looking-at-p "\\s-+1\\. Horizontal rule"))
+    (forward-line 1)
+    (should (looking-at-p "\\s-+2\\. Underlined header"))
+    (forward-line 1)
+    (should (looking-at-p "\\s-+3\\. Convert to HTML"))))
+
 (ert-deftest test-markdown-lists/beginning-of-list ()
   "Test `markdown-beginning-of-list'."
   (markdown-test-file "lists.text"
@@ -4329,7 +4560,15 @@ date = 2015-08-13 11:35:25 EST
      (setq this-command 'markdown-cycle)
      (markdown-cycle t)
      ;; Check that text is visible
-     (markdown-test-range-has-property (point-min) (point-max) 'invisible nil))))
+     (markdown-test-range-has-property (point-min) (point-max) 'invisible nil))
+
+   (let (last-command this-command)
+     ;; Cycle global visibility to "overview" mode
+     (setq this-command 'markdown-cycle)
+     (let ((current-prefix-arg '(4)))
+      (markdown-cycle)
+      ;; Check that text is visible
+      (markdown-test-range-has-property (point-min) (point-max) 'invisible nil)))))
 
 (ert-deftest test-markdown-outline/level ()
   "Test `markdown-outline-level'."
@@ -4689,6 +4928,33 @@ like statement. Detail: https://github.com/jrblevin/markdown-mode/issues/75"
       (call-interactively #'markdown-backward-same-level)
       (should (looking-at-p "## Header 2-1")))))
 
+(ert-deftest test-markdown-movement/sentence ()
+  "Move sentencen which is wrapped markup characters.
+Detail: https://github.com/jrblevin/markdown-mode/issues/517"
+  (markdown-test-string "*Sentence one.*  **Sentence two.**  ~Sentence three.~
+_Sentence four._  `Sentence five.`  Sentence six.
+Sentence seven. Sentence eight.
+"
+    (forward-sentence 1)
+    (should (looking-back "one\\.\\*" (line-beginning-position)))
+    (forward-sentence 1)
+    (should (looking-back "two\\.\\*\\*" (line-beginning-position)))
+    (forward-sentence 1)
+    (should (looking-at-p "$"))
+    (save-excursion
+      (backward-sentence 2)
+      (should (looking-at-p "\\*\\*Sentence two")))
+    (forward-sentence 1)
+    (should (looking-back "four\\._" (line-beginning-position)))
+    (forward-sentence 1)
+    (should (looking-back "five\\.`" (line-beginning-position)))
+    (forward-sentence 1)
+    (should (looking-at-p "$"))
+    (forward-sentence 1)
+    (looking-back "seven\\." (line-beginning-position))
+    (forward-sentence 1)
+    (looking-at-p "$")))
+
 ;;; Link tests:
 
 (ert-deftest test-markdown-link/follow ()
@@ -4696,7 +4962,7 @@ like statement. Detail: https://github.com/jrblevin/markdown-mode/issues/75"
   (markdown-test-string "[text](http://path?query=foo#id)"
     (let* ((opened-url nil)
            (browse-url-browser-function
-            (lambda (url &rest args) (setq opened-url url))))
+            (lambda (url &rest _args) (setq opened-url url))))
       (markdown-follow-thing-at-point nil)
       (should (equal opened-url "http://path?query=foo#id"))))
   (when (featurep 'url-parse)
@@ -4704,6 +4970,19 @@ like statement. Detail: https://github.com/jrblevin/markdown-mode/issues/75"
       (markdown-follow-thing-at-point nil)
       (should (equal (file-name-nondirectory (buffer-file-name)) "path"))
       (kill-buffer))))
+
+(ert-deftest test-markdown-link/link-in-header ()
+  "Test link following even if it is in header.
+Detail: https://github.com/jrblevin/markdown-mode/issues/430"
+  (markdown-test-string "---
+[link](https://link-in-header.com)
+---"
+    (forward-line +1)
+    (let* ((opened-url nil)
+           (browse-url-browser-function
+            (lambda (url &rest _args) (setq opened-url url))))
+      (markdown-follow-thing-at-point nil)
+      (should (equal opened-url "https://link-in-header.com")))))
 
 (ert-deftest test-markdown-link/inline-link-at-pos ()
   "Test `markdown-link-at-pos' return values with an inline link."
@@ -4735,6 +5014,30 @@ like statement. Detail: https://github.com/jrblevin/markdown-mode/issues/75"
   (markdown-test-string "http://jblevins.org/projects/markdown-mode/"
     (should (equal (markdown-link-at-pos (point)) '(1 44 nil "http://jblevins.org/projects/markdown-mode/" nil nil nil)))))
 
+(ert-deftest test-markdown-link/link-contains-parenthesis ()
+  "Test URL which contains close parenthesis.
+Detail: https://github.com/jrblevin/markdown-mode/issues/408"
+  (let ((url "https://commons.wikimedia.org/wiki/Category:SVG_locator_maps_of_continents_(location_map_scheme)_(Winkel_3_projection)"))
+    (markdown-test-string (format "[foo](%s)" url)
+      (let ((link (markdown-link-at-pos (point))))
+        (should (string= (nth 3 link) url))))))
+
+(ert-deftest test-markdown-link/start-or-end-with-spaces ()
+  "Test `markdown-link-at-pos' return values with URL part starts/ends with spaces.
+Detail: https://github.com/jrblevin/markdown-mode/issues/514"
+  (markdown-test-string "[Broken](
+http://example.com  )
+"
+    (let ((values (markdown-link-at-pos (point))))
+      (should (string= (nth 3 values) "http://example.com"))))
+
+  (markdown-test-string "[Broken](
+http://example.com \"title\"  )
+"
+    (let ((values (markdown-link-at-pos (point))))
+      (should (string= (nth 3 values) "http://example.com"))
+      (should (string= (nth 5 values) "title")))))
+
 (ert-deftest test-markdown-link/follow-filename ()
   "Test that `markdown-follow-thing-at-pos' uses
 `markdown-translate-filename-function' to translate filenames."
@@ -4751,6 +5054,17 @@ like statement. Detail: https://github.com/jrblevin/markdown-mode/issues/75"
       (markdown-follow-thing-at-point nil)
       (should (equal translated-files '("/foo/bar/baz")))
       (should (equal visited-files '("/root/foo/bar/baz.md"))))))
+
+(ert-deftest test-markdown-link/link-p ()
+  "Test that `markdown-link-p' returns t if cursor is on link."
+  (markdown-test-string "[one][two] [three][four]"
+    (should (markdown-link-p))
+    (goto-char 2)
+    (should (markdown-link-p))
+    (goto-char 12)
+    (should (markdown-link-p))
+    (goto-char 13)
+    (should (markdown-link-p))))
 
 ;;; Wiki link tests:
 
@@ -4860,16 +5174,41 @@ See `adaptive-fill-first-line-regexp'."
 
 (ert-deftest test-markdown-filling/blockquote-paragraphs ()
   "Test filling of blockquotes containing multiple paragraphs."
-  (markdown-test-string "> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n>\n> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n"
+  (markdown-test-string "> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+>
+> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+"
    (forward-paragraph)
    (fill-paragraph)
-   (should (string-equal (buffer-string) "> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n>\n> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris\n> nisi ut aliquip ex ea commodo consequat.\n"))))
+   (should (string-equal
+            (buffer-substring-no-properties (point-min) (point-max))
+            "> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+>
+> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+> nisi ut aliquip ex ea commodo consequat.
+"))))
+
+(ert-deftest test-markdown-filling/nested-blockquote-paragraphs ()
+  "Test filling of nested blockquotes.
+Detail: https://github.com/jrblevin/markdown-mode/issues/366"
+  (markdown-test-string "> > pursuit of Happiness.--That to secure these rights, Governments are
+> > instituted among Men, deriving their just powers from the consent of
+"
+   (fill-paragraph)
+   (should (string-equal
+            (buffer-substring-no-properties (point-min) (point-max))
+            "> > pursuit of Happiness.--That to secure these rights, Governments
+> > are instituted among Men, deriving their just powers from the
+> > consent of
+"))))
 
 (ert-deftest test-markdown-filling/leanpub-block ()
   "Test adaptive filling of Leanpub blocks."
   (markdown-test-string "A> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
    (fill-paragraph)
-   (should (string-equal (buffer-string) "A> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do\nA> eiusmod tempor incididunt ut labore et dolore magna aliqua."))))
+   (should (string-equal
+            (buffer-substring-no-properties (point-min) (point-max))
+            "A> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do\nA> eiusmod tempor incididunt ut labore et dolore magna aliqua."))))
 
 (ert-deftest test-markdown-filling/space-after-list-marker ()
   "`fill-paragraph' should preserve more than one space after a list marker,
@@ -5047,7 +5386,7 @@ this is not header line
   "Test `markdown-fill-paragraph' on code blocks."
   (let ((text "test\n\n```\nhello\nworld\n```"))
     (markdown-test-string text
-      (dotimes (n 5)
+      (dotimes (_ 5)
         ;; Fill at each line; buffer should not change.
         (fill-paragraph)
         (should (string-equal (buffer-string) text))))))
@@ -5402,16 +5741,221 @@ See GH-288."
       (markdown-test-range-has-face 301 308 nil)
       (markdown-test-range-has-face 310 312 'markdown-math-face))))
 
+(ert-deftest test-markdown-math/math-inline-single ()
+  "Test for math inline single.
+Detail: https://github.com/jrblevin/markdown-mode/issues/352"
+  (let ((markdown-enable-math t))
+    (markdown-test-string "$a$b$c$"
+      (markdown-test-range-has-face 1 1 'markdown-markup-face)
+      (markdown-test-range-has-face 2 2 'markdown-math-face)
+      (markdown-test-range-has-face 3 3 'markdown-markup-face)
+
+      (markdown-test-range-has-face 5 5 'markdown-markup-face)
+      (markdown-test-range-has-face 6 6 'markdown-math-face)
+      (markdown-test-range-has-face 7 7 'markdown-markup-face))))
+
+(ert-deftest test-markdown-math/math-inline-double ()
+  "Test for math inline double. This is similar to #352 issue."
+  (let ((markdown-enable-math t))
+    (markdown-test-string "$$a$$b$$c$$"
+      (markdown-test-range-has-face 1 2 'markdown-markup-face)
+      (markdown-test-range-has-face 3 3 'markdown-math-face)
+      (markdown-test-range-has-face 4 5 'markdown-markup-face)
+
+      (markdown-test-range-has-face 7 8 'markdown-markup-face)
+      (markdown-test-range-has-face 9 9 'markdown-math-face)
+      (markdown-test-range-has-face 10 11 'markdown-markup-face))))
+
 ;;; Extension: pipe table editing
 
 (ert-deftest test-markdown-table/table-begin-top-of-file ()
   "Test beginning of table detection at top of file."
-  (markdown-test-string "\n| 1 | 2 |\n"
-    (should-not (markdown-table-at-point-p))
+  (markdown-test-string "| 1 | 2 |\n| 3 | 4 |\n"
+    (should (markdown-table-at-point-p))
     (forward-line)
     (should (markdown-table-at-point-p))
-    (should (= (markdown-table-begin) 2))))
+    (should (= (markdown-table-begin) 1))))
 
+;;; Extension: pipe table insertion
+
+(ert-deftest test-markdown-insertion/create-table-with-left-align ()
+  "Insert table with left column alignment."
+  (markdown-test-string
+   ""
+   (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-table RET 3 RET 2 RET l RET"))
+   (should (string-equal (buffer-string) "|   |   |
+|:--|:--|
+|   |   |
+|   |   |
+"))
+   (should (= (point) 3))))
+
+(ert-deftest test-markdown-insertion/create-table-with-right-align ()
+  "Insert table with right column alignment."
+  (markdown-test-string
+   ""
+   (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-table RET 3 RET 2 RET r RET"))
+   (should (string-equal (buffer-string) "|   |   |
+|--:|--:|
+|   |   |
+|   |   |
+"))
+   (should (= (point) 3))))
+
+(ert-deftest test-markdown-insertion/create-table-with-center-align ()
+  "Insert table with center column alignment."
+  (markdown-test-string
+   ""
+   (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-table RET 3 RET 2 RET c RET"))
+   (should (string-equal (buffer-string) "|   |   |
+|:-:|:-:|
+|   |   |
+|   |   |
+"))
+   (should (= (point) 3))))
+
+(ert-deftest test-markdown-insertion/create-table-with-default-align ()
+  "Insert table with default column alignment."
+  (markdown-test-string
+   ""
+   (execute-kbd-macro (read-kbd-macro "M-x markdown-insert-table RET 3 RET 2 RET RET"))
+   (should (string-equal (buffer-string) "|   |   |
+|---|---|
+|   |   |
+|   |   |
+"))
+   (should (= (point) 3))))
+
+(ert-deftest test-markdown-table/align-with-escaped-separator ()
+  "Test table align if column has escaped separator.
+Details: https://github.com/jrblevin/markdown-mode/issues/308"
+  (markdown-test-string "| Col1  | Col2  |
+| :-: | :-: |
+|  AAA  |  A\\|B |"
+    (search-forward "Col2")
+    (markdown-table-align)
+    (should (string= (buffer-substring-no-properties (point-min) (point-max))
+                     "| Col1 | Col2 |
+| :-:  | :-:  |
+| AAA  | A\\|B |\n"))))
+
+(ert-deftest test-markdown-table/align-with-wiki-link ()
+  "Test table align if column has wiki link.
+Details: https://github.com/jrblevin/markdown-mode/issues/308"
+  (let ((markdown-enable-wiki-links t))
+   (markdown-test-string "| A | B |
+|-------------|---------|
+| [[Page|Address]] | Content |"
+     (search-forward "B")
+     (markdown-table-align)
+     (should (string= (buffer-substring-no-properties (point-min) (point-max))
+                      "| A                | B       |
+|------------------|---------|
+| [[Page|Address]] | Content |")))))
+
+(ert-deftest test-markdown-table/table-line-to-columns ()
+  "Test for splitting table line to columns."
+  (should (equal (markdown--table-line-to-columns "|foo|") '("foo")))
+  (should (equal (markdown--table-line-to-columns "foo") '("foo")))
+  (should (equal (markdown--table-line-to-columns "|foo|bar|") '("foo" "bar")))
+  (should (equal (markdown--table-line-to-columns "  |  foo  |  bar  |  ") '("foo" "bar")))
+  (should (equal (markdown--table-line-to-columns "foo|bar") '("foo" "bar")))
+  (should (equal (markdown--table-line-to-columns "foo | bar | baz") '("foo" "bar" "baz")))
+  (should (equal (markdown--table-line-to-columns "| x \\| |") '("x \\|"))))
+
+(ert-deftest test-markdown-table/blank-line ()
+  "Test for creating new blank line."
+  (should (string= (markdown-table-blank-line "|foo|")  "|   |"))
+  (should (string= (markdown-table-blank-line "|foo|barbaz|")  "|   |      |"))
+  (should (string= (markdown-table-blank-line "|a|bb|ccc|") "| |  |   |"))
+
+  (let ((markdown-enable-wiki-links t))
+    (should (string= (markdown-table-blank-line "| [[Page|Address]] | Content |")
+                     "|                  |         |"))))
+
+(ert-deftest test-markdown-table/get-column ()
+  "Test for getting column number"
+  (markdown-test-string "| Col1 | Col2 |"
+    (search-forward "Col1")
+    (should (= (markdown-table-get-column) 1))
+    (search-forward "Col2")
+    (should (= (markdown-table-get-column) 2)))
+
+  (markdown-test-string "| [[Page|Address]] | Content |"
+    (search-forward "Content")
+    (should (= (markdown-table-get-column) 3)))
+
+  (let ((markdown-enable-wiki-links t))
+    (markdown-test-string "| [[Page|Address]] | Content |"
+      (search-forward "Content")
+      (should (= (markdown-table-get-column) 2)))))
+
+(ert-deftest test-markdown-table/goto-column ()
+  "Test for goto specified column."
+  (markdown-test-string "| Col1 | Col2 |"
+    (markdown-table-goto-column 1)
+    (should (string= (thing-at-point 'word) "Col1"))
+    (markdown-table-goto-column 2)
+    (should (string= (thing-at-point 'word) "Col2")))
+
+  (markdown-test-string "| [[Page|Address]] | Content |"
+    (markdown-table-goto-column 2)
+    (should (string= (thing-at-point 'word) "Address")))
+
+  (let ((markdown-enable-wiki-links t))
+    (markdown-test-string "| [[Page|Address]] | Content |"
+      (markdown-table-goto-column 2)
+      (should (string= (thing-at-point 'word) "Content")))))
+
+(ert-deftest test-markdown-table/transpose-with-wiki-link ()
+  "Test for table transpose with link.
+Detail: https://github.com/jrblevin/markdown-mode/commit/44a1c5bbc5d9514e97c7cc0a90a0c578130cd1dc"
+  (let ((markdown-enable-wiki-links t))
+    (markdown-test-string "| A           | B       |
+| [[Page|Address]] | Content |
+"
+      (markdown-table-transpose)
+      (should (string=
+               (buffer-substring-no-properties (point-min) (point-max))
+               "| A | [[Page|Address]] |
+| B | Content          |
+")))))
+
+(ert-deftest test-markdown-table/forward-cell-with-escaped-vertical-bar ()
+  "Test for table forward-cell with escaped vertical bar.
+Detail: https://github.com/jrblevin/markdown-mode/issues/489"
+  (markdown-test-string "| x \\| |
+"
+    (forward-char 1)
+    (markdown-table-forward-cell)
+    (should (string=
+             (buffer-substring-no-properties (point-min) (point-max))
+             "| x \\| |
+|      |
+"))))
+
+(ert-deftest test-markdown-table/forward-cell-at-last-column ()
+  "Test for table forward-cell at last column.
+Detail: https://github.com/jrblevin/markdown-mode/issues/522"
+  (markdown-test-string "| one  | two  |
+| three | four |
+"
+    (search-forward "two")
+    (markdown-table-forward-cell)
+    (should (string= (thing-at-point 'word) "three"))
+    (markdown-table-forward-cell)
+    (should (string= (thing-at-point 'word) "four"))
+    (markdown-table-forward-cell)
+    (should (string= (buffer-substring-no-properties (line-beginning-position) (line-end-position))
+                     "|       |      |"))))
+
+(ert-deftest test-markdown-table/backward-cell-with-escaped-vertical-bar ()
+  "Test for table backward-cell with escaped vertical bar."
+  (markdown-test-string "| x \\| |   |"
+    (goto-char (point-max))
+    (backward-char 1)
+    (markdown-table-backward-cell)
+    (should (char-equal (char-after) ?x))))
 
 ;;; gfm-mode tests:
 
@@ -5431,6 +5975,97 @@ See GH-288."
     (markdown-test-range-has-face 1484 1487 'markdown-italic-face)
     (markdown-test-range-has-face 1488 1488 'markdown-markup-face)
     (markdown-test-range-has-face 1729 1790 nil)))
+
+(ert-deftest test-markdown-gfm/italic-underscore ()
+  "Test for GFM italic font lock test based on CommonMark specification.
+Details: https://github.com/jrblevin/markdown-mode/issues/448"
+  (markdown-test-string-gfm "_no_emphasis
+*emphasis*
+em*pha*sis
+*emph*asis
+emph*asis*
+em*ph as*is
+_emphasis_
+no_emph_asis
+no_emphasis_
+no_em ph_asis
+"
+    (markdown-test-range-has-face 2 3 nil)
+    (markdown-test-range-has-face 15 22 'markdown-italic-face)
+    (markdown-test-range-has-face 28 30 'markdown-italic-face)
+    (markdown-test-range-has-face 37 40 'markdown-italic-face)
+    (markdown-test-range-has-face 52 55 'markdown-italic-face)
+    (markdown-test-range-has-face 61 65 'markdown-italic-face)
+    (markdown-test-range-has-face 71 78 'markdown-italic-face)
+    (markdown-test-range-has-face 84 87 nil)
+    (markdown-test-range-has-face 97 104 nil)
+    (markdown-test-range-has-face 110 114 nil)))
+
+(ert-deftest test-markdown-gfm/italic-underscore-one-character ()
+  "Test for GFM italic font lock test for one character.
+Details: https://github.com/jrblevin/markdown-mode/issues/524"
+  (markdown-test-string-gfm "*a* other text *abc*"
+    (markdown-test-range-has-face 3 3 'markdown-markup-face)
+    (markdown-test-range-has-face 4 15 nil)
+    (markdown-test-range-has-face 16 16 'markdown-markup-face)
+    (markdown-test-range-has-face 17 19 'markdown-italic-face)
+    (markdown-test-range-has-face 20 20 'markdown-markup-face))
+
+  (markdown-test-string-gfm "*a* _b_"
+    (markdown-test-range-has-face 1 1 'markdown-markup-face)
+    (markdown-test-range-has-face 2 2 'markdown-italic-face)
+    (markdown-test-range-has-face 3 3 'markdown-markup-face)
+    (markdown-test-range-has-face 4 4 nil)
+    (markdown-test-range-has-face 5 5 'markdown-markup-face)
+    (markdown-test-range-has-face 6 6 'markdown-italic-face)
+    (markdown-test-range-has-face 7 7 'markdown-markup-face)))
+
+(ert-deftest test-markdown-gfm/bold-underscore ()
+  "Test for GFM bold font lock test.
+Details: https://github.com/jrblevin/markdown-mode/issues/525"
+(markdown-test-string-gfm "**strong**
+st**ro**ng
+**str**ong
+str**ong**
+**still strong**
+**still str**ong
+sti**ll strong**
+sti**ll str**ong
+__strong__
+not__str__ong
+__not__strong
+not__strong__
+__still strong__
+no__t strong__
+__not str__ong
+no__t str__ong
+"
+    (markdown-test-range-has-face 3 8 'markdown-bold-face)
+    (markdown-test-range-has-face 16 17 'markdown-bold-face)
+    (markdown-test-range-has-face 27 27 'markdown-bold-face)
+    (markdown-test-range-has-face 39 41 'markdown-bold-face)
+    (markdown-test-range-has-face 47 58 'markdown-bold-face)
+    (markdown-test-range-has-face 64 72 'markdown-bold-face)
+    (markdown-test-range-has-face 84 92 'markdown-bold-face)
+    (markdown-test-range-has-face 101 106 'markdown-bold-face)
+    (markdown-test-range-has-face 115 120 'markdown-bold-face)
+    (markdown-test-range-has-face 129 131 nil)
+    (markdown-test-range-has-face 140 142 nil)
+    (markdown-test-range-has-face 168 179 'markdown-bold-face)
+    (markdown-test-range-has-face 200 206 nil)
+    (markdown-test-range-has-face 217 221 nil)))
+
+(ert-deftest test-markdown-gfm/string-between-strong-markup ()
+  "Test for string between strong markup.
+Details: https://github.com/jrblevin/markdown-mode/issues/534"
+  (markdown-test-string-gfm "**foo** and **bar**"
+    (markdown-test-range-has-face 1 2 'markdown-markup-face)
+    (markdown-test-range-has-face 3 5 'markdown-bold-face)
+    (markdown-test-range-has-face 6 7 'markdown-markup-face)
+    (markdown-test-range-has-face 8 12 nil)
+    (markdown-test-range-has-face 13 14 'markdown-markup-face)
+    (markdown-test-range-has-face 15 17 'markdown-bold-face)
+    (markdown-test-range-has-face 18 19 'markdown-markup-face)))
 
 (ert-deftest test-markdown-gfm/strike-through-1 ()
   "GFM strike through font lock test."
@@ -5452,6 +6087,13 @@ See GH-288."
    (markdown-insert-strike-through)
    (should (= (point) 16))
    (should (string-equal (buffer-string) "one two ~~three~~"))))
+
+(ert-deftest test-markdown-gfm/toggle-strike-through-consecutive ()
+  "Test toggling functionality of consecutive strike-throughs."
+  (markdown-test-string-gfm "one ~~two~~ ~~three~~"
+    (search-forward "w")
+    (markdown-insert-strike-through)
+    (should (string-equal (buffer-string) "one two ~~three~~"))))
 
 (ert-deftest test-markdown-gfm/insert-code-block-empty-markup ()
   "Test GFM code block insertion with empty code section."
@@ -5477,7 +6119,7 @@ See GH-288."
    (transient-mark-mode)
    (push-mark (point) t t)
    (end-of-line)
-   (should (markdown-use-region-p))
+   (should (use-region-p))
    (markdown-insert-gfm-code-block "elisp")
    (should (string-equal (buffer-string)
                          "line 1\n\n``` elisp\nline 2\n```\n\nline 3\n"))))
@@ -5499,7 +6141,7 @@ See GH-288."
       (forward-line)
       (push-mark nil :nomsg :activate)
       (end-of-line)
-      (should (markdown-use-region-p))
+      (should (use-region-p))
       (markdown-insert-gfm-code-block "elisp"))
     (should (equal (buffer-substring-no-properties (point-min) (point-max))
                    "1.  foo\n\n    ``` elisp\n    bar\n    ```\n\n"))
@@ -5550,6 +6192,14 @@ See GH-288."
     (markdown-test-range-has-face 24 26 'markdown-pre-face)
     (markdown-test-range-has-face 28 30 'markdown-markup-face)))
 
+(ert-deftest test-markdown-gfm/one-line-code-block ()
+  "Don't handle backtick as code block language.
+Details: https://github.com/jrblevin/markdown-mode/issues/403"
+  (markdown-test-string-gfm "```three```"
+    (let ((face-props (get-text-property 4 'face)))
+      (should (memq 'markdown-inline-code-face face-props))
+      (should-not (memq 'markdown-language-keyword-face face-props)))))
+
 ;;; Extension: GFM simplified tables
 
 (ert-deftest test-markdown-gfm/false-table-first-line ()
@@ -5565,7 +6215,7 @@ Based on GH-298."
    "[|
 -|-
 x|"
-   (dotimes (x 3)
+   (dotimes (_ 3)
      (should (gfm--table-at-point-p))
      (forward-line))))
 
@@ -5630,6 +6280,19 @@ x|"
             (markdown-test-range-has-property 1 16 'font-lock-face 'markdown-missing-link-face)
             (markdown-test-range-has-property 19 26 'font-lock-face 'markdown-link-face))
         (kill-buffer)))))
+
+(ert-deftest test-markdown-ext/wiki-link-major-mode ()
+  "Test major-mode of linked page."
+  (let ((markdown-enable-wiki-links t)
+        (auto-mode-alist (cons '("bar\\.md" . gfm-mode) auto-mode-alist)))
+    (find-file "wiki/root")
+    (unwind-protect
+        (progn
+          (markdown-mode)
+          (search-forward "sub/bar.md")
+          (markdown-follow-wiki-link-at-point)
+          (should (eq major-mode 'gfm-mode)))
+      (kill-buffer))))
 
 (defadvice markdown-live-preview-window-eww
     (around markdown-test-create-fake-eww disable)
@@ -5759,7 +6422,7 @@ x|"
                      (window-start) (window-point))
                     final-win-st-diff)))))))
 
-;; Tests for imenu
+;;; Tests for imenu
 
 (ert-deftest test-markdown-imenu/metadata ()
   "Don't correct header like statement in metadata.
@@ -5821,13 +6484,35 @@ https://github.com/jrblevin/markdown-mode/issues/235"
       (should (buffer-live-p buffer))
       (should (equal calls `((1 4 ,buffer)))))))
 
+(ert-deftest test-markdown-command/string-command ()
+  "Test `markdown-command' for string which has only command."
+  (skip-unless (executable-find "pandoc"))
+  (markdown-test-string "foo"
+    (let ((markdown-command "pandoc"))
+      ;; check exception is not thrown
+      (should (markdown)))))
+
+(ert-deftest test-markdown-command/string-command-with-options ()
+  "Test `markdown-command' for string which has command and options."
+  (skip-unless (executable-find "pandoc"))
+  (markdown-test-string "foo"
+    (let ((markdown-command "pandoc --from=markdown --to=html5"))
+      (should (markdown)))))
+
+(ert-deftest test-markdown-command/list-of-strings ()
+  "Test `markdown-command' for list of strings."
+  (skip-unless (executable-find "pandoc"))
+  (markdown-test-string "foo"
+    (let ((markdown-command '("pandoc" "--from=markdown" "--to=html5")))
+      (should (markdown)))))
+
 (ert-deftest test-markdown-command/does-not-exist ()
   "Test ‘markdown’ with a non-existing ‘markdown-command’."
   (skip-unless (not (file-executable-p "/does/not/exist")))
   (markdown-test-string "foo"
     (let* ((markdown-command "/does/not/exist")
            (data (should-error (markdown) :type 'user-error)))
-      (should (string-prefix-p "/does/not/exist failed with exit code "
+      (should (string-prefix-p "Markdown command /does/not/exist is not found"
                                (error-message-string data))))))
 
 (ert-deftest test-markdown-command/fails ()
@@ -5866,6 +6551,113 @@ https://github.com/jrblevin/markdown-mode/issues/235"
            (data (should-error (markdown-open) :type 'user-error)))
       (should (string-prefix-p "false failed with exit code 1"
                                (error-message-string data))))))
+
+(ert-deftest test-markdown-open-image-command ()
+  "Test ‘markdown-open’ with ‘markdown-open-command’ being a function."
+  (markdown-test-string "![foo](./bar.jpg)"
+    (let ((markdown-open-image-command
+           (lambda (file) (should (string= file "./bar.jpg")))))
+      (forward-char 3)
+      (markdown-follow-link-at-point))))
+
+;;; Tests for view mode
+
+(ert-deftest test-markdown-view-mode/filter-buffer-substring ()
+  "Test `filter-buffer-substring' of `markdown-view-mode'.
+Detail: https://github.com/jrblevin/markdown-mode/pull/493"
+  (let ((test-string "# foo
+~~This is a dog~~
+
+```python
+foo(bar=None)
+```
+")
+        (test-func
+         (lambda ()
+           (should (string= (filter-buffer-substring (point-min) (line-end-position)) "foo"))
+           (forward-line +1)
+           (should (string= (filter-buffer-substring (point) (line-end-position)) "This is a dog"))
+           (forward-line +2)
+           (let ((code-beg (point)))
+             (forward-line +3)
+             (should (string= (filter-buffer-substring code-beg (point)) "foo(bar=None)\n"))))))
+    (markdown-test-string-view test-string
+      (funcall test-func))
+
+    (markdown-test-string-gfm-view test-string
+      (funcall test-func))))
+
+;;; Tests for electric pair
+
+(ert-deftest test-markdown-electric-pair-mode ()
+  "Test insert triple backtick with `electric-pair-mode'."
+  (markdown-test-string-gfm ""
+    (let ((markdown-gfm-use-electric-backquote nil))
+      (electric-pair-local-mode +1)
+      (make-local-variable 'electric-pair-pairs)
+      (add-to-list 'electric-pair-pairs '(?` . ?`))
+      (dotimes (_ 3)
+        (let ((last-command-event ?`))
+          (call-interactively (key-binding `[,last-command-event]))))
+      (should (looking-back "```" (line-beginning-position)))
+      (should (looking-at-p "```")))))
+
+;;; Tests for flyspell mode
+
+(defun markdown-test-flyspell-incorrect-word-p ()
+  (let ((bounds (bounds-of-thing-at-point 'word)))
+    (cl-loop for ov in (overlays-in (car bounds) (cdr bounds))
+             thereis (overlay-get ov 'flyspell-overlay))))
+
+(ert-deftest test-markdown-flyspell/check-word-p ()
+  "Test for `flyspell'."
+  (markdown-test-string "aaa
+
+```
+bbb
+```
+
+ccc
+
+`ddd`
+
+eee
+
+<!-- fff -->
+"
+    (flyspell-buffer)
+    (search-forward "aaa")
+    (should (markdown-test-flyspell-incorrect-word-p))
+    (search-forward "bbb") ;; in code block
+    (should-not (markdown-test-flyspell-incorrect-word-p))
+    (search-forward "ccc")
+    (should (markdown-test-flyspell-incorrect-word-p))
+    (search-forward "ddd") ;; in inline code
+    (should-not (markdown-test-flyspell-incorrect-word-p))
+    (search-forward "eee")
+    (should (markdown-test-flyspell-incorrect-word-p))
+    (search-forward "fff") ;; in comment
+    (should-not (markdown-test-flyspell-incorrect-word-p))))
+
+(ert-deftest test-markdown-flyspell/remove-overlay ()
+  "Test non-dictionary word in code block with `flyspell-mode'.
+Details: https://github.com/jrblevin/markdown-mode/issues/311"
+  (markdown-test-string "bbb
+```
+bbb
+"
+    (flyspell-mode +1)
+    (flyspell-buffer)
+    (goto-char (point-max))
+    (insert "```\n")
+    (forward-line -2)
+    (flyspell-buffer)
+
+    ;; check 'bbb' in code block
+    (should-not (markdown-test-flyspell-incorrect-word-p))
+    ;; check 'bbb' outside block
+    (goto-char (point-min))
+    (should (markdown-test-flyspell-incorrect-word-p))))
 
 (provide 'markdown-test)
 

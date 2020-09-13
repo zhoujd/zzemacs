@@ -109,7 +109,7 @@ Ubuntu setting
         $ sudo snap set core proxy.http=http://host:port/
         $ sudo snap set core proxy.https=http://host:port/
         $ sudo snap get core proxy
-        $ sudo snap install foolbar2000
+        $ sudo snap install foobar2000
 
 
 11. Install Microsoft fonts

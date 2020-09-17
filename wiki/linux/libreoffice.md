@@ -9,5 +9,5 @@ libreoffice
 2. Window font
 
     ##Substituting Calibri And Cambria Fonts
-    #sudo  apt install fonts-crosextra-carlito fonts-crosextra-caladea
+    $ sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
     

@@ -5,3 +5,4 @@
 *.uuid
 custom.el
 99_proxy.sh
+ ps

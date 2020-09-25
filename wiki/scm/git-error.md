@@ -69,3 +69,7 @@ Git error and solutions
         $ git branch -m old-name new-name
         $ git push origin :old-name new-name
         $ git push origin -u new-name
+
+9. No submodule mapping found in .gitmodules for path 'xxxxxx'
+
+        $ git rm --cached  xxxxxx

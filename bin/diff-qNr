@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 2 ] ; then
+    echo "Usage: `basename $0` <dir1> <dir2>"
+    exit 1
+fi
+
+diff -qNr $1 $2

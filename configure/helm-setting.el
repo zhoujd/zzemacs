@@ -93,6 +93,7 @@
   (helm-find-1 (file-name-as-directory
                 (ido-read-directory-name "Directory: "))))
 
+;;See file content temporarily by persistent action(C-j).
 (require 'helm-ag)
 (require 'helm-grep)
 (defun zz:helm-grep-ag ()

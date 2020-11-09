@@ -295,7 +295,7 @@
 
 (setq default-major-mode 'text-mode)
 (setq truncate-partial-width-windows nil)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 
 ;;indent setting
 (setq-default tab-always-indent 'complete)
@@ -440,7 +440,7 @@
 
 ;;when deleted a file goes to the OS's trash folder:
 ;;Ubuntu system: .local/share/Trash/files
-(setq trash-directory "~/.Trash")
+;(setq trash-directory "~/.Trash")
 (setq delete-by-moving-to-trash t)
 
 ;;stop asking “Active processes exist; kill them and exit anyway”

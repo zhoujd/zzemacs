@@ -440,7 +440,10 @@
 
 ;;when deleted a file goes to the OS's trash folder:
 ;;Ubuntu system: .local/share/Trash/files
-;(setq trash-directory "~/.Trash")
+(defvar zz:system-trash-flag t
+  "Use system trash flag")
+(unless zz:system-trash-flag
+  (setq trash-directory "~/.Trash"))
 (setq delete-by-moving-to-trash t)
 
 ;;stop asking “Active processes exist; kill them and exit anyway”

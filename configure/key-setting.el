@@ -194,6 +194,7 @@
  global-map
  (list
   (kbd "C-x C-b") 'ibuffer
+  (kbd "C-x C-f") 'zz:find-file
   (kbd "C-c w")   'compare-windows
   (kbd "%")       'zz:match-paren
 

@@ -192,6 +192,32 @@
              (ibuffer-jump-to-buffer recent-buffer-name)))
 (ad-activate 'ibuffer)
 
+;;ibuffer ido
+(defun ibuffer-ido-find-file (file &optional wildcards)
+  "Like `ido-find-file', but default to the directory of the buffer at point."
+  (interactive
+   (let ((default-directory
+           (let ((buf (ibuffer-current-buffer)))
+             (if (buffer-live-p buf)
+                 (with-current-buffer buf
+                   default-directory)
+                 default-directory))))
+     (list (ido-read-file-name "Find file: " default-directory) t)))
+  (find-file file wildcards))
+
+;;ibuffer keymap
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (define-key ibuffer-mode-map (kbd "C-x C-f") 'ibuffer-ido-find-file)
+            (define-key ibuffer-mode-map (kbd "C-x f") 'ibuffer-find-file)
+            ))
+
+;;ido-find-file
+(defun zz:find-file ()
+  (interactive)
+  (ido-mode t)
+  (ido-find-file))
+
 ;;alias operate setting
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)

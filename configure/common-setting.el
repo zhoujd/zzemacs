@@ -350,7 +350,7 @@
 (setq ido-save-directory-list-file nil)
 (setq ido-use-virtual-buffers nil)
 (setq ido-enable-flex-matching t)
-(require 'ido-mode)
+(require 'ido)
 (ido-mode t)
 
 (custom-set-faces

@@ -7,6 +7,10 @@
 (require 'helm)
 (require 'helm-config)
 
+;;helm default key bindings
+;;| M-o     | left   | Previous source                                   |
+;;| C-o     | right  | Next source                                       |
+;;| C-j     |        | Persistent action (Execute and keep Helm session) |
 (helm-mode t)
 
 ;;no completion

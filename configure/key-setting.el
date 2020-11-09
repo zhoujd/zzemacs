@@ -264,8 +264,6 @@
   (kbd "C-n")     'helm-next-line
   (kbd "C-M-n")   'helm-next-source
   (kbd "C-M-p")   'helm-previous-source
-  (kbd "M-N")     'helm-next-source
-  (kbd "M-P")     'helm-previous-source
   ))
 
 (apply-keys-to-map

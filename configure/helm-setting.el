@@ -7,7 +7,7 @@
 (require 'helm)
 (require 'helm-config)
 
-;;helm default key bindings
+;;https://github.com/emacs-helm/helm/blob/master/helm.el#L1432
 ;;| M-o     | left   | Previous source                                   |
 ;;| C-o     | right  | Next source                                       |
 ;;| C-j     |        | Persistent action (Execute and keep Helm session) |

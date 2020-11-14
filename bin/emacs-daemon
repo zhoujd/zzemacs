@@ -28,7 +28,6 @@ EOF
 
 install_centos() {
     user=jiandon
-    
     echo "Setup /usr/lib/systemd/system/emacs@.service"
     sudo tee /usr/lib/systemd/system/emacs@.service  <<EOF
 [Unit]

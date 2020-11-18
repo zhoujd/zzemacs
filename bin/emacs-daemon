@@ -81,8 +81,11 @@ start() {
             user=jiandon
             systemctl start emacs@${user}
             ;;
+        daemon )
+            emacs --daemon
+            ;;
         * )
-            echo "$0 start {ubuntu|centos}"
+            echo "$0 start {ubuntu|centos|daemon}"
             ;;
     esac
 }

@@ -177,3 +177,8 @@ Ubuntu setting
                /dev/video0
                /dev/video1
          $ sudo apt install cheese
+
+18. Postsetting
+
+    https://theoddblog.in/post-installation-setup-for-ubuntu/
+

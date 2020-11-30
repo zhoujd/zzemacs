@@ -15,3 +15,9 @@ Kubernetes
         ## in container
         $ ping -c1 hello
         $ echo 'Hello, Weave!' | netcat hello 1234
+
+3. Debug Service
+
+   https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
+   
+

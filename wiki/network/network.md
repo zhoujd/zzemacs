@@ -133,3 +133,17 @@ network
         server = 10.109.19.69
         server_type = 5
         server_port = 1080
+
+10. 10 useful commands when debugging network issues in Linux
+    https://medium.com/@janethavishka/10-useful-commands-when-debugging-network-issues-in-linux-71d082fca5a1
+
+        1) ping(Packet Internet Groper)
+        2) telnet(Teletype Network)
+        3) netstat(Network Statistics)
+        4) ifconfig(Interface Configuration)
+        5) traceroute
+        6) route
+        7) arp(Address Resolution Protocol)
+        8) dig(Domain Information Groper)
+        9) nslookup(Name Server Lookup)
+        10) nmap(Network Map)

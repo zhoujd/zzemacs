@@ -19,5 +19,5 @@ Kubernetes
 3. Debug Service
 
    https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/
-   
+   https://www.weave.works/docs/net/latest/troubleshooting/
 

@@ -2,10 +2,13 @@
 
 ## https://www.emacswiki.org/emacs/EmacsAsDaemon
 
+EMACS_SRV_UBUNTU=~/.config/systemd/user/emacs.service
+EMACS_SRV_CENTOS=/usr/lib/systemd/system/emacs@.service
+
 install_ubuntu() {
-    echo "Setup ~/.config/systemd/user/emacs.service"
+    echo "Setup $EMACS_SRV_UBUNTU"
     mkdir -p ~/.config/systemd/user
-    tee ~/.config/systemd/user/emacs.service  <<EOF
+    tee $EMACS_SRV_UBUNTU  <<EOF
 [Unit]
 Description=Emacs text editor
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
@@ -28,7 +31,7 @@ EOF
 
 install_centos() {
     user=jiandon
-    echo "Setup /usr/lib/systemd/system/emacs@.service"
+    echo "Setup $EMACS_SRV_CENTOS"
     sudo tee /usr/lib/systemd/system/emacs@.service  <<EOF
 [Unit]
 Description=Emacs: the extensible, self-documenting text editor
@@ -52,6 +55,7 @@ EOF
 }
 
 
+
 install() {
     case $1 in
         ubuntu )
@@ -59,6 +63,24 @@ install() {
             ;;
         centos )
             install_centos
+            ;;
+        * )
+            echo "$0 install {ubuntu|centos}"
+            ;;
+    esac
+}
+
+uninstall() {
+    case $1 in
+        ubuntu )
+            systemctl stop emacs
+            systemctl disable emacs
+            rm -f $EMACS_SRV_UBUNTU
+            ;;
+        centos )
+            systemctl stop emacs
+            systemctl disable emacs@${user}
+            sudo rm $EMACS_SRV_CENTOS
             ;;
         * )
             echo "$0 install {ubuntu|centos}"
@@ -103,6 +125,9 @@ status() {
 case $1 in
     install )
         install $2
+        ;;
+    uninstall )
+        uninstall $2
         ;;
     start )
         start $2

@@ -311,3 +311,17 @@ Linux something
     # udevadm info -q all -n /dev/sdc1 | grep -i by-uuid | head -1
     # tune2fs -l /dev/sdc1 | grep UUID
     # dumpe2fs /dev/sdc1 | grep UUID
+
+25. Upgrade GCC (gcc)
+
+
+    # sudo yum install libmpc-devel mpfr-devel gmp-devel
+    # cd ~/Downloads
+    # curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O
+    # curl https://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O
+
+    # tar xvfj gcc-4.9.2.tar.bz2
+    # cd gcc-4.9.2
+    # ./configure --disable-multilib --enable-languages=c,c++
+    # make -j 4
+    # make install

@@ -20,3 +20,7 @@ libreoffice
 
         $ sudo apt install libreoffice
         $ libreoffice
+
+5. Install Database
+
+        $ sudo apt install libreoffice-base

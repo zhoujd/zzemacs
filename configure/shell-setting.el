@@ -404,8 +404,8 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;eterm-256color
 ;;eterm-color: apt install ncurses-term
-(require 'eterm-256color)
-(add-hook 'term-mode-hook #'eterm-256color-mode)
+;(require 'eterm-256color)
+;(add-hook 'term-mode-hook #'eterm-256color-mode)
 
 
 ;;shell mode

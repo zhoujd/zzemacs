@@ -3,33 +3,84 @@
 ## x11vnc
 #set -x -v
 
+vnc_passwd=password
+
+install_service() {
+    sudo tee /lib/systemd/system/x11vnc.service <<EOF
+[Unit]
+Description=x11vnc service
+After=display-manager.service network.target syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -forever -display :0 -auth guess -passwd $vnc_passwd
+ExecStop=/usr/bin/killall x11vnc
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    sudo systemctl daemon-reload
+    sudo systemctl enable x11vnc.service
+    sudo systemctl start x11vnc.service
+    
+    echo "install service done"
+}
+
+install_deps() {
+    if [ -z "$(pidof x11vnc)" ]; then
+        #TZ=Asia/Shanghai
+        #sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+        #sudo echo $TZ > /etc/timezone
+        sudo apt install -y x11vnc xvfb
+    fi
+
+    echo "install deps done"
+}
+
+start() {
+    if [ -z "$(pidof x11vnc)" ]; then
+        mkdir ~/.vnc
+        x11vnc -storepasswd $vnc_passwd ~/.vnc/passwd
+        x11vnc  -ncache 10 -forever -usepw -create &
+    else
+        echo "x11vnc already exist."
+    fi
+
+    echo "start done"
+}
+
+stop () {
+    if [ -z "$(pidof x11vnc)" ]; then
+        echo "no x11vnc exist"
+    else
+        kill -9 `pidof x11vnc`
+    fi
+
+    echo "stop done"
+}
+
+status () {
+    ps -ef | grep x11vnc | grep -v grep
+}
+
 case "$1" in
     "install" )
-        if [ -z "$(pidof x11vnc)" ]; then
-            #TZ=Asia/Shanghai
-            #sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-            #sudo echo $TZ > /etc/timezone
-            
-            sudo apt install -y x11vnc xvfb
-        fi
+        install_service
         ;;
-    'start' )
-        if [ -z "$(pidof x11vnc)" ]; then
-            mkdir ~/.vnc
-            x11vnc -storepasswd intel123 ~/.vnc/passwd
-            x11vnc  -ncache 10 -forever -usepw -create &
-        else
-            echo "x11vnc already exist."
-        fi
+    "deps" )
+        install_deps
         ;;
-    'stop' )
-        if [ -z "$(pidof x11vnc)" ]; then
-            echo "no x11vnc exist"
-        else
-            kill -9 `pidof x11vnc`
-        fi
+    "start" )
+        start
+        ;;
+    "stop" )
+        stop
+        ;;
+    "status" )
+        status
         ;;
     * )
-        echo "$0 [install|start|stop]"
+        echo "$0 [install|deps|start|stop|status]"
         ;;
 esac

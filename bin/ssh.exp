@@ -3,7 +3,7 @@
 ##http://expect.sourceforge.net/
 ##http://en.wikipedia.org/wiki/Expect
 
-##sudo apt-get install expect
+##sudo apt install expect
 ##sudo yum install expect
 
 if {$argc < 2} {

@@ -6,6 +6,9 @@
 vnc_passwd=password
 
 install_service() {
+    echo -n Please input x11-vnc Password: 
+    read -s vnc_passwd
+    
     sudo tee /lib/systemd/system/x11vnc.service <<EOF
 [Unit]
 Description=x11vnc service
@@ -27,6 +30,14 @@ EOF
     echo "install service done"
 }
 
+remove_service() {
+    sudo systemctl stop x11vnc.service
+    sudo systemctl disable x11vnc.service
+    sudo rm /lib/systemd/system/x11vnc.service
+
+    echo "remove service done"
+}
+
 install_deps() {
     if [ -z "$(pidof x11vnc)" ]; then
         #TZ=Asia/Shanghai
@@ -40,6 +51,9 @@ install_deps() {
 
 start() {
     if [ -z "$(pidof x11vnc)" ]; then
+        echo -n Password: 
+        read -s vnc_passwd
+
         mkdir ~/.vnc
         x11vnc -storepasswd $vnc_passwd ~/.vnc/passwd
         x11vnc  -ncache 10 -forever -usepw -create &
@@ -68,6 +82,9 @@ case "$1" in
     "install" )
         install_service
         ;;
+    "remove" )
+        remove_service
+        ;;
     "deps" )
         install_deps
         ;;
@@ -81,6 +98,6 @@ case "$1" in
         status
         ;;
     * )
-        echo "$0 [install|deps|start|stop|status]"
+        echo "$0 [install|remove|deps|start|stop|status]"
         ;;
 esac

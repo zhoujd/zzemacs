@@ -288,6 +288,7 @@
 ;;yaml-mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yml$'" . yaml-mode))
 (add-hook 'yaml-mode-hook
           '(lambda ()
              (defkeys-map yaml-mode-map

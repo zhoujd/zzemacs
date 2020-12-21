@@ -51,7 +51,7 @@
     [M-f1]            'monky-status
     (kbd "C-x <f1>")  nil
     (kbd "C-c <f1>")  nil
-    )
+    "f1 key binding")
 
 (define-fn-key (gethash "f2" fn-key-table)
     [f2]              'bm-toggle
@@ -60,7 +60,7 @@
     [M-f2]            'bm-previous
     (kbd "C-x <f2>")  'bm-remove-all-all-buffers
     (kbd "C-c <f2>")  'bm-remove-all-current-buffer
-    )
+    "f2 key binding")
 
 (define-fn-key (gethash "f3" fn-key-table)
     [f3]              'zz:last-buffer-go
@@ -69,7 +69,7 @@
     [M-f3]            'helm-projectile-grep
     (kbd "C-x <f3>")  'register-list
     (kbd "C-c <f3>")  'repeat-complex-command
-    )
+    "f3 key binding")
 
 (define-fn-key (gethash "f4" fn-key-table)
     [f4]              nil
@@ -78,7 +78,7 @@
     [M-f4]            'zz:helm-grep-ag
     (kbd "C-x <f4>")  'helm-recentf
     (kbd "C-c <f4>")  'zz:recentf-open-files-compl
-    )
+    "f4 key binding")
 
 (define-fn-key (gethash "f5" fn-key-table)
     [f5]              'highlight-symbol
@@ -87,7 +87,7 @@
     [M-f5]            'highlight-symbol-prev
     (kbd "C-x <f5>")  'highlight-symbol-query-replace
     (kbd "C-c <f5>")  'highlight-symbol-list-all
-    )
+    "f5 key binding")
 
 (define-fn-key (gethash "f6" fn-key-table)
     [f6]              (if-ms-windows 'zz:get-local-shell 'zz:get-term)
@@ -96,7 +96,7 @@
     [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
     (kbd "C-x <f6>")  (if-ms-windows 'zz:switch-to-shell 'zz:switch-to-term)
     (kbd "C-c <f6>")  (if-ms-windows 'zz:get-local-shell 'ansi-term)
-    )
+    "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)
     [f7]              'compile
@@ -105,7 +105,7 @@
     [M-f7]            'previous-error
     (kbd "C-x <f7>")  'toggle-case-fold-search
     (kbd "C-c <f7>")  'toggle-text-mode-auto-fill
-    )
+    "f7 key binding")
 
 (define-fn-key (gethash "f8" fn-key-table)
     [f8]              'gdb
@@ -114,7 +114,7 @@
     [M-f8]            'gud-refresh
     (kbd "C-x <f8>")  'gdb-many-windows
     (kbd "C-c <f8>")  'gud-tooltip-mode
-    )
+    "f8 key binding")
 
 (define-fn-key (gethash "f9" fn-key-table)
     [f9]              (zz:quick-shell zz:shell "*shell*")
@@ -123,7 +123,7 @@
     [M-f9]            'zz:popup-term
     (kbd "C-x <f9>")  'zz:switch-to-shell
     (kbd "C-c <f9>")  (if-ms-windows 'eshell 'zz:remote-shell)
-    )
+    "f9 key binding")
 
 (define-fn-key (gethash "f10" fn-key-table)
     [f10]             'helm-occur
@@ -132,7 +132,7 @@
     [M-f10]           'whitespace-cleanup-region
     (kbd "C-x <f10>") 'menu-bar-open
     (kbd "C-c <f10>") 'menu-bar-mode
-    )
+    "f10 key binding")
 
 (define-fn-key (gethash "f11" fn-key-table)
     [f11]             'linum-mode
@@ -141,7 +141,7 @@
     [M-f11]           'fci-mode
     (kbd "C-x <f11>") 'tool-bar-mode
     (kbd "C-c <f11>") 'scroll-bar-mode
-    )
+    "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)
     [f12]             'find-name-dired
@@ -150,7 +150,7 @@
     [M-f12]           'lgrep
     (kbd "C-x <f12>") 'zz:untabify-buffer
     (kbd "C-c <f12>") 'zz:tabify-buffer
-    )
+    "f12 key binding")
 
 
 (provide 'fn-setting)

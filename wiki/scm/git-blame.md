@@ -26,3 +26,8 @@ Git Blame
         ## Getting Help
         $ man git-blame
         $ git help blame
+
+2. Emacs use git blame
+
+    First, use the vc-annotate command, which is bound to the key sequence C-x v g.
+    

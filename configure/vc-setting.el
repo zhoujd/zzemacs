@@ -1,6 +1,8 @@
 ;;;version control setting
 ;;
 
+(zz:load-path "elisp")
+
 ;;add mode support
 (setq auto-mode-alist
    (append
@@ -34,19 +36,24 @@
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
+;;git blame line
+(require 'git-blame-line)
+
 ;;magit
 (zz:load-path "site-lisp/magit/lisp")
 (require 'magit)
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)
-  ((kbd "M-g M-c") 'magit-checkout))
+  ((kbd "M-g M-c") 'magit-checkout)
+  ((kbd "M-g M-b") 'git-blame-line))
 
 ;;git show
 (require 'git-show)
 
 ;;diffstat
 (require 'diffstat)
-(add-hook 'diff-mode-hook (lambda () (local-set-key "\C-c\C-l" 'diffstat)))
+(add-hook 'diff-mode-hook (lambda ()
+                            (local-set-key "\C-c\C-l" 'diffstat)))
 
 ;;github pull request
 (require 'github-pullrequest)

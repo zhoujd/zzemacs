@@ -22,6 +22,7 @@ install_package_ubuntu() {
 ##package for centos
 install_package_centos() {
     sudo yum install -y git diffstat
+    sudo yum install -y kernel-devel kernel-headers gcc flex bison openssl-devel bc elfutils-libelf-devel
 }
 
 ##package for fedora

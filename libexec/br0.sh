@@ -1,6 +1,6 @@
 #!/bin/sh
 
-##sudo apt-get install bridge-utils
+##sudo apt install bridge-utils
 ##sudo yum install bridge-utils
 
 if [ $# != 2 ] ; then

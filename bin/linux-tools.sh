@@ -14,6 +14,7 @@ install_package_suse() {
 
 ##package for ubuntu
 install_package_ubuntu() {
+    sudo apt install -y curl wget w3m
     sudo apt install -y rofi
     sudo apt install -y rxvt-unicode
     sudo apt install -y openssh-server

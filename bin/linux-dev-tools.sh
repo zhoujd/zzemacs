@@ -19,12 +19,13 @@ install_package_suse() {
 
 ##package for ubuntu
 install_package_ubuntu() {
-    sudo apt-get install -y libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev
-    sudo apt-get install -y xorg-dev autoconf libtool yasm
-    sudo apt-get install -y x11proto-dri2-dev
-    sudo apt-get install -y xutils-dev
-    sudo apt-get install -y g++
-    sudo apt-get install -y git gitk diffstat
+    sudo apt install -y libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev
+    sudo apt install -y xorg-dev autoconf libtool yasm
+    sudo apt install -y x11proto-dri2-dev
+    sudo apt install -y xutils-dev
+    sudo apt install -y g++
+    sudo apt install -y git gitk diffstat
+    sudo apt install -y make cmake
 }
 
 ##package for centos

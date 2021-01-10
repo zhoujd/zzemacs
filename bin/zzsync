@@ -7,7 +7,9 @@
 
 if [ $# != 2 ] ; then
     echo "Usage: `basename $0` <source> <target>"
+    echo "Usage: `basename $0` <source> ./"
     echo "Usage: rsync -vaa --info=all4 --delete <source> <target>"
+    echo "Usage: rsync -vaa --info=all4 --delete <source> ./"
     exit 1
 fi
 

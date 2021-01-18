@@ -99,6 +99,8 @@
 
 ;;https://github.com/emacsorphanage/helm-ag
 ;;See file content temporarily by persistent action(C-j).
+(zz:load-path "site-lisp/popup")
+(require 'popup)
 (require 'helm-ag)
 (require 'helm-grep)
 (defun zz:helm-grep-ag ()

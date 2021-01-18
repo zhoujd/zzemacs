@@ -103,6 +103,7 @@
 (require 'popup)
 (require 'helm-ag)
 (require 'helm-grep)
+(setq helm-grep-file-path-style 'relative)
 (defun zz:helm-grep-ag ()
   (interactive)
   (helm-grep-ag-1 (file-name-as-directory

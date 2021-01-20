@@ -10,11 +10,16 @@ if [ $# != 2 ] ; then
     exit 1;
 fi
 
+if [ $EUID -ne 0 ]; then
+    echo "You must be a root user" 2>&1
+    exit 1
+fi
+
 eth0=$1
 br0=$2
 
 ifconfig $eth0 down                  # close eth0 first
-brctl addbr $br0                     # add virtual bridge br0
+brctl addbr $br0 || true             # add virtual bridge br0
 brctl addif $br0 $eth0               # add interface eth0 on br0
 brctl stp $br0 off                   # only on bridge, so close generate tree protocol
 brctl setfd $br0 1                   # set br0 delaytime of forward

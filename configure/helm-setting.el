@@ -94,8 +94,9 @@
 (require 'helm-find)
 (defun zz:helm-find ()
   (interactive)
-  (helm-find-1 (expand-file-name (file-name-as-directory
-                                  (ido-read-directory-name "Directory: ")))))
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (helm-find-1 default-directory)))
 
 ;;https://github.com/emacsorphanage/helm-ag
 ;;See file content temporarily by persistent action(C-j).
@@ -107,10 +108,9 @@
   '(helm-grep-file-path-style 'relative))
 (defun zz:helm-grep-ag ()
   (interactive)
-  (let ((dir (expand-file-name (file-name-as-directory
-                                (ido-read-directory-name "Directory: ")))))
-    (setq default-directory dir)
-    (helm-grep-ag-1 dir)))
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (helm-grep-ag-1 default-directory)))
 
 (require 'helm-tramp)
 (require 'helm-cscope)

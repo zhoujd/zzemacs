@@ -4,9 +4,10 @@
 #set -x -v
 
 vnc_passwd=password
+vnc_pw_file=~/.vnc/passwd
 
 install_service() {
-    echo -n Please input x11-vnc Password: 
+    echo -n "Please input x11-vnc Password: "
     read -s vnc_passwd
     
     sudo tee /lib/systemd/system/x11vnc.service <<EOF
@@ -51,11 +52,15 @@ install_deps() {
 
 start() {
     if [ -z "$(pidof x11vnc)" ]; then
-        echo -n Password: 
-        read -s vnc_passwd
-
-        mkdir ~/.vnc
-        x11vnc -storepasswd $vnc_passwd ~/.vnc/passwd
+        if [ -f $vnc_pw_file ]; then
+            echo "use exist $vnc_pw_file"
+        else
+            echo -n Please input VNC password: 
+            read -s vnc_passwd
+            mkdir ~/.vnc
+            x11vnc -storepasswd $vnc_passwd $vnc_pw_file
+        fi
+        
         x11vnc  -ncache 10 -forever -usepw -create &
     else
         echo "x11vnc already exist."

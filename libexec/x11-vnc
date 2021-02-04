@@ -60,8 +60,10 @@ start() {
             mkdir ~/.vnc
             x11vnc -storepasswd $vnc_passwd $vnc_pw_file
         fi
-        
+
+        echo "staring x11vnc"
         x11vnc  -ncache 10 -forever -usepw -create &
+        sleep 5s
     else
         echo "x11vnc already exist."
     fi
@@ -73,7 +75,7 @@ stop () {
     if [ -z "$(pidof x11vnc)" ]; then
         echo "no x11vnc exist"
     else
-        kill -9 `pidof x11vnc`
+        killall x11vnc
     fi
 
     echo "stop done"

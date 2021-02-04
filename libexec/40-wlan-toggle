@@ -3,13 +3,25 @@
 ## automatically toggle wireless depending on LAN cable being plugged in
 ## $ sudo cp 40-wlan-toggle /etc/NetworkManager/dispatcher.d/
 
-if echo "$1" | grep -E ^"en"; then
-    case "$2" in
-        up)
-            nmcli radio wifi off
-            ;;
-        down)
-            nmcli radio wifi on
-            ;;
-    esac
-fi
+case $1 in
+    en* )
+        case "$2" in
+            up)
+                nmcli radio wifi off
+                ;;
+            down)
+                nmcli radio wifi on
+                ;;
+        esac
+        ;;
+    wl* )
+        case "$2" in
+            up)
+                nmcli con down bridge-br0
+                ;;
+            down)
+                nmcli con up bridge-br0
+                ;;
+        esac
+        ;;
+esac

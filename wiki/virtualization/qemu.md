@@ -14,3 +14,8 @@ QEMU
         $ qemu-system-xi386 -hda ubuntu.img -boot d -cdrom /home/sk/Soft_Backup/OS\ Images/New/ubuntu-15.04-server-i386.iso -m 640
         $ qemu -hda ubuntu.img -m 640
 
+3. URLs
+
+    https://wiki.qemu.org/Documentation/Networking
+    https://wiki.qemu.org/Documentation/Networking/NAT
+

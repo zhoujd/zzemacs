@@ -18,4 +18,18 @@ QEMU
 
     https://wiki.qemu.org/Documentation/Networking
     https://wiki.qemu.org/Documentation/Networking/NAT
+    https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
 
+4. The fun of routing to Wifi
+
+        # cat  /etc/sysctl.conf
+          net.ipv4.ip_forward = 1
+        # sysctl -p /etc/sysctl.conf
+        
+        ##Now, in this example, the bridge interface is br0 and the host system is connected through wlan0. 
+        ##First, help the traffic get through the wlan0
+        # iptables -A FORWARD -i br0 -o wlan0 -j ACCEPT
+        # iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+         
+        ##Then, let the system know that the known traffic can get back at br0:
+        # iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT

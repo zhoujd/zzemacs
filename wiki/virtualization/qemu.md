@@ -35,22 +35,22 @@ QEMU
         # iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 5. Expanding the Filesystem
-    The qcow2 image is built such that, by running a simple command from within the VM environment, you can resize the root filesystem to fill the partitioned space.
+    
+        ##The qcow2 image is built such that, by running a simple command from within the VM environment, 
+        ##you can resize the root filesystem to fill the partitioned space.
+        ##Note
+        ##In this example, the filesystem to be resized is /dev/vda2 but it will depend on the drives that are available in the VM image 
+        ## – it could be /dev/sda2 or something similar.
+        ##Before the rootfs is resized, running df -h from within the VM environment will show you that /dev/vda2 has a size of 3.1G. 
+        ##To grow the partition, resize the /dev/vda2 partition and then check df -h again to see that it is now 31G:
 
-    Note
+        purism@pureos:~$ sudo resize2fs /dev/vda2
+        resize2fs 1.44.4 (18-Aug-2018)
+        Filesystem at /dev/vda2 is mounted on /; on-line resizing required
+        old_desc_blocks = 1, new_desc_blocks = 4
+        The filesystem on /dev/vda2 is now 8172342 (4k) blocks long.
 
-    In this example, the filesystem to be resized is /dev/vda2 but it will depend on the drives that are available in the VM image – it could be /dev/sda2 or something similar.
-
-    Before the rootfs is resized, running df -h from within the VM environment will show you that /dev/vda2 has a size of 3.1G. To grow the partition, resize the /dev/vda2 partition and then check df -h again to see that it is now 31G:
-
-    purism@pureos:~$ sudo resize2fs /dev/vda2
-    resize2fs 1.44.4 (18-Aug-2018)
-    Filesystem at /dev/vda2 is mounted on /; on-line resizing required
-    old_desc_blocks = 1, new_desc_blocks = 4
-    The filesystem on /dev/vda2 is now 8172342 (4k) blocks long.
-
-    purism@pureos:~$ df -h /
-    Filesystem      Size  Used Avail Use% Mounted on
-    /dev/vda2        31G  2.2G   28G   8% /
-    Now your additional space on /dev/vda2 is immediately ready for use without any need to reboot.
-
+        purism@pureos:~$ df -h /
+        Filesystem      Size  Used Avail Use% Mounted on
+        /dev/vda2        31G  2.2G   28G   8% /
+        Now your additional space on /dev/vda2 is immediately ready for use without any need to reboot.

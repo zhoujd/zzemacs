@@ -54,3 +54,9 @@ QEMU
         Filesystem      Size  Used Avail Use% Mounted on
         /dev/vda2        31G  2.2G   28G   8% /
         Now your additional space on /dev/vda2 is immediately ready for use without any need to reboot.
+
+6. Qemu Guest Agent Integration
+
+        ##http://wiki.stoney-cloud.org/wiki/Qemu_Guest_Agent_Integration
+        ##https://wiki.libvirt.org/page/Qemu_guest_agent
+

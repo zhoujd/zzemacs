@@ -61,3 +61,7 @@ FFMPEG
 
         $ sudo apt install libx264-dev libx265-dev 
         $ ./configure --enable-libx264 --enable-libx265
+
+7. Thumbnailer
+
+        $ sudo apt install ffmpegthumbnailer

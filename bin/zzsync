@@ -13,4 +13,16 @@ if [ $# != 2 ] ; then
     exit 1
 fi
 
-rsync -vaa --info=all4 --delete $1 $2
+if [ -d $2 ]; then
+    rsync -vaa --info=all4 --delete $1 $2
+else
+    echo -n "$2 does not exist, create $2 (y/N) : "
+    read answer
+    case "$answer" in
+        "Y" | "y" )
+            echo "create $2"
+            mkdir -v -p $2
+            rsync -vaa --info=all4 --delete $1 $2
+            ;;
+    esac
+fi

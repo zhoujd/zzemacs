@@ -59,6 +59,14 @@ noproxy() {
     unset socks_port
 }
 
+chmodf() {
+    find $2 -type f -exec chmod $1 {} \;
+}
+
+chmodd() {
+    find $2 -type d -exec chmod $1 {} \;
+}
+
 ## delete or list invalite soft link
 #rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }
 #lserrln() { find $1 -type l -print | xargs lsattr -d 2>&1 | grep "No such file or directory" | awk '{print $11}';}

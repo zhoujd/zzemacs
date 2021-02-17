@@ -48,3 +48,13 @@ Samba Server
         ## Note: file_mode=0777,dir_mode=0777
         $ sudo mount -t cifs -o username=username,password=password,noperm //samba_hostname_or_server_ip/sharename /mnt/smbmount
         $ sudo mount -t cifs -o username=zach //192.168.121.118/sharename /mnt/smbmount
+
+5. Mount Samba share using fstab
+
+        $ cat /ect/fstab
+        //192.168.122.52/user1  /mnt/shares cifs credentials=/.sambacreds 0 0
+
+        $ cat /.sambacreds
+        username=user1
+        password=password
+        domain=WORKGROUP 

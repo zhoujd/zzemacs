@@ -172,18 +172,24 @@ Ubuntu setting
 
         ## camera & webcam
         $ sudo apt install v4l-utils
-         $ v4l2-ctl --list-devices
-           EasyCamera: EasyCamera (usb-0000:00:14.0-4):
+        $ v4l2-ctl --list-devices
+          EasyCamera: EasyCamera (usb-0000:00:14.0-4):
                /dev/video0
                /dev/video1
-         $ sudo apt install cheese
+        $ sudo apt install cheese
 
 18. Postsetting
 
-    https://theoddblog.in/post-installation-setup-for-ubuntu/
+        ## https://theoddblog.in/post-installation-setup-for-ubuntu/
 
 19. Install Google Chrome Browser
 
         $ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         $ sudo apt install ./google-chrome-stable_current_amd64.deb
 
+20. Thunar Thumbernail
+
+        $ killall thunar
+        $ sudo apt install tumbler tumbler-plugins-extra ffmpegthumbnailer 
+        $ thunar -q
+        $ reboot

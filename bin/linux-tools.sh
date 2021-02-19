@@ -37,6 +37,8 @@ install_package_ubuntu() {
     sudo apt install -y synaptic
     sudo apt install -y xdotool     ## xdotool click 4
     sudo apt install -y xautomation ## xte "mouseclick 4"
+    sudo apt install -y planner
+    sudo apt install -y dconf-cli
 }
 
 ##package for centos

@@ -12,10 +12,9 @@ if [ $# -ne 1 ]; then
 fi
 
 USER_NAME=$1
-SUDO_CFG=${USER_NAME}.conf
 
-cat > /etc/sudoers.d/${SUDO_CFG} <<EOF
-## ${SUDO_CFG}
+cat > /etc/sudoers.d/${USER_NAME} <<EOF
+## ${USER_NAME}
 Defaults env_keep+="http_proxy https_proxy ftp_proxy no_proxy socks_proxy all_proxy"
 ${USER_NAME} ALL=(ALL) ALL
 EOF

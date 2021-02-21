@@ -325,3 +325,8 @@ Linux something
     # ./configure --disable-multilib --enable-languages=c,c++
     # make -j 4
     # make install
+
+26. find -print0 and xargs -0
+
+    $ find -name "*.txt" -print0 | xargs -0 sed -i 's/aaa/bbb/g'
+    $ find -type f -exec sed -i 's/home/work/g' \{\} \; 

@@ -244,7 +244,6 @@
 (setq calendar-longitude +121.47)
 (setq calendar-location-name "Shanghai")
 (setq calendar-remove-frame-by-deleting t)
-(setq calendar-week-start-day 1)
 
 (setq christian-holidays nil)
 (setq hebrew-holidays nil)
@@ -268,18 +267,36 @@
 (setq mark-holidays-in-calendar t)
 (setq view-calendar-holidays-initially t)
 
+;;chinese-calendar
+(setq chinese-calendar-celestial-stem
+      ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
+(setq chinese-calendar-terrestrial-branch
+      ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
+
+;;display ISO week numbers in CalendarMode
+(copy-face font-lock-constant-face 'calendar-iso-week-face)
+(set-face-attribute 'calendar-iso-week-face nil)
+(setq calendar-week-start-day 1)
+(setq calendar-intermonth-text
+      '(propertize
+        (format "%2d"
+                (car
+                 (calendar-iso-from-absolute
+                  (calendar-absolute-from-gregorian (list month day year)))))
+        'font-lock-face 'calendar-iso-week-face))
+(copy-face 'default 'calendar-iso-week-header-face)
+(set-face-attribute 'calendar-iso-week-header-face nil)
+(setq calendar-intermonth-header
+      (propertize "WW"
+                  'font-lock-face 'calendar-iso-week-header-face))
+(set-face-attribute 'calendar-iso-week-face nil
+                    :foreground "salmon")
+
 ;;settings for appt
 (require 'appt)
 (setq appt-issue-message nil)
 (setq appt-message-warning-time 3)
 (setq appt-display-format 'window)
-
-;;chinese-calendar
-(setq calendar-week-start-day 7)
-(setq chinese-calendar-celestial-stem
-      ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"])
-(setq chinese-calendar-terrestrial-branch
-      ["子" "丑" "寅" "卯" "辰" "巳" "戊" "未" "申" "酉" "戌" "亥"])
 
 (setq column-number-mode t)
 (setq default-fill-column 80)
@@ -504,25 +521,6 @@
 ;;auto refresh remote files
 (custom-set-variables
  '(auto-revert-remote-files t))
-
-;;Displaying ISO week numbers in CalendarMode
-(copy-face font-lock-constant-face 'calendar-iso-week-face)
-(set-face-attribute 'calendar-iso-week-face nil)
-(setq calendar-week-start-day 1)
-(setq calendar-intermonth-text
-      '(propertize
-        (format "%2d"
-                (car
-                 (calendar-iso-from-absolute
-                  (calendar-absolute-from-gregorian (list month day year)))))
-        'font-lock-face 'calendar-iso-week-face))
-(copy-face 'default 'calendar-iso-week-header-face)
-(set-face-attribute 'calendar-iso-week-header-face nil)
-(setq calendar-intermonth-header
-      (propertize ""                  ; or e.g. "KW" in Germany
-                  'font-lock-face 'calendar-iso-week-header-face))
-(set-face-attribute 'calendar-iso-week-face nil
-                    :foreground "salmon")
 
 
 (provide 'common-setting)

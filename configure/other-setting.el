@@ -292,6 +292,10 @@
 (zz:load-path "site-lisp/iedit")
 (require 'iedit)
 
+;;emacs-calfw
+(zz:load-path "site-lisp/emacs-calfw")
+(require 'calfw)
+
 
 (provide 'other-setting)
 

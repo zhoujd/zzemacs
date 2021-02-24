@@ -22,5 +22,5 @@ FreeBSD
         
    For sh, set proxy in /etc/profile:
 
-        export HTTP_PROXY http://web-proxy.xxxxxx.com:8080
-        export HTTPS_PROXY https://web-proxy.xxxxxx.com:8080
+        export HTTP_PROXY=http://web-proxy.xxxxxx.com:8080
+        export HTTPS_PROXY=https://web-proxy.xxxxxx.com:8080

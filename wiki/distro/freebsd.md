@@ -105,6 +105,6 @@ FreeBSD
 
         # pkg install nano bash bash-completion
         # cat /etc/shells
-        # chsh -s /bin/csh /bin/bash
+        # chsh -s /bin/csh /usr/local/bin/bash
         # env
 

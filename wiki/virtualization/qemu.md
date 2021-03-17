@@ -29,7 +29,7 @@ QEMU
         ##Now, in this example, the bridge interface is br0 and the host system is connected through wlan0. 
         ##First, help the traffic get through the wlan0
         # iptables -A FORWARD -i br0 -o wlan0 -j ACCEPT
-        # iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+        # iptables -A POSTROUTING -t nat -o wlan0 -j MASQUERADE
          
         ##Then, let the system know that the known traffic can get back at br0:
         # iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT

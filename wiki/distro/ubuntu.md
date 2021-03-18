@@ -193,3 +193,13 @@ Ubuntu setting
         $ sudo apt install tumbler tumbler-plugins-extra ffmpegthumbnailer 
         $ thunar -q
         $ reboot
+
+21. Check package dependencies
+
+        $ sudo apt install apt-rdepends
+        ## apt-rdepends [options] [packages]
+        ## find out the dependencies of php
+        $ apt-rdepends php
+        ## know what packages depend upon php
+        $ apt-rdepends -r php
+

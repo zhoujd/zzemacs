@@ -60,3 +60,23 @@ Dnsmasq
         dhcp-option=option:netmask,255.255.255.0
         
         $ sudo systemctl restart dnsmasq
+
+3. Dnsmasq in Docker
+
+        ##https://github.com/jpillora/docker-dnsmasq
+        $ docker search dnsmasq
+        $ docker pull jpillora/dnsmasq
+        $ vi /opt/dnsmasq.conf
+        $ docker run \
+        --name dnsmasq \
+        -d \
+        -p 53:53/udp \
+        -p 8053:8080 \
+        -v /opt/dnsmasq.conf:/etc/dnsmasq.conf \
+        --log-opt "max-size=100m" \
+        -e "HTTP_USER=admin" \
+        -e "HTTP_PASS=passwd" \
+        --restart always \
+        jpillora/dnsmasq
+        
+        $ firefox http://<docker-host>:5380

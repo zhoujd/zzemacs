@@ -67,3 +67,7 @@ Kubernetes
         kubernetes-worker01:~$ kubeadm join --discovery-token abcdef.1234567890abcdef --discovery-token-ca-cert-hash sha256:1234..cdef 1.2.3.4:6443
         kubernetes-master:~$ kubectl get nodes
         kubernetes-master:~$ kubectl label node worker01 node-role.kubernetes.io/worker=worker --overwrite
+
+5. nodeSelector must be wrapped with a spec. Like so
+        
+        $ kubectl run --generator=run-pod/v1 -ti --rm test --image=ubuntu:18.04 --overrides='{"spec": { "nodeSelector": {"nodename": "eks-prod-4"}}}'

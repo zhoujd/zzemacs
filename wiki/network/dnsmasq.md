@@ -80,3 +80,12 @@ Dnsmasq
         jpillora/dnsmasq
         
         $ firefox http://<docker-host>:5380
+
+        ##test
+        $ host myhost.company <docker-host>
+        Using domain server:
+        Name: <docker-host>
+        Address: <docker-host>#53
+        Aliases:
+
+        myhost.company has address 10.0.0.2

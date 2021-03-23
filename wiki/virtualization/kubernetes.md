@@ -35,7 +35,7 @@ Kubernetes
         
         ## Step 3: Add Kubernetes Signing Key
         $ sudo apt install curl
-        $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+        $ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
         
         ## Step 4: Add Software Repositories
         $ sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"

@@ -39,6 +39,8 @@ Kubernetes
         
         ## Step 4: Add Software Repositories
         $ sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+        or
+        $ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
         
         ## Step 5: Kubernetes Installation Tools
         $ sudo apt install kubeadm kubelet kubectl

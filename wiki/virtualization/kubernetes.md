@@ -34,8 +34,9 @@ Kubernetes
         $ sudo systemctl start docker
         
         ## Step 3: Add Kubernetes Signing Key
-        $ sudo apt install curl
+        $ sudo apt install apt-transport-https ca-certificates curl
         $ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        $ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
         
         ## Step 4: Add Software Repositories
         $ sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
@@ -73,3 +74,5 @@ Kubernetes
 5. nodeSelector must be wrapped with a spec. Like so
         
         $ kubectl run --generator=run-pod/v1 -ti --rm test --image=ubuntu:18.04 --overrides='{"spec": { "nodeSelector": {"nodename": "eks-prod-4"}}}'
+
+6. 

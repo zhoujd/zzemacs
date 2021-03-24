@@ -58,12 +58,19 @@ Kubernetes
         
         ## Step 8: Initialize Kubernetes on Master Node
         $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+        or
+        $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=<hostname>
+
         kubernetes-master:~$ mkdir -p $HOME/.kube
         kubernetes-master:~$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
         kubernetes-master:~$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
         
         ## Step 9: Deploy Pod Network to Cluster
-        kubernetes-master:~$ sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+        kubernetes-master:~$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+        or
+        kubernetes-master:~$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+        kubernetes-master:~$ kubectl cluster-info
         kubernetes-master:~$ kubectl get pods --all-namespaces
         
         ## Step 10: Join Worker Node to Cluster

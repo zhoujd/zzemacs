@@ -44,6 +44,7 @@ Kubernetes
         $ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
         
         ## Step 5: Kubernetes Installation Tools
+        ## https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
         $ sudo apt install kubeadm kubelet kubectl
         $ sudo apt-mark hold kubeadm kubelet kubectl
         $ kubeadm version

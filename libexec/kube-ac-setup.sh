@@ -5,7 +5,6 @@ kube_ac() {
     cat > ~/.bashrc.d/zz-kube.sh <<EOF
 alias k=kubectl
 source <(kubectl completion bash | sed s/kubectl/k/g)
-export KUBE_EDITOR="emacs -nw -Q"
 EOF
 }
 

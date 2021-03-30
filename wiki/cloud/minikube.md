@@ -58,3 +58,6 @@ minikube
         $ sudo systemctl restart libvirtd.service
         
         ##Step 3,4,5 as same as on Ubuntu
+
+3. Minikube on Github
+   https://github.com/kubernetes/minikube

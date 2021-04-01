@@ -34,6 +34,7 @@ CentOS
         gpg-pubkey-f4a80eb5-53a7ff4b    gpg(CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>)
         gpg-pubkey-352c64e5-52ae6884    gpg(Fedora EPEL (7) <epel@fedoraproject.org>)
         [root@apps2 ~]# rpm -e gpg-pubkey-352c64e5-52ae6884
+        [root@apps2 ~]# rpm -e --allmatches gpg-pubkey-fe590cb7-533d77ee
         [root@apps2 ~]# rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n'
         gpg-pubkey-f4a80eb5-53a7ff4b    gpg(CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>)
         [root@apps2 ~]#

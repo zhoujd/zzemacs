@@ -50,15 +50,9 @@
 
 (defun helm-switchb-shell-list ()
   (interactive)
-  (helm :sources '(helm-switchb-shell-source)
+  (helm :sources '(helm-switchb-shell-source
+                   helm-switchb-term-source)
         :buffer "*helm shell*"
-        :truncate-lines helm-buffers-truncate-lines
-        ))
-
-(defun helm-switchb-term-list ()
-  (interactive)
-  (helm :sources '(helm-switchb-term-source)
-        :buffer "*helm term*"
         :truncate-lines helm-buffers-truncate-lines
         ))
 

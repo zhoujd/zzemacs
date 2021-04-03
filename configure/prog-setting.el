@@ -313,6 +313,9 @@
 (require 'company-ansible)
 (add-to-list 'company-backends 'company-ansible)
 
+;;json
+(require 'json-mode)
+
 
 (provide 'prog-setting)
 

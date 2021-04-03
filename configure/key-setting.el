@@ -96,6 +96,7 @@
   [f4]            'kill-this-buffer
   
   (kbd "b")       'helm-switchb-shell-list
+  (kbd "M-b")     'helm-mt
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   
@@ -219,6 +220,7 @@
   (kbd "C-x b")   'helm-buffers-list
   (kbd "C-x M-b") 'helm-mini
   (kbd "C-c b")   'helm-switchb-shell-list
+  (kbd "C-c M-b") 'helm-mt
   (kbd "C-c d")   'helm-switchb-dired-list
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file

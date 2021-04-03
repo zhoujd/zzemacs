@@ -124,6 +124,9 @@
               ((kbd "M-s M-f") 'helm-comint-prompts)
               )))
 
+;;heml-mt
+(require 'helm-mt)
+
 
 (provide 'helm-setting)
 

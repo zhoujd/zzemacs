@@ -199,6 +199,7 @@ Dmitriy Igrishin's patched version of comint.el."
               ((kbd "C-c C-j") 'term-line-mode)
               ((kbd "C-c C-k") 'term-char-mode)
               ((kbd "C-c C-q") 'term-pager-toggle)
+              ((kbd "C-h")     'term-send-backspace)
               
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
@@ -209,6 +210,7 @@ Dmitriy Igrishin's patched version of comint.el."
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
               ((kbd "C-c M-o") 'zz:term-send-clear)
+              ((kbd "C-h")     'term-send-backspace)
               ((kbd "M-w")     'zz:kill-ring-save-switch-to-char-mode)
               )))
 

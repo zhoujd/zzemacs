@@ -38,7 +38,7 @@
   ))
 
 (apply-keys-to-map
- help-map
+ f4-map
  (list
   (kbd "1")       (zz:quick-shell zz:shell-f1  "*shell<f1>*")
   (kbd "2")       (zz:quick-shell zz:shell-f2  "*shell<f2>*")
@@ -50,28 +50,27 @@
   (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
   (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
   (kbd "0")       (zz:quick-shell zz:shell-f10 "*shell<f10>*")
-  (kbd "-")       'ielm
-  (kbd "=")       'eshell
-  ))
-
-(apply-keys-to-map
- f4-map
- (list
-  (kbd "1")       (zz:quick-buffer zz:shell-1  "*shell<1>*")
-  (kbd "2")       (zz:quick-buffer zz:shell-2  "*shell<2>*")
-  (kbd "3")       (zz:quick-buffer zz:shell-3  "*shell<3>*")
-  (kbd "4")       (zz:quick-buffer zz:shell-4  "*shell<4>*")
-  (kbd "5")       (zz:quick-buffer zz:shell-5  "*shell<5>*")
-  (kbd "6")       (zz:quick-buffer zz:shell-6  "*shell<6>*")
-  (kbd "7")       (zz:quick-buffer zz:shell-7  "*shell<7>*")
-  (kbd "8")       (zz:quick-buffer zz:shell-8  "*shell<8>*")
-  (kbd "9")       (zz:quick-buffer zz:shell-9  "*shell<9>*")
-  (kbd "0")       (zz:quick-buffer zz:shell-10 "*shell<10>*")
   (kbd "-")       'zz:cd-shell
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
   (kbd "`")       'zz:switch-to-shell
+  
+  (kbd "C-1")     (zz:quick-buffer zz:shell-1  "*shell<1>*")
+  (kbd "C-2")     (zz:quick-buffer zz:shell-2  "*shell<2>*")
+  (kbd "C-3")     (zz:quick-buffer zz:shell-3  "*shell<3>*")
+  (kbd "C-4")     (zz:quick-buffer zz:shell-4  "*shell<4>*")
+  (kbd "C-5")     (zz:quick-buffer zz:shell-5  "*shell<5>*")
+  (kbd "C-6")     (zz:quick-buffer zz:shell-6  "*shell<6>*")
+  (kbd "C-7")     (zz:quick-buffer zz:shell-7  "*shell<7>*")
+  (kbd "C-8")     (zz:quick-buffer zz:shell-8  "*shell<8>*")
+  (kbd "C-9")     (zz:quick-buffer zz:shell-9  "*shell<9>*")
+  (kbd "C-0")     (zz:quick-buffer zz:shell-10 "*shell<10>*")
+  (kbd "C--")     'zz:cd-shell
+  (kbd "C-=")     'zz:remote-shell
+  (kbd "C-\\")    'zz:get-shell
+  (kbd "C-DEL")   'zz:get-shell
+  (kbd "C-`")     'zz:switch-to-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
   (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")

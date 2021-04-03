@@ -162,6 +162,26 @@
   ))
 
 (apply-keys-to-map
+ help-map
+ (list
+  (kbd "1")       (lookup-key f4-map (kbd "1"))
+  (kbd "2")       (lookup-key f4-map (kbd "2"))
+  (kbd "3")       (lookup-key f4-map (kbd "3"))
+  (kbd "4")       (lookup-key f4-map (kbd "4"))
+  (kbd "5")       (lookup-key f4-map (kbd "5"))
+  (kbd "6")       (lookup-key f4-map (kbd "6"))
+  (kbd "7")       (lookup-key f4-map (kbd "7"))
+  (kbd "8")       (lookup-key f4-map (kbd "8"))
+  (kbd "9")       (lookup-key f4-map (kbd "9"))
+  (kbd "0")       (lookup-key f4-map (kbd "0"))
+  (kbd "-")       (lookup-key f4-map (kbd "-"))
+  (kbd "=")       (lookup-key f4-map (kbd "="))
+  (kbd "\\")      (lookup-key f4-map (kbd "\\"))
+  (kbd "DEL")     (lookup-key f4-map (kbd "DEL"))
+  (kbd "`")       (lookup-key f4-map (kbd "`"))
+  ))
+
+(apply-keys-to-map
  mode-specific-map
  (list
   (kbd "1")       (lookup-key f4-map (kbd "1"))
@@ -179,6 +199,22 @@
   (kbd "\\")      (lookup-key f4-map (kbd "\\"))
   (kbd "DEL")     (lookup-key f4-map (kbd "DEL"))
   (kbd "`")       (lookup-key f4-map (kbd "`"))
+
+  (kbd "C-1")     (lookup-key f4-map (kbd "C-1"))
+  (kbd "C-2")     (lookup-key f4-map (kbd "C-2"))
+  (kbd "C-3")     (lookup-key f4-map (kbd "C-3"))
+  (kbd "C-4")     (lookup-key f4-map (kbd "C-4"))
+  (kbd "C-5")     (lookup-key f4-map (kbd "C-5"))
+  (kbd "C-6")     (lookup-key f4-map (kbd "C-6"))
+  (kbd "C-7")     (lookup-key f4-map (kbd "C-7"))
+  (kbd "C-8")     (lookup-key f4-map (kbd "C-8"))
+  (kbd "C-9")     (lookup-key f4-map (kbd "C-9"))
+  (kbd "C-0")     (lookup-key f4-map (kbd "C-0"))
+  (kbd "C--")     (lookup-key f4-map (kbd "C--"))
+  (kbd "C-=")     (lookup-key f4-map (kbd "C-="))
+  (kbd "C-\\")    (lookup-key f4-map (kbd "C-\\"))
+  (kbd "C-DEL")   (lookup-key f4-map (kbd "C-DEL"))
+  (kbd "C-`")     (lookup-key f4-map (kbd "C-`"))
 
   (kbd "M-1")     (lookup-key f4-map (kbd "M-1"))
   (kbd "M-2")     (lookup-key f4-map (kbd "M-2"))

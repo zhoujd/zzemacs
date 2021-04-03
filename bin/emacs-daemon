@@ -90,7 +90,11 @@ uninstall() {
 
 stop() {
     echo "Stop emacs daemon"
-    emacsclient -e "(kill-emacs)" >/dev/null 2>&1
+    emacsclient -e "(kill-emacs)"
+    echo "Wait 5s"
+    sleep 5s
+    echo "killall emacs"
+    killall emacs
 }
 
 start() {
@@ -133,7 +137,6 @@ case $1 in
         start $2
         ;;
     stop )
-        stop
         stop
         ;;
     restart )

@@ -282,6 +282,9 @@
 (setq column-number-mode t)
 (setq default-fill-column 80)
 
+;;auto fill mode
+;;(add-hook 'text-mode-hook 'auto-fill-mode)
+
 ;;'y' for 'yes', 'n' for 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -335,7 +338,6 @@
 
 (setq default-major-mode 'text-mode)
 (setq truncate-partial-width-windows nil)
-(add-hook 'text-mode-hook 'auto-fill-mode)
 
 ;;indent setting
 (setq-default tab-always-indent 'complete)

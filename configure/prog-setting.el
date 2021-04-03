@@ -308,6 +308,11 @@
 (require 'ansible)
 (add-hook 'yaml-mode-hook '(lambda () (ansible 1)))
 
+;;https://github.com/krzysztof-magosa/company-ansible
+(zz:load-path "site-lisp/company-ansible")
+(require 'company-ansible)
+(add-to-list 'company-backends 'company-ansible)
+
 
 (provide 'prog-setting)
 

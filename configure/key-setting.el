@@ -70,7 +70,7 @@
   (kbd "C-=")     'zz:remote-shell
   (kbd "C-\\")    'zz:get-shell
   (kbd "C-DEL")   'zz:get-shell
-  (kbd "C-`")     'zz:switch-to-shell
+  (kbd "C-`")     'zz:switch-to-c-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
   (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")

@@ -250,12 +250,26 @@ Dmitriy Igrishin's patched version of comint.el."
              (format "^\\\*%s-[a-zA-Z0-9]+\\\*$" multi-shell-buffer-name)
              (buffer-name b))
             (string-match
+             (format "^\\\*%s<f[0-9]+>\\\*$" multi-shell-buffer-name)
+             (buffer-name b))
+            (string-match
              (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
              (buffer-name b)))
       (progn
         (setq zz:shells (cons  (buffer-name b) zz:shells)))))
   (catch 'return
     (throw 'return zz:shells)))
+
+(defun zz:shell-c-list ()
+  (setq zz:c-shells ())
+  (dolist (b (buffer-list))
+    (if (string-match
+         (format "^\\\*%s<[0-9]+>\\\*$" multi-shell-buffer-name)
+         (buffer-name b))
+        (progn
+          (setq zz:c-shells (cons  (buffer-name b) zz:c-shells)))))
+  (catch 'return
+    (throw 'return zz:c-shells)))
 
 (defun zz:shell-fn-list ()
   (setq zz:fn-shells ())
@@ -302,6 +316,32 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Shell name: " (zz:shell-list))))
+  (if (get-buffer buf-name)
+      (progn
+        (switch-to-buffer buf-name))
+      (progn
+        (if-ms-windows
+         (if zz:linux-bash-p
+             (progn
+              (with-utf-8-env
+               (let ((shell-file-name "bash")
+                     (shell-command-switch "-c")
+                     (explicit-bash-args '("--login" "-i"))
+                     (explicit-shell-file-name "bash"))
+                 (setenv "SHELL" shell-file-name)
+                 (zz:create-shell-buffer buf-name)
+                 )))
+             (progn
+              (zz:create-shell-buffer buf-name)))
+         (progn
+          (zz:create-shell-buffer buf-name))
+          )))
+  (message "switch to %s" buf-name))
+
+;; switch to c shell
+(defun zz:switch-to-c-shell (buf-name)
+  "switch to named shell buffer it not exist creat it by name"
+  (interactive (list (ido-completing-read "Shell name: " (zz:shell-c-list))))
   (if (get-buffer buf-name)
       (progn
         (switch-to-buffer buf-name))

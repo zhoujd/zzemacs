@@ -54,7 +54,7 @@
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
-  (kbd "`")       'zz:switch-to-shell
+  (kbd "`")       'zz:switch-to-fn-shell
   
   (kbd "C-1")     (zz:quick-buffer zz:shell-1  "*shell<1>*")
   (kbd "C-2")     (zz:quick-buffer zz:shell-2  "*shell<2>*")

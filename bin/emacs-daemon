@@ -104,7 +104,7 @@ start() {
             systemctl start emacs@${user}
             ;;
         daemon )
-            emacs --daemon
+            emacs --fg-daemon
             ;;
         * )
             echo "$0 start {ubuntu|centos|daemon}"

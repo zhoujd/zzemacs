@@ -303,6 +303,10 @@
 (zz:load-path "site-lisp/ztree")
 (require 'ztree)
 
+;;ansible
+(require 'ansible)
+(add-hook 'yaml-mode-hook '(lambda () (ansible 1)))
+
 
 (provide 'prog-setting)
 

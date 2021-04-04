@@ -316,6 +316,9 @@
 ;;json
 (require 'json-mode)
 
+;;diffview
+(require 'diffview)
+
 
 (provide 'prog-setting)
 

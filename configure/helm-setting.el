@@ -132,7 +132,11 @@
 ;;helm-ispell
 (require 'helm-ispell)
 
+;;heml-sudo-find-file
+(require 'sudo-edit)
+(defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 
+  
 (provide 'helm-setting)
 
 ;;; helm-setting.el ends here

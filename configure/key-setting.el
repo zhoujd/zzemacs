@@ -226,6 +226,7 @@
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf
+  (kbd "C-c M-f") 'helm-sudo-find-file
   (kbd "C-M-z")   'helm-resume
   (kbd "M-x")     'helm-M-x
 

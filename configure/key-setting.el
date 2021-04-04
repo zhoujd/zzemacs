@@ -94,6 +94,7 @@
  f4-map
  (list
   [f4]            'kill-this-buffer
+  (kbd "SPC")     'helm-ispell
   
   (kbd "b")       'helm-switchb-shell-list
   (kbd "M-b")     'helm-mt

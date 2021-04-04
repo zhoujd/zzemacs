@@ -133,6 +133,7 @@
 (require 'helm-ispell)
 
 ;;heml-sudo-find-file
+;;helm-find-files supports opening a file as root with C-c r.
 (require 'sudo-edit)
 (defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 

@@ -296,6 +296,9 @@
 (zz:load-path "site-lisp/emacs-calfw")
 (require 'calfw)
 
+;;ssh-tunnels
+(require 'ssh-tunnels)
+
 
 (provide 'other-setting)
 

@@ -109,6 +109,7 @@
   (kbd "C-r")     'zz:add-code-review-note
   (kbd "C-s")     'zz:slime-connect-stumpwm
   (kbd "C-t")     'zz:open-with-terminal
+  (kbd "C-n")     'backlight
 
   (kbd "C-f")     'zz:secondary-x-font
   (kbd "M-f")     'zz:primary-x-font

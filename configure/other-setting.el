@@ -299,6 +299,9 @@
 ;;ssh-tunnels
 (require 'ssh-tunnels)
 
+;;backlight
+(require 'backlight)
+
 
 (provide 'other-setting)
 

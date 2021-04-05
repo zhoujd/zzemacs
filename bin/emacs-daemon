@@ -90,11 +90,12 @@ uninstall() {
 
 stop() {
     echo "Stop emacs daemon"
-    emacsclient -e "(kill-emacs)"
+    emacsclient -e '(save-buffers-kill-emacs)'
+    emacsclient -e '(kill-emacs)'
     echo "Wait 5s"
     sleep 5s
     echo "killall emacs"
-    killall emacs
+    pkill -9 emacs
 }
 
 start() {

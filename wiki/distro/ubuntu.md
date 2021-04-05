@@ -203,3 +203,6 @@ Ubuntu setting
         ## know what packages depend upon php
         $ apt-rdepends -r php
 
+22. eBook reader
+
+        $ wget https://github.com/johnfactotum/foliate/releases/download/2.6.3/com.github.johnfactotum.foliate_2.6.3_all.deb

@@ -11,6 +11,8 @@
 ;;| M-o     | left   | Previous source                                   |
 ;;| C-o     | right  | Next source                                       |
 ;;| C-j     |        | Persistent action (Execute and keep Helm session) |
+;;| C-c ?   |        | helm help                                         |
+;;| C-c r   |        | sudo open                                         |
 (helm-mode t)
 
 ;;no completion
@@ -133,7 +135,6 @@
 (require 'helm-ispell)
 
 ;;heml-sudo-find-file
-;;helm-find-files supports opening a file as root with C-c r.
 (require 'sudo-edit)
 (defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 

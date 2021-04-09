@@ -302,6 +302,10 @@
 ;;backlight
 (require 'backlight)
 
+;;whitespace cleanup mode
+(require 'whitespace-cleanup-mode)
+(setq global-whitespace-cleanup-mode t)
+
 
 (provide 'other-setting)
 

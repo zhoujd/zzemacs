@@ -82,7 +82,7 @@ graphlog =
 progress =
 rebase =
 color =
-hgk = 
+hgk =
 largefiles =
 
 [largefiles]
@@ -102,10 +102,10 @@ df.diffargs = \$parent \$child
 track.current = True
 
 [http_proxy]
-host = 
+host =
 no = 10.0.0.0/8,192.168.0.0/16,localhost,127.0.0.0/8,134.134.0.0/16
 
-[web] 
+[web]
 push_ssl = False
 allow_push = *
 cacerts = ${ZZ_MISC_ROOT}/hg-cacert.pem

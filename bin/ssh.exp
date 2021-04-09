@@ -16,7 +16,7 @@ set passwd [lindex $argv 0]
 set user   [lindex $argv 1]
 set host   [lindex $argv 2]
 
-spawn ssh -o "StrictHostKeyChecking no" -l $user $host 
+spawn ssh -o "StrictHostKeyChecking no" -l $user $host
 expect "${user}@${host}'s password:"
 exec sleep 1
 send "${passwd}\n"

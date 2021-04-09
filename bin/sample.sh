@@ -154,7 +154,7 @@ esac
 #	./emacs  # run emacs
 #   -Q
 #   --quick
-#)	
+#)
 #
 #"${cmd[@]}"
 

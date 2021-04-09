@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 if [ $# != 1 ]; then
     echo "Usage: $0 <host_ip|host_name>"

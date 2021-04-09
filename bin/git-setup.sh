@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ### http://gitbook.liuhui998.com/index.html
-## git submodule add url path/to/name 
+## git submodule add url path/to/name
 ## git submodule init
 ## git submodule foreach git pull
 ## git submodule update
 ## git cherry-pick xxx-commit-id
 ## git pull --squash another
-## git update-index --assume-unchanged /path/to/file 
+## git update-index --assume-unchanged /path/to/file
 ## git update-index --no-assume-unchanged /path/to/file
 ## find -type d -empty -exec touch {}/.gitignore \;
 

@@ -156,7 +156,7 @@ Linux something
 
     # dd if=/dev/sda1 | gzip -c > sda1.img.gz
     # gzip -cd sda1.img.gz | dd of=/dev/sda1
-    
+
     # dd if=/dev/sda1 | bzip2 > sda1.img.bz2
     # bzip2 -dc sda1.img.bz2 | dd of=/dev/sda1
 
@@ -252,7 +252,7 @@ Linux something
         $ ls -ld /home/tom/
         $ ps aux | grep tom
         $ ps -u tom
-        
+
     Task: Change username from tom to jerry on Linux
         # id tom
         # usermod -l jerry tom
@@ -260,27 +260,27 @@ Linux something
         # id tom
         # id jerry
         # ls -ld /home/tom
-        
+
        A NOTE ABOUT RUNNING PROCESS
         # usermod -l jerry tom
           usermod: user tom is currently used by process 6886
         # pkill -u tom pid
         # pkill -9 -u tom
         # usermod -l jerry tom
-        
+
     Task: Change primary groupname from tom to jerry
         # id tom
         # groupmod -n jerry tom
         ## Verify it ###
         # id tom
         # ls -ld /home/tom
-        
+
     How to change user home directory from /home/tom/ to /home/jerry
         # usermod -d /home/jerry -m jerry
         # usermod -c "jerry" jerry
         # id jerry
         # ls -ld /home/jerry
-        
+
     How to change user tom UID/GID from 5001 to 10000
         # id tom
         # usermod -u 10000 tom
@@ -303,7 +303,7 @@ Linux something
 
 
 24. 7 Methods To Identify Disk Partition/FileSystem UUID
-     
+
     # blkid
     # lsblk -o name,mountpoint,size,uuid
     # ls -lh /dev/disk/by-uuid/
@@ -329,4 +329,4 @@ Linux something
 26. find -print0 and xargs -0
 
     $ find -name "*.txt" -print0 | xargs -0 sed -i 's/aaa/bbb/g'
-    $ find -type f -exec sed -i 's/home/work/g' \{\} \; 
+    $ find -type f -exec sed -i 's/home/work/g' \{\} \;

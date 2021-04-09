@@ -2,7 +2,7 @@ Bridge
 ======
 
 https://www.hiroom2.com/2018/05/08/ubuntu-1804-bridge-en/
-    
+
 1. bridge-utils + DHCP
 ```
 $ INTERFACE=ens3

@@ -3,7 +3,7 @@ Arch setting
 
 1. Build kernel from source.
         $ firefox https://linuxhint.com/upgrade-kernel-on-arch-linux
-   
+
         $ sudo pacman -S ncurses make gcc bc openssl
         $ wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.15.2.tar.xz
         $ tar xvf linux-4.15.2.tar.xz

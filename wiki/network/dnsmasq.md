@@ -8,11 +8,11 @@ Dnsmasq
         $ sudo systemctl stop systemd-resolved
         $ rm -rf /etc/resolv.conf
         $ echo "nameserver 8.8.8.8" > /etc/resolv.conf
-        
+
         ##Install Dnsmasq
         $ sudo apt install dnsmasq dnsutils ldnsutils -y
         $ sudo systemctl status dnsmasq
-        
+
         ##Configure Dnsmasq
         $ sudo nano /etc/dnsmasq.conf
         port=53
@@ -27,11 +27,11 @@ Dnsmasq
         $ dnsmasq --test
         $ sudo systemctl restart dnsmasq
         $ ss -alnp | grep -i :53
-        
+
         ##Add DNS Records to Dnsmasq Server
         $ nano /etc/hosts
         your-server-ip host1.dns-example.com
-        
+
         ##Verify Dnsmasq Server Resolution
         $ dig host1.dns-example.com +short
         your-server-ip
@@ -39,7 +39,7 @@ Dnsmasq
         172.67.68.93
         104.26.3.165
         104.26.2.165
-        
+
         ##Configure Remote Client to Use Dnsmasq DNS Server
         $ sudo apt install dnsutils ldnsutils -y
         $ nano /etc/resolv.conf
@@ -50,7 +50,7 @@ Dnsmasq
         $ drill google.com | grep "Query time"
         ;; Query time: 4 msec
 
-2. Configure Dnsmasq as DHCP Server 
+2. Configure Dnsmasq as DHCP Server
 
         $ sudo vim /etc/dnsmasq.conf
         dhcp-range=192.168.3.25,192.168.3.50,24h
@@ -58,7 +58,7 @@ Dnsmasq
         dhcp-option=option:ntp-server,192.168.3.5
         dhcp-option=option:dns-server,192.168.3.5
         dhcp-option=option:netmask,255.255.255.0
-        
+
         $ sudo systemctl restart dnsmasq
 
 3. Dnsmasq in Docker
@@ -78,7 +78,7 @@ Dnsmasq
         -e "HTTP_PASS=passwd" \
         --restart always \
         jpillora/dnsmasq
-        
+
         $ firefox http://<docker-host>:5380
 
         ##test

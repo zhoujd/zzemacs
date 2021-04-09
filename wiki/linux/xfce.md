@@ -4,7 +4,7 @@ Xfce
 1. Install Xfce
 
         $ sudo apt install -y xubuntu-desktop
-        
+
         $ sudo apt install -y expect
         $ cat <<EOF | expect
         set timeout -1
@@ -12,8 +12,8 @@ Xfce
         expect "Default display manager: "
         send "lightdm\n"
         expect eof
-        EOF 
-       
+        EOF
+
         $ sudo reboot
 
 2. Remove Xfce
@@ -28,7 +28,7 @@ Xfce
         $ cd /usr/share/xfce4/backdrops
 
 4. Clock format
-         
+
         Thu Apr 4, 3:24 PM
         %a %b %e, %l:%M %p
 
@@ -36,9 +36,9 @@ Xfce
 
         $ sudo apt install docky
         $ gconftool-2 --type Boolean --set /apps/docky-2/Docky/Items/DockyItem/ShowDockyItem False
-        
+
         $ sudo apt-get install launchy launchy-plugins
-        
+
         ## Fix the Broken Icons
         ## Fix broken icons for Terminal and Thunar in xfce4 (Docky)
         $ sudo cp /usr/share/applications/* ~/.local/share/applications
@@ -65,13 +65,13 @@ Xfce
 9. window resize
 
         It's very easy, you can use Alt + right-click + drag.
-        
+
 10. Slingscold (Alternative to Launchpad)
 
         $ sudo add-apt-repository ppa:noobslab/macbuntu
         $ sudo apt-get update
         $ sudo apt-get install slingscold
-        
+
         ## optional
         $ sudo add-apt-repository --remove ppa:noobslab/macbuntu
         $ sudo apt update

@@ -2,19 +2,19 @@ VirtualBox
 ==========
 
 1. Share folder with auto mount (/media/sf_win10)
-   
+
         $ sudo usermod -a -G vboxsf zhoujd
         or
         $ sudo chmod 777 /media/sf_win10
 
         ## mount manually
-        $ sudo mkdir -p /mnt/VMshare 
+        $ sudo mkdir -p /mnt/VMshare
         $ sudo mount -t vboxsf VMshare /mnt/VMshare
 
 2. Command line
 
         $ vboxmanage list vms
-        
+
 
 3. Enable kernel support
 

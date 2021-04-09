@@ -19,7 +19,7 @@ FreeBSD
 
         # setenv HTTP_PROXY http://web-proxy.xxxxxx.com:8080
         # setenv HTTPS_PROXY https://web-proxy.xxxxxx.com:8080
-        
+
    For sh, set proxy in /etc/profile:
 
         # export HTTP_PROXY=http://web-proxy.xxxxxx.com:8080
@@ -39,11 +39,11 @@ FreeBSD
 
 5. Secure SSH on FreeBSD
 
-        # nano /etc/ssh/sshd_config 
+        # nano /etc/ssh/sshd_config
         PermitRootLogin yes
-        
+
         # service sshd restart
-        
+
 6. Install and Configure Sudo on FreeBSD
 
         # pkg install sudo
@@ -58,13 +58,13 @@ FreeBSD
         # service -l
         # cat /etc/rc.conf
         sshd_enable=”YES”
-        
+
         or
-        
+
         # sysrc sshd_enable=”YES”
         # sysrc syslogd_flags="-ss"
         # service syslogd restart
-        
+
 8. List Network Sockets
 
         # sockstat -4
@@ -76,26 +76,26 @@ FreeBSD
         # lsof -i4 -i6
         # netstat -an |egrep 'Proto|LISTEN'
         # netstat -a |egrep 'Proto|LISTEN'
-        
+
 9. Configure FreeBSD Static IP
 
-        # cat /etc/rc.conf 
+        # cat /etc/rc.conf
         #ifconfig_em0="DHCP"
         ifconfig_em0="inet 192.168.1.100 netmask 255.255.255.0"
         #Default Gateway
         defaultrouter="192.168.1.1"
-        
+
 10. Configure FreeBSD DNS Network
 
         # cat /etc/resolv.conf
         nameserver your_first_DNS_server_IP
         nameserver your_second_DNS_server_IP
         search your_local_domain
-        
+
         # cat /etc/rc.conf
         hostname=”freebsdhost”
-        
-        ## multiple IP address 
+
+        ## multiple IP address
         # cat /etc/rc.conf
         ifconfig_em0_alias0="192.168.1.5 netmask 255.255.255.255"
 

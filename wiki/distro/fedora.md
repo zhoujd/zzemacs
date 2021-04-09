@@ -6,7 +6,7 @@ Fedora
         $ cat /etc/dnf/dnf.conf
         proxy=http://host:port/
         fastestmirror=true
-        
+
 2. Rpmfusion
 
         $ sudo dnf install http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-30.noarch.rpm

@@ -190,7 +190,7 @@ Ubuntu setting
 20. Thunar Thumbnail
 
         $ killall thunar
-        $ sudo apt install tumbler tumbler-plugins-extra ffmpegthumbnailer 
+        $ sudo apt install tumbler tumbler-plugins-extra ffmpegthumbnailer
         $ thunar -q
         $ reboot
 

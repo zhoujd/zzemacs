@@ -10,7 +10,7 @@ libreoffice
 
         ##Substituting Calibri And Cambria Fonts
         $ sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
-    
+
 3. Install the default Sifr icons:
 
         $ sudo apt install libreoffice-style-sifr

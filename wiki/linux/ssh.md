@@ -17,7 +17,7 @@ ssh
         $ sudo nano /etc/ssh/sshd_config
         AllowTcpForwarding yes
         GatewayPorts clientspecified
-        
+
         $ sudo systemctl restart sshd.service
 
         ## on A

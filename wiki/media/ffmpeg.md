@@ -10,13 +10,13 @@ FFMPEG
     For build ffmpeg via source on Ubuntu 18.04
 
         sudo apt install yasm
-        
+
         ./configure --prefix=/usr ./configure --prefix=/usr --enable-shared
         make -j4
         sudo make install
 
 1. Merge multiable mp4 in for one
-    
+
         $ ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts
         $ ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts
         $ ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4
@@ -50,16 +50,16 @@ FFMPEG
         $ ffmpeg -f concat -i **list.txt** -c copy output.mp4
 
 5. FFmpeg build 32 bit execute
-   
+
         $ sudo apt-get install gcc-multilib g++-multilib module-assistant
         $ ./configure --cc='gcc -m32'
 
         $ sudo apt install ccache
         $ ./configure --cc='ccache gcc -m32'
-   
+
 6. Build ffmpeg with x264 and x265
 
-        $ sudo apt install libx264-dev libx265-dev 
+        $ sudo apt install libx264-dev libx265-dev
         $ ./configure --enable-libx264 --enable-libx265
 
 7. Thumbnailer

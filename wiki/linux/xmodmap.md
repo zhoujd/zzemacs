@@ -7,7 +7,7 @@ xmodmap
 
 
 2. Disable resets layouts
-    
+
         # gnome-settings-daemon that resets layouts when attach a new keyboard
         # or sudo apt install dconf-editor
         dconf write /org/gnome/settings-daemon/plugins/keyboard/active false

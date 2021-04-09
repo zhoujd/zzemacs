@@ -15,10 +15,10 @@ Patch to kernel
 
         bash> cd /usr/src/linux-X.Y.Z/
         bash> make clean
-        
+
         bash> make menuconfig/oldconfig/
         bash> cp arch/x86/configs/i386_defconfig .config
-        
+
         bash> make bzImage
         bash> cp arch/x86/boot/bzImage /boot/vmlinuz
 

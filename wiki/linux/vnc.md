@@ -89,12 +89,12 @@ VNC More
 
 6. VNC on Windows http://www.tightvnc.com/download.php
 7. Download x11vnc from http://www.karlrunge.com/x11vnc/
-        
+
         $ export TZ=America/Los_Angeles
         $ ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-            
+
         $ sudo apt install x11vnc xvfb
-            
+
         $ mkdir -p ~/.vnc
         $ x11vnc -storepasswd 1234 ~/.vnc/passwd
         $ x11vnc -forever -usepw -create &

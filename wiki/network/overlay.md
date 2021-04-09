@@ -16,7 +16,7 @@ overlay
         ubuntu@VM2:~$ sudo ovs-vsctl add-port br-mng intif -- set interface intif type=internal
         ubuntu@VM2:~$ sudo ovs-vsctl add-port br-mng vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=10.0.0.11 options:key=1025
         ubuntu@VM2:~$ sudo ifconfig intif 192.168.10.12/24 mtu 1450 up
-        
+
         ## Test the Connectivity
         ubuntu@VM1:~$ ifconfig
         eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500

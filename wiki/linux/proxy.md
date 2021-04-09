@@ -5,7 +5,7 @@ Proxy setting
 
         cat .bashrc
         cat /etc/profile
-        
+
         export http_proxy=user:pwd@proxy_addr:port
         export https_proxy=
         export ftp_proxy=
@@ -19,7 +19,7 @@ Proxy setting
         Acquire::https::proxy "https://$proxyserveraddr:$proxyserverport/";
         Acquire::ftp::proxy   "ftp://$proxyserveraddr:$proxyserverport/";
         Acquire::socks::proxy "socks://$proxyserveraddr:$proxyserverport/";
-        
+
 3. centos yum
 
         cat /etc/yum.conf

@@ -4,11 +4,11 @@ Linux kernel
 1. KGDB on target
 
         CONFIG_KGDB = y
-        CONFIG_KGDB_SERIAL_CONSOLE = y 
+        CONFIG_KGDB_SERIAL_CONSOLE = y
 
         ## add parameter to initrd in grub.cfg (kgdb over console)
         kgdbwait kgdboc=0,9600      ## ttyS0, 9600/115200
-        
+
         echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
 
         echo g > /proc/sysrq-trigger
@@ -37,11 +37,11 @@ Linux kernel
 
 5. QEMU
         [root@localhost kvm]# qemu-system-x86_64 -hda vdisk.img -net none -m 1024 -daemonize -cpu host -smp 2 -vnc :1 -s
-        
+
         $ virsh edit <vm-name>
-        <qemu:commandline> 
-        <qemu:arg value='-S'/> 
-        <qemu:arg value='-gdb'/> 
-        <qemu:arg value='tcp::1234'/> 
+        <qemu:commandline>
+        <qemu:arg value='-S'/>
+        <qemu:arg value='-gdb'/>
+        <qemu:arg value='tcp::1234'/>
         </qemu:commandline>
 

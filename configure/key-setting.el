@@ -55,7 +55,7 @@
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
   (kbd "`")       'zz:switch-to-fn-shell
-  
+
   (kbd "C-1")     (zz:quick-buffer zz:shell-1  "*shell<1>*")
   (kbd "C-2")     (zz:quick-buffer zz:shell-2  "*shell<2>*")
   (kbd "C-3")     (zz:quick-buffer zz:shell-3  "*shell<3>*")
@@ -95,12 +95,12 @@
  (list
   [f4]            'kill-this-buffer
   (kbd "SPC")     'helm-ispell
-  
+
   (kbd "b")       'helm-switchb-shell-list
   (kbd "M-b")     'helm-mt
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
-  
+
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
                                  (zz:execute-key zz:thunar '("thunar")))
@@ -131,17 +131,19 @@
   (kbd "f")       (zz:execute-key zz:firefox     '("firefox"))
   (kbd "g")       (zz:execute-key zz:chrome      '("google-chrome"))
   (kbd "m")       (zz:execute-key zz:thunderbird '("thunderbird"))
-  
+
   (kbd "h")       (zz:execute-key zz:thunar      '("thunar"))
   (kbd "v")       (zz:execute-key zz:vim         '("urxvt" "-e" "vim"))
   (kbd "t")       (zz:execute-key zz:tmux        '("urxvt" "-e" "tmux"))
-                                                 
+
   (kbd "d")       (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
   (kbd "r")       (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
   (kbd "s")       (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
   (kbd "w")       (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
-                                                 
+
+  (kbd "M-c")     (zz:execute-key zz:sakura      '("sakura"))
   (kbd "M-m")     (zz:execute-key zz:meld        '("meld"))
+  (kbd "M-g")     (zz:execute-key zz:gitg        '("gitg"))
   ))
 
 (apply-keys-to-map

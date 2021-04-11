@@ -304,7 +304,20 @@
 
 ;;whitespace cleanup mode
 (require 'whitespace-cleanup-mode)
-(setq global-whitespace-cleanup-mode t)
+(dolist (hook
+         (list
+          'java-mode-hook
+          'c++-mode-hook
+          'python-mode-hook
+          'c-mode-hook
+          'perl-mode-hook
+          'php-mode-hook
+          'emacs-lisp-mode-hook
+          'markdown-mode-hook
+          'yaml-mode-hook
+          'lisp-mode-hook
+          ))
+  (add-hook hook 'whitespace-cleanup-mode))
 
 
 (provide 'other-setting)

@@ -101,3 +101,13 @@ Xfce
         Open Settings Editor
         Go to Channel xfwm4
         Disable Property zoom_desktop
+
+15. Thunar custom action
+
+        Name: Emacs Shell Here
+        Description: Open Emacs Shell
+        Command: cd %f && emacsclient -c -e "(zz:get-shell)"
+
+        Name: Emacs Shell
+        Description: Open Emacs
+        Command: emacsclient -c %F

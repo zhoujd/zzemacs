@@ -83,4 +83,7 @@ Kubernetes
 
         $ kubectl run --generator=run-pod/v1 -ti --rm test --image=ubuntu:18.04 --overrides='{"spec": { "nodeSelector": {"nodename": "eks-prod-4"}}}'
 
-6.
+6. Kubernetes multi-container pods and container communication
+
+        ## https://www.mirantis.com/blog/multi-container-pods-and-container-communication-in-kubernetes/
+        $ kubectl exec mc1 -c 2nd -- /bin/cat /html/index.html

@@ -116,3 +116,4 @@ Xfce
 
         $ xfce4-settings-manager
         ## uncheck -> Session and Startup -> Application autostart -> evolution alarm notify
+        $ sudo chmod -x  /usr/libexec/evolution-data-server/evolution-alarm-notify

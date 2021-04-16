@@ -11,10 +11,7 @@
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
 
-## use emacs as merge tool
-EMACS_FLAG="y"
-
-merge_extern() {
+main() {
     if [ "$OS" = "Windows_NT" ] ; then
         MERGE_TOOL_0="bcompare $*"
         MERGE_TOOL_1="p4merge $*"
@@ -31,30 +28,6 @@ merge_extern() {
     fi
 
     $MERGE_SELECT
-}
-
-merge_emacs() {
-    if [ "$OS" = "Windows_NT" ] ; then
-        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd -W)"
-    else
-        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd)"
-    fi
-
-    emacs --quick \
-          --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
-          --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
-          --eval "(message \"emacs merge finished.\")"
-}
-
-main() {
-    case "$EMACS_FLAG" in
-        "Y" | "y" )
-            merge_emacs $*
-            ;;
-        * )
-            merge_extern $*
-            ;;
-    esac
 }
 
 ## run merge tools

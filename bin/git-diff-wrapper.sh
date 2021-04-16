@@ -11,10 +11,8 @@
 ## http://ftp.gnome.org/pub/GNOME/sources/meld/3.12/
 ## https://git.gnome.org/browse/meld/
 
-## use emacs as diff tool
-EMACS_FLAG="n"
 
-diff_extern() {
+main() {
     if [ "$OS" = "Windows_NT" ] ; then
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"
@@ -32,30 +30,6 @@ diff_extern() {
     fi
 
     $DIFF_SELECT
-}
-
-diff_emacs() {
-    if [ "$OS" = "Windows_NT" ] ; then
-        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd -W)"
-    else
-        ELISP_PATH="$(cd $(dirname $0)/../elisp && pwd)"
-    fi
-
-    emacs --quick \
-          --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
-          --eval "(ediff-sample-diff \"$1\" \"$2\")" \
-          --eval "(message \"emacs diff finished.\")"
-}
-
-main() {
-    case "$EMACS_FLAG" in
-        "Y" | "y" )
-            diff_emacs $*
-            ;;
-        * )
-            diff_extern $*
-            ;;
-    esac
 }
 
 ## run diff tools

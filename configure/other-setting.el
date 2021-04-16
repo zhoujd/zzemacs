@@ -316,6 +316,7 @@
           'markdown-mode-hook
           'yaml-mode-hook
           'lisp-mode-hook
+          'shell-script-mode-hook
           ))
   (add-hook hook 'whitespace-cleanup-mode))
 

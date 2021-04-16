@@ -83,6 +83,7 @@ git config --global alias.de    "ediff"
 git config --global alias.dex   "ediffx"
 git config --global alias.ds    "diff --stat"
 git config --global alias.mt    "mergetool"
+git config --global alias.mte   "mergetool --tool=emacs"
 git config --global alias.mn    "merge --no-ff"
 git config --global alias.cp    "cherry-pick"
 git config --global alias.cpn   "cherry-pick -n"
@@ -138,6 +139,10 @@ git config --global difftool.prompt false
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode true
+git config --global merge.tool emacs
+git config --global mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.emacs.trustExitCode true
+
 git config --global mergetool.keepBackup false
 
 git config --global push.default simple

@@ -35,6 +35,7 @@ git config alias.de    "ediff"
 git config alias.dex   "ediffx"
 git config alias.ds    "diff --stat"
 git config alias.mt    "mergetool"
+git config alias.mte   "mergetool --tool=emacs"
 git config alias.cp    "cherry-pick"
 git config alias.cpn   "cherry-pick -n"
 git config alias.rb    "rebase"
@@ -63,6 +64,10 @@ git config difftool.prompt false
 git config merge.tool extmerge
 git config mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config mergetool.extmerge.trustExitCode true
+git config merge.tool emacs
+git config mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config mergetool.emacs.trustExitCode true
+
 git config mergetool.keepBackup false
 
 

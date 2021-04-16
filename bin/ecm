@@ -1,0 +1,3 @@
+#!/bin/sh
+
+emacsclient -c -e '(progn (magit-status) (delete-other-windows))'

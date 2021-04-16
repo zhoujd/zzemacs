@@ -111,3 +111,8 @@ Xfce
         Name: Emacs Shell
         Description: Open Emacs
         Command: emacsclient -c %F
+
+16. Disable evolution-alarm-notify
+
+        $ xfce4-settings-manager
+        ## uncheck -> Session and Startup -> Application autostart -> evolution alarm notify

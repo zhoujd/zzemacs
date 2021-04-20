@@ -7,4 +7,5 @@ Github
         ## https://github.com/<username>/<repository>/tarball/<version>
         $ wget https://github.com/OpenVisualCloud/VCAC-SW-Analytics/tarball/1ce455db80e20b544b9d9e67176636e13f3f42f0
         $ wget https://codeload.github.com/OpenVisualCloud/VCAC-SW-Analytics/tar.gz/1ce455db80e20b544b9d9e67176636e13f3f42f0
-        $ wget https://codeload.github.com/OpenVisualCloud/VCAC-SW-Analytics/legacy.tar.gz/1ce455db80e20b544b9d9e67176636e13f3f42f0
+        $ wget -O - https://codeload.github.com/OpenVisualCloud/VCAC-SW-Analytics/legacy.tar.gz/1ce455db80e20b544b9d9e67176636e13f3f42f0 | tar xz
+        $ curl -L  https://codeload.github.com/OpenVisualCloud/VCAC-SW-Analytics/tar.gz/1ce455db80e20b544b9d9e67176636e13f3f42f0 | tar xz --strip-components=1

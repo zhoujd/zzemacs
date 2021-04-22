@@ -147,6 +147,9 @@ git config --global mergetool.keepBackup false
 
 git config --global push.default simple
 
+## requires git v1.7.10+
+git config --global include.path "~/.gitconfig.url"
+
 ## update gitconfig for cmd using
 if [ "$OS" = "Windows_NT" ] ; then
     if [ ! $(cd "$HOME" ; pwd -W) = $(cd $USERPROFILE ; pwd -W) ] ; then

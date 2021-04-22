@@ -148,7 +148,10 @@ git config --global mergetool.keepBackup false
 git config --global push.default simple
 
 ## requires git v1.7.10+
-git config --global include.path "~/.gitconfig.url"
+GITCONFIG_URL=~/.gitconfig.url
+if [ -f $GITCONFIG_URL ]; then
+    git config --global include.path $GITCONFIG_URL
+fi
 
 ## update gitconfig for cmd using
 if [ "$OS" = "Windows_NT" ] ; then

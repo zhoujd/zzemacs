@@ -39,6 +39,7 @@ install_package_ubuntu() {
     sudo apt install -y xautomation ## xte "mouseclick 4"
     sudo apt install -y planner
     sudo apt install -y dconf-cli
+    sudo apt install -y trash-cli htop neofetch ncdu
 }
 
 ##package for centos

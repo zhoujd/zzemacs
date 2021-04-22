@@ -17,16 +17,14 @@ main() {
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"
         DIFF_TOOL_2="p4merge $*"
-        DIFF_TOOL_3="vim -d $*"
 
         DIFF_SELECT=$DIFF_TOOL_0
     else
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"
         DIFF_TOOL_2="p4merge $*"
-        DIFF_TOOL_3="vim -d $*"
 
-        DIFF_SELECT=$DIFF_TOOL_2
+        DIFF_SELECT=$DIFF_TOOL_1
     fi
 
     $DIFF_SELECT

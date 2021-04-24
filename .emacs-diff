@@ -1,6 +1,9 @@
 ;;; ediff sample file for git/hg diff-merge
 ;;;
 
+;; Translate `C-h' to Backspace
+(keyboard-translate ?\C-h ?\C-?)
+
 ;; UI setting
 (if (fboundp 'menu-bar-mode)     (menu-bar-mode -1))
 (if (fboundp 'blink-cursor-mode) (blink-cursor-mode -1))
@@ -32,6 +35,17 @@
 ;; Color setting
 (set-face-background 'default "black")
 (set-face-foreground 'default "white")
+
+;; Display local-mode calendar
+(setq display-time-string-forms
+      '("["24-hours":"minutes","dayname","monthname" "day","year"]"))
+(display-time)
+
+(unless (version< emacs-version "23.2")
+  (setq global-mode-string (remove 'display-time-string global-mode-string))
+  (setq mode-line-end-spaces
+        (list (propertize " " 'display '(space :align-to (- right 23)))
+              'display-time-string)))
 
 ;; Set ediff style
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -68,6 +82,10 @@
 (global-set-key [S-down]        'shrink-window)
 (global-set-key [S-right]       'enlarge-window-horizontally)
 (global-set-key [S-left]        'shrink-window-horizontally)
+
+;; delete key
+(global-set-key [backspace]     'delete-backward-char)
+(global-set-key [delete]        'delete-char)
 
 
 (provide 'ediff-sample)

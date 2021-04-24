@@ -14,6 +14,6 @@ fi
 EMACS="emacs"
 
 $EMACS --quick \
-       --eval "(load-file \"$ZZEMACS_ROOT/.emacs-ediff\")" \
+       --eval "(load-file \"$ZZEMACS_ROOT/.emacs-diff\")" \
        --eval "(ediff-sample-diff \"$1\" \"$2\")" \
        --eval "(message \"emacs diff finished.\")"

@@ -27,8 +27,5 @@
         vc-setting
         ))
 
-(progn
-  (magit-status)
-  (delete-other-windows))
 
 ;;;; .emacs end here

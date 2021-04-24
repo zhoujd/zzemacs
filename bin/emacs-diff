@@ -6,7 +6,7 @@
 
 # Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
-    ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)/home/jiandon/zzemacs
+    ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)
 else
     ZZEMACS_ROOT=$(cd $(dirname $0)/.. && pwd)
 fi
@@ -14,6 +14,6 @@ fi
 EMACS="emacs"
 
 $EMACS --quick \
-       --eval "(load-file \"$ZZEMACS_ROOT/.emacs-diff\")" \
+       --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
        --eval "(ediff-sample-diff \"$1\" \"$2\")" \
        --eval "(message \"emacs diff finished.\")"

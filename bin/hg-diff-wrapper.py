@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-### parameter desc
-#$child $parent
+# parameter desc
+# $child $parent
 
 import os
 import sys
 import platform
 
-emacs_flag="y"
+emacs_flag = "y"
 
 def diff_extern(a, b):
     diff_select = []
@@ -33,6 +33,7 @@ def diff_extern(a, b):
 
     os.system(" ".join(diff_select))
 
+
 def diff_emacs(a, b):
     strfilepath = os.path.realpath(__file__)
     sysstr = platform.system()
@@ -42,7 +43,7 @@ def diff_emacs(a, b):
         strfilepath = strfilepath.replace("\\", "/")
 
     zzemacs_path = "%s/../" % (os.path.dirname(strfilepath),)
-    elisp_string="(progn \
+    elisp_string = "(progn \
                     (load-file \\\"%s/elisp/ediff-sample.el\\\") \
                     (ediff-sample-diff \\\"%s\\\" \\\"%s\\\") \
                   )" % (zzemacs_path, a, b)
@@ -50,9 +51,10 @@ def diff_emacs(a, b):
     cmd = "emacs --quick --eval \"%s\"" % elisp_string
     os.system(cmd)
 
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print "Using example: %s <diff-A> <diff-B>" % sys.argv[0]
+        print("Using example: %s <diff-A> <diff-B>" % sys.argv[0])
         sys.exit(1)
 
     if emacs_flag == "y" or emacs_flag == "Y":

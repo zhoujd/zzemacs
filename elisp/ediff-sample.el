@@ -41,11 +41,10 @@
       '("["24-hours":"minutes","dayname","monthname" "day","year"]"))
 (display-time)
 
-(unless (version< emacs-version "23.2")
-  (setq global-mode-string (remove 'display-time-string global-mode-string))
-  (setq mode-line-end-spaces
-        (list (propertize " " 'display '(space :align-to (- right 23)))
-              'display-time-string)))
+(setq global-mode-string (remove 'display-time-string global-mode-string))
+(setq mode-line-end-spaces
+      (list (propertize " " 'display '(space :align-to (- right 23)))
+            'display-time-string))
 
 ;; Set ediff style
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

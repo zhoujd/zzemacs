@@ -1,0 +1,34 @@
+;;;; .emacs --- emacs config file
+;;;
+
+(defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))
+  "zzemacs`s path")
+
+(defun zz:load-path (path)
+  "my add to list"
+  (when (not (member path load-path))
+    (add-to-list 'load-path (concat zzemacs-path "/" path))))
+
+(defun zz:load-file (file)
+  "my load file"
+  (load-file (concat zzemacs-path "/" file)))
+
+(defun zz:load-configure (file)
+  "my load configure file"
+  (load-file (concat zzemacs-path "/configure/" file)))
+
+(zz:load-path "configure")
+(mapc (lambda (setting)
+        (require setting)
+        (message "Load %s end ..." setting))
+      '(
+        macro-setting
+        common-setting
+        vc-setting
+        ))
+
+(progn
+  (magit-status)
+  (delete-other-windows))
+
+;;;; .emacs end here

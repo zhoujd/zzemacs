@@ -24,6 +24,7 @@
       '(
         macro-setting
         common-setting
+        server-setting
         env-setting
         cedet-setting
         complete-setting

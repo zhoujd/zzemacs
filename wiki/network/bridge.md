@@ -134,3 +134,7 @@ EOF
 $ sudo systemctl enable systemd-networkd
 $ sudo reboot
 ```
+
+7 QEMU Guide to Bridged Networking
+
+https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md

@@ -1,10 +1,16 @@
 Linux kernel
-==============
+============
 
-1. KGDB on target
+1. Kenerl debug
+   https://www.kernel.org/doc/html/v4.16/dev-tools/kgdb.html
 
-        CONFIG_KGDB = y
-        CONFIG_KGDB_SERIAL_CONSOLE = y
+2. KGDB debug
+   KGDB on target
+
+        # CONFIG_STRICT_KERNEL_RWX is not set
+        CONFIG_FRAME_POINTER=y
+        CONFIG_KGDB=y
+        CONFIG_KGDB_SERIAL_CONSOLE=y
 
         ## add parameter to initrd in grub.cfg (kgdb over console)
         kgdbwait kgdboc=0,9600      ## ttyS0, 9600/115200
@@ -14,7 +20,7 @@ Linux kernel
         echo g > /proc/sysrq-trigger
         SysRq : DEBUG
 
-2. KGDB on host
+    KGDB on host
 
         # gdb vmlinux
         (gdb) set remotebaud 9600

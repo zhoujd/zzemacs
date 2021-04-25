@@ -45,3 +45,20 @@ Linux kernel
         <qemu:arg value='tcp::1234'/>
         </qemu:commandline>
 
+6. Alloc memory
+
+    kmalloc
+        kernel kmalloc is returning a virtual address, not a physical one.
+        Don't know where exactly nor do we care unless we're doing DMA
+
+    alloc_pages
+        If you want to allocate from high memory, use alloc_pages().
+        The alloc_pages() function returns a struct page, and not a pointer to a logical address.
+        Because high memory might not be mapped, the only way to access it might be via the corresponding struct page structure.
+        To obtain an actual pointer, use kmap() to map the high memory into the kernel's logical address space.
+
+    vmalloc
+        If you do not need physically contiguous pagesonly virtually contiguoususe vmalloc()
+
+    slab cache
+        If you are creating and destroying many large data structures, consider setting up a slab cache.

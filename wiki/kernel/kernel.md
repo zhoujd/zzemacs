@@ -3,8 +3,9 @@ Linux kernel
 
 1. Kenerl debug
    https://www.kernel.org/doc/html/v4.16/dev-tools/kgdb.html
+   https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html
 
-2. KGDB debug
+2. Debug with kgdb
    KGDB on target
 
         # CONFIG_STRICT_KERNEL_RWX is not set
@@ -13,10 +14,12 @@ Linux kernel
         CONFIG_KGDB_SERIAL_CONSOLE=y
 
         ## add parameter to initrd in grub.cfg (kgdb over console)
+        ## add to kernel commandline
+        ## check by `cat /proc/cmdline`
         kgdbwait kgdboc=0,9600      ## ttyS0, 9600/115200
 
+        ## Optional: configure kgdboc at runtime with sysfs
         echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
-
         echo g > /proc/sysrq-trigger
         SysRq : DEBUG
 

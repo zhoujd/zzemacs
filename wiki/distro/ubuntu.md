@@ -206,3 +206,7 @@ Ubuntu setting
 22. eBook reader
 
         $ wget https://github.com/johnfactotum/foliate/releases/download/2.6.3/com.github.johnfactotum.foliate_2.6.3_all.deb
+
+23. Ubuntu git kernel repository
+
+        ## https://kernel.ubuntu.com/git/ubuntu/

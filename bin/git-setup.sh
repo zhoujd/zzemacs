@@ -139,11 +139,12 @@ git config --global difftool.prompt false
 git config --global merge.tool extmerge
 
 git config --global mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
-git config --global mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.extmerge.trustExitCode false
 
-git config --global mergetool.trustExitCode false
+git config --global mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config --global mergetool.emacs.trustExitCode false
+
 git config --global mergetool.keepBackup false
-git config --global mergetool.prompt false
 
 git config --global push.default simple
 

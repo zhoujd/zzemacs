@@ -64,11 +64,11 @@ git config difftool.prompt false
 git config merge.tool extmerge
 
 git config mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config mergetool.extmerge.trustExitCode false
 git config mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+git config mergetool.emacs.trustExitCode false
 
-git config mergetool.trustExitCode false
 git config mergetool.keepBackup false
-git config mergetool.prompt false
 
 
 echo git local setup end ...

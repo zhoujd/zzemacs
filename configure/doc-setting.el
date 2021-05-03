@@ -75,6 +75,9 @@
 ;;highlight code in code block
 (setq org-src-fontify-natively t)
 
+;;Github Flavored Markdown exporter for Org Mode
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 
 ;;pandoc mode
 ;;apt install pandoc

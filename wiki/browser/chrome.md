@@ -14,3 +14,7 @@ chrome
 
     Setting -> Advance -> System -> Disable  HW accelerate
     $ google-chrome --disable-gpu
+
+4. Disable restore pages
+
+   $ google-chrome --disable-session-crashed-bubble

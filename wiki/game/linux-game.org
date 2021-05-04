@@ -3,7 +3,7 @@
 * Astromenace 
   https://viewizard.com/download.html#astromenace_linux
 
-  # begin_src
+  #+BEGIN_SRC shell
   Ubuntu/Mint/Debian:
   $ sudo apt-get install astromenace
  
@@ -18,4 +18,4 @@
  
   FreeBSD:
   $ sudo pkg_add -r -v astromenace
-  # end_src
+  #+END_SRC

@@ -2,3 +2,20 @@
 
 * Astromenace 
   https://viewizard.com/download.html#astromenace_linux
+
+  # begin_src
+  Ubuntu/Mint/Debian:
+  $ sudo apt-get install astromenace
+ 
+  Mageia:
+  $ sudo urpmi astromenace
+ 
+  OpenSuse:
+  $ sudo zypper install astromenace
+ 
+  Fedora:
+  $ sudo yum install astromenace
+ 
+  FreeBSD:
+  $ sudo pkg_add -r -v astromenace
+  # end_src

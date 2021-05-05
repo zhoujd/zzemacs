@@ -1,21 +1,21 @@
 # title: Linux Gaming
 
-* Astromenace 
+* Astromenace
   https://viewizard.com/download.html#astromenace_linux
 
   #+BEGIN_SRC shell
   Ubuntu/Mint/Debian:
   $ sudo apt-get install astromenace
- 
+
   Mageia:
   $ sudo urpmi astromenace
- 
+
   OpenSuse:
   $ sudo zypper install astromenace
- 
+
   Fedora:
   $ sudo yum install astromenace
- 
+
   FreeBSD:
   $ sudo pkg_add -r -v astromenace
   #+END_SRC

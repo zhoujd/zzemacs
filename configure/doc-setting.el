@@ -79,6 +79,7 @@
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 
+;;https://github.com/rlister/org-present
 (autoload 'org-present "org-present" nil t)
 (eval-after-load "org-present"
   '(progn

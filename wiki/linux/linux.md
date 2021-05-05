@@ -102,6 +102,16 @@ Linux something
 9. CD/DVD image burning
     mkisofs -r -o sample.iso my_private
 
+    mkdir /mnt/cdrom
+    lsblk -f
+    mount /dev/sr0 /mnt/cdrom
+
+    mount -o loop /CentOS-6.9-x86_64-bin-DVD1.iso /mnt/cdrom
+
+    cat /etc/fstab
+    /CentOS-bin.DVD1.iso  /mnt/cdrom  iso9660  loop,defaults  0   0
+
+
     cdrecord -scanbus ==> you well get dev=*,*,*
     cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso
     cdrecord -v -eject dev=0,0,0 -data cd_image.iso

@@ -193,6 +193,8 @@
   (kbd "C-x C-f") 'zz:find-file
   (kbd "C-x g")   'magit-status
   (kbd "C-c w")   'compare-windows
+  (kbd "C-c ;")   'iedit-mode
+  (kbd "C-c M-;") 'iedit-dwim
   (kbd "%")       'zz:match-paren
 
   [backspace]     'delete-backward-char

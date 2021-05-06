@@ -51,7 +51,9 @@ GO Lang
 
         ## https://github.com/onsi/ginkgo
         $ go get -u github.com/onsi/ginkgo/ginkgo
-
+        or
+        $ go get github.com/onsi/ginkgo/ginkgo
+        $ go get github.com/onsi/gomega/...
 
 7. Install latest go version
 

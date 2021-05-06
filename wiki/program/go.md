@@ -53,7 +53,7 @@ GO Lang
         $ go get -u github.com/onsi/ginkgo/ginkgo
 
 
-7 Install latest go version
+7. Install latest go version
 
         ## in case there is old version of go is installed
         $ sudo apt-get purge golang*

@@ -315,14 +315,14 @@
 (set-face-attribute 'mode-line nil
                     :background "#353644"
                     :foreground "white"
-                    :box '(:line-width 4 :color "#353644")
+                    :box '(:line-width 3 :color "#353644")
                     :overline nil
                     :underline nil)
 
 (set-face-attribute 'mode-line-inactive nil
                     :background "#565063"
                     :foreground "white"
-                    :box '(:line-width 4 :color "#565063")
+                    :box '(:line-width 3 :color "#565063")
                     :overline nil
                     :underline nil)
 

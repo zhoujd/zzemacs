@@ -1,0 +1,8 @@
+#+title: Emacs daemon
+
+1. Enable emacs daemon with systemctl
+   https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd/
+
+#+BEGIN_SRC
+systemctl --user enable --now emacs
+#+END_SRC

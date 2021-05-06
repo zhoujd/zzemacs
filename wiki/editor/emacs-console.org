@@ -1,6 +1,6 @@
 #+TITLE: Emacs Console Key setting
 #+AUTHOR: zhoujd
-#+EMAIL: zjd-403@163.com
+#+EMAIL: zchrzhou@gmail.com
 
 Emacs Ctrl modifiers don't work in console
 

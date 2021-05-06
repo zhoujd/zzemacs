@@ -1,126 +1,32 @@
 #!/bin/bash
 
 ## https://www.emacswiki.org/emacs/EmacsAsDaemon
-
-EMACS_SRV_UBUNTU=~/.config/systemd/user/emacs.service
-EMACS_SRV_CENTOS=/usr/lib/systemd/system/emacs@.service
-
-install_ubuntu() {
-    echo "Setup $EMACS_SRV_UBUNTU"
-    mkdir -p ~/.config/systemd/user
-    tee $EMACS_SRV_UBUNTU  <<EOF
-[Unit]
-Description=Emacs text editor
-Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/emacs --daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
-Environment=SSH_AUTH_SOCK=%t/keyring/ssh
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-EOF
-
-    echo "Start emacs daemon"
-    systemctl enable --user emacs
-    systemctl start --user emacs
-}
-
-install_centos() {
-    user=jiandon
-    echo "Setup $EMACS_SRV_CENTOS"
-    sudo tee /usr/lib/systemd/system/emacs@.service  <<EOF
-[Unit]
-Description=Emacs: the extensible, self-documenting text editor
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/emacs --daemon --user %u
-ExecStop=/usr/bin/emacsclient --eval "(progn (setq kill-emacs-hook 'nil) (kill-emacs))"
-Restart=always
-User=%i
-WorkingDirectory=%h
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    echo "Start emacs daemon"
-    systemctl daemon-reload
-    systemctl enable emacs@${user}
-    systemctl start emacs@${user}
-}
-
-
+## https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd
 
 install() {
-    case $1 in
-        ubuntu )
-            install_ubuntu
-            ;;
-        centos )
-            install_centos
-            ;;
-        * )
-            echo "$0 install {ubuntu|centos}"
-            ;;
-    esac
+    echo "Install emacs daemon"
+    systemctl --user enable --now emacs
 }
 
 uninstall() {
-    case $1 in
-        ubuntu )
-            systemctl stop emacs
-            systemctl disable emacs
-            rm -f $EMACS_SRV_UBUNTU
-            ;;
-        centos )
-            systemctl stop emacs
-            systemctl disable emacs@${user}
-            sudo rm $EMACS_SRV_CENTOS
-            ;;
-        * )
-            echo "$0 install {ubuntu|centos}"
-            ;;
-    esac
+    echo "Uninstall emacs daemon"
+    systemctl --user disable --now emacs
 }
 
 stop() {
     echo "Stop emacs daemon"
-    emacsclient -e '(save-buffers-kill-emacs)'
-    emacsclient -e '(kill-emacs)'
-    echo "Wait 5s"
-    sleep 5s
-    echo "killall emacs"
-    pkill -9 emacs
+    systemctl --user stop --now emacs
 }
 
 start() {
     echo "Start emacs daemon"
-    case $1 in
-        ubuntu )
-            systemctl start --user emacs
-            ;;
-        centos )
-            user=jiandon
-            systemctl start emacs@${user}
-            ;;
-        daemon )
-            emacs --fg-daemon
-            ;;
-        * )
-            echo "$0 start {ubuntu|centos|daemon}"
-            ;;
-    esac
+    systemctl --user start --now emacs
 }
 
 restart() {
     echo "Restart emacs daemon"
     stop
-    start $1
+    start
 }
 
 status() {
@@ -129,24 +35,24 @@ status() {
 
 case $1 in
     install )
-        install $2
+        install
         ;;
     uninstall )
-        uninstall $2
+        uninstall
         ;;
     start )
-        start $2
+        start
         ;;
     stop )
         stop
         ;;
     restart )
-        restart $2
+        restart
         ;;
     status )
         status
         ;;
     * )
-        echo "Usage: $0 {install|start|stop|restart|status}"
+        echo "Usage: $(basename $0) {install|uninstall|start|stop|restart|status}"
         ;;
 esac

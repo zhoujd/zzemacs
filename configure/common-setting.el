@@ -335,7 +335,8 @@
 (unless (version< emacs-version "23.2")
   (setq global-mode-string (remove 'display-time-string global-mode-string))
   (setq mode-line-end-spaces
-        (list (propertize " " 'display `((space :align-to (- right ,(string-width display-time-string)))))
+        (list (propertize " " 'display `((space :align-to (- (- right right-fringe right-margin)
+                                                             ,(string-width display-time-string)))))
               (propertize display-time-string 'face '(:foreground "#5DD8FF")))))
 
 ;;embrace light show

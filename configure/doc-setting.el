@@ -96,6 +96,9 @@
                  (org-present-show-cursor)
                  (org-present-read-write)))))
 
+;;https://webonastick.com/emacs-lisp/hide-mode-line.el
+(autoload 'hide-mode-line "hide-mode-line" nil t)
+
 ;;pandoc mode
 ;;apt install pandoc
 (zz:load-path "site-lisp/pandoc-mode")

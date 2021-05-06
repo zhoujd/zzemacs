@@ -131,7 +131,7 @@
     [C-f10]           'whitespace-cleanup
     [M-f10]           'whitespace-cleanup-region
     (kbd "C-x <f10>") 'menu-bar-open
-    (kbd "C-c <f10>") 'menu-bar-mode
+    (kbd "C-c <f10>") 'hide-mode-line
     "f10 key binding")
 
 (define-fn-key (gethash "f11" fn-key-table)

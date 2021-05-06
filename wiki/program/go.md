@@ -51,3 +51,23 @@ GO Lang
 
         ## https://github.com/onsi/ginkgo
         $ go get -u github.com/onsi/ginkgo/ginkgo
+
+
+7 Install latest go version
+
+        ## in case there is old version of go is installed
+        $ sudo apt-get purge golang*
+
+        ## get latest version from https://golang.org/dl/
+        $ tar_name="go1.16.3.linux-amd64.tar.gz"
+        $ wget https://golang.org/dl/$tar_name
+        $ tar -xvf $tar_name
+        $ rm -f $tar_name
+        $ sudo rm -rf /usr/local/go
+        $ sudo mv go /usr/local
+
+        ## Add following lines into `.bashrc` or `.zshrc`
+        $ mkdir -p $HOME/go
+        $ export GOPATH=$HOME/go
+        $ export GOROOT=/usr/local/go
+        $ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin

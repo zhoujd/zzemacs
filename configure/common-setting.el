@@ -328,7 +328,7 @@
 
 ;;display local-mode calendar
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %b %d %H:%M WW%W")
+      '((propertize (format-time-string "%a %b %d %H:%M WW%U")
                     'face 'font-lock-builtin-face)))
 (display-time)
 

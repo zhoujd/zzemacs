@@ -46,3 +46,8 @@ GO Lang
 
         $ mkdir -p api build cmd deployments docs internal pkg scripts test third-party tools vendor
         $ touch Makefile README.md
+
+6. Ginkgo Go testing framework
+
+        ## https://github.com/onsi/ginkgo
+        $ go get -u github.com/onsi/ginkgo/ginkgo

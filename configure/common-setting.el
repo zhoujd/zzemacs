@@ -278,11 +278,11 @@
 
 (setq frame-title-format
       '(:eval
-	(format "%s@%s [Emacs%s] %s"
-		(user-login-name)
-		(system-name)
-		(nth 2 (split-string (version)))
-		(zz:fname-title-string))))
+        (format "%s@%s [Emacs%s] %s"
+                (user-login-name)
+                (system-name)
+                (nth 2 (split-string (version)))
+                (zz:fname-title-string))))
 
 ;;suppress GUI features
 (setq use-file-dialog nil)
@@ -311,15 +311,31 @@
 (auto-compression-mode t)
 (column-number-mode t)
 
+;;mode-line face attribute
+(set-face-attribute 'mode-line nil
+                    :background "#353644"
+                    :foreground "white"
+                    :box '(:line-width 2 :color "#353644")
+                    :overline nil
+                    :underline nil)
+
+(set-face-attribute 'mode-line-inactive nil
+                    :background "#565063"
+                    :foreground "white"
+                    :box '(:line-width 2 :color "#565063")
+                    :overline nil
+                    :underline nil)
+
 ;;display local-mode calendar
 (setq display-time-string-forms
-      '("["24-hours":"minutes","dayname","monthname" "day","year"]"))
+      '((propertize (format-time-string "%a %b %d %H:%M WW%W")
+                    'face 'font-lock-builtin-face)))
 (display-time)
 
 (unless (version< emacs-version "23.2")
   (setq global-mode-string (remove 'display-time-string global-mode-string))
   (setq mode-line-end-spaces
-        (list (propertize " " 'display '(space :align-to (- right 23)))
+        (list (propertize " " 'display '(space :align-to (- right 22)))
               'display-time-string)))
 
 ;;embrace light show

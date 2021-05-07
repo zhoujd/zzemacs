@@ -328,8 +328,7 @@
 
 ;;display local-mode calendar
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %b %d %H:%M WW%U")
-                    'face 'font-lock-builtin-face)))
+      '((propertize (format-time-string "%a %b %d %H:%M WW%U"))))
 (display-time)
 
 (unless (version< emacs-version "23.2")

@@ -5,4 +5,7 @@
 
 #+BEGIN_SRC
 systemctl --user enable --now emacs
+systemctl --user disable --now emacs
+systemctl --user start --now emacs
+systemctl --user stop --now emacs
 #+END_SRC

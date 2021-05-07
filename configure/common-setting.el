@@ -337,7 +337,7 @@
   (setq mode-line-end-spaces
         (list (propertize " " 'display `((space :align-to (- (- right right-fringe right-margin)
                                                              ,(string-width display-time-string)))))
-              (propertize display-time-string 'face '(:foreground "#5DD8FF")))))
+              'display-time-string)))
 
 ;;embrace light show
 (show-paren-mode t)

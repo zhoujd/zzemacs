@@ -326,17 +326,15 @@
                     :overline nil
                     :underline nil)
 
-;;display local-mode calendar
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %H:%M WW%U"))))
 (display-time)
 
-(unless (version< emacs-version "23.2")
-  (setq global-mode-string (remove 'display-time-string global-mode-string))
-  (setq mode-line-end-spaces
-        (list (propertize " " 'display `((space :align-to (- (- right right-fringe right-margin)
-                                                             ,(string-width display-time-string)))))
-              'display-time-string)))
+(setq global-mode-string (remove 'display-time-string global-mode-string))
+(setq mode-line-end-spaces
+      (list (propertize " " 'display `((space :align-to (- (- right right-fringe right-margin)
+                                                           ,(string-width display-time-string)))))
+            'display-time-string))
 
 ;;embrace light show
 (show-paren-mode t)

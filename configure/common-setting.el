@@ -332,7 +332,7 @@
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))
 (setq mode-line-end-spaces
-      (list (propertize " " 'display `((space :align-to (- (- right right-fringe right-margin)
+      (list (propertize " " 'display `((space :align-to (- (- right right-fringe)
                                                            ,(string-width display-time-string)))))
             'display-time-string))
 

@@ -138,6 +138,22 @@
 (setq tramp-shell-prompt-pattern   ;;to work with zsh prompt
       "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 (setq tramp-default-method (if-ms-windows "plink" "ssh"))
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-methods
+               '("sshx11"
+                 (tramp-login-program        "ssh")
+                 (tramp-login-args           (("-l" "%u") ("-p" "%p") ("%c")
+                                              ("-e" "none") ("-X") ("%h")))
+                 (tramp-async-args           (("-q")))
+                 (tramp-remote-shell         "/bin/sh")
+                 (tramp-remote-shell-login   ("-l"))
+                 (tramp-remote-shell-args    ("-c"))
+                 (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
+                                              ("-o" "UserKnownHostsFile=/dev/null")
+                                              ("-o" "StrictHostKeyChecking=no")
+                                              ("-o" "ForwardX11=yes")))
+                 (tramp-default-port         22)))
+  (tramp-set-completion-function "sshx11" tramp-completion-function-alist-ssh))
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")

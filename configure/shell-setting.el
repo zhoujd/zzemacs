@@ -509,11 +509,10 @@ Dmitriy Igrishin's patched version of comint.el."
     ))
 
 ;;remote term
-(defun zz:remote-term (host port)
-  "Connect to a remote host by SSH."
-  (interactive "sHost: \nsPort (default 22): ")
-  (let* ((port (if (equal port "") "22" port))
-         (multi-term-program "ssh")
+(defun zz:remote-term (host)
+  "Connect to a remote host by multi-term."
+  (interactive "sHost: ")
+  (let* ((multi-term-program "ssh")
          (multi-term-program-switches (format "%s" host)))
     (multi-term)
     ))

@@ -82,7 +82,7 @@
   (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
   (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
   (kbd "M-0")     (zz:quick-buffer zz:term-10 "*terminal<10>*")
-  (kbd "M--")     'zz:cd-shell
+  (kbd "M--")     'zz:ssh
   (kbd "M-=")     'zz:remote-term
   (kbd "M-\\")    'multi-term
   (kbd "M-DEL")   'multi-term

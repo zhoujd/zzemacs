@@ -495,8 +495,8 @@ Dmitriy Igrishin's patched version of comint.el."
             (company-mode t)
             (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
 
-;;remote term
-(defun zz:remote-term (host port)
+;;remote ssh
+(defun zz:ssh (host port)
   "Connect to a remote host by SSH."
   (interactive "sHost: \nsPort (default 22): ")
   (let* ((port (if (equal port "") "22" port))
@@ -506,6 +506,16 @@ Dmitriy Igrishin's patched version of comint.el."
     (term-mode)
     (term-char-mode)
     (switch-to-buffer (format "*%s*" buf))
+    ))
+
+;;remote term
+(defun zz:remote-term (host port)
+  "Connect to a remote host by SSH."
+  (interactive "sHost: \nsPort (default 22): ")
+  (let* ((port (if (equal port "") "22" port))
+         (multi-term-program "ssh")
+         (multi-term-program-switches (format "%s" host)))
+    (multi-term)
     ))
 
 

@@ -36,6 +36,7 @@
         ediff-setting
         other-setting
         shell-setting
+        term-setting
         sample-setting
         w3m-setting
         doc-setting

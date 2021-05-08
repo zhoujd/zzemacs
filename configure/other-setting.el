@@ -134,9 +134,7 @@
 ;;;tramp setting
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
-(require 'tramp)                   ;;run if tramp exists && not loaded yet.
-(setq tramp-shell-prompt-pattern   ;;to work with zsh prompt
-      "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+(require 'tramp)
 (add-to-list 'tramp-methods
              '("sshx11"
                (tramp-login-program        "ssh")

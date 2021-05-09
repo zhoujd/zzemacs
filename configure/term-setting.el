@@ -188,13 +188,9 @@
   (interactive)
   (let* ((default-directory (file-name-as-directory
                              (ido-read-directory-name "Directory: ")))
-         (switches (list "-c" (format "cd %s; bash -l" default-directory)))
-         (buf (format "term:%s" default-directory)))
-    (set-buffer (apply 'make-term buf "/bin/bash" nil switches))
-    (term-mode)
-    (term-char-mode)
-    (switch-to-buffer (format "*%s*" buf))
-    ))
+         (multi-term-default-dir default-directory))
+        (multi-term)
+        ))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

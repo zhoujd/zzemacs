@@ -196,6 +196,15 @@
     (switch-to-buffer (format "*%s*" buf))
     ))
 
+;;auto kill term buffer
+(add-hook 'term-exec-hook (lambda ()
+            (let* ((buff (current-buffer))
+                 (proc (get-buffer-process buff)))
+            (lexical-let ((buff buff))
+               (set-process-sentinel proc (lambda (process event)
+                            (if (string= event "finished\n")
+                                       (kill-buffer buff))))))))
+
 
 (provide 'term-setting)
 

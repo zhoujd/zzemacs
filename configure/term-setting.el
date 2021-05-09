@@ -181,16 +181,15 @@
   (interactive "sHost: ")
   (let* ((multi-term-program "ssh")
          (multi-term-program-switches (format "%s" host)))
-    (multi-term)
-    ))
+    (multi-term)))
 
+;;change dir term
 (defun zz:cd-term ()
   (interactive)
   (let* ((default-directory (file-name-as-directory
                              (ido-read-directory-name "Directory: ")))
          (multi-term-default-dir default-directory))
-        (multi-term)
-        ))
+        (multi-term)))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

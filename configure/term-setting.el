@@ -180,8 +180,11 @@
   "Connect to a remote host by multi-term."
   (interactive "sHost: ")
   (let* ((multi-term-program "ssh")
-         (multi-term-program-switches (format "%s" host)))
-    (multi-term)))
+         (multi-term-program-switches (format "%s" host))
+         (default-directory "~"))
+    (multi-term)
+    (setq default-directory (format "/%s:%s:" tramp-default-method  host))
+    ))
 
 ;;change dir term
 (defun zz:cd-term ()

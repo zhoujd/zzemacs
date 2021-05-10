@@ -3,9 +3,6 @@
 
 (zz:load-path "site-lisp")
 
-;;cl-lib
-(require 'cl-lib)
-
 ;;hydra
 (zz:load-path "site-lisp/hydra")
 (require 'hydra)

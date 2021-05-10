@@ -3,17 +3,20 @@
 
 (zz:load-path "site-lisp")
 
-;;hydra 0.14.0
+;;cl-lib
+(require 'cl-lib)
+
+;;hydra
 (zz:load-path "site-lisp/hydra")
 (require 'hydra)
 
-;;dash 2.15.0
+;;dash
 (require 'dash)
 
-;;s 1.9.0
+;;s
 (require 's)
 
-;;f 0.17.1
+;;f
 (require 'f)
 
 

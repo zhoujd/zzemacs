@@ -52,7 +52,6 @@
 ;;https://github.com/emacs-helm/helm-descbinds
 ;;C-h b
 (require 'helm-descbinds)
-(require 'multi-web-mode)
 (helm-descbinds-mode)
 
 ;;https://github.com/ShingoFukuyama/helm-swoop
@@ -138,7 +137,7 @@
 (require 'sudo-edit)
 (defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 
-  
+
 (provide 'helm-setting)
 
 ;;; helm-setting.el ends here

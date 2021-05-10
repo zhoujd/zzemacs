@@ -4,7 +4,7 @@
 (zz:load-path "elisp")
 (require 'apply-keys)
 
-;;;some keymap define by emacs default
+;;some keymap define by emacs default
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
 ;;esc-map           --- <ESC>
 ;;help-map          --- C-h
@@ -20,7 +20,7 @@
 ;;facemenu-keymap   --- M-o
 ;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
 
-;;;;function key setting on console
+;;function key setting on console
 ;;suspend-frame ctrl-x ctrl-z
 (defvar ctrl-z-map       (make-sparse-keymap) "ctrl-z-map for self functions.")
 (defvar ctrl-x-fn-map    (make-sparse-keymap) "ctrl-x f1/f12")

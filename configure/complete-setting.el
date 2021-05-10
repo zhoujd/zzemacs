@@ -5,11 +5,11 @@
 
 ;; list methold in current buffer
 ;; switch buffer in h & cpp file
-(require 'eassist)
-(defkeys-map eassist-mode-map
-  ((kbd "TAB") 'eassist-jump-to-method)
-  ((kbd "C-b") 'eassist-backspace-pressed)
-  ((kbd "C-q") 'eassist-escape))
+;(require 'eassist)
+;(defkeys-map eassist-mode-map
+;  ((kbd "TAB") 'eassist-jump-to-method)
+;  ((kbd "C-b") 'eassist-backspace-pressed)
+;  ((kbd "C-q") 'eassist-escape))
 
 ;; Semantic DataBase
 (setq semanticdb-default-save-directory

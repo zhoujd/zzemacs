@@ -109,26 +109,13 @@
     (zz:console-font (nth 0 zz:cn-font-list)))
 
 ;;color theme
-(zz:load-path "site-lisp/color-theme")
-(require 'color-theme)
-(require 'color-theme-blackboard)
-(require 'color-theme-tango)
-(color-theme-initialize)
+(zz:load-path "site-lisp/emacs-color-themes")
+(require 'emacs-color-themes)
+(load-theme 'junio t)
 
-(setq color-theme-choices '(color-theme-gnome2
-                            color-theme-blackboard
-                            color-theme-blackboard2
-                            color-theme-tango-dark
-                            ))
-
-(if window-system
-    (progn
-      (funcall (nth 3 color-theme-choices))
-      ;(funcall (nth (random (length color-theme-choices)) color-theme-choices))
-      )
-    (progn
-      (set-face-background 'default "black")
-      (set-face-foreground 'default "gray")))
+(unless window-system
+  (set-face-background 'default "black")
+  (set-face-foreground 'default "gray"))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")

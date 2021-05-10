@@ -195,8 +195,10 @@
   (kbd "C-c w")   'compare-windows
   (kbd "C-c ;")   'iedit-mode
   (kbd "C-c M-;") 'iedit-dwim
+  (kbd "C-c M-h") 'discover-my-major
   (kbd "%")       'zz:match-paren
 
+  (kbd "C-h")     'delete-backward-char
   [backspace]     'delete-backward-char
   [delete]        'delete-char
 
@@ -216,7 +218,6 @@
   (kbd "M-X")     'smex
   (kbd "C-x M-x") 'execute-extended-command
   (kbd "C-c M-x") 'smex-major-mode-commands
-  (kbd "C-h")     'delete-backward-char
   ))
 
 ;;helm key setting

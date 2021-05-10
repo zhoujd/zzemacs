@@ -366,6 +366,9 @@
 (global-set-key [remap query-replace] 'anzu-query-replace)
 (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
 
+;;https://framagit.org/steckerhalter/discover-my-major
+(require 'discover-my-major)
+
 
 (provide 'other-setting)
 

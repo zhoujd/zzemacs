@@ -24,6 +24,7 @@
 (defkeys-map company-active-map
   ([return]    nil)
   ((kbd "RET") nil)
+  ((kbd "C-h") 'delete-backward-char)
   ([tab]       'company-complete-selection)
   ((kbd "TAB") 'company-complete-selection))
 

@@ -10,8 +10,8 @@
 (setq evil-toggle-key "C-|")
 (require 'evil)
 
-;;toggle evil mode
-(defun zz:toggle-evil-mode ()
+;;evil toggle
+(defun zz:evil-toggle ()
   (interactive)
   (if (bound-and-true-p evil-local-mode)
       (progn

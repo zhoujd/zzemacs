@@ -111,7 +111,7 @@
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
-(load-theme 'blackboard t)
+(load-theme 'zz t)
 
 (unless window-system
   (set-face-background 'default "black")

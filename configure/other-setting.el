@@ -369,6 +369,9 @@
 ;;https://framagit.org/steckerhalter/discover-my-major
 (require 'discover-my-major)
 
+;;https://github.com/mickeynp/discover.el
+(require 'discover)
+
 
 (provide 'other-setting)
 

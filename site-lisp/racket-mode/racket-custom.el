@@ -26,7 +26,7 @@
 ;; In other words defcustom of racket-foo-bar has a :tag "Foo Bar".
 
 (require 'rx)
-(require 'sh-script) ;for sh-heredoc-face
+(require 'sh-script) ;for sh-heredoc
 
 (defgroup racket nil
   "Editing and REPL for the Racket language."
@@ -290,7 +290,7 @@ level quieter. That way you can set the '* topic to a level like
   "Selfeval Face")
 
 (defface-racket racket-here-string-face
-  '((t (:inherit sh-heredoc-face)))
+  '((t (:inherit sh-heredoc)))
   "Face for here strings."
   "Here String Face")
 

@@ -25,6 +25,7 @@
         macro-setting
         common-setting
         server-setting
+        lib-setting
         env-setting
         cedet-setting
         complete-setting

@@ -5,7 +5,7 @@ python resource
     - path.py(http://pypi.python.org/pypi/path.py)
 
             from path import path
-            d = path('/home/guido/bin')
+            d = path('~/bin')
             for f in d.files('*.py'):
                 f.chmod(0755)
 

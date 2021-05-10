@@ -10,7 +10,7 @@
   (kbd "1")       (lookup-key global-map [f1])
   (kbd "2")       (lookup-key global-map [f2])
   (kbd "3")       (lookup-key global-map [f3])
-  (kbd "4")       (lookup-key f4-map     [f4])
+  (kbd "4")       (lookup-key global-map [f4])
   (kbd "5")       (lookup-key global-map [f5])
   (kbd "6")       (lookup-key global-map [f6])
   (kbd "7")       (lookup-key global-map [f7])

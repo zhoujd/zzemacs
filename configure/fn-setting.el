@@ -45,8 +45,8 @@
 
 ;;define fn key setting
 (define-fn-key (gethash "f1" fn-key-table)
-    [f1]              nil
-    [S-f1]            'zz:toggle-evil-mode
+    [f1]              help-map
+    [S-f1]            'zz:evil-toggle
     [C-f1]            'magit-status
     [M-f1]            'monky-status
     (kbd "C-x <f1>")  nil
@@ -72,7 +72,7 @@
     "f3 key binding")
 
 (define-fn-key (gethash "f4" fn-key-table)
-    [f4]              nil
+    [f4]              f4-map
     [S-f4]            'zz:undo-kill-buffer
     [C-f4]            'zz:helm-find
     [M-f4]            'zz:helm-grep-ag

@@ -371,6 +371,7 @@
 
 ;;https://github.com/mickeynp/discover.el
 (require 'discover)
+(global-discover-mode t)
 
 
 (provide 'other-setting)

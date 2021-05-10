@@ -4,20 +4,21 @@
 (zz:load-path "elisp")
 (require 'apply-keys)
 
-;;;;some keymap define by emacs default
-;;;esc-map           --- <ESC>
-;;;help-map          --- C-h
-;;;mode-specific-map --- C-c
-;;;ctl-x-map         --- C-x
-;;;mule-keymap       --- C-x <RET>
-;;;ctl-x-4-map       --- C-x 4
-;;;ctl-x-5-map       --- C-x 5
-;;;2C-mode-map       --- C-x 6
-;;;vc-prefix-map     --- C-x v
-;;;goto-map          --- M-g
-;;;search-map        --- M-s
-;;;facemenu-keymap   --- M-o
-;;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
+;;;some keymap define by emacs default
+;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Prefix-Keys.html
+;;esc-map           --- <ESC>
+;;help-map          --- C-h
+;;mode-specific-map --- C-c
+;;ctl-x-map         --- C-x
+;;mule-keymap       --- C-x <RET>
+;;ctl-x-4-map       --- C-x 4
+;;ctl-x-5-map       --- C-x 5
+;;2C-mode-map       --- C-x 6
+;;vc-prefix-map     --- C-x v
+;;goto-map          --- M-g
+;;search-map        --- M-s
+;;facemenu-keymap   --- M-o
+;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
 
 ;;;;function key setting on console
 ;;suspend-frame ctrl-x ctrl-z

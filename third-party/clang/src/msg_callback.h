@@ -10,11 +10,11 @@
 void completion_AcceptRequest(completion_Session *session, FILE *fp);
 
 
-/* 
+/*
    MESSAGE HANDLERS: callback to handle recieved requests
 
    COMPLETION: Do code completion at a specified point.
-   Message format: 
+   Message format:
         row:[#row#]
         column:[#column#]
         source_length:[#src_length#]

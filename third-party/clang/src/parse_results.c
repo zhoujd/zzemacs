@@ -11,7 +11,7 @@
  * string to fp, that's the text that a user would be expected to type to get
  * this code-completion result. TypedText is the keyword for the client program
  * (emacs script in this case) to filter completion results.
- * 
+ *
  * This function returns the number of completion chunks on success, or it
  * would return an -1 if no TypedText chunk was found.
  */
@@ -25,7 +25,7 @@ static int completion_printCompletionHeadTerm(
     /* inspect all chunks only to find the TypedText chunk */
     for ( ; i_chunk < n_chunks; i_chunk++)
     {
-        if (clang_getCompletionChunkKind(completion_string, i_chunk) 
+        if (clang_getCompletionChunkKind(completion_string, i_chunk)
             == CXCompletionChunk_TypedText)
         {
             /* We got it, just dump it to fp */
@@ -68,14 +68,14 @@ static void completion_printAllCompletionTerms(
         /* get the type and completion text of this chunk */
         chk_kind = clang_getCompletionChunkKind(completion_string, i_chunk);
         chk_text = clang_getCompletionChunkText(completion_string, i_chunk);
-        
+
         /* differenct kinds of chunks has various output formats */
         switch (chk_kind)
         {
         case CXCompletionChunk_Placeholder:
             fprintf(fp, "<#%s#>", clang_getCString(chk_text));
             break;
-                
+
         case CXCompletionChunk_ResultType:
             fprintf(fp, "[#%s#]", clang_getCString(chk_text));
             break;
@@ -88,7 +88,7 @@ static void completion_printAllCompletionTerms(
                 fp);
             fprintf(fp, "#}");
             break;
-                
+
         default:
             fprintf(fp, "%s", clang_getCString(chk_text));
         }
@@ -106,9 +106,9 @@ void completion_printCompletionLine(
     if (completion_printCompletionHeadTerm(completion_string, fp) > 1)
     {
         /* If there's not only one TypedText chunk in this completion string,
-         * we still have a lot of info to dump: 
+         * we still have a lot of info to dump:
          *
-         *     COMPLETION: typed_text : ##infos## 
+         *     COMPLETION: typed_text : ##infos##
          */
         fprintf(fp, " : ");
         completion_printAllCompletionTerms(completion_string, fp);

@@ -44,12 +44,12 @@ typedef struct __completion_Session_struct
 
 
 
-/* Initialize basic information for completion, such as source filename, initial source 
+/* Initialize basic information for completion, such as source filename, initial source
    buffer and command line arguments to pass to clang */
-void 
+void
 __initialize_completionSession(int argc, char *argv[], completion_Session *session);
 
-/* Initialize session object and launch the completion server, preparse the source file and 
+/* Initialize session object and launch the completion server, preparse the source file and
    build the AST for furture code completion requests  */
 void startup_completionSession(int argc, char *argv[], completion_Session *session);
 

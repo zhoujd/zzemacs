@@ -14,16 +14,16 @@ static void __copy_cmdlineArgs(int argc, char *argv[], completion_Session *sessi
     /* copy argv[1..argc-1] to cmdline_args */
     for ( ; i_arg < session->num_args; i_arg++)
     {
-        session->cmdline_args[i_arg] = 
+        session->cmdline_args[i_arg] =
             (char*)calloc(sizeof(char), strlen(argv[i_arg + 1]) + 1);
 
         strcpy(session->cmdline_args[i_arg], argv[i_arg + 1]);
     }
 }
 
-/* Initialize basic information for completion, such as source filename, initial source 
+/* Initialize basic information for completion, such as source filename, initial source
    buffer and command line arguments for clang */
-void 
+void
 __initialize_completionSession(int argc, char *argv[], completion_Session *session)
 {
     /* filename shall be the last parameter */
@@ -36,8 +36,8 @@ __initialize_completionSession(int argc, char *argv[], completion_Session *sessi
 }
 
 
-/* Initialize session object and launch the completion server, preparse the source file and 
-   build the AST for furture code completion requests  
+/* Initialize session object and launch the completion server, preparse the source file and
+   build the AST for furture code completion requests
 */
 void startup_completionSession(int argc, char *argv[], completion_Session *session)
 {
@@ -65,14 +65,14 @@ static struct CXUnsavedFile __get_CXUnsavedFile(const completion_Session *sessio
     return unsaved_files;
 }
 
-CXTranslationUnit 
+CXTranslationUnit
 completion_parseTranslationUnit(completion_Session *session)
 {
     struct CXUnsavedFile unsaved_files = __get_CXUnsavedFile(session);
-    session->cx_tu = 
+    session->cx_tu =
         clang_parseTranslationUnit(
-            session->cx_index, session->src_filename, 
-            (const char * const *) session->cmdline_args, session->num_args, 
+            session->cx_index, session->src_filename,
+            (const char * const *) session->cmdline_args, session->num_args,
             &unsaved_files, 1,
             session->ParseOptions);
 
@@ -82,18 +82,18 @@ completion_parseTranslationUnit(completion_Session *session)
 int completion_reparseTranslationUnit(completion_Session *session)
 {
     struct CXUnsavedFile unsaved_files = __get_CXUnsavedFile(session);
-    return 
+    return
         clang_reparseTranslationUnit(
             session->cx_tu, 1, &unsaved_files, session->ParseOptions);
 }
 
-CXCodeCompleteResults* 
+CXCodeCompleteResults*
 completion_codeCompleteAt(
     completion_Session *session, int line, int column)
 {
     struct CXUnsavedFile unsaved_files = __get_CXUnsavedFile(session);
-    return 
+    return
         clang_codeCompleteAt(
-            session->cx_tu, session->src_filename, line, column, 
+            session->cx_tu, session->src_filename, line, column,
             &unsaved_files, 1, session->CompleteAtOptions);
 }

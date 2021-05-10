@@ -7,7 +7,7 @@
 #include "msg_callback.h"
 
 
-/* This function is intended to help debugging transmition issues, and should 
+/* This function is intended to help debugging transmition issues, and should
    not be called in the final release version. */
 void __dump_session(const completion_Session *session, FILE *fp)
 {
@@ -17,7 +17,7 @@ void __dump_session(const completion_Session *session, FILE *fp)
     }
 
     fprintf(fp, "filename: %s\n"
-                "code:\n%s\n", 
+                "code:\n%s\n",
         session->src_filename, session->src_buffer); fflush(fp);
 }
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
         printf("Source file name must be specified as the last commandline argument\n");
         exit(-1);
     }
-    
+
     startup_completionSession(argc, argv, &session);
 
     for ( ; ; ) {

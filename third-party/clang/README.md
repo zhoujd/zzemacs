@@ -1,8 +1,8 @@
 clang complete
 ==============
 
-1.1 Ubuntu 16.04
-Install llvm-dev and libclang-dev.
+1 Ubuntu LTS
+    Install llvm-dev and libclang-dev.
 
     $ sudo apt-get install -y clang llvm-dev libclang-dev
     $ git clone https://github.com/Golevka/emacs-clang-complete-async
@@ -11,8 +11,8 @@ Install llvm-dev and libclang-dev.
     $ cp clang-complete ~/bin/
     $ cp auto-complete-clang.el ~/.elisp/
 
-1.2 CentOS 7
-Install llvm-devel, clang-devel and zlib.
+2 CentOS
+    Install llvm-devel, clang-devel and zlib.
 
     $ sudo yum install -y llvm-devel clang-devel zlib
     $ git clone https://github.com/Golevka/emacs-clang-complete-async
@@ -21,8 +21,8 @@ Install llvm-devel, clang-devel and zlib.
     $ cp clang-complete ~/bin/
     $ cp auto-complete-clang.el ~/.elisp/
 
-1.3 OSX
-Because XCode does not have enought Clang header files, install clang and llvm with Homebrew.
+3 OSX
+    Because XCode does not have enought Clang header files, install clang and llvm with Homebrew.
 
     $ brew install --with-clang --all-targets --rtti --universal --jit llvm
     $ git clone https://github.com/Golevka/emacs-clang-complete-async

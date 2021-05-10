@@ -22,8 +22,8 @@ static void __read_n_bytes(FILE *fp, char *buffer, int len)
 }
 
 
-/* Read the source file portion of the message to the source code buffer in 
-   specified session object. 
+/* Read the source file portion of the message to the source code buffer in
+   specified session object.
 
    Sourcefile segment always starts with source_length: [#len#], followed by a
    newline character, then the actual source code. Length of the source code is
@@ -39,7 +39,7 @@ static void completion_readSourcefile(completion_Session *session, FILE *fp)
     {
         /* expand the buffer two-fold of source size */
         session->buffer_capacity = source_length * 2;
-        session->src_buffer = 
+        session->src_buffer =
             (char*)realloc(session->src_buffer, session->buffer_capacity);
     }
 
@@ -49,7 +49,7 @@ static void completion_readSourcefile(completion_Session *session, FILE *fp)
 }
 
 
-/* Read completion request (where to complete at and current source code) from message 
+/* Read completion request (where to complete at and current source code) from message
    header and calculate completion candidates.
 
    Message format:
@@ -80,8 +80,8 @@ void completion_doCompletion(completion_Session *session, FILE *fp)
 	    completion_printCodeCompletionResults(res, stdout);
         clang_disposeCodeCompleteResults(res);
     }
-    
-    fprintf(stdout, "$"); fflush(stdout);    /* we need to inform emacs that all 
+
+    fprintf(stdout, "$"); fflush(stdout);    /* we need to inform emacs that all
                                                 candidates has already been sent */
 }
 
@@ -116,7 +116,7 @@ static void completion_freeCmdlineArgs(completion_Session *session)
 
 /* Update command line arguments passing to clang translation unit. Format
    of the coming CMDLINEARGS message is as follows:
-   
+
        num_args: [#n_args#]
        arg1 arg2 ... (there should be n_args items here)
 */
@@ -143,7 +143,7 @@ void completion_doCmdlineArgs(completion_Session *session, FILE *fp)
         strcpy(session->cmdline_args[i_arg], arg);
     }
 
-    /* we have to rebuild our translation units to make these cmdline args changes 
+    /* we have to rebuild our translation units to make these cmdline args changes
        take place */
     clang_disposeTranslationUnit(session->cx_tu);
     completion_parseTranslationUnit(session);
@@ -180,7 +180,7 @@ void completion_doSyntaxCheck(completion_Session *session, FILE *fp)
     fprintf(stdout, "$"); fflush(stdout);    /* end of output */
 }
 
-/* When emacs buffer is killed, a SHUTDOWN message is sent automatically by a hook 
+/* When emacs buffer is killed, a SHUTDOWN message is sent automatically by a hook
    function to inform the completion server (this program) to terminate. */
 void completion_doShutdown(completion_Session *session, FILE *fp)
 {

@@ -250,6 +250,23 @@
   ))
 
 (apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-M-1")   'zz:urxvt
+  (kbd "C-M-2")   'zz:chrome
+  (kbd "C-M-3")   'zz:firefox
+  (kbd "C-M-4")   'zz:meld
+  (kbd "C-M-5")   'zz:rofi-drun
+  (kbd "C-M-6")   'zz:rofi-run
+  (kbd "C-M-7")   'zz:rofi-ssh
+  (kbd "C-M-8")   'zz:rofi-win
+  (kbd "C-M-9")   'zz:thunar
+  (kbd "C-M-0")   'zz:tmux
+  (kbd "C-M--")   'zz:baidu
+  (kbd "C-M-=")   'zz:google
+  ))
+
+(apply-keys-to-map
  help-map
  (list
   (kbd "M-a")     'helm-apropos

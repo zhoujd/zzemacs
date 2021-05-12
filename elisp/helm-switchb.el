@@ -28,7 +28,7 @@
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
-        (kill-buffer (car (split-string cand)))))
+        (kill-buffer (car (split-string cand helm-switchb-separator)))))
 
 (defun helm-switchb-shell-new (candidate)
   (multi-shell-new))

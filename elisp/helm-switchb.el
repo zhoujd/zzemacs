@@ -4,12 +4,16 @@
 (require 'helm)
 (require 'multi-shell)
 
+(defvar helm-switchb-separator "   "
+  "helm switchb separator")
+
 (defmacro helm-switchb-candidate (mode)
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%s  %s"
+        (format "%-25s%s%s"
                 (buffer-name buf)
+                helm-switchb-separator
                 (with-current-buffer (buffer-name buf)
                   default-directory)))
       (cl-remove-if-not
@@ -19,7 +23,7 @@
        (buffer-list)))))
 
 (defun helm-switchb-select (candidate)
-  (switch-to-buffer (car (split-string candidate "  "))))
+  (switch-to-buffer (car (split-string candidate helm-switchb-separator))))
 
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)

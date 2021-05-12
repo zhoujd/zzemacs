@@ -8,7 +8,7 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%-20s %s"
+        (format "%s  %s"
                 (buffer-name buf)
                 (with-current-buffer (buffer-name buf)
                   default-directory)))
@@ -19,7 +19,7 @@
        (buffer-list)))))
 
 (defun helm-switchb-select (candidate)
-  (switch-to-buffer (car (split-string candidate))))
+  (switch-to-buffer (car (split-string candidate "  "))))
 
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)

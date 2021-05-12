@@ -51,7 +51,7 @@ Set annotation_level.
 
 ** core dump debugging
 
-#+BEGIN_SRC
+#+BEGIN_SRC sh
 ## allow core file creation
 $ ulimit -c unlimited
 

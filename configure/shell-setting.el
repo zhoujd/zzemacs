@@ -347,7 +347,9 @@ Dmitriy Igrishin's patched version of comint.el."
         (shell-command-switch "-c")
         (explicit-bash-args '("trans" "-I"))
         (explicit-shell-file-name "bash"))
-    (zz:create-shell-buffer "*trans shell*")
+    (if (executable-find "trans")
+        (zz:create-shell-buffer "*trans shell*")
+        (message "Cannot find trans!"))
     ))
 
 

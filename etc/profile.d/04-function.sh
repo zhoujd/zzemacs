@@ -60,14 +60,10 @@ noproxy() {
 }
 
 ## find /var/ftp -type f -print0 | xargs -0 chmod -v 760
-chmodf() {
-    find $2 -type f -exec chmod $1 {} \;
-}
+chmodf() { find $2 -type f -exec chmod $1 {} \; }
 
 ## find /var/ftp -type d -print0 | xargs -0 chmod -v 770
-chmodd() {
-    find $2 -type d -exec chmod $1 {} \;
-}
+chmodd() { find $2 -type d -exec chmod $1 {} \; }
 
 ## delete or list invalite soft link
 #rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }

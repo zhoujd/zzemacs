@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## https://github.com/garyparrot/rofi-translate
+## https://github.com/soimort/translate-shell
+
+trans -speak "$*"
+
+echo "trans speak done ..."

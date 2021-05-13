@@ -3,6 +3,14 @@
 ## https://github.com/garyparrot/rofi-translate
 ## https://github.com/soimort/translate-shell
 
-gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell
+online() {
+    gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell
+}
+
+offline() {
+    trans --shell
+}
+
+offline
 
 echo "trans shell done ..."

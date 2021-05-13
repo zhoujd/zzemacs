@@ -372,6 +372,9 @@
 ;;https://github.com/mickeynp/discover.el
 (require 'discover)
 
+;;https://github.com/xuchunyang/translate-shell.el
+(require 'translate-shell)
+
 
 (provide 'other-setting)
 

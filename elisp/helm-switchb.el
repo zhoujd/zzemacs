@@ -52,6 +52,7 @@
   (helm-build-sync-source "Multi-term buffers"
     :candidates (helm-switchb-candidate 'term-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
+              ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New terminal" . helm-switchb-term-new))
     ))

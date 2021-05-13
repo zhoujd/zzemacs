@@ -64,44 +64,6 @@ noproxy() {
     unset socks_port
 }
 
-cecho() {
-    local exp=$1;
-    local color=$2;
-
-    if ! [[ $color =~ '^[0-9]$' ]] ; then
-        case $(echo $color | tr '[:upper:]' '[:lower:]') in
-            black) color=0 ;;
-            red) color=1 ;;
-            green) color=2 ;;
-            yellow) color=3 ;;
-            blue) color=4 ;;
-            magenta) color=5 ;;
-            cyan) color=6 ;;
-            white|*) color=7 ;; # white or invalid color
-        esac
-    fi
-
-    tput setaf $color;
-    echo $exp;
-    tput sgr0;
-}
-
-# say @b@green[[Success]]
-say() {
-    echo "$@" | \
-        sed -e "s/\(\(@\(red\|green\|yellow\|blue\|magenta\|cyan\|white\|reset\|b\|u\)\)\+\)[[]\{2\}\(.*\)[]]\{2\}/\1\4@reset/g" \
-            -e "s/@red/$(tput setaf 1)/g" \
-            -e "s/@green/$(tput setaf 2)/g" \
-            -e "s/@yellow/$(tput setaf 3)/g" \
-            -e "s/@blue/$(tput setaf 4)/g" \
-            -e "s/@magenta/$(tput setaf 5)/g" \
-            -e "s/@cyan/$(tput setaf 6)/g" \
-            -e "s/@white/$(tput setaf 7)/g" \
-            -e "s/@reset/$(tput sgr0)/g" \
-            -e "s/@b/$(tput bold)/g" \
-            -e "s/@u/$(tput sgr 0 1)/g"
-}
-
 ## delete or list invalite soft link
 #rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }
 #lserrln() { find $1 -type l -print | xargs lsattr -d 2>&1 | grep "No such file or directory" | awk '{print $11}';}

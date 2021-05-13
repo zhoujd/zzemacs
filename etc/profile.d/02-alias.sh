@@ -86,7 +86,6 @@ alias vlc265='vlc --demux hevc'
 alias vlc264='vlc --demux h264'
 
 ## tmux
-alias tmux='TERM=xterm-256color tmux'
 alias tnews='tmux new-session -s'
 alias tls='tmux list-session'
 alias tlw='tmux list-window'

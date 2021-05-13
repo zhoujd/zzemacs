@@ -23,17 +23,19 @@ export LS_COLORS=$LS_COLORS:'di=01;33:ln=36'
 ## mangenta='\[\033[1;35m\]'
 ## white='\[\033[1;37m\]'
 prompt() {
+    local green='\[\033[0;32m\]'
     local lgreen='\[\033[1;32m\]'
+    local blue='\[\033[0;34m\]'
     local lblue='\[\033[1;34m\]'
     local norm='\[\033[m\]'
+    local title='\[\033]0;\w\007\]'
     case $TERM in
         xterm* | rxvt* )
-            local title='\[\033]0;\w\007\]'
-            PS1="${lgreen}\u@\h ${lblue}\W${norm}\$ "
+            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
         eterm* | emacs* )
-            PS1="${lgreen}\u@\h ${lblue}\W${norm}\$ "
+            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* )
             PS1="\u@\h \W\$ "

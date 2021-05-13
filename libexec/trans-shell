@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## https://github.com/garyparrot/rofi-translate
+## https://github.com/soimort/translate-shell
+
+gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell
+
+echo "trans shell done ..."

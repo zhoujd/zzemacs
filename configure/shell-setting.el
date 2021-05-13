@@ -340,6 +340,16 @@ Dmitriy Igrishin's patched version of comint.el."
             (company-mode t)
             (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
 
+;;trans shell
+(defun zz:trans-shell ()
+  (interactive)
+  (let ((shell-file-name "bash")
+        (shell-command-switch "-c")
+        (explicit-bash-args '("trans" "-I"))
+        (explicit-shell-file-name "bash"))
+    (zz:create-shell-buffer "*trans shell*")
+    ))
+
 
 (provide 'shell-setting)
 

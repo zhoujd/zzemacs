@@ -25,6 +25,9 @@
 (defun helm-switchb-select (candidate)
   (switch-to-buffer (car (split-string candidate helm-switchb-separator))))
 
+(defun helm-switchb-dired-open (candidate)
+  (dired (nth 2 (split-string candidate helm-switchb-separator))))
+
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
@@ -40,6 +43,7 @@
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
+              ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new))
     ))

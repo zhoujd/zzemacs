@@ -4,7 +4,7 @@
 # http://vanmontfort.be/pub/linux/.bashrc
 
 # ls colors setting
-export LS_COLORS='di=01;35:ln=04'
+export LS_COLORS="$LS_COLORS:di=01;35:ln=04"
 
 cecho() {
     local exp=$1;

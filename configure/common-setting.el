@@ -314,7 +314,7 @@
                     :underline nil)
 
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %b %d %H:%M WW%U"))))
+      '((propertize (format-time-string "%a %b %d %l:%M %p %U"))))
 (display-time)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))

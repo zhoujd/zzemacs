@@ -4,11 +4,6 @@
 ipaddr() { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()    { cd "$@";  l; }
 
-## find /var/ftp -type f -print0 | xargs -0 chmod -v 760
-chmodf() { find $2 -type f -exec chmod $1 {} \; }
-## find /var/ftp -type d -print0 | xargs -0 chmod -v 770
-chmodd() { find $2 -type d -exec chmod $1 {} \; }
-
 ## e.g. up -> go up 1 directory
 ## up 4 -> go up 4 directories
 up() {
@@ -64,6 +59,12 @@ noproxy() {
     unset socks_port
 }
 
+## chmod on files and directory
+#find -type f -print0 | xargs -0 chmod -v 760
+#find -type f -exec chmod 760 {} \;
+#find -type d -print0 | xargs -0 chmod -v 770
+#find -type d -exec chmod 770 {} \;
+
 ## delete or list invalite soft link
-#rmerrln() { for f in $(find $1 -type l); do [ -e $f ] && rm -f $f; done }
-#lserrln() { find $1 -type l -print | xargs lsattr -d 2>&1 | grep "No such file or directory" | awk '{print $11}';}
+#find -L /path -type l -exec rm -i {} \;
+#find -xtype l -delete

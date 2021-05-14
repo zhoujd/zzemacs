@@ -82,7 +82,7 @@
     (zz:frame-font (nth 0 zz:en-font-list))
     (if window-system
         (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
-        (zz:frame-font (nth 0 zz:en-font-list))))
+        (zz:frame-font (nth 3 zz:en-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

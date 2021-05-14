@@ -45,7 +45,6 @@
   (setq indent-tabs-mode 1))
 
 (defun zz:go-indent2 ()
-  (setq-default)
   (setq tab-width 2)
   (setq standard-indent 2)
   (setq indent-tabs-mode nil))

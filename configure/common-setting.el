@@ -54,15 +54,14 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (defconst zz:en-font-list '(
-                            "Consolas 14"
-                            "SF Mono 13"
-                            "Anonymous Pro 14"
                             "JetBrains Mono 13"
+                            "Consolas 14"
+                            "Anonymous Pro 14"
                             "WenQuanYi Zen Hei Mono Medium 15"
                             ))
 (defconst zz:cn-font-list '(
-                            "Microsoft YaHei Mono"
                             "Droid Sans Fallback"
+                            "Microsoft YaHei Mono"
                             ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)
@@ -80,10 +79,10 @@
 ;;console font setting
 ;;emacs daemon goes console font
 (if (daemonp)
-    (zz:frame-font (nth 3 zz:en-font-list))
+    (zz:frame-font (nth 0 zz:en-font-list))
     (if window-system
-        (zz:frame-font (nth 3 zz:en-font-list) (nth 1 zz:cn-font-list))
-        (zz:frame-font (nth 4 zz:en-font-list))))
+        (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
+        (zz:frame-font (nth 0 zz:en-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

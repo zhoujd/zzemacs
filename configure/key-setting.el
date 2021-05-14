@@ -29,7 +29,7 @@
   (kbd "C-s")     'slime-selector
   (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
-  (kbd "RET")     'sudo-edit-current-file
+  (kbd "RET")     'zz:sudo-edit-current-file
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "o")       'zz:last-buffer-go

@@ -459,7 +459,7 @@
 (defalias 'c 'toggle-case-fold-search)
 
 ;;Configure saved from menu "Save Options"
-(setq-default custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.emacs.d/custom.el")
 
 ;;auto refresh remote files
 (custom-set-variables

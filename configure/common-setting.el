@@ -55,8 +55,6 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
-                        "JetBrains Mono 13"
-                        "JetBrains Mono 23"
                         "Consolas 14"
                         "Consolas 24"
                         "SF Mono 13"

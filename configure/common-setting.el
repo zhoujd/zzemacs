@@ -53,16 +53,16 @@
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
-(setq zz:en-font-list '(
-                        "Consolas 14"
-                        "SF Mono 13"
-                        "Anonymous Pro 14"
-                        "JetBrains Mono 13"
-                        ))
-(setq zz:cn-font-list '(
-                        "Microsoft YaHei Mono"
-                        "Droid Sans Fallback"
-                        ))
+(defconst zz:en-font-list '(
+                            "Consolas 14"
+                            "SF Mono 13"
+                            "Anonymous Pro 14"
+                            "JetBrains Mono 13"
+                            ))
+(defconst zz:cn-font-list '(
+                            "Microsoft YaHei Mono"
+                            "Droid Sans Fallback"
+                            ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)
   "frame font setting"

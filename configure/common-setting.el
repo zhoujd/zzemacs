@@ -63,16 +63,17 @@
                         "Microsoft YaHei Mono"
                         ))
 
-(defun zz:frame-font (font-en-name font-cn-name)
+(defun zz:frame-font (font-en-name &optional font-cn-name)
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
   (add-to-list 'default-frame-alist (cons 'font font-en-name))
   ;; Setting Chinese Font
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font)
-                      charset
-                      (font-spec :family font-cn-name))))
+  (when font-cn-name
+    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font)
+                        charset
+                        (font-spec :family font-cn-name)))))
 
 (defun zz:console-font (font-console-name)
   "my console font setting"
@@ -81,9 +82,11 @@
 
 ;;console font setting
 ;;emacs daemon goes console font
-(if window-system
-    (zz:frame-font (nth 3 zz:en-font-list) (nth 0 zz:cn-font-list))
-    (zz:console-font (nth 0 zz:en-font-list)))
+(if (daemonp)
+    (zz:frame-font (nth 3 zz:en-font-list))
+    (if window-system
+        (zz:frame-font (nth 3 zz:en-font-list) (nth 0 zz:cn-font-list))
+        (zz:console-font (nth 0 zz:en-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

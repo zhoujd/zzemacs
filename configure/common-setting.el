@@ -65,7 +65,7 @@
                         ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)
-  "my frame font setting"
+  "frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
   (add-to-list 'default-frame-alist (cons 'font font-en-name))
@@ -76,18 +76,13 @@
                         charset
                         (font-spec :family font-cn-name)))))
 
-(defun zz:console-font (font-console-name)
-  "my console font setting"
-    (set-face-attribute 'default nil :font font-console-name)
-    (add-to-list 'default-frame-alist (cons 'font font-console-name)))
-
 ;;console font setting
 ;;emacs daemon goes console font
 (if (daemonp)
     (zz:frame-font (nth 3 zz:en-font-list))
     (if window-system
         (zz:frame-font (nth 3 zz:en-font-list) (nth 1 zz:cn-font-list))
-        (zz:console-font (nth 0 zz:en-font-list))))
+        (zz:frame-font (nth 0 zz:en-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

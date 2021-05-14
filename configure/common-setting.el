@@ -16,7 +16,6 @@
 ;;the current frame to make it transparent
 (set-frame-parameter (selected-frame) 'alpha '(95 70))
 (add-to-list 'default-frame-alist '(alpha 95 70))
-(add-to-list 'default-frame-alist '(font . "Consolas-14"))
 
 ;; -*- Chinese -*-
 (defun zz:set-language-chinese ()
@@ -55,8 +54,8 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
-                        "JetBrains Mono 13"
-                        "JetBrains Mono 23"
+                        "JetBrains Mono-13"
+                        "JetBrains Mono-23"
                         "Consolas 14"
                         "Consolas 24"
                         "SF Mono 13"
@@ -80,6 +79,8 @@
   "my frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
+  (set-frame-parameter nil :font font-en-name)
+  ;(add-to-list 'default-frame-alist '(font . 'font-en-name))
   ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)

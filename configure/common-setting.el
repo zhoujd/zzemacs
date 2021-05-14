@@ -78,6 +78,7 @@
 (defun zz:frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
+  (set-face-attribute 'default nil :font font-en-name)
   (add-to-list 'default-frame-alist (cons 'font font-en-name))
   ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
@@ -107,7 +108,7 @@
 ;;emacs daemon goes console font
 (if window-system
     (zz:primary-x-font)
-    (zz:console-font (nth 0 zz:cn-font-list)))
+    (zz:console-font (nth 0 zz:en-font-list)))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

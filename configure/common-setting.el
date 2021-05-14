@@ -58,6 +58,7 @@
                             "SF Mono 13"
                             "Anonymous Pro 14"
                             "JetBrains Mono 13"
+                            "WenQuanYi Zen Hei Mono Medium 15"
                             ))
 (defconst zz:cn-font-list '(
                             "Microsoft YaHei Mono"
@@ -82,7 +83,7 @@
     (zz:frame-font (nth 3 zz:en-font-list))
     (if window-system
         (zz:frame-font (nth 3 zz:en-font-list) (nth 1 zz:cn-font-list))
-        (zz:frame-font (nth 0 zz:en-font-list))))
+        (zz:frame-font (nth 4 zz:en-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

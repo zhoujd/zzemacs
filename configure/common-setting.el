@@ -61,6 +61,7 @@
                         ))
 (setq zz:cn-font-list '(
                         "Microsoft YaHei Mono"
+                        "Droid Sans Fallback"
                         ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)
@@ -85,7 +86,7 @@
 (if (daemonp)
     (zz:frame-font (nth 3 zz:en-font-list))
     (if window-system
-        (zz:frame-font (nth 3 zz:en-font-list) (nth 0 zz:cn-font-list))
+        (zz:frame-font (nth 3 zz:en-font-list) (nth 1 zz:cn-font-list))
         (zz:console-font (nth 0 zz:en-font-list))))
 
 ;;color theme

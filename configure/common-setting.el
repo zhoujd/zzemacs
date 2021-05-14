@@ -55,7 +55,7 @@
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
                         "JetBrains Mono-13"
-                        "JetBrains Mono-23"
+                        "JetBrains Mono 23"
                         "Consolas 14"
                         "Consolas 24"
                         "SF Mono 13"
@@ -78,9 +78,7 @@
 (defun zz:frame-font (font-en-name font-cn-name)
   "my frame font setting"
   ;; Setting English Font
-  (set-face-attribute 'default nil :font font-en-name)
-  (set-frame-parameter nil :font font-en-name)
-  ;(add-to-list 'default-frame-alist '(font . 'font-en-name))
+  (add-to-list 'default-frame-alist (cons 'font font-en-name))
   ;; Setting Chinese Font
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
@@ -90,9 +88,8 @@
 
 (defun zz:console-font (font-console-name)
   "my console font setting"
-  (when (member font-console-name (font-family-list))
-    (add-to-list 'default-frame-alist
-                 '(font . font-console-name))))
+    (set-face-attribute 'default nil :font font-console-name)
+    (add-to-list 'default-frame-alist (cons 'font font-console-name)))
 
 (defun zz:primary-x-font ()
   (interactive)
@@ -107,6 +104,7 @@
    (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))))
 
 ;;console font setting
+;;emacs daemon goes console font
 (if window-system
     (zz:primary-x-font)
     (zz:console-font (nth 0 zz:cn-font-list)))

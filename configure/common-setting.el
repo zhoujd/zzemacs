@@ -57,7 +57,7 @@
                             "JetBrains Mono 13"
                             "Consolas 14"
                             "Anonymous Pro 14"
-                            "WenQuanYi Zen Hei Mono Medium 15"
+                            "WenQuanYi Zen Hei Mono 15"
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"

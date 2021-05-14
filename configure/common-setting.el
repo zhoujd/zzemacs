@@ -89,9 +89,11 @@
 (require 'emacs-color-themes)
 (load-theme 'zz t)
 
-(unless window-system
-  (set-face-background 'default "black")
-  (set-face-foreground 'default "gray"))
+;;color for console
+(unless (daemonp)
+  (unless window-system
+    (set-face-background 'default "black")
+    (set-face-foreground 'default "gray")))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")

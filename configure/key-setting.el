@@ -112,9 +112,6 @@
   (kbd "C-t")     'zz:open-with-terminal
   (kbd "C-n")     'backlight
 
-  (kbd "C-f")     'zz:secondary-x-font
-  (kbd "M-f")     'zz:primary-x-font
-
   (kbd "M-d")     (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
   (kbd "M-r")     (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
   (kbd "M-s")     (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))

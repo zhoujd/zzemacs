@@ -54,26 +54,14 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (setq zz:en-font-list '(
-                        "JetBrains Mono-13"
-                        "JetBrains Mono 23"
                         "Consolas 14"
-                        "Consolas 24"
                         "SF Mono 13"
-                        "SF Mono 23"
                         "Anonymous Pro 14"
-                        "Anonymous Pro 24"
+                        "JetBrains Mono 13"
                         ))
 (setq zz:cn-font-list '(
-                        "Microsoft YaHei Mono 16"
-                        "Microsoft YaHei Mono 24"
+                        "Microsoft YaHei Mono"
                         ))
-
-(defun zz:font-name (name)
-  (when (string-match ".*[ ]" name)
-    (setq zz:cn-name (substring (match-string 0 name) 0 -1))))
-
-(defun zz:font-size (name)
-  (string-to-number (car (last (split-string name)))))
 
 (defun zz:frame-font (font-en-name font-cn-name)
   "my frame font setting"
@@ -84,30 +72,17 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font)
                       charset
-                      (font-spec :family (zz:font-name font-cn-name)
-                                 :size   (zz:font-size font-cn-name)))))
+                      (font-spec :family font-cn-name))))
 
 (defun zz:console-font (font-console-name)
   "my console font setting"
     (set-face-attribute 'default nil :font font-console-name)
     (add-to-list 'default-frame-alist (cons 'font font-console-name)))
 
-(defun zz:primary-x-font ()
-  (interactive)
-  (if-ms-windows
-   (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
-   (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))))
-
-(defun zz:secondary-x-font ()
-  (interactive)
-  (if-ms-windows
-   (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))
-   (zz:frame-font (nth 1 zz:en-font-list) (nth 1 zz:cn-font-list))))
-
 ;;console font setting
 ;;emacs daemon goes console font
 (if window-system
-    (zz:primary-x-font)
+    (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
     (zz:console-font (nth 0 zz:en-font-list)))
 
 ;;color theme

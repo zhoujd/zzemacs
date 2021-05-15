@@ -147,9 +147,13 @@
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
 ;;go to last frame
+(defvar zz:switch-frame-flag t)
 (defun zz:last-frame-go ()
   (interactive)
-  (other-frame +1))
+  (if zz:switch-frame-flag
+      (other-frame +1)
+      (other-frame -1))
+  (setq zz:switch-frame-flag (not zz:switch-frame-flag)))
 
 (defun zz:line-to-top-of-window ()
     (interactive)

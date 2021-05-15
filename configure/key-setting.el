@@ -172,7 +172,7 @@
   (kbd "M-1")     'delete-other-windows
   (kbd "M-2")     'delete-other-frames
   (kbd "M-3")     'zz:last-buffer-go
-  (kbd "M-4")     'kill-this-buffer
+  (kbd "M-4")     'zz:kill-this-buffer
   (kbd "M-5")     'gud-go
   (kbd "M-6")     'gud-break
   (kbd "M-7")     'gud-next

@@ -337,6 +337,11 @@
   (interactive)
   (message (buffer-file-name)))
 
+(defun zz:kill-this-buffer ()
+  (interactive)
+  (when (yes-or-no-p "Really kill this buffer?")
+    (kill-this-buffer)))
+
 
 (provide 'sample-setting)
 

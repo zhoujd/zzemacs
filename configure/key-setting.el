@@ -33,6 +33,9 @@
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "o")       'zz:last-buffer-go
+  (kbd "t")       'zz:trans-shell
+  (kbd "C-t")     'translate-shell-brief
+  (kbd "M-t")     'translate-shell
   (kbd "TAB")     'zz:insert-file-name
   (kbd "`")       'ztree-diff-1
   (kbd "M-`")     'ztree-dir-1

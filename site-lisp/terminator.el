@@ -230,7 +230,7 @@ active on the current window."
     (setq cterminal (format "*terminal<%s>*" term-number))
     (if (get-buffer cterminal)
         (switch-to-buffer cterminal)
-      (get-buffer-create (multi-term)))))
+      (multi-term))))
 
 
 ;;;###autoload

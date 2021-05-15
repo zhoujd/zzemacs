@@ -15,44 +15,42 @@
 ;;switch line/char mode
 ;;C-c C-j => 'term-line-mode'
 ;;C-c C-k => 'term-char-mode'
-(unless-ms-windows
- (require 'multi-term)
- (setq multi-term-switch-after-close nil)
- (setq multi-term-dedicated-select-after-open-p t)
- (setq multi-term-scroll-to-bottom-on-output t)
- (setq multi-term-program "bash")
- (setq multi-term-program-switches "--login")
+(require 'multi-term)
+(setq multi-term-switch-after-close nil)
+(setq multi-term-dedicated-select-after-open-p t)
+(setq multi-term-scroll-to-bottom-on-output t)
+(setq multi-term-program "bash")
+(setq multi-term-program-switches "--login")
 
- (set-terminal-coding-system 'utf-8-unix)
- (add-hook 'term-exec-hook
-           (function
-            (lambda ()
-              (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
+(set-terminal-coding-system 'utf-8-unix)
+(add-hook 'term-exec-hook
+          (function
+           (lambda ()
+             (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
 
- ;;tmux prefix
- (defun zz:term-send-tmux ()
-   "Use term-send-raw-string \"\C-b\" for tmux"
+;;tmux prefix
+(defun zz:term-send-tmux ()
+  "Use term-send-raw-string \"\C-b\" for tmux"
   (interactive)
   (term-send-raw-string "\C-b"))
- (add-to-list 'term-bind-key-alist '("C-c C-b" . zz:term-send-tmux))
+(add-to-list 'term-bind-key-alist '("C-c C-b" . zz:term-send-tmux))
 
- ;;screen prefix
- (defun zz:term-send-screen ()
-   "Use term-send-raw-string \"\C-a\" for screen"
+;;screen prefix
+(defun zz:term-send-screen ()
+  "Use term-send-raw-string \"\C-a\" for screen"
   (interactive)
   (term-send-raw-string "\C-a"))
- (add-to-list 'term-bind-key-alist '("C-c C-a" . zz:term-send-screen))
+(add-to-list 'term-bind-key-alist '("C-c C-a" . zz:term-send-screen))
 
- ;;terminator setting
- (require 'terminator)
- (terminator-global-mode t)
- (terminator-basic-setup)
- (defkeys-map terminator-mode-map
+;;terminator setting
+(require 'terminator)
+(terminator-global-mode t)
+(terminator-basic-setup)
+(defkeys-map terminator-mode-map
   ((kbd "C-c t 1") (zz:quick-termintor zz:terminator-0 0))
   ((kbd "C-c t 2") (zz:quick-termintor zz:terminator-1 1))
   ((kbd "C-c t 3") (zz:quick-termintor zz:terminator-2 2))
-  ((kbd "C-c t 4") (zz:quick-termintor zz:terminator-3 3))
-  ))
+  ((kbd "C-c t 4") (zz:quick-termintor zz:terminator-3 3)))
 
 ;;set term buffer size to unlimited
 (add-hook 'term-mode-hook
@@ -125,7 +123,6 @@
       (progn
         (setq old-buf (current-buffer))
         (multi-term-dedicated-toggle))))
-
 
 ;; switch to named term
 (defun zz:term-list ()

@@ -62,23 +62,23 @@
 (defun zz:non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
-	  ;; WM_SYSCOMMAND restore #xf120
-	  (w32-send-sys-command 61728)
+          ;; WM_SYSCOMMAND restore #xf120
+          (w32-send-sys-command 61728)
       (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
 
 (defun zz:fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
-	  ;; WM_SYSCOMMAND maximaze #xf030
-	  (w32-send-sys-command 61488)
+          ;; WM_SYSCOMMAND maximaze #xf030
+          (w32-send-sys-command 61488)
       (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
 
 (defun zz:toggle-fullscreen ()
   (interactive)
   (setq zz:fullscreen-p (not zz:fullscreen-p))
   (if zz:fullscreen-p
-	  (zz:non-fullscreen)
-	(zz:fullscreen)))
+          (zz:non-fullscreen)
+        (zz:fullscreen)))
 
 (defun zz:toggle-maxframe ()
   (interactive)
@@ -146,6 +146,11 @@
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
+;;go to last frame
+(defun zz:last-frame-go ()
+  (interactive)
+  (other-frame +1))
+
 (defun zz:line-to-top-of-window ()
     (interactive)
     (recenter 0))
@@ -164,9 +169,9 @@
 
 ;;file transform
 (defun zz:dos2unix-1 (buffer)
-  "Automate M-% C-q C-m RET RET !" 
-  (interactive "*b") 
-  (save-excursion 
+  "Automate M-% C-q C-m RET RET !"
+  (interactive "*b")
+  (save-excursion
     (goto-char (point-min))
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
@@ -211,7 +216,7 @@
   (while (< i arg)
     (setq i (1+ i))
     (insert (int-to-string i))
-	(backward-char 1)
+        (backward-char 1)
     (next-line 2)
     (beginning-of-line 0)
     )

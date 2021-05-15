@@ -149,7 +149,7 @@
  (list
   (kbd "C-1")     'delete-window
   (kbd "C-2")     'delete-frame
-  (kbd "C-3")     'other-frame
+  (kbd "C-3")     'zz:last-frame-go
   (kbd "C-4")     'zz:undo-kill-buffer
   (kbd "C-5")     'gud-until
   (kbd "C-6")     'gud-remove
@@ -171,7 +171,7 @@
  (list
   (kbd "M-1")     'delete-other-windows
   (kbd "M-2")     'delete-other-frames
-  (kbd "M-3")     'other-window
+  (kbd "M-3")     'zz:last-buffer-go
   (kbd "M-4")     'kill-this-buffer
   (kbd "M-5")     'gud-go
   (kbd "M-6")     'gud-break

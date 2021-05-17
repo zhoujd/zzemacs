@@ -1,14 +1,10 @@
 ;;; bm.el --- Visible bookmarks in buffer. -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2000-2018  Jo Odland
+;; Copyright (C) 2000-2019  Jo Odland
 
 ;; Author: Jo Odland <jo.odland(at)gmail.com>
 ;; Keywords: bookmark, highlight, faces, persistent
 ;; URL: https://github.com/joodland/bm
-
-;; Portions Copyright (C) 2002 by Ben Key
-;; Updated by Ben Key <bkey1(at)tampabay.rr.com> on 2002-12-05
-;; to add support for XEmacs
 
 
 ;; This file is *NOT* part of GNU Emacs.
@@ -83,22 +79,21 @@
 ;;      `bm-highlight-style'. It is possible to have fringe-markers on
 ;;      left or right side.
 ;;
+;;    - Display the number of bookmarks in the current buffer in the
+;;      mode line, see `bm-modeline-info' and
+;;      `bm-modeline-display-total'.
 
 
 ;;; Known limitations:
 ;;
-;;   This package is developed and tested on GNU Emacs 23.x. It should
-;;   work on all GNU Emacs 21.x, GNU Emacs 22.x and also on XEmacs
-;;   21.x with some limitations.
+;;   This package is developed and tested on GNU Emacs 26.x. It should
+;;   also work on all GNU Emacs newer than version 21.x.
 ;;
 ;;   There are some incompatibilities with lazy-lock when using
 ;;   fill-paragraph. All bookmark below the paragraph being filled
 ;;   will be lost. This issue can be resolved using the
 ;;   `jit-lock-mode' introduced in GNU Emacs 21.1
 ;;
-;;   Bookmarks will be extended when inserting text (before, inside or
-;;   after) bookmark in XEmacs. This is due to the missing support for
-;;   overlay hooks i XEmacs.
 
 
 ;;; Installation:
@@ -135,6 +130,20 @@
 ;;   left, add the following to line:
 ;;
 ;;   (setq bm-marker 'bm-marker-right)
+;;
+;;
+;;   Mode line:
+;;
+;;   Since there are number of different packages that helps with
+;;   configuring the mode line, it is hard to provide integrations.
+;;   Below is two examples on how to add it to the standard Emacs mode
+;;   line:
+;;
+;;     (add-to-list 'mode-line-position '(:eval (bm-modeline-info)) t)
+;;
+;;   or
+;;
+;;     (setq global-mode-string '(:eval (bm-modeline-info)))
 ;;
 
 
@@ -217,7 +226,6 @@
 ;;
 ;;  - The use of overlays for bookmarks was inspired by highline.el by
 ;;    Vinicius Jose Latorre <vinicius(at)cpqd.com.br>.
-;;  - Thanks to Ben Key for XEmacs support.
 ;;  - Thanks to Peter Heslin for notifying me on the incompability
 ;;    with lazy-lock.
 ;;  - Thanks to Christoph Conrad for adding support for goto line
@@ -247,14 +255,11 @@
 ;;
 
 (eval-and-compile
-  (require 'cl-lib)
+  (require 'cl-extra)
   (require 'cl-macs)
-  ;; avoid compile warning on unbound variable
-  (require 'info)
 
-  ;; xemacs needs overlay emulation package
-  (unless (fboundp 'overlay-lists)
-    (require 'overlay)))
+  ;; avoid compile warning on unbound variable
+  (require 'info))
 
 
 (defconst bm-bookmark-repository-version 2
@@ -399,9 +404,36 @@ t, search in all open buffers."
   :type 'boolean
   :group 'bm)
 
+(defcustom bm-modeline-display-front-space " "
+  "* Specify the space in front of the bookmark count on the mode line."
+  :type 'boolean
+  :group 'bm)
+
+(defcustom bm-modeline-display-end-space nil
+  "* Specify the space after the bookmark count on the mode line."
+  :type 'string
+  :group 'bm)
+
+(defcustom bm-modeline-display-when-empty nil
+  "*Specify if the bm mode-line will be display is there are no
+  bookmarks. Used by the `bm-modeline-info'
+
+nil, do not display anything is there are no bookmarks.
+t, always display the total number of bookmarks."
+  :type 'boolean
+  :group 'bm)
+
+(defcustom bm-modeline-display-total nil
+  "*Specify the bm mode-line display format. Used by the `bm-modeline-info'.
+
+nil, display the number of bookmarks above and below the cursor.
+t, only display the total number of bookmarks."
+  :type 'boolean
+  :group 'bm)
+
 (defcustom temporary-bookmark-p nil
-  "when visit a bookmark using `bm-next' or `bm-previsour'  the bookmark
-will be auto removed if this option is not nil."
+  "When stopping on a bookmark using `bm-next' or `bm-previsour'
+the bookmark will be removed if this option is not nil."
   :type 'boolean
   :group 'bm)
 
@@ -422,6 +454,12 @@ t, goto position on the line where the bookmark was set."
 
 (defcustom bm-electric-show t
   "*If t, `bm-show' acts like an electric buffer."
+  :type 'boolean
+  :group 'bm)
+
+
+(defcustom bm-show-enable-mouse t
+  "*If t, `bm-show' allows for mouse clicks to jump to bookmarks."
   :type 'boolean
   :group 'bm)
 
@@ -500,6 +538,11 @@ before bm is loaded.")
   "Fringe marker side. Left of right.")
 
 (defvar bm-current nil)
+
+(defvar bm-after-goto-hook nil
+  "Hook run after jumping to a bookmark in `bm-goto'. This can be
+  useful to expand a collapsed section containing a bookmark.")
+
 
 ;; avoid errors on emacs running in a terminal
 (when (fboundp 'define-fringe-bitmap)
@@ -606,12 +649,12 @@ when `bm-next' or `bm-previous' navigate to this bookmark."
           (overlay-put bookmark 'before-string (bm-get-fringe-marker)))
         (if (or bm-annotate-on-create annotation)
             (bm-bookmark-annotate bookmark annotation))
-        (unless (featurep 'xemacs)
-          ;; gnu emacs specific features
-          (overlay-put bookmark 'priority bm-priority)
-          (overlay-put bookmark 'modification-hooks '(bm-freeze))
-          (overlay-put bookmark 'insert-in-front-hooks '(bm-freeze-in-front))
-          (overlay-put bookmark 'insert-behind-hooks '(bm-freeze)))
+
+        (overlay-put bookmark 'priority bm-priority)
+        (overlay-put bookmark 'modification-hooks '(bm-freeze))
+        (overlay-put bookmark 'insert-in-front-hooks '(bm-freeze-in-front))
+        (overlay-put bookmark 'insert-behind-hooks '(bm-freeze))
+
         (setq bm-current bookmark)
         bookmark))))
 
@@ -643,6 +686,21 @@ EV is the mouse event."
   (save-excursion
     (mouse-set-point ev)
     (bm-toggle)))
+
+ 
+(defun bm-modeline-info nil
+  "Display information about the number of bookmarks in the
+current buffer. Format depends on `bm-modeline-display-total' and
+`bm-modeline-display-when-empty'"
+  (if (or (> (bm-count) 0) bm-modeline-display-when-empty)
+      (let ((bookmarks (bm-lists t 'bm-bookmark-is-visible)))
+        (concat
+         bm-modeline-display-front-space
+         (if bm-modeline-display-total
+             (format "bm(%s)" (+ (length (car bookmarks)) (length (cdr bookmarks))))
+           (format "bm(%s:%s)" (length (car bookmarks)) (length (cdr bookmarks))))
+         bm-modeline-display-end-space))
+    nil))
 
 
 (defun bm-count nil
@@ -749,7 +807,7 @@ If optional argument PREDICATE is provided, it is used as a
 selection criteria for filtering the lists."
   (if (null predicate)
     (setq predicate 'bm-bookmarkp))
-  
+
   (overlay-recenter (point))
   (cond ((equal 'forward direction)
          (cons nil (remq nil (mapcar predicate (cdr (overlay-lists))))))
@@ -763,11 +821,9 @@ selection criteria for filtering the lists."
   "overlays in current buffer"
   (let ((bookmarks (bm-lists)))
     (append
-     ;; xemacs has the list sorted after buffer position, while
-     ;; gnu emacs list is sorted relative to current position.
-     (if (featurep 'xemacs)
-         (car bookmarks)
-       (reverse (car bookmarks)))
+
+     ;; list is sorted relative to current position.
+     (reverse (car bookmarks))
      (cdr bookmarks))))
 
 (defun bm-overlay-all()
@@ -1054,6 +1110,7 @@ EV is the mouse event."
                         (overlay-start bookmark)
                         (marker-position (overlay-get bookmark 'position))))
           (goto-char (overlay-start bookmark)))
+        (run-hooks 'bm-after-goto-hook)
         (setq bm-wrapped nil)           ; turn off wrapped state
         (if bm-recenter
             (recenter))
@@ -1208,9 +1265,7 @@ users by the likes of `bm-show' and `bm-show-all'."
       (list
        ;; The header
        (format-non-nil format-string
-                       (if all
-                           (format "%s:%s" bm-header-buffer-name
-                                   bm-header-line)
+                       (if all (format "%s:%s" bm-header-buffer-name bm-header-line)
                          bm-header-line)
                        (when bm-show-annotations
                          bm-header-annotation)
@@ -1222,24 +1277,55 @@ users by the likes of `bm-show' and `bm-show-all'."
               (let* ((line (lstrip (buffer-substring (overlay-start bm)
                                                      (overlay-end bm))))
                      ;; line numbers start on 1
-                     (line-num (+ 1 (count-lines (point-min) (overlay-start bm)))) 
+                     (line-num (+ 1 (count-lines (point-min) (overlay-start bm))))
                      (string
                       (format-non-nil format-string
-                                      (if all
-                                          (format "%s:%d" (buffer-name)
-                                                  line-num)
+                                      (if all (format "%s:%d" (buffer-name) line-num)
                                         line-num)
                                       (when bm-show-annotations
                                         (or (overlay-get bm 'annotation) ""))
                                       (if (string-match "\n$" line)
                                           line
                                         (concat line "\n")))))
-                (put-text-property 0 (length string) 'bm-buffer (buffer-name)
-                                   string)
+                (when bm-show-enable-mouse
+                  (put-text-property 0 (- (length string) 1) 'mouse-face 'highlight string)
+                  (let ((map (make-sparse-keymap)))
+                    (define-key map [mouse-1] 'bm-show-click-mouse-1)
+                    (define-key map [mouse-3] 'bm-show-click-mouse-3)
+                    (put-text-property 0 (length string) 'keymap map string)))
+
+                (put-text-property 0 (length string) 'bm-buffer (buffer-name) string)
                 (put-text-property 0 (length string) 'bm-bookmark bm string)
+
                 string)))
         bookmarks
         "")))))
+
+
+(defun bm-show-click-mouse-1 (event)
+  "Respond to `mouse-1' (left) click on a bookmark in a `bm-show' buffer"
+  (interactive "e")
+  (bm-show-click-mouse event t))
+
+
+(defun bm-show-click-mouse-3 (event)
+  "Respond to `mouse-3' (right) click on a bookmark in a `bm-show' buffer"
+  (interactive "e")
+  (bm-show-click-mouse event))
+
+
+(defun bm-show-click-mouse (event &optional close)
+  "Goto the bookmark under the mouse, close the `bm-show' buffer if optional parameter is present."
+  (let ((window (posn-window (event-end event)))
+        (pos (posn-point (event-end event))))
+
+    (if (not (windowp window))
+        (error "No file chosen"))
+    (with-current-buffer (window-buffer window)
+      (goto-char pos)
+      (if close (bm-show-goto-bookmark)
+        (bm-show-bookmark))
+      )))
 
 
 (defun bm-show-display-lines (header lines)

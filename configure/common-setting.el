@@ -54,10 +54,10 @@
 ;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
 (defconst zz:en-font-list '(
+                            "WenQuanYi Zen Hei Mono 15"
                             "JetBrains Mono 13"
                             "Consolas 14"
                             "Anonymous Pro 14"
-                            "WenQuanYi Zen Hei Mono 15"
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"

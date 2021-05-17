@@ -259,6 +259,8 @@
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
+(setq bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
+      bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el")
 
 ;;expand-region
 (zz:load-path "site-lisp/expand-region")

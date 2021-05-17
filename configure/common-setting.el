@@ -61,7 +61,6 @@
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"
-                            "Microsoft YaHei Mono"
                             ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)

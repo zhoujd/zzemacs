@@ -25,16 +25,17 @@ install_fonts() {
     case "$TARGET_TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
-            sudo mkdir -p $FONT_TARGET
-            sudo rm $FONT_TARGET/zach
-            sudo ln -sf ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
-            sudo fc-cache -f
+            if [ -d $FONT_TARGET ]; then
+                sudo ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+                sudo fc-cache -f
+            fi
             ;;
         "user" )
             FONT_TARGET=~/.fonts
-            mkdir -p $FONT_TARGET
-            ln -sf ${ZZEMACS_ROOT}/font/* $FONT_TARGET
-            fc-cache -f
+            if [ -d $FONT_TARGET ]; then
+                ln -sfvT ${ZZEMACS_ROOT}/font/* $FONT_TARGET
+                fc-cache -f
+            fi
             ;;
         * )
             echo "unknown $TARGET_TYPE"
@@ -48,12 +49,10 @@ install_others() {
     mkdir -p ~/.emacs.d
 
     ##link zzemacs/etc/terminfo
-    rm -rf ~/.terminfo
-    ln -sf ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
+    ln -sfvT ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
 
     ##link zzemacs/etc/gdbinit
-    rm -rf ~/.gdbinit
-    ln -sf ${ZZEMACS_ROOT}/etc/gdbinit ~/.gdbinit
+    ln -sfvT ${ZZEMACS_ROOT}/etc/gdbinit ~/.gdbinit
 }
 
 ##install thirdparty

@@ -104,6 +104,11 @@
               ((kbd "/") dired-filter-map))
             ))
 
+;;image dired
+(require 'image-dired)
+(setq image-dired-external-viewer "sxiv")
+(setq image-dired-thumb-size 130)
+
 
 (provide 'dired-setting)
 

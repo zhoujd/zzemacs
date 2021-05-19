@@ -8,6 +8,8 @@
 (defun mpa-play (path)
   (interactive "fFile: ")
   (mpv-start (expand-file-name path) "--no-video"))
+(defalias 'mpv 'mpv-play)
+(defalias 'mpa 'mpa-play)
 
 ;;bingo
 (require 'bongo)

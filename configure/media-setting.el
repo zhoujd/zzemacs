@@ -19,6 +19,7 @@
 (setq bongo-mode-line-indicator-format nil)
 (setq bongo-display-track-icons nil)
 (setq bongo-track-mark-icon-file-name nil)
+(setq bongo-vlc-program-name "cvlc")
 
 
 (provide 'media-setting)

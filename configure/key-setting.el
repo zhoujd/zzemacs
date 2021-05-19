@@ -31,7 +31,6 @@
   (kbd "SPC")     'er/expand-region
   (kbd "RET")     'zz:sudo-edit-current-file
   (kbd "b")       'helm-bm
-  (kbd "C-b")     'bongo
   (kbd "d")       'docker
   (kbd "o")       'zz:last-buffer-go
   (kbd "t")       'zz:trans-shell
@@ -120,6 +119,8 @@
   (kbd "M-r")     (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
   (kbd "M-s")     (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
   (kbd "M-w")     (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
+
+  (kbd "/")       'bongo
   ))
 
 ;;execute start-process key

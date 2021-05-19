@@ -5,6 +5,9 @@
 
 ;;mpv
 (require 'mpv)
+(defun mpa-play (path)
+  (interactive "fFile: ")
+  (mpv-start (expand-file-name path) "--no-video"))
 
 ;;bingo
 (require 'bongo)

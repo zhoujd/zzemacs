@@ -26,6 +26,9 @@
 
 (setq mpg123-format-name-function 'zz:mpg123-format-name-function)
 
+;;mpv
+(require 'mpv)
+
 
 (provide 'media-setting)
 

@@ -50,7 +50,7 @@
         python-setting
         go-setting
         docker-setting
-        ;;media-setting
+        media-setting
         ;;matlab-setting
         ;;spell-setting
         ;;gnuplot-setting

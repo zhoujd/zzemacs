@@ -14,7 +14,7 @@
 ;;bingo
 (require 'bongo)
 (setq bongo-logo nil)
-(setq bongo-enabled-backends '(mpv))
+(setq bongo-enabled-backends '(vlc mpv))
 (setq bongo-mode-line-indicator-mode nil)
 (setq bongo-mode-line-indicator-format nil)
 (setq bongo-display-track-icons nil)

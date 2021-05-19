@@ -29,6 +29,9 @@
 ;;mpv
 (require 'mpv)
 
+;;bingo
+(require 'bongo)
+
 
 (provide 'media-setting)
 

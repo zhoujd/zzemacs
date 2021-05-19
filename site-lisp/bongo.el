@@ -247,6 +247,8 @@ executed from buffers that are not in Bongo Playlist mode.
 This variable overrides `bongo-default-playlist-buffer-name'.
 See the function `bongo-playlist-buffer'.")
 
+(defvar bongo-keep-comments nil
+  "Keep comments")
 
 
 ;;;; Customization variables
@@ -10722,7 +10724,7 @@ If BUFFER is neither nil nor a buffer, return nil."
 
   To enqueue tracks in the nearest playlist buffer, use `e'.
   To hop to the nearest playlist buffer, use `h'.\n\n"))
-            (when bongo-prefer-library-buffers
+            (when (and bongo-keep-comments bongo-prefer-library-buffers)
               (bongo-insert-enabled-backends-comment)))))))
 
 (defun bongo-default-playlist-buffer ()

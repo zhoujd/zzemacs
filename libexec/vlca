@@ -1,8 +1,16 @@
-#!/bin/bash
+#! /bin/sh
 
 if [ $# = 0 ]; then
     echo "Usage: $(basename $0) {files|dirs}"
     exit 0
 fi
 
-cvlc --novideo "$*"
+for i in $@ ; do
+    if [ -d $i ]; then
+        vlc -I "dummy" --novideo --play-and-exit $i/*
+    else
+        vlc -I "dummy" --novideo --play-and-exit $i
+    fi
+done
+
+echo "vlca done"

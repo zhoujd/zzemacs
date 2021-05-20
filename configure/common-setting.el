@@ -51,17 +51,18 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;M-x menu-set-font
-;;(set-face-font 'default "-*-Microsoft YaHei Mono-*-*-*-*-17-*-*-*-*-*-*-*")
-;;(custom-set-faces '(default ((t (:family "Consolas" :size 15)))))
+;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
+;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz:en-font-list '(
                             "JetBrains Mono 13"
-                            "Consolas 14"
                             "Anonymous Pro 14"
-                            "WenQuanYi Zen Hei Mono 15"
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"
                             ))
+(defconst zz:console-font-list '(
+                                 "WenQuanYi Zen Hei Mono 15"
+                                 ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)
   "frame font setting"
@@ -81,7 +82,7 @@
     (zz:frame-font (nth 0 zz:en-font-list))
     (if window-system
         (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
-        (zz:frame-font (nth 3 zz:en-font-list))))
+        (zz:frame-font (nth 0 zz:console-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")

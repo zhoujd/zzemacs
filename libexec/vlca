@@ -5,12 +5,17 @@ if [ $# = 0 ]; then
     exit 0
 fi
 
-for i in $@ ; do
-    if [ -d $i ]; then
-        vlc -I "dummy" --novideo --play-and-exit $i/*
-    else
-        vlc -I "dummy" --novideo --play-and-exit $i
-    fi
-done
+vlca_play() {
+    local vca_cmd="vlc -I dummy --novideo --play-and-exit"
+    for i in "$@" ; do
+        if [ -d "$i" ]; then
+            $vca_cmd "$i"/*
+        else
+            $vca_cmd "$i"
+        fi
+    done
+}
+
+vlca_play "$@"
 
 echo "vlca done"

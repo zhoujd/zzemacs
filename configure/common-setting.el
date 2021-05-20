@@ -55,7 +55,6 @@
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz:en-font-list '(
                             "Droid Sans Mono Slashed 13"
-                            "Droid Sans Mono Dotted 13"
                             "JetBrains Mono 13"
                             "Consolas 14"
                             ))

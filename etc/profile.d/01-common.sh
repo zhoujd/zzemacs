@@ -4,7 +4,7 @@
 # http://vanmontfort.be/pub/linux/.bashrc
 
 # ls colors setting
-export LS_COLORS=$LS_COLORS:'di=01;33:ln=36'
+export LS_COLORS=$LS_COLORS:'di=1;33:ln=36'
 
 ### color prompt
 ## norm='\[\033[m\]'

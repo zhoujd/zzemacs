@@ -54,9 +54,10 @@
 ;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz:en-font-list '(
-                            "Droid Sans Mono Slashed 13"
                             "JetBrains Mono 13"
                             "Consolas 14"
+                            "WenQuanYi Zen Hei Mono 15"
+                            "Droid Sans Mono Slashed 13"
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"

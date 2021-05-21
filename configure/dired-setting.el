@@ -79,7 +79,7 @@
        (list "\\.htm$"  "firefox")
        (list "\\.html$" "firefox")
        (list "\\.mp3$"  "mpv")
-       (list "\\.pdf$"  "FoxitReader")
+       (list "\\.pdf$"  "zathura")
        (list "\\.pptx$" "libreoffice")
        (list "\\.ppt$"  "libreoffice")
        (list "\\.docx$" "libreoffice")

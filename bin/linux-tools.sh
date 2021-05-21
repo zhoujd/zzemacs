@@ -43,6 +43,7 @@ install_package_ubuntu() {
     sudo apt install -y keynav
     sudo apt install -y trash-cli htop neofetch ncdu
     sudo apt install -y zathura     ## pdf viewer like vim
+    sudo apt install -y zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps 
 }
 
 ##package for centos

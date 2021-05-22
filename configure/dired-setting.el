@@ -65,6 +65,8 @@
   (set-buffer-modified-p nil))
 (add-hook 'dired-after-readin-hook 'zz:dired-dir-first)
 
+;;https://github.com/muennich/sxiv
+;;https://wiki.archlinux.org/title/Sxiv
 (setq dired-guess-shell-alist-user
       (list
        (list "\\.chm$"  "xchm")
@@ -86,6 +88,11 @@
        (list "\\.doc$"  "libreoffice")
        (list "\\.xlsx$" "libreoffice")
        (list "\\.xls$"  "libreoffice")
+       (list "\\.jpeg$" "sxiv")
+       (list "\\.jpg$"  "sxiv")
+       (list "\\.png$"  "sxiv")
+       (list "\\.gif$"  "sxiv")
+       (list "\\.bmp$"  "sxiv")
        ))
 
 ;;Direx
@@ -106,6 +113,7 @@
 
 ;;image dired
 (require 'image-dired)
+
 (setq image-dired-external-viewer "sxiv")
 (setq image-dired-thumb-size 130)
 

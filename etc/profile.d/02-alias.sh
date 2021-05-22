@@ -36,7 +36,6 @@ alias less='less -R -S -#2'
 alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias usage='du -h --max-depth=1'
-alias sudo='sudo '
 
 ## path alias
 alias path='echo -e ${PATH//:/\\n}'
@@ -81,10 +80,6 @@ alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 
-## vlc alias
-alias vlc265='vlc --demux hevc'
-alias vlc264='vlc --demux h264'
-
 ## tmux
 alias tnews='tmux new-session -s'
 alias tls='tmux list-session'
@@ -95,17 +90,6 @@ alias tas='tmux attach'
 alias tat='tmux attach -t'
 alias trs='tmux rename-session -t'
 alias tks='tmux kill-session -t'
-
-## byobu
-alias bnews='byobu new-session -s'
-alias bls='byobu list-session'
-alias blw='byobu list-window'
-alias bsw='byobu switch -t'
-alias blc='byobu list-command'
-alias bas='byobu attach'
-alias bat='byobu attach -t'
-alias brs='byobu rename-session -t'
-alias bks='byobu kill-session -t'
 
 ## others
 alias nano='nano -w'

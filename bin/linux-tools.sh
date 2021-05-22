@@ -9,7 +9,7 @@ echo "install linux-tool begin..."
 
 ##package for suse
 install_package_suse() {
-    sudo zypperl install dos2unix
+    sudo zypper install dos2unix
 }
 
 ##package for ubuntu
@@ -19,7 +19,7 @@ install_package_ubuntu() {
     sudo apt install -y rxvt-unicode
     sudo apt install -y openssh-server
     sudo apt install -y tree
-    sudo apt install -y tmux byobu vim
+    sudo apt install -y tmux vim
     sudo apt install -y sbcl
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy

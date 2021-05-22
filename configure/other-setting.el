@@ -299,7 +299,7 @@
 ;;grep+
 (require 'grep+)
 
-;;powerline
+;;mode-line powerline
 ;(require 'powerline)
 ;(set-face-attribute 'mode-line nil :background "#bdbdbd" :box nil)
 

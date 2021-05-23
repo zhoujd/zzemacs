@@ -210,3 +210,7 @@ Ubuntu setting
 23. Ubuntu git kernel repository
 
         ## https://kernel.ubuntu.com/git/ubuntu/
+
+24. Disable apt progress bar
+
+        $ sudo apt -o Dpkg::Progress-Fancy="0" -o APT::Color="0" install vim-gtk

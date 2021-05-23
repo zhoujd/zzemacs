@@ -23,6 +23,12 @@
             (define-key map key fn)))
         (setq i (+ i 2))))))
 
+;;unset keys
+(defun unset-keys-to-map (map keys)
+  "unset multi keys defines"
+  (dolist (key keys)
+    (define-key map key nil)))
+
 
 (provide 'apply-keys)
 

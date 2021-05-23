@@ -144,9 +144,9 @@
   (kbd "s")       (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
   (kbd "w")       (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
 
-  (kbd "M-c")     (zz:execute-key zz:sakura      '("sakura"))
-  (kbd "M-m")     (zz:execute-key zz:meld        '("meld"))
   (kbd "M-g")     (zz:execute-key zz:gitg        '("gitg"))
+  (kbd "M-m")     (zz:execute-key zz:meld        '("meld"))
+  (kbd "M-t")     (zz:execute-key zz:trans       '("urxvt" "-e" "trans" "-I"))
   ))
 
 (apply-keys-to-map
@@ -263,8 +263,8 @@
   (kbd "C-M-6")   'zz:rofi-run
   (kbd "C-M-7")   'zz:rofi-ssh
   (kbd "C-M-8")   'zz:rofi-win
-  (kbd "C-M-9")   'zz:thunar
-  (kbd "C-M-0")   'zz:tmux
+  (kbd "C-M-9")   'zz:tmux
+  (kbd "C-M-0")   'zz:trans
   (kbd "C-M--")   'zz:baidu
   (kbd "C-M-=")   'zz:google
   ))

@@ -29,6 +29,7 @@
 (defvar shift-fn-map     (make-sparse-keymap) "S-f1/f12")
 (defvar ctrl-fn-map      (make-sparse-keymap) "C-f1/f12")
 (defvar meta-fn-map      (make-sparse-keymap) "M-f1/f12")
+(defvar help-fn-map      (make-sparse-keymap) "help f1/f12")
 
 (defvar f4-map           (make-sparse-keymap) "f4 for self functions.")
 (defvar f4-e-map         (make-sparse-keymap) "f4-e for execute functions.")
@@ -57,6 +58,7 @@
   (kbd "s")     shift-fn-map
   (kbd "c")     ctrl-fn-map
   (kbd "m")     meta-fn-map
+  (kbd "h")     help-fn-map
 
   ;;self f4-map
   (kbd "e")     f4-e-map

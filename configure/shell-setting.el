@@ -87,11 +87,6 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (zz:switch-to-shell buf-name))
 
-;;popup term
-(if-ms-windows
- (setq popup-terminal-command '("cmd" "/c" "start"))
- (setq popup-terminal-command '("urxvt")))
-
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)
 (when-ms-windows

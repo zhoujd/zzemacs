@@ -133,7 +133,7 @@
   (kbd "c")       (zz:execute-key zz:urxvt       '("urxvt"))
   (kbd "f")       (zz:execute-key zz:firefox     '("firefox"))
   (kbd "g")       (zz:execute-key zz:chrome      '("google-chrome"))
-  (kbd "m")       (zz:execute-key zz:thunderbird '("thunderbird"))
+  (kbd "m")       (zz:execute-key zz:evolution   '("evolution"))
 
   (kbd "h")       (zz:execute-key zz:thunar      '("thunar"))
   (kbd "v")       (zz:execute-key zz:vim         '("urxvt" "-e" "vim"))

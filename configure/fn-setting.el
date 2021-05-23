@@ -158,12 +158,6 @@
     (kbd "C-c <f12>") 'zz:tabify-buffer
     "f12 key binding")
 
-(unset-keys-to-map
- help-fn-map
- (list
-  [f1]
-  [f4]
-  ))
 
 (provide 'fn-setting)
 

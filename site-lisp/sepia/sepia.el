@@ -24,7 +24,7 @@
 (require 'gud)
 (require 'cl-lib)
 ;; try optional modules, but don't bitch if we fail:
-(ignore-errors (require 'sepia-w3m))
+;; (ignore-errors (require 'sepia-w3m))
 (ignore-errors (require 'sepia-tree))
 (ignore-errors (require 'sepia-ido))
 ;; (ignore-errors (require 'sepia-snippet))

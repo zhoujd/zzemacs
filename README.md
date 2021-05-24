@@ -13,7 +13,7 @@ zzemacs - emacs for Zachary Zhou
     - LIBTIFF:           http://download.osgeo.org/libtiff
     - LIBXPM:            http://www.x.org/releases/current/src/lib
 
-## Some url
+## Some URL
 
     - GNU emacs: <http://ftp.gnu.org/emacs>
     - Third-party for emacs refer to zzemacs/third-party/readme.md

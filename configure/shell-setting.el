@@ -85,7 +85,9 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;start shell prompt
 (defun zz:start-shell (buf-name)
   (interactive)
-  (zz:switch-to-shell buf-name))
+  (zz:switch-to-shell buf-name)
+  (when-ms-windows
+   (zz:clear-input)))
 
 ;;http://www.emacswiki.org/emacs/multi-shell.el
 (require 'multi-shell)

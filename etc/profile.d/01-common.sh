@@ -34,10 +34,10 @@ prompt() {
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
-        eterm* | emacs* )
+        eterm* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
-        dumb* )
+        dumb* | emacs* )
             PS1="\u@\h \W\$ "
             ;;
     esac

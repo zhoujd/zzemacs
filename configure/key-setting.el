@@ -243,6 +243,9 @@
   (kbd "C-`")     'helm-imenu
   (kbd "C-~")     'helm-semantic
 
+  (kbd "C-'")     'next-multiframe-window
+  (kbd "M-'")     'previous-multiframe-window
+
   (kbd "M-.")     'helm-etags-plus-select
   (kbd "M-*")     'helm-etags-plus-history
   (kbd "C-=")     'helm-etags-plus-history-go-back

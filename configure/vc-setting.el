@@ -63,7 +63,8 @@
 
 ;;git-gutter
 ;;https://github.com/emacsorphanage/git-gutter
-(require 'git-gutter)
+;;https://github.com/nonsequitur/git-gutter-plus
+(require 'git-gutter+)
 
 
 (provide 'vc-setting)

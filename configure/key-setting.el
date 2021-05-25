@@ -195,7 +195,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-x C-f") 'zz:find-file
   (kbd "C-x g")   'magit-status
-  (kbd "C-x C-g") 'git-gutter-mode
+  (kbd "C-x C-g") 'git-gutter+-mode
   (kbd "C-c w")   'compare-windows
   (kbd "C-c ;")   'iedit-mode
   (kbd "C-c M-;") 'iedit-dwim

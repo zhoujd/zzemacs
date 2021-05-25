@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# = 0 ]; then
+    echo "Usage: $(basename $0) {files|dirs}"
+    exit 1
+fi
+
+play() {
+    local cmd="vlc -I dummy --play-and-exit"
+    for i in "$@" ; do
+        if [ -d "$i" ]; then
+            $cmd "$i"/*
+        else
+            $cmd "$i"
+        fi
+    done
+}
+
+play "$@"
+
+echo "vlca done"

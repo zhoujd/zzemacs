@@ -244,7 +244,7 @@
   (kbd "C-~")     'helm-semantic
 
   (kbd "C-'")     'next-multiframe-window
-  (kbd "M-'")     'previous-multiframe-window
+  (kbd "C-\"")    'previous-multiframe-window
 
   (kbd "M-.")     'helm-etags-plus-select
   (kbd "M-*")     'helm-etags-plus-history

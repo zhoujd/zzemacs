@@ -61,6 +61,10 @@
 ;;gitlab ci mode
 (require 'gitlab-ci-mode)
 
+;;git-gutter
+;;https://github.com/emacsorphanage/git-gutter
+(require 'git-gutter)
+
 
 (provide 'vc-setting)
 

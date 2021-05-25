@@ -319,6 +319,10 @@
 ;;diffview
 (require 'diffview)
 
+;;protocol buffers
+;;https://github.com/protocolbuffers/protobuf/blob/master/editors/protobuf-mode.el
+(require 'protobuf-mode)
+
 
 (provide 'prog-setting)
 

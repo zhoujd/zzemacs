@@ -112,6 +112,9 @@ Xfce
         Description: Open Emacs
         Command: emacsclient -c %F
 
+        Name: Open Terminal Here
+        Command: exo-open --working-directory %f --launch TerminalEmulator
+
 16. Disable evolution-alarm-notify
 
         $ xfce4-settings-manager

@@ -103,6 +103,7 @@ Xfce
         Disable Property zoom_desktop
 
 15. Thunar custom action
+    https://docs.xfce.org/xfce/thunar/custom-actions
 
         Name: Emacs Shell Here
         Description: Open Emacs Shell

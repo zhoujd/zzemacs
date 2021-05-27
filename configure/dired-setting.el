@@ -69,18 +69,19 @@
 ;;https://wiki.archlinux.org/title/Sxiv
 (setq dired-guess-shell-alist-user
       (list
-       (list "\\.chm$"  "xchm")
        (list "\\.rm$"   "mpv")
        (list "\\.rmvb$" "mpv")
        (list "\\.avi$"  "mpv")
        (list "\\.asf$"  "mpv")
-       (list "\\.wma$"  "mpv")
+       (list "\\.wmv$"  "mpv")
        (list "\\.mkv$"  "mpv")
-       (list "\\.mp3$"  "mpv")
        (list "\\.mp4$"  "mpv")
+       (list "\\.webm$" "mpv")
+       (list "\\.mp3$"  "mpa")
+       (list "\\.wma$"  "mpa")
        (list "\\.htm$"  "firefox")
        (list "\\.html$" "firefox")
-       (list "\\.mp3$"  "mpv")
+       (list "\\.chm$"  "xchm")
        (list "\\.pdf$"  "zathura")
        (list "\\.pptx$" "libreoffice")
        (list "\\.ppt$"  "libreoffice")

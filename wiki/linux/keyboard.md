@@ -1,5 +1,5 @@
-xmodmap
-=======
+keyboard
+========
 
 1. Persistent Keyboard Mapping on Ubuntu using xmodmap
 
@@ -11,3 +11,14 @@ xmodmap
         # gnome-settings-daemon that resets layouts when attach a new keyboard
         # or sudo apt install dconf-editor
         dconf write /org/gnome/settings-daemon/plugins/keyboard/active false
+
+3. Moving The Ctrl Key
+   https://www.emacswiki.org/emacs/MovingTheCtrlKey
+
+   On Debian and derivatives (Ubuntu, Mint etc.)
+   To make Caps Lock another Ctrl key, edit the file /etc/default/keyboard
+
+        $ cat /etc/default/keyboard
+        XKBOPTIONS="ctrl:nocaps"		# Some people prefer "ctrl:swapcaps"
+
+        $ sudo dpkg-reconfigure -phigh console-setup

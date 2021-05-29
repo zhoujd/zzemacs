@@ -56,15 +56,15 @@
 (defconst zz:en-font-list '(
                             "JetBrains Mono 13"
                             "IBM Plex Mono 13"
-                            "Consolas 14"
-                            "WenQuanYi Zen Hei Mono 15"
+                            "Consolas 13"
+                            "WenQuanYi Zen Hei Mono 13"
                             "Droid Sans Mono Slashed 13"
                             ))
 (defconst zz:cn-font-list '(
                             "Droid Sans Fallback"
                             ))
 (defconst zz:console-font-list '(
-                                 "WenQuanYi Zen Hei Mono 15"
+                                 "WenQuanYi Zen Hei Mono 13"
                                  ))
 
 (defun zz:frame-font (font-en-name &optional font-cn-name)

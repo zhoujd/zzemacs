@@ -11,7 +11,7 @@
 
 (zz:load-path "site-lisp")
 
-(keyboard-translate ?\C-h ?\C-?)  ; translate `C-h' to Backspace
+(keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
 ;;the current frame to make it transparent
 (set-frame-parameter (selected-frame) 'alpha '(95 70))

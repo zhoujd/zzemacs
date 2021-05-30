@@ -74,6 +74,10 @@
   (kbd "p")     f4-p-map
   ))
 
+(defun zz:ctrl-z-help ()
+  (interactive)
+  (helm-descbinds (kbd "C-z h")))
+
 
 (provide 'keymap-setting)
 

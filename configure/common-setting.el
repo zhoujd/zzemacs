@@ -83,14 +83,14 @@
 ;;emacs daemon goes console font
 (if (daemonp)
     (zz:frame-font (nth 0 zz:en-font-list))
-    (if window-system
+    (if (display-graphic-p)
         (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
         (zz:frame-font (nth 0 zz:console-font-list))))
 
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
-(if window-system
+(if (display-graphic-p)
     (progn
       (load-theme 'zz t))
     (progn

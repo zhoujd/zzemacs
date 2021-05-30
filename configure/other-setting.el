@@ -258,7 +258,7 @@
 (zz:load-path "site-lisp/bookmarkplus")
 (require 'bookmark+)
 ;;auto-save bookmarks flag, toggle this option using 'M-~’
-;(setq bookmark-save-flag 1)
+(setq bookmark-save-flag t)
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))

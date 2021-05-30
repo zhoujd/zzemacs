@@ -33,6 +33,9 @@
   (kbd "TAB")     'zz:insert-file-name
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
+  (kbd "C-/")     (lambda ()
+                    (interactive)
+                    (helm-descbinds (kbd "C-z h")))
   (kbd "o")       'zz:last-buffer-go
   (kbd "t")       'zz:trans-shell
   (kbd "C-t")     'translate-shell-brief

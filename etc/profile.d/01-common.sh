@@ -40,6 +40,10 @@ prompt() {
         dumb* | emacs* )
             PS1="\u@\h \W\$ "
             ;;
+        linux* )
+            export TERM=xterm-256color
+            PS1="${lgreen}\u@\h \W${green}\$ ${norm}"
+            ;;
     esac
     export PS1
 }

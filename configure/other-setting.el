@@ -253,10 +253,12 @@
 ;;maxframe
 ;(require 'maxframe)
 
-;;bookmark+
+;;bookmark plus
+;;https://www.emacswiki.org/emacs/BookmarkPlus
 (zz:load-path "site-lisp/bookmarkplus")
 (require 'bookmark+)
-(setq bookmark-save-flag 1) ;; auto-save bookmarks
+;;auto-save bookmarks flag, toggle this option using 'M-~’
+(setq bookmark-save-flag 1)
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))

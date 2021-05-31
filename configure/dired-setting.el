@@ -114,9 +114,12 @@
 
 ;;image dired
 (require 'image-dired)
-
 (setq image-dired-external-viewer "sxiv")
 (setq image-dired-thumb-size 130)
+
+;;dired play with vlc/mpv
+(zz:load-path "elisp")
+(require 'dired-play)
 
 
 (provide 'dired-setting)

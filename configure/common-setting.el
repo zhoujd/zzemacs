@@ -166,8 +166,8 @@
 
 ;;Diary Setting
 (setq diary-file "~/.diary")
-(setq calendar-latitude +31.23)
-(setq calendar-longitude +121.47)
+(setq calendar-latitude +34.41)
+(setq calendar-longitude +121.29)
 (setq calendar-location-name "Shanghai")
 (setq calendar-remove-frame-by-deleting t)
 

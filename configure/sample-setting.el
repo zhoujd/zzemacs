@@ -341,6 +341,13 @@
   (interactive)
   (kill-buffer (current-buffer)))
 
+(defun zz:delete-process ()
+  (interactive)
+  (let ((pname (ido-completing-read "Process Name: "
+                                    (mapcar 'process-name (process-list)))))
+
+    (delete-process (get-process pname))))
+
 
 (provide 'sample-setting)
 

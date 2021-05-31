@@ -1,8 +1,8 @@
-;;; dired-vlc.el
+;;; dired-play.el
 
 (require 'dired-aux)
-(defvar dired-filelist-cmd
-  '(("vlc" "-L")))
+
+(defvar dired-filelist-cmd '(("vlc" "-L")))
 (defun dired-start-process (cmd &optional file-list)
   (interactive
    (let ((files (dired-get-marked-files
@@ -13,7 +13,9 @@
       files)))
   (let (list-switch)
     (start-process
-     cmd nil shell-file-name
+     cmd
+     nil
+     shell-file-name
      shell-command-switch
      (format
       "nohup 1>/dev/null 2>/dev/null %s \"%s\""
@@ -23,9 +25,10 @@
           (format "%s %s" cmd list-switch)
           cmd)
       (mapconcat #'expand-file-name file-list "\" \"")))))
+
 (define-key dired-mode-map "r" 'dired-start-process)
 
 
-(provide 'dired-vlc)
+(provide 'dired-play)
 
-;;; end of dired-vlc.el
+;;; end of dired-play.el

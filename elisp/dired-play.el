@@ -2,8 +2,11 @@
 
 (require 'dired-aux)
 
+;;filelist cmd
 (defvar dired-filelist-cmd '(("vlc" "-L")))
-(defun dired-start-process (cmd &optional file-list)
+
+;;play files which marked
+(defun dired-play-start (cmd &optional file-list)
   (interactive
    (let ((files (dired-get-marked-files
                  t current-prefix-arg)))
@@ -26,7 +29,14 @@
           cmd)
       (mapconcat #'expand-file-name file-list "\" \"")))))
 
-(define-key dired-mode-map "r" 'dired-start-process)
+(define-key dired-mode-map "r" 'dired-play-start)
+
+;;delete play process vlc or mpv
+(defun dired-play-delete ()
+  (interactive)
+  (let ((pname (ido-completing-read "Process Name: "
+                                    '("vlc" "mpv"))))
+    (delete-process (get-process pname))))
 
 
 (provide 'dired-play)

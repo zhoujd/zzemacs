@@ -14,8 +14,8 @@
 (keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
 ;;the current frame to make it transparent
-(set-frame-parameter (selected-frame) 'alpha '(95 70))
-(add-to-list 'default-frame-alist '(alpha 95 70))
+;(set-frame-parameter (selected-frame) 'alpha '(95 70))
+;(add-to-list 'default-frame-alist '(alpha 95 70))
 
 ;; -*- Chinese -*-
 (defun zz:set-language-chinese ()

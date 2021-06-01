@@ -4,6 +4,7 @@
 
 ;;filelist cmd
 (defvar dired-filelist-cmd '(("vlc" "-L")))
+(defvar dired-play-prefix "nohup 1>/dev/null 2>/dev/null")
 
 ;;play files which marked
 (defun dired-play-start (cmd &optional file-list)
@@ -20,14 +21,14 @@
      nil
      shell-file-name
      shell-command-switch
-     (format
-      "nohup 1>/dev/null 2>/dev/null %s \"%s\""
-      (if (and (> (length file-list) 1)
-               (setq list-switch
-                     (cadr (assoc cmd dired-filelist-cmd))))
-          (format "%s %s" cmd list-switch)
-          cmd)
-      (mapconcat #'expand-file-name file-list "\" \"")))))
+     (format "%s %s \"%s\""
+             dired-play-prefix
+             (if (and (> (length file-list) 1)
+                      (setq list-switch
+                            (cadr (assoc cmd dired-filelist-cmd))))
+                 (format "%s %s" cmd list-switch)
+                 cmd)
+             (mapconcat #'expand-file-name file-list "\" \"")))))
 
 (define-key dired-mode-map "r" 'dired-play-start)
 

@@ -57,6 +57,7 @@
                             "JetBrains Mono 13"
                             "IBM Plex Mono 13"
                             "Consolas 13"
+                            "Dejavu Sans Mono 13"
                             "WenQuanYi Zen Hei Mono 13"
                             "Droid Sans Mono Slashed 13"
                             ))

@@ -1,25 +1,28 @@
 #!/bin/bash
 
 ### pars for fun: install | remove | rollback
-function apt-history(){
-
-      case "$1" in
-        install)
-              grep 'install ' /var/log/dpkg.log
-              ;;
-        upgrade|remove)
-              grep $1 /var/log/dpkg.log
-              ;;
-        rollback)
-              grep upgrade /var/log/dpkg.log | \
-                  grep "$2" -A10000000 | \
-                  grep "$3" -B10000000 | \
-                  awk '{print $4"="$5}'
-              ;;
-        *)
-              cat /var/log/dpkg.log
-              ;;
-      esac
+apt_history(){
+    local log_file=/var/log/dpkg.log{,.1}
+    case $1 in
+        install )
+            grep 'install ' $log_file
+            ;;
+        upgrade|remove )
+            grep $1 $log_file
+            ;;
+        rollback )
+            grep upgrade $log_file | \
+                grep "$2" -A10000000 | \
+                grep "$3" -B10000000 | \
+                awk '{print $4"="$5}'
+            ;;
+        print )
+            cat $log_file
+            ;;
+        * )
+            echo "$(basename $0) {install|upgrade|remove|rollback|print}"
+            exit 1;
+    esac
 }
 
-apt-history
+apt_history "$@"

@@ -5,4 +5,4 @@ if [ $# = 0 ]; then
     exit 0
 fi
 
-mpv --no-video "$*"
+mpv --no-video "$@"

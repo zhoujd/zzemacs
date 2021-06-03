@@ -42,6 +42,7 @@ prompt() {
             ;;
         linux* )
             export TERM=xterm-256color
+            export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
             PS1="${lgreen}\u@\h \W${green}\$ ${norm}"
             ;;
     esac

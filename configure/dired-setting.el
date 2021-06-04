@@ -94,6 +94,7 @@
        (list "\\.png$"  "sxiv")
        (list "\\.gif$"  "sxiv")
        (list "\\.bmp$"  "sxiv")
+       (list "\\.vsdx"  "drawio")
        ))
 
 ;;Direx

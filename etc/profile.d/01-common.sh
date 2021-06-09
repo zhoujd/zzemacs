@@ -29,22 +29,21 @@ prompt() {
     local lblue='\[\033[1;34m\]'
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
-    local pt='`[ $(id -u) == "0" ] && echo "#" || echo "\$"` '
     case $TERM in
         xterm* | rxvt* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}${pt}${norm}"
+            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
         eterm* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}${pt}${norm}"
+            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )
-            PS1="\u@\h \W${pt}"
+            PS1="\u@\h \W\$ "
             ;;
         linux* )
             export TERM=xterm-256color
             export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
-            PS1="${lgreen}\u@\h \W${green}${pt}${norm}"
+            PS1="${lgreen}\u@\h \W${green}\$ ${norm}"
             ;;
     esac
     export PS1

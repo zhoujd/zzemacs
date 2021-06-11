@@ -1,0 +1,17 @@
+#+TITLE: Emacs Docview
+
+* Keybind URL
+  https://www.gnu.org/software/emacs/manual/html_node/emacs/DocView-Navigation.html
+  https://github.com/emacs-mirror/emacs/blob/master/lisp/doc-view.el#L402
+
+* Keys
+  - scroll the current page: C-p, C-n, C-b, C-f, and the arrow keys.
+  - next page by typing n, PageDown, next or C-x ] (doc-view-next-page)
+  - previous page, type p, PageUp, prior or C-x [ (doc-view-previous-page)
+  - SPC (doc-view-scroll-up-or-next-page)
+  - DEL (doc-view-scroll-down-or-previous-page)
+  - M-< (doc-view-first-page)
+  - M-> (doc-view-last-page)
+  - M-g M-g or M-g g (doc-view-goto-page)
+  - + (doc-view-enlarge)
+  - - (doc-view-shrink)

@@ -358,7 +358,7 @@
                     ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         '(85 . 50) '(100 . 100)))))
+         '(90 . 50) '(100 . 100)))))
 
 (defun zz:transparency (value)
   "Sets the transparency of the frame window. 0=transparent/100=opaque"

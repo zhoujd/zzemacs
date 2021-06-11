@@ -13,11 +13,11 @@
 
 (keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
-;;the current frame to make it transparent
-;(set-frame-parameter (selected-frame) 'alpha '(95 70))
-;(add-to-list 'default-frame-alist '(alpha 95 70))
+;;transparency (<active> <inactive>) form
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 
-;; -*- Chinese -*-
+;;Chinese
 (defun zz:set-language-chinese ()
   "This is for chinese setting"
   (interactive)
@@ -25,7 +25,7 @@
   (set-buffer-file-coding-system 'chinese-gb18030)
   (message "This is for chinese"))
 
-;; -*- Japanese -*-
+;;Japanese
 (defun zz:set-language-japanese ()
   "This is for japanese setting"
   (interactive)
@@ -33,7 +33,7 @@
   (set-buffer-file-coding-system 'japanese-shift-jis)
   (message "This is for japanese"))
 
-;; -*- utf-8 -*-
+;;utf-8
 (defun zz:set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
@@ -42,7 +42,7 @@
   (setq default-input-method "chinese-py")
   (message "This is for utf-8"))
 
-;; -*- Language switch -*-
+;;Language switch
 (cond
   ;;((string-match "j[ap].*" (getenv "LANG")) (zz:set-language-japanese))
   ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz:set-language-chinese))

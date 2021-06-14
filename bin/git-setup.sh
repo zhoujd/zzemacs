@@ -17,6 +17,8 @@
 ## wget https://github.com/git/git/archive/v2.16.6.zip
 ## unzip v2.16.6.zip
 ## cd git-2.16.6
+## sed -i 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/g' debian/control
+## sed -i 's/TEST =test//g' debian/rules
 ## make prefix=/opt/git all
 ## make prefix=/opt/git install
 ## echo /opt/git/bin >> /etc/environment # or others

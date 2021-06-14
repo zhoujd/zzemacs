@@ -84,3 +84,28 @@ Git error and solutions
 
         # update your submodule
         $ git submodule update --remote
+
+11. gnutls_handshake() failed: Error in the pull function
+
+        ## rebuid git from source with openssl
+        $ sudo apt-get update
+        $ sudo apt-get install build-essential fakeroot dpkg-dev
+        $ sudo apt-get build-dep git
+        $ sudo apt-get install libcurl4-openssl-dev
+        $
+        $ mkdir ~/git-openssl
+        $ cd ~/git-openssl
+        $ apt-get source git
+        $
+        $ cd git-2.17.1/
+        $ sed -i 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/g' debian/control
+        $ sed -i 's/TEST =test//g' debian/rules
+        $ sudo dpkg-buildpackage -rfakeroot -b
+        $ cd ..
+        $ sudo dpkg -i git_2.17.1-1ubuntu0.3_amd64.deb
+
+        or
+
+        ## Install git package with openssl support
+        $ wget https://www.dreamoftime0.com/wp-content/uploads/ftp/tools/git_openssl_2.17.1/git_2.17.1-1ubuntu0.3_amd64.deb
+        $ sudo dpkg -i git_2.17.1-1ubuntu0.3_amd64.deb

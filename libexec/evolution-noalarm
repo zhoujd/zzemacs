@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -z $(command -v evolution) ] ; then
+    echo "Cannot find evolution"
+    exit 1
+fi
+
+disable_alarm() {
+    echo "kill evolution-alarm-notify"
+    sudo killall evolution-alarm
+    echo "rename evolution-alarm-notify"
+    sudo mv \
+         /usr/libexec/evolution-data-server/evolution-alarm-notify \
+         /usr/libexec/evolution-data-server/evolution-alarm-notify.origin
+}
+
+disable_alarm
+
+echo "evolution disble evolution-alarm-notify done"

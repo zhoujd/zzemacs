@@ -8,10 +8,8 @@ fi
 disable_alarm() {
     echo "kill evolution-alarm-notify"
     sudo killall evolution-alarm
-    echo "rename evolution-alarm-notify"
-    sudo mv \
-         /usr/libexec/evolution-data-server/evolution-alarm-notify \
-         /usr/libexec/evolution-data-server/evolution-alarm-notify.origin
+    echo "chmod -x evolution-alarm-notify"
+    sudo chmod -x /usr/libexec/evolution-data-server/evolution-alarm-notify
 }
 
 disable_alarm

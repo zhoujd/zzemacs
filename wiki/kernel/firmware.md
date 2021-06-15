@@ -1,7 +1,7 @@
 firmware
 ========
 
-1. How to store firmware file into header file (.h)
+## How to store firmware file into header file (.h)
 
 ```
 ## Usage: xxd -i fname > abc.h
@@ -39,7 +39,7 @@ extern const char _binary_somefile_bin_end;
 extern const int _binary_somefile_bin_size;
 ```
 
-2. JamesM's kernel development tutorials
+## JamesM's kernel development tutorials
    http://www.jamesmolloy.co.uk/tutorial_html/1.-Environment%20setup.html
 
 ``` Makefile

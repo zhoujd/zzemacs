@@ -3,7 +3,7 @@ Bridge
 
 https://www.hiroom2.com/2018/05/08/ubuntu-1804-bridge-en/
 
-1. bridge-utils + DHCP
+## bridge-utils + DHCP
 ```
 $ INTERFACE=ens3
 $ sudo apt install -y bridge-utils
@@ -19,7 +19,7 @@ EOF
 $ sudo reboot
 ```
 
-2. bridge-utils + Static IP Address
+## bridge-utils + Static IP Address
 ```
 $ INTERFACE=ens3
 $ sudo apt install -y bridge-utils
@@ -45,7 +45,7 @@ $ sudo sed -i /etc/systemd/resolved.conf \
 $ sudo reboot
 ```
 
-3. nmcli + DHCP
+## nmcli + DHCP
 ```
 $ sudo nmcli con add type bridge ifname br0
 $ sudo nmcli con mod bridge-br0 bridge.stp no
@@ -53,7 +53,7 @@ $ sudo nmcli con add type bridge-slave ifname ${INTERFACE} master bridge-br0
 $ sudo reboot
 ```
 
-4. nmcli + Static IP Address
+## nmcli + Static IP Address
 ```
 $ sudo nmcli con add type bridge ifname br0
 $ sudo nmcli con mod bridge-br0 bridge.stp no
@@ -66,7 +66,7 @@ $ sudo nmcli con modify bridge-br0 ipv4.method manual \
 $ sudo reboot
 ```
 
-5. systemd-networkd + DHCP
+## systemd-networkd + DHCP
 ```
 $ INTERFACE=ens3
 $ MACADDR=$(ip a s ${INTERFACE} | grep 'link/ether' | awk '{ print $2 }')
@@ -99,7 +99,7 @@ $ sudo systemctl enable systemd-networkd
 $ sudo reboot
 ```
 
-6. systemd-networkd + Static IP Address
+## systemd-networkd + Static IP Address
 ```
 $ INTERFACE=ens3
 $ MACADDR=$(ip a s ${INTERFACE} | grep 'link/ether' | awk '{ print $2 }')
@@ -135,6 +135,6 @@ $ sudo systemctl enable systemd-networkd
 $ sudo reboot
 ```
 
-7 QEMU Guide to Bridged Networking
+## QEMU Guide to Bridged Networking
 
 https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md

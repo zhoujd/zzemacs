@@ -1,15 +1,15 @@
 E-mail
-=====
+======
 
-1. Using Claws Mail with Gmail
+## Using Claws Mail with Gmail
 [https://www.claws-mail.org/faq/index.php/Using_Claws_Mail_with_Gmail]
 [claws-gmail](../../doc/linux/claws-gmail.pdf)
 
 
-2. Claws Mail Interface
+## Claws Mail Interface
 [https://www.claws-mail.org/faq/index.php/Interface]
 
-3. Hotmail/Outlook
+## Hotmail/Outlook
 
 Login -> Setting -> Sync email
 IMAP Setting

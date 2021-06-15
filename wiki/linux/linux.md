@@ -1,7 +1,7 @@
 Linux something
 ================
 
-1. rpm package
+## rpm package
 
     <http://linux.vbird.org/linux_basic/0520rpm_and_srpm.php>
 
@@ -11,7 +11,7 @@ Linux something
 
     $ yum list installed | grep kmd
 
-2. linux cross reference
+## linux cross reference
 
     <http://lxr.oss.org.cn/source/>
 
@@ -19,19 +19,19 @@ Linux something
 
     <http://lxr.linux.no/>
 
-3. FreeBSD & Linux cross refernce
+## FreeBSD & Linux cross refernce
 
     <http://fxr.watson.org/>
 
     <http://svnweb.freebsd.org/>
 
-3. android cross reference
+## Android cross reference
 
     <http://androidxref.com/>
 
     <http://code.metager.de/source/xref/android/>
 
-4. QEMU
+## QEMU
 
     [QEMU for windows]<http://qemu.weilnetz.de/>
 
@@ -46,7 +46,7 @@ Linux something
     sudo kvm -localtime -cdrom /dev/cdrom -m 512 -boot d win2.img
     sudo kvm -localtime -m 512 -hda windows.img -cdrom winxp.iso -boot d -clock -rtc -no-acpi
 
-4. Multi GCC
+## Multi GCC
 
     gcc -v
     ls -l /usr/bin/gcc* /usr/bin/g++*
@@ -58,7 +58,8 @@ Linux something
 
     sudo update-alternatives --config gcc
 
-5. CentOS rpm
+## CentOS rpm
+
     ## http://wiki.centos.org/HowTos/RebuildSRPM
     ## http://wiki.centos.org/HowTos/I_need_the_Kernel_Source
     sudo yum update kernel-2.6.32-431.17.1.el6
@@ -87,19 +88,22 @@ Linux something
     ##query file belong rpm package
     rpm -qf /path/filename
 
-6. Centos LIB dir when compile
+## Centos LIB dir when compile
+
     ./configure --prefix=/usr  --libdir=/usr/lib64
 
-7. Enter text console
+## Enter text console
+
     SUSE/CentOS: vim /etc/inittab  5=>3
     Ubuntu: vim /etc/default/grub
             GRUB_CMDLINE_LINUX_DEFAULT="quiet splash text"
             sudo update-grub
 
-8. Q/A web for Linux/FreeBSD/Unix like
-    http://stackexchange.com/
+## Q/A web for Linux/FreeBSD/Unix like
+   http://stackexchange.com/
 
-9. CD/DVD image burning
+## CD/DVD image burning
+
     mkisofs -r -o sample.iso my_private
 
     mkdir /mnt/cdrom
@@ -116,7 +120,8 @@ Linux something
     cdrecord -v speed=8 dev=0,0,0 -data cd_image.iso
     cdrecord -v -eject dev=0,0,0 -data cd_image.iso
 
-10. CentOS6.5 upgrade gcc 4.7.2
+## CentOS6.5 upgrade gcc 4.7.2
+
     wget http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo
     sudo cp devtools-1.1.repo /etc/yum.repos.d/devtools-1.1.repo
     sudo yum clean all
@@ -129,7 +134,8 @@ Linux something
     export CPP=/opt/centos/devtoolset-1.1/root/usr/bin/cpp
     export CXX=/opt/centos/devtoolset-1.1/root/usr/bin/c++
 
-11. Ubuntu proxy
+## Ubuntu proxy
+
     ##Temp in shell, ~/.bashrc for /etc/profile
     $ export http_proxy="http://hostname:port"
     $ export http_proxy="https://hostname:port"
@@ -144,12 +150,13 @@ Linux something
     Acquire::https::proxy "http://hostname:port";
     Acquire::ftp::proxy "http://hostname:port";
 
-12. Ubuntu ISO image
-    http://releases.ubuntu.com/12.04.5/
-    http://cdimage.ubuntu.com/releases/
-    http://mirrors.163.com/ubuntu-releases/
+## Ubuntu ISO image
+   http://releases.ubuntu.com/12.04.5/
+   http://cdimage.ubuntu.com/releases/
+   http://mirrors.163.com/ubuntu-releases/
 
-13. dd backup disk
+## dd backup disk
+
     ## Disk
     # dd if=/dev/sda of=sda.img bs=4M
     # dd if=sda.img of=/dev/sda
@@ -179,7 +186,8 @@ Linux something
     # dd if=/dev/hda? | gzip -c | ssh user@other-machine "cat >/path/to/save/to/filename"
     # cat /path/to/filename | ssh user@knoppix-machine "gunzip -c | dd of=/dev/hda?"
 
-14. SUSE ssh access
+## SUSE ssh access
+
     # vim /etc/sysconfig/SuSEfirewall2
     ## Make sure
     FW_SERVICES_EXT_TCP="ssh"
@@ -198,7 +206,8 @@ Linux something
     # chkconfig --level 35 sshd on
     # chkconfig --list sshd
 
-15. upgrade glibc
+## upgrade glibc
+
     ## http://ftp.gnu.org/gnu/glibc/
     [ghui@StuOS glibc-2.14]$ mkdir build
     [ghui@StuOS glibc-2.14]$ cd build
@@ -208,31 +217,37 @@ Linux something
     [ghui@StuOS bin]$ export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH
     [ghui@StuOS bin]$ sudo ldconfig -v
 
-16. xargs && cp
+## xargs && cp
+
     # ls *.jpg | xargs -n1 -i cp {} /external-hard-drive/directory
 
-17. sudo without password
+## sudo without password
+
     If you want to run apt-get without having to supply a sudo password, just edit the sudo config file to allow that. (Replace "zhoujd" in this example with your own login).
 
     zhoujd ALL=(root) NOPASSWD: /usr/bin/apt-get
 
     Hint: edit the config file with “sudo visudo”, not “sudo vim /etc/sudoers”. Visudo will check that you haven’t totally screwed up the config file before writing it out.
 
-18. multiable file change name
+## multiable file change name
+
     find public_html/ -name '*.shtml' | perl -pe 's/(.*)\.shtml/ mv $1.shtml $1.php/' | bash
 
-19. update initramfs
+## update initramfs
+
     # mkinitrd -f -v /boot/initrd-$(uname -r).img $(uname -r)
     # dracut -f
     # dracut -f initramfs-$(uname -r).img $(uname -r)
 
-20. ssh&scp now yes/no ask
+##  ssh & scp now yes/no ask
+
     [root@master ~]# vi /etc/ssh/ssh_config
     StrictHostKeyChecking no
     - or -
     [root@master ~]# ssh IP -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no
 
-21. disable report problem on ubuntu
+## disable report problem on ubuntu
+
     # ls /var/crash/
     # sudo rm -fr /var/crash/*
     # sudo stop apport
@@ -243,17 +258,20 @@ Linux something
     # sudo service apport start force_start=1
     enabled=0
 
-21. tag kernel
+## tag kernel
+
     #Tag the patched kernel to provide easy identification.
     $ perl -pi -e 's/.*CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION=".ZZ.r1"/' .config
 
-22. functions in dynamic library
+## functions in dynamic library
+
     $ nm a.so
     $ readelf -s a.so
     $ readelf -a a.so
     $ objdump -x a.so unamed.a
 
-23. Change or Rename User Name and UID (user-id)
+## Change or Rename User Name and UID (user-id)
+
     Task: View current user and group membership for user named tom
         $ id tom
         $ grep '^tom:' /etc/passwd
@@ -312,7 +330,7 @@ Linux something
         # id new
 
 
-24. 7 Methods To Identify Disk Partition/FileSystem UUID
+## 7 Methods To Identify Disk Partition/FileSystem UUID
 
     # blkid
     # lsblk -o name,mountpoint,size,uuid
@@ -322,8 +340,7 @@ Linux something
     # tune2fs -l /dev/sdc1 | grep UUID
     # dumpe2fs /dev/sdc1 | grep UUID
 
-25. Upgrade GCC (gcc)
-
+## Upgrade GCC (gcc)
 
     # sudo yum install libmpc-devel mpfr-devel gmp-devel
     # cd ~/Downloads
@@ -336,7 +353,7 @@ Linux something
     # make -j 4
     # make install
 
-26. find -print0 and xargs -0
+## find -print0 and xargs -0
 
     $ find -name "*.txt" -print0 | xargs -0 sed -i 's/aaa/bbb/g'
     $ find -type f -exec sed -i 's/home/work/g' \{\} \;

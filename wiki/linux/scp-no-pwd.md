@@ -1,24 +1,24 @@
 SCP in script
 ===============
 
-1. First Choice
+## First Choice
 
-        #!/bin/bash
-        IP=192.168.1.179
-        PASSWD=123456
-        content=$(cat <<!
-                    spawn scp -r root@$IP:/home/CRM /home
-                    send "yes\n"
-                    expect password:
-                    send "$PASSWD\n"
-                    expect eof
-        )
-        echo "$content" | expect
+    #!/bin/bash
+    IP=192.168.1.179
+    PASSWD=123456
+    content=$(cat <<!
+                spawn scp -r root@$IP:/home/CRM /home
+                send "yes\n"
+                expect password:
+                send "$PASSWD\n"
+                expect eof
+    )
+    echo "$content" | expect
 
-2. Second Choice:
+## Second Choice:
 
-    * #yum install expect
-    * #vi scp.exp
+    * # yum install expect
+    * # vi scp.exp
 
             #!/usr/bin/expect -f
             spawn scp -r root@192.168.1.179:/home/CRM /home
@@ -36,17 +36,17 @@ SCP in script
             #chmod +x scp.exp
             #./scp.exp
 
-3. Third Choice
+## Third Choice
 
-          #!/bin/bash
-          IP=192.168.1.179
-          PASSWD=123456
-          content=$(cat <<!
-              spawn scp -r root@$IP:/home/CRM /home
-              send "yes\n"
-              expect password:
-              send "$PASSWD\n"
-              expect "Are you sure you want to continue connecting (yes/no)?" { send "yes\r" } "Password:" { send "$PASSWD\r" }
-              expect eof
-          )
-          echo "$content" | expect
+    #!/bin/bash
+    IP=192.168.1.179
+    PASSWD=123456
+    content=$(cat <<!
+        spawn scp -r root@$IP:/home/CRM /home
+        send "yes\n"
+        expect password:
+        send "$PASSWD\n"
+        expect "Are you sure you want to continue connecting (yes/no)?" { send "yes\r" } "Password:" { send "$PASSWD\r" }
+        expect eof
+    )
+    echo "$content" | expect

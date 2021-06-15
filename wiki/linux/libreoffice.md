@@ -1,26 +1,26 @@
 libreoffice
 ===========
 
-1. Disable logo
+## Disable logo
 
-        sudo nano /etc/libreoffice/sofficerc
-        logo=0
+    sudo nano /etc/libreoffice/sofficerc
+    logo=0
 
-2. Window font
+## Window font
 
-        ##Substituting Calibri And Cambria Fonts
-        $ sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
+    ##Substituting Calibri And Cambria Fonts
+    $ sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
 
-3. Install the default Sifr icons:
+## Install the default Sifr icons:
 
-        $ sudo apt install libreoffice-style-sifr
-        Tools->Options->Libreoffice->View->Icon style: Sifr
+    $ sudo apt install libreoffice-style-sifr
+    Tools->Options->Libreoffice->View->Icon style: Sifr
 
-4. Install suits
+## Install suits
 
-        $ sudo apt install libreoffice
-        $ libreoffice
+    $ sudo apt install libreoffice
+    $ libreoffice
 
-5. Install Database
+## Install Database
 
-        $ sudo apt install libreoffice-base
+    $ sudo apt install libreoffice-base

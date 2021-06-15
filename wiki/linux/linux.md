@@ -14,27 +14,22 @@ Linux something
 ## linux cross reference
 
     <http://lxr.oss.org.cn/source/>
-
     <http://lxr.free-electrons.com/>
-
     <http://lxr.linux.no/>
 
 ## FreeBSD & Linux cross refernce
 
     <http://fxr.watson.org/>
-
     <http://svnweb.freebsd.org/>
 
 ## Android cross reference
 
     <http://androidxref.com/>
-
     <http://code.metager.de/source/xref/android/>
 
 ## QEMU
 
     [QEMU for windows]<http://qemu.weilnetz.de/>
-
     [QEMU wiki]<http://wiki.qemu.org/Main_Page>
 
     sudo apt-get install kvm qemu qemu-kvm virt-manager kernel-package linux-source kqemu-source build-essential
@@ -100,7 +95,7 @@ Linux something
             sudo update-grub
 
 ## Q/A web for Linux/FreeBSD/Unix like
-   http://stackexchange.com/
+    http://stackexchange.com/
 
 ## CD/DVD image burning
 
@@ -151,9 +146,9 @@ Linux something
     Acquire::ftp::proxy "http://hostname:port";
 
 ## Ubuntu ISO image
-   http://releases.ubuntu.com/12.04.5/
-   http://cdimage.ubuntu.com/releases/
-   http://mirrors.163.com/ubuntu-releases/
+    http://releases.ubuntu.com/12.04.5/
+    http://cdimage.ubuntu.com/releases/
+    http://mirrors.163.com/ubuntu-releases/
 
 ## dd backup disk
 
@@ -271,66 +266,71 @@ Linux something
     $ objdump -x a.so unamed.a
 
 ## Change or Rename User Name and UID (user-id)
+### Task: View current user and group membership for user named tom
 
-    Task: View current user and group membership for user named tom
-        $ id tom
-        $ grep '^tom:' /etc/passwd
-        $ grep 'tom' /etc/group
-        $ groups tom
-        $ ls -ld /home/tom/
-        $ ps aux | grep tom
-        $ ps -u tom
+    $ id tom
+    $ grep '^tom:' /etc/passwd
+    $ grep 'tom' /etc/group
+    $ groups tom
+    $ ls -ld /home/tom/
+    $ ps aux | grep tom
+    $ ps -u tom
 
-    Task: Change username from tom to jerry on Linux
-        # id tom
-        # usermod -l jerry tom
-        ## Verify ###
-        # id tom
-        # id jerry
-        # ls -ld /home/tom
+### Task: Change username from tom to jerry on Linux
 
-       A NOTE ABOUT RUNNING PROCESS
-        # usermod -l jerry tom
-          usermod: user tom is currently used by process 6886
-        # pkill -u tom pid
-        # pkill -9 -u tom
-        # usermod -l jerry tom
+    # id tom
+    # usermod -l jerry tom
+    ## Verify ###
+    # id tom
+    # id jerry
+    # ls -ld /home/tom
 
-    Task: Change primary groupname from tom to jerry
-        # id tom
-        # groupmod -n jerry tom
-        ## Verify it ###
-        # id tom
-        # ls -ld /home/tom
+    A NOTE ABOUT RUNNING PROCESS
+    # usermod -l jerry tom
+      usermod: user tom is currently used by process 6886
+    # pkill -u tom pid
+    # pkill -9 -u tom
+    # usermod -l jerry tom
 
-    How to change user home directory from /home/tom/ to /home/jerry
-        # usermod -d /home/jerry -m jerry
-        # usermod -c "jerry" jerry
-        # id jerry
-        # ls -ld /home/jerry
+### Task: Change primary groupname from tom to jerry
 
-    How to change user tom UID/GID from 5001 to 10000
-        # id tom
-        # usermod -u 10000 tom
-        # id tom
-        # groupmod -g 10000 tom
-        # id tom
+    # id tom
+    # groupmod -n jerry tom
+    ## Verify it ###
+    # id tom
+    # ls -ld /home/tom
 
-    Blueman: configured directory for incoming file does not exist
-        $ gsettings get org.blueman.transfer shared-path
-        $ gsettings set org.blueman.transfer shared-path '/home/your_user_name/Downloads'
+### How to change user home directory from /home/tom/ to /home/jerry
 
-    Summary command lines
-        # killall -u old
-        # id old
-        # usermod -l new old
-        # groupmod -n new old
-        # usermod -d /home/new -m new
-        # usermod -c "New Real Name" new
-        # id new
+    # usermod -d /home/jerry -m jerry
+    # usermod -c "jerry" jerry
+    # id jerry
+    # ls -ld /home/jerry
 
+### How to change user tom UID/GID from 5001 to 10000
 
-## 7 Methods To Identify Disk Partition/FileSystem UUID
+    # id tom
+    # usermod -u 10000 tom
+    # id tom
+    # groupmod -g 10000 tom
+    # id tom
+
+### Blueman: configured directory for incoming file does not exist
+
+    $ gsettings get org.blueman.transfer shared-path
+    $ gsettings set org.blueman.transfer shared-path '/home/your_user_name/Downloads'
+
+### Summary command lines
+
+    # killall -u old
+    # id old
+    # usermod -l new old
+    # groupmod -n new old
+    # usermod -d /home/new -m new
+    # usermod -c "New Real Name" new
+    # id new
+
+## Identify Disk Partition/FileSystem UUID
 
     # blkid
     # lsblk -o name,mountpoint,size,uuid

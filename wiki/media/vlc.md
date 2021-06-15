@@ -1,7 +1,7 @@
 VLC Something
 =============
 
-1. Bat file for VLC video wall
+## Bat file for VLC video wall
 
     cd "c:\Program Files (x86)\VideoLAN\VLC"
 

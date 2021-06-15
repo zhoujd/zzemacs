@@ -1,9 +1,8 @@
-Putty resource
-====================================
+Putty
+=====
 
-1. Useful command lines
+## Useful command lines
 
-        $ putty -sercfg 19200,8,n,1,N -serial "$@" &
-        $ putty -X -ssh "$@" &
-        $ putty -load x11-forward "$@" &
-
+    $ putty -sercfg 19200,8,n,1,N -serial "$@" &
+    $ putty -X -ssh "$@" &
+    $ putty -load x11-forward "$@" &

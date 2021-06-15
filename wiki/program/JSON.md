@@ -1,8 +1,7 @@
 JSON
 =====
 
-
-1. JSON processor
+## JSON processor
 ```
 ## https://github.com/stedolan/jq
 $ sudo apt install jq
@@ -12,7 +11,7 @@ $ echo '{"foo": "0"}' | jq .foo
 $ echo '{"foo": "0"}' | jq -r .foo
 ```
 
-2. Read Json from stdin
+## Read Json from stdin
 ```
 #!/bin/bash
 # Read stdin

@@ -1,75 +1,75 @@
 GO Lang
 =======
 
-1. Debug with GDB
+## Debug with GDB
 
-        <https://golang.org/doc>
-        <https://golang.org/doc/gdb>
+    <https://golang.org/doc>
+    <https://golang.org/doc/gdb>
 
-        $ go run main.go
-        $ go build -gcflags "-N -l" -o gdb_sandbox main.go
-        $ gdb gdb_sandbox
+    $ go run main.go
+    $ go build -gcflags "-N -l" -o gdb_sandbox main.go
+    $ gdb gdb_sandbox
 
-        (gdb) source ~/go/src/runtime/runtime-gdb.py
-        or
-        (gdb) source /usr/share/go/src/runtime/runtime-gdb.py
+    (gdb) source ~/go/src/runtime/runtime-gdb.py
+    or
+    (gdb) source /usr/share/go/src/runtime/runtime-gdb.py
 
-        (gdb) l
-        (gdb) b main.go:9
-        (gdb) r
+    (gdb) l
+    (gdb) b main.go:9
+    (gdb) r
 
-2. Godoc
+## Godoc
 
-        $ sudo apt install golang-golang-x-tools
+    $ sudo apt install golang-golang-x-tools
 
-3. Go project directories
+## Go project directories
 
-        <https://github.com/golang-standards/project-layout>
+     <https://github.com/golang-standards/project-layout>
 
-4. Go as script
+## Go as script
 
-        $ cat vikas.go
-        //usr/bin/env go run "$0" "$@"; exit
+    $ cat vikas.go
+    //usr/bin/env go run "$0" "$@"; exit
 
-        package main
+    package main
 
-        import "fmt"
+    import "fmt"
 
-        func main() {
-            fmt.Printf("Hello World\n")
-        }
+    func main() {
+        fmt.Printf("Hello World\n")
+    }
 
-        $ ./vikas.go
-        Hello World
+    $ ./vikas.go
+    Hello World
 
-5. Init Go project
+## Init Go project
 
-        $ mkdir -p api build cmd deployments docs internal pkg scripts test third-party tools vendor
-        $ touch Makefile README.md
+    $ mkdir -p api build cmd deployments docs internal pkg scripts test third-party tools vendor
+    $ touch Makefile README.md
 
-6. Ginkgo Go testing framework
+## Ginkgo Go testing framework
 
-        ## https://github.com/onsi/ginkgo
-        $ go get -u github.com/onsi/ginkgo/ginkgo
-        or
-        $ go get github.com/onsi/ginkgo/ginkgo
-        $ go get github.com/onsi/gomega/...
+    ## https://github.com/onsi/ginkgo
+    $ go get -u github.com/onsi/ginkgo/ginkgo
+    or
+    $ go get github.com/onsi/ginkgo/ginkgo
+    $ go get github.com/onsi/gomega/...
 
-7. Install latest go version
+## Install latest go version
 
-        ## in case there is old version of go is installed
-        $ sudo apt-get purge golang*
+    ## in case there is old version of go is installed
+    $ sudo apt-get purge golang*
 
-        ## get latest version from https://golang.org/dl/
-        $ tar_name="go1.16.3.linux-amd64.tar.gz"
-        $ wget https://golang.org/dl/$tar_name
-        $ tar -xvf $tar_name
-        $ rm -f $tar_name
-        $ sudo rm -rf /usr/local/go
-        $ sudo mv go /usr/local
+    ## get latest version from https://golang.org/dl/
+    $ tar_name="go1.16.3.linux-amd64.tar.gz"
+    $ wget https://golang.org/dl/$tar_name
+    $ tar -xvf $tar_name
+    $ rm -f $tar_name
+    $ sudo rm -rf /usr/local/go
+    $ sudo mv go /usr/local
 
-        ## Add following lines into `.bashrc` or `.zshrc`
-        $ mkdir -p $HOME/go
-        $ export GOPATH=$HOME/go
-        $ export GOROOT=/usr/local/go
-        $ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+    ## Add following lines into `.bashrc` or `.zshrc`
+    $ mkdir -p $HOME/go
+    $ export GOPATH=$HOME/go
+    $ export GOROOT=/usr/local/go
+    $ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin

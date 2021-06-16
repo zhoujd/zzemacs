@@ -74,7 +74,8 @@
     :action '(("Switch to buffer" . helm-switchb-select)
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
-              ("New shell" . helm-switchb-shell-new))
+              ("New shell" . helm-switchb-shell-new)
+              ("New terminal" . helm-switchb-term-new))
     :keymap helm-switchb-map
     ))
 
@@ -84,6 +85,7 @@
     :action '(("Switch to buffer" . helm-switchb-select)
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
+              ("New shell" . helm-switchb-shell-new)
               ("New terminal" . helm-switchb-term-new))
     :keymap helm-switchb-map
     ))

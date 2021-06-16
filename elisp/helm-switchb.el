@@ -47,15 +47,21 @@
 (defun helm-switchb-term-new (candidate)
   (multi-term))
 
-(defun helm-switcb-run-kill ()
+(defun helm-switcb-kill-shell ()
   "kill action"
   (interactive)
   (helm-switchb-kill (helm-marked-candidates)))
 
+(defun helm-switcb-open-dired ()
+  "kill action"
+  (interactive)
+  (helm-switchb-dired-open (helm-get-selection)))
+
 (defvar helm-switchb-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-c d") (helm-switchb-run (helm-switcb-run-kill)))
+    (define-key map (kbd "C-c d")   (helm-switchb-run (helm-switcb-kill-shell)))
+    (define-key map (kbd "C-c M-d") (helm-switchb-run (helm-switcb-open-dired)))
     map)
   "Keymap for `helm-switchb'.")
 
@@ -76,6 +82,7 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New terminal" . helm-switchb-term-new))
+    :keymap helm-switchb-map
     ))
 
 (defun helm-switchb-shell-list ()

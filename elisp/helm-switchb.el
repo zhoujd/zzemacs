@@ -60,11 +60,23 @@
   (interactive)
   (helm-switchb-dired-open (helm-get-selection)))
 
+(defun helm-switcb-open-shell ()
+  "open shell buffer"
+  (interactive)
+  (helm-switchb-shell-new (helm-get-selection)))
+
+(defun helm-switcb-open-term ()
+  "open term buffer"
+  (interactive)
+  (helm-switchb-term-new (helm-get-selection)))
+
 (defvar helm-switchb-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
     (define-key map (kbd "C-c d")   (helm-switchb-run (helm-switcb-kill-shell)))
     (define-key map (kbd "C-c M-d") (helm-switchb-run (helm-switcb-open-dired)))
+    (define-key map (kbd "C-c s")   (helm-switchb-run (helm-switcb-open-shell)))
+    (define-key map (kbd "C-c t")   (helm-switchb-run (helm-switcb-open-term)))
     map)
   "Keymap for `helm-switchb'.")
 

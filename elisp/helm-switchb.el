@@ -48,10 +48,12 @@
   (multi-term))
 
 (defun helm-switcb-kill-shell ()
+  "kill shell buffer"
   (interactive)
   (helm-switchb-kill (helm-marked-candidates)))
 
 (defun helm-switcb-open-dired ()
+  "open dired buffer"
   (interactive)
   (helm-switchb-dired-open (helm-get-selection)))
 

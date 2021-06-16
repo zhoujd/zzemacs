@@ -8,6 +8,7 @@
   "helm switchb separator")
 
 (defmacro helm-switchb-candidate (mode)
+  "Collect and format candidates base on Major mode"
   `(lambda ()
      (mapcar
       (lambda (buf)
@@ -23,7 +24,7 @@
        (buffer-list)))))
 
 (defmacro helm-switchb-run (&rest body)
-  "Define an action with BODY to be run after exiting Helm."
+  "Define an action with BODY to be run after exiting Helm"
   (declare (doc-string 1))
   `(lambda ()
      (interactive)

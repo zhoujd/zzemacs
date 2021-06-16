@@ -4,7 +4,7 @@
 (require 'helm)
 (require 'multi-shell)
 
-(defvar helm-switchb-separator "   "
+(defvar helm-switchb-separator " "
   "helm switchb separator")
 
 (defmacro helm-switchb-candidate (mode)
@@ -12,7 +12,7 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%-25s%s%s"
+        (format "%-27s%s%s"
                 (buffer-name buf)
                 helm-switchb-separator
                 (with-current-buffer (buffer-name buf)
@@ -35,7 +35,7 @@
   (switch-to-buffer (car (split-string candidate helm-switchb-separator))))
 
 (defun helm-switchb-dired-open (candidate)
-  (dired (nth 2 (split-string candidate helm-switchb-separator))))
+  (dired (car (reverse (split-string candidate helm-switchb-separator)))))
 
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
@@ -43,10 +43,12 @@
         (kill-buffer (car (split-string cand helm-switchb-separator)))))
 
 (defun helm-switchb-shell-new (candidate)
-  (multi-shell-new))
+  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator)))))
+    (multi-shell-new)))
 
 (defun helm-switchb-term-new (candidate)
-  (multi-term))
+  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator)))))
+    (multi-term)))
 
 (defun helm-switcb-kill-shell ()
   "kill shell buffer"

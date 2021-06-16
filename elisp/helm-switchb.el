@@ -3,6 +3,7 @@
 
 (require 'helm)
 (require 'multi-shell)
+(require 'multi-term)
 
 (defvar helm-switchb-separator " "
   "helm switchb separator")

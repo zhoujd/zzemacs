@@ -33,22 +33,22 @@
        (helm-exit-and-execute-action (lambda (_candidate) ,@body)))))
 
 (defun helm-switchb-select (candidate)
-  (switch-to-buffer (car (split-string candidate helm-switchb-separator))))
+  (switch-to-buffer (car (split-string candidate helm-switchb-separator t))))
 
 (defun helm-switchb-dired-open (candidate)
-  (dired (car (reverse (split-string candidate helm-switchb-separator)))))
+  (dired (car (reverse (split-string candidate helm-switchb-separator t)))))
 
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
-        (kill-buffer (car (split-string cand helm-switchb-separator)))))
+        (kill-buffer (car (split-string cand helm-switchb-separator t)))))
 
 (defun helm-switchb-shell-new (candidate)
-  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator)))))
+  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator t)))))
     (multi-shell-new)))
 
 (defun helm-switchb-term-new (candidate)
-  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator)))))
+  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator t)))))
     (multi-term)))
 
 (defun helm-switcb-kill-shell ()

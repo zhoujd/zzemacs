@@ -22,6 +22,14 @@
            (eq major-mode ,mode)))
        (buffer-list)))))
 
+(defmacro helm-switchb-run (&rest body)
+  "Define an action with BODY to be run after exiting Helm."
+  (declare (doc-string 1))
+  `(lambda ()
+     (interactive)
+     (with-helm-alive-p
+       (helm-exit-and-execute-action (lambda (_candidate) ,@body)))))
+
 (defun helm-switchb-select (candidate)
   (switch-to-buffer (car (split-string candidate helm-switchb-separator))))
 
@@ -39,6 +47,18 @@
 (defun helm-switchb-term-new (candidate)
   (multi-term))
 
+(defun helm-switcb-run-kill ()
+  "kill action"
+  (interactive)
+  (helm-switchb-kill (helm-marked-candidates)))
+
+(defvar helm-switchb-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map helm-map)
+    (define-key map (kbd "C-c d") (helm-switchb-run (helm-switcb-run-kill)))
+    map)
+  "Keymap for `helm-switchb'.")
+
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
@@ -46,6 +66,7 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new))
+    :keymap helm-switchb-map
     ))
 
 (defvar helm-switchb-term-source

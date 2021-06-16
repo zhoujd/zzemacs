@@ -1,18 +1,26 @@
+# website: https://github.com/zhoujd/zzokapi
+# author: Zachary Zhou <zchrzhou@gmail.com>
+
 # dispatch.py
 # -*- coding: utf-8 -*-
 
 import os
+import re
 import framework.config as config
 
 class Dispatch:
-    def __init__(self, workdir, srcdir, argv):
+    def __init__(self, workdir, srcdir, argv, helpdoc=None):
         self.workdir = workdir
         self.srcdir = srcdir
         self.params = argv
         self.appmap = {}
         self.entryname = os.path.basename(argv[0])
+        self.helpdoc = helpdoc
 
     def run(self):
+        if config.verbose is True:
+            print("Work directory: %s" % self.workdir)
+
         self.getappmap()
         if len(self.params) == 1:
             self.usage()
@@ -41,12 +49,21 @@ class Dispatch:
                 if config.verbose is True:
                     print(app)
                 cmdline = "%s %s" % (" ".join(app), args)
-                print("cmdline: %s\n" % cmdline)
+                if config.verbose is True:
+                    print("cmdline: %s\n" % cmdline)
                 os.system(cmdline)
 
     def usage(self):
-        for key, value in sorted(self.appmap.items()):
-            print("Use: %s %s [argv]" % (self.entryname, key.replace("-", " ")))
+        if self.helpdoc is not None:
+            print("%s" % self.helpdoc)
+        else:
+            for key, value in sorted(self.appmap.items()):
+                key = key.replace("---", "-++")
+                key = key.replace("--", "-+")
+                sublist = key.split("-")
+                sublist = [x.replace("+", "-") for x in sublist]
+                subcmd = " ".join(sublist)
+                print("Use: %s %s [argv]" % (self.entryname, subcmd))
 
     def findapp(self, app):
         if app in self.appmap.keys():
@@ -84,7 +101,7 @@ class Dispatch:
             if appext in config.appnames:
                 apptype = config.appnames[appext]
             elif appext == "" and config.supportnoext is True:
-                apptype = "unknown"
+                apptype = ""
 
             if apptype is not None:
                 appinfo.append(apptype)

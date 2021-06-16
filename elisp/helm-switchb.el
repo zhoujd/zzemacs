@@ -48,12 +48,10 @@
   (multi-term))
 
 (defun helm-switcb-kill-shell ()
-  "kill action"
   (interactive)
   (helm-switchb-kill (helm-marked-candidates)))
 
 (defun helm-switcb-open-dired ()
-  "kill action"
   (interactive)
   (helm-switchb-dired-open (helm-get-selection)))
 

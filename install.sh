@@ -9,7 +9,7 @@ echo "install .emacs to HOME directory begin..."
 
 ##setup .emacs
 install_dot_emacs() {
-cat <<EOF > ~/.emacs
+    cat <<EOF > ~/.emacs
 ;;;This is .emacs for zhoujd.
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
 (if (file-exists-p (concat zzemacs-path "/.emacs"))

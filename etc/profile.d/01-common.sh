@@ -22,6 +22,8 @@ export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 ## lblue='\[\033[1;34m\]'
 ## mangenta='\[\033[1;35m\]'
 ## white='\[\033[1;37m\]'
+## gray='\[\033[0;37m\]'
+## lgray='\[\033[1;37m\]'
 prompt() {
     local green='\[\033[0;32m\]'
     local lgreen='\[\033[1;32m\]'

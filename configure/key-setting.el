@@ -306,13 +306,6 @@
   (kbd "2")       'typit-advanced-test
   ))
 
-(keys-unset-to-map
- help-fn-map
- (list
-  [f1]
-  [f4]
-  ))
-
 
 (provide 'key-setting)
 

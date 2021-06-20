@@ -1,6 +1,9 @@
 ;;;; fn-setting.el --- key function config file
 ;;;
 
+(zz:load-path "elisp")
+(require 'apply-keys)
+
 ;;fn-key-table
 (defvar fn-key-table
   (let ((hash (make-hash-table :test 'equal)))
@@ -175,6 +178,13 @@
     (kbd "C-x <f12>") 'zz:untabify-buffer
     (kbd "C-c <f12>") 'zz:tabify-buffer
     "f12 key binding")
+
+(keys-unset-to-map
+ help-fn-map
+ (list
+  [f1]
+  [f4]
+  ))
 
 
 (provide 'fn-setting)

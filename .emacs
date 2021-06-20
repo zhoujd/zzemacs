@@ -40,7 +40,6 @@
         sample-setting
         w3m-setting
         doc-setting
-        game-setting
         dired-setting
         evil-setting
         c-setting
@@ -51,6 +50,8 @@
         go-setting
         docker-setting
         media-setting
+        game-setting
+        typing-setting
         ;;matlab-setting
         ;;spell-setting
         ;;gnuplot-setting

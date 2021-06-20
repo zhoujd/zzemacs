@@ -302,6 +302,8 @@
   (kbd "C-s")     'sokoban
   (kbd "C-t")     'tetris
   (kbd "M-t")     'autotetris
+  (kbd "1")       'typit-basic-test
+  (kbd "2")       'typit-advanced-test
   ))
 
 (keys-unset-to-map

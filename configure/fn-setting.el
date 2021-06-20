@@ -24,9 +24,10 @@
 
 (defun add-fn-key (fn-map fn-sym fn)
   (when (and fn-map fn-sym fn)
-    (define-key global-map  fn-sym  fn)
-    (define-key help-fn-map fn-sym  fn)
-    (define-key fn-map      fn-name fn)))
+    (define-key global-map fn-sym  fn)
+    (define-key fn-map     fn-name fn)
+    (unless (keymapp fn)
+      (define-key help-fn-map fn-sym fn))))
 
 (defun define-fn-key (fn-name fn-sym fn s-fn-sym s-fn
                               c-fn-sym c-fn m-fn-sym m-fn
@@ -146,13 +147,6 @@
   (kbd "C-x <f12>") 'zz:untabify-buffer
   (kbd "C-c <f12>") 'zz:tabify-buffer
   "f12 key binding")
-
-(keys-unset-to-map
- help-fn-map
- (list
-  [f1]
-  [f4]
-  ))
 
 
 (provide 'fn-setting)

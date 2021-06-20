@@ -1,9 +1,6 @@
 ;;;; fn-setting.el --- key function config file
 ;;;
 
-(zz:load-path "elisp")
-(require 'apply-keys)
-
 ;;fn-key-table
 (defvar fn-key-table
   (let ((hash (make-hash-table :test 'equal)))

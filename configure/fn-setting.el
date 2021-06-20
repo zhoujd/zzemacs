@@ -22,23 +22,23 @@
     hash)
   "fn-key-table")
 
-(defun add-fn-key (fn-map fn-sym fn)
-  (when (and fn-map fn-sym fn)
-    (define-key global-map fn-sym  fn)
-    (define-key fn-map     fn-name fn)
-    (unless (keymapp fn)
-      (define-key help-fn-map fn-sym fn))))
+(defun add-fn-key (name map sym func)
+  (when (and name map sym func)
+    (define-key global-map sym  func)
+    (define-key map        name func)
+    (unless (keymapp func)
+      (define-key help-fn-map sym func))))
 
 (defun define-fn-key (fn-name fn-sym fn s-fn-sym s-fn
                               c-fn-sym c-fn m-fn-sym m-fn
                               ctrl-x-fn-sym ctrl-x-fn
                               ctrl-c-fn-sym ctrl-c-fn &optional doc)
-  (add-fn-key fn-map        fn-sym fn)
-  (add-fn-key shift-fn-map  s-fn-sym s-fn)
-  (add-fn-key ctrl-fn-map   c-fn-sym c-fn)
-  (add-fn-key meta-fn-map   m-fn-sym m-fn)
-  (add-fn-key ctrl-x-fn-map ctrl-x-fn-sym ctrl-x-fn)
-  (add-fn-key ctrl-c-fn-map ctrl-c-fn-sym ctrl-c-fn))
+  (add-fn-key fn-name fn-map        fn-sym fn)
+  (add-fn-key fn-name shift-fn-map  s-fn-sym s-fn)
+  (add-fn-key fn-name ctrl-fn-map   c-fn-sym c-fn)
+  (add-fn-key fn-name meta-fn-map   m-fn-sym m-fn)
+  (add-fn-key fn-name ctrl-x-fn-map ctrl-x-fn-sym ctrl-x-fn)
+  (add-fn-key fn-name ctrl-c-fn-map ctrl-c-fn-sym ctrl-c-fn))
 
 (define-fn-key (gethash "f1" fn-key-table)
   [f1]              help-map

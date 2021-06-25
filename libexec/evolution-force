@@ -5,13 +5,12 @@ if [ -z $(command -v evolution) ] ; then
     exit 1
 fi
 
-force_restart() {
-    echo "evolution restart"
+force_down() {
+    echo "evolution down"
     evolution --force-shutdown > /dev/null 2>&1
     sleep 2s
-    evolution
 }
 
-force_restart
+force_down
 
-echo "evolution force restart done"
+echo "evolution force down done"

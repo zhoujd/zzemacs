@@ -15,7 +15,7 @@ install_package() {
         "Ubuntu" | "LinuxMint" )
             sudo apt install -y cscope
             sudo apt install -y texinfo
-            sudo apt install -y markdown
+            sudo apt install -y markdown pandoc
             sudo apt install -y w3m
             sudo apt install -y silversearcher-ag
             sudo apt install -y socat

@@ -8,12 +8,10 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;;set markdow command
-(setq markdown-command
-      (if (executable-find "markdown")
-          (concat "markdown")
-          (concat "perl " zzemacs-path "/libexec/markdown.pl | "
-                  "perl " zzemacs-path "/libexec/smartypants.pl")))
+;;The default command for markdown (~markdown~), doesn't support tables
+;;(e.g. GitHub flavored markdown). Pandoc does, so let's use that.
+(setq markdown-command "pandoc --from markdown --to html")
+(setq markdown-command-needs-filename t)
 
 ;;github markdown preview
 (zz:load-path "site-lisp/github-markdown-preview")

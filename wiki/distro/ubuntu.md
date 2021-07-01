@@ -1,7 +1,7 @@
 Ubuntu setting
 ==============
 
-## English date etc.
+## English date etc
 
     System settings -> Language support -> Regional format
     => English(United States)

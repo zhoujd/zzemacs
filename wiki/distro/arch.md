@@ -1,7 +1,7 @@
 Arch setting
 ==============
 
-## Build kernel from source.
+## Build kernel from source
 
     $ firefox https://linuxhint.com/upgrade-kernel-on-arch-linux
 

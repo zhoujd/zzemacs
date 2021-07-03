@@ -18,3 +18,8 @@ HHKB
     ## Login UI bluetooth enable
     $ sudo nano /etc/bluetooth/main.conf
     AutoEnable=true
+
+## HHKB Hybrid pairing on Manjaro
+
+    ## Samilar on Ubuntu
+    $ sudo pacman -S bluez-utils

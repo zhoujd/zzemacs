@@ -23,3 +23,16 @@ HHKB
 
     ## Samilar on Ubuntu
     $ sudo pacman -S bluez-utils
+
+## Turn on bluetooth on login screen
+
+    ## https://unix.stackexchange.com/questions/197212/turn-on-bluetooth-on-login-screen
+    $ cat /etc/udev/rules.d/10-local.rules
+    # Set bluetooth power up
+    ACTION=="add", KERNEL=="hci0", RUN+="/usr/bin/hciconfig hci0 up"
+
+    or
+
+    $ cat /etc/udev/rules.d/10-local.rules
+    # Set bluetooth power up
+    ACTION=="add", KERNEL=="hci0", RUN+="/bin/bluetoothctl --agent menu power on"

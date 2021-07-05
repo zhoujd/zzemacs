@@ -23,3 +23,38 @@ HHKB
 
     ## Samilar on Ubuntu
     $ sudo pacman -S bluez-utils
+
+## Turn on bluetooth on login screen
+
+    ## https://unix.stackexchange.com/questions/197212/turn-on-bluetooth-on-login-screen
+    $ cat /etc/udev/rules.d/10-local.rules
+    # Set bluetooth power up
+    ACTION=="add", KERNEL=="hci0", RUN+="/usr/bin/hciconfig hci0 up"
+
+    ## Start bluetooth in rc.local
+    $ cat /etc/rc.zach.d/z01bluetooth
+    #!/bin/bash
+
+    do_start() {
+        echo "$0 start"
+        test -x /sbin/rfkill && /sbin/rfkill unblock bluetooth
+        test -x /bin/bluetoothctl && /bin/bluetoothctl power on
+    }
+
+    do_stop() {
+        echo "$0 stop"
+    }
+
+    case "$1" in
+        start)
+            do_start
+            ;;
+        stop)
+            do_stop
+            ;;
+        *)
+            echo "Usage: $0 {start|stop}" >&2
+            exit 3
+            ;;
+    esac
+    exit 0

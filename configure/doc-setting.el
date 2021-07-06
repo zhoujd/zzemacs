@@ -94,6 +94,13 @@
                  (org-present-show-cursor)
                  (org-present-read-write)))))
 
+;;org plantuml
+;;https://plantuml.com/emacs
+;;export e.g. with C-c C-e h o
+(setq org-plantuml-jar-path (expand-file-name "~/.plantuml/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+
 ;;https://webonastick.com/emacs-lisp/hide-mode-line.el
 (autoload 'hide-mode-line "hide-mode-line" nil t)
 

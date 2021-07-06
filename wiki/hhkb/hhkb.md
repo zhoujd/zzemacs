@@ -58,3 +58,7 @@ HHKB
             ;;
     esac
     exit 0
+
+## Bluetooth URLs
+
+    ## https://wiki.archlinux.org/title/Bluetooth

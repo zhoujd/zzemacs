@@ -110,6 +110,11 @@
 (zz:load-path "site-lisp/hydra")
 (require 'pandoc-mode)
 
+;;epub reading
+;;https://depp.brause.cc/nov.el
+(require 'nov)
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+
 
 (provide 'doc-setting)
 

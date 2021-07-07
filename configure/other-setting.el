@@ -303,8 +303,8 @@
 (require 'grep+)
 
 ;;mode-line powerline
-(require 'powerline)
-(powerline-default-theme)
+;(require 'powerline)
+;(powerline-default-theme)
 
 ;;iedit
 (zz:load-path "site-lisp/iedit")

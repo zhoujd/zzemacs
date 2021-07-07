@@ -303,8 +303,8 @@
 (require 'grep+)
 
 ;;mode-line powerline
-;(require 'powerline)
-;(set-face-attribute 'mode-line nil :background "#bdbdbd" :box nil)
+(require 'powerline)
+(powerline-default-theme)
 
 ;;iedit
 (zz:load-path "site-lisp/iedit")

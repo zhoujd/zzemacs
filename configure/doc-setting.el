@@ -96,8 +96,9 @@
 
 ;;org plantuml
 ;;https://plantuml.com/emacs
+;;Ubuntu: apt install plantuml
 ;;export e.g. with C-c C-e h o
-(setq org-plantuml-jar-path (expand-file-name "~/.plantuml/plantuml.jar"))
+(setq org-plantuml-jar-path (expand-file-name "/usr/share/plantuml/plantuml.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 

@@ -16,7 +16,14 @@ SETUP_ROOT=$(cd $(dirname $0) && pwd)
 
 echo "Swap caps and left ctrl start ..."
 
-ZZEMACS_ROOT=$(cd $SETUP_ROOT/.. && pwd)
-xmodmap $ZZEMACS_ROOT/etc/swap-caps-ctrl.xmodmap 2>/dev/null
+swapcaps() {
+    setxkbmap -option ctrl:swapcaps     # Swap Left Control and Caps Lock
+}
+
+nocaps() {
+    setxkbmap -option ctrl:nocaps       # Make Caps Lock a Control key
+}
+
+swapcaps
 
 echo "Swap caps and left ctrl end ..."

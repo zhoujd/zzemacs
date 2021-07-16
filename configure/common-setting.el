@@ -282,8 +282,8 @@
 
 ;;mode-line face attribute
 (custom-set-faces
- '(mode-line-inactive ((t :background "#353644" :box (:line-width 2 :color "#353644"))))
- '(mode-line ((t :background "#565063" :box (:line-width 2 :color "#565063")))))
+ '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
+ '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063")))))
 
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %l:%M %p %U"))))

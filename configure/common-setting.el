@@ -281,10 +281,9 @@
 (column-number-mode t)
 
 ;;mode-line face attribute
-;;#353644, #565063
 (custom-set-faces
- '(mode-line-inactive ((t :background "#282C34" :box (:line-width 2 :color "#282C34"))))
- '(mode-line     ((t :background "#2C323C" :box (:line-width 2 :color "#2C323C")))))
+ '(mode-line-inactive ((t :background "#353644" :box (:line-width 2 :color "#353644"))))
+ '(mode-line ((t :background "#565063" :box (:line-width 2 :color "#565063")))))
 
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %l:%M %p %U"))))

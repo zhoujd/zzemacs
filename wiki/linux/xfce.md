@@ -58,7 +58,12 @@ Xfce
 
 ## compton compositor
 
+    ## https://wiki.archlinux.org/title/Picom
     $ sudo apt install compton compton-conf
+
+    ## https://wiki.archlinux.org/title/Xcompmgr
+    ## xcompmgr -C
+    $ sudo apt install xcompmgr
 
 ## window resize
 

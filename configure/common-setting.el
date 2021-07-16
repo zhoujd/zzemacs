@@ -281,19 +281,10 @@
 (column-number-mode t)
 
 ;;mode-line face attribute
-(set-face-attribute 'mode-line nil
-                    :background "#353644"
-                    :foreground "white"
-                    :box '(:line-width 2 :color "#353644")
-                    :overline nil
-                    :underline nil)
-
-(set-face-attribute 'mode-line-inactive nil
-                    :background "#565063"
-                    :foreground "white"
-                    :box '(:line-width 2 :color "#565063")
-                    :overline nil
-                    :underline nil)
+;;#353644, #565063
+(custom-set-faces
+ '(mode-line-inactive ((t :background "#282C34" :box (:line-width 2 :color "#282C34"))))
+ '(mode-line     ((t :background "#2C323C" :box (:line-width 2 :color "#2C323C")))))
 
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %l:%M %p %U"))))

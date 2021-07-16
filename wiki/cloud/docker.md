@@ -52,7 +52,7 @@ EOF
     1. Allow your local user access via xhost: xhost +SI:localuser:$(id -un) and create a similar user with docker run option: --user=$(id -u):$(id -g)
     2. Discouraged: Allow root access to X with xhost +SI:localuser:root
 
-## x11docker: x11docker logo Run GUI applications in Docker
+## Use x11docker logo Run GUI applications in Docker
 
     ## https://github.com/mviereck/x11docker
     ## https://github.com/mviereck/x11docker/wiki

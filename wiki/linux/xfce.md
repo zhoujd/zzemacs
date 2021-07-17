@@ -65,6 +65,11 @@ Xfce
     ## xcompmgr -C
     $ sudo apt install xcompmgr
 
+    ## transparency windows
+    $ transset -n emacs 0.9
+    $ transset -n urxvt 0.9
+
+
 ## window resize
 
     It's very easy, you can use Alt + right-click + drag.

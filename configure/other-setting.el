@@ -326,6 +326,7 @@
               (iedit-start (current-word) (point-min) (point-max)))))))
 
 ;;emacs-calfw
+;;https://en.wikipedia.org/wiki/Week#Week_numbering
 (zz:load-path "site-lisp/emacs-calfw")
 (require 'calfw)
 

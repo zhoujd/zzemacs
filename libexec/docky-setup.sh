@@ -1,6 +1,7 @@
 #!/bin/bash
 
-## Ubuntu 20.04 LTS
+## https://askubuntu.com/questions/1237396/install-docky-in-ubuntu-20-04
+## https://packages.ubuntu.com/bionic/docky
 
 mkdir -p ~/Downloads/docky
 cd ~/Downloads/docky

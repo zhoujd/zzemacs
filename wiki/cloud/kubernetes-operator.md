@@ -112,7 +112,9 @@ Kubernetes Operator
 
     ## Apply YAML
     $ kubectl apply -f deploy/service_account.yaml
-    $ kubectl apply -f deploy/role.yamlkubectl apply -f deploy/role_binding.yamlkubectl apply -f deploy/operator.yaml
+    $ kubectl apply -f deploy/role.yaml
+    $ kubectl apply -f deploy/role_binding.yaml
+    $ kubectl apply -f deploy/operator.yaml
     $ kubectl get all
 
     ## Submit CR

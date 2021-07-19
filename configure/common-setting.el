@@ -14,8 +14,9 @@
 (keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
 ;;transparency 'alpha '(<active> . <inactive>) or 'alpha <both>
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
-(add-to-list 'default-frame-alist '(alpha 90 90))
+;;https://www.emacswiki.org/emacs/TransparentEmacs
+(set-frame-parameter (selected-frame) 'alpha 90)
+(add-to-list 'default-frame-alist '(alpha 90))
 
 ;;Chinese
 (defun zz:set-language-chinese ()

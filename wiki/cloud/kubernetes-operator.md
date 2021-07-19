@@ -1,6 +1,10 @@
 Kubernetes Operator
 ===================
 
+## Go Operator Tutorial
+
+    ## https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/
+
 ## Install operator sdk
 
     ## https://sdk.operatorframework.io/docs/contribution-guidelines/developer-guide/#prerequisites

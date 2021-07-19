@@ -36,6 +36,7 @@ Kubernetes Operator
 
 ## Update CRD
 
+    ## Update CRD
     $ operator-sdk generate k8s
     $ operator-sdk generate crds
 
@@ -43,7 +44,7 @@ Kubernetes Operator
     $ kubectl apply -f deploy/crds/test.k8s.realibox.com_realiboxes_crd.yaml
 
     ## Check CRD on k8s cluster
-    $ $ kubectl get crd
+    $ kubectl get crd
     NAME                                      CREATED AT
     clusterauthtokens.cluster.cattle.io       2020-08-29T06:41:42Z
     clusteruserattributes.cluster.cattle.io   2020-08-29T06:41:42Z

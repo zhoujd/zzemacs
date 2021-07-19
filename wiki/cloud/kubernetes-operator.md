@@ -22,8 +22,8 @@ Kubernetes Operator
 
 ## Create CRD
 
-    $ operator-sdk add api --api-version=<api-version> --kind=<kind-name>
-    $ operator-sdk add api --api-version=test.k8s.realibox.com/v1 --kind=Realibox
+    $ operator-sdk create api --api-version=<api-version> --kind=<kind-name>
+    $ operator-sdk create api --api-version=test.k8s.realibox.com/v1 --kind=Realibox
     $ vim pkg/apis/test/v1/realibox_types.go
     // RealiboxSpec defines the desired state of Realibox
     type RealiboxSpec struct {
@@ -61,8 +61,8 @@ Kubernetes Operator
 
 ## Create Controller
 
-    $ operator-sdk add controller --api-version=<api-version> --kind=<kind-name>
-    $ operator-sdk add controller --api-version=test.k8s.realibox.com/v1 --kind=Realibox
+    $ operator-sdk create controller --api-version=<api-version> --kind=<kind-name>
+    $ operator-sdk create controller --api-version=test.k8s.realibox.com/v1 --kind=Realibox
 
     $ vim pkg/controller/realibox/realibox_controller.go
     ...

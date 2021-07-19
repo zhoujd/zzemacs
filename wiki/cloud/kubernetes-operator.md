@@ -1,4 +1,4 @@
-Kubernetes operator
+Kubernetes Operator
 ===================
 
 ## Install operator sdk

@@ -13,9 +13,9 @@
 
 (keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
-;;transparency (<active> <inactive>) form
-(set-frame-parameter (selected-frame) 'alpha '(90 50))
-(add-to-list 'default-frame-alist '(alpha 90 50))
+;;transparency 'alpha '(<active> . <inactive>) or 'alpha <both>
+(set-frame-parameter (selected-frame) 'alpha '(90 90))
+(add-to-list 'default-frame-alist '(alpha 90 90))
 
 ;;Chinese
 (defun zz:set-language-chinese ()

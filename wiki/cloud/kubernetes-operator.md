@@ -34,8 +34,8 @@ Kubernetes Operator
     ## Modifying Spec
     type RealiboxSpec struct {
         Domain string `json:"domain,omitempty"`
-        OSS string `json:"oss,omitempty"`
-        Size    string `json:"size,omitempty"`
+        OSS    string `json:"oss,omitempty"`
+        Size   string `json:"size,omitempty"`
     }
 
 ## Update CRD

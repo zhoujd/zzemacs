@@ -3,6 +3,7 @@ Kubernetes Operator
 
 ## Install operator sdk
 
+    ## https://sdk.operatorframework.io/docs/contribution-guidelines/developer-guide/#prerequisites
     $ export RELEASE_VERSION=v1.8.1
     $ export RELEASE_PKG=operator-sdk_linux_amd64
     $ curl -LO https://github.com/operator-framework/operator-sdk/releases/download/${RELEASE_VERSION}/${RELEASE_PKG}

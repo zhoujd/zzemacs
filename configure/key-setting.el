@@ -114,6 +114,7 @@
   (kbd "C-r")     'zz:add-code-review-note
   (kbd "C-s")     'zz:slime-connect-stumpwm
   (kbd "C-t")     'zz:open-with-terminal
+  (kbd "M-t")     'zz:transparency-toggle
   (kbd "C-n")     'backlight
 
   (kbd "M-d")     (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))

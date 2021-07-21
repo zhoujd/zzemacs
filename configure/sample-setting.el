@@ -348,6 +348,7 @@
 
     (delete-process (get-process pname))))
 
+;;also handle undocumented (<active> <inactive>) form
 (defun zz:transparency-toggle ()
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
@@ -355,10 +356,9 @@
      nil 'alpha
      (if (eql (cond ((numberp alpha) alpha)
                     ((numberp (cdr alpha)) (cdr alpha))
-                    ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         '(90 . 50) '(100 . 100)))))
+         '(90 . 90) '(100 . 100)))))
 
 (defun zz:transparency (value)
   "Sets the transparency of the frame window. 0=transparent/100=opaque"

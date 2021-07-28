@@ -32,7 +32,6 @@ install_package_ubuntu() {
     sudo apt install -y djview4
     sudo apt install -y baobab
     sudo apt install -y pidgin-sipe
-    sudo apt install -y sakura
     sudo apt install -y xautolock
     sudo apt install -y synaptic
     sudo apt install -y xdotool     ## xdotool click 4
@@ -43,7 +42,8 @@ install_package_ubuntu() {
     sudo apt install -y keynav
     sudo apt install -y trash-cli htop neofetch ncdu
     sudo apt install -y zathura     ## pdf viewer like vim
-    sudo apt install -y zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps 
+    sudo apt install -y zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps
+    sudo apt install -y wireshark tshark
 }
 
 ##package for centos

@@ -59,6 +59,39 @@ noproxy() {
     unset socks_port
 }
 
+urlencode() {
+    # urlencode <string>
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        case $c in
+            [a-zA-Z0-9.~_-]) printf "$c" ;;
+            *) printf '%%%02X' "'$c"
+        esac
+    done
+}
+
+urldecode() {
+    # urldecode <string>
+    local url_encoded="${1//+/ }"
+    printf '%b' "${url_encoded//%/\\x}"
+}
+
+urlenc() {
+    # urlenc <string>
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        printf '%%%02X' "'$c"
+    done
+}
+
+urldec() {
+    # urldec <string>
+    local url_encoded="${1//+/ }"
+    printf '%b' "${url_encoded//%/\\x}"
+}
+
 ## chmod on files and directory
 #find -type f -print0 | xargs -0 chmod -v 760
 #find -type f -exec chmod 760 {} \;

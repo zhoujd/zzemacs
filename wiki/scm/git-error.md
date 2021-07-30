@@ -107,3 +107,7 @@ Git error and solutions
     ## Install git package with openssl support
     $ wget https://www.dreamoftime0.com/wp-content/uploads/ftp/tools/git_openssl_2.17.1/git_2.17.1-1ubuntu0.3_amd64.deb
     $ sudo dpkg -i git_2.17.1-1ubuntu0.3_amd64.deb
+
+## Git clone verbose output
+
+    $ GIT_TRACE=2 git clone --progress --verbose http://github.com/zhoujd/zzemacs ~/zzemacs

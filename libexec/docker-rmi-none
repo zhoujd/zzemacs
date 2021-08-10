@@ -1,3 +1,13 @@
 #!/bin/bash
 
-docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+case $1 in
+    -f | --force )
+        docker rmi $(docker images -f "dangling=true" -q) --force
+        ;;
+    -h )
+        echo "Usage $(basename $0) {-f|--fource|-h}"
+        ;;
+    * )
+        docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+        ;;
+esac

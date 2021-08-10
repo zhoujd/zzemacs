@@ -1,13 +1,11 @@
 #!/bin/bash
 
-case $1 in
-    -f | --force )
-        docker rmi $(docker images -f "dangling=true" -q) --force
-        ;;
-    -h )
-        echo "Usage $(basename $0) {-f|--fource|-h}"
-        ;;
-    * )
-        docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-        ;;
-esac
+echo "Clean Docker images ..."
+img_list=$(docker images --filter "dangling=true" -q --no-trunc)
+if [ -n "$img_list" ]; then
+    docker rmi $img_list
+else
+    echo "Images already cleaned"
+fi
+
+echo "Clean Docker images done"

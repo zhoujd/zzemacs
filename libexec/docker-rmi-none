@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "Clean Docker images ..."
+echo "Docker images clean ..."
 img_list=$(docker images --filter "dangling=true" -q --no-trunc)
 if [ -n "$img_list" ]; then
     docker rmi $img_list
 else
-    echo "Images already cleaned"
+    echo "Docker images already cleaned"
 fi
 
-echo "Clean Docker images done"
+echo "Docker images clean done"

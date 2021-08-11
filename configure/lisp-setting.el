@@ -127,7 +127,7 @@
 (require 'bridge)
 (autoload 'install-bridge "bridge" "Install a process bridge." t)
 (setq bridge-hook 
-      '(lambda ()
+      (lambda ()
          (setq bridge-source-insert nil)
          (setq bridge-destination-insert nil)))
 

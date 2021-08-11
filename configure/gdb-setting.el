@@ -24,7 +24,7 @@
 
 (add-hook
  'gdb-mode-hook
- '(lambda ()
+ (lambda ()
     (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
 
 

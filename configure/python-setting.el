@@ -49,10 +49,6 @@
 (setq python-shell-interpreter "python3")
 (setq elpy-rpc-python-command "python3")
 
-;;highlight-indent-guides
-(require 'highlight-indent-guides)
-(setq highlight-indent-guides-method 'character)
-
 (defun zz:py-indent-4 ()
   (setq tab-width 4)
   (setq python-shift-right 4)
@@ -66,9 +62,7 @@
   (setq python-indent 2))
 
 (defun zz:python-mode-hook ()
-  (zz:py-indent-4)
-  (highlight-indent-guides-mode t)
-  (set-face-foreground 'highlight-indent-guides-character-face "dimgray"))
+  (zz:py-indent-4))
 
 (add-hook 'python-mode-hook
           'zz:python-mode-hook)

@@ -288,7 +288,7 @@
 ;;yaml-mode
 (require 'yaml-mode)
 (add-hook 'yaml-mode-hook
-          '(lambda ()
+          (lambda ()
              (defkeys-map yaml-mode-map ("\C-m" 'newline-and-indent))))
 
 ;;nginx-mode
@@ -306,7 +306,7 @@
 ;;ansible
 (zz:load-path "site-lisp/ansible")
 (require 'ansible)
-(add-hook 'yaml-mode-hook '(lambda () (ansible 1)))
+(add-hook 'yaml-mode-hook (lambda () (ansible 1)))
 
 ;;https://github.com/krzysztof-magosa/company-ansible
 (zz:load-path "site-lisp/company-ansible")
@@ -322,6 +322,15 @@
 ;;protocol buffers
 ;;https://github.com/protocolbuffers/protobuf/blob/master/editors/protobuf-mode.el
 (require 'protobuf-mode)
+
+;;highlight-indent-guides
+(require 'highlight-indent-guides)
+(setq highlight-indent-guides-method 'character)
+(dolist (hook
+         (list
+          'prog-mode-hook
+          'yaml-mode-hook))
+  (add-hook hook 'highlight-indent-guides-mode))
 
 
 (provide 'prog-setting)

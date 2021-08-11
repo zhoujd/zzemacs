@@ -14,6 +14,11 @@
 (load "elpy-django")
 (elpy-enable)
 
+;;disable highlight-indentation-mode
+(add-hook 'elpy-mode-hook
+          (lambda ()
+            (highlight-indentation-mode -1)))
+
 ;;pyenv-mode
 ;(require 'pyenv-mode)
 
@@ -29,6 +34,7 @@
 ;;remove warning: "Can't guess python-indent-offset"
 (setq python-indent-guess-indent-offset-verbose nil)
 
+
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python -i -m pdb <file-name.py>
 ;;M-x pdb
@@ -43,6 +49,10 @@
 (setq python-shell-interpreter "python3")
 (setq elpy-rpc-python-command "python3")
 
+;;highlight-indent-guides
+(require 'highlight-indent-guides)
+(setq highlight-indent-guides-method 'character)
+
 (defun zz:py-indent-4 ()
   (setq tab-width 4)
   (setq python-shift-right 4)
@@ -55,8 +65,13 @@
   (setq python-shift-left 2)
   (setq python-indent 2))
 
+(defun zz:python-mode-hook ()
+  (zz:py-indent-4)
+  (highlight-indent-guides-mode t)
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray"))
+
 (add-hook 'python-mode-hook
-          'zz:py-indent-4)
+          'zz:python-mode-hook)
 
 
 (provide 'python-setting)

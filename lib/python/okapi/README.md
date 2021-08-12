@@ -1,7 +1,7 @@
 zzokapi
 =======
 
-## Create entry script like below - 
+## Create entry script
 
     #!/usr/bin/env python3
     

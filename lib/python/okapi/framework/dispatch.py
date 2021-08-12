@@ -5,7 +5,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import re
 import framework.config as config
 
 class Dispatch:
@@ -14,13 +13,13 @@ class Dispatch:
         self.srcdir = srcdir
         self.params = argv
         self.appmap = {}
+        self.applist = []
         self.entryname = os.path.basename(argv[0])
         self.helpdoc = helpdoc
 
     def run(self):
         if config.verbose is True:
             print("Work directory: %s" % self.workdir)
-
         self.getappmap()
         if len(self.params) == 1:
             self.usage()
@@ -29,7 +28,6 @@ class Dispatch:
             args = ""
             app = None
             match = False
-
             for num in range(config.maxmatch, 1, -1):
               if len(self.params) >= num and match is False:
                 cmd = "-".join(self.params[1:num])
@@ -41,7 +39,6 @@ class Dispatch:
                 if app is not None:
                     match = True
                     break
-
             if app is None and match is False:
                 print("Can't find cmd to usaged\n")
                 print("Try to run '%s help' to get help\n" % self.entryname)
@@ -71,10 +68,22 @@ class Dispatch:
         else:
             return None
 
+    def addapp(self):
+        for app in self.applist:
+            appinfo = []
+            appname, appext = os.path.splitext(app)
+            apptype = None
+            if appext in config.appnames:
+                apptype = config.appnames[appext]
+            elif appext == "" and config.supportnoext is True:
+                apptype = ""
+            if apptype is not None:
+                appinfo.append(apptype)
+                appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
+                self.appmap[appname] = appinfo
+
     def getappmap(self):
         appdir = "%s/%s" % (self.srcdir, config.appdirname)
-        applist = []
-
         for (dirname, subdir, subfile) in os.walk(appdir):
             if config.verbose is True:
                 print('Dirname: %s' % dirname)
@@ -83,30 +92,15 @@ class Dispatch:
             for f in subfile:
                 filefullname = "%s/%s" % (dirname, f)
                 if os.access(filefullname, os.X_OK):
-                    applist.append(f)
+                    self.applist.append(f)
             if config.limitdept is True:
                 break
-
         for ignore in config.appignorefiles:
             try:
-                applist.remove(ignore)
+                self.applist.remove(ignore)
             except Exception:
                 pass
 
-        for app in applist:
-            appinfo = []
-            appname, appext = os.path.splitext(app)
-            apptype = None
-
-            if appext in config.appnames:
-                apptype = config.appnames[appext]
-            elif appext == "" and config.supportnoext is True:
-                apptype = ""
-
-            if apptype is not None:
-                appinfo.append(apptype)
-                appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
-                self.appmap[appname] = appinfo
-
+        self.addapp()
         if config.verbose is True:
             print(self.appmap)

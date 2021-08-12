@@ -38,7 +38,6 @@ HHKB
     do_start() {
         echo "$0 start"
         test -x /sbin/rfkill && /sbin/rfkill unblock bluetooth
-        test -x /bin/bluetoothctl && /bin/bluetoothctl power on
     }
 
     do_stop() {
@@ -62,3 +61,10 @@ HHKB
 ## Bluetooth URLs
 
     ## https://wiki.archlinux.org/title/Bluetooth
+
+## Bluetooth service failed to set mode
+
+    $ sudo rfkill unblock bluetooth
+    $ sudo systemctl stop bluetooth
+    $ sudo systemctl status bluetooth
+    $ sudo systemctl restart bluetooth

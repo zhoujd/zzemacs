@@ -10,3 +10,20 @@ Python
     $ make -j 4
     $ make install
 
+## Remove old versions of Python and pip
+
+    $ python2 -m pip uninstall pip
+    $ python3 -m pip uninstall pip
+
+    ## 18.04
+    $ sudo apt-get remove python-pip
+    ## 20.04
+    $ sudo apt-get remove python3-pip
+
+## pip2 installation on ubuntu 20.04
+
+    $ wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+    ## To /usr/local/bin
+    $ sudo python2 get-pip.py
+    ## To ~/.local/bin
+    $ python2 get-pip.py

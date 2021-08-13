@@ -1,5 +1,6 @@
 ;;;python programme setting
 ;;https://wiki.python.org/moin/EmacsEditor
+;;https://elpy.readthedocs.io/en/latest/
 
 ;;elpy pkg deps
 ;;pip install rope jedi flake8 importmagic
@@ -56,7 +57,7 @@
       flycheck-python-flake8-executable "python3")
 
 ;;activate rcp-venv
-;(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
+(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

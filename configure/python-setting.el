@@ -50,6 +50,11 @@
       (append python-environment-virtualenv
               '("--python" "python3")))
 
+;;flycheck
+(setq flycheck-python-pycompile-executable "python3"
+      flycheck-python-pylint-executable "python3"
+      flycheck-python-flake8-executable "python3")
+
 ;;activate rcp-venv
 ;(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
 

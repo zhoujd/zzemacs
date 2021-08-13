@@ -263,7 +263,9 @@ If ASK-FOR-EACH-ONE is non-nil, ask before killing each python process."
 
 If SIT is non-nil, sit for that many seconds after creating a
 Python process. This allows the process to start up."
-  (let* ((bufname (format "*%s*" (python-shell-get-process-name nil)))
+  (let* ((process-connection-type
+          (if (string-equal system-type "darwin") nil t))  ;; see https://github.com/jorgenschaefer/elpy/pull/1671
+         (bufname (format "*%s*" (python-shell-get-process-name nil)))
          (proc (get-buffer-process bufname)))
     (if proc
         proc
@@ -415,7 +417,7 @@ active, additionally flashes that region briefly."
             (message "Sent: %s" code-on-first-line)
           (message "Sent: %s..." code-on-first-line))
         (when (bound-and-true-p eval-sexp-fu-flash-mode)
-          (multiple-value-bind (_bounds hi unhi _eflash)
+          (cl-multiple-value-bind (_bounds hi unhi _eflash)
               (eval-sexp-fu-flash (cons begin end))
             (eval-sexp-fu-flash-doit (lambda () t) hi unhi)))))))
 

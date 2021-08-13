@@ -96,7 +96,7 @@ for example), set this to the full interpreter path."
            (elpy-rpc-restart)))
   :group 'elpy)
 
-(defcustom elpy-rpc-pythonpath (file-name-directory (locate-library "elpy"))
+(defcustom elpy-rpc-pythonpath (file-name-directory load-file-name)
   "A directory to add to the PYTHONPATH for the RPC process.
 
 This should be a directory where the elpy module can be found. If
@@ -229,8 +229,8 @@ needed packages from `elpy-rpc--get-package-list'."
   "Return the list of packages to be installed in the RPC virtualenv."
   (let ((rpc-python-version (elpy-rpc--get-python-version)))
     (if (version< rpc-python-version "3.6.0")
-        '("jedi" "flake8" "autopep8" "yapf" "rope")
-      '("jedi" "flake8" "autopep8" "yapf" "black" "rope"))))
+        '("jedi" "flake8" "autopep8" "yapf")
+      '("jedi" "flake8" "autopep8" "yapf" "black"))))
 
 (defun elpy-rpc--get-python-version ()
   "Return the RPC python version."
@@ -418,7 +418,8 @@ binaries used to create the virtualenv."
                          "-m" "pip" "install" "--upgrade"
                          (elpy-rpc--get-package-list))
                   0)
-          (message "Elpy failed to install some of the RPC dependencies, please use `elpy-config' to install them.")))
+          (message "Elpy failed to install some of the RPC dependencies, please use `elpy-config' to install them.\n%s" (buffer-string))
+          ))
     (message "Some of Elpy's functionnalities will not work, please use `elpy-config' to install the needed python dependencies.")))
 
 (defun elpy-rpc-reinstall-virtualenv ()
@@ -926,36 +927,6 @@ This is usually an error or backtrace."
                           "\n"
                           "script = jedi.Script(" script-args ")\n"
                           "script." method "()\n"))))
-            (let ((rope-info (cdr (assq 'rope_debug_info data))))
-              (when rope-info
-                (insert "\n")
-                (elpy-insert--header "Rope Debug Information")
-                (insert "```\n"
-                        "\n"
-                        "Reproduction:\n"
-                        "\n")
-                (let ((project-root (cdr (assq 'project_root rope-info)))
-                      (filename (cdr (assq 'filename rope-info)))
-                      (source (cdr (assq 'source rope-info)))
-                      (function-name (cdr (assq 'function_name rope-info)))
-                      (function-args (cdr (assq 'function_args rope-info))))
-                  (insert "```Python\n")
-                  (insert "\n"
-                          "source = '''\n"
-                          source
-                          "'''\n"
-                          "\n")
-                  (insert "project = rope.base.project.Project(\n"
-                          (format "    %S,\n" project-root)
-                          "    ropefolder=None\n"
-                          ")\n")
-                  (insert "resource = rope.base.libutils.path_to_resource(\n"
-                          "    project,\n"
-                          (format "    %S,\n" filename)
-                          "    'file'\n"
-                          ")\n")
-                  (insert (format "%s(\n    %s\n)\n"
-                                  function-name function-args)))))
             (unless (= 0 (current-column))
               (insert "\n"))
             (insert "```"))
@@ -1166,6 +1137,47 @@ Returns a possible multi-line docstring."
 (defun elpy-rpc-get-names (&optional success error)
   "Return all names (possible candidates for jumping to definition)."
   (elpy-rpc "get_names"
+            (list buffer-file-name
+                  (elpy-rpc--buffer-contents)
+                  (- (point)
+                     (point-min)))
+            success error))
+
+(defun elpy-rpc-get-rename-diff (new-name &optional success error)
+  "Return the diffs resulting from renaming the thing at point to NEW-NAME."
+  (elpy-rpc "get_rename_diff"
+            (list buffer-file-name
+                  (elpy-rpc--buffer-contents)
+                  (- (point)
+                     (point-min))
+                  new-name)
+            success error))
+
+(defun elpy-rpc-get-extract-variable-diff (new-name beg-line end-line beg-col end-col &optional success error)
+  "Return the diffs resulting from renaming the thing at point to NEW-NAME."
+  (elpy-rpc "get_extract_variable_diff"
+            (list buffer-file-name
+                  (elpy-rpc--buffer-contents)
+                  (- (point)
+                     (point-min))
+                  new-name
+                  beg-line end-line beg-col end-col)
+            success error))
+
+(defun elpy-rpc-get-extract-function-diff (new-name beg-line end-line beg-col end-col &optional success error)
+  "Return the diffs resulting from renaming the thing at point to NEW-NAME."
+  (elpy-rpc "get_extract_function_diff"
+            (list buffer-file-name
+                  (elpy-rpc--buffer-contents)
+                  (- (point)
+                     (point-min))
+                  new-name
+                  beg-line end-line beg-col end-col)
+            success error))
+
+(defun elpy-rpc-get-inline-diff (&optional success error)
+  "Return the diffs resulting from inlineing the variable at point."
+  (elpy-rpc "get_inline_diff"
             (list buffer-file-name
                   (elpy-rpc--buffer-contents)
                   (- (point)

@@ -90,9 +90,9 @@
 
 ;;perl mode
 ;;Ubuntu: sudo apt install plsense
-(require 'company-plsense)
 (if (executable-find "plsense")
     (progn
+      (require 'company-plsense)
       (company-plsense-setup)
       (company-plsense-start-server-quiet)))
 

@@ -1,6 +1,8 @@
 ;;;python programme setting
 ;;https://wiki.python.org/moin/EmacsEditor
 ;;https://elpy.readthedocs.io/en/latest/
+;;https://elpy.readthedocs.io/en/latest/FAQ.html#q-how-do-i-install-development-version-of-elpy
+;;https://github.com/jorgenschaefer/elpy
 
 ;;elpy pkg deps
 ;;pip install rope jedi flake8 importmagic

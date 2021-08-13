@@ -4,8 +4,9 @@
 
 ;; Author: Jorgen Schaefer <contact@jorgenschaefer.de>
 ;; URL: http://github.com/jorgenschaefer/pyvenv
-;; Package-Version: 20181202.1607
-;; Version: 1.19
+;; Package-Version: 1.21
+;; Package-Commit: 103d2f158ef2a760741682e18741e44107c68f3f
+;; Version: 1.21
 ;; Keywords: Python, Virtualenv, Tools
 
 ;; This program is free software; you can redistribute it and/or
@@ -177,10 +178,20 @@ This is usually the base name of `pyvenv-virtual-env'.")
                           venv-name)))
     (unless (file-exists-p venv-dir)
       (run-hooks 'pyvenv-pre-create-hooks)
-      (with-current-buffer (generate-new-buffer "*virtualenv*")
-        (call-process "virtualenv" nil t t
-                      "-p" python-executable venv-dir)
-        (display-buffer (current-buffer)))
+      (cond
+       ((executable-find "virtualenv")
+        (with-current-buffer (generate-new-buffer "*virtualenv*")
+          (call-process "virtualenv" nil t t
+                        "-p" python-executable venv-dir)
+          (display-buffer (current-buffer))))
+       ((= 0 (call-process python-executable nil nil nil
+                           "-m" "venv" "-h"))
+        (with-current-buffer (generate-new-buffer "*venv*")
+          (call-process python-executable nil t t
+                        "-m" "venv" venv-dir)
+          (display-buffer (current-buffer))))
+       (t
+        (error "Pyvenv necessitates the 'virtualenv' python package")))
       (run-hooks 'pyvenv-post-create-hooks))
     (pyvenv-activate venv-dir)))
 
@@ -288,16 +299,15 @@ This is usually the base name of `pyvenv-virtual-env'.")
 
 ;;;###autoload
 (defun pyvenv-workon (name)
-  "Activate a virtual environment from $WORKON_HOME."
+  "Activate a virtual environment from $WORKON_HOME.
+
+If the virtual environment NAME is already active, this function
+does not try to reactivate the environment."
   (interactive
    (list
     (completing-read "Work on: " (pyvenv-virtualenv-list)
                      nil t nil 'pyvenv-workon-history nil nil)))
-  (when (not (or (equal name "")
-                 ;; Some completion frameworks can return nil for the
-                 ;; default, see
-                 ;; https://github.com/jorgenschaefer/elpy/issues/144
-                 (equal name nil)))
+  (unless (member name (list "" nil pyvenv-virtual-env-name))
     (pyvenv-activate (format "%s/%s"
                              (pyvenv-workon-home)
                              name))))

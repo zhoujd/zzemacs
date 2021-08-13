@@ -12,12 +12,13 @@ Note: If you are using Windows, then Jedi.el will not work with distutils.
 
 setup(
     name='jediepcserver',
-    version='0.2.8',
+    version='0.3.0',
     py_modules=['jediepcserver'],
     install_requires=[
         "jedi>=0.11.0",
         "epc>=0.0.4",
         "argparse",
+        "setuptools",
     ],
     entry_points={
         'console_scripts': ['jediepcserver = jediepcserver:main'],

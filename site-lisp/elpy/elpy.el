@@ -4,7 +4,7 @@
 
 ;; Author: Jorgen Schaefer <contact@jorgenschaefer.de>, Gaby Launay <gaby.launay@protonmail.com>
 ;; URL: https://github.com/jorgenschaefer/elpy
-;; Version: 1.32.0
+;; Version: 1.35.0
 ;; Keywords: Python, IDE, Languages, Tools
 ;; Package-Requires: ((company "0.9.10") (emacs "24.4") (highlight-indentation "0.7.0") (pyvenv "1.20") (yasnippet "0.13.0") (s "1.12.0"))
 
@@ -53,7 +53,7 @@
 (require 'elpy-rpc)
 (require 'pyvenv)
 
-(defconst elpy-version "1.32.0"
+(defconst elpy-version "1.35.0"
   "The version of the Elpy Lisp code.")
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -278,6 +278,18 @@ option is `pdb'."
 (defcustom elpy-disable-backend-error-display t
   "Non-nil if Elpy should disable backend error display."
   :type 'boolean
+  :group 'elpy)
+
+
+(defcustom elpy-formatter nil
+  "Auto formatter used by `elpy-format-code'.
+
+if nil, use the first formatter found amongst
+`yapf' , `autopep8' and `black'."
+  :type '(choice (const :tag "First one found" nil)
+                 (const :tag "Yapf" yapf)
+                 (const :tag "autopep8" autopep8)
+                 (const :tag "Black" black))
   :group 'elpy)
 
 (defcustom elpy-syntax-check-command "flake8"
@@ -534,13 +546,21 @@ This option need to bet set through `customize' or `customize-set-variable' to b
     (add-hook 'pyvenv-post-deactivate-hooks 'elpy-rpc--disconnect)
     (add-hook 'inferior-python-mode-hook 'elpy-shell--enable-output-filter)
     (add-hook 'python-shell-first-prompt-hook 'elpy-shell--send-setup-code t)
+    ;; Add codecell boundaries highligting
+    (font-lock-add-keywords
+     'python-mode
+     `((,(replace-regexp-in-string "\\\\" "\\\\"
+                                   elpy-shell-cell-boundary-regexp)
+        0 'elpy-codecell-boundary prepend)))
     ;; Enable Elpy-mode in the opened python buffer
+    (setq elpy-enabled-p t)
     (dolist (buffer (buffer-list))
       (and (not (string-match "^ ?\\*" (buffer-name buffer)))
            (with-current-buffer buffer
              (when (string= major-mode 'python-mode)
+               (python-mode)  ;; update codecell fontification
                (elpy-mode t)))))
-    (setq elpy-enabled-p t)))
+    ))
 
 (defun elpy-disable ()
   "Disable Elpy in all future Python buffers."
@@ -552,6 +572,12 @@ This option need to bet set through `customize' or `customize-set-variable' to b
   (remove-hook 'pyvenv-post-deactivate-hooks 'elpy-rpc--disconnect)
   (remove-hook 'inferior-python-mode-hook 'elpy-shell--enable-output-filter)
   (remove-hook 'python-shell-first-prompt-hook 'elpy-shell--send-setup-code)
+  ;; Remove codecell boundaries highligting
+  (font-lock-remove-keywords
+   'python-mode
+   `((,(replace-regexp-in-string "\\\\" "\\\\"
+                                 elpy-shell-cell-boundary-regexp)
+      0 'elpy-codecell-boundary prepend)))
   (setq elpy-enabled-p nil))
 
 ;;;###autoload
@@ -567,8 +593,12 @@ virtualenv.
   :lighter " Elpy"
   (unless (derived-mode-p 'python-mode)
     (error "Elpy only works with `python-mode'"))
+  (unless elpy-enabled-p
+    (error "Please enable Elpy with `(elpy-enable)` before using it"))
   (when (boundp 'xref-backend-functions)
     (add-hook 'xref-backend-functions #'elpy--xref-backend nil t))
+  ;; Set this for `elpy-check' command
+  (setq-local python-check-command elpy-syntax-check-command)
   (cond
    (elpy-mode
     (elpy-modules-buffer-init))
@@ -598,8 +628,8 @@ virtualenv.
 
 (defvar elpy-config--get-config "import json
 import sys
+from distutils.version import LooseVersion
 import warnings
-
 warnings.filterwarnings('ignore', category=FutureWarning)
 
 try:
@@ -607,12 +637,21 @@ try:
 except ImportError:
     import urllib.request as urllib
 
-from distutils.version import LooseVersion
+
+# Check if we can connect to pypi quickly enough
+try:
+    response = urllib.urlopen('https://pypi.org/pypi', timeout=1)
+    CAN_CONNECT_TO_PYPI = True
+except:
+    CAN_CONNECT_TO_PYPI = False
 
 
 def latest(package, version=None):
+    if not CAN_CONNECT_TO_PYPI:
+        return None
     try:
-        response = urllib.urlopen('https://pypi.org/pypi/{package}/json'.format(package=package)).read()
+        response = urllib.urlopen('https://pypi.org/pypi/{package}/json'.format(package=package),
+               timeout=2).read()
         latest = json.loads(response)['info']['version']
         if version is None or LooseVersion(version) < LooseVersion(latest):
             return latest
@@ -623,6 +662,7 @@ def latest(package, version=None):
 
 
 config = {}
+config['can_connect_to_pypi'] = CAN_CONNECT_TO_PYPI
 config['rpc_python_version'] = ('{major}.{minor}.{micro}'
                             .format(major=sys.version_info[0],
                                     minor=sys.version_info[1],
@@ -791,10 +831,9 @@ item in another window.\n\n")
     (when (and (gethash "rpc_python_executable" config)
                (not (gethash "virtual_env" config)))
       (elpy-insert--para
-       "You have not activated a virtual env. While Elpy supports this, "
-       "it is often a good idea to work inside a virtual env. You can use "
-       "M-x pyvenv-activate or M-x pyvenv-workon to activate a virtual "
-       "env.\n\n"))
+       "You have not activated a virtual env. It is not mandatory but"
+       " often a good idea to work inside a virtual env. You can use "
+       "`M-x pyvenv-activate` or `M-x pyvenv-workon` to activate one.\n\n"))
 
     ;; No virtual env, but ~/.local/bin not in PATH
     (when (and (not (memq system-type '(ms-dos windows-nt)))
@@ -859,24 +898,44 @@ item in another window.\n\n")
                      :package python-shell-interpreter :norpc t)
       (insert "\n\n"))
 
-    ;; Pip not available in the rpc virtualenv
-    (when (and (elpy-rpc--pip-missing)
-               (not (gethash "jedi_version" config)))
+    ;; Couldn't connect to pypi to check package versions
+    (when (not (gethash "can_connect_to_pypi" config))
       (elpy-insert--para
-       "Pip doesn't seem to be installed in the dedicated virtualenv "
-       "created by Elpy (" (elpy-rpc-get-virtualenv-path) "). "
-       "This will prevent some features from working properly"
-       " (completion, documentation, reformatting, ...). "
-       "You can try reinstalling the virtualenv with `elpy-rpc-reinstall-virtualenv'. "
-       "If the problem persists, please report on Elpy's github page."
-       "\n\n"))
+       "Elpy could not connect to Pypi (or at least not quickly enough) "
+       "and check if the python packages were up-to-date. "
+       "You can still try to update all of them:"
+       "\n")
+      (insert "\n")
+      (widget-create 'elpy-insert--generic-button
+                     :button-name "[Update python packages]"
+                     :function (lambda () (with-elpy-rpc-virtualenv-activated
+                                        (elpy-rpc--install-dependencies))))
+      (insert "\n\n"))
+
+    ;; Pip not available in the rpc virtualenv
+    (when (and
+           (equal elpy-rpc-virtualenv-path 'default)
+           (elpy-rpc--pip-missing))
+         (elpy-insert--para
+          "Pip doesn't seem to be installed in the dedicated virtualenv "
+          "created by Elpy (" (elpy-rpc-get-virtualenv-path) "). "
+          "This may prevent some features from working properly"
+          " (completion, documentation, reformatting, ...). "
+          "You can try reinstalling the virtualenv. "
+          "If the problem persists, please report on Elpy's github page."
+          "\n\n")
+      (widget-create 'elpy-insert--generic-button
+                     :button-name "[Reinstall RPC virtualenv]"
+                     :function (lambda () (elpy-rpc-reinstall-virtualenv)))
+      (insert "\n\n"))
 
     ;; Requested backend unavailable
     (when (and (gethash "rpc_python_executable" config)
                (not (gethash "jedi_version" config)))
       (elpy-insert--para
-       "The jedi package is not available. Completion and code navigation will"
-       " not work.\n")
+       "The Jedi package is not currently installed. "
+       "This package is needed for code completion, code navigation "
+       "and access to documentation.\n")
       (insert "\n")
       (widget-create 'elpy-insert--pip-button
                      :package "jedi")
@@ -903,14 +962,24 @@ item in another window.\n\n")
       (insert "\n\n"))
 
 
-    ;; No autopep8 available
-    (unless (gethash "autopep8_version" config)
+    ;; No auto formatting tool available
+    (unless (or
+             (gethash "autopep8_version" config)
+             (gethash "yapf_version" config)
+             (gethash "black_version" config))
       (elpy-insert--para
-       "The autopep8 package is not available. Commands using this will "
-       "not work.\n")
+       "No autoformatting package is currently installed. "
+       "At least one is needed (Autopep8, Yapf or Black) "
+       "to perform autoformatting (`C-c C-r f` in a python buffer).\n")
       (insert "\n")
       (widget-create 'elpy-insert--pip-button
                      :package "autopep8")
+      (insert "\n")
+      (widget-create 'elpy-insert--pip-button
+                     :package "yapf")
+      (insert "\n")
+      (widget-create 'elpy-insert--pip-button
+                     :package "black")
       (insert "\n\n"))
 
     ;; Newer version of autopep8 available
@@ -923,16 +992,6 @@ item in another window.\n\n")
                      :package "autopep8" :upgrade t)
       (insert "\n\n"))
 
-    ;; No yapf available
-    (unless (gethash "yapf_version" config)
-      (elpy-insert--para
-       "The yapf package is not available. Commands using this will "
-       "not work.\n")
-      (insert "\n")
-      (widget-create 'elpy-insert--pip-button
-                     :package "yapf")
-      (insert "\n\n"))
-
     ;; Newer version of yapf available
     (when (and (gethash "yapf_version" config)
                (gethash "yapf_latest" config))
@@ -941,16 +1000,6 @@ item in another window.\n\n")
       (insert "\n")
       (widget-create 'elpy-insert--pip-button
                      :package "yapf" :upgrade t)
-      (insert "\n\n"))
-
-    ;; No black available
-    (unless (gethash "black_version" config)
-      (elpy-insert--para
-       "The black package is not available. Commands using this will "
-       "not work.\n")
-      (insert "\n")
-      (widget-create 'elpy-insert--pip-button
-                     :package "black")
       (insert "\n\n"))
 
     ;; Newer version of black available
@@ -966,13 +1015,14 @@ item in another window.\n\n")
     ;; Syntax checker not available
     (unless (executable-find (car (split-string elpy-syntax-check-command)))
       (elpy-insert--para
-       "The configured syntax checker could not be found. Elpy uses this "
-       "program to provide syntax checks of your programs, so you might "
-       "want to install one. Elpy by default uses flake8.\n")
+       (format
+        "The configured syntax checker (%s) could not be found. Elpy uses this "
+        (car (split-string elpy-syntax-check-command)))
+       "program to provide syntax checks of your code. You can either "
+       "install it, or select another one using `elpy-syntax-check-command`.\n")
       (insert "\n")
       (widget-create 'elpy-insert--pip-button :package "flake8" :norpc t)
       (insert "\n\n"))
-
     ))
 
 (defun elpy-config--package-available-p (package)
@@ -1034,7 +1084,9 @@ virtual_env_short"
       (let ((venv (getenv "VIRTUAL_ENV")))
         (puthash "virtual_env" venv config)
         (if venv
-            (puthash "virtual_env_short" (file-name-nondirectory venv) config)
+            (puthash "virtual_env_short" (file-name-nondirectory
+                                          (directory-file-name venv))
+                     config)
           (puthash "virtual_env_short" nil config)))
       (with-elpy-rpc-virtualenv-activated
        (let ((return-value (ignore-errors
@@ -1732,7 +1784,7 @@ If OTHER-WINDOW-P is non-nil, show the same in other window."
         (pop-to-buffer buffer t)
       (switch-to-buffer buffer))
     (goto-char (1+ offset))
-    (recenter 0)))
+    ))
 
 (defun elpy-nav-forward-block ()
   "Move to the next line indented like point.
@@ -2245,18 +2297,25 @@ prefix argument is given, prompt for a symbol from the user."
 ;;;;;;;;;;;;;;;;;;;;;
 ;;; Code reformatting
 
+
 (defun elpy-format-code ()
   "Format code using the available formatter."
   (interactive)
-  (cond
-   ((elpy-config--package-available-p "yapf")
-    (elpy-yapf-fix-code))
-   ((elpy-config--package-available-p "autopep8")
-    (elpy-autopep8-fix-code))
-   ((elpy-config--package-available-p "black")
-    (elpy-black-fix-code))
-   (t
-    (message "Install yapf/autopep8 to format code."))))
+  (let ((elpy-formatter (or elpy-formatter
+                            (catch 'available
+                              (dolist (formatter '(yapf autopep8 black))
+                                (when (elpy-config--package-available-p
+                                       formatter)
+                                  (throw 'available formatter)))))))
+    (unless elpy-formatter
+      (error "No formatter installed, please install one using `elpy-config'"))
+    (unless (elpy-config--package-available-p elpy-formatter)
+      (error "The '%s' formatter is not installed, please install it using `elpy-config' or choose another one using `elpy-formatter'"
+             elpy-formatter))
+    (when (interactive-p) (message "Autoformatting code with %s."
+                                   elpy-formatter))
+    (funcall (intern (format "elpy-%s-fix-code" elpy-formatter)))))
+
 
 (defun elpy-yapf-fix-code ()
   "Automatically formats Python code with yapf.
@@ -2961,10 +3020,11 @@ and return the list."
             (cl-loop
              for pytel-cand in new-candidate-names
              for pytel-cand = (replace-regexp-in-string "($" "" pytel-cand)
-             for pytel-cand = (replace-regexp-in-string "^.*\\." ""
-                                                        pytel-cand)
-             if (not (member pytel-cand candidate-names))
-             do (push (list (cons 'name pytel-cand)) candidates)))
+             for pytel-cand = (replace-regexp-in-string "^.*\\." "" pytel-cand)
+             for pytel-cand = (string-trim pytel-cand)
+             unless (member pytel-cand candidate-names)
+               do (push (list (cons 'name pytel-cand)) candidates)
+             ))
           candidates)))))
 
 (defun elpy-company-backend (command &optional arg &rest ignored)
@@ -3061,77 +3121,100 @@ and return the list."
   (pcase command
     (`global-init
      (require 'eldoc)
-     (setq eldoc-minor-mode-string nil))
+     (elpy-modules-remove-modeline-lighter 'eldoc-minor-mode))
     (`buffer-init
-     ;; avoid eldoc message flickering when using eldoc and company modules jointly
-     (eldoc-add-command-completions "company-")
      (eldoc-add-command-completions "python-indent-dedent-line-backspace")
      (set (make-local-variable 'company-frontends)
           (remq 'company-echo-metadata-frontend company-frontends))
-     (set (make-local-variable 'eldoc-documentation-function)
-          'elpy-eldoc-documentation)
+     ;; New (Emacs >= 28) vs old eldoc API
+     (if (and (version< "28.0.0" emacs-version)
+              (boundp 'eldoc-documentation-functions))
+         (add-hook 'eldoc-documentation-functions
+                   'elpy-eldoc-documentation nil t)
+       (set (make-local-variable 'eldoc-documentation-function)
+            'elpy-eldoc-documentation))
      (eldoc-mode 1))
     (`buffer-stop
      (eldoc-mode -1)
      (kill-local-variable 'eldoc-documentation-function))))
 
-(defun elpy-eldoc-documentation ()
+(defun elpy-eldoc-documentation (&optional callback &rest _more)
   "Return some interesting information for the code at point.
 
-This will return flymake errors for the line at point if there
-are any. If not, this will do an asynchronous call to the RPC
-backend to get a call tip, and display that using
-`eldoc-message'. If the backend has no call tip, this will
-display the current class and method instead."
-  (let ((flymake-error (elpy-flymake-error-at-point)))
+This function is meant to be added to `eldoc-documentation-functions'
+\(for Emacs >= 28) or set in `eldoc-documentation-function' (for older
+Emacs versions).
+
+This will return flymake errors for the line at point if there are
+any. If not, this will do an asynchronous call to the RPC backend to
+get a call tip, and display that using `eldoc-message'. If the backend
+has no call tip, this will display the current class and method
+instead.
+
+If specified, CALLBACK is the function called to display the
+documentation (only used for Emacs >= 28)."
+  (let ((cb (or callback
+                (lambda (doc &rest plist)
+                  (let ((thing (plist-get plist :thing))
+                        (face (plist-get plist :face)))
+                    (when thing
+                      (setq thing (format "%s: "
+                                          (propertize thing
+                                            'face
+                                            'font-lock-function-name-face)))
+                      (setq doc
+                            (if (version<= emacs-version "25")
+                                (format "%s%s" thing doc)
+                              (let ((eldoc-echo-area-use-multiline-p nil))
+                                (eldoc-docstring-format-sym-doc thing doc)))))
+                    (eldoc-message doc)))))
+        (flymake-error (elpy-flymake-error-at-point)))
     (if flymake-error
         flymake-error
-      ;; Try getting calltip
-      (elpy-rpc-get-calltip
-       (lambda (calltip)
+      (elpy-rpc-get-calltip-or-oneline-docstring
+       (lambda (info)
          (cond
-          ((stringp calltip)
-           (eldoc-message calltip))
-          (calltip
-           (let ((name (cdr (assq 'name calltip)))
-                 (index (cdr (assq 'index calltip)))
-                 (params (cdr (assq 'params calltip))))
+          ;; INFO is a string, just display it
+          ((stringp info)
+           (funcall cb info))
+          ;; INFO is a calltip
+          ((string= (cdr (assq 'kind info)) "calltip")
+           (let ((name (cdr (assq 'name info)))
+                 (index (cdr (assq 'index info)))
+                 (params (cdr (assq 'params info))))
              (when index
                (setf (nth index params)
                      (propertize (nth index params)
                                  'face
                                  'eldoc-highlight-function-argument)))
-             (let ((prefix (propertize name 'face
+             (let* ((prefix (propertize name 'face
                                        'font-lock-function-name-face))
-                   (args (format "(%s)" (mapconcat #'identity params ", "))))
-               (eldoc-message
-                (if (version<= emacs-version "25")
-                    (format "%s%s" prefix args)
-                  (eldoc-docstring-format-sym-doc prefix args nil))))))
+                   (args (format "%s(%s)" prefix
+                                 (mapconcat #'identity params ", "))))
+               (funcall cb args))))
+          ;; INFO is a oneline docstring
+          ((string= (cdr (assq 'kind info)) "oneline_doc")
+           (let ((name (cdr (assq 'name info)))
+                 (docs (cdr (assq 'doc info))))
+             (funcall cb docs
+                      :thing name
+                      :face 'font-lock-function-name-face)))
+          ;; INFO is nil, maybe display the current function
           (t
-           ;; Try getting oneline docstring
-           (elpy-rpc-get-oneline-docstring
-            (lambda (doc)
-              (cond
-               (doc
-                (let ((name (cdr (assq 'name doc)))
-                      (doc (cdr (assq 'doc doc))))
-                  (let ((prefix (propertize (format "%s: " name)
-                                            'face
-                                            'font-lock-function-name-face)))
-                    (eldoc-message
-                     (if (version<= emacs-version "25")
-                         (format "%s%s" prefix doc)
-                       (let ((eldoc-echo-area-use-multiline-p nil))
-                         (eldoc-docstring-format-sym-doc prefix doc nil)))))))
-               ;; Give the current definition
-               (elpy-eldoc-show-current-function
-                (let ((current-defun (python-info-current-defun)))
-                  (when current-defun
-                    (eldoc-message
-                     (format "In: %s()" current-defun))))))))))))
-      ;; Return the last message until we're done
-      eldoc-last-message)))
+           (if elpy-eldoc-show-current-function
+               (let ((current-defun (python-info-current-defun)))
+                 (when current-defun
+                   (eldoc-message
+                    (concat "In: "
+                            (propertize
+                             (format "%s()" current-defun)
+                             'face 'font-lock-function-name-face)))))
+             (eldoc-message ""))))))
+      (if callback
+          ;; New protocol: return non-nil, non-string
+          t
+        ;; Old protocol: return the last message until we're done
+        eldoc-last-message))))
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -3224,15 +3307,11 @@ display the current class and method instead."
   "^\\s-*[uU]?[rR]?\"\"\"\n?\\s-*"
   "Version of `hs-block-start-regexp' for docstrings.")
 
-;; Herlpers
-(defun elpy-info-docstring-p (&optional syntax-ppss)
-  "Return non-nil if point is in a docstring."
-  (save-excursion
-    (and (progn (python-nav-beginning-of-statement)
-                (looking-at "\\(\"\\|'\\)"))
-         (progn (forward-line -1)
-                (beginning-of-line)
-                (python-info-looking-at-beginning-of-defun)))))
+(defface elpy-codecell-boundary '((t :inherit 'highlight))
+  "Face for elpy codecell boundary."
+  :group 'elpy-mode)
+
+
 ;; Indicators
 (defun elpy-folding--display-code-line-counts (ov)
   "Display a folded region indicator with the number of folded lines.
@@ -3379,11 +3458,11 @@ docstring body."
   "Hide the docstring at point."
   (hs-life-goes-on
    (let ((hs-block-start-regexp elpy-docstring-block-start-regexp))
-     (when (and (elpy-info-docstring-p) (not (hs-already-hidden-p)))
+     (when (and (python-info-docstring-p) (not (hs-already-hidden-p)))
        (let (beg end line-beg line-end)
          ;; Get first doc line
          (if (not (save-excursion (forward-line -1)
-                                  (elpy-info-docstring-p)))
+                                  (python-info-docstring-p)))
              (setq beg (line-beginning-position))
            (forward-line -1)
            (end-of-line)
@@ -3396,7 +3475,7 @@ docstring body."
          (setq line-beg (line-number-at-pos))
          ;; Get last line
          (if (not (save-excursion (forward-line 1)
-                                  (elpy-info-docstring-p)))
+                                  (python-info-docstring-p)))
              (progn
                (setq end (line-end-position))
                (setq line-end (line-number-at-pos)))
@@ -3411,7 +3490,7 @@ docstring body."
   "Show docstring at point."
   (hs-life-goes-on
    (let ((hs-block-start-regexp elpy-docstring-block-start-regexp))
-     (when (elpy-info-docstring-p)
+     (when (python-info-docstring-p)
        (hs-show-block)))))
 
 (defvar-local elpy-folding-docstrings-hidden nil
@@ -3428,7 +3507,7 @@ docstring body."
        (while (python-nav-forward-defun)
          (search-forward-regexp ")\\s-*:" nil t)
          (forward-line)
-         (when (and (elpy-info-docstring-p)
+         (when (and (python-info-docstring-p)
                     (progn
                       (beginning-of-line)
                       (search-forward-regexp elpy-folding-docstring-regex
@@ -3541,14 +3620,14 @@ If a region is selected, fold that region."
          (elpy-folding--hide-region (region-beginning) (region-end))
        ;; Adapt starting regexp if on a docstring
        (let ((hs-block-start-regexp
-              (if (elpy-info-docstring-p)
+              (if (python-info-docstring-p)
                   elpy-docstring-block-start-regexp
                 hs-block-start-regexp)))
          ;; Hide or fold
          (cond
           ((hs-already-hidden-p)
            (hs-show-block))
-          ((elpy-info-docstring-p)
+          ((python-info-docstring-p)
            (elpy-folding--hide-docstring-at-point))
           (t
            (hs-hide-block))))))))
@@ -3575,8 +3654,6 @@ If a region is selected, fold that region."
               elpy-folding-fringe-indicators)
          (setq-local flymake-fringe-indicator-position 'right-fringe)
        (setq-local flymake-fringe-indicator-position 'left-fringe))
-     ;; Set this for `elpy-check' command
-     (setq-local python-check-command elpy-syntax-check-command)
      ;; For emacs > 26.1, python.el natively supports flymake,
      ;; so we just tell python.el to use the wanted syntax checker
      (when (version<= "26.1" emacs-version)
@@ -3992,6 +4069,16 @@ which we're looking."
        python-shell--prompt-calculated-input-regexp)
       (rx eos))
      output)))
+
+(unless (fboundp 'python-info-docstring-p)
+  (defun python-info-docstring-p (&optional syntax-ppss)
+    "Return non-nil if point is in a docstring."
+    (save-excursion
+      (and (progn (python-nav-beginning-of-statement)
+                  (looking-at "\\(\"\\|'\\)"))
+           (progn (forward-line -1)
+                  (beginning-of-line)
+                  (python-info-looking-at-beginning-of-defun))))))
 
 (provide 'elpy)
 ;;; elpy.el ends here

@@ -44,6 +44,10 @@
 (setq py-python-command "python3")
 (setq python-shell-interpreter "python3")
 (setq elpy-rpc-python-command "python3")
+(setq jedi:environment-root "jedi")
+(setq jedi:environment-virtualenv
+      (append python-environment-virtualenv
+              '("--python" "python3")))
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

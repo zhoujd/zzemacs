@@ -19,9 +19,6 @@
           (lambda ()
             (highlight-indentation-mode -1)))
 
-;;pyenv-mode
-;(require 'pyenv-mode)
-
 (zz:load-path "site-lisp/python-environment")
 (zz:load-path "site-lisp/epc")
 (zz:load-path "site-lisp/jedi-core")
@@ -33,7 +30,6 @@
 (setq python-shell-completion-native-enable nil)
 ;;remove warning: "Can't guess python-indent-offset"
 (setq python-indent-guess-indent-offset-verbose nil)
-
 
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python -i -m pdb <file-name.py>

@@ -9,10 +9,10 @@ PERL
     $ tar -xzf perl-${VER}.tar.gz
     $ cd perl-${vER}
     ## with thread support
-    $ ./Configure -des -Dprefix=$HOME/localperl -Dusethreads
+    $ ./Configure -des -Dprefix=$HOME/.zach/perl5 -Dusethreads
     $ make
     $ make test
     or
     $ TEST_JOBS=3 make test_harness
     $ make install
-    $ export PATH=$HOME/localperl/bin:$PATH
+    $ export PATH=$HOME/.zach/perl5/bin:$PATH

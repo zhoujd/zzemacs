@@ -50,6 +50,7 @@
         go-setting
         groovy-setting
         docker-setting
+        http-setting
         media-setting
         game-setting
         typing-setting

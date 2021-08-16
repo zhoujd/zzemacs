@@ -37,7 +37,7 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (local-set-key (kbd "C-c m") 'gofmt)
   (local-set-key (kbd "M-.") 'godef-jump)
-  (local-set-key (kbd "M-*") 'pop-tag-mark)
+  (local-set-key (kbd "M-,") 'pop-tag-mark)
   (set (make-local-variable 'company-backends) '(company-go)))
 
 (defun zz:go-indent4 ()

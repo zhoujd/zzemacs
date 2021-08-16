@@ -80,7 +80,7 @@
       )))
 
 (defun zz:temp-delete ()
-  "delte ~/.emacs.d/temp-setting.el"
+  "delete ~/.emacs.d/temp-setting.el"
   (interactive)
   (let ((path zz:dev-set-file))
     (when (file-exists-p path)

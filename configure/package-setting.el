@@ -7,6 +7,9 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
+;;disable package-enable-at-startup
+(setq package-enable-at-startup nil)
+
 ;;emacs proxy
 ;(setq url-proxy-services
 ;   '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")

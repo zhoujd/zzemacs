@@ -431,8 +431,9 @@
 (add-to-list 'minor-mode-alist '(case-fold-search " CFS"))
 (defalias 'c 'toggle-case-fold-search)
 
-;;Configure saved from menu "Save Options"
-(setq custom-file "~/.emacs.d/custom.el")
+;;configure saved from menu "Save Options"
+;;normal location: ~/.emacs.d/custom.el
+(setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;;auto refresh remote files
 (custom-set-variables

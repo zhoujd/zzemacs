@@ -117,6 +117,7 @@
   (kbd "C-t")     'zz:open-with-terminal
   (kbd "M-t")     'zz:transparency-toggle
   (kbd "C-n")     'backlight
+  (kbd "C-u")     'disk-usage
 
   (kbd "M-d")     (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
   (kbd "M-r")     (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))

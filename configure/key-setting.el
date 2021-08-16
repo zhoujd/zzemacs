@@ -109,7 +109,6 @@
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
                                  (zz:execute-key zz:thunar '("thunar")))
-  (kbd "C-f")     'zel-find-file-frecent
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-r")     'zz:add-code-review-note

@@ -382,8 +382,8 @@
 (require 'translate-shell)
 
 ;;https://github.com/rudolfochrist/zel
-(require 'zel)
-(zel-install)
+;(require 'zel)
+;(zel-install)
 
 ;;https://github.com/emacs-straight/disk-usage
 (require 'disk-usage)

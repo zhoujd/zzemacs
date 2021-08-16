@@ -1,4 +1,9 @@
 ;;;groovy program setting
+;;On Ubuntu
+;;apt search openjdk
+;;apt install openjdk-16-jdk*
+;;apt install openjdk-16-jre*
+;;https://groovy.apache.org/download.html
 
 ;;groovy mode
 (zz:load-path "site-lisp/groovy")

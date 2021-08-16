@@ -48,6 +48,7 @@
         perl-setting
         python-setting
         go-setting
+        groovy-setting
         docker-setting
         media-setting
         game-setting

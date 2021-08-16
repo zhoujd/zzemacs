@@ -37,6 +37,14 @@
 (zz:load-path "site-lisp/docker")
 (require 'docker)
 
+;;https://github.com/Silex/docker-api.el
+(zz:load-path "site-lisp/docker-api")
+(require 'docker-api)
+
+;;https://github.com/meqif/docker-compose-mode
+(require 'docker-compose-mode)
+(require 'docker-compose-mode-helpers)
+
 ;;https://github.com/chrisbarrett/kubernetes-el
 (zz:load-path "site-lisp/kubernetes-el")
 (require 'kubernetes)

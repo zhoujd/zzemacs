@@ -419,7 +419,7 @@
 (defvar zz:system-trash-flag t
   "Use system trash flag")
 (unless zz:system-trash-flag
-  (setq trash-directory "~/.Trash"))
+  (setq trash-directory "~/.trash"))
 (setq delete-by-moving-to-trash t)
 
 ;;stop asking “Active processes exist; kill them and exit anyway”

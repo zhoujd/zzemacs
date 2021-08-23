@@ -1,9 +1,21 @@
 #!/bin/bash
 
-emacsclient -e "(if (> (length (frame-list)) 1) 't)" | grep -q t
-if [ "$?" = "1" ]; then
-    # none found so create frame
-    emacsclient -n -c -a "" "$@"
-else
-    emacsclient -n -a "" "$@"
+if [ $# = 0 ]; then
+    echo "Usage: $(basename $0) <files>|<directories>"
+    exit 0
+fi
+
+emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep t                                                                     
+if [ "$?" = "1" ]; then                                                                                                              
+    if [ "$DISPLAY" = "" ]; then                                                                                                     
+        emacsclient -c -a "" "$@"                                                                                                    
+    else                                                                                                                             
+        emacsclient -c -n -a "" "$@"                                                                                                 
+    fi                                                                                                                               
+else                                                                                                                                 
+    if [ "$DISPLAY" = "" ]; then                                                                                                     
+        emacsclient -a "" "$@"
+    else
+        emacsclient -n -a "" "$@"
+    fi
 fi

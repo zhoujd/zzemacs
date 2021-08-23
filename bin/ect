@@ -1,7 +1,13 @@
-#!/bin/sh
+#!/bin/bash                                                                                                                          
 
-if [ -z "$1" ]; then
-    emacsclient -t
-else
-    emacsclient -t "$@"
+if [ $# = 0 ]; then
+    echo "Usage: $(basename $0) <files>|<directories>"
+    exit 0
+fi
+
+emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep t                                                                     
+if [ "$?" = "1" ]; then                                                                                                              
+    emacsclient -c -a "" "$@"                                                                                                    
+else                                                                                                                                 
+    emacsclient -a "" "$@"
 fi

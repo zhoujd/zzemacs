@@ -395,6 +395,10 @@
 (require 'ripgrep)
 (require 'projectile-ripgrep)
 
+;;logview
+(zz:load-path "site-lisp/datetime")
+(require 'logview)
+
 
 (provide 'other-setting)
 

@@ -1,0 +1,8 @@
+*.elc
+
+/dev/*.class
+/test/*.class
+
+/Eldev-local
+/.eldev
+/dist

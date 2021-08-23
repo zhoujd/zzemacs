@@ -388,6 +388,9 @@
 ;;https://github.com/emacs-straight/disk-usage
 (require 'disk-usage)
 
+;;"dired" buffers can be handled
+(require 'recentf-ext)
+
 
 (provide 'other-setting)
 

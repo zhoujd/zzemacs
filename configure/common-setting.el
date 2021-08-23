@@ -51,11 +51,12 @@
 
 ;;font setting
 ;;tools: xlsfonts or xfontsel
+;;more fonts: https://github.com/ryanoasis/nerd-fonts
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz:en-font-list '(
-                            "JetBrains Mono 13"
+                            "JetBrains Mono NL 13"
                             "IBM Plex Mono 13"
                             "Consolas 13"
                             "Dejavu Sans Mono 13"

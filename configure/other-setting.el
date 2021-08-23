@@ -399,6 +399,10 @@
 (zz:load-path "site-lisp/datetime")
 (require 'logview)
 
+;;google this
+(require 'google-this)
+(google-this-mode 1)
+
 
 (provide 'other-setting)
 

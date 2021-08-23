@@ -6,5 +6,4 @@ if [ "$?" = "1" ]; then
     emacsclient -n -c -a "" "$@"
 else
     emacsclient -n -a "" "$@"
-    pop-window "Emacs"
 fi

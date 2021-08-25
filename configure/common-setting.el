@@ -359,7 +359,7 @@
       recentf-max-menu-items      30)
 
 (unless-ms-windows
- (add-to-list 'recentf-exclude "^/\\(?:ssh\\|su\\|sudo\\)?:"))
+ (setq recentf-exclude '("~$" "/tmp/" "/ssh:" "/sshx11:" "/sudo:")))
 
 (recentf-mode t)
 (defadvice recentf-track-closed-file (after push-beginning activate)

@@ -5,7 +5,12 @@ if [ $# = 0 ]; then
     exit 0
 fi
 
-emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep t > /dev/null
+FRAME_EXIST=`cat <<EOF
+(if (> (length (frame-list)) 1)
+    't)
+EOF
+`
+emacsclient -n -e "$FRAME_EXIST" | grep t
 if [ "$?" = "1" ]; then
     if [ "$DISPLAY" = "" ]; then
         emacsclient -c -a "" "$@"

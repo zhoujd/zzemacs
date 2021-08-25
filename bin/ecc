@@ -5,15 +5,15 @@ if [ $# = 0 ]; then
     exit 0
 fi
 
-emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep t                                                                     
-if [ "$?" = "1" ]; then                                                                                                              
-    if [ "$DISPLAY" = "" ]; then                                                                                                     
-        emacsclient -c -a "" "$@"                                                                                                    
-    else                                                                                                                             
-        emacsclient -c -n -a "" "$@"                                                                                                 
-    fi                                                                                                                               
-else                                                                                                                                 
-    if [ "$DISPLAY" = "" ]; then                                                                                                     
+emacsclient -n -e "(if (> (length (frame-list)) 1) 't)" | grep t > /dev/null
+if [ "$?" = "1" ]; then
+    if [ "$DISPLAY" = "" ]; then
+        emacsclient -c -a "" "$@"
+    else
+        emacsclient -c -n -a "" "$@"
+    fi
+else
+    if [ "$DISPLAY" = "" ]; then
         emacsclient -a "" "$@"
     else
         emacsclient -n -a "" "$@"

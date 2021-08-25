@@ -6,9 +6,5 @@ else
     OPT=-c
 fi
 
-if [ "$OS" = "Windows_NT" ] ; then
-    emacsclient -a "runemacs" -f "~\\.emacs.d\\server\\server" -n  "$@" $OPT
-else
-    emacsclient -a '' "$@" $OPT
-fi
+emacsclient -a '' "$@" $OPT
 

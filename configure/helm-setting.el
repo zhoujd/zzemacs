@@ -138,6 +138,9 @@
 (require 'sudo-edit)
 (defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 
+;;helm-google
+(require 'helm-google)
+
 
 (provide 'helm-setting)
 

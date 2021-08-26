@@ -400,6 +400,10 @@
 (require 'google-this)
 (google-this-mode 1)
 
+;;neotree
+(zz:load-path "site-lisp/neotree")
+(require 'neotree)
+
 
 (provide 'other-setting)
 

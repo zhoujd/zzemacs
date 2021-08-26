@@ -34,6 +34,7 @@
   (kbd "/")       'zz:ctrl-z-help
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
+  (kbd "n")       'neotree-toggle
   (kbd "o")       'zz:last-buffer-go
   (kbd "C-r")     'recentf-open-files
   (kbd "C-s")     'slime-selector

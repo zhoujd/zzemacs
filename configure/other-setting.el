@@ -388,9 +388,6 @@
 ;;https://github.com/emacs-straight/disk-usage
 (require 'disk-usage)
 
-;;"dired" buffers can be handled
-(require 'recentf-ext)
-
 ;;Ubuntu: apt install ripgrep
 (require 'ripgrep)
 (require 'projectile-ripgrep)

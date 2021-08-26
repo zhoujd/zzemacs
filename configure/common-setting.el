@@ -354,14 +354,16 @@
        ad-do-it))
 
 ;;recentf
+(require 'recentf)
+(require 'recentf-ext)
+(recentf-mode t)
 (setq recentf-menu-open-all-flag  t
-      recentf-max-saved-items     100
+      recentf-max-saved-items     30
       recentf-max-menu-items      30)
 
 (unless-ms-windows
  (setq recentf-exclude '("~$" "/tmp/" "/ssh:" "/sshx11:" "/sudo:")))
 
-(recentf-mode t)
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))

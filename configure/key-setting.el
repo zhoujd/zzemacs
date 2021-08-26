@@ -26,20 +26,21 @@
 (apply-keys-to-map
  ctrl-z-map
  (list
-  (kbd "C-s")     'slime-selector
-  (kbd "C-z")     'repeat
   (kbd "SPC")     'er/expand-region
   (kbd "RET")     'zz:sudo-edit-current-file
   (kbd "TAB")     'zz:insert-file-name
+  (kbd "`")       'ztree-diff-1
+  (kbd "M-`")     'ztree-dir-1
+  (kbd "/")       'zz:ctrl-z-help
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
-  (kbd "/")       'zz:ctrl-z-help
   (kbd "o")       'zz:last-buffer-go
+  (kbd "C-r")     'recentf-open-files
+  (kbd "C-s")     'slime-selector
   (kbd "t")       'zz:trans-shell
   (kbd "C-t")     'translate-shell-brief
   (kbd "M-t")     'translate-shell
-  (kbd "`")       'ztree-diff-1
-  (kbd "M-`")     'ztree-dir-1
+  (kbd "C-z")     'repeat
   ))
 
 (apply-keys-to-map

@@ -71,11 +71,6 @@
   ([M-S-backspace] 'redo)
   ((kbd "C-?")     'redo))
 
-;; space tab show
-;(require 'jaspace)
-;(setq jaspace-alternate-eol-string "\xab\n")
-;(setq jaspace-highlight-tabs t) ; highlight tabs ; ...
-
 (require 'blank-mode)
 (defvar blank-bg-color (background-color-at-point))
 (defvar blank-fg-color "gray20")
@@ -119,18 +114,6 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;(defun zz:kill-buffer-when-exit ()
-;  "Close assotiated buffer when a process exited"
-;  (let ((current-process (ignore-errors (get-buffer-process (current-buffer)))))
-;    (when current-process
-;      (set-process-sentinel current-process
-;                            (lambda (watch-process change-state)
-;                               (when (string-match "//(finished//|exited//)" change-state)
-;                                (kill-buffer (process-buffer watch-process))))))))
-
-;(add-hook 'gdb-mode-hook 'zz:kill-buffer-when-exit)
-;(add-hook 'shell-mode-hook 'zz:kill-buffer-when-exit)
-
 ;;;tramp setting
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
@@ -159,12 +142,6 @@
 ;;https://github.com/nonsequitur/smex/
 (require 'smex)
 (smex-initialize)
-
-;;mulit-occur
-;;isearch press M-o will list match in current buffer
-;;M-O(not zero) will list match in all buffers
-;(require 'color-moccur)
-;(require 'moccur-edit)
 
 ;;bookmark setting
 (require 'bm)
@@ -243,15 +220,8 @@
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 
-;;eproject manage
-;(zz:load-path "site-lisp/eproject")
-;(require 'eproject)
-
 ;;http://nschum.de/src/emacs/highlight-symbol/
 (require 'highlight-symbol)
-
-;;maxframe
-;(require 'maxframe)
 
 ;;bookmark plus
 ;;https://www.emacswiki.org/emacs/BookmarkPlus
@@ -289,9 +259,6 @@
 (require 'vimrc-mode)
 (add-to-list 'auto-mode-alist '(".vim\\(rc\\)?$" . vimrc-mode))
 
-;;minimap show left
-;(require 'minimap)
-
 ;;igrep
 (require 'igrep)
 
@@ -301,10 +268,6 @@
 
 ;;grep+
 (require 'grep+)
-
-;;mode-line powerline
-;(require 'powerline)
-;(powerline-default-theme)
 
 ;;iedit
 (zz:load-path "site-lisp/iedit")
@@ -381,10 +344,6 @@
 ;;https://github.com/xuchunyang/translate-shell.el
 (require 'translate-shell)
 
-;;https://github.com/rudolfochrist/zel
-;(require 'zel)
-;(zel-install)
-
 ;;https://github.com/emacs-straight/disk-usage
 (require 'disk-usage)
 
@@ -398,7 +357,11 @@
 
 ;;google this
 (require 'google-this)
-(google-this-mode 1)
+(google-this-mode t)
+
+;;all-the-icons
+(zz:load-path "site-lisp/all-the-icons")
+(require 'all-the-icons)
 
 ;;neotree
 (zz:load-path "site-lisp/neotree")

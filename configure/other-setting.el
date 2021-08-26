@@ -359,10 +359,6 @@
 (require 'google-this)
 (google-this-mode t)
 
-;;all-the-icons
-(zz:load-path "site-lisp/all-the-icons")
-(require 'all-the-icons)
-
 ;;neotree
 (zz:load-path "site-lisp/neotree")
 (require 'neotree)

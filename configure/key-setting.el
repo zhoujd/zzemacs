@@ -38,9 +38,7 @@
   (kbd "o")       'zz:last-buffer-go
   (kbd "C-r")     'recentf-open-files
   (kbd "C-s")     'slime-selector
-  (kbd "t")       'zz:trans-shell
-  (kbd "C-t")     'translate-shell-brief
-  (kbd "M-t")     'translate-shell
+  (kbd "C-t")     'trashed
   (kbd "C-z")     'repeat
   ))
 

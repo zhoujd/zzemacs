@@ -363,6 +363,9 @@
 (zz:load-path "site-lisp/neotree")
 (require 'neotree)
 
+;;trash
+(require 'trashed)
+
 
 (provide 'other-setting)
 

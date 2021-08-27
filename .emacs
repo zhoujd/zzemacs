@@ -37,6 +37,7 @@
         other-setting
         shell-setting
         term-setting
+        eshell-setting
         sample-setting
         w3m-setting
         doc-setting

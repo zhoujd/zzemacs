@@ -365,6 +365,7 @@
 
 ;;trash
 (require 'trashed)
+(setq trashed-buffer-name "*Trash Can*")
 
 
 (provide 'other-setting)

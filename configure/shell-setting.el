@@ -297,12 +297,6 @@ Dmitriy Igrishin's patched version of comint.el."
  (require 'bash-completion)
  (bash-completion-setup))
 
-;;eshell setting
-(setq eshell-prompt-function
-      (lambda ()
-        (concat "" (user-login-name) "@" (system-name) " "
-                (eshell/pwd) " % ")))
-
 ;;M-x cd /hostname:/current/path/in/the/shell
 (defun zz:remote-shell (&optional host)
   "Open a remote shell to a host"

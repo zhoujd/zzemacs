@@ -323,6 +323,10 @@ Dmitriy Igrishin's patched version of comint.el."
       (zz:get-shell)
       )))
 
+(defun zz:cd (dir)
+  (interactive "DDirectory: ")
+  (setq default-directory dir))
+
 (defun zz:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")
   (let ((default-directory dir))

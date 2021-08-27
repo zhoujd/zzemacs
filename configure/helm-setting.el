@@ -141,6 +141,11 @@
 ;;helm-google
 (require 'helm-google)
 
+;;helm-ssh-tunnel
+(zz:load-path "site-lisp/ssh-tunnels")
+(require 'ssh-tunnels)
+(require 'helm-ssh-tunnels)
+
 
 (provide 'helm-setting)
 

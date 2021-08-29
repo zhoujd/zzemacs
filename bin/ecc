@@ -10,7 +10,7 @@ FRAME_EXIST=`cat <<EOF
     't)
 EOF
 `
-emacsclient -n -e "$FRAME_EXIST" | grep t >/dev/null
+emacsclient -n -e "$FRAME_EXIST" | grep t >/dev/null 2>&1
 if [ "$?" = "1" ]; then
     if [ "$DISPLAY" = "" ]; then
         emacsclient -c -a "" "$@"

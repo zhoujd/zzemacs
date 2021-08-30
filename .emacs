@@ -51,6 +51,7 @@
         go-setting
         groovy-setting
         docker-setting
+        vagrant-setting
         http-setting
         media-setting
         game-setting

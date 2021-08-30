@@ -63,7 +63,7 @@
     "        ))"
     ""
     ";; project key setting"
-    ";(zz:execute-key f4-p-map \"f\" zz:firefox '(\"firefox\" \"http://www.baidu.com\"))"
+    ";(zz:exec-key f4-p-map \"f\" zz:firefox '(\"firefox\" \"http://www.baidu.com\"))"
     ))
 
 (defun zz:temp-setting ()

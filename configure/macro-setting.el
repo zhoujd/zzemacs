@@ -55,7 +55,7 @@
   `(put ',operator 'lisp-indent-function ,indentation))
 
 ;;marcro for start-process
-(defmacro zz:execute-key (fn-name args)
+(defmacro zz:exec-key (fn-name args)
   `(defun ,fn-name ()
      (interactive)
      (apply 'start-process "execute-key" nil ,args)))

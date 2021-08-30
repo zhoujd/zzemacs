@@ -109,8 +109,8 @@
   (kbd "t")       'helm-tramp
 
   (kbd "C-b")     'browse-url
-  (kbd "C-d")     (if-ms-windows (zz:execute-key zz:explorer '("explorer" "."))
-                                 (zz:execute-key zz:thunar '("thunar")))
+  (kbd "C-d")     (if-ms-windows (zz:exec-key zz:explorer '("explorer" "."))
+                                 (zz:exec-key zz:thunar '("thunar")))
   (kbd "C-e")     'eshell
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
@@ -121,10 +121,10 @@
   (kbd "C-n")     'backlight
   (kbd "C-u")     'disk-usage
 
-  (kbd "M-d")     (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
-  (kbd "M-r")     (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
-  (kbd "M-s")     (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
-  (kbd "M-w")     (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
+  (kbd "M-d")     (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
+  (kbd "M-r")     (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))
+  (kbd "M-s")     (zz:exec-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
+  (kbd "M-w")     (zz:exec-key zz:rofi-win    '("rofi" "-show" "window"))
 
   (kbd "/")       'bongo
   ))
@@ -136,23 +136,23 @@
   (kbd "\\")      'zz:baidu
   (kbd "`")       'zz:google
 
-  (kbd "c")       (zz:execute-key zz:urxvt       '("urxvt"))
-  (kbd "f")       (zz:execute-key zz:firefox     '("firefox"))
-  (kbd "g")       (zz:execute-key zz:chrome      '("google-chrome"))
-  (kbd "m")       (zz:execute-key zz:evolution   '("evolution"))
+  (kbd "c")       (zz:exec-key zz:urxvt       '("urxvt"))
+  (kbd "f")       (zz:exec-key zz:firefox     '("firefox"))
+  (kbd "g")       (zz:exec-key zz:chrome      '("google-chrome"))
+  (kbd "m")       (zz:exec-key zz:evolution   '("evolution"))
 
-  (kbd "h")       (zz:execute-key zz:thunar      '("thunar"))
-  (kbd "v")       (zz:execute-key zz:vim         '("urxvt" "-e" "vim"))
-  (kbd "t")       (zz:execute-key zz:tmux        '("urxvt" "-e" "tmux"))
+  (kbd "h")       (zz:exec-key zz:thunar      '("thunar"))
+  (kbd "v")       (zz:exec-key zz:vim         '("urxvt" "-e" "vim"))
+  (kbd "t")       (zz:exec-key zz:tmux        '("urxvt" "-e" "tmux"))
 
-  (kbd "d")       (zz:execute-key zz:rofi-drun   '("rofi" "-show" "drun"))
-  (kbd "r")       (zz:execute-key zz:rofi-run    '("rofi" "-show" "run"))
-  (kbd "s")       (zz:execute-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
-  (kbd "w")       (zz:execute-key zz:rofi-win    '("rofi" "-show" "window"))
+  (kbd "d")       (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
+  (kbd "r")       (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))
+  (kbd "s")       (zz:exec-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
+  (kbd "w")       (zz:exec-key zz:rofi-win    '("rofi" "-show" "window"))
 
-  (kbd "M-g")     (zz:execute-key zz:gitg        '("gitg"))
-  (kbd "M-m")     (zz:execute-key zz:meld        '("meld"))
-  (kbd "M-t")     (zz:execute-key zz:trans       '("urxvt" "-e" "trans" "-I"))
+  (kbd "M-g")     (zz:exec-key zz:gitg        '("gitg"))
+  (kbd "M-m")     (zz:exec-key zz:meld        '("meld"))
+  (kbd "M-t")     (zz:exec-key zz:trans       '("urxvt" "-e" "trans" "-I"))
   ))
 
 (apply-keys-to-map

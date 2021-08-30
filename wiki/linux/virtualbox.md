@@ -13,7 +13,8 @@ VirtualBox
 
 ## Command line
 
-    $ vboxmanage list vms
+    $ VBoxManage list vms
+    $ VBoxManage list bridgedifs
 
 ## Enable kernel support
 

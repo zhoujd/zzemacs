@@ -40,6 +40,9 @@
 (require 'git-blame-line)
 
 ;;magit
+;;M-x magit-log-buffer-file
+;;M-x magit-find-file
+;;File log: C-x v l
 (zz:load-path "site-lisp/magit/lisp")
 (require 'magit)
 (defkeys-map global-map

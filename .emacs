@@ -52,6 +52,7 @@
         groovy-setting
         docker-setting
         vagrant-setting
+        kube-setting
         http-setting
         media-setting
         game-setting

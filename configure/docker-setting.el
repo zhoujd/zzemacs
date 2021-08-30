@@ -45,10 +45,6 @@
 (require 'docker-compose-mode)
 (require 'docker-compose-mode-helpers)
 
-;;https://github.com/chrisbarrett/kubernetes-el
-(zz:load-path "site-lisp/kubernetes-el")
-(require 'kubernetes)
-
 
 (provide 'docker-setting)
 

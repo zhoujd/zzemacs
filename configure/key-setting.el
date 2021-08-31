@@ -301,6 +301,7 @@
 (apply-keys-to-map
  f4-g-map
  (list
+  (kbd "g")       'gomoku
   (kbd "p")       'practice-words
   (kbd "C-p")     'typing-of-emacs
   (kbd "s")       'snake

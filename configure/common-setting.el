@@ -288,7 +288,7 @@
  '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063")))))
 
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %b %d %l:%M %p %U"))))
+      '((propertize (format-time-string "%a %b %d %l:%M %p"))))
 (display-time)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))

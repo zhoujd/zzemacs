@@ -98,6 +98,7 @@
        ("g" "revert buffer" revert-buffer)
        ("m" "mark" dired-mark)
        ("o" "find file other window" dired-find-file-other-window)
+       ("r" "play video files" dired-play-start)
        ("s" "sort toggle or edit" dired-sort-toggle-or-edit)
        ("t" "toggle marks" dired-toggle-marks)
        ("u" "unmark" dired-unmark)

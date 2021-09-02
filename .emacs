@@ -34,14 +34,14 @@
         gdb-setting
         vc-setting
         ediff-setting
-        other-setting
+        dired-setting
         shell-setting
         term-setting
         eshell-setting
+        other-setting
         sample-setting
         w3m-setting
         doc-setting
-        dired-setting
         evil-setting
         c-setting
         lisp-setting

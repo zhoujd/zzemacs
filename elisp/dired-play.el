@@ -1,4 +1,7 @@
 ;;; dired-play.el
+;;
+;;(require 'dired-play)
+;;(define-key dired-mode-map "r" 'dired-play-start)
 
 (require 'dired-aux)
 
@@ -29,8 +32,6 @@
                  (format "%s %s" cmd list-switch)
                  cmd)
              (mapconcat #'expand-file-name file-list "\" \"")))))
-
-(define-key dired-mode-map "r" 'dired-play-start)
 
 ;;delete play process vlc or mpv
 (defun dired-play-delete ()

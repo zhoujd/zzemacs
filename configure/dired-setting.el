@@ -104,15 +104,8 @@
 (defkeys-map global-map
   ((kbd "C-x C-j") 'direx:jump-to-directory))
 
-
 (zz:load-path "site-lisp/dired-hacks")
 (require 'dired-filter)
-
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (defkeys-map dired-mode-map
-              ((kbd "/") dired-filter-map))
-            ))
 
 ;;image dired
 (require 'image-dired)
@@ -122,6 +115,11 @@
 ;;dired play with vlc/mpv
 (zz:load-path "elisp")
 (require 'dired-play)
+
+;;dired-mode-map
+(defkeys-map dired-mode-map
+  ((kbd "/") dired-filter-map)
+  ((kbd "r") 'dired-play-start))
 
 
 (provide 'dired-setting)

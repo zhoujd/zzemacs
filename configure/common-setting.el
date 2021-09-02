@@ -355,6 +355,7 @@
 
 ;;recentf
 (require 'recentf)
+(require 'recentf-ext)
 (recentf-mode t)
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30

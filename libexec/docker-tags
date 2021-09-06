@@ -16,7 +16,7 @@ image=$1
 tags=$(curl -L -s "https://registry.hub.docker.com/v2/repositories/library/${image}/tags?page_size=1024" | jq '."results"[]["name"]')
 
 if [ -n "$2" ]; then
-    tags=` echo "${tags}" | grep "$2" `
+    tags=$(echo "${tags}" | grep "$2")
 fi
 
 echo "${tags}"

@@ -1,13 +1,14 @@
 #!/bin/bash
 
 if [ $# = 0 ]; then
+    cmd=$(basename $0)
     cat << HELP
-dockertags  --  list all tags for a Docker image on a remote registry.
+$cmd  --  list all tags for a Docker image on a remote registry.
 EXAMPLE: 
     - list all tags for ubuntu:
-       dockertags ubuntu
+       \$ $cmd ubuntu
     - list all php tags containing apache:
-       dockertags php apache
+       \$ $cmd php apache
 HELP
     exit 1
 fi    

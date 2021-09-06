@@ -49,3 +49,8 @@ RabbitMQ
 
     ## Delete user permissions:
     $ rabbitmqctl clear_permissions -p /myvhost user
+
+## Tutorials "Hello World!"
+
+    ## https://www.rabbitmq.com/tutorials/tutorial-one-go.html
+    ## https://www.rabbitmq.com/tutorials/tutorial-one-python.html

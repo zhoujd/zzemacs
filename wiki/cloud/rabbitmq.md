@@ -52,6 +52,7 @@ RabbitMQ
 
 ## Tutorials "Hello World!"
 
+    ## https://www.rabbitmq.com/getstarted.html
     ## https://github.com/rabbitmq/rabbitmq-tutorials
     ## https://www.rabbitmq.com/tutorials/tutorial-one-go.html
     ## https://www.rabbitmq.com/tutorials/tutorial-one-python.html

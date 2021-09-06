@@ -2,8 +2,8 @@ RabbitMQ
 ========
 
 ## Install RabbitMQ on Ubuntu 20.04 LTS
-   https://idroot.us/install-rabbitmq-ubuntu-20-04/
 
+    ## https://idroot.us/install-rabbitmq-ubuntu-20-04/
     $ sudo apt update
     $ sudo apt install erlang
     $ sudo apt install rabbitmq-server
@@ -15,6 +15,7 @@ RabbitMQ
     ## Input guest/guest for http://localhost:15672
     $ rabbitmqctl add_user admin StrongPassword
     $ rabbitmqctl set_user_tags admin administrator
+    $ rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
     $ sudo usermod -aG rabbitmq $USER
 

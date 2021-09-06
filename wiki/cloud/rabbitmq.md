@@ -55,3 +55,9 @@ RabbitMQ
     ## https://github.com/rabbitmq/rabbitmq-tutorials
     ## https://www.rabbitmq.com/tutorials/tutorial-one-go.html
     ## https://www.rabbitmq.com/tutorials/tutorial-one-python.html
+
+## Install rabbitmqadmin
+
+    $ wget http://{hostname}:15672/cli/rabbitmqadmin
+    $ chmod +x rabbitmqadmin
+    $ sudo mv rabbitmqadmin /usr/local/bin/

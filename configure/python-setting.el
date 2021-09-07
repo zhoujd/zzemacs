@@ -35,9 +35,9 @@
 (setq python-indent-guess-indent-offset-verbose nil)
 
 ;;pdb setup, note the python version
-;;run pdb.py (like this): python -i -m pdb <file-name.py>
+;;run pdb.py (like this): python3 -i -m pdb <file-name.py>
 ;;M-x pdb
-(setq gud-pdb-command-name "python -i -m pdb")
+(setq gud-pdb-command-name "python3 -i -m pdb")
 
 ;;scons file setting
 (setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))

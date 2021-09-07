@@ -2,12 +2,12 @@
 
 ZZEMACS_ROOT=`pwd`
 
-##source vars and functions
+## source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
 
 echo "install .emacs to HOME directory begin..."
 
-##setup .emacs
+## setup .emacs
 install_dot_emacs() {
     cat <<EOF > ~/.emacs
 ;;;This is .emacs for zhoujd.
@@ -18,9 +18,9 @@ install_dot_emacs() {
 EOF
 }
 
-##setup font
+## setup font
 install_fonts() {
-    TARGET_TYPE="system"   ##system/user
+    TARGET_TYPE="system"   ## system/user
     echo "install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
@@ -43,38 +43,38 @@ install_fonts() {
     esac
 }
 
-##setup others
+## setup others
 install_others() {
-    ##create ~/.emacs.d
+    ## create ~/.emacs.d
     mkdir -p ~/.emacs.d
 
-    ##link zzemacs/etc/terminfo
+    ## link zzemacs/etc/terminfo
     ln -sfvT ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
 
-    ##link zzemacs/etc/gdbinit
+    ## link zzemacs/etc/gdbinit
     ln -sfvT ${ZZEMACS_ROOT}/etc/gdbinit ~/.gdbinit
 }
 
-##install thirdparty
+## install thirdparty
 install_thirdparty() {
     echo "install third party to $TARGET_TYPE"
-    ##install pymacs
+    ## install pymacs
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
-    ##install EPL
+    ## install EPL
     ${ZZEMACS_ROOT}/third-party/perl/install.sh
 }
 
 main() {
-    ##install configure file
+    ## install configure file
     confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
                     run_cmd install_dot_emacs
-    ##install fonts
+    ## install fonts
     confirm_execute "Do you want to install fonts ? [y/N]" \
                     run_cmd install_fonts
-    ##install others
+    ## install others
     confirm_execute "Do you want to install others ? [y/N]" \
                     run_cmd install_others
-    ##install third-party
+    ## install third-party
     confirm_execute "Do you want to install third-party packages ? (y/N): " \
                     run_cmd install_thirdparty
 }

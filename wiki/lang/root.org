@@ -1,0 +1,10 @@
+#+TITLE: Root
+
+| Root        | Origin | Meaning      | Changes | Synonyms                         | Example |
+|-------------+--------+--------------+---------+----------------------------------+---------|
+| DUC,DUC[DU] | Latin  | to lead      | du      | to drive -                       |         |
+|             |        |              |         | G: agog                          |         |
+|             |        |              |         | L: ag/ig/act,flig,pel/puls[peal] |         |
+| HOM         | Latin  | man          |         | G: anthrop                       |         |
+|             |        |              |         | S: man                           |         |
+| HUM         | Latin  | earth,ground |         |                                  |         |

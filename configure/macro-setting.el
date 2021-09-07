@@ -1,12 +1,12 @@
 ;;;; macro-setting.el --- macro config file
 ;;
 
-(defmacro if-ms-windows (if-cause &optional else-cause)
+(defmacro if-ms-windows (then-cause &optional else-cause)
   `(if ,(eq system-type 'windows-nt)
-       ,if-cause ,else-cause))
+       ,then-cause ,else-cause))
 
-(defmacro if-not-ms-windows (if-cause &optional else-cause)
-  `(if-ms-windows ,else-cause ,if-cause))
+(defmacro if-not-ms-windows (then-cause &optional else-cause)
+  `(if-ms-windows ,else-cause ,then-cause))
 
 (defmacro unless-ms-windows (&rest body)
   `(if-not-ms-windows (progn ,@body)))
@@ -14,13 +14,13 @@
 (defmacro when-ms-windows (&rest body)
   `(if-ms-windows (progn ,@body)))
 
-(defmacro if-emacs25 (if-cause &optional else-cause)
+(defmacro if-emacs25 (then-cause &optional else-cause)
   `(if ,(and (>= emacs-major-version 25)
              (>= emacs-minor-version 1))
-       ,if-cause ,else-cause))
+       ,then-cause ,else-cause))
 
-(defmacro if-not-emacs25 (if-cause &optional else-cause)
-  `(if-emacs25 ,else-cause ,if-cause))
+(defmacro if-not-emacs25 (then-cause &optional else-cause)
+  `(if-emacs25 ,else-cause ,then-cause))
 
 (defmacro when-emacs25 (&rest body)
   `(if-emacs25 (progn ,@body)))

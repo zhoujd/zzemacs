@@ -1,11 +1,13 @@
-#+TITLE: Root
+#+TITLE: root
 
-| Root          | Origin | Meaning      | Description      | Changes | Synonyms     | Relatives                        | Example |
-|---------------+--------+--------------+------------------+---------+--------------+----------------------------------+---------|
-| DUC,DUC[DU]   | Latin  | to lead      |                  | du      | L: men[mean] | to driver -                      |         |
-|               |        |              |                  |         | G: agog      | L: ag/ig/act,flig,pel/puls[peal] |         |
-| HOM           | Latin  | man          |                  |         | G: anthrop   |                                  |         |
-|               |        |              |                  |         | S: man       |                                  |         |
-| HUM           | Latin  | earth,ground |                  |         |              |                                  |         |
-| TAIN,TEN[TIN] | Latin  | to hold      | tain: from Frech |         |              |                                  |         |
-|               |        |              | tin: weak form   |         |              |                                  |         |
+| Root          | Origin | Meaning       | Description       | Changes | Synonyms     | Relatives                        | Example |
+|---------------+--------+---------------+-------------------+---------+--------------+----------------------------------+---------|
+| DUC,DUC[DU]   | Latin  | to lead       |                   | du      | L: men[mean] | to driver -                      |         |
+|               |        |               |                   |         | G: agog      | L: ag/ig/act,flig,pel/puls[peal] |         |
+| HOM           | Latin  | man           |                   |         | G: anthrop   |                                  |         |
+|               |        |               |                   |         | S: man       |                                  |         |
+| HUM           | Latin  | earth,ground  |                   |         |              |                                  |         |
+| TAIN,TEN[TIN] | Latin  | to hold       | tain: from French |         |              |                                  |         |
+|               |        |               | tin: weak form    |         |              |                                  |         |
+| NORM          | Latin  | standard,rule |                   |         |              |                                  |         |
+| UND           | Latin  | wave          |                   |         |              |                                  |         |

@@ -17,24 +17,24 @@ SCP in script
 
 ## Second Choice:
 
-    * # yum install expect
-    * # vi scp.exp
+    # yum install expect
+    # vi scp.exp
 
-            #!/usr/bin/expect -f
-            spawn scp -r root@192.168.1.179:/home/CRM /home
-            set timeout 10
-            expect "root@192.168.1.179's password:"
-            exec sleep 1
-            send "123456\n"
-            interact
+          #!/usr/bin/expect -f
+          spawn scp -r root@192.168.1.179:/home/CRM /home
+          set timeout 10
+          expect "root@192.168.1.179's password:"
+          exec sleep 1
+          send "123456\n"
+          interact
 
-    * run script
+    run script
 
-            #expect scp.exp
-      or
+          #expect scp.exp
+    or
 
-            #chmod +x scp.exp
-            #./scp.exp
+          #chmod +x scp.exp
+          #./scp.exp
 
 ## Third Choice
 

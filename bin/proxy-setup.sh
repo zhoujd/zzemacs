@@ -37,6 +37,7 @@ case "$OS" in
         ;;
 esac
 
+## all_proxy[ALL_PROXY] doesn't work for remote docker daemon
 tee $PROXY_SCRIPT <<EOF
 #!/bin/sh
 
@@ -58,9 +59,6 @@ export SOCKS_PROXY=\$socks_proxy
 
 export no_proxy=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
 export NO_PROXY=\$no_proxy
-
-export all_proxy=\$http_proxy
-export ALL_PROXY=\$all_proxy
 EOF
 
 echo "setup proxy done"

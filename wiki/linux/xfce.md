@@ -135,3 +135,5 @@ Xfce
     ## https://www.richud.com/wiki/Ubuntu_Evolution_fix_database_disk_image_is_malformed
     $ cd ~/.local/share/evolution/mail/local
     $ mv folders.db folders.db-
+    $ ~/.cache/evolution/mail/<ews-account-uid>/
+    $ find -name "folders.db"

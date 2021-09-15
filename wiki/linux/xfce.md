@@ -129,3 +129,9 @@ Xfce
     $ xfce4-settings-manager
     ## uncheck -> Session and Startup -> Application autostart -> evolution alarm notify
     $ sudo chmod -x  /usr/libexec/evolution-data-server/evolution-alarm-notify
+
+## Ubuntu Evolution fix database disk image is malformed
+
+    ## https://www.richud.com/wiki/Ubuntu_Evolution_fix_database_disk_image_is_malformed
+    $ cd ~/.local/share/evolution/mail/local
+    $ mv folders.db folders.db-

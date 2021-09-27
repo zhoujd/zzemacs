@@ -77,6 +77,11 @@ install_package_fedora() {
     sudo dnf install -y rxvt-unicode
 }
 
+install_package_manjaro() {
+    sudo pacman -S rxvt-unicode
+    sudo pacman -S vim
+}
+
 # dectect OS version
 case "$OS_DISTRO" in
     "SUSE" )
@@ -90,6 +95,9 @@ case "$OS_DISTRO" in
         ;;
     "Fedora" )
         run_cmd install_package_fedora
+        ;;
+    "Arch" | "Manjaro" )
+        run_cmd install_package_manjaro
         ;;
     * )
         echo "You are about to install on a non supported linux distribution."

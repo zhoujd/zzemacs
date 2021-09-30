@@ -129,6 +129,23 @@ current repl's (as per slime-output-buffer) window."
 (defvar slime-repl-input-start-mark)
 (defvar slime-repl-prompt-start-mark)
 
+(defvar slime-repl-history-use-mark nil
+  "A non-nil value means that history will be replaced from the mark.
+
+Instead of replacing form input-start, look up history and replace input
+from the mark. Calling 'slime-repl-previous-input',
+ 'slime-repl-previous-matching-input' or their -next counterparts with a prefix
+ argument sets this variable for the duration of one history lookup.")
+
+(defun slime-repl-history-yank-start ()
+  "The position which 'slime-repl-previous-input' will replace from.
+
+When 'slime-repl-history-use-mark' is non-nil, and (mark) is after the current
+input start, return it.  Otherwise, return 'slime-repl-input-start-mark'."
+  (if (and slime-repl-history-use-mark (mark))
+      (max (mark) slime-repl-input-start-mark)
+      slime-repl-input-start-mark))
+
 (defun slime-output-buffer (&optional noprompt)
   "Return the output buffer, create it if necessary."
   (let ((buffer (slime-connection-output-buffer)))
@@ -240,7 +257,7 @@ hashtable `slime-output-target-to-marker'; output is inserted at this marker."
   (case target
     ((nil) (slime-repl-emit string))
     (:repl-result (slime-repl-emit-result string t))
-    (t (slime-emit-to-target string target))))
+    (t (slime-repl-emit-to-target string target))))
 
 (defvar slime-repl-popup-on-output nil
   "Display the output buffer when some output is written.
@@ -293,27 +310,10 @@ This is set to nil after displaying the buffer.")
 (defvar slime-last-output-target-id 0
   "The last integer we used as a TARGET id.")
 
-(defvar slime-output-target-to-marker
-  (make-hash-table)
-  "Map from TARGET ids to Emacs markers.
-The markers indicate where output should be inserted.")
-
-(defun slime-output-target-marker (target)
-  "Return the marker where output for TARGET should be inserted."
-  (case target
-    ((nil)
-     (with-current-buffer (slime-output-buffer)
-       slime-output-end))
-    (:repl-result
-     (with-current-buffer (slime-output-buffer)
-       slime-repl-input-start-mark))
-    (t
-     (gethash target slime-output-target-to-marker))))
-
-(defun slime-emit-to-target (string target)
+(defun slime-repl-emit-to-target (string target)
   "Insert STRING at target TARGET.
 See `slime-output-target-to-marker'."
-  (let* ((marker (slime-output-target-marker target))
+  (let* ((marker (slime-repl-output-target-marker target))
          (buffer (and marker (marker-buffer marker))))
     (when buffer
       (with-current-buffer buffer
@@ -323,6 +323,18 @@ See `slime-output-target-to-marker'."
           (goto-char marker)
           (insert-before-markers string)
           (set-marker marker (point)))))))
+
+(defun slime-repl-output-target-marker (target)
+  (case target
+    ((nil)
+     (with-current-buffer (slime-output-buffer)
+       slime-output-end))
+    (:repl-result
+     (with-current-buffer (slime-output-buffer)
+       slime-repl-input-start-mark))
+    (t
+     (slime-output-target-marker target))))
+
 
 (defun slime-switch-to-output-buffer ()
   "Select the output buffer, when possible in an existing window.
@@ -452,7 +464,8 @@ joined together."))
   ("\C-c\C-n" 'slime-repl-next-prompt)
   ("\C-c\C-p" 'slime-repl-previous-prompt)
   ("\C-c\C-z" 'slime-nop)
-  ("\C-cI" 'slime-repl-inspect))
+  ("\C-cI" 'slime-repl-inspect)
+  ("\C-x\C-e" 'slime-eval-last-expression))
 
 (slime-define-keys slime-inspector-mode-map
   ((kbd "M-RET") 'slime-inspector-copy-down-to-repl))
@@ -618,7 +631,7 @@ The input is the region from after the last prompt to the end of
 buffer."
   (or (run-hook-with-args-until-success 'slime-repl-current-input-hooks
                                         until-point-p)
-      (buffer-substring-no-properties slime-repl-input-start-mark
+      (buffer-substring-no-properties (slime-repl-history-yank-start)
                                       (if until-point-p
                                           (point)
                                         (point-max)))))
@@ -815,7 +828,7 @@ earlier in the buffer."
 (defun slime-repl-delete-current-input ()
   "Delete all text from the prompt."
   (interactive)
-  (delete-region slime-repl-input-start-mark (point-max)))
+  (delete-region (slime-repl-history-yank-start) (point-max)))
 
 (defun slime-eval-last-expression-in-repl (prefix)
   "Evaluates last expression in the Slime REPL.
@@ -937,16 +950,6 @@ used with a prefix argument (C-u), doesn't switch back afterwards."
   :type 'boolean
   :group 'slime-repl)
 
-(defcustom slime-repl-history-remove-duplicates nil
-  "*When T all duplicates are removed except the last one."
-  :type 'boolean
-  :group 'slime-repl)
-
-(defcustom slime-repl-history-trim-whitespaces nil
-  "*When T strip all whitespaces from the beginning and end."
-  :type 'boolean
-  :group 'slime-repl)
-
 (make-variable-buffer-local
  (defvar slime-repl-input-history '()
    "History list of strings read from the REPL buffer."))
@@ -954,12 +957,10 @@ used with a prefix argument (C-u), doesn't switch back afterwards."
 (defun slime-repl-add-to-input-history (string)
   "Add STRING to the input history.
 Empty strings and duplicates are ignored."
-  (when slime-repl-history-trim-whitespaces
-    (setq string (slime-trim-whitespace string)))
+  (setq string (slime-trim-whitespace string))
   (unless (equal string "")
-    (when slime-repl-history-remove-duplicates
-      (setq slime-repl-input-history
-            (remove string slime-repl-input-history)))
+    (setq slime-repl-input-history
+          (remove string slime-repl-input-history))
     (unless (equal string (car slime-repl-input-history))
       (push string slime-repl-input-history))))
 
@@ -1033,15 +1034,23 @@ If EXCLUDE-STRING is specified then it's excluded from the search."
   "Cycle backwards through input history.
 If the `last-command' was a history navigation command use the
 same search pattern for this command.
-Otherwise use the current input as search pattern."
+Otherwise use the current input as search pattern.
+
+With a prefix-arg, do replacement from the mark."
   (interactive)
-  (slime-repl-history-replace 'backward (slime-repl-history-pattern t)))
+  (let ((slime-repl-history-use-mark (or slime-repl-history-use-mark
+                                         current-prefix-arg)))
+    (slime-repl-history-replace 'backward (slime-repl-history-pattern t))))
 
 (defun slime-repl-next-input ()
   "Cycle forwards through input history.
-See `slime-repl-previous-input'."
+See `slime-repl-previous-input'.
+
+With a prefix-arg, do replacement from the mark."
   (interactive)
-  (slime-repl-history-replace 'forward (slime-repl-history-pattern t)))
+  (let ((slime-repl-history-use-mark (or slime-repl-history-use-mark
+                                         current-prefix-arg)))
+    (slime-repl-history-replace 'forward (slime-repl-history-pattern t))))
 
 (defun slime-repl-forward-input ()
   "Cycle forwards through input history."
@@ -1054,23 +1063,33 @@ See `slime-repl-previous-input'."
   (slime-repl-history-replace 'backward (slime-repl-history-pattern)))
 
 (defun slime-repl-previous-matching-input (regexp)
+  "Insert the previous matching input.
+
+With a prefix-arg, do the insertion at the mark."
   (interactive (list (slime-read-from-minibuffer
 		      "Previous element matching (regexp): ")))
   (slime-repl-terminate-history-search)
-  (slime-repl-history-replace 'backward regexp))
+  (let ((slime-repl-history-use-mark (or slime-repl-history-use-mark
+                                         current-prefix-arg)))
+    (slime-repl-history-replace 'backward regexp)))
 
 (defun slime-repl-next-matching-input (regexp)
+  "Insert the next matching input.
+
+With a prefix-arg, do the insertion at the mark."
   (interactive (list (slime-read-from-minibuffer
 		      "Next element matching (regexp): ")))
   (slime-repl-terminate-history-search)
-  (slime-repl-history-replace 'forward regexp))
+  (let ((slime-repl-history-use-mark (or slime-repl-history-use-mark
+                                         current-prefix-arg)))
+   (slime-repl-history-replace 'forward regexp)))
 
 (defun slime-repl-history-pattern (&optional use-current-input)
   "Return the regexp for the navigation commands."
   (cond ((slime-repl-history-search-in-progress-p)
          slime-repl-history-pattern)
         (use-current-input
-         (goto-char (max slime-repl-input-start-mark (point)))
+         (goto-char (max (slime-repl-history-yank-start) (point)))
          (let ((str (slime-repl-current-input t)))
            (cond ((string-match "^[ \t\n]*$" str) nil)
                  (t (concat "^" (regexp-quote str))))))

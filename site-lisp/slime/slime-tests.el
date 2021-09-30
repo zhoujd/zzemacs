@@ -553,8 +553,7 @@ confronted with nasty #.-fu."
         (slime-check "Definition now at point." (looking-at snippet))))))
 
 (def-slime-test (find-definition.3
-                 (:fails-for "abcl" "allegro" "clisp" "lispworks" "sbcl"
-                             "ecl"))
+                 (:fails-for "abcl" "allegro" "clisp" "lispworks" "ecl"))
     (name source regexp)
     "Extra tests for defstruct."
     '(("swank::foo-struct"
@@ -730,7 +729,7 @@ Confirm that SUBFORM is correctly located."
                        (setcdr cell result))
                      cell))
       (slime-wait-condition "Compilation finished" (lambda () (car cell))
-                            0.5)
+                            5)
       (let ((result (cdr cell)))
         (slime-check "Compilation successfull"
           (eq (slime-compilation-result.successp result) t))))))
@@ -756,7 +755,7 @@ Confirm that SUBFORM is correctly located."
             (slime-compile-string input 0)
             (slime-wait-condition "Compilation finished"
                                   (lambda () (car cell))
-                                  0.5)
+                                  5)
             (slime-test-expect "Compile-string result correct"
                                output (slime-eval '(cl-user::foo))))
         (remove-hook 'slime-compilation-finished-hook hook))
@@ -777,7 +776,7 @@ Confirm that SUBFORM is correctly located."
                 (slime-compile-and-load-file)
                 (slime-wait-condition "Compilation finished"
                                       (lambda () (car cell))
-                                      0.5))
+                                      5))
               (slime-test-expect "Compile-file result correct"
                                  output (slime-eval '(cl-user::foo))))
           (remove-hook 'slime-compilation-finished-hook hook)
@@ -1107,7 +1106,7 @@ the buffer's undo-list."
       (sldb-continue))
     (slime-wait-condition "sldb closed"
                           (lambda () (not (sldb-get-default-buffer)))
-                          0.5))
+                          5))
   (slime-sync-to-top-level 1))
 
 (def-slime-test (break2 (:fails-for "cmucl" "allegro"))
@@ -1433,7 +1432,7 @@ Reconnect afterwards."
            (slime-compile-and-load-file)
            (slime-wait-condition "Compilation finished"
                                  (lambda () (car cell))
-                                 0.5)
+                                 5)
            (slime-test-eval-now "(setq *.var.* t)")
            (setcar cell nil)
            (slime-xref :calls ".fn1."
@@ -1442,13 +1441,13 @@ Reconnect afterwards."
                          (setcar cell t)))
            (slime-wait-condition "Xrefs computed and displayed"
                                  (lambda () (car cell))
-                                 0.5)
+                                 5)
            (setcar cell nil)
            (with-current-buffer slime-xref-last-buffer
              (slime-recompile-all-xrefs)
              (slime-wait-condition "Compilation finished"
                                    (lambda () (car cell))
-                                   0.5))
+                                   5))
            (should (cl-equalp (list (slime-test-eval-now "(.fn2.)")
                                     (slime-test-eval-now "(.fn3.)"))
                               '("T" "T"))))

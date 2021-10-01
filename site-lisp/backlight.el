@@ -108,7 +108,7 @@
   (let ((devices (cddr (and (file-exists-p backlight-sys-dir)
                             (directory-files backlight-sys-dir)))))
     (if (null devices)
-        (message "Error: Unable to find backlight device")
+        (message "No backlight device")
       (when (and (null backlight-pref-device)
 		 (> (length devices) 1))
 	(message (concat "Warning: Multiple backlight devices. Using the first, "

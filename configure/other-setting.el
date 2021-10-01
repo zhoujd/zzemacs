@@ -4,11 +4,12 @@
 (zz:load-path "site-lisp")
 (zz:load-path "elisp")
 
-;;session + desktop
+;; session + desktop
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
 (setq session-save-file-coding-system 'utf-8)
-(desktop-load-default)
+(when (< emacs-major-version 27)
+  (desktop-load-default))
 
 ;; use only one desktop
 (setq desktop-path '("~/.emacs.d/"))

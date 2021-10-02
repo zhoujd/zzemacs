@@ -137,3 +137,10 @@ Xfce
     $ mv folders.db folders.db-
     $ ~/.cache/evolution/mail/<ews-account-uid>/
     $ find -name "folders.db"
+
+
+## xdg-open
+
+    ## https://wiki.archlinux.org/title/Xdg-utils
+    $ xdg-mime query default video/mp4
+    $ xdg-mime default mpv.desktop video/mp4

@@ -144,3 +144,9 @@ Xfce
     ## https://wiki.archlinux.org/title/Xdg-utils
     $ xdg-mime query default video/mp4
     $ xdg-mime default mpv.desktop video/mp4
+    $ xdg-mime default mpv.desktop video/webm
+    ## For MKV
+    $ xdg-mime query filetype whatever.mkv
+    video/x-matroska
+    $ xdg-mime query default video/x-matroska
+    $ xdg-mime default mpv.desktop video/x-matroska

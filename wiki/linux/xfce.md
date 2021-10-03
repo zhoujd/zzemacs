@@ -153,6 +153,7 @@ Xfce
 
 ## ulauncher theme
 
+    ## Press Alt+Enter to access an alt menu
     ## https://github.com/yerbestpal/ambiant-mate-ulauncher-theme
     $ mkdir -p ~/.config/ulauncher/user-themes
     $ cd ~/.config/ulauncher/user-themes

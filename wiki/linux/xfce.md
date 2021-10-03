@@ -150,3 +150,10 @@ Xfce
     video/x-matroska
     $ xdg-mime query default video/x-matroska
     $ xdg-mime default mpv.desktop video/x-matroska
+
+## ulauncher theme
+
+    ## https://github.com/yerbestpal/ambiant-mate-ulauncher-theme
+    $ mkdir -p ~/.config/ulauncher/user-themes
+    $ cd ~/.config/ulauncher/user-themes
+    $ git clone https://github.com/yerbestpal/ambiant-mate-ulauncher-theme

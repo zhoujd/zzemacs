@@ -370,6 +370,7 @@
 
 ;;which-key
 (require 'which-key)
+(setq which-key-lighter "")
 (which-key-mode t)
 
 

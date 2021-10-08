@@ -163,6 +163,8 @@ Xfce
 
     ## https://linuxconfig.org/get-better-notifications-in-your-wm-with-dunst
     $ sudo apt install dunst libnotify-bin
+    $ mkdir -p $HOME/.config/dunst
+    $ cp $XDG_CONFIG_HOME/dunst/dunstrc $HOME/.config/dunst/dunstrc
     $ dunst &
     $ disown
     ## open a new terminal

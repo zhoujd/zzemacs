@@ -158,3 +158,12 @@ Xfce
     $ mkdir -p ~/.config/ulauncher/user-themes
     $ cd ~/.config/ulauncher/user-themes
     $ git clone https://github.com/yerbestpal/ambiant-mate-ulauncher-theme
+
+## notification with dunst
+
+    ## https://linuxconfig.org/get-better-notifications-in-your-wm-with-dunst
+    $ sudo apt install dunst libnotify-bin
+    $ dunst &
+    $ disown
+    ## open a new terminal
+    $ notify-send "Notification Title" "Notification Messages"

@@ -42,8 +42,13 @@
 (defun dired-play-stop ()
   (interactive)
   (let* ((plist '("vlc" "cvlc" "vlca" "mpv" "mpa"))
-         (pname (ido-completing-read "Process Name: " plist)))
-    (delete-process (get-process pname))))
+         (pname (ido-completing-read "Process Name: " (push "all" plist))))
+    (if (string= pname "all")
+        (dolist (pitem plist)
+          (when (get-process pitem)
+            (delete-process (get-process pitem))))
+        (when (get-process pname)
+          (delete-process (get-process pname))))))
 
 
 (provide 'dired-play)

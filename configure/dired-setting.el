@@ -121,6 +121,12 @@
   ((kbd "/") dired-filter-map)
   ((kbd "r") 'dired-play-start))
 
+;;https://github.com/thomp/dired-launch
+;;J (dired-launch-command) launches the file using the preferred application
+;;K (dired-launch-with-prompt-command) prompts for the application and then launches the file
+(require 'dired-launch)
+(dired-launch-enable)
+
 
 (provide 'dired-setting)
 

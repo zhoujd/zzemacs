@@ -107,7 +107,7 @@
 (require 'helm-ag)
 (require 'helm-grep)
 (custom-set-variables
-  '(helm-grep-file-path-style 'relative))
+ '(helm-grep-file-path-style 'relative))
 (defun zz:helm-grep-ag ()
   (interactive)
   (let ((default-directory (file-name-as-directory

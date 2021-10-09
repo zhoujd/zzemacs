@@ -6,10 +6,10 @@
 (zz:load-path "site-lisp/kubernetes-el")
 (require 'kubernetes)
 
-;;kubel
+;;https://github.com/abrochard/kubel
 ;M-x kubel-set-namespace
 ;M-x kubel-set-context
-(require 'kubel)
+;(require 'kubel)
 
 ;;kubernetes helm
 (require 'kubernetes-helm)

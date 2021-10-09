@@ -41,8 +41,8 @@
 ;;delete play process vlc or mpv
 (defun dired-play-stop ()
   (interactive)
-  (let ((pname (ido-completing-read "Process Name: "
-                                    '("vlc" "cvlc" "vlca" "mpv" "mpa"))))
+  (let* ((plist '("vlc" "cvlc" "vlca" "mpv" "mpa"))
+         (pname (ido-completing-read "Process Name: " plist)))
     (delete-process (get-process pname))))
 
 

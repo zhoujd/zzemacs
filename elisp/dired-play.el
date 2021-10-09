@@ -24,7 +24,7 @@
      nil
      shell-file-name
      shell-command-switch
-     (format "%s %s \"%s\""
+     (format "%s %s \'%s\'"
              dired-play-prefix
              (if (and (> (length file-list) 1)
                       (setq list-switch

@@ -9,6 +9,9 @@
 (defvar dired-filelist-cmd '(("vlc" "-L")))
 (defvar dired-play-prefix "nohup 1>/dev/null 2>/dev/null")
 
+(defun replace-in-string (what with in)
+  (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
+
 ;;play files which marked
 (defun dired-play-start (cmd &optional file-list)
   (interactive
@@ -24,14 +27,15 @@
      nil
      shell-file-name
      shell-command-switch
-     (format "%s %s \'%s\'"
+     (format "%s %s \"%s\""
              dired-play-prefix
              (if (and (> (length file-list) 1)
                       (setq list-switch
                             (cadr (assoc cmd dired-filelist-cmd))))
                  (format "%s %s" cmd list-switch)
                  cmd)
-             (mapconcat #'expand-file-name file-list "\" \"")))))
+             (replace-in-string "\"" "\\\""
+                                (mapconcat #'expand-file-name file-list "\" \""))))))
 
 ;;delete play process vlc or mpv
 (defun dired-play-delete ()

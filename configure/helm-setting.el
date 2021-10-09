@@ -112,7 +112,7 @@
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (helm-grep-ag-1 default-directory)))
+    (helm-do-ag default-directory)))
 
 (require 'helm-tramp)
 (require 'helm-cscope)
@@ -122,7 +122,7 @@
 (add-hook 'comint-mode-hook
           (lambda ()
             (defkeys-map comint-mode-map
-              ((kbd "M-s f") 'helm-comint-prompts-all)
+              ((kbd "M-s f")   'helm-comint-prompts-all)
               ((kbd "M-s M-f") 'helm-comint-prompts)
               )))
 ;;helm proc

@@ -119,7 +119,8 @@
 ;;dired-mode-map
 (defkeys-map dired-mode-map
   ((kbd "/") dired-filter-map)
-  ((kbd "r") 'dired-play-start))
+  ((kbd "r") 'dired-play-start)
+  ((kbd "z") 'dired-play-stop))
 
 ;;https://github.com/thomp/dired-launch
 ;;J (dired-launch-command) launches the file using the preferred application

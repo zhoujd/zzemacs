@@ -2,6 +2,7 @@
 ;;
 ;;(require 'dired-play)
 ;;(define-key dired-mode-map "r" 'dired-play-start)
+;;(define-key dired-mode-map "z" 'dired-play-stop)
 
 (require 'dired-aux)
 
@@ -38,10 +39,10 @@
                                 (mapconcat #'expand-file-name file-list "\" \""))))))
 
 ;;delete play process vlc or mpv
-(defun dired-play-delete ()
+(defun dired-play-stop ()
   (interactive)
   (let ((pname (ido-completing-read "Process Name: "
-                                    '("vlc" "mpv"))))
+                                    '("vlc" "cvlc" "vlca" "mpv" "mpa"))))
     (delete-process (get-process pname))))
 
 

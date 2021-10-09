@@ -157,6 +157,13 @@
   ))
 
 (apply-keys-to-map
+ f4-p-map
+ (list
+  (kbd "1")       'zz:python-scratch
+  (kbd "2")       'zz:sh-scratch
+  ))
+
+(apply-keys-to-map
  global-map
  (list
   (kbd "C-1")     'delete-window

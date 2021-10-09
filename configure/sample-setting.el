@@ -365,6 +365,36 @@
   (interactive "nTransparency Value 0 - 100 opaque:")
   (set-frame-parameter (selected-frame) 'alpha value))
 
+(defun zz:python-scratch ()
+  (interactive)
+    (let (
+          ;; Creates a new buffer object.
+         (buf (get-buffer-create "*python-scratch*"))
+         )
+      ;; Executes functions that would change the current buffer at
+      ;; buffer buf
+     (with-current-buffer buf
+       ;;; Set the new buffer to scratch mode
+       (python-mode)
+       ;;; Pop to scratch buffer
+       (pop-to-buffer buf)
+       )))
+
+(defun zz:sh-scratch ()
+  (interactive)
+    (let (
+          ;; Creates a new buffer object.
+         (buf (get-buffer-create "*sh-scratch*"))
+         )
+      ;; Executes functions that would change the current buffer at
+      ;; buffer buf
+     (with-current-buffer buf
+       ;;; Set the new buffer to scratch mode
+       (sh-mode)
+       ;;; Pop to scratch buffer
+       (pop-to-buffer buf)
+       )))
+
 
 (provide 'sample-setting)
 

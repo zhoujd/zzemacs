@@ -36,6 +36,7 @@
   (kbd "d")       'docker
   (kbd "n")       'neotree-toggle
   (kbd "o")       'zz:last-buffer-go
+  (kbd "C-p")     'proced
   (kbd "C-r")     'recentf-open-files
   (kbd "C-s")     'slime-selector
   (kbd "t")       'trashed

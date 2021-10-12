@@ -8,14 +8,12 @@ zzemacs - emacs for Zachary Zhou
 
 ## Libraries for build emacs
 
-    - LIBJPEG:           http://www.ijg.org/files
-    - LIBGIF & LIBUNGIF: https://sourceforge.net/projects/giflib
-    - LIBTIFF:           http://download.osgeo.org/libtiff
-    - LIBXPM:            http://www.x.org/releases/current/src/lib
+    - LIBJPEG:           <http://www.ijg.org/files>
+    - LIBGIF & LIBUNGIF: <https://sourceforge.net/projects/giflib>
+    - LIBTIFF:           <http://download.osgeo.org/libtiff>
+    - LIBXPM:            <http://www.x.org/releases/current/src/lib>
 
-## Some URL
+## Some URLs
 
     - GNU emacs: <http://ftp.gnu.org/emacs>
     - Third-party for emacs refer to zzemacs/third-party/readme.md
-
-## Thanks for plugin owners and github

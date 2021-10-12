@@ -368,11 +368,6 @@
 (require 'trashed)
 (setq trashed-buffer-name "*Trash Can*")
 
-;;which-key
-(require 'which-key)
-(setq which-key-lighter "")
-(which-key-mode t)
-
 
 (provide 'other-setting)
 

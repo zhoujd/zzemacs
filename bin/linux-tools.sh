@@ -24,7 +24,7 @@ install_package_ubuntu() {
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
     sudo apt install -y cups-pdf
-    sudo apt install -y git-email gitk gitg
+    sudo apt install -y git-email gitk
     sudo apt install -y meld
     sudo apt install -y evolution-ews
     sudo apt install -y dos2unix
@@ -44,6 +44,7 @@ install_package_ubuntu() {
     sudo apt install -y zathura     ## pdf viewer like vim
     sudo apt install -y zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps
     sudo apt install -y wireshark tshark
+    sudo apt install -y dunst
 }
 
 ##package for centos

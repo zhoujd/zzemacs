@@ -27,3 +27,8 @@ chrome
     - Select text by vim navigation keys, aka: h, j, k, l, b, e, w, $ (I especially like shift + w, as it goes to the end of the next word)
     - Yank via y
     You now can switch the context and paste the text via Ctrl+V
+
+## Saved Passwords Issues
+
+    ## Turn off sync up with clean
+    ## Turn on sync will auto update

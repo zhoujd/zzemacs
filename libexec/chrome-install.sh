@@ -5,8 +5,9 @@
 VERSION_STRING=current
 URL_BASE=https://dl.google.com/linux/direct
 
-PKG_NAME=google-chrome-stable_${VERSION_STRING}_amd64.deb
-PKG_URL=$URL_BASE/$PKG
+PKG_BASE=google-chrome-stable
+PKG_NAME=${PKG_BASE}_${VERSION_STRING}_amd64.deb
+PKG_URL=${URL_BASE}/${PKG_NAME}
 
 download() {
     echo "Download chrome"
@@ -19,10 +20,12 @@ install() {
     echo "Install chrome"
     pushd ~/Downloads/
     if [ -f $PKG_NAME ]; then
-        sudo dpkg -i $PKG_NAME
+        sudo apt install ./$PKG_NAME
+        sudo apt-mark hold $PKG_BASE
     fi
-    popd
 }
+
+apt hold google-chrome-stable
 
 clean() {
     echo "Clean $PKG_NAME"

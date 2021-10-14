@@ -25,8 +25,6 @@ install() {
     fi
 }
 
-apt hold google-chrome-stable
-
 clean() {
     echo "Clean $PKG_NAME"
     pushd ~/Downloads/

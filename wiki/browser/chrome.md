@@ -32,3 +32,7 @@ chrome
 
     ## Turn off sync up with clean
     ## Turn on sync will auto update
+
+## Black theme
+
+    ## 'Just Black' theme

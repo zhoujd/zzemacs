@@ -35,8 +35,11 @@
                             (cadr (assoc cmd dired-filelist-cmd))))
                  (format "%s %s" cmd list-switch)
                  cmd)
-             (replace-in-string "\"" "\\\""
-                                (mapconcat #'expand-file-name file-list "\" \""))))))
+             (mapconcat #'expand-file-name
+                        (mapcar (lambda (file)
+                                  (replace-in-string "\"" "\\\"" file))
+                                file-list)
+                        "\" \"")))))
 
 ;;delete play process vlc or mpv
 (defun dired-play-stop ()

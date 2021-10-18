@@ -169,3 +169,8 @@ Xfce
     $ disown
     ## open a new terminal
     $ notify-send "Notification Title" "Notification Messages"
+
+## evolution change keyboard shortcuts
+
+    ## https://askubuntu.com/questions/1125058/how-to-change-evolutions-keyboard-shortcuts
+    $ vim ~/.config/evolution/accels

@@ -174,3 +174,10 @@ Xfce
 
     ## https://askubuntu.com/questions/1125058/how-to-change-evolutions-keyboard-shortcuts
     $ vim ~/.config/evolution/accels
+
+## X cursor
+
+    ## http://web.mit.edu/linux/redhat/docs/Custom-X-Tips.txt
+    ## https://pissedoffadmins.com/os/linux/xsetroot-cursor_name-list.html
+    $ xsetroot -def
+    $ xsetroot -cursor_name top_left_arrow

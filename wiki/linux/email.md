@@ -6,12 +6,13 @@ E-mail
 [https://www.claws-mail.org/faq/index.php/Using_Claws_Mail_with_Gmail]
 [claws-gmail](../../doc/linux/claws-gmail.pdf)
 
-
 ## Claws Mail Interface
 [https://www.claws-mail.org/faq/index.php/Interface]
 
 ## Hotmail/Outlook
 
+[https://support.microsoft.com/en-us/office/pop-imap-and-smtp-settings-8361e398-8af4-4e97-b147-6c6c4ac95353]
+[https://www.howto-outlook.com/howto/accountsettings.htm]
 Login -> Setting -> Sync email
 IMAP Setting
 Server name: outlook.office365.com

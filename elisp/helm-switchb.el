@@ -35,25 +35,35 @@
   `(lambda ()
      (interactive)
      (with-helm-alive-p
-       (helm-exit-and-execute-action (lambda (_candidate) ,@body)))))
+       (helm-exit-and-execute-action
+        (lambda (_candidate) ,@body)))))
 
 (defun helm-switchb-select (candidate)
-  (switch-to-buffer (car (split-string candidate helm-switchb-separator t))))
+  (switch-to-buffer
+   (car (split-string
+         candidate helm-switchb-separator t))))
 
 (defun helm-switchb-dired-open (candidate)
-  (dired (car (reverse (split-string candidate helm-switchb-separator t)))))
+  (dired (car (reverse
+               (split-string
+                candidate helm-switchb-separator t)))))
 
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
-        (kill-buffer (car (split-string cand helm-switchb-separator t)))))
+        (kill-buffer (car (split-string
+                           cand helm-switchb-separator t)))))
 
 (defun helm-switchb-shell-new (candidate)
-  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator t)))))
+  (let ((default-directory
+          (car (reverse (split-string
+                         candidate helm-switchb-separator t)))))
     (multi-shell-new)))
 
 (defun helm-switchb-term-new (candidate)
-  (let ((default-directory (car (reverse (split-string candidate helm-switchb-separator t)))))
+  (let ((default-directory
+          (car (reverse (split-string
+                         candidate helm-switchb-separator t)))))
     (multi-term)))
 
 (defun helm-switcb-kill-shell ()

@@ -17,6 +17,9 @@
   "my load configure file"
   (load-file (concat zzemacs-path "/configure/" file)))
 
+(defconst zz:emacs-start-time (current-time)
+  "track of loading time")
+
 (zz:load-path "configure")
 (mapc (lambda (setting)
         (require setting)
@@ -66,5 +69,10 @@
         key-setting
         fkey-setting
         ))
+
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          zz:emacs-start-time))))
+  (message "Loading settings...done (%.3fs)" elapsed))
+
 
 ;;;; .emacs end here

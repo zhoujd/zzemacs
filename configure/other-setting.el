@@ -368,6 +368,12 @@
 (require 'trashed)
 (setq trashed-buffer-name "*Trash Can*")
 
+;;vkill
+(require 'vkill)
+
+;;git-annex
+(require 'git-annex)
+
 
 (provide 'other-setting)
 

@@ -125,11 +125,11 @@
 (defun zz:open-with-terminal()
   "Open terminal to current dired"
   (interactive)
-  (start-process  "gnome-terminal"
-                  nil
-                  "gnome-terminal"
-                  ""
-                  ))
+  (start-process "urxvt"
+                 nil
+                 "urxvt"
+                 "-cd"
+                 default-directory))
 
 (defun zz:open-with-nautilus()
   "Open nautilus on current dired"

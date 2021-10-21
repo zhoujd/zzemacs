@@ -115,6 +115,7 @@
   (kbd "C-e")     'eshell
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
+  (kbd "C-k")     'vkill
   (kbd "C-r")     'zz:add-code-review-note
   (kbd "C-s")     'zz:slime-connect-stumpwm
   (kbd "C-t")     'zz:open-with-terminal

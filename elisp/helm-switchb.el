@@ -8,6 +8,9 @@
 (defvar helm-switchb-separator " "
   "helm switchb separator")
 
+(defvar helm-switchb-ignores '("*Async Shell Command*")
+  "helm switchb ignores buffers")
+
 (defmacro helm-switchb-candidate (mode)
   "Collect and format candidates base on Major mode"
   `(lambda ()
@@ -21,7 +24,7 @@
       (progn
         (cl-remove-if
          (lambda (buf)
-           (or (string= (buffer-name buf) "*Async Shell Command*")
+           (or (member (buffer-name buf) helm-switchb-ignores)
                (with-current-buffer buf
                  (neq major-mode ,mode))))
          (buffer-list))))))

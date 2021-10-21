@@ -18,11 +18,13 @@
                 helm-switchb-separator
                 (with-current-buffer (buffer-name buf)
                   default-directory)))
-      (cl-remove-if-not
-       (lambda (buf)
-         (with-current-buffer buf
-           (eq major-mode ,mode)))
-       (buffer-list)))))
+      (progn
+        (cl-remove-if
+         (lambda (buf)
+           (or (string= (buffer-name buf) "*Async Shell Command*")
+               (with-current-buffer buf
+                 (neq major-mode ,mode))))
+         (buffer-list))))))
 
 (defmacro helm-switchb-run (&rest body)
   "Define an action with BODY to be run after exiting Helm"

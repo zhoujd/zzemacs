@@ -59,7 +59,7 @@
       flycheck-python-flake8-executable "python3")
 
 ;;activate rcp-venv
-(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
+;(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

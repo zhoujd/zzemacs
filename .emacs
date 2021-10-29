@@ -54,7 +54,7 @@
         go-setting
         groovy-setting
         docker-setting
-        vagrant-setting
+        virt-setting
         kube-setting
         http-setting
         media-setting

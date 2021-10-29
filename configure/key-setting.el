@@ -122,6 +122,7 @@
   (kbd "M-t")     'zz:transparency-toggle
   (kbd "C-n")     'backlight
   (kbd "C-u")     'disk-usage
+  (kbd "C-v")     'virt-manager
 
   (kbd "M-d")     (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
   (kbd "M-r")     (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))

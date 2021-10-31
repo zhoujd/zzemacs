@@ -110,6 +110,20 @@
 (zz:load-path "site-lisp/popup")
 (require 'popup)
 (require 'helm-ag)
+
+;;https://github.com/ggreer/the_silver_searcher
+;;apt/dnf/yum install silversearcher-ag
+(defun zz:helm-ag-switch-to-ag()
+  (interactive)
+  (custom-set-variables
+   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+   '(helm-ag-command-option "--all-text")
+   '(helm-ag-insert-at-point 'symbol))
+  (message "helm-ag switch to ag"))
+
+;;https://beyondgrep.com/install/
+;;https://beyondgrep.com/more-tools/
+;;Ubuntu: sudo apt install ack-grep
 (defun zz:helm-ag-switch-to-ack()
   (interactive)
   (custom-set-variables
@@ -118,13 +132,15 @@
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ack"))
 
-(defun zz:helm-ag-switch-to-ag()
+;;https://github.com/eliben/pss/
+;;pip install pss
+(defun zz:helm-ag-switch-to-pss()
   (interactive)
   (custom-set-variables
-   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-   '(helm-ag-command-option "--all-text")
+   '(helm-ag-command-option "")
+   '(helm-ag-base-command "pss --nocolor --noheading")
    '(helm-ag-insert-at-point 'symbol))
-  (message "helm-ag switch to ag"))
+  (message "helm-ag switch to pss"))
 
 ;;helm default using ag
 (zz:helm-ag-switch-to-ag)

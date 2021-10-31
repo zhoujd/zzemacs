@@ -101,6 +101,10 @@
     (helm-find-1 default-directory)))
 
 ;;https://github.com/emacsorphanage/helm-ag
+;;https://github.com/ggreer/the_silver_searcher
+;;apt/yum/dnf install silversearcher-ag
+;;pacman -S the_silver_searcher
+;;yum install epel-release.noarch the_silver_searcher
 ;;See file content temporarily by persistent action(C-j).
 (zz:load-path "site-lisp/popup")
 (require 'popup)

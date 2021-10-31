@@ -61,3 +61,13 @@ minikube
 
 ## Minikube on Github
    https://github.com/kubernetes/minikube
+
+## MInikube use virtualbox
+
+    $ minikube start --driver=virtualbox
+    $ minikube config set driver virtualbox
+
+## Install multus CNI
+
+    $ git clone https://github.com/k8snetworkplumbingwg/multus-cni && cd multus-cni
+    $ cat ./deployments/multus-daemonset-thick-plugin.yml | kubectl apply -f -

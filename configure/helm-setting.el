@@ -100,20 +100,34 @@
                             (ido-read-directory-name "Directory: "))))
     (helm-find-1 default-directory)))
 
+;;See file content temporarily by persistent action(C-j).
+;;For ack: helm-ag-base-command "ack --nocolor --nogroup"
 ;;https://github.com/emacsorphanage/helm-ag
 ;;https://github.com/ggreer/the_silver_searcher
 ;;apt/yum/dnf install silversearcher-ag
 ;;pacman -S the_silver_searcher
 ;;yum install epel-release.noarch the_silver_searcher
-;;See file content temporarily by persistent action(C-j).
 (zz:load-path "site-lisp/popup")
 (require 'popup)
 (require 'helm-ag)
-(custom-set-variables
- '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
- '(helm-ag-command-option "--all-text")
- '(helm-ag-insert-at-point 'symbol)
- '(helm-ag-ignore-buffer-patterns '("\\.txt\\'" "\\.mkd\\'")))
+(defun zz:helm-ag-switch-to-ack()
+  (interactive)
+  (custom-set-variables
+   '(helm-ag-command-option "")
+   '(helm-ag-base-command "ack --nocolor --nogroup")
+   '(helm-ag-insert-at-point 'symbol))
+  (message "helm-ag switch to ack"))
+
+(defun zz:helm-ag-switch-to-ag()
+  (interactive)
+  (custom-set-variables
+   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+   '(helm-ag-command-option "--all-text")
+   '(helm-ag-insert-at-point 'symbol))
+  (message "helm-ag switch to ag"))
+
+;;helm default using ag
+(zz:helm-ag-switch-to-ag)
 
 (require 'helm-grep)
 (custom-set-variables
@@ -145,7 +159,7 @@
 ;;helm-ispell
 (require 'helm-ispell)
 
-;;heml-sudo-find-file
+;;helm-sudo-find-file
 (require 'sudo-edit)
 (defalias 'helm-sudo-find-file 'sudo-edit-find-file)
 

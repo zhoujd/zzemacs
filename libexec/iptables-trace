@@ -1,8 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 ## 1. Run sudo iptables-trace.sh enable 22
 ## 2. Then run tail -f /var/log/kern.log to see iptables flow log
 ## 3. Once trace is finished, stop it by running sudo iptables-trace.sh disable 22
+
+if [ $EUID -ne 0 ]; then
+    echo "You must be a root user" 2>&1
+    exit 1
+fi
 
 if [ "$#" != "2" ] || ! [ "${2}" -eq "${2}" ] 2> /dev/null ; then
     if [ "${1}" != "enable" ] && [ "${1}" != "disable" ]; then

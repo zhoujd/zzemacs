@@ -109,9 +109,16 @@
 (zz:load-path "site-lisp/popup")
 (require 'popup)
 (require 'helm-ag)
+(custom-set-variables
+ '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+ '(helm-ag-command-option "--all-text")
+ '(helm-ag-insert-at-point 'symbol)
+ '(helm-ag-ignore-buffer-patterns '("\\.txt\\'" "\\.mkd\\'")))
+
 (require 'helm-grep)
 (custom-set-variables
  '(helm-grep-file-path-style 'relative))
+
 (defun zz:helm-grep-ag ()
   (interactive)
   (let ((default-directory (file-name-as-directory

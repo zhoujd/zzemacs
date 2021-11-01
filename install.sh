@@ -48,6 +48,9 @@ install_others() {
     ## create ~/.emacs.d
     mkdir -p ~/.emacs.d
 
+    ## link zzemacs/etc/emacs_bash
+    ln -sfvT ${ZZEMACS_ROOT}/etc/emacs_bash ~/.emacs_bash 
+
     ## link zzemacs/etc/terminfo
     ln -sfvT ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
 

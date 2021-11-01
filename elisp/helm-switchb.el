@@ -66,22 +66,22 @@
                          candidate helm-switchb-separator t)))))
     (multi-term)))
 
-(defun helm-switcb-kill-shell ()
+(defun helm-switchb-kill-shell ()
   "kill shell buffer"
   (interactive)
   (helm-switchb-kill (helm-marked-candidates)))
 
-(defun helm-switcb-open-dired ()
+(defun helm-switchb-open-dired ()
   "open dired buffer"
   (interactive)
   (helm-switchb-dired-open (helm-get-selection)))
 
-(defun helm-switcb-open-shell ()
+(defun helm-switchb-open-shell ()
   "open shell buffer"
   (interactive)
   (helm-switchb-shell-new (helm-get-selection)))
 
-(defun helm-switcb-open-term ()
+(defun helm-switchb-open-term ()
   "open term buffer"
   (interactive)
   (helm-switchb-term-new (helm-get-selection)))
@@ -89,10 +89,10 @@
 (defvar helm-switchb-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-c d")   (helm-switchb-run (helm-switcb-kill-shell)))
-    (define-key map (kbd "C-c M-d") (helm-switchb-run (helm-switcb-open-dired)))
-    (define-key map (kbd "C-c s")   (helm-switchb-run (helm-switcb-open-shell)))
-    (define-key map (kbd "C-c t")   (helm-switchb-run (helm-switcb-open-term)))
+    (define-key map (kbd "C-c d")   (helm-switchb-run (helm-switchb-kill-shell)))
+    (define-key map (kbd "C-c M-d") (helm-switchb-run (helm-switchb-open-dired)))
+    (define-key map (kbd "C-c s")   (helm-switchb-run (helm-switchb-open-shell)))
+    (define-key map (kbd "C-c t")   (helm-switchb-run (helm-switchb-open-term)))
     map)
   "Keymap for `helm-switchb'.")
 

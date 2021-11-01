@@ -317,6 +317,13 @@ Dmitriy Igrishin's patched version of comint.el."
       (zz:get-shell)
       )))
 
+(defun zz:helm-cd-shell (dir)
+  (interactive "DDirectory: ")
+  (with-temp-buffer
+    (cd dir)
+    (zz:get-shell)
+    ))
+
 (defun zz:cd ()
   "cd with ido"
   (interactive)

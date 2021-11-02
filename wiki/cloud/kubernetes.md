@@ -66,9 +66,21 @@ Kubernetes
     kubernetes-master:~$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
     ## Step 9: Deploy Pod Network to Cluster
+
+    ## multus-cni
+    kubernetes-master:~$ git clone https://github.com/k8snetworkplumbingwg/multus-cni && cd multus-cni
+    kubernetes-master:~$ cat ./deployments/multus-daemonset-thick-plugin.yml | kubectl apply -f -
+    ## flannel
     kubernetes-master:~$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-    or
+    ## calico
     kubernetes-master:~$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+    ## Redefine CIDR
+    kubernetes-master:~$ curl https://docs.projectcalico.org/manifests/calico.yaml -O
+    kubernetes-master:~$ vim calio.yaml
+                         - name: CALICO_IPV4POOL_CIDR
+                           value: "10.245.0.0/16"
+    kubernetes-master:~$ kubectl apply -f calico.yaml
 
     kubernetes-master:~$ kubectl cluster-info
     kubernetes-master:~$ kubectl get pods --all-namespaces

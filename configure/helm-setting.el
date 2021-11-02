@@ -154,6 +154,8 @@
     (helm-do-ag default-directory)))
 
 (require 'helm-tramp)
+(setq helm-tramp-default-method "sshx11")
+
 (require 'helm-cscope)
 (require 'helm-bm)
 

@@ -4,7 +4,7 @@
 
 ;; Author: Masashı Mıyaura
 ;; URL: https://github.com/masasam/emacs-helm-tramp
-;; Version: 1.2.6
+;; Version: 1.3.9
 ;; Package-Requires: ((emacs "24.3") (helm "2.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -32,11 +32,15 @@
 (require 'helm)
 (require 'tramp)
 (require 'cl-lib)
-(require 'multi-shell)
 
 (defgroup helm-tramp nil
   "Tramp with helm interface for ssh, docker, vagrant"
   :group 'helm)
+
+(defcustom helm-tramp-default-method "ssh"
+  "Default method when use tramp multi hop."
+  :group 'helm-tramp
+  :type 'string)
 
 (defcustom helm-tramp-docker-user nil
   "If you want to use login user name when `docker-tramp' used, set variable."
@@ -45,6 +49,21 @@
 
 (defcustom helm-tramp-localhost-directory "/"
   "Initial directory when connecting with /sudo:root@localhost:."
+  :group 'helm-tramp
+  :type 'string)
+
+(defcustom helm-tramp-control-master nil
+  "If you want to put out a candidate for completion from ssh controlmaster, please set to t."
+  :group 'helm-tramp
+  :type 'string)
+
+(defcustom helm-tramp-control-master-path "~/.ssh/"
+  "Path where ssh controlmaster exists."
+  :group 'helm-tramp
+  :type 'string)
+
+(defcustom helm-tramp-control-master-prefix "master-"
+  "Prefix of ssh controlmaster."
   :group 'helm-tramp
   :type 'string)
 
@@ -85,58 +104,103 @@ Kill all remote buffers."
         (hosts (if file '() helm-tramp-custom-connections)))
     (dolist (host source)
       (when (string-match "[H\\|h]ost +\\(.+?\\)$" host)
-        (setq host (match-string 1 host))
-        (if (string-match "[ \t\n\r]+\\'" host)
-            (replace-match "" t t host))
-        (if (string-match "\\`[ \t\n\r]+" host)
-            (replace-match "" t t host))
+	(setq host (match-string 1 host))
+	(if (string-match "[ \t\n\r]+\\'" host)
+	    (replace-match "" t t host))
+	(if (string-match "\\`[ \t\n\r]+" host)
+	    (replace-match "" t t host))
         (unless (string= host "*")
-          (if (string-match "[ ]+" host)
-              (let ((result (split-string host " ")))
-                (while result
-                  (push
-                   (concat "/" tramp-default-method ":" (car result) ":")
-                   hosts)
-                  (push
-                   (concat "/ssh:" (car result) "|sudo:root@" (car result) ":/")
-                   hosts)
-                  (pop result)))
-              (push
-               (concat "/" tramp-default-method ":" host ":")
-               hosts)
-              (push
-               (concat "/ssh:" host "|sudo:" host ":/")
-               hosts))))
+	  (if (string-match "[ ]+" host)
+	      (let ((result (split-string host " ")))
+		(while result
+		  (push
+		   (concat "/" tramp-default-method ":" (car result) ":")
+		   hosts)
+		  (push
+		   (concat "/" helm-tramp-default-method ":" (car result) "|sudo:root@" (car result) ":/")
+		   hosts)
+		  (pop result)))
+	    (push
+	     (concat "/" tramp-default-method ":" host ":")
+	     hosts)
+	    (push
+	     (concat "/" helm-tramp-default-method ":" host "|sudo:root@" host ":/")
+	     hosts))))
       (when (string-match "Include +\\(.+\\)$" host)
         (setq include-file (match-string 1 host))
         (when (not (file-name-absolute-p include-file))
           (setq include-file (concat (file-name-as-directory "~/.ssh") include-file)))
         (when (file-exists-p include-file)
           (setq hosts (append hosts (helm-tramp--candidates include-file))))))
+    (when helm-tramp-control-master
+      (let ((files (helm-tramp--directory-files
+		    (expand-file-name
+		     helm-tramp-control-master-path)
+		    helm-tramp-control-master-prefix))
+	    (hostuser nil)
+	    (hostname nil)
+	    (port nil))
+	(dolist (controlmaster files)
+	  (let ((file (file-name-nondirectory controlmaster)))
+	    (when (string-match
+		   (concat helm-tramp-control-master-prefix "\\(.+?\\)@\\(.+?\\):\\(.+?\\)$")
+		   file)
+	      (setq hostuser (match-string 1 file))
+	      (setq hostname (match-string 2 file))
+	      (setq port (match-string 3 file))
+	      (push
+	       (concat "/" tramp-default-method ":" hostuser "@" hostname "#" port ":")
+	       hosts)
+	      (push
+	       (concat "/" helm-tramp-default-method ":" hostuser "@" hostname "#" port "|sudo:root@" hostname ":/")
+	       hosts))))))
     (when (require 'docker-tramp nil t)
       (cl-loop for line in (cdr (ignore-errors (apply #'process-lines "docker" (list "ps"))))
-               for info = (reverse (split-string line "[[:space:]]+" t))
-               collect (progn (push
-                               (concat "/docker:" (car info) ":/")
-                               hosts)
-                              (when helm-tramp-docker-user
-                                (if (listp helm-tramp-docker-user)
-                                    (let ((docker-user helm-tramp-docker-user))
-                                      (while docker-user
-                                        (push
-                                         (concat "/docker:" (car docker-user) "@" (car info) ":/")
-                                         hosts)
-                                        (pop docker-user)))
-                                    (push
-                                     (concat "/docker:" helm-tramp-docker-user "@" (car info) ":/")
-                                     hosts))))))
+	       for info = (reverse (split-string line "[[:space:]]+" t))
+	       collect (progn (push
+			       (concat "/docker:" (car info) ":/")
+			       hosts)
+			      (when helm-tramp-docker-user
+				(if (listp helm-tramp-docker-user)
+				    (let ((docker-user helm-tramp-docker-user))
+				      (while docker-user
+					(push
+					 (concat "/docker:" (car docker-user) "@" (car info) ":/")
+					 hosts)
+					(pop docker-user)))
+				  (push
+				   (concat "/docker:" helm-tramp-docker-user "@" (car info) ":/")
+				   hosts))))))
     (when (require 'vagrant-tramp nil t)
-      (cl-loop for box-name in (map 'list 'cadr (vagrant-tramp--completions))
-               do (progn
-                    (push (concat "/vagrant:" box-name ":/") hosts)
-                    (push (concat "/vagrant:" box-name "|sudo:" box-name ":/") hosts))))
+      (cl-loop for box-name in (cl-map 'list 'cadr (vagrant-tramp--completions))
+	       do (progn
+		    (push (concat "/vagrant:" box-name ":/") hosts)
+		    (push (concat "/vagrant:" box-name "|sudo:" box-name ":/") hosts))))
     (push (concat "/sudo:root@localhost:" helm-tramp-localhost-directory) hosts)
     (reverse hosts)))
+
+(defun helm-tramp--directory-files (dir regexp)
+  "Return list of all files under DIR that have file names matching REGEXP."
+  (let ((result nil)
+	(files nil)
+	(tramp-mode (and tramp-mode (file-remote-p (expand-file-name dir)))))
+    (dolist (file (sort (file-name-all-completions "" dir)
+			'string<))
+      (unless (member file '("./" "../"))
+	(if (not (helm-tramp--directory-name-p file))
+	    (when (string-match regexp file)
+	      (push (expand-file-name file dir) files)))))
+    (nconc result (nreverse files))))
+
+(defsubst helm-tramp--directory-name-p (name)
+  "Return non-nil if NAME ends with a directory separator character."
+  (let ((len (length name))
+        (lastc ?.))
+    (if (> len 0)
+        (setq lastc (aref name (1- len))))
+    (or (= lastc ?/)
+        (and (memq system-type '(windows-nt ms-dos))
+             (= lastc ?\\)))))
 
 (defun helm-tramp-open (path)
   "Tramp open with PATH."
@@ -145,7 +209,7 @@ Kill all remote buffers."
 (defun helm-tramp-open-shell (path)
   "Tramp open shell at PATH."
   (let ((default-directory path))
-    (multi-shell-new)))
+    (shell (concat "* Helm tramp shell - " path))))
 
 (defvar helm-tramp--source
   (helm-build-sync-source "Tramp"
@@ -160,6 +224,14 @@ Kill all remote buffers."
   "Open your ~/.ssh/config with helm interface.
 You can connect your server with tramp"
   (interactive)
+  (unless (file-exists-p "~/.ssh/config")
+    (error "There is no ~/.ssh/config"))
+  (when (require 'docker-tramp nil t)
+    (unless (executable-find "docker")
+      (error "'docker' is not installed")))
+  (when (require 'vagrant-tramp nil t)
+    (unless (executable-find "vagrant")
+      (error "'vagrant' is not installed")))
   (run-hooks 'helm-tramp-pre-command-hook)
   (helm :sources '(helm-tramp--source) :buffer "*helm tramp*")
   (run-hooks 'helm-tramp-post-command-hook))

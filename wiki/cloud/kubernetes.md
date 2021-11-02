@@ -85,6 +85,9 @@ Kubernetes
     kubernetes-master:~$ kubectl cluster-info
     kubernetes-master:~$ kubectl get pods --all-namespaces
 
+    ## Remove the taint to be able to schedule Pods on the control-plane node (single_node_deployment)
+    kubernetes-master:~$ kubectl taint nodes --all node-role.kubernetes.io/master-
+
     ## Step 10: Join Worker Node to Cluster
     kubernetes-master:~$ kubeadm token create --print-join-command --ttl=10m --description="token for kubernetes-master"
     kubernetes-worker01:~$ kubeadm join --discovery-token abcdef.1234567890abcdef --discovery-token-ca-cert-hash sha256:1234..cdef 1.2.3.4:6443

@@ -83,7 +83,6 @@
 (require 'projectile)
 (projectile-mode t)
 (setq projectile-dynamic-mode-line nil)
-
 (defkeys-map projectile-mode-map
   ((kbd "C-c p") 'projectile-command-map))
 
@@ -154,7 +153,8 @@
     (helm-do-ag default-directory)))
 
 (require 'helm-tramp)
-(setq helm-tramp-default-method "sshx11")
+(setq helm-tramp-default-method "sshx11"
+      helm-tramp-verbose 0)
 
 (require 'helm-cscope)
 (require 'helm-bm)

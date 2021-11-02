@@ -135,6 +135,13 @@
                (tramp-default-port         22)))
 (tramp-set-completion-function "sshx11" tramp-completion-function-alist-ssh)
 (setq tramp-default-method (if-ms-windows "plink" "sshx11"))
+;;speed up tramp
+(setq remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp
+      (format "%s\\|%s"
+                    vc-ignore-dir-regexp
+                    tramp-file-name-regexp))
+(setq tramp-verbose 1)
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")

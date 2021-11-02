@@ -1,4 +1,3 @@
 ## ~/.emacs_bash
 
 alias sudo='sudo -E'
-export PS1

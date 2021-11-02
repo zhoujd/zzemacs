@@ -185,6 +185,10 @@
 (require 'ssh-tunnels)
 (require 'helm-ssh-tunnels)
 
+;;helm-switch-to-repl
+(require 'helm-switch-to-repl)
+(helm-switch-to-repl-setup)
+
 
 (provide 'helm-setting)
 

@@ -102,3 +102,10 @@ Kubernetes
 
     ## https://www.mirantis.com/blog/multi-container-pods-and-container-communication-in-kubernetes/
     $ kubectl exec mc1 -c 2nd -- /bin/cat /html/index.html
+
+## Calicoctl
+
+    $ curl -o calicoctl -O -L  "https://github.com/projectcalico/calicoctl/releases/download/v3.20.2/calicoctl"
+    $ chmod +x calicoctl
+    $ curl -o kubectl-calico -O -L  "https://github.com/projectcalico/calicoctl/releases/download/v3.20.2/calicoctl"
+    $ chmod +x kubectl-calico

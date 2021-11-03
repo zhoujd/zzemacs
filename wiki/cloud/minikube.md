@@ -72,6 +72,10 @@ minikube
     $ minikube start --driver=kvm2
     $ minikube config set driver kvm2
 
+    ## Docker
+    $ minikube start --driver=docker
+    $ minikube config set driver docker
+
 ## Install multus CNI
 
     $ git clone https://github.com/k8snetworkplumbingwg/multus-cni && cd multus-cni

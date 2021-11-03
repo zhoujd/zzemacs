@@ -58,3 +58,20 @@ EOF
     ## https://github.com/mviereck/x11docker/wiki
     ## https://hub.docker.com/r/x11docker/xwayland
     $ docker pull x11docker/xwayland
+
+## docker-proxy using port when no containers are running
+
+    ## Stop Docker
+    $ sudo systemctl stop docker.service
+
+    ## Find your particular zombie proxy processes
+    $ sudo netstat -pna | grep docker-proxy
+    # tcp6       0      0 :::8025       :::*     LISTEN      <PID_A>/docker-proxy
+    # tcp6       0      0 :::13306      :::*     LISTEN      <PID_B>/docker-proxy
+    # ...
+
+    ## Kill them
+    $ sudo kill -9 PID_A PID_B ...
+
+    ## Restart Docker
+    sudo systemctl start docker.service

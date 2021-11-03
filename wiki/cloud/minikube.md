@@ -64,8 +64,13 @@ minikube
 
 ## MInikube use virtualbox
 
+    ## VM virtualbox
     $ minikube start --driver=virtualbox
     $ minikube config set driver virtualbox
+
+    ## Better and suggest kvm2
+    $ minikube start --driver=kvm2
+    $ minikube config set driver kvm2
 
 ## Install multus CNI
 

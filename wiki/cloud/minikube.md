@@ -80,3 +80,14 @@ minikube
 
     $ git clone https://github.com/k8snetworkplumbingwg/multus-cni && cd multus-cni
     $ cat ./deployments/multus-daemonset-thick-plugin.yml | kubectl apply -f -
+
+## Minikube and Bridged Networking
+
+    ## https://dpb587.me/post/2020/04/11/minikube-and-bridged-networking/
+    $ sudo route add -net 10.96.0.0/12 $( get_bridged_ip )
+    $ sudo tcptraceroute 10.107.154.9 443
+      Tracing the path to 10.107.154.9 on TCP port 443 (https), 30 hops max
+       1  kubernetes.default.svc (192.0.2.113)  2.732 ms  1.108 ms  0.983 ms
+       2  10.107.154.9  1.222 ms  1.075 ms  0.994 ms
+       3  10.107.154.9 [open]  1.026 ms  1.514 ms  1.334 ms
+    $ open https://10.107.154.9/#/login

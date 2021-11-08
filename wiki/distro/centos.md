@@ -37,3 +37,12 @@ CentOS
     [root@apps2 ~]# rpm -e --allmatches gpg-pubkey-fe590cb7-533d77ee
     [root@apps2 ~]# rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n'
     gpg-pubkey-f4a80eb5-53a7ff4b    gpg(CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>)
+
+## How to add a CentOS repo, having URL of Packages
+
+    $ cat /etc/yum.repos.d/myrepo.repo
+    [myrepo]
+    name=My extras packages for CentOS 7.4.1708
+    baseurl=baseurl=http://vault.centos.org/centos/7.4.1708/extras/x86_64/
+    enabled=1
+    $ sudo yum install --disablerepo=* --enablerepo=myrepo -y docker-1.12.6-55.gitc4618fb.el7.centos

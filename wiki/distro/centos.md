@@ -45,4 +45,7 @@ CentOS
     name=My extras packages for CentOS 7.4.1708
     baseurl=baseurl=http://vault.centos.org/centos/7.4.1708/extras/x86_64/
     enabled=1
+    #gpgcheck=1
+    #gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
     $ sudo yum install --disablerepo=* --enablerepo=myrepo -y docker-1.12.6-55.gitc4618fb.el7.centos

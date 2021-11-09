@@ -395,6 +395,10 @@
        (pop-to-buffer buf)
        )))
 
+(defun zz:reload-emacs-configuration ()
+  (interactive)
+  (load-file "~/.emacs"))
+
 
 (provide 'sample-setting)
 

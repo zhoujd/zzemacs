@@ -21,5 +21,6 @@ echo "remove others ..."
 $sudo_rm_app /usr/bin/zz{emacs,run}
 $rm_app ~/.terminfo
 $rm_app ~/.gdbinit
+$rm_app ~/.emacs_bash
 
 echo "uninstall zzemacs end ..."

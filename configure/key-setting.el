@@ -74,7 +74,7 @@
   (kbd "C-8")     (zz:quick-buffer zz:shell-8  "*shell<8>*")
   (kbd "C-9")     (zz:quick-buffer zz:shell-9  "*shell<9>*")
   (kbd "C-0")     (zz:quick-buffer zz:shell-10 "*shell<10>*")
-  (kbd "C--")     'zz:helm-cd-shell
+  (kbd "C--")     'zz:cd-shell
   (kbd "C-=")     'zz:remote-shell
   (kbd "C-\\")    'zz:get-shell
   (kbd "C-DEL")   'zz:get-shell

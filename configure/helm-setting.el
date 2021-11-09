@@ -13,6 +13,7 @@
 ;;| C-j     |        | Persistent action (Execute and keep Helm session) |
 ;;| C-c ?   |        | helm help                                         |
 ;;| C-c r   |        | sudo open                                         |
+;;| C-]     |        | toggle between showing filenames or full pathnames|
 (helm-mode t)
 
 ;;no completion

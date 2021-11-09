@@ -182,6 +182,13 @@
     (setq default-directory (format "/%s:%s:" tramp-default-method  host))
     ))
 
+(defun zz:helm-cd-term (dir)
+  (interactive "DDirectory: ")
+  (let*
+      ((default-directory dir)
+       (multi-term-default-dir default-directory))
+    (multi-term)))
+
 ;;change dir term
 (defun zz:cd-term ()
   (interactive)

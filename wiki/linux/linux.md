@@ -357,3 +357,10 @@ Linux something
 
     $ find -name "*.txt" -print0 | xargs -0 sed -i 's/aaa/bbb/g'
     $ find -type f -exec sed -i 's/home/work/g' \{\} \;
+
+## How to Clean a Linux Zombie Process
+
+    $ ps -A -ostat,pid,ppid | grep -e '[zZ]'
+    Z      108   103
+    $ kill -s SIGCHLD 103
+    $ kill -9 103

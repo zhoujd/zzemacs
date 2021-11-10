@@ -146,3 +146,8 @@ Network
     8) dig(Domain Information Groper)
     9) nslookup(Name Server Lookup)
     10) nmap(Network Map)
+
+## Test connectivity to a specific TCP service listening on your host
+
+    $ $ nc -vz host.minikube.internal 8000
+    Connection to host.minikube.internal 8000 port [tcp/*] succeeded!

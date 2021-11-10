@@ -149,5 +149,6 @@ Network
 
 ## Test connectivity to a specific TCP service listening on your host
 
+    $ sudo apt install iputils-ping netcat-openbsd
     $ nc -vz host.minikube.internal 8000
     Connection to host.minikube.internal 8000 port [tcp/*] succeeded!

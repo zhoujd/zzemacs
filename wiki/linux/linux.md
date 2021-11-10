@@ -360,6 +360,8 @@ Linux something
 
 ## How to Clean a Linux Zombie Process
 
+    $ ps aux | egrep "Z|defunct"
+    or
     $ ps -A -ostat,pid,ppid | grep -e '[zZ]'
     Z      108   103
     $ kill -s SIGCHLD 103

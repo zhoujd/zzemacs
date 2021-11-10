@@ -75,3 +75,14 @@ EOF
 
     ## Restart Docker
     sudo systemctl start docker.service
+
+## Add container network route
+
+    $ docker ps | grep <app-name> | awk '{print $1}'
+    2a808c0b24a7
+    $ docker inspect -f {{.State.Pid}} 2a808c0b24a7
+    63011
+    $ nsenter -n -t 63011
+    Revert complete!
+    $ route add -net 195.168.1.0 netmask 255.255.255.0 gw 6.6.6.1
+    $ route

@@ -171,7 +171,13 @@
     (switch-to-buffer (format "*%s*" buf))
     ))
 
-;;remote term
+(defun zz:cd-term ()
+  (interactive)
+  (let* ((default-directory (file-name-as-directory
+                             (ido-read-directory-name "Directory: ")))
+         (multi-term-default-dir default-directory))
+        (multi-term)))
+
 (defun zz:remote-term (host)
   "Connect to a remote host by multi-term."
   (interactive "sHost: ")
@@ -208,14 +214,6 @@
         (setq default-directory prefix))
       (call-interactively 'zz:helm-cd-term)
     )))
-
-;;change dir term
-(defun zz:cd-term ()
-  (interactive)
-  (let* ((default-directory (file-name-as-directory
-                             (ido-read-directory-name "Directory: ")))
-         (multi-term-default-dir default-directory))
-        (multi-term)))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

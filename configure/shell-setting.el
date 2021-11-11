@@ -314,8 +314,7 @@ Dmitriy Igrishin's patched version of comint.el."
     (let* ((prefix "~"))
       (when (tramp-tramp-file-p default-directory)
         (setq default-directory prefix))
-      (call-interactively 'zz:cd)
-      (zz:get-shell)
+      (call-interactively 'zz:cd-shell)
       )))
 
 (defun zz:remote-shell (&optional host)

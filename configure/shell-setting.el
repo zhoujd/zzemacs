@@ -297,6 +297,13 @@ Dmitriy Igrishin's patched version of comint.el."
  (require 'bash-completion)
  (bash-completion-setup))
 
+(defun zz:cd ()
+  "cd with ido"
+  (interactive)
+  (let ((dir (file-name-as-directory
+              (ido-read-directory-name "Directory: "))))
+    (cd dir)))
+
 (defun zz:cd-shell ()
   "Open a cd shell"
   (interactive)
@@ -306,27 +313,6 @@ Dmitriy Igrishin's patched version of comint.el."
       (cd dir)
       (zz:get-shell)
       )))
-
-(defun zz:helm-cd-shell (dir)
-  (interactive "DDirectory: ")
-  (with-temp-buffer
-    (cd dir)
-    (zz:get-shell)
-    ))
-
-(defun zz:cd ()
-  "cd with ido"
-  (interactive)
-  (let ((dir (file-name-as-directory
-              (ido-read-directory-name "Directory: "))))
-    (cd dir)))
-
-(defun zz:helm-remote-cd ()
-  "cd with helm"
-  (interactive)
-  (let* ((prefix (concat "/" tramp-default-method ":"))
-         (default-directory prefix))
-    (message (call-interactively 'cd))))
 
 (defun zz:local-shell ()
   "Open a local shell"
@@ -347,6 +333,20 @@ Dmitriy Igrishin's patched version of comint.el."
       (cd (concat "/" tramp-default-method ":" host ":"))
       (zz:get-shell)
       )))
+
+(defun zz:helm-remote-cd ()
+  "cd with helm"
+  (interactive)
+  (let* ((prefix (concat "/" tramp-default-method ":"))
+         (default-directory prefix))
+    (message (call-interactively 'cd))))
+
+(defun zz:helm-cd-shell (dir)
+  (interactive "DDirectory: ")
+  (with-temp-buffer
+    (cd dir)
+    (zz:get-shell)
+    ))
 
 (defun zz:helm-local-shell ()
   "local shell with helm"

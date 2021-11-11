@@ -172,6 +172,7 @@
 (setq ibuffer-default-sorting-mode 'major-mode)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
+               ("Helm" (predicate string-match "Hmm" mode-name))
                ("Dired" (mode . dired-mode))
                ("Emacs" (or
                           (name . "^\\*.*\\*$")

@@ -342,8 +342,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (let* ((prefix (concat "/" tramp-default-method ":"))
          (default-directory prefix))
-    (call-interactively 'cd)
-    (zz:get-shell)
+    (call-interactively 'zz:helm-cd-shell)
     ))
 
 (defun zz:shell-directory (name dir)

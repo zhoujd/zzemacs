@@ -192,10 +192,12 @@
 (defun zz:helm-remote-term ()
   "remote term with helm"
   (interactive)
-  (let* ((prefix (concat "/" tramp-default-method ":"))
-         (default-directory prefix))
-    (call-interactively 'zz:helm-cd-term)
-    ))
+  (with-temp-buffer
+    (let* ((prefix (concat "/" tramp-default-method ":")))
+      (unless (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz:helm-cd-term)
+    )))
 
 ;;change dir term
 (defun zz:cd-term ()

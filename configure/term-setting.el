@@ -173,27 +173,39 @@
 
 (defun zz:cd-term ()
   (interactive)
-  (let* ((default-directory (file-name-as-directory
-                             (ido-read-directory-name "Directory: ")))
-         (multi-term-default-dir default-directory))
-        (multi-term)))
+  (with-temp-buffer
+    (let* ((default-directory (file-name-as-directory
+                               (ido-read-directory-name "Directory: ")))
+           (multi-term-default-dir default-directory))
+      (multi-term))))
+
+(defun zz:local-term ()
+  (interactive)
+  (with-temp-buffer
+    (when (tramp-tramp-file-p default-directory)
+      (setq default-directory "~"))
+    (let* ((default-directory (file-name-as-directory
+                               (ido-read-directory-name "Directory: ")))
+           (multi-term-default-dir default-directory))
+      (multi-term))))
 
 (defun zz:remote-term (host)
   "Connect to a remote host by multi-term."
   (interactive "sHost: ")
-  (let* ((multi-term-program "ssh")
-         (multi-term-program-switches (format "%s" host))
-         (default-directory "~"))
-    (multi-term)
-    (setq default-directory (format "/%s:%s:" tramp-default-method  host))
-    ))
+  (with-temp-buffer
+    (let* ((multi-term-program "ssh")
+           (multi-term-program-switches (format "%s" host))
+           (default-directory "~"))
+      (multi-term)
+      (setq default-directory (format "/%s:%s:" tramp-default-method  host))
+      )))
 
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")
-  (let*
-      ((default-directory dir)
-       (multi-term-default-dir default-directory))
-    (multi-term)))
+  (with-temp-buffer
+    (let* ((default-directory dir)
+           (multi-term-default-dir default-directory))
+      (multi-term))))
 
 (defun zz:helm-local-term ()
   "remote term with helm"

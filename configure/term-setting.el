@@ -182,6 +182,15 @@
     (setq default-directory (format "/%s:%s:" tramp-default-method  host))
     ))
 
+(defun zz:helm-remote-term ()
+  "remote term with helm"
+  (interactive)
+  (let* ((prefix (concat "/" tramp-default-method ":"))
+         (default-directory prefix))
+    (call-interactively 'cd)
+    (multi-term)
+    ))
+
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")
   (let*

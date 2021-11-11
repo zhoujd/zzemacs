@@ -297,16 +297,6 @@ Dmitriy Igrishin's patched version of comint.el."
  (require 'bash-completion)
  (bash-completion-setup))
 
-;;M-x cd /hostname:/current/path/in/the/shell
-(defun zz:remote-shell (&optional host)
-  "Open a remote shell to a host"
-  (interactive)
-  (with-temp-buffer
-    (let ((host (if host host (read-string "Host: "))))
-      (cd (concat "/" tramp-default-method ":" host ":"))
-      (zz:get-shell)
-      )))
-
 (defun zz:cd-shell ()
   "Open a cd shell"
   (interactive)
@@ -334,13 +324,24 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:helm-remote-cd ()
   "cd with helm"
   (interactive)
-  (let ((default-directory "/sshx11:"))
+  (let* ((prefix (concat "/" tramp-default-method ":"))
+         (default-directory prefix))
     (message (call-interactively 'cd))))
+
+(defun zz:remote-shell (&optional host)
+  "Open a remote shell to a host"
+  (interactive)
+  (with-temp-buffer
+    (let ((host (if host host (read-string "Host: "))))
+      (cd (concat "/" tramp-default-method ":" host ":"))
+      (zz:get-shell)
+      )))
 
 (defun zz:helm-remote-shell ()
   "remote shell with helm"
   (interactive)
-  (let ((default-directory "/sshx11:"))
+  (let* ((prefix (concat "/" tramp-default-method ":"))
+         (default-directory prefix))
     (call-interactively 'cd)
     (zz:get-shell)
     ))

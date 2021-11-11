@@ -340,10 +340,12 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:helm-remote-shell ()
   "remote shell with helm"
   (interactive)
-  (let* ((prefix (concat "/" tramp-default-method ":"))
-         (default-directory prefix))
-    (call-interactively 'zz:helm-cd-shell)
-    ))
+  (with-temp-buffer
+    (let* ((prefix (concat "/" tramp-default-method ":")))
+      (unless (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz:helm-cd-shell)
+      )))
 
 (defun zz:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")

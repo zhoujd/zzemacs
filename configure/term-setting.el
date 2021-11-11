@@ -189,6 +189,16 @@
        (multi-term-default-dir default-directory))
     (multi-term)))
 
+(defun zz:helm-local-term ()
+  "remote term with helm"
+  (interactive)
+  (with-temp-buffer
+    (let* ((prefix "~"))
+      (when (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz:helm-cd-term)
+    )))
+
 (defun zz:helm-remote-term ()
   "remote term with helm"
   (interactive)

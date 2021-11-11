@@ -328,6 +328,17 @@ Dmitriy Igrishin's patched version of comint.el."
          (default-directory prefix))
     (message (call-interactively 'cd))))
 
+(defun zz:local-shell ()
+  "Open a local shell"
+  (interactive)
+  (with-temp-buffer
+    (let* ((prefix "~"))
+      (when (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz:cd)
+      (zz:get-shell)
+      )))
+
 (defun zz:remote-shell (&optional host)
   "Open a remote shell to a host"
   (interactive)
@@ -335,6 +346,16 @@ Dmitriy Igrishin's patched version of comint.el."
     (let ((host (if host host (read-string "Host: "))))
       (cd (concat "/" tramp-default-method ":" host ":"))
       (zz:get-shell)
+      )))
+
+(defun zz:helm-local-shell ()
+  "local shell with helm"
+  (interactive)
+  (with-temp-buffer
+    (let* ((prefix "~"))
+      (when (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz:helm-cd-shell)
       )))
 
 (defun zz:helm-remote-shell ()
@@ -352,6 +373,18 @@ Dmitriy Igrishin's patched version of comint.el."
   (let ((default-directory dir))
     (shell name)))
 
+;;trans shell
+(defun zz:trans-shell ()
+  (interactive)
+  (let ((shell-file-name "bash")
+        (shell-command-switch "-c")
+        (explicit-bash-args '("trans" "-I" "-no-rlwrap"))
+        (explicit-shell-file-name "bash"))
+    (if (executable-find "trans")
+        (zz:create-shell-buffer "*trans shell*")
+        (message "Cannot find trans!"))
+    ))
+
 ;;shell mode
 (require 'company-shell)
 
@@ -360,18 +393,6 @@ Dmitriy Igrishin's patched version of comint.el."
           (lambda ()
             (company-mode t)
             (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
-
-;;trans shell
-(defun zz:trans-shell ()
-  (interactive)
-  (let ((shell-file-name "bash")
-        (shell-command-switch "-c")
-        (explicit-bash-args '("trans" "-I"))
-        (explicit-shell-file-name "bash"))
-    (if (executable-find "trans")
-        (zz:create-shell-buffer "*trans shell*")
-        (message "Cannot find trans!"))
-    ))
 
 
 (provide 'shell-setting)

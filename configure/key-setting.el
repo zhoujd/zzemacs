@@ -57,8 +57,8 @@
   (kbd "7")       (zz:quick-shell zz:shell-f7  "*shell<f7>*")
   (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
   (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
-  (kbd "0")       (zz:quick-shell zz:shell-f10 "*shell<f10>*")
-  (kbd "-")       'zz:cd-shell
+  (kbd "0")       'zz:cd-shell
+  (kbd "-")       'zz:local-shell
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
@@ -73,8 +73,8 @@
   (kbd "C-7")     (zz:quick-buffer zz:shell-7  "*shell<7>*")
   (kbd "C-8")     (zz:quick-buffer zz:shell-8  "*shell<8>*")
   (kbd "C-9")     (zz:quick-buffer zz:shell-9  "*shell<9>*")
-  (kbd "C-0")     (zz:quick-buffer zz:shell-10 "*shell<10>*")
-  (kbd "C--")     'zz:helm-cd-shell
+  (kbd "C-0")     'zz:helm-cd-shell
+  (kbd "C--")     'zz:helm-local-shell
   (kbd "C-=")     'zz:helm-remote-shell
   (kbd "C-\\")    'zz:get-shell
   (kbd "C-DEL")   'zz:get-shell
@@ -89,8 +89,8 @@
   (kbd "M-7")     (zz:quick-buffer zz:term-7  "*terminal<7>*")
   (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
   (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
-  (kbd "M-0")     (zz:quick-buffer zz:term-10 "*terminal<10>*")
-  (kbd "M--")     'zz:helm-cd-term
+  (kbd "M-0")     'zz:helm-cd-term
+  (kbd "M--")     'zz:helm-local-term
   (kbd "M-=")     'zz:helm-remote-term
   (kbd "M-\\")    'multi-term
   (kbd "M-DEL")   'multi-term

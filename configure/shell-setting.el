@@ -337,6 +337,14 @@ Dmitriy Igrishin's patched version of comint.el."
   (let ((default-directory "/sshx11:"))
     (message (call-interactively 'cd))))
 
+(defun zz:helm-remote-shell ()
+  "remote shell with helm"
+  (interactive)
+  (let ((default-directory "/sshx11:"))
+    (call-interactively 'cd)
+    (zz:get-shell)
+    ))
+
 (defun zz:shell-directory (name dir)
   (interactive "sShell name: \nDDirectory: ")
   (let ((default-directory dir))

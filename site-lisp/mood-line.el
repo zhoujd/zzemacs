@@ -3,7 +3,7 @@
 ;; Author: Jessie Hildebrandt <jessieh.net>
 ;; Homepage: https://gitlab.com/jessieh/mood-line
 ;; Keywords: mode-line faces
-;; Version: 1.2.5
+;; Version: 1.2.4
 ;; Package-Requires: ((emacs "25.1"))
 
 ;; This file is not part of GNU Emacs.
@@ -49,7 +49,6 @@
 
 (defvar flycheck-current-errors)
 (defvar flymake--mode-line-format)
-(defvar anzu-cons-mode-line-p)
 (defvar anzu--state)
 (defvar anzu--cached-count)
 (defvar anzu--overflow-p)
@@ -158,7 +157,7 @@
     (concat left
             " "
             (propertize " "
-                        'display `((space :align-to (- right (- 0 right-margin) ,reserve))))
+                        'display `((space :align-to (- right ,reserve))))
             right)))
 
 ;;
@@ -291,11 +290,7 @@
 (defun mood-line-segment-flymake ()
   "Displays information about the current status of flymake in the mode-line (if available)."
   (when (and (boundp 'flymake-mode) flymake-mode)
-    ;; Depending on Emacs version, flymake stores the mode-line segment using one of two variable names
-    (let ((flymake-segment-format (if (boundp 'flymake-mode-line-format)
-                                      flymake-mode-line-format
-                                    flymake--mode-line-format)))
-      (concat (mood-line--string-trim (format-mode-line flymake-segment-format)) "  "))))
+    (concat (mood-line--string-trim (format-mode-line flymake--mode-line-format)) "  ")))
 
 (defun mood-line-segment-process ()
   "Displays the current value of `mode-line-process' in the mode-line."
@@ -307,8 +302,8 @@
 ;; Activation function
 ;;
 
-(defvar-local mood-line--default-mode-line mode-line-format)
-(defvar-local mood-line--anzu-cons-mode-line-p nil)
+;; Store the default mode-line format
+(defvar mood-line--default-mode-line mode-line-format)
 
 ;;;###autoload
 (define-minor-mode mood-line-mode
@@ -327,14 +322,6 @@
         (add-hook 'find-file-hook #'mood-line--update-vc-segment)
         (add-hook 'after-save-hook #'mood-line--update-vc-segment)
         (advice-add #'vc-refresh-state :after #'mood-line--update-vc-segment)
-
-        ;; Disable anzu's mode-line segment setting, saving the previous setting to be restored later (if present)
-        (when (boundp 'anzu-cons-mode-line-p)
-          (setq mood-line--anzu-cons-mode-line-p anzu-cons-mode-line-p))
-        (setq-default anzu-cons-mode-line-p nil)
-
-        ;; Save previous mode-line-format to be restored later
-        (setq mood-line--default-mode-line mode-line-format)
 
         ;; Set the new mode-line-format
         (setq-default mode-line-format
@@ -370,9 +357,6 @@
       (remove-hook 'file-find-hook #'mood-line--update-vc-segment)
       (remove-hook 'after-save-hook #'mood-line--update-vc-segment)
       (advice-remove #'vc-refresh-state #'mood-line--update-vc-segment)
-
-      ;; Restore anzu's mode-line segment setting
-      (setq-default anzu-cons-mode-line-p mood-line--anzu-cons-mode-line-p)
 
       ;; Restore the original mode-line format
       (setq-default mode-line-format mood-line--default-mode-line))))

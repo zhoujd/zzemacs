@@ -1,1 +1,1 @@
-alias sudo='sudo -E'
+test -f ~/.emacs_profile && . ~/.emacs_profile

@@ -322,6 +322,7 @@
 (setq save-abbrevs nil)
 
 ;;ido mode
+;;https://www.emacswiki.org/emacs/InteractivelyDoThings
 (require 'ido-complete-space-or-hyphen)
 (setq ido-save-directory-list-file nil)
 (setq ido-use-virtual-buffers nil)

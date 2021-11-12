@@ -382,6 +382,10 @@
 ;;git-annex
 (require 'git-annex)
 
+;;mood-line
+(require 'mood-line)
+(mood-line-mode t)
+
 
 (provide 'other-setting)
 

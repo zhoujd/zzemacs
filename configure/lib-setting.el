@@ -16,6 +16,9 @@
 ;;f
 (require 'f)
 
+;;crux
+(require 'crux)
+
 
 (provide 'lib-setting)
 

@@ -309,15 +309,10 @@
 ;;edit current file with sudo
 (defun zz:prepare-tramp-sudo-string (tempfile)
   (if (file-remote-p tempfile)
-      (let ((vec (tramp-dissect-file-name tempfile)))
-        (tramp-make-tramp-file-name
-         "sudo"
-         (tramp-file-name-user nil)
-         (tramp-file-name-host vec)
-         (tramp-file-name-localname vec)
-         (format "ssh:%s@%s|"
-                 (tramp-file-name-user vec)
-                 (tramp-file-name-host vec))))
+      (let* ((parts (s-split ":" tempfile))
+             (hostname (nth 1 parts))
+             (filepath (car (last parts))))
+        (concat "/ssh" ":" hostname "|" "sudo" ":" hostname ":" filepath))
       (concat "/sudo:root@localhost:" tempfile)))
 
 (defun zz:sudo-edit-current-file ()
@@ -328,10 +323,11 @@
         (progn
           (setq my-file-name (dired-get-file-for-visit))
           (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name)))
-        (setq my-file-name (buffer-file-name)
-              position (point))
-        (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name))
-        (goto-char position))))
+        (progn
+          (setq my-file-name (buffer-file-name)
+                position (point))
+          (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name))
+          (goto-char position)))))
 
 (defun zz:path ()
   (interactive)
@@ -398,6 +394,21 @@
 (defun zz:reload-emacs-configuration ()
   (interactive)
   (load-file "~/.emacs"))
+
+(defun zz:reopen-remote-file-as-root ()
+  "Reopen a remote file as root over tramp."
+  (find-alternate-file
+   (let* ((parts (s-split ":" buffer-file-name))
+          (hostname (nth 1 parts))
+          (filepath (car (last parts))))
+     (concat "/ssh" ":" hostname "|" "sudo" ":" hostname ":" filepath))))
+
+(defun zz:reopen-file-as-root ()
+  "Reopen a local or remote file as root."
+  (interactive)
+  (if (file-remote-p default-directory)
+      (zz:reopen-remote-file-as-root)
+      (crux-reopen-as-root)))
 
 
 (provide 'sample-setting)

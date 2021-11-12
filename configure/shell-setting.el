@@ -321,6 +321,8 @@ Dmitriy Igrishin's patched version of comint.el."
   "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
+    (when (tramp-tramp-file-p default-directory)
+      (cd "~"))
     (let* ((ssh-host-cmd "cat ~/.ssh/config ~/.ssh/config.d/* \
                           | grep -i -e '^host ' \
                           | grep -v '[*?]' \

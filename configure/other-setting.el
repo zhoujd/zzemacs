@@ -385,6 +385,9 @@
 ;;mood-line
 (require 'mood-line)
 
+;;ssh-config-mode
+(require 'ssh-config-mode)
+
 
 (provide 'other-setting)
 

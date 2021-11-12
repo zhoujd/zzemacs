@@ -321,14 +321,15 @@ Dmitriy Igrishin's patched version of comint.el."
   "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
-    (let* ((ssh-host-cmd "cat ~/.ssh/config ~/.ssh/config.d/* /etc/ssh/ssh_config 2> /dev/null \
+    (let* ((ssh-host-cmd "cat ~/.ssh/config ~/.ssh/config.d/* \
                           | grep -i -e '^host ' \
                           | grep -v '[*?]' \
                           | grep -v 'git.*com' \
                           | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
            (host (if host host
                      (ido-completing-read "Host: "
-                                          (split-string (shell-command-to-string ssh-host-cmd))))))
+                                          (split-string
+                                           (shell-command-to-string ssh-host-cmd))))))
       (cd (concat "/" tramp-default-method ":" host ":"))
       (zz:get-shell)
       )))

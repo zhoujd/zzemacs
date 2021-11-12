@@ -383,8 +383,8 @@
 (require 'git-annex)
 
 ;;mood-line
-(require 'mood-line)
-(mood-line-mode t)
+;(require 'mood-line)
+;(mood-line-mode t)
 
 
 (provide 'other-setting)

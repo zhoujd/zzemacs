@@ -322,16 +322,17 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (with-temp-buffer
     (let* ((default-directory "~/.ssh")
-           (ssh-host-cmd "cat config config.d/* \
-                          | grep -i -e '^host ' \
-                          | grep -v '[*?]' \
-                          | grep -v 'git.*com' \
-                          | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+           (cmd "cat config config.d/* \
+                 | grep -i -e '^host ' \
+                 | grep -v '[*?]' \
+                 | grep -v 'git.*com' \
+                 | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
            (host (if host host
                      (ido-completing-read "Host: "
                                           (split-string
-                                           (shell-command-to-string ssh-host-cmd))))))
-      (cd (concat "/" tramp-default-method ":" host ":"))
+                                           (shell-command-to-string cmd)))))
+           (remote (concat "/" tramp-default-method ":" host ":")))
+      (cd remote)
       (zz:get-shell)
       )))
 

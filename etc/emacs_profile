@@ -1,0 +1,4 @@
+# .emacs_profile
+export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
+export PAGER=less
+alias sudo='sudo -E'

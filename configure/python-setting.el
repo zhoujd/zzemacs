@@ -58,8 +58,9 @@
       flycheck-python-pylint-executable "python3"
       flycheck-python-flake8-executable "python3")
 
-;;activate rcp-venv
-;(pyvenv-activate "~/.emacs.d/elpy/rpc-venv")
+;;virtualenv
+(setenv "WORKON_HOME" (expand-file-name "~/.venv"))
+(pyvenv-activate "~/.venv/emacs")
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

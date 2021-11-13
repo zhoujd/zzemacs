@@ -27,3 +27,8 @@ Python
     $ sudo python2 get-pip.py
     ## To ~/.local/bin
     $ python2 get-pip.py
+
+## Python virtualenv
+
+    ##https://python.land/virtual-environments/virtualenv
+    $ python3 -m venv <MYVENV>

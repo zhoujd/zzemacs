@@ -32,6 +32,7 @@
   (kbd "`")       'ztree-diff-1
   (kbd "M-`")     'ztree-dir-1
   (kbd "/")       'zz:ctrl-z-help
+  (kbd "a")       'zz:display-current-time
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "n")       'neotree-toggle

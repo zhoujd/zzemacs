@@ -410,6 +410,10 @@
       (zz:reopen-remote-file-as-root)
       (crux-reopen-as-root)))
 
+(defun zz:display-current-time ()
+  (interactive)
+  (message (format-time-string "%a %b %d %l:%M %p")))
+
 
 (provide 'sample-setting)
 

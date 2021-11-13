@@ -230,6 +230,10 @@
   "Displays the name of the current buffer in the mode-line."
   (propertize "%b  " 'face 'mood-line-buffer-name))
 
+(defun mood-line-segment-time ()
+  "Displays time"
+  (propertize " " 'face 'display-time-string))
+
 (defun mood-line-segment-anzu ()
   "Displays color-coded anzu status information in the mode-line (if available)."
   (when (and (boundp 'anzu--state) anzu--state)
@@ -346,6 +350,7 @@
                              (:eval (mood-line-segment-flycheck))
                              (:eval (mood-line-segment-flymake))
                              (:eval (mood-line-segment-process))
+                             (:eval (mood-line-segment-time))
                              " ")))))))
     (progn
 

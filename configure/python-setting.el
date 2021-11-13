@@ -60,7 +60,7 @@
 
 ;;virtualenv
 (setenv "WORKON_HOME" (expand-file-name "~/.venv"))
-(pyvenv-activate "~/.venv/emacs")
+(pyvenv-activate (expand-file-name "~/.venv/emacs"))
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

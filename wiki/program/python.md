@@ -30,5 +30,7 @@ Python
 
 ## Python virtualenv
 
+    ##https://docs.python.org/3/tutorial/venv.html
     ##https://python.land/virtual-environments/virtualenv
     $ python3 -m venv <MYVENV>
+    $ source <MYVENV>/bin/activate

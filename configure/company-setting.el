@@ -7,7 +7,7 @@
 (global-company-mode t)
 (setq company-idle-delay 0) ;; nil for not auto popup
 (setq company-show-numbers t)
-(setq company-minimum-prefix-length 1)
+(setq company-minimum-prefix-length 2)
 
 ;;keys
 (defkeys-map company-active-map

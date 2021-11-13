@@ -59,8 +59,9 @@
       flycheck-python-flake8-executable "python3")
 
 ;;virtualenv
-(setenv "WORKON_HOME" (expand-file-name "~/.venv"))
-(pyvenv-workon "emacs")
+(when (file-exists-p (expand-file-name "~/.venv/emacs"))
+  (setenv "WORKON_HOME" (expand-file-name "~/.venv"))
+  (pyvenv-workon "emacs"))
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

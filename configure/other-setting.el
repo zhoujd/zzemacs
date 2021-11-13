@@ -385,7 +385,6 @@
 ;;mood-line
 (require 'mood-line)
 (mood-line-mode t)
-(display-time)
 
 ;;ssh-config-mode
 (require 'ssh-config-mode)

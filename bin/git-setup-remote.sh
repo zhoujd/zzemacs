@@ -2,8 +2,8 @@
 
 echo git remote setup start ...
 
-REMOTE_DIR='~/zach'
-REMOTE_CFG="$REMOTE_DIR/.gitconfig-zach"
+REMOTE_DIR=$HOME/zach
+REMOTE_CFG=$REMOTE_DIR/.gitconfig-zach
 
 mkdir -p $REMOTE_DIR
 
@@ -57,7 +57,7 @@ git config --file=$REMOTE_CFG alias.rb    "rebase"
 git config --file=$REMOTE_CFG alias.addp  "add -p"
 
 ## includeif
-git config --global --add includeif."gitdir:$REMOTE_DIR/".path "$REMOTE_CFG"
+git config --global --add includeif.gitdir:$REMOTE_DIR/.path $REMOTE_CFG
 
 
 echo git remote setup end ...

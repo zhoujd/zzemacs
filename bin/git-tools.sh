@@ -12,23 +12,23 @@ install_package() {
     case "$OS_DISTRO" in
         "SUSE" )
             sudo zypper install -y git-core
-            sudo zypper install -y gitk
+            sudo zypper install -y gitk git-gui
             sudo zypper install -y git-email
             ;;
         "Ubuntu" | "LinuxMint" )
-            sudo apt-get install -y git-core
-            sudo apt-get install -y gitk
-            sudo apt-get install -y git-email
-            sudo apt-get install -y tig
+            sudo apt install -y git-core
+            sudo apt install -y gitk git-gui
+            sudo apt install -y git-email
+            sudo apt install -y tig
             ;;
         "CentOS" )
             sudo yum install -y git-core
-            sudo yum install -y gitk
+            sudo yum install -y gitk git-gui
             sudo yum install -y git-email
             ;;
         "Fedora" )
             sudo dnf install -y git-core
-            sudo dnf install -y gitk
+            sudo dnf install -y gitk git-gui
             sudo yum install -y git-email
             ;;
         "Arch" | "Manjaro" )

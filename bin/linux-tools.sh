@@ -24,7 +24,7 @@ install_package_ubuntu() {
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy
     sudo apt install -y cups-pdf
-    sudo apt install -y git-email gitk
+    sudo apt install -y git-email gitk git-gui
     sudo apt install -y meld
     sudo apt install -y evolution-ews
     sudo apt install -y dos2unix
@@ -55,7 +55,7 @@ install_package_centos() {
     sudo yum install -y vim
     sudo yum install -y nano
     sudo yum install -y tmux
-    sudo yum install -y git gitk
+    sudo yum install -y git gitk git-gui
     sudo yum install -y wireless-tools
     sudo yum install -y python3 python3-pip python2-pip
     sudo yum install -y rxvt-unicode sakura

@@ -9,7 +9,7 @@ echo "Install linux-dev-tool begin..."
 
 ##package for ubuntu
 install_package_suse() {
-    sudo zypper install -y gcc gcc-c++ automake git gitk diffstat
+    sudo zypper install -y gcc gcc-c++ automake git gitk git-gui diffstat
     sudo zypper install -y ncurses-devel ncurses zlib-devel
     sudo zypper install -y tk tk-devel
     sudo zypper install -y flex cmake bison libtool perl-Archive-Zip
@@ -24,7 +24,7 @@ install_package_ubuntu() {
     sudo apt install -y x11proto-dri2-dev
     sudo apt install -y xutils-dev
     sudo apt install -y g++
-    sudo apt install -y git gitk diffstat
+    sudo apt install -y git gitk git-gui diffstat
     sudo apt install -y make cmake
 }
 

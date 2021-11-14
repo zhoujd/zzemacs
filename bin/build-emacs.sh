@@ -70,7 +70,7 @@ install_package() {
             sudo yum install -y GConf2-devel pkgconfig
             sudo yum install -y libXft-devel
             sudo yum install -y git-core
-            sudo yum install -y gitk
+            sudo yum install -y gitk git-gui
             sudo yum install -y wget
             ;;
         "Fedora" )
@@ -85,7 +85,7 @@ install_package() {
             sudo dnf install -y GConf2-devel pkgconfig
             sudo dnf install -y libXft-devel
             sudo dnf install -y git-core
-            sudo dnf install -y gitk
+            sudo dnf install -y gitk git-gui
             ;;
         "Arch" | "Manjaro" )
             sudo pacman -S libjpeg libtiff giflib imagemagick

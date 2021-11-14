@@ -1,5 +1,5 @@
-Git error and solutions
-=======================
+Git
+===
 
 ## Pushing to Git returning Error Code 403 fatal: HTTP request failed
    Edit .git/config file under your repo directory
@@ -111,3 +111,11 @@ Git error and solutions
 ## Git clone verbose output
 
     $ GIT_TRACE=2 git clone --progress --verbose http://github.com/zhoujd/zzemacs ~/zzemacs
+
+## How to Use Multiple Git Configs on One Computer
+
+    $ cat ~/.gitconfig
+    [includeIf "gitdir:~/personal/"]
+    path = ~/.gitconfig-personal
+    [includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work

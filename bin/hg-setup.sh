@@ -108,7 +108,7 @@ no = 10.0.0.0/8,192.168.0.0/16,localhost,127.0.0.0/8,134.134.0.0/16
 [web]
 push_ssl = False
 allow_push = *
-cacerts = ${ZZ_MISC_ROOT}/hg-cacert.pem
+cacerts = ${ZZ_MISC_ROOT}/cert/hg-cacert.pem
 
 [hostfingerprints]
 bitbucket.org = 46:de:34:e7:9b:18:cd:7f:ae:fd:8b:e3:bc:f4:1a:5e:38:d7:ac:24

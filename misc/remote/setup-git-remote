@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo git remote setup start ...
+echo setup git remote start ...
 
 REMOTE_DIR=$HOME/zach
 REMOTE_CFG=$REMOTE_DIR/.gitconfig-zach
@@ -60,4 +60,4 @@ git config --file=$REMOTE_CFG alias.addp  "add -p"
 git config --global --add includeif.gitdir:$REMOTE_DIR/.path $REMOTE_CFG
 
 
-echo git remote setup end ...
+echo setup git remote end ...

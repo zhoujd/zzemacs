@@ -111,8 +111,8 @@ git config --global alias.hub   '!git daemon --base-path=. --export-all --enable
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 
-## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/ca-bundle.crt
-## git config --global http.sslcainfo $MISC_ROOT/ca-bundle.crt
+## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/cert/ca-bundle.crt
+## git config --global http.sslcainfo $MISC_ROOT/cert/ca-bundle.crt
 ## export GIT_SSL_NO_VERIFY=1
 git config --global http.sslverify false
 

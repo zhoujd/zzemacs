@@ -3,6 +3,7 @@
 * echo with colors
 
 #+begin_src sh
+## https://www.colorhexa.com/
 ## cecho "hello world" green
 cecho() {
     local exp=$1

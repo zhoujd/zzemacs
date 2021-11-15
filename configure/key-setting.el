@@ -33,7 +33,7 @@
   (kbd "M-`")     'ztree-dir-1
   (kbd "/")       'zz:ctrl-z-help
   (kbd "a")       'zz:display-current-time
-  (kbd "C-a")     'display-time-world
+  (kbd "C-a")     'helm-world-time
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "n")       'neotree-toggle

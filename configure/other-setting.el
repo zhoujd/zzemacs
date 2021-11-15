@@ -164,8 +164,8 @@
 
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-buffer-name-style 'forward
+      uniquify-after-kill-buffer-p t)
 
 ;;ibuffer setting
 (setq ibuffer-show-empty-filter-groups nil)

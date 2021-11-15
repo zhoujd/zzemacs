@@ -45,11 +45,7 @@
       helm-apropos-function-list        '(helm-def-source--emacs-commands
                                           helm-def-source--emacs-functions
                                           helm-def-source--emacs-variables
-                                          helm-def-source--emacs-faces)
-      display-time-world-list           '(("Asia/Shanghai" "Shanghai")
-                                          ("PST8PDT" "Mountain View")
-                                          ("Europe/London" "London")
-                                          ("Australia/Sydney" "Sydney")))
+                                          helm-def-source--emacs-faces))
 
 ;;https://github.com/ptrv/helm-smex
 (require 'helm-smex)

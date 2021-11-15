@@ -289,7 +289,7 @@
 
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %l:%M %p"))))
-(display-time)
+(display-time-mode t)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))
 (setq mode-line-end-spaces
@@ -297,6 +297,13 @@
                         `((space :align-to (- (- right right-fringe)
                                               ,(string-width display-time-string)))))
             'display-time-string))
+
+;;M-x display-time-world
+(setq display-time-world-list '(("Asia/Shanghai"       "Shanghai")
+                                ("Asia/Calcutta"       "Bangalore")
+                                ("Europe/London"       "London")
+                                ("America/Los_Angeles" "Los Angeles")
+                                ("America/New_York"    "New York")))
 
 ;;embrace light show
 (show-paren-mode t)

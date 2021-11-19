@@ -109,3 +109,52 @@ Kubernetes
     $ chmod +x calicoctl
     $ curl -o kubectl-calico -O -L  "https://github.com/projectcalico/calicoctl/releases/download/v3.20.2/calicoctl"
     $ chmod +x kubectl-calico
+
+## How to limit the number of CPUs in Kubernetes
+
+    ## https://community.denodo.com/kb/en/view/document/How%20to%20limit%20the%20number%20of%20CPUs%20in%20Kubernetes?category=Operation
+    ## https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/
+    ## Check the number of cores in your nodes
+    $ kubectl get nodes -o custom-columns=NODE:.metadata.name,CPU:.status.capacity.cpu
+
+    ## The Kubernetes CPU Manager allows two different policies: none and static
+    ## default policy “none” does not really provide any affinity to the pods,
+    ## so the restrictions applied in the Pod definition are enforced using CFS quota.
+    ## the static policy allows to assign dedicated CPUs on the node to a pod,
+    ## and that CPU will be removed from the shared pool and not available for other processes.
+    ## For this, the pods must run in Guaranteed QoS mode and request full cores (not fractions).
+    ## The other pods running in Burstable mode or Guaranteed but with fractional CPU requests run with the shared pool of CPUs.
+
+    ## Enable static policy
+    ## Step 1:
+    ## apply the CPU Manager configuration into the kubelet.service file
+    $ sudo vi /etc/systemd/system/kubelet.service
+    ...
+    --cpu-manager-policy=static \
+    --kube-reserved=cpu=1,memory=200Mi,ephemeral-storage=1Gi \
+    --system-reserved=cpu=1,memory=200Mi,ephemeral-storage=1Gi \
+    ...
+    ## Step 2
+    ## reset the CPU Manager by deleting the folder /var/lib/kubelet/cpu_manager_state and restarting the kubelet:
+    $ sudo rm -rf /var/lib/kubelet/cpu_manager_state
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl stop kubelet
+    $ sudo systemctl start kubelet
+    ## Step 3
+    ## Deploy your Denodo pods in Guaranteed mode and request full cores in the pod definition.
+    ## For instance, you can append the following to the pod YAML to request 1 exclusive core
+    ...
+    resources:
+      limits:
+        memory: "2000Mi"
+        cpu: "1"
+    ...
+
+    ## Testing the CPU Manager (Java Code)
+    public class cores {
+        public static void main(String[] args){
+            Runtime runtime = Runtime.getRuntime();
+            int num_cores = runtime.availableProcessors();
+            System.out.println(num_cores);
+        }
+    }

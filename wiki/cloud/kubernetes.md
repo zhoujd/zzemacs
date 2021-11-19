@@ -125,6 +125,10 @@ Kubernetes
     ## For this, the pods must run in Guaranteed QoS mode and request full cores (not fractions).
     ## The other pods running in Burstable mode or Guaranteed but with fractional CPU requests run with the shared pool of CPUs.
 
+    ## CPUManager Feature Gate
+    ## https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/
+    ## Make sure CPUManager Feature Gate is true (BETA - default=true) in kubelet
+
     ## Enable static policy
     ## Step 1:
     ## apply the CPU Manager configuration into the kubelet.service file

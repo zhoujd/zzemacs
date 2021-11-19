@@ -232,7 +232,7 @@
 
 (defun mood-line-segment-time ()
   "Displays time"
-  (propertize " " 'face 'display-time-string))
+  (propertize " " 'face 'mood-line-status-info))
 
 (defun mood-line-segment-anzu ()
   "Displays color-coded anzu status information in the mode-line (if available)."

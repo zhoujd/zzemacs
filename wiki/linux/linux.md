@@ -366,3 +366,10 @@ Linux something
     Z      108   103
     $ kill -s SIGCHLD 103
     $ kill -9 103
+
+## Show list all users and date the logged in
+
+    ## https://askubuntu.com/questions/1164464/command-to-show-list-all-users-and-date-the-logged-in
+    $ users
+    $ who -uH
+    $ zgrep login /var/log/auth.log*

@@ -34,6 +34,7 @@
   (kbd "/")       'zz:ctrl-z-help
   (kbd "a")       'zz:display-current-time
   (kbd "C-a")     'helm-world-time
+  (kbd "M-a")     'world-time-list
   (kbd "b")       'helm-bm
   (kbd "d")       'docker
   (kbd "n")       'neotree-toggle

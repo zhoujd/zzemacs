@@ -300,7 +300,7 @@
 
 ;;M-x display-time-world
 (setq display-time-world-list '(("Asia/Shanghai"       "Shanghai")
-                                ("Asia/Calcutta"       "Bangalore")
+                                ("Asia/Bangalore"      "Bangalore")
                                 ("Europe/London"       "London")
                                 ("America/Los_Angeles" "Los Angeles")
                                 ("America/New_York"    "New York")))

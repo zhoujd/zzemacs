@@ -54,6 +54,10 @@
 ;;https://github.com/emacs-helm/helm-descbinds
 ;;C-h b
 (require 'helm-descbinds)
+(defun zz:ctrl-z-help ()
+  (interactive)
+  (helm-descbinds (kbd "C-z h")))
+
 (require 'multi-web-mode)
 (helm-descbinds-mode)
 

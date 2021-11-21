@@ -111,6 +111,7 @@
   (kbd "M-b")     'helm-mt
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
+  (kbd "z")       'helm-stumpwm-commands
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:exec-key zz:explorer '("explorer" "."))

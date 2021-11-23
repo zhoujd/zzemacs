@@ -120,7 +120,7 @@
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)
 (add-to-list 'tramp-methods
-             '("sshx11"
+             '("sshz"
                (tramp-login-program        "ssh")
                (tramp-login-args           (("-l" "%u") ("-p" "%p") ("%c")
                                             ("-e" "none") ("-X") ("%h")))
@@ -133,8 +133,8 @@
                                             ("-o" "StrictHostKeyChecking=no")
                                             ("-o" "ForwardX11=yes")))
                (tramp-default-port         22)))
-(tramp-set-completion-function "sshx11" tramp-completion-function-alist-ssh)
-(setq tramp-default-method (if-ms-windows "plink" "sshx11"))
+(tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
+(setq tramp-default-method (if-ms-windows "plink" "sshz"))
 ;;speed up tramp
 (setq remote-file-name-inhibit-cache nil)
 (setq vc-ignore-dir-regexp

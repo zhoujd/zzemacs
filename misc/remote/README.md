@@ -3,9 +3,11 @@ README
 
 ## Install remote
 
-    $ ssh <host> "mkdir ~/zach"
-    $ scp -r remote <host>:zach
+    $ host=<host>
+    $ ssh ${host} "mkdir ~/zach"
+    $ scp -r remote ${host}:zach
 
 ## Uninstall remote
 
-    $ ssh <host> "rm -rf ~/zach"
+    $ host=<host>
+    $ ssh ${host} "rm -rf ~/zach"

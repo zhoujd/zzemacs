@@ -57,6 +57,7 @@ git config --file=$REMOTE_CFG alias.rb    "rebase"
 git config --file=$REMOTE_CFG alias.addp  "add -p"
 
 ## includeif
+git config --global --unset-all includeif.gitdir:$REMOTE_DIR/.path
 git config --global --add includeif.gitdir:$REMOTE_DIR/.path $REMOTE_CFG
 
 

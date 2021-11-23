@@ -1,5 +1,7 @@
 # -*- mode: shell-script -*-
 # copy emacs_profile to remote ~/.emacs_profile
+
+export PS1='[\u@\h \W]$ '
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 export PAGER=less
 

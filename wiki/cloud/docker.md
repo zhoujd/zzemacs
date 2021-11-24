@@ -3,19 +3,17 @@ Docker
 
 ## Container entrypoint
 
-```bash
-tee entrypoint <<EOF
-#!/bin/sh -e
+    tee entrypoint <<EOF
+    #!/bin/sh -e
 
-cmd=${1:-""}
-case ${cmd} in
-   *)
-      echo "invalid command ${cmd}"
-      sleep infinity
-      ;;
-esac
-EOF
-```
+    cmd=${1:-""}
+    case ${cmd} in
+       *)
+          echo "invalid command ${cmd}"
+          sleep infinity
+          ;;
+    esac
+    EOF
 
 ## Redirecting command output in docker
 
@@ -86,3 +84,50 @@ EOF
     Revert complete!
     $ route add -net 195.168.1.0 netmask 255.255.255.0 gw 6.6.6.1
     $ route
+
+## Docker proxy for fetching package when building docker image
+
+    $ cat > ~/.docker/config.json <<EOF
+    {
+     "proxies":
+     {
+       "default":
+       {
+         "httpProxy": "http://<host>:<port>",
+         "httpsProxy": "http://<host>:<port>",
+         "noProxy": "127.0.0.0/8"
+       }
+      }
+    }
+    EOF
+
+## Docker proxy for host pull images
+
+    local host=child-prc.intel.com
+    local port=913
+
+    $ sudo mkdir /etc/systemd/system/docker.service.d
+    $ sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf <<EOF
+    [Service]
+    Environment="HTTP_PROXY=http://$host:$port"
+    Environment="HTTPS_PROXY=http://$host:$port"
+    Environment="FTP_PROXY=http://$host:$port"
+    Environment="NO_PROXY=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8"
+    EOF
+
+## Docker daemon example
+
+    $ sudo tee /etc/docker/daemon.json <<EOF
+    {
+        "insecure-registries": ["$TOOLS_SERVER:5000"],
+        "tls": false,
+        "storage-driver": "overlay2"
+    }
+    EOF
+
+## Docker restart service
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker
+    $ sudo systemctl show --property=Environment docker
+    $ sudo docker run hello-world

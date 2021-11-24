@@ -48,9 +48,10 @@ Kubernetes
     $ sudo apt install kubeadm kubelet kubectl
     $ sudo apt-mark hold kubeadm kubelet kubectl
     $ kubeadm version
+    $ sudo systemctl enable  kubelet.service
 
     ## Step 6: Begin Kubernetes Deployment
-    $ sudo swapoff –a
+    $ sudo swapoff -a
 
     ## Step 7: Assign Unique Hostname for Each Server Node
     $ sudo hostnamectl set-hostname master-node

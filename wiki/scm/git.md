@@ -126,3 +126,8 @@ Git
     $ mkdir -p ~/.config/git
     $ git clone https://github.com/dracula/gitk
     $ cp gitk/gitk ~/.config/git/
+
+## Git GUI
+
+    $ sudo apt install git-gui
+    $ cd /usr/share/git-gui/lib

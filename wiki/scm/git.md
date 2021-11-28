@@ -119,3 +119,10 @@ Git
     path = ~/.gitconfig-personal
     [includeIf "gitdir:~/work/"]
     path = ~/.gitconfig-work
+
+## Gitk dark mode
+
+    ## https://github.com/dracula/gitk
+    $ mkdir -p ~/.config/git
+    $ git clone https://github.com/dracula/gitk
+    $ cp gitk/gitk ~/.config/git/

@@ -116,6 +116,7 @@
         (t (self-insert-command (or arg 1)))))
 
 ;;;tramp setting
+;;Press C-l ido-reread-directory while in the process of finding a file.
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)

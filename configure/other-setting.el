@@ -136,7 +136,7 @@
 (tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
 (setq tramp-default-method (if-ms-windows "plink" "sshz"))
 ;;speed up tramp
-(setq remote-file-name-inhibit-cache nil)
+(setq remote-file-name-inhibit-cache t)
 (setq vc-ignore-dir-regexp
       (format "%s\\|%s"
                     vc-ignore-dir-regexp

@@ -410,6 +410,7 @@
       (zz:reopen-remote-file-as-root)
       (crux-reopen-as-root)))
 
+;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
 (defun zz:display-current-time ()
   (interactive)
   (message (format-time-string "%a %b %e %Y WW%U %l:%M %p")))

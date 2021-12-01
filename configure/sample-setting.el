@@ -412,7 +412,7 @@
 
 (defun zz:display-current-time ()
   (interactive)
-  (message (format-time-string "%a %b %d %Y WW%U %l:%M %p")))
+  (message (format-time-string "%a %b %e %Y WW%U %l:%M %p")))
 
 
 (provide 'sample-setting)

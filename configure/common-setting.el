@@ -299,7 +299,7 @@
             'display-time-string))
 
 ;;M-x display-time-world
-(setq display-time-world-time-format "%A %d %B %R %Z"
+(setq display-time-world-time-format "%10A %5e %10B %10R %5Z"
       display-time-world-list '(("Asia/Shanghai"       "Shanghai")
                                 ("Asia/Calcutta"       "Bangalore")
                                 ("Europe/London"       "London")

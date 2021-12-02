@@ -40,6 +40,13 @@ When turning on, it uses `flyspell-on-for-buffer-type' so code-vs-text is handle
       ;; else - flyspell is off, turn it on
       (flyspell-on-for-buffer-type)))
 
+;;https://0--key.github.io/emacs/grammar_checker.html
+;;https://languagetool.org/download/
+;;https://github.com/mhayashi1120/Emacs-langtool
+(setq langtool-language-tool-jar "/opt/languagetool/languagetool-commandline.jar")
+(require 'langtool)
+(setq langtool-default-language "en-US")
+
 
 (provide 'spell-setting)
 

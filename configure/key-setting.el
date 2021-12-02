@@ -112,6 +112,11 @@
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
+  (kbd "w")       'langtool-check
+  (kbd "W")       'langtool-check-done
+  (kbd "l")       'langtool-switch-default-language
+  (kbd "s")       'langtool-show-message-at-point
+  (kbd "c")       'langtool-correct-buffer
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:exec-key zz:explorer '("explorer" "."))
@@ -127,6 +132,7 @@
   (kbd "C-n")     'backlight
   (kbd "C-u")     'disk-usage
   (kbd "C-v")     'virt-manager
+
 
   (kbd "M-d")     (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
   (kbd "M-r")     (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))

@@ -300,7 +300,7 @@
 
 ;;M-x display-time-world
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
-(setq display-time-world-time-format "%A%t %10B %2e %10R %5Z"
+(setq display-time-world-time-format "%10A %10B %2e %10R %5Z"
       display-time-world-list '(("Asia/Shanghai"       "Shanghai")
                                 ("Asia/Calcutta"       "Bangalore")
                                 ("Europe/London"       "London")

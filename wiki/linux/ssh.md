@@ -25,3 +25,17 @@ ssh
 
     ## on C
     $ ssh -p 7070 userOnC@B
+
+## ssh/rsync from one Linux machine to another with a standard ethernet cable
+
+    $ SLAVE_USER_NAME=user
+    $ ssh ${SLAVE_USER_NAME}@${SLAVE_IPV6}%${MASTER_INTERFACE}
+    $ rsync \
+      --recursive \
+      --perms \
+      --human-readable \
+      --progress \
+      --verbose \
+      -e ssh \
+      /path/to/src \
+      ${SLAVE_USER_NAME}@[${SLAVE_IPV6}%${MASTER_INTERFACE}]:/path/to/dest

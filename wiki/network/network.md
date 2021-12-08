@@ -152,3 +152,11 @@ Network
     $ sudo apt install iputils-ping netcat-openbsd
     $ nc -vz host.minikube.internal 8000
     Connection to host.minikube.internal 8000 port [tcp/*] succeeded!
+
+## inxi :: a full featured system information script
+
+    ## https://smxi.org/docs/inxi.htm
+    ##
+    $ sudo apt install inxi
+    $ inxi -i
+    $ inxi -b

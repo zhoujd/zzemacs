@@ -156,7 +156,7 @@ Network
 ## inxi :: a full featured system information script
 
     ## https://smxi.org/docs/inxi.htm
-    ##
+    ## https://smxi.org/docs/inxi-installation.htm
     $ sudo apt install inxi
     $ inxi -i
     $ inxi -b

@@ -163,6 +163,7 @@ Network
 
 ## Macvlan and IPvlan basics
 
+    ## https://cizixs.com/2017/02/14/network-virtualization-macvlan/
     ## https://sreeninet.wordpress.com/2016/05/29/macvlan-and-ipvlan/
     $ sudo ip link add mymacvlan1 link eth0 type macvlan mode bridge
     $ sudo ip link add mymacvlan2 link eth0 type macvlan mode bridge

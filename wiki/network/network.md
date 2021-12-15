@@ -160,3 +160,31 @@ Network
     $ sudo apt install inxi
     $ inxi -i
     $ inxi -b
+
+## Macvlan and IPvlan basics
+
+    ## https://sreeninet.wordpress.com/2016/05/29/macvlan-and-ipvlan/
+    $ sudo ip link add mymacvlan1 link eth0 type macvlan mode bridge
+    $ sudo ip link add mymacvlan2 link eth0 type macvlan mode bridge
+    $ sudo ifconfig mymacvlan1 up
+    $ sudo ifconfig mymacvlan2 up
+
+    ## macvlan with subinterface
+    $ sudo vconfig add eth2 10
+    $ sudo vconfig add eth2 20
+    $ sudo ip link add mymacvlan1 link eth2.10 type macvlan mode bridge
+    $ sudo ip link add mymacvlan2 link eth2.10 type macvlan mode bridge
+    $ sudo ifconfig mymacvlan1 up
+    $ sudo ifconfig mymacvlan2 up
+    $
+    $ sudo ip link add mymacvlan3 link eth2.20 type macvlan mode bridge
+    $ sudo ip link add mymacvlan4 link eth2.20 type macvlan mode bridge
+    $ sudo ifconfig mymacvlan3 up
+    $ sudo ifconfig mymacvlan4 up
+
+    ## ipvlan need kernel support > 4.2
+    ## ipvlan is similar to macvlan with the difference being that the endpoints have the same mac address
+    $ sudo ip link add myipvlan1 link enp0s3 type ipvlan mode l2
+    $ sudo ifconfig myipvlan1 up
+    $ sudo ip link add myipvlan2 link enp0s3 type ipvlan mode l2
+    $ sudo ifconfig myipvlan2 up

@@ -163,3 +163,11 @@ Kubernetes
             System.out.println(num_cores);
         }
     }
+
+## How to configure kubectl with cluster information from a .conf file?
+
+    ## http://kubernetes.io/docs/user-guide/kubeconfig-file/
+    $ export KUBECONFIG=.kubeconfig:$HOME/.kube/config
+    $ alias k8='kubectl'
+    $ alias k8prd='kubectl --kubeconfig ~/.kube/config_prd.conf'
+    $ kubectl --kubeconfig

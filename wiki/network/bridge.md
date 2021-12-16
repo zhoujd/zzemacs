@@ -47,9 +47,11 @@ $ sudo reboot
 
 ## nmcli + DHCP
 ```
-$ sudo nmcli con add type bridge ifname br0
-$ sudo nmcli con mod bridge-br0 bridge.stp no
-$ sudo nmcli con add type bridge-slave ifname ${INTERFACE} master bridge-br0
+$ INTERFACE=eno1
+$ BRIDGE=br0
+$ sudo nmcli con add type bridge ifname ${BRIDGE}
+$ sudo nmcli con mod bridge-${BRIDGE} bridge.stp no
+$ sudo nmcli con add type bridge-slave ifname ${INTERFACE} master bridge-${BRIDGE}
 $ sudo reboot
 ```
 

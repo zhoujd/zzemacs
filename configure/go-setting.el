@@ -30,15 +30,17 @@
 (mapc #'zz:add-os-path zz:go-path)
 
 ;; company-go
-(require 'company-go)
+;(require 'company-go)
+;(add-hook 'go-mode-hook 'company-mode)
+;(defun zz:company-go-hook ()
+;  (set (make-local-variable 'company-backends) '(company-go)))
+;(add-hook 'go-mode-hook 'zz:company-go-hook)
 
 (defun zz:go-mode-hook ()
-  ;; Call Gofmt before saving                                                    
   (add-hook 'before-save-hook 'gofmt-before-save)
   (local-set-key (kbd "C-c m") 'gofmt)
   (local-set-key (kbd "M-.") 'godef-jump)
-  (local-set-key (kbd "M-,") 'pop-tag-mark)
-  (set (make-local-variable 'company-backends) '(company-go)))
+  (local-set-key (kbd "M-,") 'pop-tag-mark))
 
 (defun zz:go-indent4 ()
   (setq tab-width 4)
@@ -49,10 +51,9 @@
   (setq standard-indent 2)
   (setq indent-tabs-mode nil))
 
-(add-hook 'go-mode-hook 'zz:go-mode-hook)
 (add-hook 'go-mode-hook 'go-eldoc-setup)
 (add-hook 'go-mode-hook 'go-guru-hl-identifier-mode)
-(add-hook 'go-mode-hook 'company-mode)
+(add-hook 'go-mode-hook 'zz:go-mode-hook)
 (add-hook 'go-mode-hook 'zz:go-indent4)
 
 

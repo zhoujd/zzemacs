@@ -36,5 +36,17 @@ kubernetes cni
     $ docker inspect --format '{{ .State.Pid }}' <CONTAINER_ID>
     ## Run Command in Namespace
     $ nsenter -t <CONTAINER_PID> -n ip addr
+
+    ## Move NIC to container network space
+    $ ip link set dev <NIC> netns <CONTAINER_PID>
+    $ nsenter -t <CONTAINER_PID> -n dhclient <NIC>
+    $ nsenter -t <CONTAINER_PID> -n ip a
+
+    ## Move back to system PID=1
+    $ nsenter -t <CONTAINER_PID> -n
+    $ lsns -p <CONTAINER_PID>
+    $ lsns -p 1
+    $ ip link set dev <NIC> netns 1
+
     ## Back to default ns
     $ exit

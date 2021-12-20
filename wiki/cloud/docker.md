@@ -84,6 +84,7 @@ Docker
     Revert complete!
     $ route add -net 195.168.1.0 netmask 255.255.255.0 gw 6.6.6.1
     $ route
+    $ exit
 
 ## Docker proxy for fetching package when building docker image
 

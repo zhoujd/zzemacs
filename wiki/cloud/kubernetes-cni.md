@@ -27,3 +27,14 @@ kubernetes cni
     $ export CNI_CONTAINERID="aaa"
     $ /opt/cni/bin/host-device < myhost-device.conf
     $ ip netns exec test ip a
+
+## How to View the Network Namespaces in Kubernetes
+
+    ## Get Container ID
+    $ docker ps
+    ## Get Container PID
+    $ docker inspect --format '{{ .State.Pid }}' <CONTAINER_ID>
+    ## Run Command in Namespace
+    $ nsenter -t <CONTAINER_PID> -n ip addr
+    ## Back to default ns
+    $ exit

@@ -141,7 +141,7 @@ $ sudo reboot
 
 https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md
 
-## With iproute2
+## Bridge with iproute2
 
     ## https://wiki.archlinux.org/title/Network_bridge
     $ sudo ip link add name bridge_name type bridge
@@ -154,3 +154,19 @@ https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md
     $ sudo ip link set eth0 nomaster
     $ sudo ip link set eth0 down
     $ ip link delete bridge_name type bridge
+
+## Bridge with netplan
+
+    ## /etc/netplan/01-netcfg.yaml (or whatever file you have there, could also be 50-cloud-init.yaml)
+    $ cat /etc/netplan/00-installer-config.yaml
+    network:
+      version: 2
+      renderer: networkd
+      ethernets:
+        eno1:
+          dhcp4: no
+      bridges:
+        br0:
+          interfaces: [eno1]
+          dhcp4: yes
+    $ netplan apply

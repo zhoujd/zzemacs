@@ -159,82 +159,58 @@ Docker
 
     # Create network namespace.
     ubuntu@vm0:~$ ip netns add sample
-
     # List namespaces.
     ubuntu@vm0:~$ ip netns list
     sample
-
     # Create new veth pair.
     ubuntu@vm0:~$ ip link add veth1 type veth peer name veth2
-
     # List network interfaces.
     ubuntu@vm0:~$ ip a
-
     # Move veth1 to 'sample' namespace.
     ubuntu@vm0:~$ ip link set veth1 netns sample
-
     # List interfaces in 'default' namespace.
     ubuntu@vm0:~$ ip a
-
     # List interfaces in 'default' namespace.
     ubuntu@vm0:~$ ip a
-
     # Create a linux bridge *samplebr*.
     ubuntu@vm0:~$ ip link add name samplebr type bridge
-
     # Join *veth2* network interface to *samplebr* bridge.
     ubuntu@vm0:~$ ip link set veth2 master samplebr
-
     # Assign an ipv4 address to *samplebr*.
     ubuntu@vm0:~$ ip addr add 10.1.1.1/24 brd + dev samplebr
-
     # Assign an ipv4 address to *veth1*.
     ubuntu@vm0:~$ ip netns exec sample ip addr add 10.1.1.2/24 dev veth1
-
     # Up *veth1* device.
     ubuntu@vm0:~$ ip netns exec sample ip link set veth1 up
-
     # Up container localhost.
     ubuntu@vm0:~$ ip netns exec sample ip link set lo up
-
     # Up *veth2* device.
     ubuntu@vm0:~$ ip link set veth2 up
-
     # Up *samplebr* device.
     ubuntu@vm0:~$ ip link set samplebr up
-
     # Add bridge 'samplebr' as default gateway for the container network.
     ubuntu@vm0:~$ ip netns exec sample ip route add default via 10.1.1.1
-
     ubuntu@vm0:~$ ping 10.1.1.2
     PING 10.1.1.1 (10.1.1.2) 56(84) bytes of data.
     64 bytes from 10.1.1.2: icmp_seq=1 ttl=64 time=0.022 ms
     64 bytes from 10.1.1.2: icmp_seq=2 ttl=64 time=0.028 ms
-
     ubuntu@vm0:~$ ip netns exec sample ping 172.17.52.174
     PING 172.17.52.174 (172.17.52.174) 56(84) bytes of data.
     64 bytes from 172.17.52.174: icmp_seq=1 ttl=64 time=0.024 ms
     64 bytes from 172.17.52.174: icmp_seq=2 ttl=64 time=0.143 ms
-
     ubuntu@vm0:~$ sudo ip netns exec sample ping 8.8.8.8
     connect: Network is unreachable
-
     ubuntu@vm0:~$ ip netns exec sample ping github.com
     ping: github.com: Temporary failure in name resolution
-
     # Make sure *ip_forwarding* is enabled.
     root@test1:~# sysctl -w net.ipv4.ip_forward=1
-
     # Enable sending requests and getting responses to/from internet (ping 8.8.8.8).
     root@test1:~# iptables -t nat -A POSTROUTING -s 10.1.1.0/24 ! -o samplebr -j MASQUERADE
-
     # Find your dns nameserver for the host network interface (eth0)
     root@test1:~#  systemd-resolve --status
-
     # Create resolv.conf file for container network.
     root@test1:~# mkdir -p /etc/netns/sample/
     root@test1:~# echo "nameserver 172.17.52.161" > /etc/netns/sample/resolv.conf
-
     # Test dns again.
     root@test1:~# ip netns exec sample ping github.com
     PING github.com (140.82.118.3) 56(84) bytes of data.

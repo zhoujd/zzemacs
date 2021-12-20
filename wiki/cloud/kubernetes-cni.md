@@ -43,6 +43,9 @@ kubernetes cni
     $ nsenter -t <CONTAINER_PID> -n ip a
 
     ## Move back to system PID=1
+    ## Entry all namespace
+    $ nsenter -t <CONTAINER_PID> -a
+    ## Entry network namespace
     $ nsenter -t <CONTAINER_PID> -n
     $ lsns -p <CONTAINER_PID>
     $ lsns -p 1

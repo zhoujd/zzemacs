@@ -170,3 +170,63 @@ https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md
           interfaces: [eno1]
           dhcp4: yes
     $ netplan apply
+
+## Configuring a network bridge using nmcli commands
+
+    ## Step 1: Create a bridge interface
+    $ nmcli connection add type bridge con-name bridge0 ifname bridge0
+
+    ## Step 2: Display the network interfaces, and note the names of the interfaces you want to add to the bridge
+    $ nmcli device status
+    DEVICE  TYPE      STATE         CONNECTION
+    enp7s0  ethernet  disconnected  --
+    enp8s0  ethernet  disconnected  --
+    bond0   bond      connected     bond0
+    bond1   bond      connected     bond1
+
+    ## Step 3: Assign the interfaces to the bridge
+    ## Create new connection profiles for them
+    $ nmcli connection add type ethernet slave-type bridge con-name bridge0-port1 ifname enp7s0 master bridge0
+    $ nmcli connection add type ethernet slave-type bridge con-name bridge0-port2 ifname enp8s0 master bridge0
+    ## Assign an existing connection profile
+    $ nmcli connection modify bond0 master bridge0
+    $ nmcli connection modify bond1 master bridge0
+
+    ## Step 4: Configure the IP settings of the bridge. Skip this step if you want to use this bridge as a ports of other devices.
+    $ nmcli connection modify bridge0 ipv4.addresses '192.0.2.1/24'
+    $ nmcli connection modify bridge0 ipv4.gateway '192.0.2.254'
+    $ nmcli connection modify bridge0 ipv4.dns '192.0.2.253'
+    $ nmcli connection modify bridge0 ipv4.dns-search 'example.com'
+    $ nmcli connection modify bridge0 ipv4.method manual
+
+    $ nmcli connection modify bridge0 ipv6.addresses '2001:db8:1::1/64'
+    $ nmcli connection modify bridge0 ipv6.gateway '2001:db8:1::fffe'
+    $ nmcli connection modify bridge0 ipv6.dns '2001:db8:1::fffd'
+    $ nmcli connection modify bridge0 ipv6.dns-search 'example.com'
+    $ nmcli connection modify bridge0 ipv6.method manual
+
+    ## Step 5: Optional: Configure further properties of the bridge, By default, STP is enabled.
+    $ nmcli connection modify bridge0 bridge.priority '16384'
+
+    ## Step 6: Activate the connection
+    $ nmcli connection up bridge0
+
+    ## Step 7: Verify that the ports are connected
+    $ nmcli device
+    DEVICE   TYPE      STATE      CONNECTION
+    ...
+    enp7s0   ethernet  connected  bridge0-port1
+    enp8s0   ethernet  connected  bridge0-port2
+
+    ## Enable the connection.autoconnect-slaves
+    $ nmcli connection modify bridge0 connection.autoconnect-slaves 1
+    $ nmcli connection up bridge0
+
+    $ ip link show master bridge0
+    3: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master bridge0 state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:62:61:0e brd ff:ff:ff:ff:ff:ff
+    4: enp8s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel master bridge0 state UP mode DEFAULT group default qlen 1000
+        link/ether 52:54:00:9e:f1:ce brd ff:ff:ff:ff:ff:ff
+    $ bridge link show
+    3: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master bridge0 state forwarding priority 32 cost 100
+    4: enp8s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master bridge0 state listening priority 32 cost 100

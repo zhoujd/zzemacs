@@ -189,3 +189,25 @@ Network
     $ sudo ifconfig myipvlan1 up
     $ sudo ip link add myipvlan2 link enp0s3 type ipvlan mode l2
     $ sudo ifconfig myipvlan2 up
+
+## How Docker Container Networking Works - Mimic It Using Linux Network Namespaces
+
+    ## https://dev.to/polarbit/how-docker-container-networking-works-mimic-it-using-linux-network-namespaces-9mj
+    ## Try to list docker network namespaces. But the result will be empty.
+    $ sudo ip netns list
+    <no result>
+
+    ## Make docker network namespaces visible.
+    $ sudo mkdir -p /var/run/netns
+    $ pid1="$(docker inspect con1 -f '{{.State.Pid}}')"
+    $ pid2="$(docker inspect con2 -f '{{.State.Pid}}')"
+    $ pid3="$(docker inspect con3 -f '{{.State.Pid}}')"
+    $ sudo ln -sf /proc/$pid1/ns/net /var/run/netns/con1
+    $ sudo ln -sf /proc/$pid2/ns/net /var/run/netns/con2
+    $ sudo ln -sf /proc/$pid3/ns/net /var/run/netns/con3
+
+    ## Now we can see the container network namespaces.
+    $ sudo ip netns list
+    con3 (id: 3)
+    con2 (id: 2)
+    con1 (id: 1)

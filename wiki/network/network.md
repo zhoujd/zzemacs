@@ -189,3 +189,19 @@ Network
     $ sudo ifconfig myipvlan1 up
     $ sudo ip link add myipvlan2 link enp0s3 type ipvlan mode l2
     $ sudo ifconfig myipvlan2 up
+
+## Use bridge connect namespace
+
+    $ ip link add br0 type bridge
+    $ ip link set dev br0 up
+
+    $ ip link add type veth
+
+    $ ip link set dev veth1 netns net0
+    $ ip netns exec net0 ip link set dev veth1 name eth0
+    $ ip netns exec net0 ip addr add 10.0.1.1/24 dev eth0
+    $ ip netns exec net0 ip link set dev eth0 up
+
+    $ ip link set dev veth0 master br0
+    $ ip link set dev veth0 up
+    $ bridge link

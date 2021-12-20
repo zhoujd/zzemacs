@@ -205,3 +205,12 @@ Network
     $ ip link set dev veth0 master br0
     $ ip link set dev veth0 up
     $ bridge link
+
+## Send a file over TCP port 9899 from host2 (client) to host1 (server).
+
+    ## https://en.wikipedia.org/wiki/Netcat
+    user@HOST1$ ncat -l 9899 > outputfile
+    user@HOST2$ ncat HOST1 9899 < inputfile
+    ## Transfer in the other direction, turning Ncat into a “one file” server.
+    user@HOST1$ ncat -l 9899 < inputfile
+    user@HOST2$ ncat HOST1 9899 > outputfile

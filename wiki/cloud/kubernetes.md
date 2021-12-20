@@ -58,9 +58,9 @@ Kubernetes
     $ sudo hostnamectl set-hostname worker01
 
     ## Step 8: Initialize Kubernetes on Master Node
-    $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+    $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16
     or
-    $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=<hostname>
+    $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --control-plane-endpoint=<hostname>
 
     kubernetes-master:~$ mkdir -p $HOME/.kube
     kubernetes-master:~$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config

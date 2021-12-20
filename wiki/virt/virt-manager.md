@@ -20,3 +20,23 @@ virt-manager
     $ sudo -s
     $ virsh define --file nameofvm.xml
     $ mv example.qcow2 /var/lib/libvirt/images/
+
+## Virsh commands cheatsheet
+
+    $ virsh nodeinfo
+    $ virsh list --all
+    $ virsh list
+    $ virsh domrename currentname  newname
+    $ virsh  edit domain
+    $ virsh start test
+    $ virsh autostart test
+    $ virsh autostart --disable test
+    $ virsh dominfo test
+    $ virsh shutdown test
+    $ virsh destroy test
+    $ for i in `sudo virsh list | grep running | awk '{print $2}'` do
+        sudo virsh shutdown $i
+      done
+    $ virsh reboot test
+    $ virsh console test
+    $ virsh console test --force

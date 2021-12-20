@@ -140,3 +140,17 @@ $ sudo reboot
 ## QEMU Guide to Bridged Networking
 
 https://github.com/foxlet/macOS-Simple-KVM/blob/master/docs/guide-passthrough.md
+
+## With iproute2
+
+    ## https://wiki.archlinux.org/title/Network_bridge
+    $ sudo ip link add name bridge_name type bridge
+    $ sudo ip link set bridge_name up
+    $ sudo ip link set eth0 up
+    $ sudo ip link set eth0 master bridge_name
+    $ sudo bridge link
+
+    ## delete brdige
+    $ sudo ip link set eth0 nomaster
+    $ sudo ip link set eth0 down
+    $ ip link delete bridge_name type bridge

@@ -53,3 +53,22 @@ kubernetes cni
 
     ## Back to default ns
     $ exit
+
+## Test network connections with ncat
+
+    ## Send a file over TCP port 9899 from host2 (client) to host1 (server).
+    user@HOST1$ sudo apt install ncat
+    user@HOST2$ sudo apt install ncat
+
+    user@HOST1$ ncat -l 9899 > outputfile
+    user@HOST2$ ncat HOST1 9899 < inputfile
+
+    user@HOST1$ ncat -l 9899
+    user@HOST2$ echo "This is a test" | ncat HOST1 9899
+
+    ## Transfer in the other direction, turning Ncat into a “one file” server.
+    user@HOST1$ ncat -l 9899 < inputfile
+    user@HOST2$ ncat HOST1 9899 > outputfile
+
+    user@HOST1$ echo "This is a test" | ncat -l 9899
+    user@HOST2$ ncat HOST1 9899

@@ -81,3 +81,8 @@ Nginx
         proxy_pass http://node_js;
       }
     }
+
+## Nginx forward proxy http/https and proxy mail service
+
+    ## https://programmer.group/nginx-forward-proxy-http-https-and-proxy-mail-service.html
+    ## https://github.com/chobits/ngx_http_proxy_connect_module

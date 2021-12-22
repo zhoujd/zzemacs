@@ -39,3 +39,10 @@ ssh
       -e ssh \
       /path/to/src \
       ${SLAVE_USER_NAME}@[${SLAVE_IPV6}%${MASTER_INTERFACE}]:/path/to/dest
+
+## rsync tool
+
+    ## Important: ALWAYS think about wether you want trailing / chars!
+    ## https://lzone.de/cheat-sheet/rsync
+    $ rsync -avz  src dest           # content of ./src/ transferred to ./dest/
+    $ rsync -avz  src dest/          # content of ./src/ transferred to ./dest/src/

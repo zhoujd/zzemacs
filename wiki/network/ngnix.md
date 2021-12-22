@@ -86,6 +86,7 @@ Nginx
 
     ## https://programmer.group/nginx-forward-proxy-http-https-and-proxy-mail-service.html
     ## https://github.com/chobits/ngx_http_proxy_connect_module
+    ## https://superuser.com/questions/604352/nginx-as-forward-proxy-for-https
     ## Nginx itself does not support https protocol request forwarding.
     ## In order for nginx to achieve this effect, need to use the third-party module ngx_http_proxy_connect_module.
     server {

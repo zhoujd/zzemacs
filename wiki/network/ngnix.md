@@ -86,3 +86,35 @@ Nginx
 
     ## https://programmer.group/nginx-forward-proxy-http-https-and-proxy-mail-service.html
     ## https://github.com/chobits/ngx_http_proxy_connect_module
+    ## Nginx itself does not support https protocol request forwarding.
+    ## In order for nginx to achieve this effect, need to use the third-party module ngx_http_proxy_connect_module.
+    server {
+
+        resolver 114.114.114.114;  #DNS resolution address
+        listen 10080;              #Monitor address
+        resolver_timeout 10s;      #Timeout
+        proxy_connect;             #Enable connection http method support
+        proxy_connect_allow            443 563;  #Ports that agents can connect to
+        proxy_connect_connect_timeout  10s;      #Agent connection time out
+        proxy_connect_read_timeout     10s;
+        proxy_connect_send_timeout     10s;
+        access_log  /weblogs/nginx/proxy.access.log;
+        error_log   /weblogs/nginx /proxy.error.log;
+
+        location / {
+            proxy_pass $scheme://$http_host$request_uri;
+            proxy_set_header Host $http_host;
+
+            proxy_buffers 256 4k;
+            proxy_max_temp_file_size 0;
+
+            proxy_connect_timeout 30s;
+
+            #allow 127.0.0.1;  #ip restrictions
+            #deny all ;
+        }
+    }
+
+    ## Test command (on the client)
+    $ curl -I http://www.baidu.com -v -x 10.10.11.93:10080
+    $ curl -I https://www.baidu.com -v -x 10.10.11.93:10080

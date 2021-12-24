@@ -228,6 +228,7 @@
   (kbd "C-c M-;") 'iedit-dwim
   (kbd "C-c M-h") 'discover-my-major
   (kbd "%")       'zz:match-paren
+  (kbd "M-<tab>") 'buffer-flip
 
   (kbd "C-h")     'delete-backward-char
   [backspace]     'delete-backward-char

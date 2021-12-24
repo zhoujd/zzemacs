@@ -401,9 +401,6 @@
 
 ;;buffer-flip
 (require 'buffer-flip)
-;; key to begin cycling buffers.  Global key.
-(global-set-key (kbd "M-<tab>") 'buffer-flip)
-
 ;; transient keymap used once cycling starts
 (setq buffer-flip-map
       (let ((map (make-sparse-keymap)))
@@ -411,7 +408,6 @@
         (define-key map (kbd "M-S-<tab>") 'buffer-flip-backward)
         (define-key map (kbd "M-ESC")     'buffer-flip-abort)
         map))
-
 ;; buffers matching these patterns will be skipped
 (setq buffer-flip-skip-patterns
       '("^\\*helm\\b"

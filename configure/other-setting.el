@@ -394,6 +394,11 @@
 ;;M-x world-time-list
 (require 'world-time-mode)
 
+;;flx ido
+(require 'flx-ido)
+(flx-ido-mode t)
+(setq ido-enable-flex-matching t)
+
 
 (provide 'other-setting)
 

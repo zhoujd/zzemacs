@@ -335,7 +335,7 @@
 (require 'ido-complete-space-or-hyphen)
 (setq ido-save-directory-list-file nil)
 (setq ido-use-virtual-buffers nil)
-(setq ido-enable-flex-matching t)
+(setq ido-enable-flex-matching nil)
 (require 'ido)
 (ido-mode t)
 

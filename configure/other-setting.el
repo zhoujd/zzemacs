@@ -401,14 +401,14 @@
 
 ;;buffer-flip
 (require 'buffer-flip)
-;; transient keymap used once cycling starts
+;;transient keymap used once cycling starts
 (setq buffer-flip-map
       (let ((map (make-sparse-keymap)))
         (define-key map (kbd "M-<tab>")   'buffer-flip-forward)
         (define-key map (kbd "M-S-<tab>") 'buffer-flip-backward)
         (define-key map (kbd "M-ESC")     'buffer-flip-abort)
         map))
-;; buffers matching these patterns will be skipped
+;;buffers matching these patterns will be skipped
 (setq buffer-flip-skip-patterns
       '("^\\*helm\\b"
         "^\\*swiper\\*$"))

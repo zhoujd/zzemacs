@@ -13,6 +13,14 @@
 (require 'apply-keys)
 
 (apply-keys-to-map
+ function-key-map
+ (list
+  [(control shift iso-lefttab)] [(control shift tab)]
+  [(meta shift iso-lefttab)] [(meta shift tab)]
+  [(meta control shift iso-lefttab)] [(meta control shift tab)]
+  ))
+
+(apply-keys-to-map
  key-translation-map
  (list
   (kbd "M-] h")   'event-apply-hyper-modifier

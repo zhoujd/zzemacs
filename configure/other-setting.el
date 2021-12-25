@@ -415,6 +415,7 @@
 (setq buffer-flip-skip-patterns
       '("^\\*helm\\b"
         "^\\*Ido\\b"
+        "^\\*tramp\\b"
         "^\\*swiper\\*$"))
 
 

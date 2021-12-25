@@ -131,3 +131,18 @@ Git
 
     $ sudo apt install git-gui
     $ cd /usr/share/git-gui/lib
+
+## How to use git bisect?
+
+    $ git log --pretty=oneline
+    $ git bisect start
+    $ git bisect bad                 # Current version is bad
+    $ git bisect good v2.6.13-rc2    # v2.6.13-rc2 is known to be good
+    or
+    $ git bisect start [end_commit] [begin_commit]
+    $ git bisect start HEAD 4d83cf
+    $ git log  ## run test
+    $ git bisect good
+    $ git log  ## run test
+    $ git bisect bad
+    $ git bisect reset

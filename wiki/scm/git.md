@@ -134,6 +134,7 @@ Git
 
 ## How to use git bisect?
 
+    $ git help bisect
     $ git log --pretty=oneline
     $ git bisect start
     $ git bisect bad                 # Current version is bad

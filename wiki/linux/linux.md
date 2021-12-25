@@ -373,10 +373,3 @@ Linux something
     $ users
     $ who -uH
     $ zgrep login /var/log/auth.log*
-
-## chage command in Linux
-
-    ## chage command is used to view and change the user password expiry information
-    $ USERADDCMD="useradd -m <user>"
-    $ USERCHGCMD="chage -M 99999 sys_cert;passwd -d <user>"
-    $ getent passwd 2>/dev/null | grep -m 1 -e <user>

@@ -395,9 +395,13 @@
 (require 'world-time-mode)
 
 ;;flx ido
-(require 'flx-ido)
-(flx-ido-mode t)
-(setq ido-enable-flex-matching t)
+;(require 'flx-ido)
+;(flx-ido-mode t)
+;(setq ido-enable-flex-matching t)
+
+;;ido-better-flex
+(require 'ido-better-flex)
+(ido-better-flex/enable)
 
 ;;buffer-flip
 (require 'buffer-flip)

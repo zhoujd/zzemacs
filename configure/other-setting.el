@@ -414,6 +414,7 @@
 ;;buffers matching these patterns will be skipped
 (setq buffer-flip-skip-patterns
       '("^\\*helm\\b"
+        "^\\*Ido\\b"
         "^\\*swiper\\*$"))
 
 

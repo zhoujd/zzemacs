@@ -1,13 +1,13 @@
 Linux Tool
 ==========
 
-## Linuxkit 
+## Linuxkit
 
     git clone https://github.com/linuxkit/linuxkit
     cd linuxkit && make
     cp -rf bin/linuxkit /usr/local/linuxkit
     linuxkit build -format iso-bios -name kitiso minimal.yml
-    du -sh * | grep linuxkit.iso 
+    du -sh * | grep linuxkit.iso
     file linuxkit.iso
 
 ## chage command in Linux
@@ -17,3 +17,9 @@ Linux Tool
     $ USERCHGCMD="chage -M 99999 sys_cert;passwd -d <user>"
     $ getent passwd 2>/dev/null | grep -m 1 -e <user>
     $ hostnamectl status
+
+## lsar and unar
+
+    $ sudo apt install unar
+    $ lsar
+    $ unar

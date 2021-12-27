@@ -5,9 +5,15 @@
 (zz:load-path "site-lisp/company")
 (require 'company)
 (global-company-mode t)
-(setq company-idle-delay 0) ;; nil for not auto popup
-(setq company-show-numbers t)
-(setq company-minimum-prefix-length 2)
+(setq company-idle-delay 0
+      company-show-numbers t
+      company-complete-number t
+      company-dabbrev-ignore-case t
+      company-dabbrev-downcase nil
+      company-dabbrev-other-buffers t
+      company-dabbrev-code-other-buffers t
+      company-selection-wrap-around t
+      company-minimum-prefix-length 2)
 
 ;;keys
 (defkeys-map company-active-map

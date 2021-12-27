@@ -26,24 +26,12 @@
   (let ((darker-fg        "#e4e4ef")
         (darker-fg+1      "#f4f4ff")
         (darker-fg+2      "#f5f5f5")
-        (darker-white     "#ffffff")
-        (darker-black     "#000000")
         (darker-bg-1      "#101010")
         (darker-bg        "#181818")
         (darker-bg+1      "#282828")
         (darker-bg+2      "#453d41")
-        (darker-bg+3      "#484848")
-        (darker-bg+4      "#52494e")
-        (darker-red-1     "#c73c3f")
-        (darker-red       "#f43841")
-        (darker-red+1     "#ff4f58")
         (darker-green     "#73c936")
-        (darker-yellow    "#ffdd33")
-        (darker-brown     "#cc8c3c")
-        (darker-quartz    "#95a99f")
-        (darker-niagara-1 "#5f627f")
-        (darker-niagara   "#96a6c8")
-        (darker-wisteria  "#9e95c7"))
+        (darker-brown     "#cc8c3c"))
     (custom-set-faces
      `(company-tooltip ((t (:foreground ,darker-fg :background ,darker-bg+1))))
      `(company-tooltip-annotation ((t (:foreground ,darker-brown :background ,darker-bg+1))))
@@ -57,7 +45,6 @@
      `(company-preview ((t (:background ,darker-green))))
      `(company-preview-common ((t (:foreground ,darker-green :background ,darker-bg-1))))
      )))
-
 (add-hook 'company-mode-hook 'zz:company-hook)
 
 

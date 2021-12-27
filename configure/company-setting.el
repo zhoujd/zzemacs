@@ -42,7 +42,7 @@
      `(company-tooltip ((t (:foreground ,darker-fg :background ,darker-bg+1))))
      `(company-tooltip-annotation ((t (:foreground ,darker-brown :background ,darker-bg+1))))
      `(company-tooltip-annotation-selection ((t (:foreground ,darker-brown :background ,darker-bg-1))))
-     `(company-tooltip-selection ((t (:foreground ,darker-fg :background ,darker-bg-1))))
+     `(company-tooltip-selection ((t (:foreground ,darker-brown :background ,darker-bg-1))))
      `(company-tooltip-mouse ((t (:background ,darker-bg-1))))
      `(company-tooltip-common ((t (:foreground ,darker-green))))
      `(company-tooltip-common-selection ((t (:foreground ,darker-green))))

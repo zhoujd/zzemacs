@@ -301,6 +301,13 @@ Dmitriy Igrishin's patched version of comint.el."
  (add-hook 'shell-dynamic-complete-functions
            'bash-completion-dynamic-complete))
 
+(defun zz:cd ()
+  "cd with ido"
+  (interactive)
+  (let ((dir (file-name-as-directory
+              (ido-read-directory-name "Directory: "))))
+    (cd dir)))
+
 (defun zz:cd-shell ()
   "Open a cd shell"
   (interactive)
@@ -339,6 +346,10 @@ Dmitriy Igrishin's patched version of comint.el."
       (cd remote)
       (zz:get-shell)
       )))
+
+(defun zz:helm-cd (dir)
+  (interactive "DDirectory: ")
+  (cd dir))
 
 (defun zz:helm-cd-shell (dir)
   (interactive "DDirectory: ")

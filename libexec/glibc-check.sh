@@ -6,11 +6,20 @@ if [ "$OS" = "Windows_NT" ] ; then
     exit 0
 fi
 
-GLIBC_FOLDER=/lib64
-GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
+OnCentOS() {
+    GLIBC_FOLDER=/lib64
+    GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
+}
+
+OnUbuntu() {
+    GLIBC_FOLDER=/usr/lib/x86_64-linux-gnu
+    GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
+}
+
+OnUbuntu
 
 ## List GLIBC files
-ls -l  $GLIBC_FOLDER/libc*
+ls -l  $GLIBC_FOLDER/libc.so.*
 
 ## List GLIBC  version
 echo "Check $GLIBC_PATH ..."

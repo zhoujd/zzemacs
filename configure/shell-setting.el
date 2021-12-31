@@ -295,7 +295,11 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;https://github.com/szermatt/emacs-bash-completion
 (unless-ms-windows
  (require 'bash-completion)
- (bash-completion-setup))
+ (autoload 'bash-completion-dynamic-complete
+   "bash-completion"
+   "BASH completion hook")
+ (add-hook 'shell-dynamic-complete-functions
+           'bash-completion-dynamic-complete))
 
 (defun zz:cd-shell ()
   "Open a cd shell"

@@ -380,8 +380,9 @@ Dmitriy Igrishin's patched version of comint.el."
         (message "Cannot find trans!"))
     ))
 
-;;shell mode
-(require 'company-shell)
+;;company-shell
+;(require 'company-shell)
+;(add-to-list 'company-backends 'company-shell)
 
 ;;shell-mode use company-mode
 (add-hook 'shell-mode-hook

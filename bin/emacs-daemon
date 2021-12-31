@@ -3,6 +3,11 @@
 ## https://www.emacswiki.org/emacs/EmacsAsDaemon
 ## https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd
 ## systemctl --user list-units --type service
+## Add Chinese input method support
+## Environment=SSH_AUTH_SOCK=%t/keyring/ssh LANG=en_US.UTF-8 GTK_IM_MODULE=ibus QT4_IM_MODULE=ibus XMODIFIERS="@im=ibus"
+## sed -i '/Environment/ s/$/ LANG=en_US.UTF-8 GTK_IM_MODULE=ibus QT4_IM_MODULE=ibus XMODIFIERS="@im=ibus"/' ~/.config/systemd/user/emacs.service
+## systemctl --user daemon-reload
+## systemctl --user restart emacs.service
 
 install() {
     echo "Install emacs daemon"

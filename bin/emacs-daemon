@@ -31,7 +31,10 @@ restart() {
 }
 
 status() {
+    echo "Status of emacs daemon"
+    systemctl status --user emacs
     ps -ef | grep emacs | grep daemon | grep -v emacs-daemon
+
 }
 
 case $1 in

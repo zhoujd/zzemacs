@@ -20,14 +20,14 @@ install_bashrc() {
 
 # load script in ~/.bashrc.d
 for i in ~/.bashrc.d/*.sh ; do
-    test -r "\$i" && . "\$i" >/dev/null 2>&1
+    [ -r "\$i" ] && . "\$i" >/dev/null 2>&1
 done
 EOF
 }
 
 install_bashrc_emacs() {
     cat <<EOF > $ZZEMACS_BASHRC
-test -f $ZZEMACS_ROOT/etc/profile && . $ZZEMACS_ROOT/etc/profile
+[ -f $ZZEMACS_ROOT/etc/profile ] && . $ZZEMACS_ROOT/etc/profile
 EOF
 }
 

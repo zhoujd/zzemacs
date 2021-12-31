@@ -42,6 +42,21 @@ status() {
 
 }
 
+config() {
+    echo "Config emacs daemon"
+    mkdir -p ~/.config/systemd/user/emacs.service.d
+    tee ~/.config/systemd/user/emacs.service.d/override.conf <<EOF
+[Service]
+Environment="LANG=en_US.UTF-8"
+Environment="GTK_IM_MODULE=ibus"
+Environment="QT_IM_MODULE=ibus"
+Environment="XMODIFIERS=@im=ibus"
+EOF
+    echo echo "Reload emacs daemon"
+    systemctl --user daemon-reload
+    systemctl --user restart --now emacs
+}
+
 case $1 in
     install )
         install
@@ -61,7 +76,10 @@ case $1 in
     status )
         status
         ;;
-    * )
-        echo "Usage: $(basename $0) {install|uninstall|start|stop|restart|status}"
+    config )
+        config
+        ;;
+     * )
+        echo "Usage: $(basename $0) {install|uninstall|start|stop|restart|status|config}"
         ;;
 esac

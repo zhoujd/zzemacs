@@ -1,22 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
-##Check run OS
-if [ "$OS" = "Windows_NT" ] ; then
-    echo "This script is not support on windows."
-    exit 0
-fi
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 
-OnCentOS() {
-    GLIBC_FOLDER=/lib64
-    GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
-}
+. $ZZEMACS_ROOT/bin/sample.sh
 
-OnUbuntu() {
-    GLIBC_FOLDER=/usr/lib/x86_64-linux-gnu
-    GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
-}
-
-OnUbuntu
+# dectect OS version
+case "$OS_DISTRO" in
+    "Ubuntu" | "LinuxMint" )
+        GLIBC_FOLDER=/usr/lib/x86_64-linux-gnu
+        GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
+        ;;
+    "CentOS" )
+        GLIBC_FOLDER=/lib64
+        GLIBC_PATH=$GLIBC_FOLDER/libc.so.6
+        ;;
+    * )
+        echo "Non supported linux distribution."
+        exit 1
+        ;;
+esac
 
 ## List GLIBC files
 ls -l  $GLIBC_FOLDER/libc.so.*

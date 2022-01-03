@@ -378,3 +378,6 @@ Linux something
 
     ## https://opensource.com/article/20/7/linux-wallset
     ## https://github.com/terroo/wallset
+    $ wallset -V video.mp4
+    $ wallset -L
+    $ wallset -I 1

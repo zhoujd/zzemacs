@@ -373,3 +373,8 @@ Linux something
     $ users
     $ who -uH
     $ zgrep login /var/log/auth.log*
+
+## Add videos as wallpaper on your Linux desktop
+
+    ## https://opensource.com/article/20/7/linux-wallset
+    ## https://github.com/terroo/wallset

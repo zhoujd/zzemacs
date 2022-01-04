@@ -40,3 +40,11 @@ virt-manager
     $ virsh reboot test
     $ virsh console test
     $ virsh console test --force
+
+## How to fix "network 'default' is not active" error in libvirt
+
+    ## https://libvirt.org/sources/virshcmdref/html/sect-net-autostart.html
+    ## https://www.xmodulo.com/network-default-is-not-active.html
+    $ sudo virsh net-list --all
+    $ sudo virsh net-start default
+    $ net-autostart --network default --disable

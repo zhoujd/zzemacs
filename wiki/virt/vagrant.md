@@ -16,3 +16,9 @@ Vagrant
     $ vagrant status
     $ vagrant destroy
     $ vagrant up --provider libvirt
+
+
+## Use bundler to execute Vagrant:
+
+    $ sudo apt install ruby-bundler
+    $ bundle exec vagrant up --provider=libvirt

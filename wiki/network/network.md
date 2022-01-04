@@ -231,4 +231,5 @@ Network
     # ip route add default via $ROUTE dev br0
 
     ## -netdev TYPE,id=NAME,...
-    # qemu -netdev tap,id=tap0
+    # qemu -netdev tap,id=tap0 linux.img
+    # qemu -net tap -net tap0 linux.img

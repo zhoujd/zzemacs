@@ -18,7 +18,8 @@ Vagrant
     $ vagrant up --provider libvirt
 
 
-## Use bundler to execute Vagrant:
+## Use bundler to execute Vagrant
 
+    ## https://github.com/vagrant-libvirt/vagrant-libvirt#libvirt-configuration
     $ sudo apt install ruby-bundler
     $ bundle exec vagrant up --provider=libvirt

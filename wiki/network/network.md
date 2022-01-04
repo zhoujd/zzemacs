@@ -229,3 +229,6 @@ Network
     # ip address delete $PREFIX dev eth0
     # ip address add $PREFIX dev br0
     # ip route add default via $ROUTE dev br0
+
+    ## -netdev TYPE,id=NAME,...
+    # qemu -netdev tap,id=tap0

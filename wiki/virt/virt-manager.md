@@ -47,4 +47,4 @@ virt-manager
     ## https://www.xmodulo.com/network-default-is-not-active.html
     $ sudo virsh net-list --all
     $ sudo virsh net-start default
-    $ net-autostart --network default --disable
+    $ sudo virsh net-autostart --network default --disable

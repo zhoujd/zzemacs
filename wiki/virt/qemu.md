@@ -59,3 +59,29 @@ QEMU
 
     ##http://wiki.stoney-cloud.org/wiki/Qemu_Guest_Agent_Integration
     ##https://wiki.libvirt.org/page/Qemu_guest_agent
+
+## Setting the TAP network for QEMU
+
+    ## https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/862912682/Networking+in+QEMU
+    sudo apt-get install bridge-utils
+    sudo apt-get install uml-utilities
+    # Create a bridge named br0
+    brctl addbr br0
+    # Add eth0 interface to bridge
+    brctl addif br0 eth0
+    # Create tap interface.
+    tunctl -t tap0 -u `whoami`
+    # Add tap0 interface to bridge.
+    brctl addif br0 tap0
+    # Check/Bring up all interfaces.
+    ifconfig eth0 up
+    ifconfig tap0 up
+    ifconfig br0 up
+    # Check if bridge is set properly.
+    brctl show
+    # Assign IP address to bridge 'br0'.
+    dhclient -v br0
+
+    ## Boot QEMU
+    petalinux-boot --qemu --kernel --qemu-args="-net nic -net nic -net nic -net nic -net tap,ifname=tap0,script=no,downscript=no"
+    petalinux-boot --qemu --kernel --qemu-args="-net nic -net nic -net tap,ifname=tap0,script=no,downscript=no"

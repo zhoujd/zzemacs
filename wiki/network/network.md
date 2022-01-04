@@ -214,3 +214,18 @@ Network
     ## Transfer in the other direction, turning Ncat into a “one file” server.
     user@HOST1$ ncat -l 9899 < inputfile
     user@HOST2$ ncat HOST1 9899 > outputfile
+
+## Setting up taps on Linux
+
+    ## https://wiki.qemu.org/Documentation/Networking
+    # modprobe tun tap                  # unnecessary if tun/tap is built-in
+    # ip link add br0 type bridge
+    # ip tuntap add dev tap0 mode tap
+    # ip link set dev tap0 master br0   # set br0 as the target bridge for tap0
+    # ip link set dev eth0 master br0   # set br0 as the target bridge for eth0
+    # ip link set dev br0 up
+
+    ## reassigning the physical device's addresses for the bridge to be usable
+    # ip address delete $PREFIX dev eth0
+    # ip address add $PREFIX dev br0
+    # ip route add default via $ROUTE dev br0

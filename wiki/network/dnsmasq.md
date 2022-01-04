@@ -89,3 +89,9 @@ Dnsmasq
     Aliases:
 
     myhost.company has address 10.0.0.2
+
+## Subnet with dnsmasq as the DHCP server
+
+    # ip addr add 172.20.0.1/16 dev br0
+    # ip link set br0 up
+    # dnsmasq --interface=br0 --bind-interfaces --dhcp-range=172.20.0.2,172.20.255.254

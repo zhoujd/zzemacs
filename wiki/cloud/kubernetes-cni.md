@@ -72,3 +72,13 @@ kubernetes cni
 
     user@HOST1$ echo "This is a test" | ncat -l 9899
     user@HOST2$ ncat HOST1 9899
+
+    ## Test with nc (Use Ctrl+C to exit)
+    $ ping 192.0.2.1
+    $ ping6 2001:db8::1
+    $ echo foobar | nc -6 -u 2001:db8::1 4242
+    foobar
+    $ echo foobar | nc -u 192.0.2.1 4242
+    foobar
+    $ echo foobar | nc -6 -q2 2001:db8::1 4242
+    foobar

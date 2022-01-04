@@ -27,7 +27,7 @@ virt-manager
     $ virsh list --all
     $ virsh list
     $ virsh domrename currentname  newname
-    $ virsh  edit domain
+    $ virsh edit domain
     $ virsh start test
     $ virsh autostart test
     $ virsh autostart --disable test

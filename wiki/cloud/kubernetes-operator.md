@@ -119,3 +119,72 @@ Kubernetes Operator
 
     ## Submit CR
     $ kubectl logs -f test-controller-75bf886d9c-whjdn
+
+## Extend the Kubernetes API by creating our very own object/resource via CRDs
+
+    ## Create the CRD
+    $ cat my-new-crd.yaml
+    apiVersion: apiextensions.k8s.io/v1beta1
+    kind: CustomResourceDefinition
+    metadata:
+      name: mysql.db.example.com
+    spec:
+      group: db.example.com
+      version: v1
+      scope: Namespaced
+      names:
+        plural: mysqls
+        singular: mysql
+        kind: MySql
+        shortNames:
+        - ms
+    $ kubectl create -f my-new-crd.yaml
+    ## Verify CRD Creation via CLI
+    $ kubectl get crd
+    NAME                 KIND
+    mysql.db.example.com CustomResourceDefinition.v1beta1.apiextensions.k8s.io
+    $ curl -XGET localhost:8001/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions
+    ...
+    ## Verify New Database Resource via CLI
+    $ kubectl get mysql
+    No resources found.
+    $ curl -XGET localhost:8001/apis/db.example.com/v1/namespaces/default/mysqls
+    {
+      "apiVersion": "db.example.com/v1",
+      "items": [],
+      "kind": "MySqlList",
+      "metadata": {
+        "resourceVersion": "240591",
+        "selfLink": "/apis/stable.example.com/v1/namespaces/default/mysqls"
+      }
+    }
+    ## Create a new mysql object
+    $ cat new-mysql-object.yaml
+    apiVersion: "db.example.com/v1"
+    kind: MySql
+    metadata:
+      name: wordpress
+    spec:
+      user: wp
+      password: secret
+      foo: bar
+    $ kubectl create -f new-mysql-object.yaml
+    ## verify the creation of the mysql object
+    $ kubectl get mysql
+    $ kubectl get mysql wordpress -o yaml
+    apiVersion: db.example.com/v1
+    kind: MySql
+    metadata:
+      clusterName: ""
+      creationTimestamp: 2017-10-14T03:23:26Z
+      deletionGracePeriodSeconds: null
+      deletionTimestamp: null
+      name: wordpress
+      namespace: default
+      resourceVersion: "238701"
+      selfLink: /apis/db.example.com/v1/namespaces/default/mysqls/wordpress
+      uid: 0afd1584-b08f-11e7-9176-080027b424ef
+    spec:
+      foo: bar
+      password: secret
+      user: wp

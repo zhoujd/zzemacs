@@ -188,3 +188,16 @@ Kubernetes Operator
       foo: bar
       password: secret
       user: wp
+    ## A Custom Resource needs a controller to ACT upon its presence
+    ## Kubernetes Controllers
+       Observe -> Analyze -> Act
+    ## Need a custom controller to notice the new database object and ACT
+    ## Operators! = Custom Resource Definitions (CRD) + Custom Controller + Your Knowledge!
+
+## Kubernetes object reading
+
+    $ oc proxy
+    $ curl localhost:8001
+    $ curl http://localhost:8001/api/v1/ | jq .resources[].name
+    $ kubectl get pod kube-dns-1187388186-rr1jb -n kube-system -o yaml
+    $ curl -XGET ../api/v1/namespaces/kube-system/pods/kube-dns-1187388186-rr1jb

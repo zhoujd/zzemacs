@@ -22,7 +22,7 @@ kubernetes cni
     $ export CNI_COMMAND=ADD
     $ export CNI_NETNS=/var/run/netns/test
     $ export CNI_IFNAME=eth0
-    $ export CNI_ARGS
+    $ export CNI_ARGS=
     $ export CNI_PATH=/opt/cni/bin
     $ export CNI_CONTAINERID="aaa"
     $ /opt/cni/bin/host-device < myhost-device.conf

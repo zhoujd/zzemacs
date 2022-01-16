@@ -171,3 +171,19 @@ Kubernetes
     $ alias k8='kubectl'
     $ alias k8prd='kubectl --kubeconfig ~/.kube/config_prd.conf'
     $ kubectl --kubeconfig
+
+## Get the POD and Node IP from inside a Pod?
+
+    containers:
+    - env:
+      - name: MY_POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
+
+    $ kubectl get pods "${PodName}" -o json | jq .status.podIP | tr -d "\"")
+    $ kubectl get pods "${PodName}" -o json | jq .status.hostIP | tr -d "\"")

@@ -59,7 +59,9 @@ Kubernetes
 
     ## Step 8: Initialize Kubernetes on Master Node
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16
-    or
+    $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --apiserver-advertise-address=<ip>
+    $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --apiserver-advertise-address=<hostname>
+    $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --control-plane-endpoint=<ip>
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --control-plane-endpoint=<hostname>
 
     kubernetes-master:~$ mkdir -p $HOME/.kube

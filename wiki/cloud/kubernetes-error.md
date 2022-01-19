@@ -7,3 +7,5 @@ Kubernetes Error
     KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"
     $ sudo systemctl daemon-reload
     $ sudo systemctl restart kubelet
+    $ sudo systemctl status kubelet
+    $ journalctl -xeu kubelet

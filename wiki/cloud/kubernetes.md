@@ -52,6 +52,8 @@ Kubernetes
 
     ## Step 6: Begin Kubernetes Deployment
     $ sudo swapoff -a
+    $ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+    $ sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
     ## Step 7: Assign Unique Hostname for Each Server Node
     $ sudo hostnamectl set-hostname master-node

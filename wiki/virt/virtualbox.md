@@ -13,4 +13,4 @@ VirtualBox
     ## Getting the VM's IP address
     $ vboxmanage guestproperty get {VM NAME} "/VirtualBox/GuestInfo/Net/0/V4/IP"
     ## Add Port Forwarding (e.g. SSH)
-    vboxmanage modifyvm {VM NAME} --natpf1 "guestssh,tcp,,22111,,22"
+    $ vboxmanage modifyvm {VM NAME} --natpf1 "guestssh,tcp,,22111,,22"

@@ -118,6 +118,10 @@
 
 ;;https://github.com/ggreer/the_silver_searcher
 ;;apt/dnf/yum install silversearcher-ag
+;;helm-ag-base-command "grep -rin"
+;;helm-ag-base-command "csearch -n"
+;;helm-ag-base-command "pt --nocolor --nogroup"
+;;helm-ag-base-command "rg --vimgrep --no-heading"
 (defun zz:helm-ag-switch-to-ag-inexact()
   "case-insensitive and without word boundaries."
   (interactive)

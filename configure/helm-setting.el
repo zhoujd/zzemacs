@@ -118,6 +118,7 @@
 
 ;;https://github.com/ggreer/the_silver_searcher
 ;;apt/dnf/yum install silversearcher-ag
+;;apt/dnf/yum install ripgrep
 ;;helm-ag-base-command "grep -rin"
 ;;helm-ag-base-command "csearch -n"
 ;;helm-ag-base-command "pt --nocolor --nogroup"

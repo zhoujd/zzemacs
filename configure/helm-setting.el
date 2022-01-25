@@ -157,8 +157,24 @@
         helm-ag-insert-at-point 'symbol)
   (message "helm-ag switch to pss"))
 
+(defun zz:helm-ag-switch-to-grep-inexact()
+  (interactive)
+  (setq helm-ag-command-option ""
+        helm-ag-base-command "grep -rin"
+        helm-ag-insert-at-point 'symbol)
+  (message "helm-ag switch to grep inexact"))
+
+(defun zz:helm-ag-switch-to-grep-exact()
+  (interactive)
+  (setq helm-ag-command-option ""
+        helm-ag-base-command "grep -rn"
+        helm-ag-insert-at-point 'symbol)
+  (message "helm-ag switch to grep exact"))
+
 ;;helm default using ag
-(zz:helm-ag-switch-to-ag-inexact)
+(if (executable-find "ag")
+    (zz:helm-ag-switch-to-ag-inexact)
+    (zz:helm-ag-switch-to-grep-inexact))
 
 (require 'helm-grep)
 (custom-set-variables

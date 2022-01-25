@@ -125,6 +125,13 @@
         helm-ag-insert-at-point 'symbol)
   (message "helm-ag switch to ag"))
 
+(defun zz:helm-ag-switch-to-ag-exact()
+  (interactive)
+  (setq helm-ag-base-command "ag --nocolor --nogroup --word-regexp --case-sensitive"
+        helm-ag-command-option "--all-text"
+        helm-ag-insert-at-point 'symbol)
+  (message "helm-ag switch to ag exact"))
+
 ;;https://beyondgrep.com/install/
 ;;https://beyondgrep.com/more-tools/
 ;;Ubuntu: sudo apt install ack-grep

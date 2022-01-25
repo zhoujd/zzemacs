@@ -160,14 +160,14 @@
 (defun zz:helm-ag-switch-to-grep-inexact()
   (interactive)
   (setq helm-ag-command-option ""
-        helm-ag-base-command "grep -rin –binary-files=text"
+        helm-ag-base-command "grep -rinI"
         helm-ag-insert-at-point 'symbol)
   (message "helm-ag switch to grep inexact"))
 
 (defun zz:helm-ag-switch-to-grep-exact()
   (interactive)
   (setq helm-ag-command-option ""
-        helm-ag-base-command "grep -rn –binary-files=text"
+        helm-ag-base-command "grep -rnI"
         helm-ag-insert-at-point 'symbol)
   (message "helm-ag switch to grep exact"))
 

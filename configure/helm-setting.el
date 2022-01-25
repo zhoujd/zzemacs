@@ -118,7 +118,8 @@
 
 ;;https://github.com/ggreer/the_silver_searcher
 ;;apt/dnf/yum install silversearcher-ag
-(defun zz:helm-ag-switch-to-ag()
+(defun zz:helm-ag-switch-to-ag-inexact()
+  "case-insensitive and without word boundaries."
   (interactive)
   (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
         helm-ag-command-option "--all-text"
@@ -126,6 +127,7 @@
   (message "helm-ag switch to ag"))
 
 (defun zz:helm-ag-switch-to-ag-exact()
+  "case-sensitive and with word boundaries."
   (interactive)
   (setq helm-ag-base-command "ag --nocolor --nogroup --word-regexp --case-sensitive"
         helm-ag-command-option "--all-text"
@@ -152,7 +154,7 @@
   (message "helm-ag switch to pss"))
 
 ;;helm default using ag
-(zz:helm-ag-switch-to-ag)
+(zz:helm-ag-switch-to-ag-inexact)
 
 (require 'helm-grep)
 (custom-set-variables

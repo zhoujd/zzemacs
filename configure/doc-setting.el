@@ -1,7 +1,7 @@
 ;;;; Document setting
 
 ;;markdown setting
-;;http://http://johnmacfarlane.net/pandoc/
+;;https://github.com/jrblevin/markdown-mode
 (zz:load-path "site-lisp/markdown-mode")
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))

@@ -68,5 +68,7 @@ FFMPEG
 
 ## Recorde video
 
+    ## slop -f "%x %y %w %h"
+    $ sudo apt install slop
     $ ffmpeg -f x11grab -s 1920x1024 -i :0.0+0,40 -c:v libx264 -preset ultrafast -crf 0 /tmp/emacs.mkv
     $ ffmpeg -i /tmp/emacs.mkv /tmp/emacs.mp4 #or whatever output you want - mp4 is about 1/100th the size

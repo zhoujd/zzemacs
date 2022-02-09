@@ -452,7 +452,10 @@
 (custom-set-variables
  '(auto-revert-remote-files t))
 
-;;disable cl warning on emacs27
+;;remove cl warning on emacs27
+;;debug `Package cl is deprecated`
+;(require 'loadhist)
+;(file-dependents (feature-file 'cl))
 (unless (< emacs-major-version 27)
   (setq byte-compile-warnings '(cl-functions)))
 

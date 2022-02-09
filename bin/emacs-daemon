@@ -51,8 +51,8 @@ status() {
 
 config() {
     echo "Config emacs daemon"
-    mkdir -p ~/.config/systemd/user/emacs.service.d
-    tee ~/.config/systemd/user/emacs.service.d/override.conf <<EOF
+    mkdir -p $SERV_ROOT/emacs.service.d
+    tee $SERV_ROOT/emacs.service.d/override.conf <<EOF
 [Service]
 Environment="LANG=en_US.UTF-8"
 Environment="GTK_IM_MODULE=ibus"

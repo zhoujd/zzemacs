@@ -1,6 +1,6 @@
 ;;; helm-for-files.el --- helm-for-files and related. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@
     helm-source-locate)
   "Your preferred sources for `helm-for-files' and `helm-multi-files'.
 
-When adding a source here it is up to you to ensure the library of
-this source is accessible and properly loaded."
+When adding a source here it is up to you to ensure the library
+of this source is accessible and properly loaded."
   :type '(repeat (choice symbol))
   :group 'helm-files)
 
@@ -128,7 +128,7 @@ Be aware that a nil value will make tramp display very slow."
    (migemo :initform t)
    (persistent-action :initform 'helm-ff-kill-or-find-buffer-fname)))
 
-(defmethod helm--setup-source :after ((source helm-recentf-source))
+(cl-defmethod helm--setup-source :after ((source helm-recentf-source))
   (setf (slot-value source 'action)
         (append (symbol-value (helm-actions-from-type-file))
                 '(("Delete file(s) from recentf" .
@@ -138,10 +138,11 @@ Be aware that a nil value will make tramp display very slow."
 
 (defvar helm-source-recentf nil
   "See (info \"(emacs)File Conveniences\").
-Set `recentf-max-saved-items' to a bigger value if default is too small.")
+Set `recentf-max-saved-items' to a bigger value if default is too
+small.")
 
 (defcustom helm-recentf-fuzzy-match nil
-  "Enable fuzzy matching in `helm-source-recentf' when non--nil."
+  "Enable fuzzy matching in `helm-source-recentf' when non-nil."
   :group 'helm-files
   :type 'boolean
   :set (lambda (var val)
@@ -173,7 +174,7 @@ Colorize only symlinks, directories and files."
            ;; Call file-attributes only if:
            ;; - file is not remote
            ;; - helm-for-files--tramp-not-fancy is nil and file is remote AND
-           ;; connected. (Issue #1679)
+           ;; connected. (Bug#1679)
            for type = (and (or (null isremote)
                                (and (null helm-for-files-tramp-not-fancy)
                                     (file-remote-p i nil t)))
@@ -192,11 +193,18 @@ Colorize only symlinks, directories and files."
                                     'match-part (funcall mp-fn disp)
                                     'help-echo (expand-file-name i))
                         i))
-                 (t (cons (propertize disp
-                                      'face 'helm-ff-file
-                                      'match-part (funcall mp-fn disp)
-                                      'help-echo (expand-file-name i))
-                          i)))))
+                 (t (let* ((ext (helm-file-name-extension disp))
+                           (disp (propertize disp
+                                             'face 'helm-ff-file
+                                             'match-part (funcall mp-fn disp)
+                                             'help-echo (expand-file-name i))))
+                      (when (condition-case _err
+                                (string-match (format "\\.\\(%s\\)$" ext) disp)
+                              (invalid-regexp nil))
+                        (add-face-text-property
+                         (match-beginning 1) (match-end 1)
+                         'helm-ff-file-extension nil disp))
+                      (cons disp i))))))
 
 (defclass helm-files-in-current-dir-source (helm-source-sync helm-type-file)
   ((candidates :initform (lambda ()
@@ -253,8 +261,8 @@ Run all sources defined in `helm-for-files-preferred-list'."
 
 Allow toggling back and forth from locate to others sources with
 `helm-multi-files-toggle-locate-binding' key.
-This avoid launching needlessly locate when what you search is already
-found."
+This avoids launching locate needlessly when what you are
+searching for is already found."
   (interactive)
   (require 'helm-x-files)
   (unless helm-source-buffers-list
@@ -298,11 +306,5 @@ found."
         :buffer "*helm recentf*"))
 
 (provide 'helm-for-files)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-for-files.el ends here

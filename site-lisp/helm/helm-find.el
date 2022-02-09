@@ -1,6 +1,6 @@
 ;;; helm-find.el --- helm interface for find command. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,8 +26,9 @@
   :type  'boolean)
 
 (defcustom helm-findutils-search-full-path nil
-  "Search in full path with shell command find when non--nil.
-I.e use the -path/ipath arguments of find instead of -name/iname."
+  "Search in full path with shell command find when non-nil.
+I.e. use the -path/ipath arguments of find instead of
+-name/iname."
   :group 'helm-files
   :type 'boolean)
 
@@ -165,11 +166,5 @@ are passed to \"find\" literally."
     (helm-find-1 directory)))
 
 (provide 'helm-find)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-find.el ends here

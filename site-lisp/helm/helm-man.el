@@ -1,6 +1,6 @@
 ;;; helm-man.el --- Man and woman UI -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,9 +31,10 @@
 (declare-function woman-expand-directory-path "woman.el" (path-dirs path-regexps))
 (declare-function woman-topic-all-completions "woman.el" (path))
 (declare-function helm-generic-sort-fn "helm-utils.el" (S1 S2))
+(declare-function helm-comp-read "helm-mode")
 
 (defgroup helm-man nil
-  "Man and Woman applications for helm."
+  "Man and Woman applications for Helm."
   :group 'helm)
 
 (defcustom helm-man-or-woman-function 'Man-getpage-in-background
@@ -54,11 +55,11 @@ Arguments are passed to `manual-entry' with `format.'"
 ;; Internal
 (defvar helm-man--pages nil
   "All man pages on system.
-Will be calculated the first time you invoke helm with this
+Will be calculated the first time you invoke Helm with this
 source.")
 
 (defun helm-man-default-action (candidate)
-  "Default action for jumping to a woman or man page from helm."
+  "Default action for jumping to a woman or man page from Helm."
   (let ((wfiles (mapcar #'car (woman-file-name-all-completions candidate))))
     (condition-case nil
         (let ((file (if (cdr wfiles)
@@ -109,11 +110,5 @@ With a prefix arg reinitialize the cache."
           :buffer "*helm man woman*"))
 
 (provide 'helm-man)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-man.el ends here

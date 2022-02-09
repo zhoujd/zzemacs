@@ -1,6 +1,6 @@
 ;;; helm-x-files.el --- helm auxiliary functions and sources. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
 ;;; Code:
 
 (require 'helm-for-files)
@@ -23,13 +25,16 @@
 ;;; List of files gleaned from every dired buffer
 ;;
 ;;
+(defvar dired-buffers)
+(defvar directory-files-no-dot-files-regexp)
 (defun helm-files-in-all-dired-candidates ()
+  "Return a list of files from live `dired' buffers."
   (save-excursion
     (cl-loop for (f . b) in dired-buffers
           when (buffer-live-p b)
           append (let ((dir (with-current-buffer b dired-directory)))
                    (if (listp dir) (cdr dir)
-                     (directory-files f t dired-re-no-dot))))))
+                     (directory-files f t directory-files-no-dot-files-regexp))))))
 
 ;; (dired '("~/" "~/.emacs.d/.emacs-custom.el" "~/.emacs.d/.emacs.bmk"))
 
@@ -51,8 +56,8 @@
                               (or (string-match helm-tramp-file-name-regexp f)
                                   (file-exists-p f)))
                             (mapcar 'car session-file-alist))))
-   (keymap       :initform helm-generic-files-map)
-   (help-message :initform helm-generic-file-help-message)
+   (keymap       :initform 'helm-generic-files-map)
+   (help-message :initform 'helm-generic-file-help-message)
    (action       :initform 'helm-type-file-actions)))
 
 (defvar helm-source-session nil
@@ -74,6 +79,7 @@
 ;; Tracker desktop search
 
 (defun helm-source-tracker-transformer (candidates _source)
+  "Return file names from tracker CANDIDATES."
   ;; loop through tracker candidates selecting out file:// lines
   ;; then select part after file:// and url decode to get straight filenames
   (cl-loop for cand in candidates
@@ -101,7 +107,7 @@
     :action-transformer '(helm-transform-file-load-el
                           helm-transform-file-browse-url)
     :requires-pattern 3)
-  "Source for retrieving files matching the current input pattern
+  "Source for retrieving files matching the current input pattern \
 with the tracker desktop search.")
 
 ;; Spotlight (MacOS X desktop search)
@@ -114,15 +120,8 @@ with the tracker desktop search.")
 
 (defvar helm-source-mac-spotlight
   (helm-make-source "mdfind" 'helm-mac-spotlight-source)
-  "Source for retrieving files via Spotlight's command line
-utility mdfind.")
+  "Source for retrieving files via Spotlight's command line utility mdfind.")
 
 (provide 'helm-x-files)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-x-files.el ends here

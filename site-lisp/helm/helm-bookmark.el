@@ -1,6 +1,6 @@
 ;;; helm-bookmark.el --- Helm for Emacs regular Bookmarks. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -56,42 +56,50 @@
 
 
 (defface helm-bookmark-info
-    '((t (:foreground "green")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "green"))
   "Face used for W3m Emacs bookmarks (not w3m bookmarks)."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-w3m
-    '((t (:foreground "yellow")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "yellow"))
   "Face used for W3m Emacs bookmarks (not w3m bookmarks)."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-gnus
-    '((t (:foreground "magenta")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "magenta"))
   "Face used for Gnus bookmarks."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-man
-    '((t (:foreground "Orange4")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "Orange4"))
   "Face used for Woman/man bookmarks."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-file
-    '((t (:foreground "Deepskyblue2")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "Deepskyblue2"))
   "Face used for file bookmarks."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-file-not-found
-    '((t (:foreground "Slategray4")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "Slategray4"))
   "Face used for file bookmarks."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-directory
-    '((t (:inherit helm-ff-directory)))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :inherit helm-ff-directory))
   "Face used for file bookmarks."
   :group 'helm-bookmark)
 
 (defface helm-bookmark-addressbook
-    '((t (:foreground "tomato")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "tomato"))
   "Face used for addressbook bookmarks."
   :group 'helm-bookmark)
 
@@ -105,7 +113,7 @@
     (define-key map (kbd "C-]")     'helm-bookmark-toggle-filename)
     (define-key map (kbd "M-e")     'helm-bookmark-run-edit)
     map)
-  "Generic Keymap for emacs bookmark sources.")
+  "Generic Keymap for Emacs bookmark sources.")
 
 (defclass helm-source-basic-bookmarks (helm-source-in-buffer helm-type-bookmark)
    ((init :initform (lambda ()
@@ -113,7 +121,8 @@
                       (helm-init-candidates-in-buffer
                           'global
                         (bookmark-all-names))))
-    (filtered-candidate-transformer :initform 'helm-bookmark-transformer)))
+    (filtered-candidate-transformer :initform 'helm-bookmark-transformer)
+    (find-file-target :initform #'helm-bookmarks-quit-an-find-file-fn)))
 
 (defvar helm-source-bookmarks
   (helm-make-source "Bookmarks" 'helm-source-basic-bookmarks)
@@ -151,7 +160,7 @@
   "Toggle bookmark location visibility."
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'toggle-filename
+    (helm-set-attr 'toggle-filename
                   '(helm-bookmark-toggle-filename-1 . never-split))
     (helm-execute-persistent-action 'toggle-filename)))
 (put 'helm-bookmark-toggle-filename 'helm-only t)
@@ -292,8 +301,8 @@ BOOKMARK is a bookmark name or a bookmark record."
 (defvar w3m-async-exec)
 (defun helm-bookmark-jump-w3m (bookmark)
   "Jump to W3m bookmark BOOKMARK, setting a new tab.
-If `browse-url-browser-function' is set to something else
-than `w3m-browse-url' use it."
+If `browse-url-browser-function' is set to something else than
+`w3m-browse-url' use it."
   (require 'helm-net)
   (let* ((file  (or (bookmark-prop-get bookmark 'filename)
                     (bookmark-prop-get bookmark 'url)))
@@ -336,7 +345,18 @@ than `w3m-browse-url' use it."
 (defclass helm-source-filtered-bookmarks (helm-source-in-buffer helm-type-bookmark)
   ((filtered-candidate-transformer
     :initform '(helm-adaptive-sort
-                helm-highlight-bookmark))))
+                helm-highlight-bookmark))
+   (find-file-target :initform #'helm-bookmarks-quit-an-find-file-fn)))
+
+(defun helm-bookmarks-quit-an-find-file-fn (source)
+  (let* ((sel (helm-get-selection nil nil source))
+         (bmk (assoc (replace-regexp-in-string "\\`\\*" "" sel)
+                     bookmark-alist)))
+    (helm-aif (bookmark-get-filename bmk)
+        (if (and helm--url-regexp
+                 (string-match helm--url-regexp it))
+            it (expand-file-name it))
+      (expand-file-name default-directory))))
 
 ;;; W3m bookmarks.
 ;;
@@ -456,9 +476,9 @@ than `w3m-browse-url' use it."
 
 (defclass helm-bookmark-override-inheritor (helm-source) ())
 
-(defmethod helm--setup-source ((source helm-bookmark-override-inheritor))
+(cl-defmethod helm--setup-source ((source helm-bookmark-override-inheritor))
   ;; Ensure `helm-source-in-buffer' method is called.
-  (call-next-method)
+  (cl-call-next-method)
   (setf (slot-value source 'action)
         (helm-append-at-nth
          (cl-loop for (name . action) in helm-type-bookmark-actions
@@ -596,7 +616,8 @@ than `w3m-browse-url' use it."
 ;;
 (defun helm-bookmark-edit-bookmark (bookmark-name)
   "Edit bookmark's name and file name, and maybe save them.
-BOOKMARK-NAME is the current (old) name of the bookmark to be renamed."
+BOOKMARK-NAME is the current (old) name of the bookmark to be
+renamed."
   (let ((bmk (helm-bookmark-get-bookmark-from-name bookmark-name))
         (handler (bookmark-prop-get bookmark-name 'handler)))
     (if (eq handler 'addressbook-bookmark-jump)
@@ -644,8 +665,8 @@ If NEW is nil, then prompt for its string value.
 
 If BATCH is non-nil, then do not rebuild the menu list.
 
-While the user enters the new name, repeated `C-w' inserts consecutive
-words from the buffer into the new bookmark name."
+While the user enters the new name, repeated `C-w' inserts
+consecutive words from the buffer into the new bookmark name."
   (interactive (list (bookmark-completing-read "Old bookmark name")))
   (bookmark-maybe-historicize-string old)
   (bookmark-maybe-load-default-file)
@@ -694,7 +715,7 @@ words from the buffer into the new bookmark name."
 
 (defun helm-bookmark-get-bookmark-from-name (bmk)
   "Return bookmark name even if it is a bookmark with annotation.
-e.g prepended with *."
+E.g. prepended with *."
   (let ((bookmark (replace-regexp-in-string "\\`\\*" "" bmk)))
     (if (assoc bookmark bookmark-alist) bookmark bmk)))
 
@@ -716,9 +737,9 @@ e.g prepended with *."
 
 ;;;###autoload
 (defun helm-filtered-bookmarks ()
-  "Preconfigured helm for bookmarks (filtered by category).
-Optional source `helm-source-bookmark-addressbook' is loaded
-only if external addressbook-bookmark package is installed."
+  "Preconfigured `helm' for bookmarks (filtered by category).
+Optional source `helm-source-bookmark-addressbook' is loaded only
+if external addressbook-bookmark package is installed."
   (interactive)
   (helm :sources helm-bookmark-default-filtered-sources
         :prompt "Search Bookmark: "
@@ -727,11 +748,5 @@ only if external addressbook-bookmark package is installed."
                        (buffer-name helm-current-buffer))))
 
 (provide 'helm-bookmark)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-bookmark.el ends here

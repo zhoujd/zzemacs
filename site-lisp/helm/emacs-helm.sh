@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 
-## Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+## Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ cd "${0%/*}" || exit 1
 
 # Check if autoload file exists.
 # It may be in a different directory if emacs-helm.sh is a symlink.
-TRUENAME=$(find . -samefile "$0" -printf "%l")
+TRUENAME=$(ls -l "$0" | awk '{print $11}')
 if [ ! -z "$TRUENAME" ]; then
     AUTO_FILE="${TRUENAME%/*}/helm-autoloads.el"
 else
@@ -175,27 +175,57 @@ cat > $CONF_FILE <<EOF
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\\n\\n"))
 
 (setq load-path (quote $LOAD_PATH))
-(require 'package)
-;; User may be using a non standard \`package-user-dir'.
-;; Modify \`package-directory-list' instead of \`package-user-dir'
-;; in case the user starts Helm from a non-ELPA installation.
-(unless (file-equal-p package-user-dir "~/.emacs.d/elpa")
-  (add-to-list 'package-directory-list (directory-file-name
-                                        (file-name-directory
-                                         (directory-file-name default-directory)))))
 
-(let* ((str-lst "$LOAD_PACKAGES")
-       (load-packages (and str-lst
-                           (not (string= str-lst ""))
-                           (split-string str-lst ","))))
-  (setq package-load-list
-        (if (equal load-packages '("all"))
-            '(all)
-          (append '((helm-core t) (helm t) (async t) (popup t))
-                  (mapcar (lambda (p) (list (intern p) t)) load-packages)))))
+(defvar default-package-manager nil)
+(defvar bootstrap-version)
+(let* ((packages "$LOAD_PACKAGES")
+       (pkg-list (and packages
+                      (not (equal packages ""))
+                      (split-string packages ",")))
+       (straight-path (expand-file-name "straight/build/" user-emacs-directory))
+       (async-path (expand-file-name "straight/build/async" user-emacs-directory))
+       (bootstrap-file
+        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (bootstrap-version 5))
+  (when (file-exists-p bootstrap-file)
+    (setq default-package-manager 'straight)
+    (load bootstrap-file nil 'nomessage)
+    (add-to-list 'load-path async-path)
+    (when pkg-list
+      (dolist (pkg pkg-list)
+        (let* ((pkg-path (expand-file-name pkg straight-path))
+               (autoload-file (expand-file-name
+                               (format "%s-autoloads.el" pkg)
+                               pkg-path)))
+          (add-to-list 'load-path pkg-path)
+          (if (file-exists-p autoload-file)
+              (load autoload-file nil 'nomessage)
+            (straight-use-package (intern pkg))))))))
 
-(package-initialize)
+(unless (eq default-package-manager 'straight)
+  (require 'package)
+  ;; User may be using a non standard \`package-user-dir'.
+  ;; Modify \`package-directory-list' instead of \`package-user-dir'
+  ;; in case the user starts Helm from a non-ELPA installation.
+  (unless (file-equal-p package-user-dir (locate-user-emacs-file "elpa"))
+    (add-to-list 'package-directory-list (directory-file-name
+                                          (file-name-directory
+                                           (directory-file-name default-directory)))))
+
+  (let* ((str-lst "$LOAD_PACKAGES")
+         (load-packages (and str-lst
+                             (not (string= str-lst ""))
+                             (split-string str-lst ","))))
+    (setq package-load-list
+          (if (equal load-packages '("all"))
+              '(all)
+            (append '((helm-core t) (helm t) (async t) (popup t))
+                    (mapcar (lambda (p) (list (intern p) t)) load-packages)))))
+
+  (package-initialize))
+
 (add-to-list 'load-path (file-name-directory (file-truename "$0")))
+
 (unless (> $TOOLBARS 0)
    (setq default-frame-alist '((vertical-scroll-bars . nil)
                                (tool-bar-lines . 0)

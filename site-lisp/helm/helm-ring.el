@@ -1,6 +1,6 @@
 ;;; helm-ring.el --- kill-ring, mark-ring, and register browsers for helm. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,16 +39,17 @@
   "Max number of chars displayed per candidate in kill-ring browser.
 When `t', don't truncate candidate, show all.
 By default it is approximatively the number of bits contained in five lines
-of 80 chars each i.e 80*5.
-Note that if you set this to nil multiline will be disabled, i.e you
-will not have anymore separators between candidates."
+of 80 chars each, i.e. 80*5.
+Note that if you set this to nil multiline will be disabled, i.e. you
+will not have separators between candidates any more."
   :type '(choice (const :tag "Disabled" t)
           (integer :tag "Max candidate offset"))
   :group 'helm-ring)
 
 (defcustom helm-kill-ring-actions
   '(("Yank marked" . helm-kill-ring-action-yank)
-    ("Delete marked" . helm-kill-ring-action-delete))
+    ("Delete marked" . helm-kill-ring-action-delete)
+    ("Search from candidate" . helm-kill-ring-search-from-string))
   "List of actions for kill ring source."
   :group 'helm-ring
   :type '(alist :key-type string :value-type function))
@@ -72,6 +73,7 @@ will not have anymore separators between candidates."
     (define-key map (kbd "M-y")     'helm-next-line)
     (define-key map (kbd "M-u")     'helm-previous-line)
     (define-key map (kbd "M-D")     'helm-kill-ring-delete)
+    (define-key map (kbd "C-s")     'helm-kill-ring-run-search-from-string)
     (define-key map (kbd "C-]")     'helm-kill-ring-toggle-truncated)
     (define-key map (kbd "C-c C-k") 'helm-kill-ring-kill-selection)
     (define-key map (kbd "C-c d")   'helm-kill-ring-run-persistent-delete)
@@ -81,8 +83,8 @@ will not have anymore separators between candidates."
 (defvar helm-source-kill-ring
   (helm-build-sync-source "Kill Ring"
     :init (lambda ()
-            (helm-attrset 'last-command last-command)
-            (helm-attrset 'multiline helm-kill-ring-max-offset))
+            (helm-set-attr 'last-command last-command)
+            (helm-set-attr 'multiline helm-kill-ring-max-offset))
     :candidates #'helm-kill-ring-candidates
     :filtered-candidate-transformer #'helm-kill-ring-transformer
     :action 'helm-kill-ring-actions
@@ -97,7 +99,7 @@ will not have anymore separators between candidates."
 
 (defun helm-kill-ring-candidates ()
   (cl-loop with cands = (helm-fast-remove-dups kill-ring :test 'equal)
-           for kill in (if (eq (helm-attr 'last-command) 'yank)
+           for kill in (if (eq (helm-get-attr 'last-command) 'yank)
                             (cdr cands)
                           cands)
            unless (or (< (length kill) helm-kill-ring-threshold)
@@ -120,7 +122,7 @@ will not have anymore separators between candidates."
     (let* ((cur-cand (helm-get-selection))
            (presel-fn (lambda ()
                         (helm-kill-ring--preselect-fn cur-cand))))
-      (helm-attrset 'multiline
+      (helm-set-attr 'multiline
                     (if helm-kill-ring--truncated-flag
                         15000000
                         helm-kill-ring-max-offset))
@@ -163,10 +165,10 @@ use `helm-kill-ring-separator' as default."
 (defun helm-kill-ring-action-yank-1 (str)
   "Insert STR in `kill-ring' and set STR to the head.
 
-When called with a prefix arg, point and mark are exchanged without
-activating region.
-If this action is executed just after `yank',
-replace with STR as yanked string."
+When called with a prefix arg, point and mark are exchanged
+without activating region.
+If this action is executed just after `yank', replace with STR as
+yanked string."
   (let ((yank-fn (lambda (&optional before yank-pop)
                    (insert-for-yank str)
                    ;; Set the window start back where it was in
@@ -189,10 +191,10 @@ replace with STR as yanked string."
              ;; Adding a `delete-selection' property
              ;; to `helm-kill-ring-action' is not working
              ;; because `this-command' will be `helm-maybe-exit-minibuffer',
-             ;; so use this workaround (Issue #1520).
+             ;; so use this workaround (Bug#1520).
              (when (and (region-active-p) delete-selection-mode)
                (delete-region (region-beginning) (region-end)))
-             (if (not (eq (helm-attr 'last-command helm-source-kill-ring) 'yank))
+             (if (not (eq (helm-get-attr 'last-command helm-source-kill-ring) 'yank))
                  (progn
                    ;; Ensure mark is at beginning of inserted text.
                    (push-mark)
@@ -213,6 +215,18 @@ replace with STR as yanked string."
                  (run-with-timer 0.01 nil yank-fn before 'pop))))
         (kill-new str)))))
 (define-obsolete-function-alias 'helm-kill-ring-action 'helm-kill-ring-action-yank "2.4.0")
+
+(defun helm-kill-ring-search-from-string (candidate)
+  (let ((str (car (split-string candidate "\n"))))
+    (helm-multi-occur-1
+     (list (current-buffer))
+     (regexp-quote (substring-no-properties str)))))
+
+(defun helm-kill-ring-run-search-from-string ()
+  (interactive)
+  (with-helm-alive-p
+    (helm-exit-and-execute-action 'helm-kill-ring-search-from-string)))
+(put 'helm-kill-ring-run-search-from-string 'helm-only t)
 
 (defun helm-kill-ring-action-delete (_candidate)
   "Delete marked candidates from `kill-ring'."
@@ -237,7 +251,7 @@ replace with STR as yanked string."
   "Delete current candidate without quitting."
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'quick-delete '(helm-kill-ring-persistent-delete . never-split))
+    (helm-set-attr 'quick-delete '(helm-kill-ring-persistent-delete . never-split))
     (helm-execute-persistent-action 'quick-delete)))
 (put 'helm-kill-ring-run-persistent-delete 'helm-only t)
 
@@ -358,8 +372,12 @@ This is a command for `helm-kill-ring-map'."
 
 (defun helm-register-candidates ()
   "Collecting register contents and appropriate commands."
-  (cl-loop for (char . val) in register-alist
+  (cl-loop for (char . rval) in register-alist
         for key    = (single-key-description char)
+        for e27 = (registerv-p rval)
+        for val = (if e27 ; emacs-27
+                      (registerv-data rval)
+                    rval)
         for string-actions =
         (cond
           ((numberp val)
@@ -382,7 +400,7 @@ This is a command for `helm-kill-ring-map'."
                  'jump-to-register))
           ((and (vectorp val)
                 (fboundp 'undo-tree-register-data-p)
-                (undo-tree-register-data-p (elt val 1)))
+                (undo-tree-register-data-p (if e27 val (elt val 1))))
            (list
             "Undo-tree entry."
             'undo-tree-restore-state-from-register))
@@ -420,7 +438,7 @@ This is a command for `helm-kill-ring-map'."
             'kill-new
             'append-to-register
             'prepend-to-register)))
-        unless (null string-actions) ; Fix Issue #1107.
+        unless (null string-actions) ; Fix Bug#1107.
         collect (cons (format "Register %3s:\n %s" key (car string-actions))
                       (cons char (cdr string-actions)))))
 
@@ -581,11 +599,5 @@ This command is useful when used with persistent action."
   (kmacro-edit-macro))
 
 (provide 'helm-ring)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-ring.el ends here

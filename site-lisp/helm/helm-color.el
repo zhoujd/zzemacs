@@ -1,6 +1,6 @@
 ;;; helm-color.el --- colors and faces -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 (require 'helm)
 (require 'helm-help)
 (require 'helm-elisp)
+
+(declare-function list-colors-display "facemenu")
 
 ;;; Customize Face
 ;;
@@ -59,6 +61,7 @@
 ;;
 ;;
 (defun helm-colors-init ()
+  (require 'facemenu)
   (unless (helm-candidate-buffer)
     (save-selected-window
       (list-colors-display)
@@ -84,25 +87,25 @@
   (kill-new (helm-colors-get-rgb candidate)))
 
 (defun helm-color-run-insert-name ()
-  "Insert name of color from `helm-source-colors'"
+  "Insert name of color from `helm-source-colors'."
   (interactive)
   (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-insert-name)))
 (put 'helm-color-run-insert-name 'helm-only t)
 
 (defun helm-color-run-kill-name ()
-  "Kill name of color from `helm-source-colors'"
+  "Kill name of color from `helm-source-colors'."
   (interactive)
   (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-kill-name)))
 (put 'helm-color-run-kill-name 'helm-only t)
 
 (defun helm-color-run-insert-rgb ()
-  "Insert RGB of color from `helm-source-colors'"
+  "Insert RGB of color from `helm-source-colors'."
   (interactive)
   (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-insert-rgb)))
 (put 'helm-color-run-insert-rgb 'helm-only t)
 
 (defun helm-color-run-kill-rgb ()
-  "Kill RGB of color from `helm-source-colors'"
+  "Kill RGB of color from `helm-source-colors'."
   (interactive)
   (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-kill-rgb)))
 (put 'helm-color-run-kill-rgb 'helm-only t)
@@ -160,11 +163,5 @@
         :buffer "*helm colors*"))
 
 (provide 'helm-color)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-color.el ends here

@@ -1,6 +1,6 @@
 ;;; helm-comint.el --- Comint prompt navigation for helm. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2019 Pierre Neidhardt <mail@ambrevar.xyz>
+;; Copyright (C) 2020 Pierre Neidhardt <mail@ambrevar.xyz>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -33,12 +33,14 @@
 ;;; Comint prompts
 ;;
 (defface helm-comint-prompts-promptidx
-  '((t (:foreground "cyan")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       (:foreground "cyan")))
   "Face used to highlight comint prompt index."
   :group 'helm-comint-faces)
 
 (defface helm-comint-prompts-buffer-name
-  '((t (:foreground "green")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       (:foreground "green")))
   "Face used to highlight comint buffer name."
   :group 'helm-comint-faces)
 
@@ -47,9 +49,9 @@
   :group 'helm-comint
   :type 'boolean)
 
-(defcustom helm-comint-mode-list '(comint-mode slime-repl-mode sly-mrepl-mode)
+(defcustom helm-comint-mode-list '(comint-mode slime-repl-mode sly-mrepl-mode sql-interactive-mode)
   "Supported modes for prompt navigation.
-Derived modes (e.g. Geiser's REPL) are automatically supported."
+Derived modes (e.g., Geiser's REPL) are automatically supported."
   :group 'helm-comint
   :type '(repeat (choice symbol)))
 
@@ -57,8 +59,8 @@ Derived modes (e.g. Geiser's REPL) are automatically supported."
                                                                   (sly-mrepl-next-prompt)
                                                                   (point))))
   "Alist of (MODE . NEXT-PROMPT-FUNCTION) to use.
- If the current major mode is a key in this list, the associated function will be
- used to navigate the prompts.
+ If the current major mode is a key in this list, the associated
+ function will be used to navigate the prompts.
  The function must return the point after the prompt.
  Otherwise (comint-next-prompt 1) will be used."
   :group 'helm-comint
@@ -66,11 +68,11 @@ Derived modes (e.g. Geiser's REPL) are automatically supported."
 
 (defcustom helm-comint-max-offset 400
   "Max number of chars displayed per candidate in comint-input-ring browser.
-When `t', don't truncate candidate, show all.
-By default it is approximatively the number of bits contained in five lines
-of 80 chars each i.e 80*5.
-Note that if you set this to nil multiline will be disabled, i.e you
-will not have anymore separators between candidates."
+When t, don't truncate candidate, show all.
+By default it is approximatively the number of bits contained in
+five lines of 80 chars each i.e 80*5.
+Note that if you set this to nil multiline will be disabled, i.e
+you will not have anymore separators between candidates."
   :type '(choice (const :tag "Disabled" t)
           (integer :tag "Max candidate offset"))
   :group 'helm-misc)
@@ -87,7 +89,7 @@ will not have anymore separators between candidates."
   "List the prompts in BUFFER in mode MODE.
 
 Return a list of (\"prompt\" (point) (buffer-name) prompt-index))
-e.g. (\"ls\" 162 \"*shell*\" 3).
+E.g. (\"ls\" 162 \"*shell*\" 3).
 If BUFFER is nil, use current buffer."
   (with-current-buffer (or buffer (current-buffer))
     (when (derived-mode-p mode)
@@ -216,18 +218,13 @@ See `helm-comint-prompts-list'."
 (defun helm-comint-input-ring ()
   "Preconfigured `helm' that provide completion of `comint' history."
   (interactive)
-  (when (derived-mode-p 'comint-mode)
+  (when (or (derived-mode-p 'comint-mode)
+            (member major-mode helm-comint-mode-list))
     (helm :sources 'helm-source-comint-input-ring
           :input (buffer-substring-no-properties (comint-line-beginning-position)
                                                  (point-at-eol))
           :buffer "*helm comint history*")))
 
 (provide 'helm-comint)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-comint.el ends here

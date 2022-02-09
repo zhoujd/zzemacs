@@ -1,6 +1,6 @@
 ;;; helm-locate.el --- helm interface for locate. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@
 (require 'helm-types)
 (require 'helm-help)
 
+(defvar helm-ff-default-directory)
+(declare-function helm-read-file-name "helm-mode")
+
 
 (defgroup helm-locate nil
   "Locate related Applications and libraries for Helm."
@@ -39,19 +42,21 @@ If nil Search in all files."
 
 (defcustom helm-ff-locate-db-filename "locate.db"
   "The basename of the locatedb file you use locally in your directories.
-When this is set and `helm' find such a file in the directory from
-where you launch locate, it will use this file and will not prompt you
-for a db file.
-Note that this happen only when locate is launched with a prefix arg."
+When this is set and Helm finds such a file in the directory from
+where you launch locate, it will use this file and will not
+prompt you for a db file.
+Note that this happen only when locate is launched with a prefix
+arg."
   :group 'helm-locate
   :type 'string)
 
 (defcustom helm-locate-command nil
   "A list of arguments for locate program.
 
-Helm will calculate a default value for your system on startup unless
-`helm-locate-command' is non-nil, here the default values it will use
-according to your system:
+Helm will calculate a default value for your system on startup
+unless `helm-locate-command' is non-nil.
+
+Here are the default values it will use according to your system:
 
 Gnu/linux:     \"locate %s -e -A --regex %s\"
 berkeley-unix: \"locate %s %s\"
@@ -60,19 +65,20 @@ Others:        \"locate %s %s\"
 
 This string will be passed to format so it should end with `%s'.
 The first format spec is used for the \"-i\" value of locate/es,
-So don't set it directly but use `helm-locate-case-fold-search'
+so don't set it directly but use `helm-locate-case-fold-search'
 for this.
 
-The last option must be the one preceding pattern i.e \"-r\" or \"--regex\".
+The last option must be the one preceding pattern i.e \"-r\" or
+\"--regex\".
 
 You will be able to pass other options such as \"-b\" or \"l\"
-during helm invocation after entering pattern only when multi matching,
-not when fuzzy matching.
+during Helm invocation after entering pattern only when multi
+matching, not when fuzzy matching.
 
-Note that the \"-b\" option is added automatically by helm when
+Note that the \"-b\" option is added automatically by Helm when
 var `helm-locate-fuzzy-match' is non-nil and switching back from
-multimatch to fuzzy matching (this is done automatically when a space
-is detected in pattern)."
+multimatch to fuzzy matching (this is done automatically when a
+space is detected in pattern)."
   :type 'string
   :group 'helm-locate)
 
@@ -86,8 +92,8 @@ is detected in pattern)."
   "It have the same meaning as `helm-case-fold-search'.
 The -i option of locate will be used depending of value of
 `helm-pattern' when this is set to 'smart.
-When nil \"-i\" will not be used at all.
-and when non--nil it will always be used.
+When nil \"-i\" will not be used at all and when non-nil it will
+always be used.
 NOTE: the -i option of the \"es\" command used on windows does
 the opposite of \"locate\" command."
   :group 'helm-locate
@@ -107,8 +113,8 @@ Note that when this is enabled searching is done on basename."
 
 (defcustom helm-locate-project-list nil
   "A list of directories, your projects.
-When set, allow browsing recursively files in all
-directories of this list with `helm-projects-find-files'."
+When set, allow browsing recursively files in all directories of
+this list with `helm-projects-find-files'."
   :group 'helm-locate
   :type '(repeat string))
 
@@ -120,9 +126,9 @@ For Windows and `es' use something like \"es -r ^%s.*%s.*$\"
 The two format specs are mandatory.
 
 If for some reasons you can't use locate because your filesystem
-doesn't have a data base, you can use find command from findutils but
-be aware that it will be much slower, see `helm-find-files' embebded
-help for more infos."
+doesn't have a database, you can use find command from findutils
+but be aware that it will be much slower.  See `helm-find-files'
+embedded help for more infos."
   :type 'string
   :group 'helm-files)
 
@@ -134,15 +140,16 @@ help for more infos."
     map))
 
 (defface helm-locate-finish
-    '((t (:foreground "Green")))
+  `((t ,@(and (>= emacs-major-version 27) '(:extend t))
+       :foreground "Green"))
   "Face used in mode line when locate process is finish."
   :group 'helm-locate)
 
 
 (defun helm-ff-find-locatedb (&optional from-ff)
   "Try to find if a local locatedb file is available.
-The search is done in `helm-ff-default-directory' or
-fall back to `default-directory' if FROM-FF is nil."
+The search is done in `helm-ff-default-directory' or falls back to
+`default-directory' if FROM-FF is nil."
   (helm-aif (and helm-ff-locate-db-filename
                  (locate-dominating-file
                   (or (and from-ff
@@ -166,11 +173,11 @@ It should receive the same arguments as
 
 (defun helm-locate-1 (&optional localdb init from-ff default)
   "Generic function to run Locate.
-Prefix arg LOCALDB when (4) search and use a local locate db file when it
-exists or create it, when (16) force update of existing db file
-even if exists.
-It have no effect when locate command is 'es'.
-INIT is a string to use as initial input in prompt.
+Prefix arg LOCALDB when (4) search and use a local locate db file
+when it exists or create it, when (16) force update of existing
+db file even if exists.
+It has no effect when locate command is 'es'.  INIT is a string
+to use as initial input in prompt.
 See `helm-locate-with-db' and `helm-locate'."
   (require 'helm-mode)
   (helm-locate-set-command)
@@ -349,7 +356,7 @@ Sort is done on basename of CANDIDATES."
    (group :initform 'helm-locate)))
 
 ;; Override helm-type-file class keymap.
-(defmethod helm--setup-source :after ((source helm-locate-override-inheritor))
+(cl-defmethod helm--setup-source :after ((source helm-locate-override-inheritor))
   (setf (slot-value source 'keymap) helm-locate-map))
 
 (defvar helm-source-locate
@@ -412,13 +419,17 @@ Sort is done on basename of CANDIDATES."
 (defun helm-locate-init-subdirs ()
   (with-temp-buffer
     (call-process-shell-command
-     (format helm-locate-recursive-dirs-command
-	     (if (string-match-p "\\`es" helm-locate-recursive-dirs-command)
-                 ;; Fix W32 paths.
-		 (replace-regexp-in-string
-                  "/" "\\\\\\\\" (helm-attr 'basedir))
-                 (helm-attr 'basedir))
-	     (helm-attr 'subdir))
+     (if (string-match-p "\\`fd" helm-locate-recursive-dirs-command)
+         (format helm-locate-recursive-dirs-command
+                 ;; fd pass path at end.
+                 (helm-get-attr 'subdir) (helm-get-attr 'basedir))
+       (format helm-locate-recursive-dirs-command
+	       (if (string-match-p "\\`es" helm-locate-recursive-dirs-command)
+                   ;; Fix W32 paths.
+		   (replace-regexp-in-string
+                    "/" "\\\\\\\\" (helm-get-attr 'basedir))
+                 (helm-get-attr 'basedir))
+	       (helm-get-attr 'subdir)))
      nil t nil)
     (buffer-string)))
 
@@ -443,8 +454,8 @@ Note: you can add locate options after entering pattern.
 See 'man locate' for valid options and also `helm-locate-command'.
 
 You can specify a local database with prefix argument ARG.
-With two prefix arg, refresh the current local db or create it
-if it doesn't exists.
+With two prefix arg, refresh the current local db or create it if
+it doesn't exists.
 
 To create a user specific db, use
 \"updatedb -l 0 -o db_path -U directory\".
@@ -461,11 +472,5 @@ Where db_path is a filename matched by
   (helm-locate-1 arg nil nil (thing-at-point 'filename)))
 
 (provide 'helm-locate)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-locate.el ends here

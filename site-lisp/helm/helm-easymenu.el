@@ -1,6 +1,6 @@
 ;;; helm-easymenu.el --- Helm easymenu definitions. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2020 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -34,6 +34,9 @@
     ["Bookmarks" helm-filtered-bookmarks t])
    ("Buffers"
     ["Find buffers" helm-buffers-list t])
+   ("Projects"
+    ["Browse project" helm-browse-project]
+    ["Projects history" helm-projects-history])
    ("Commands"
     ["Emacs Commands" helm-M-x t]
     ["Externals Commands" helm-run-external-command t])
@@ -77,11 +80,5 @@
 
 
 (provide 'helm-easymenu)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-easymenu.el ends here

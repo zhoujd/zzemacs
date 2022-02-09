@@ -1,6 +1,6 @@
 ;;; helm-font --- Font and ucs selection for Helm -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,9 +21,13 @@
 (require 'helm)
 (require 'helm-help)
 
+;; No warnings in Emacs built --without-x
+(declare-function x-list-fonts "xfaces.c")
+
+(declare-function helm-generic-sort-fn "helm-utils")
 
 (defgroup helm-font nil
-  "Related applications to display fonts in helm."
+  "Related applications to display fonts in Helm."
   :group 'helm)
 
 (defcustom helm-ucs-recent-size 10
@@ -37,7 +41,8 @@
     ("Insert character code in hex" . helm-ucs-insert-code)
     ("Kill marked characters"       . helm-ucs-kill-char)
     ("Kill name"                    . helm-ucs-kill-name)
-    ("Kill code"                    . helm-ucs-kill-code))
+    ("Kill code"                    . helm-ucs-kill-code)
+    ("Describe char"                . helm-ucs-describe-char))
   "Actions for `helm-source-ucs'."
   :group 'helm-font
   :type '(alist :key-type string :value-type function))
@@ -53,7 +58,9 @@
   "Keymap for `helm-ucs'.")
 
 (defface helm-ucs-char
-  '((((class color) (background dark))  (:foreground "Gold")))
+  `((((class color) (background dark))
+     ,@(and (>= emacs-major-version 27) '(:extend t))
+     :foreground "Gold"))
   "Face used to display ucs characters."
   :group 'helm-font)
 
@@ -111,7 +118,7 @@
            finally return (cons code char)))
 
 (defun helm-calculate-ucs-max-len ()
-  "Calculate the length of longest `ucs-names' candidate."
+  "Calculate the length of the longest `ucs-names' candidate."
   (let ((ucs-struct (ucs-names)))
     (if (hash-table-p ucs-struct)
         (helm-calculate-ucs-hash-table-max-len ucs-struct)
@@ -172,7 +179,7 @@ either be an alist or a hash-table."
     (helm-ucs-collect-symbols-alist ucs-struct)))
 
 (defun helm-ucs-init ()
-  "Initialize an helm buffer with ucs symbols.
+  "Initialize a Helm buffer with ucs symbols.
 Only math* symbols are collected."
   (unless helm-ucs--max-len
     (setq helm-ucs--max-len
@@ -185,7 +192,8 @@ Only math* symbols are collected."
 
 (defun helm-ucs-match (candidate n)
   "Return the N part of an ucs CANDIDATE.
-Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs name."
+Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs
+name."
   (when (string-match
          "^(\\(#x[a-f0-9]+\\)): *\\(.\\) *\\([^:]+\\)+"
          candidate)
@@ -234,6 +242,13 @@ Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs name."
   (helm-ucs-save-recentest candidate)
   (kill-new (helm-ucs-match candidate 3)))
 
+;; Describe char
+(defun helm-ucs-describe-char (candidate)
+  "Describe char CANDIDATE."
+  (with-temp-buffer
+    (insert (helm-ucs-match candidate 2))
+    (describe-char (point-min))))
+
 ;; Navigation in current-buffer (persistent)
 
 (defun helm-ucs-forward-char (_candidate)
@@ -255,33 +270,33 @@ Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs name."
 (defun helm-ucs-persistent-forward ()
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'action-forward 'helm-ucs-forward-char)
+    (helm-set-attr 'action-forward 'helm-ucs-forward-char)
     (helm-execute-persistent-action 'action-forward)))
 (put 'helm-ucs-persistent-forward 'helm-only t)
 
 (defun helm-ucs-persistent-backward ()
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'action-back 'helm-ucs-backward-char)
+    (helm-set-attr 'action-back 'helm-ucs-backward-char)
     (helm-execute-persistent-action 'action-back)))
 (put 'helm-ucs-persistent-backward 'helm-only t)
 
 (defun helm-ucs-persistent-delete ()
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'action-delete 'helm-ucs-delete-backward)
+    (helm-set-attr 'action-delete 'helm-ucs-delete-backward)
     (helm-execute-persistent-action 'action-delete)))
 (put 'helm-ucs-persistent-delete 'helm-only t)
 
 (defun helm-ucs-persistent-insert-space ()
   (interactive)
   (with-helm-alive-p
-    (helm-attrset 'action-insert-space 'helm-ucs-insert-space)
+    (helm-set-attr 'action-insert-space 'helm-ucs-insert-space)
     (helm-execute-persistent-action 'action-insert-space)))
 
 (defvar helm-source-ucs-recent
   (helm-build-sync-source "Recent UCS"
-    :action helm-ucs-actions
+    :action 'helm-ucs-actions
     :candidates (lambda () helm-ucs-recent)
     :help-message helm-ucs-help-message
     :keymap helm-ucs-map
@@ -294,7 +309,7 @@ Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs name."
     :help-message 'helm-ucs-help-message
     :filtered-candidate-transformer
     (lambda (candidates _source) (sort candidates #'helm-generic-sort-fn))
-    :action helm-ucs-actions
+    :action 'helm-ucs-actions
     :persistent-action (lambda (candidate)
                          (helm-ucs-insert-char candidate)
                          (helm-force-update))
@@ -310,7 +325,7 @@ Where N=1 is the ucs code, N=2 the ucs char and N=3 the ucs name."
 
 ;;;###autoload
 (defun helm-ucs (arg)
-  "Preconfigured helm for `ucs-names'.
+  "Preconfigured `helm' for `ucs-names'.
 
 Called with a prefix arg force reloading cache."
   (interactive "P")
@@ -325,11 +340,5 @@ Called with a prefix arg force reloading cache."
           :buffer "*helm ucs*")))
 
 (provide 'helm-font)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-font.el ends here

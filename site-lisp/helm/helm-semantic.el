@@ -1,7 +1,7 @@
 ;;; helm-semantic.el --- Helm interface for Semantic -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2012 ~ 2017 Daniel Hackney <dan@haxney.org>
-;;               2012 ~ 2019  Thierry Volpiatto<thierry.volpiatto@gmail.com>
+;;               2012 ~ 2021  Thierry Volpiatto<thierry.volpiatto@gmail.com>
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 
@@ -165,7 +165,7 @@ you have completion on these functions with `C-M i' in the customize interface."
 ;;;###autoload
 (defun helm-semantic (arg)
   "Preconfigured `helm' for `semantic'.
-If ARG is supplied, pre-select symbol at point instead of current"
+If ARG is supplied, pre-select symbol at point instead of current."
   (interactive "P")
   (let ((tag (helm-aif (car (semantic-current-tag-parent))
                  (let ((curtag (car (semantic-current-tag))))
@@ -173,7 +173,8 @@ If ARG is supplied, pre-select symbol at point instead of current"
                        (format "\\_<%s\\_>" curtag)
                      (cons (format "\\_<%s\\_>" it)
                            (format "\\_<%s\\_>" curtag))))
-               (format "\\_<%s\\_>" (car (semantic-current-tag))))))
+               (format "\\_<%s\\_>" (car (semantic-current-tag)))))
+        (helm-highlight-matches-around-point-max-lines 'never))
     (unless helm-source-semantic
       (setq helm-source-semantic
             (helm-make-source "Semantic Tags" 'helm-semantic-source
@@ -206,6 +207,7 @@ Fill in the symbol at point by default."
   (let* ((source (if (semantic-active-p)
                      'helm-source-semantic
                      'helm-source-imenu))
+         (helm-highlight-matches-around-point-max-lines 'never)
          (imenu-p (eq source 'helm-source-imenu))
          (imenu-auto-rescan imenu-p)
          (str (thing-at-point 'symbol))
@@ -226,11 +228,5 @@ Fill in the symbol at point by default."
           :buffer "*helm semantic/imenu*")))
 
 (provide 'helm-semantic)
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-semantic.el ends here

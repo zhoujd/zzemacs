@@ -3,7 +3,7 @@
 ;; Original Author: rubikitch
 
 ;; Copyright (C) 2008 ~ 2011 rubikitch
-;; Copyright (C) 2011 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2011 ~ 2020 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; Author: Thierry Volpiatto <thierry.volpiatto@gmail.com>
 ;; URL: http://github.com/emacs-helm/helm
@@ -67,7 +67,7 @@ when these options are used."
   "Regexp to represent space itself in multiple regexp match.")
 
 (defun helm-mm-split-pattern (pattern &optional grep-space)
-  "Split PATTERN if it contain spaces and return resulting list.
+  "Split PATTERN if it contains spaces and return resulting list.
 If spaces in PATTERN are escaped, don't split at this place.
 i.e \"foo bar baz\"=> (\"foo\" \"bar\" \"baz\")
 but \"foo\\ bar baz\"=> (\"foo\\s-bar\" \"baz\").
@@ -126,7 +126,7 @@ If GREP-SPACE is used translate escaped space to \"\\s\" instead of \"\\s-\"."
 
 (defun helm-mm-prefix-match (candidate &optional pattern)
   ;; In filename completion basename and basedir may be
-  ;; quoted, unquote them for string comparison (Issue #1283).
+  ;; quoted, unquote them for string comparison (Bug#1283).
   (setq pattern (replace-regexp-in-string
                  "\\\\" "" (or pattern helm-pattern)))
   (let ((len (length pattern)))
@@ -187,9 +187,9 @@ If GREP-SPACE is used translate escaped space to \"\\s\" instead of \"\\s-\"."
 (defvar helm-mm--3-pattern-list nil)
 
 (defun helm-mm-3-get-patterns (pattern)
-  "Returns a list of predicate/regexp cons cells.
-e.g. ((identity . \"foo\") (not . \"bar\")).
-If PATTERN is inchanged, don't recompute PATTERN and return the
+  "Return a list of predicate/regexp cons cells.
+E.g., ((identity . \"foo\") (not . \"bar\")).
+If PATTERN is unchanged, don't recompute PATTERN and return the
 previous value stored in `helm-mm--3-pattern-list'."
   (unless (equal pattern helm-mm--3-pattern-str)
     (setq helm-mm--3-pattern-str pattern
@@ -199,24 +199,24 @@ previous value stored in `helm-mm--3-pattern-list'."
 
 (defun helm-mm-3-get-patterns-internal (pattern)
   "Return a list of predicate/regexp cons cells.
-e.g. ((identity . \"foo\") (not . \"bar\"))."
+E.g., ((identity . \"foo\") (not . \"bar\"))."
   (unless (string= pattern "")
     (cl-loop for pat in (helm-mm-split-pattern pattern)
-          collect (if (string= "!" (substring pat 0 1))
+          collect (if (char-equal ?! (aref pat 0))
                       (cons 'not (substring pat 1))
                     (cons 'identity pat)))))
 
 (cl-defun helm-mm-3-match (candidate &optional (pattern helm-pattern))
   "Check if PATTERN match CANDIDATE.
-When PATTERN contain a space, it is splitted and matching is done
-with the several resulting regexps against CANDIDATE.
-e.g \"bar foo\" will match \"foobar\" and \"barfoo\".
-Argument PATTERN, a string, is transformed in a list of
-cons cell with `helm-mm-3-get-patterns' if it contain a space.
-e.g \"foo bar\"=>((identity . \"foo\") (identity . \"bar\")).
-Then each predicate of cons cell(s) is called with regexp of same
-cons cell against CANDIDATE.
-i.e (identity (string-match \"foo\" \"foo bar\")) => t."
+When PATTERN contains a space, it is splitted and matching is
+done with the several resulting regexps against CANDIDATE.
+E.g., \"bar foo\" will match \"foobar\" and \"barfoo\".
+Argument PATTERN, a string, is transformed in a list of cons cell
+with `helm-mm-3-get-patterns' if it contains a space.
+E.g., \"foo bar\"=>((identity . \"foo\") (identity . \"bar\")).
+Then each predicate of cons cell(s) is called with the regexp of
+the same cons cell against CANDIDATE.
+I.e. (identity (string-match \"foo\" \"foo bar\")) => t."
   (let ((pat (helm-mm-3-get-patterns pattern)))
     (cl-loop for (predicate . regexp) in pat
              always (funcall predicate
@@ -255,8 +255,6 @@ i.e (identity (re-search-forward \"foo\" (point-at-eol) t)) => t."
            finally return nil))
 
 (defun helm-mm-3-search (pattern &rest _ignore)
-  (when (stringp pattern)
-    (setq pattern (helm-mm-3-get-patterns pattern)))
   (helm-mm-3-search-base
    pattern 're-search-forward 're-search-forward))
 
@@ -273,7 +271,7 @@ i.e (identity (re-search-forward \"foo\" (point-at-eol) t)) => t."
 (define-minor-mode helm-migemo-mode
     "Enable migemo in helm.
 It will be available in the sources handling it,
-i.e the sources which have the slot :migemo with non--nil value."
+i.e. the sources which have the slot :migemo with non--nil value."
   :lighter " Hmio"
   :group 'helm
   :global t
@@ -328,7 +326,7 @@ i.e the sources which have the slot :migemo with non--nil value."
   "Check if PATTERN match CANDIDATE.
 Same as `helm-mm-3-match' but only for the cdr of patterns, the car of
 patterns must always match CANDIDATE prefix.
-e.g \"bar foo baz\" will match \"barfoobaz\" or \"barbazfoo\" but not
+E.g. \"bar foo baz\" will match \"barfoobaz\" or \"barbazfoo\" but not
 \"foobarbaz\" whereas `helm-mm-3-match' would match all."
   (let* ((pat (helm-mm-3-get-patterns (or pattern helm-pattern)))
          (first (car pat)))
@@ -337,8 +335,6 @@ e.g \"bar foo baz\" will match \"barfoobaz\" or \"barbazfoo\" but not
                always (funcall predicate (string-match regexp candidate))))))
 
 (defun helm-mm-3p-search (pattern &rest _ignore)
-  (when (stringp pattern)
-    (setq pattern (helm-mm-3-get-patterns pattern)))
   (helm-mm-3-search-base
    pattern 'helm-mm-prefix-search 're-search-forward))
 
@@ -367,11 +363,5 @@ e.g \"bar foo baz\" will match \"barfoobaz\" or \"barbazfoo\" but not
 
 (provide 'helm-multi-match)
 
-
-;; Local Variables:
-;; byte-compile-warnings: (not obsolete)
-;; coding: utf-8
-;; indent-tabs-mode: nil
-;; End:
 
 ;;; helm-multi-match.el ends here

@@ -1,6 +1,6 @@
 ;;; helm-elisp-package.el --- helm interface for package.el -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2019 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,7 +35,19 @@
           (const :tag "Show upgradable packages" upgrade)))
 
 (defcustom helm-el-truncate-lines t
-  "Truncate lines in helm-buffer when non--nil."
+  "Truncate lines in `helm-buffer' when non-nil."
+  :group 'helm-el-package
+  :type 'boolean)
+
+
+(defcustom helm-el-package-upgrade-on-start nil
+  "Show package upgrades on startup when non nil."
+  :group 'helm-el-package
+  :type 'boolean)
+
+(defcustom helm-el-package-autoremove-on-start nil
+  "Try to autoremove no more needed packages on startup.
+See `package-autoremove'."
   :group 'helm-el-package
   :type 'boolean)
 
@@ -48,7 +60,10 @@
 
 ;; Shutup bytecompiler for emacs-24*
 (defvar package-menu-async) ; Only available on emacs-25.
+(defvar helm-marked-buffer-name)
 (declare-function async-byte-recompile-directory "ext:async-bytecomp.el")
+(declare-function with-helm-display-marked-candidates "helm-utils.el")
+
 
 (defun helm-el-package--init ()
   ;; In emacs-27 package-show-package-list returns an empty buffer
@@ -60,8 +75,12 @@
         (inhibit-read-only t))
     (when (null package-alist)
       (setq helm-el-package--show-only 'all))
-    (when (setq helm-el-package--removable-packages
-                (package--removable-packages))
+    (unless (consp package-selected-packages)
+      (helm-aif (package--find-non-dependencies)
+          (setq package-selected-packages it)))
+    (when (and (setq helm-el-package--removable-packages
+                     (package--removable-packages))
+               helm-el-package-autoremove-on-start)
       (package-autoremove))
     (unwind-protect
          (progn
@@ -91,7 +110,8 @@
                    (message "Refreshing packages list done, [%d] package(s) to upgrade"
                             (length helm-el-package--upgrades))
                  (message "Refreshing packages list done, no upgrades available"))
-             (setq helm-el-package--show-only (if helm-el-package--upgrades
+             (setq helm-el-package--show-only (if (and helm-el-package-upgrade-on-start
+                                                       helm-el-package--upgrades)
                                                   'upgrade
                                                 helm-el-package-initial-filter))))
       (kill-buffer "*Packages*"))))
@@ -365,12 +385,20 @@
    (filtered-candidate-transformer :initform 'helm-el-package--transformer)
    (action-transformer :initform 'helm-el-package--action-transformer)
    (help-message :initform 'helm-el-package-help-message)
-   (keymap :initform helm-el-package-map)
+   (keymap :initform 'helm-el-package-map)
    (update :initform 'helm-el-package--update)
    (candidate-number-limit :initform 9999)
    (action :initform '(("Describe package" . helm-el-package-describe)
                        ("Visit homepage" . helm-el-package-visit-homepage)))
+   (find-file-target :initform #'helm-el-package-quit-an-find-file-fn)
    (group :initform 'helm-el-package)))
+
+(defun helm-el-package-quit-an-find-file-fn (source)
+  (let* ((sel (helm-get-selection nil nil source))
+         (pkg (and (stringp sel)
+                   (get-text-property 0 'tabulated-list-id sel))))
+    (when (and pkg (package-installed-p pkg))
+      (expand-file-name (package-desc-dir pkg)))))
 
 (defun helm-el-package--action-transformer (actions candidate)
   (let* ((pkg-desc (get-text-property 0 'tabulated-list-id candidate))
@@ -444,7 +472,7 @@
 
 ;;;###autoload
 (defun helm-list-elisp-packages (arg)
-  "Preconfigured helm for listing and handling emacs packages."
+  "Preconfigured `helm' for listing and handling Emacs packages."
   (interactive "P")
   (when arg (setq helm-el-package--initialized-p nil))
   (unless helm-source-list-el-package
@@ -457,10 +485,11 @@
 
 ;;;###autoload
 (defun helm-list-elisp-packages-no-fetch (arg)
-  "Preconfigured helm for emacs packages.
+  "Preconfigured Helm for Emacs packages.
 
-Same as `helm-list-elisp-packages' but don't fetch packages on remote.
-Called with a prefix ARG always fetch packages on remote."
+Same as `helm-list-elisp-packages' but don't fetch packages on
+remote.  Called with a prefix ARG always fetch packages on
+remote."
   (interactive "P")
   (let ((helm-el-package--initialized-p (null arg)))
     (helm-list-elisp-packages nil)))

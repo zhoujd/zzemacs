@@ -453,10 +453,13 @@
  '(auto-revert-remote-files t))
 
 ;;remove cl warning on emacs27
-;;debug `Package cl is deprecated`
-;(require 'loadhist)
-;(file-dependents (feature-file 'cl))
 (unless (< emacs-major-version 27)
+  (defun zz:check-cl-warning()
+    "debug `Package cl is"
+    (interactive)
+    (require 'loadhist)
+    (dolist (file (file-dependents (feature-file 'cl)))
+      (message "%s" file)))
   (setq byte-compile-warnings '(cl-functions)))
 
 

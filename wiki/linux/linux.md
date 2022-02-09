@@ -384,8 +384,12 @@ Linux something
 
 ## flatpack install package
 
+    ## https://wiki.archlinux.org/title/Flatpak
+    ## ~/.local/share/flatpak/exports/share/applications
+    ## /var/lib/flatpak/exports/share/applications
     $ sudo apt install flatpak
     $ sudo apt install gnome-software-plugin-flatpak
     $ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     Can't load uri https://flathub.org/repo/flathub.flatpakrepo: Unacceptable TLS certificate
     $ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    $ flatpak uninstall --unused

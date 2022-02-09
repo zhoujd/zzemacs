@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### $ build-emacs.sh <version> <prefix>
+### $ build-emacs <version> <prefix>
 ### wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
 
 ##Check run OS
@@ -26,24 +26,16 @@ build_source() {
     if [ ! -f $EMACS_FILE ]; then
         wget https://ftp.gnu.org/gnu/emacs/$EMACS_FILE
     fi
-
     tar xf $EMACS_FILE
-
     pushd $EMACS_SRC
-
     build_started=`date`
     echo "//Starting build: $build_started"
-
     ./configure --prefix=${EMACS_PREFIX}
     make
-
-    ## install emacs
     sudo make install
-
     build_finished=`date`
     echo
     echo "//build finished: $build_finished"
-
     popd
 }
 

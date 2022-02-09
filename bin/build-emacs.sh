@@ -1,6 +1,7 @@
 #!/bin/bash
 
-### wget https://ftp.gnu.org/gnu/emacs/emacs-25.2.tar.xz
+### $ build-emacs.sh <version> <prefix>
+### wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
 
 ##Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -11,8 +12,10 @@ fi
 ##Get script path
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-EMACS_SRC=emacs-25.2
+EMACS_VER=${1:-26.3}
+EMACS_SRC=emacs-${EMACS_VER}
 EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
+EMACS_PREFIX={$2:-/usr/local/${EMACS_SRC}}
 
 ##Import vars and functions
 . $SCRIPT_ROOT/sample.sh
@@ -31,7 +34,7 @@ build_source() {
     build_started=`date`
     echo "//Starting build: $build_started"
 
-    ./configure --prefix=/usr
+    ./configure --prefix=${EMACS_PREFIX}
     make
 
     ## install emacs

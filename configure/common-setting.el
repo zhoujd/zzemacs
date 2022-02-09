@@ -452,6 +452,10 @@
 (custom-set-variables
  '(auto-revert-remote-files t))
 
+;;disable cl warning on emacs27
+(unless (< emacs-major-version 27)
+  (setq byte-compile-warnings '(cl-functions)))
+
 
 (provide 'common-setting)
 

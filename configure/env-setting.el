@@ -1,6 +1,9 @@
 ;;;; env-setting.el --- env config file
 ;;
 
+;;Use bash as default for emacs27
+(setenv "SHELL" "/bin/bash")
+
 ;;add path to env name
 (defun zz:add-os-env (path name)
   (when (file-exists-p path)

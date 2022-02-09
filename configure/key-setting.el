@@ -242,6 +242,11 @@
   [backspace]     'delete-backward-char
   [delete]        'delete-char
 
+  ;;orgmode
+  (kbd "C-c l")   'org-store-link
+  (kbd "C-c a")   'org-agenda
+  (kbd "C-c c")   'org-capture
+
   ;;quick move other windows
   [M-up]          'windmove-up
   [M-down]        'windmove-down

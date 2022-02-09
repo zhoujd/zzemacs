@@ -92,6 +92,10 @@ urldec() {
     printf '%b' "${url_encoded//%/\\x}"
 }
 
+duplfiles() {
+    find . ! -empty -type f -exec md5sum {} + | sort | uniq -w32 -dD
+}
+
 ## chmod on files and directory
 #find -type f -print0 | xargs -0 chmod -v 760
 #find -type f -exec chmod 760 {} \;

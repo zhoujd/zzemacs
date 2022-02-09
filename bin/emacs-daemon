@@ -10,8 +10,14 @@
 ## systemctl --user daemon-reload
 ## systemctl --user restart emacs.service
 
+SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
+SERV_ROOT=~/.config/systemd/user
+
 install() {
     echo "Install emacs daemon"
+    ln -sf $MISC_ROOT/emacs/emacs.service $SERV_ROOT/emacs.service
+    systemctl daemon-reload --user
     systemctl --user enable --now emacs
 }
 

@@ -14,8 +14,8 @@ SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
 EMACS_VER=${1:-26.3}
 EMACS_SRC=emacs-${EMACS_VER}
-EMACS_SRC_FILE=${EMACS_SRC}.tar.xz
-EMACS_PREFIX={$2:-/usr/local/${EMACS_SRC}}
+EMACS_FILE=${EMACS_SRC}.tar.xz
+EMACS_PREFIX=/usr/local/${EMACS_SRC}
 
 ##Import vars and functions
 . $SCRIPT_ROOT/sample.sh
@@ -23,11 +23,11 @@ EMACS_PREFIX={$2:-/usr/local/${EMACS_SRC}}
 echo "Build emacs begin ..."
 
 build_source() {
-    if [ ! -f $EMACS_SRC_FILE ]; then
-        wget https://ftp.gnu.org/gnu/emacs/$EMACS_SRC_FILE
+    if [ ! -f $EMACS_FILE ]; then
+        wget https://ftp.gnu.org/gnu/emacs/$EMACS_FILE
     fi
 
-    tar xf $EMACS_SRC_FILE
+    tar xf $EMACS_FILE
 
     pushd $EMACS_SRC
 

@@ -393,3 +393,8 @@ Linux something
     Can't load uri https://flathub.org/repo/flathub.flatpakrepo: Unacceptable TLS certificate
     $ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     $ flatpak uninstall --unused
+
+## How to use systemctl to list services on systemd Linux
+
+    $ systemctl list-units --type=service
+    $ systemctl list-units --type=service --state=running

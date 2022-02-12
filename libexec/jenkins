@@ -1,0 +1,29 @@
+#!/bin/bash
+
+HOST=jiandon-desk
+BROWSER=google-chrome
+JENKINS_URL=http://$HOST:8080/
+JENKINS_CLI=/opt/jenkins/cli/jenkins-cli.jar
+JENKINS_AUTH=admin:admin
+
+open() {
+    echo "jenkins open"
+    exec $BROWSER $JENKINS_URL
+}
+
+cli() {
+    java -jar $JENKINS_CLI -s $JENKINS_URL -webSocket -auth $JENKINS_AUTH $*
+}
+
+case $1 in
+    open )
+        open
+        ;;
+    cli )
+        shift
+        cli $*
+        ;;
+    * )
+        echo "$(basename $0) {open|cli}"
+        ;;
+esac

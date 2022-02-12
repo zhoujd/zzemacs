@@ -9,3 +9,10 @@ Jenkins
 ## JFrog CLI
 
     ## https://jfrog.com/getcli/
+
+## Jenkins Plugins Adding
+
+    ## Copy Artifacts
+    ## Audit log
+    ## Audit tail
+    ## Github pull request builder

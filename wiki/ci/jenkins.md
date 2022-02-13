@@ -16,3 +16,5 @@ Jenkins
     ## Audit log
     ## Audit tail
     ## Github pull request builder
+    ## Label Linked Jobs Plugin
+    ## Job Import Plugin

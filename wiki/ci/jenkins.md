@@ -18,3 +18,4 @@ Jenkins
     ## Github pull request builder
     ## Label Linked Jobs Plugin
     ## Job Import Plugin
+    ## Authorize Project Plugin

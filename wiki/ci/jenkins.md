@@ -35,3 +35,9 @@ Jenkins
     ## (see note below about parameterized builds - https://github.com/janinko/ghprb#parameterized-builds)
     ## In Branch Specifier, enter ${sha1} instead of the default */master.
     ## If you want to use the actual commit in the pull request, use ${ghprbActualCommit} instead of ${sha1}
+
+## PR build with GitHub Branch Source Plugin
+
+    ## Click "New item" and select "Multibranch Pipeline" as type
+    ## In Job Configuration select "GitHub" as branch source, select credentials and enter your GitHub HTTPS URL
+    ## Kick off a PR

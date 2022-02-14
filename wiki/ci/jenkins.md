@@ -31,6 +31,7 @@ Jenkins
     ## Click on the project name, click Configure. Enter:
     ## Under Advanced, set Name to origin
     ## If you just want to build PRs, set refspec to +refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*
-    ## If you want to build PRs and branches, set refspec to +refs/heads/*:refs/remotes/origin/* +refs/pull/*:refs/remotes/origin/pr/* (see note below about parameterized builds)
+    ## If you want to build PRs and branches, set refspec to +refs/heads/*:refs/remotes/origin/* +refs/pull/*:refs/remotes/origin/pr/*
+    ## (see note below about parameterized builds - https://github.com/janinko/ghprb#parameterized-builds)
     ## In Branch Specifier, enter ${sha1} instead of the default */master.
     ## If you want to use the actual commit in the pull request, use ${ghprbActualCommit} instead of ${sha1}

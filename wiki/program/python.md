@@ -34,3 +34,29 @@ Python
     ##https://python.land/virtual-environments/virtualenv
     $ python3 -m venv <MYVENV>
     $ source <MYVENV>/bin/activate
+
+## How to debug a “Segmentation fault” in Python
+
+    ## https://blog.richard.do/2018/03/18/how-to-debug-segmentation-fault-in-python/
+    ## First add the following to the top of your module.
+    import faulthandler; faulthandler.enable()
+    ## Then re-run your program with the faulthandler startup flag.
+    ## pass as an argument
+    python -Xfaulthandler my_program.py
+    ## Or as an environment variable.
+    PYTHONFAULTHANDLER=1 python my_program.py
+
+## Example of a segmentation fault on Linux with and without enabling the fault handler
+
+    $ python3 -c "import ctypes; ctypes.string_at(0)"
+    Segmentation fault
+
+    $ python3 -q -X faulthandler
+    >>> import ctypes
+    >>> ctypes.string_at(0)
+    Fatal Python error: Segmentation fault
+
+    Current thread 0x00007fb899f39700 (most recent call first):
+      File "/home/python/cpython/Lib/ctypes/__init__.py", line 486 in string_at
+      File "<stdin>", line 1 in <module>
+    Segmentation fault

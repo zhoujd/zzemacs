@@ -48,6 +48,7 @@ Python
 
 ## Example of a segmentation fault on Linux with and without enabling the fault handler
 
+    ## https://docs.python.org/3/library/faulthandler.html
     $ python3 -c "import ctypes; ctypes.string_at(0)"
     Segmentation fault
 
@@ -59,4 +60,17 @@ Python
     Current thread 0x00007fb899f39700 (most recent call first):
       File "/home/python/cpython/Lib/ctypes/__init__.py", line 486 in string_at
       File "<stdin>", line 1 in <module>
+    Segmentation fault
+
+    $ cat test.py
+    import faulthandler
+    faulthandler.enable()
+    import ctypes
+    ctypes.string_at(0)
+    $ ./test.py
+    Fatal Python error: Segmentation fault
+
+    Current thread 0x00007fb764032740 (most recent call first):
+      File "/lib/python3.8/ctypes/__init__.py", line 514 in string_at
+      File "./test.py", line 29 in <module>
     Segmentation fault

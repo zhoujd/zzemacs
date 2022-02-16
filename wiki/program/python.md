@@ -74,3 +74,12 @@ Python
       File "/lib/python3.8/ctypes/__init__.py", line 514 in string_at
       File "./test.py", line 29 in <module>
     Segmentation fault
+
+## Debugging segmentation faults using gdb
+
+    ## https://scipy-lectures.org/advanced/debugging/index.html#debugging-segmentation-faults-using-gdb
+    $ gdb python
+    (gdb) run segfault.py
+    (gdb) up
+    (gdb) up
+    (gdb) pyframe

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+plist=$(ps -A -ostat,pid | awk '/[zZ]/{ print $2 }')
+if [ -n "$plist" ]; then
+    kill -9 $plist
+    echo "Killed zombie process: $plist"
+else
+    echo "No zombie process found"
+fi    

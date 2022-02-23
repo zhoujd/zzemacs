@@ -6,6 +6,11 @@
 # ls colors setting
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 
+# git prompt
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
 ### color prompt
 ## norm='\[\033[m\]'
 ## bold='\[\033[1m\]'
@@ -33,19 +38,19 @@ prompt() {
     local title='\[\033]0;\w\007\]'
     case $TERM in
         xterm* | rxvt* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
+            PS1="${lgreen}\u@\h ${lblue}\W${green}$(parse_git_branch)\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
         eterm* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
+            PS1="${lgreen}\u@\h ${lblue}\W${green}$(parse_git_branch)\$ ${norm}"
             ;;
         dumb* | emacs* )
-            PS1="\u@\h \W\$ "
+            PS1="\u@\h \W$(parse_git_branch)\$ "
             ;;
         linux* )
             export TERM=xterm-256color
             export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
-            PS1="${lgreen}\u@\h \W${green}\$ ${norm}"
+            PS1="${lgreen}\u@\h \W${green}$(parse_git_branch)\$ ${norm}"
             ;;
     esac
     export PS1

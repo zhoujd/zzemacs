@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## script path
 ZZEMACS_ROOT=`pwd`
 
 ## source vars and functions

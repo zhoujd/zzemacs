@@ -72,3 +72,7 @@ Linux kernel
 
     slab cache
         If you are creating and destroying many large data structures, consider setting up a slab cache.
+
+## Build kernel with LOCALVERSION
+
+    $ make -j $(nproc --all) targz-pkg LOCALVERSION="-xe-max"

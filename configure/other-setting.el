@@ -419,7 +419,8 @@
         "^\\*swiper\\*$"))
 
 ;;ranger file manager
-(require 'ranger)
+;(require 'ranger)
+;(ranger-override-dired-mode -1)
 
 
 (provide 'other-setting)

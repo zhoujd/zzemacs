@@ -420,7 +420,7 @@
 
 ;;ranger file manager
 ;(require 'ranger)
-;(ranger-override-dired-mode -1)
+;(ranger-override-dired-mode t)
 
 
 (provide 'other-setting)

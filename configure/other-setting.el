@@ -418,6 +418,9 @@
         "^\\*tramp\\b"
         "^\\*swiper\\*$"))
 
+;;ranger file manager
+(require 'ranger)
+
 
 (provide 'other-setting)
 

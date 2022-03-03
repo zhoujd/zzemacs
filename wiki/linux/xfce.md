@@ -181,3 +181,19 @@ Xfce
     ## https://pissedoffadmins.com/os/linux/xsetroot-cursor_name-list.html
     $ xsetroot -def
     $ xsetroot -cursor_name top_left_arrow
+
+## picom
+
+    ## https://github.com/yshui/picom
+    $ sudo apt install meson
+    $ sudo apt install libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-shape0-dev
+    $ sudo apt install libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev
+    $ sudo apt install libxcb-image0-dev libxcb-present-dev libxcb-xinerama0-dev libxcb-glx0-dev
+    $ sudo apt install libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev libpcre2-dev
+    $ sudo apt install libpcre3-dev libevdev-dev uthash-dev libev-dev libx11-xcb-dev
+    $ meson --buildtype=release . build
+    $ ninja -C build
+    $ ninja -C build install
+
+    ## Default install prefix is /usr/local
+    $ meson configure -Dprefix=<path> build

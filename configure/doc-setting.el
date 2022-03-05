@@ -12,6 +12,7 @@
 ;;(e.g. GitHub flavored markdown). Pandoc does, so let's use that.
 (setq markdown-command "pandoc --from markdown --to html")
 (setq markdown-command-needs-filename t)
+(setq markdown-coding-system "utf-8")
 
 ;;github markdown preview
 (zz:load-path "site-lisp/github-markdown-preview")

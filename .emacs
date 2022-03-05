@@ -70,4 +70,7 @@
 (message "Loading settings...done (%s)" (emacs-init-time))
 
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;;; .emacs end here

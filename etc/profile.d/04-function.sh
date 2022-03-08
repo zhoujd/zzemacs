@@ -96,6 +96,10 @@ duplfiles() {
     find . ! -empty -type f -exec md5sum {} + | sort | uniq -w32 -dD
 }
 
+testmicrophone() {
+    arecord -vvv -d 5 -f dat /dev/null
+}
+
 ## chmod on files and directory
 #find -type f -print0 | xargs -0 chmod -v 760
 #find -type f -exec chmod 760 {} \;

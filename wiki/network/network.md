@@ -233,3 +233,10 @@ Network
     ## -netdev TYPE,id=NAME,...
     # qemu -netdev tap,id=tap0 linux.img
     # qemu -net tap -net tap0 linux.img
+
+## Private Address Space
+
+    ## https://www.rfc-editor.org/rfc/rfc1918
+    10.0.0.0        -   10.255.255.255  (10/8 prefix)
+    172.16.0.0      -   172.31.255.255  (172.16/12 prefix)
+    192.168.0.0     -   192.168.255.255 (192.168/16 prefix)

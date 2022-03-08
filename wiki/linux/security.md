@@ -13,3 +13,19 @@ Security
     ## Generate Self Signed Cert
     $ openssl x509 -req -days 365 -in server.csr -signkey server.pem -out server.crt
     $ openssl req -new -x509 -key privateKey.pem -out cert.cer -days 365
+
+## Generating a certificate and private key
+
+    ## private key and self-signed certificate
+    $ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
+
+## Validate your P2 file
+
+    ## Generate your private key and public certificate. Answer the questions and enter the Common Name when prompted.
+    $ openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+    ## Review the created certificate
+    $ openssl x509 -text -noout -in certificate.pem
+    ## Combine your key and certificate in a PKCS#12 (P12) bundle
+    $ openssl pkcs12 -inkey key.pem -in certificate.pem -export -out certificate.p12
+    ## Validate your P2 file
+    $ openssl pkcs12 -in certificate.p12 -noout -info

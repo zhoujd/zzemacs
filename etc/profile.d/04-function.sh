@@ -97,7 +97,7 @@ duplfiles() {
 }
 
 testmicrophone() {
-    arecord -vvv -d 5 -f dat /dev/null
+    arecord -vvv -d 3 -f dat /dev/null
 }
 
 ## chmod on files and directory

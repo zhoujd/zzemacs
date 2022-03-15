@@ -422,17 +422,17 @@
   (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
     (find-file tramp-file-name)))
 
-(defadvice ido-find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-(defadvice find-file (after find-file-sudo activate)
-  "Find file as root if necessary."
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+;;find-file to check the file permissions automatically anyways
+;(defadvice ido-find-file (after find-file-sudo activate)
+;  "Find file as root if necessary."
+;  (unless (and buffer-file-name
+;               (file-writable-p buffer-file-name))
+;    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+;(defadvice find-file (after find-file-sudo activate)
+;  "Find file as root if necessary."
+;  (unless (and buffer-file-name
+;               (file-writable-p buffer-file-name))
+;    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 
 (provide 'sample-setting)

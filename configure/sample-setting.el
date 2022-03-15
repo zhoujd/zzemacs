@@ -207,6 +207,13 @@
 (defun zz:sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
+;;file-file as root
+(defun zz:root-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
+
 ;;open special info file
 (defun zz:open-info-file (dir-name)
   "Create tags file."

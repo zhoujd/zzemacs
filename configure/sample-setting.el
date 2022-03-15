@@ -207,13 +207,6 @@
 (defun zz:sudo-find-file (file dir)
   (find-file (concat "/sudo:localhost:" (expand-file-name file dir))))
 
-;;file-file as root
-(defun zz:root-find-file (file-name)
-  "Like find file, but opens the file as root."
-  (interactive "FSudo Find File: ")
-  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
-    (find-file tramp-file-name)))
-
 ;;open special info file
 (defun zz:open-info-file (dir-name)
   "Create tags file."
@@ -421,6 +414,25 @@
 (defun zz:display-current-time ()
   (interactive)
   (message (format-time-string "%a %b %e %Y WW%U %l:%M %p")))
+
+;;https://emacsredux.com/blog/2013/04/21/edit-files-as-root/
+(defun zz:root-find-file (file-name)
+  "Like find file, but opens the file as root."
+  (interactive "FSudo Find File: ")
+  (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+    (find-file tramp-file-name)))
+
+(defadvice ido-find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defadvice find-file (after find-file-sudo activate)
+  "Find file as root if necessary."
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 
 (provide 'sample-setting)

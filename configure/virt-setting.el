@@ -1,8 +1,9 @@
 ;;;; virt-setting.el
 
-(zz:load-path "site-lisp/vagrant-tramp")
-(require 'vagrant-tramp)
-(require 'vagrant)
+(unless-ms-windows
+ (zz:load-path "site-lisp/vagrant-tramp")
+ (require 'vagrant-tramp)
+ (require 'vagrant))
 
 ;;virt manager
 (require 'virt-manager)

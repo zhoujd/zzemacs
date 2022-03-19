@@ -207,5 +207,6 @@ Xfce
 
 ## Prompt for the psasword from the user
 
+    ## https://blog.joshgordon.net/quick-and-dirty-rdp-from-linux/
     $ sudo apt install zenity
     $ PASSWORD=$(zenity --password)

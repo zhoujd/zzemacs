@@ -204,3 +204,8 @@ Xfce
     $ meson configure -Dprefix=<path> build
     $ ninja -C build
     $ ninja -C build install
+
+## Prompt for the psasword from the user
+
+    $ sudo apt install zenity
+    $ PASSWORD=$(zenity --password)

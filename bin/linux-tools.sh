@@ -45,6 +45,7 @@ install_package_ubuntu() {
     sudo apt install -y zathura-cb zathura-djvu zathura-pdf-poppler zathura-ps
     sudo apt install -y wireshark tshark
     sudo apt install -y dunst
+    sudo apt install -y ranger
 }
 
 ##package for centos

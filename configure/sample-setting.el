@@ -425,6 +425,18 @@ Because the former may lead name resolving errors."
       (car (last (split-string address "//")))
     address))
 
+(defun zz:use-os-proxy ()
+  "Use system proxy"
+  (interactive)
+  (let ((http_proxy (zz:trim-proxy-address (getenv "HTTP_PROXY")))
+        (https_proxy (zz:trim-proxy-address (getenv "HTTPS_PROXY")))
+        (no_proxy (getenv "NO_PROXY")))
+    (setq url-proxy-services
+          `(("no_proxy" . ,no_proxy)
+            ("http" . ,http_proxy)
+            ("https" . ,https_proxy)))
+    (message "use os proxy: %s" http_proxy)))
+
 
 (provide 'sample-setting)
 

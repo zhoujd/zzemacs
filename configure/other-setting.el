@@ -422,6 +422,10 @@
 ;(require 'ranger)
 ;(ranger-override-dired-mode t)
 
+;;use-proxy
+;(require 'use-proxy)
+;(use-proxy-mode)
+
 
 (provide 'other-setting)
 

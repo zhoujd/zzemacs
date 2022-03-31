@@ -418,6 +418,13 @@
   (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
     (find-file tramp-file-name)))
 
+(defun zz:trim-proxy-address (address)
+  "Trim proxy ADDRESS from '<scheme>://<host>:<port>' into '<host>:<port>'.
+Because the former may lead name resolving errors."
+  (if (stringp address)
+      (car (last (split-string address "//")))
+    address))
+
 
 (provide 'sample-setting)
 

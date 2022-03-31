@@ -7,8 +7,7 @@
     (let ((env (getenv name)))
       (when (or (not env)
                 (not (string-match path env)))
-        (setenv name (concat path path-separator env))
-        ))))
+        (setenv name (concat path path-separator env))))))
 
 ;;add path to PATH
 (defun zz:add-os-path (path)

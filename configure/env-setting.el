@@ -1,39 +1,56 @@
 ;;;; env-setting.el --- env config file
 ;;
 
-;;add path to env name
 (defun zz:add-os-env (path name)
+  "add path to env name"
   (when (file-exists-p path)
     (let ((env (getenv name)))
       (when (or (not env)
                 (not (string-match path env)))
         (setenv name (concat path path-separator env))))))
 
-;;add path to PATH
 (defun zz:add-os-path (path)
+  "add path to PATH"
   (interactive "DDirectory: ")
   (zz:add-os-env path "PATH")
   (setq exec-path (cons path exec-path)))
 
-;;add path to LD_LIBRARY_PATH
 (defun zz:add-lib-path (path)
+  "add path to LD_LIBRARY_PATH"
   (interactive "DDirectory: ")
   (zz:add-os-env path "LD_LIBRARY_PATH"))
 
-;;add path to PKG_CONFIG_PATH
 (defun zz:add-pkg-path (path)
+  "add path to PKG_CONFIG_PATH"
   (interactive "DDirectory: ")
   (zz:add-os-env path "PKG_CONFIG_PATH"))
 
-;;add url proxy
 (defun zz:add-os-proxy (proxy)
+  "add url proxy"
   (interactive "sProxy: ")
   (setq url-proxy-services
         `(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
           ("http" . ,proxy)
           ("https" . ,proxy))))
 
-;;add path for excute files
+(defun zz:trim-address (address)
+  "Trim proxy ADDRESS from '<scheme>://<host>:<port>' into '<host>:<port>'"
+  (if (stringp address)
+      (car (last (split-string address "//")))
+      address))
+
+(defun zz:use-os-proxy ()
+  "Use system environment proxy"
+  (interactive)
+  (let ((http_proxy (zz:trim-address (getenv "HTTP_PROXY")))
+        (https_proxy (zz:trim-address (getenv "HTTPS_PROXY")))
+        (no_proxy (getenv "NO_PROXY")))
+    (setq url-proxy-services
+          `(("no_proxy" . ,no_proxy)
+            ("http" . ,http_proxy)
+            ("https" . ,https_proxy)))
+    (message "Use OS proxy: %s" http_proxy)))
+
 (defvar zz:env-path
   (if-ms-windows
    (progn
@@ -57,6 +74,7 @@
   "add to path and exec-path")
 
 (mapc #'zz:add-os-path zz:env-path)
+
 
 (provide 'env-setting)
 

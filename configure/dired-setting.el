@@ -4,6 +4,9 @@
 ;;Dired-x is a build-in model
 (require 'dired-x)
 
+;;Show human-readable sizes and hidden files
+(setq dired-listing-switches "-alh")
+
 ;;allow dired to be able to delete or copy a whole dir.
 (setq dired-recursive-copies (quote always)) ;;"always" means no asking
 (setq dired-recursive-deletes (quote top)) ;;"top" means ask once

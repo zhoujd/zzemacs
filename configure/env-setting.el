@@ -25,32 +25,6 @@
   (interactive "DDirectory: ")
   (zz:add-os-env path "PKG_CONFIG_PATH"))
 
-(defun zz:add-os-proxy (proxy)
-  "add url proxy"
-  (interactive "sProxy: ")
-  (setq url-proxy-services
-        `(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-          ("http" . ,proxy)
-          ("https" . ,proxy))))
-
-(defun zz:trim-address (address)
-  "Trim proxy ADDRESS from '<scheme>://<host>:<port>' into '<host>:<port>'"
-  (if (stringp address)
-      (car (last (split-string address "//")))
-      address))
-
-(defun zz:use-os-proxy ()
-  "Use system environment proxy"
-  (interactive)
-  (let ((http_proxy (zz:trim-address (getenv "HTTP_PROXY")))
-        (https_proxy (zz:trim-address (getenv "HTTPS_PROXY")))
-        (no_proxy (getenv "NO_PROXY")))
-    (setq url-proxy-services
-          `(("no_proxy" . ,no_proxy)
-            ("http" . ,http_proxy)
-            ("https" . ,https_proxy)))
-    (message "Use OS proxy: %s" http_proxy)))
-
 (defvar zz:env-path
   (if-ms-windows
    (progn
@@ -74,6 +48,36 @@
   "add to path and exec-path")
 
 (mapc #'zz:add-os-path zz:env-path)
+
+(defun zz:add-os-proxy (proxy)
+  "add url proxy"
+  (interactive "sProxy: ")
+  (setq url-proxy-services
+        `(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+          ("http" . ,proxy)
+          ("https" . ,proxy))))
+
+(defun zz:trim-address (address)
+  "Trim proxy ADDRESS from '<scheme>://<host>:<port>' into '<host>:<port>'"
+  (if (stringp address)
+      (car (last (split-string address "//")))
+      address))
+
+(defun zz:use-os-proxy ()
+  "Use system environment proxy"
+  (interactive)
+  (let ((http_proxy (zz:trim-address (getenv "HTTP_PROXY")))
+        (https_proxy (zz:trim-address (getenv "HTTPS_PROXY")))
+        (no_proxy (getenv "NO_PROXY")))
+    (when (and (length http_proxy)
+               (length https_proxy))
+      (setq url-proxy-services
+            `(("no_proxy" . ,no_proxy)
+              ("http" . ,http_proxy)
+              ("https" . ,https_proxy)))
+      (message "Use OS proxy: %s" http_proxy))))
+
+(zz:use-os-proxy)
 
 
 (provide 'env-setting)

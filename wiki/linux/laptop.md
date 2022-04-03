@@ -38,5 +38,9 @@ Laptop setting
     ## https://www.dell.com/support/kbdoc/zh-cn/000179566/how-to-disable-sleep-and-configure-lid-power-settings-for-ubuntu-or-red-hat-enterprise-linux-7
     ## Disable sleep
     $ sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+    Created symlink /etc/systemd/system/sleep.target → /dev/null.
+    Created symlink /etc/systemd/system/suspend.target → /dev/null.
+    Created symlink /etc/systemd/system/hibernate.target → /dev/null.
+    Created symlink /etc/systemd/system/hybrid-sleep.target → /dev/null.
     ## Enable sleep
     $ sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target

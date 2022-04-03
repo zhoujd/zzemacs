@@ -69,8 +69,8 @@
   (let ((http_proxy (zz:trim-address (getenv "HTTP_PROXY")))
         (https_proxy (zz:trim-address (getenv "HTTPS_PROXY")))
         (no_proxy (getenv "NO_PROXY")))
-    (when (and (length http_proxy)
-               (length https_proxy))
+    (when (and (> (length http_proxy) 0)
+               (> (length https_proxy) 0))
       (setq url-proxy-services
             `(("no_proxy" . ,no_proxy)
               ("http" . ,http_proxy)

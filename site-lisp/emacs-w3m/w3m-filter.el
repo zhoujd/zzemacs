@@ -1,6 +1,6 @@
 ;;; w3m-filter.el --- filtering utility of advertisements on WEB sites
 
-;; Copyright (C) 2001-2008, 2012-2015, 2017-2019
+;; Copyright (C) 2001-2008, 2012-2015, 2017-2021
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -83,10 +83,6 @@
      "Filter top and bottom cruft for stackexchange.com"
      "\\`https://\\(?:[0-9A-Za-z_~-]+\\.\\)*stackexchange\\.com\\(?:\\'\\|/\\)"
      w3m-filter-stackexchange)
-    (t
-     "A filter for YouTube"
-     "\\`https://\\(?:[0-9A-Za-z_~-]+\\.\\)*youtube\\.com\\(?:\\'\\|/\\)"
-     w3m-filter-youtube)
     (nil
      ("Remove garbage in http://www.geocities.co.jp/*"
       "http://www.geocities.co.jp/* でゴミを取り除きます")
@@ -128,8 +124,8 @@
      "A filter for Wikipedia"
      "\\`http://.*\\.wikipedia\\.org/" w3m-filter-wikipedia)
     (t "filter for github.com repository main page"
-       "\\`http[s]?://github\\.com/[^/]+/[^/]+[/]?\\'"
-       w3m-filter-github-repo-main-page)
+       "\\`http[s]?://github\\.com"
+       w3m-filter-github)
     (t "xkcd filter" "\\`http[s]?://xkcd.com/" w3m-filter-xkcd)
     (nil
      ("Remove inline frames in all pages"
@@ -163,6 +159,31 @@ FUNCTION
   argument even if it is useless.  Use the latter (i.e. a function and
   arguments) if the function requires rest arguments."
   :group 'w3m
+  :get (lambda (symbol)
+	 (mapcar (lambda (elem)
+		   (when (consp (cadr elem))
+		     (setcar (cdr (setq elem (copy-sequence elem)))
+			     (if (equal "Japanese" w3m-language)
+				 (concat (cadadr elem) "\n(" (caadr elem) ")")
+			       (concat (caadr elem) "\n(" (cadadr elem) ")"))))
+		   elem)
+		 (default-value symbol)))
+  :set (lambda (symbol value)
+	 (custom-set-default
+	  symbol
+	  (mapcar
+	   (lambda (elem)
+	     (let ((s (cadr elem)))
+	       (cond ((null s))
+		     ((consp s))
+		     ((string-match "\\`\\(.+\\)\n(\\(.+\\))\\'" s)
+		      (setcar
+		       (cdr (setq elem (copy-sequence elem)))
+		       (if (equal "Japanese" w3m-language)
+			   (list (match-string 2 s) (match-string 1 s))
+			 (list (match-string 1 s) (match-string 2 s))))))
+	       elem))
+	   value)))
   :type '(repeat
 	  :convert-widget w3m-widget-type-convert-widget
 	  (let ((locker (lambda (fn)
@@ -210,23 +231,20 @@ FUNCTION
 				       (widget-get
 					(car (last
 					      (widget-get parent :children)))
-					:children))) :to)))))))
+					:children)))
+				 :to)))))))
 		    (widget-checkbox-action widget event))))
 	       (group
 		:format "%v" :indent 2 :inline t
 		(choice
 		 :format " %v"
-		 (string :format "%v")
-		 (string :documentation-property
-			 (lambda (value)
-			   (if (equal "Japanese" w3m-language)
-			       (concat (cadr value) "\n(" (car value) ")")
-			     (concat (car value) "\n(" (cadr value) ")")))
-			 :format "%h"
-			 :match
-			 (lambda (_widget value)
-			   (and (stringp (car-safe value))
-				(stringp (car-safe (cdr-safe value))))))
+		 (string :format "%h"
+			 :value ,(if (equal "Japanese" w3m-language)
+				     "日本語の説明 − 改行で終える
+(英語の説明 − 括弧で囲む)"
+				   "Description in English − end with newline
+(Description in Japanese − enclose in parentheses)")
+			 :documentation-property identity)
 		 (const :format "Not documented\n" nil))
 		(regexp :format "Regexp matching url: %v")
 		(choice
@@ -329,10 +347,9 @@ This variable is semi-obsolete; use `w3m-filter-configuration' instead."
 
 ;;;###autoload
 (defun w3m-toggle-filtering (arg)
-  "Toggle whether web pages will have their html modified by w3m's \
-filters before being rendered.
-When called with a prefix argument, prompt for a single filter to
-toggle with completion (a function toggled last will first appear)."
+  "Toggle whether to modify html source by the filters before rendering.
+With prefix arg, prompt for a single filter to toggle (a function
+toggled last will first appear) with completion."
   (interactive "P")
   (if (not arg)
       ;; toggle state for all filters
@@ -1067,38 +1084,201 @@ READ MORE:\\([^<]+\\)\\(</a>\\)?</strong>\\(</p>\\)?"
   (while (re-search-forward "\n[\n\t ]+" nil t)
     (replace-match "")))
 
-(defun w3m-filter-github-repo-main-page (url)
-  "filter distractions for the main page of a github repository."
-  (w3m-filter-delete-regions
-   url
-   "<div class=\"d-flex" "</header>" nil t nil nil nil 1)
-  (w3m-filter-delete-regions
-   url
-   "<div class=\"signup-prompt-bg" "<div class=\"f4\">" nil t nil nil nil 1)
-  (insert "<hr>")
-  ;; NOTE: There is inconsistency in some pages. Some have DIV element
-  ;;       'repository-topics-container', while others have 'overall-summary'.
-  (w3m-filter-delete-regions
-   url
-   "<div class=\"repository-topics-container" "<div class=\"commit-tease"
-   nil t nil nil nil 1)
-  (w3m-filter-delete-regions
-   url
-   "<div class=\"overall-summary" "<div class=\"commit-tease"
-   nil t nil nil nil 1)
-  (w3m-filter-delete-regions
-   url
-   "<div class=\"footer container-lg" "</body>" nil t nil nil nil 1)
-  (goto-char (point-min))
-  (search-forward "<div class=\"commit-tease" nil t)
-  (goto-char (match-beginning 0))
-  (insert "<hr>")
-  (search-forward "<div class=\"file-wrap\">" nil t)
-  (goto-char (match-beginning 0))
-  (insert "<hr>")
-  (search-forward "</table>" nil t)
-  (insert "<hr>")
-  )
+(defun w3m-filter-github (url)
+  "filter for github.com."
+  (let (p0 p1)
+    (cond
+     ;; condition: home page
+     ((string-match "github.com/$" url)
+      (goto-char (point-min))
+      ;; improve readability of search form
+      (when (search-forward "<input" nil t)
+	(replace-match "<hr><b>Search GitHub</b>: \\&"))
+      ;; rm other search cruft
+      (w3m-filter-delete-regions
+       url "<ul" "{{ message }}" nil nil nil (point) nil 1)
+      (insert "<hr>")
+      ;; rm broken sign-up
+      (and (search-forward "Email address" nil t)
+	   (setq p0 (search-backward "<div class=\"overflow-hidden\"" nil t))
+	   (search-forward "</form>" nil t 2)
+	   (delete-region p0 (match-end 0)))
+      ;; rm line numbers in sample code
+      (w3m-filter-delete-regions url "<pre" "</pre>" nil nil nil nil nil 1)
+      ;; rm duplicate text lines
+      (w3m-filter-delete-regions
+       url "<h2 data-optimizely-variation=\"ko\"" "</h2>"))
+     ;; condition: repository main page
+     ((string-match "github.com/[^/]+/[^/?&]+$" url)
+      ;; can't perform star or notification w/o JS, so delete
+      (w3m-filter-delete-regions url "</h1>" "</ul>" t nil nil nil nil 1)
+      (when (search-forward "forks" nil t)
+	(w3m-filter-delete-regions url "<div" "<nav" nil t nil (point) nil 1))
+      ;; place homepage link, license, stars, forks on same line
+      (goto-char (point-min))
+      (and (search-forward "<svg" nil t)
+	   (setq p0 (point))
+	   (search-forward "<nav" nil t)
+	   (setq p1 (match-beginning 0))
+	   (w3m-filter-delete-regions url "</?div" ">" nil nil t p0 p1))
+      ;; rm broken "switching branches/tags" via form
+      (goto-char (setq p1 (point-min)))
+      (and (search-forward "title=\"Switch branches or tags\"" nil t)
+	   (search-backward "<div" nil t)
+	   (setq p1 (point))
+	   (search-forward "</details>" nil t)
+	   (search-forward "</div>" nil t)
+	   (delete-region p1 (point)))
+      (goto-char p1)
+      ;; rm 'launching github desktop' etc.
+      (and (search-forward "<get-repo class=\"\">" nil t)
+	   (setq p1 (match-beginning 0))
+	   (search-forward "Git stats</h2>" nil t)
+	   (delete-region p1 (point)))
+      (goto-char p1)
+      (when (search-forward "<h2 id=\"files\"  class=\"sr-only\">Files</h2>"
+			    nil t)
+	(replace-match ""))
+      (goto-char (point-min))
+      (when (search-forward "Permalink</a>" nil t)
+	(insert "<p><b>Files</b><hr>")
+	(setq p1 (point))
+	(and (search-forward "Commit time</div>" nil t)
+	     (search-forward "</div>" nil t)
+	     (delete-region p1 (point))))
+      ;; delimit end of files with <hr>
+      (goto-char (point-min))
+      (when (and (search-forward "<readme-toc>" nil t)
+		 (setq p1 (match-beginning 0))
+		 (search-backward "<button" nil t))
+	(delete-region (match-beginning 0) p1)
+	(insert "<hr>")))
+     ;; condition: user-account main page
+     ((string-match "github.com/[^/]+$" url)
+      ;; rm second of duplicate account heading
+      (goto-char (point-min))
+      (and (search-forward "<div class=\"user-profile-sticky-bar" nil t 2)
+	   (setq p0 (match-beginning 0))
+	   (search-forward "<span class=\"user-following-container\">" nil t)
+	   (search-forward "</span>" nil t 2)
+	   (delete-region p0 (match-end 0)))
+      ;; rm duplicate achievements
+      (dolist (elem '(">Achievements</h2>"
+		      "\
+<div class=\"table-list-header-toggle states flex-auto pl-0\">"))
+	(w3m-filter-delete-regions url
+				   elem elem nil t nil nil nil 1))
+      ;; rm broken 'follow' button
+      (w3m-filter-delete-regions
+       url "<span class=\"follow d-block\">" "</span>")
+      ;; rm 'block or report'
+      (goto-char (point-min))
+      (and (search-forward "Block or Report" nil t)
+	   (search-backward "<details" nil t)
+	   (setq p0 (match-beginning 0))
+	   (search-forward "</details>" nil t)
+	   (delete-region p0 (match-end 0)))
+      ;; sections: Pinned, Contributions
+      (goto-char (point-min))
+      (let ((elem "<div class=\"js-yearly-contributions\">")
+	    case-fold-search)
+	(when (search-forward "Pinned" nil t)
+	  (setq p0 (match-end 0))
+	  ;; give 'pinned' heading better description
+	  (replace-match "\\& Repositories")
+	  ;; rm vertical space in pinned repositories section
+	  (when (search-forward elem nil t)
+	    (setq p1 (match-beginning 0))
+	    (w3m-filter-replace-regexp url "</?p[^>]*>" "" p0 p1)
+	    (goto-char p0)
+	    (search-forward elem nil t)
+	    (setq p1 (match-beginning 0))
+	    (w3m-filter-replace-regexp url "</li>" "<p>" p0 p1)))
+	;; rm broken contributions graph with months display
+	(goto-char (point-min))
+	(when (search-forward elem nil t)
+	  (setq p0 (match-end 0))
+	  (w3m-filter-delete-regions
+	   url "</h2>" "<div id=\"js-contribution-activity\""
+	   t t nil p0 nil 1)))
+      ;; in user repositories tab, separate list elements with <hr>
+      (and (string-match "\\?tab=repositories$" url)
+	   (search-forward "<div id=\"user-repositories-list\">" nil t)
+	   (setq p0 (match-end 0))
+	   (w3m-filter-replace-regexp url "<li[^>]+>" "<hr>" p0)))
+     ;; condition: all other pages
+     (t
+      ;; Simple replacements
+      (dolist (elem
+	       '(;; make sorts horizontal
+		 ("<div class=\"SelectMenu-list\">"	. "")
+		 ;; make filters horizontal
+		 ;;("<div class=\"SelectMenu-filter\">" . "")
+		 ;; react horiz #1
+		 ("Most reactions</div>"  . "Most reactions")
+		 ;; react horiz #2
+		 ("<div class=\"clearfix ws-normal p-3 p-sm-2\">" . "")
+		 ;; remove js error msg
+		 ("Sorry, something went wrong."	. "")
+		 ;; add horiz line
+		 ("<!-- Rendered timeline since"	. "<hr>\\&")
+		 ;; add horiz line
+		 ("<div class=\"TimelineItem[^-]"	. "<hr>\\&")
+		 ;; add horiz line
+		 ("<div id=\"issue_"			. "<hr><p>\\&")))
+	(goto-char (point-min))
+	(while (search-forward (car elem) nil t)
+	  (replace-match (cdr elem))))
+      ;; rm broken filters
+      (goto-char (point-min))
+      (and (search-forward "<summary class=\"btn-link\" title=\"Author\""
+			   nil t)
+	   (setq p0 (match-beginning 0))
+	   (search-forward "<summary class=\"btn-link\" title=\"Assignees\""
+			   nil t)
+	   (search-forward "</details>" nil t)
+	   (delete-region p0 (match-beginning 0)))
+      ;; Other removals
+      (w3m-filter-delete-regions
+       url "<div class=\"footer container-xl" "</body" nil t nil nil nil 1)
+      (w3m-filter-delete-regions
+       url "\
+<nav class=\"subnav-links float-left d-flex no-wrap\" aria-label=\"Issue\">"
+       "</nav>" nil t nil nil nil 1)
+      (w3m-filter-delete-regions
+       url "<div class=\"px-4\">" "to your account" nil nil nil nil nil 1)
+      (w3m-filter-delete-regions
+       url
+       "<!-- Rendered timeline since" "<div id=\"partial-users-participants"
+       nil t nil nil nil 1)
+      (w3m-filter-delete-regions
+       url "<footer class=\"SelectMenu-footer\">" "</footer>")
+      (w3m-filter-delete-regions
+       url "<summary id=\"sponsor-button-repo\"" "</summary>")
+      (w3m-filter-delete-regions
+       url "<summary class=\"btn-link\" title=\"Sort\"" "</summary>")
+      (w3m-filter-delete-regions
+       url "<clipboard-copy" "</clipboard-copy>"))
+     ) ; end 'cond'
+    ;; condition: all but the home page
+    (unless (string-match "github.com/$" url)
+      ;; rm header banner, manu, sign up, etc
+      (w3m-filter-delete-regions
+       url "<body[^>]*>" "<div>{{ message }}</div>"  t nil t nil nil 1)
+      ;; remove footer
+      (w3m-filter-delete-regions
+       url "<div class=\"footer container-xl" "</body" nil t nil nil nil 1))
+    ;; condition: all pages
+    ;; rm duplicate list: code, issues, pr, actions, proj, wiki, secur, insights
+    (w3m-filter-delete-regions
+     url "<span class=\"sr-only\">More</span>" "</nav>" nil t nil nil nil 1)
+    ;; compress list of links into single line (duplicate code!)
+    (dolist (elem '(("<ul[^>]*>"   . "")
+		    ("</ul[^>]*>"  . "<p>")
+		    ("</?li[^>]*>" . "")))
+      (goto-char (point-min))
+      (while (re-search-forward (car elem) nil t)
+	(replace-match (cdr elem))))))
 
 (defun w3m-filter-xkcd (url)
   "filter distractions for xkcd."
@@ -1247,23 +1427,21 @@ READ MORE:\\([^<]+\\)\\(</a>\\)?</strong>\\(</p>\\)?"
   (when (search-forward "<h4 id=\"h-linked\">Linked</h4>" nil t)
     (replace-match "<p><b>Linked</b><br>")
     (let ((p1 (match-end 0))
-	  (p2 (progn
-		(search-forward "<h4" nil t)
-		(match-beginning 0))))
-      (goto-char p1)
-      (while (re-search-forward "^\t</a>" p2 t)
-	(replace-match  ""))
-      (goto-char p1)
-      (while (re-search-forward "</a>" p2 t)
-	(replace-match "</a><br>"))
-      (goto-char p1)
-      (while (re-search-forward "</div>" p2 t)
-	(replace-match " "))
-      (w3m-filter-delete-regions
-       url
-       "<div class=\"spacer\">"
-       "<div class=\"answer-votes answered-accepted [^>]+>"
-       nil nil t)))
+	  p2)
+      (dolist (strs '(("^\t</a>"  "")
+		      ("</a>"     "</a><br>")
+		      ("</div>"   " ")))
+	(goto-char p1)
+	(when (setq p2 (when (search-forward "<h4" nil t)
+			 (match-beginning 0)))
+	  (goto-char p1)
+	  (while (re-search-forward (car strs) p2 t)
+	    (replace-match (cadr strs))))))
+    (w3m-filter-delete-regions
+     url
+     "<div class=\"spacer\">"
+     "<div class=\"answer-votes answered-accepted [^>]+>"
+     nil nil t))
 
   (goto-char (point-min))
   (when (search-forward "<table id=\"qinfo\">" nil t)
@@ -1279,51 +1457,6 @@ READ MORE:\\([^<]+\\)\\(</a>\\)?</strong>\\(</p>\\)?"
       (w3m-filter-replace-regexp url "<b>" "" p1 p2)
       (w3m-filter-replace-regexp url "<a[^>]+>" "" p1 p2)
       (w3m-filter-replace-regexp url "</?p[^>]*>" "" p1 p2))))
-
-(defun w3m-filter-youtube (url)
-  (w3m-filter-delete-regions url "<head>" "<title>" t t)
-  (w3m-filter-delete-regions url "</title>" "</head>" t t)
-  (insert "<body>")
-  (w3m-filter-delete-regions url
-			     "<body" "<p class=\"num-results" nil t (point))
-  (w3m-filter-delete-regions url
-			     "<div id=\"footer-container\"" "</body>" nil t)
-  (w3m-filter-replace-regexp url "</?h4[^>]*>" "")
-  (goto-char (point-min))
-  (let ((p1 (point)) (p2 (search-forward "<ol" nil t)))
-    (w3m-filter-replace-regexp url "<li>" " | " p1 p2)
-    (w3m-filter-replace-regexp url "<ul>" "" p1 p2)
-    (w3m-filter-replace-regexp url
-			       "<li><div class=\"yt-lockup[^>]*>" "<p><li>" p2)
-    (w3m-filter-replace-regexp url "<button.*</button>" "")
-    (w3m-filter-replace-regexp url "<a aria-hidden[^>]*>" "")
-    (w3m-filter-replace-regexp url "</?h3[^>]*>" "")
-    (goto-char (point-min))
-    (while (search-forward "<ul class=\"yt-lockup-meta-info\">" nil t)
-      (delete-region (match-beginning 0) (match-end 0))
-      (setq p1 (point) p2 (search-forward "</ul>" nil t))
-      (w3m-filter-replace-regexp url "</?li>" " " p1 p2)
-      (w3m-filter-replace-regexp url "</ul>" "" p1 nil 1))
-    (goto-char (point-min))
-    (while (search-forward "<ul class=\"yt-badge-list \">" nil t)
-      (replace-match "")
-      (setq p1 (point) p2 (search-forward "</ul>" nil t))
-      (insert " ")
-      (w3m-filter-replace-regexp url "</?li[^>]*>" " " p1 p2)
-      (w3m-filter-replace-regexp url "</ul>" "" p1 nil 1))
-    (w3m-filter-replace-regexp url
-			       "</div><div class=\"yt-lockup-meta \">" "")
-    (goto-char (point-min))
-    (while (search-forward "<img" nil t)
-      (let ((p1 (match-end 0)) (p2 (search-forward ">" nil t)))
-	(goto-char p1)
-	(when (search-forward "data-thumb=" p2 t)
-	  (goto-char p1)
-	  (when (re-search-forward "src=\"[^\"]*\"" p2 t)
-	    (replace-match "")
-	    (goto-char p1)
-	    (re-search-forward "data-thumb=" p2 t)
-	    (replace-match "src=")))))))
 
 (defun w3m-filter-geocities-remove-garbage (url)
   "Remove garbage in http://www.geocities.co.jp/*."

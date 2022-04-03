@@ -1,6 +1,6 @@
 ;;; w3m-util.el --- Utility macros and functions for emacs-w3m
 
-;; Copyright (C) 2001-2014, 2016-2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2014, 2016-2021 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          Shun-ichi GOTO     <gotoh@taiyo.co.jp>,
@@ -68,6 +68,7 @@
 (declare-function w3m-force-window-update "w3m-ems" (&optional window))
 (declare-function w3m-history-restore-position "w3m-hist")
 (declare-function w3m-mode "w3m")
+(declare-function w3m-url-to-file-name "w3m" (url))
 
 ;; ;;; Control structures:
 
@@ -169,14 +170,17 @@ into it."
     (while (< pos end)
       (setq prop (get-text-property pos 'face object))
       (setq next (next-single-property-change pos 'face object end))
-      (setq new-prop nil)
-      (while prop
-	(setq elem (pop prop))
-	(unless (eq elem name)
-	  (push elem new-prop)))
+      (setq new-prop (cond
+		      ((listp prop)
+		       (setq new-prop (remove name prop))
+		       (if (>= 1 (length new-prop))
+			   (car new-prop)
+			 new-prop))
+		      ((equal name prop) nil)
+		      (t prop)))
+      (remove-text-properties pos next 'face object)
       (when new-prop
-	(w3m-add-text-properties pos next
-				 (list 'face new-prop)))
+	(add-text-properties pos next (list 'face new-prop) object))
       (setq pos next))))
 
 (defmacro w3m-get-text-property-around (prop)
@@ -1113,7 +1117,8 @@ START and END are lists which represent time in Emacs-style."
 (defun w3m-url-local-p (url)
   "If URL points a file on the local system, return non-nil value.
 Otherwise return nil."
-  (string-match "\\`file:" url))
+  (and (string-match "\\`file:" url)
+       (w3m-url-to-file-name url)))
 
 (defconst w3m-url-authinfo-regexp
   "\\`\\([^:/?#]+:\\)?//\\([^/?#:]+\\)\\(?::\\([^/?#@]+\\)\\)?@"
@@ -1146,6 +1151,22 @@ Otherwise return nil."
       (match-string 1 url)
     url))
 
+(defun w3m--url-get-queries (url)
+  "Returns an ALIST of queries in URL.
+ie. For anything after the first '?', for each segment until the
+next '&' or end-of-string, a CONS whose CAR is what is to the
+left of '=' and whose CDR is to the right of it."
+  (let ((parameters (when (string-match "[^?]+\\?\\(.*\\)$" url)
+		      (match-string 1 url)))
+	split query result)
+    (when parameters
+      (setq split (split-string parameters "&" 'omit-nulls))
+      (while (setq query (pop split))
+	(if (string-match "\\([^=]+\\)=\\(.*\\)$" query)
+	    (push (cons (match-string 1 query) (match-string 2 query)) result)
+	  (push (cons query "") result))))
+    result))
+
 (defcustom w3m-strip-queries t
   "Remove unwanted queries from URLs.
 Details are set by `w3m-strip-queries-alist'."
@@ -1169,12 +1190,9 @@ referers embed."
   :group 'w3m
   :type 'boolean)
 
-(defcustom w3m-queries-log-file "~/emacs-w3m-queries_log.txt"
-  "File in which to log URL queries."
-  :group 'w3m
-  :type 'boolean)
+(defvar w3m-queries-log-file)
 
-(defun w3m--url-strip-queries (url)
+(defun w3m--url-strip-unwanted-queries (url)
   "Strip unwanted queries from a url.
 This is meant to remove unwanted trackers or other data that
 websites or referers embed. See `w3m-strip-queries-alist'."
@@ -1381,6 +1399,11 @@ the function cell of FUNCs rather than their value cell.
   (w3m-flet ((widget-sexp-value-to-internal (widget value) value))
     (apply 'widget-convert (widget-type widget)
 	   (eval (car (widget-get widget :args))))))
+
+(defmacro w3m-easy-menu-add (menu &optional map)
+  "Run `easy-menu-add' (obsolete since 28.1) on Emacs 27 and earlier."
+  (if (<= emacs-major-version 27)
+      `(easy-menu-add ,menu ,map)))
 
 ;;; Punycode RFC 3492:
 

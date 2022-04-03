@@ -1,6 +1,6 @@
 ;;; w3m-search.el --- functions convenient to access web search engines
 
-;; Copyright (C) 2001--2012, 2017-2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001--2012, 2017-2020 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Keisuke Nishida    <kxn30@po.cwru.edu>,
 ;;          Shun-ichi GOTO     <gotoh@taiyo.co.jp>,
@@ -33,12 +33,6 @@
 ;;    http://emacs-w3m.namazu.org/
 
 ;;; Code:
-
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, c[ad][ad][ad]+r are what subr.el provides.
-(eval-when-compile
-  (unless (>= emacs-major-version 26)
-    (require 'cl))) ;; c[ad][ad][ad]+r
 
 (require 'w3m)
 
@@ -164,13 +158,13 @@ __mk_ja_JP=%%83J%%83%%5E%%83J%%83i&url=search-alias%%3Daps&field-keywords=%s"
 __mk_ja_JP=%%83J%%83%%5E%%83J%%83i&url=search-alias%%3Daps&field-keywords=%s"
 	     shift_jis)))
       ("emacswiki" "https://www.emacswiki.org/cgi-bin/wiki?search=%s")
-      ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s")
-      ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s"
+      ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s&sourceid=Mozilla-search&ns0=1")
+      ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s&sourceid=Mozilla-search&ns0=1"
        utf-8)
-      ("ja.wikipedia" "https://ja.wikipedia.org/wiki/Special:Search?search=%s"
+      ("ja.wikipedia" "https://ja.wikipedia.org/wiki/Special:Search?search=%s&sourceid=Mozilla-search&ns0=1"
        utf-8)
       ("msdn" "https://search.msdn.microsoft.com/search/default.aspx?query=%s")
-      ("duckduckgo" "https://duckduckgo.com/lite" utf-8 "q=%s")))
+      ("duckduckgo" "https://lite.duckduckgo.com/lite" utf-8 "q=%s")))
   "An alist of search engines.
 Each element looks like (ENGINE ACTION CODING POST-DATA)
 ENGINE is a string, the name of the search engine.

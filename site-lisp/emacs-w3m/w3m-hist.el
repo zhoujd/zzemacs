@@ -1,6 +1,6 @@
 ;;; w3m-hist.el --- the history management system for emacs-w3m
 
-;; Copyright (C) 2001-2012, 2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2012, 2019-2021 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: w3m, WWW, hypermedia
@@ -32,14 +32,7 @@
 
 ;;; Code:
 
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, c[ad][ad][ad]+r are what subr.el provides.
-(eval-when-compile
-  (unless (>= emacs-major-version 26)
-    (require 'cl))) ;; c[ad][ad][ad]+r
-
 (require 'cl-lib) ;; cl-decf, cl-incf
-
 (require 'w3m-util)
 
 (defcustom w3m-history-reuse-history-elements nil
@@ -275,6 +268,8 @@ of the elements of the `car' of `w3m-history' (which see)."
 If VALUE is nil, the pair of PROPERTY and VALUE is removed from PLIST.
 Exceptionally, if PLIST is made empty because of removing, it will be
 instead set to `(nil nil)'.  Return PLIST itself."
+  (unless plist ;; FIXME: when/where/why is it made nil?
+    (setq plist (list nil nil)))
   (let ((pair (memq property plist)))
     (if pair
 	(if value
@@ -306,6 +301,8 @@ removing, it will be instead set to `(nil nil)'."
       (while new
 	(w3m-history-set-plist old (car new) (cadr new))
 	(setq new (cddr new))))
+    (unless old ;; FIXME: when/where/why is it made nil?
+      (setq old (list nil nil)))
     (setq new (copy-sequence old))
     (while new
       (w3m-history-set-plist old (car new) (cadr new))
@@ -478,51 +475,51 @@ The case where `w3m-history-reuse-history-elements' is non-nil:
 If REPLACE is nil, NEWPROPS is merged into properties of the current
 history element.  Otherwise, properties of the current history element
 are replaced with NEWPROPS."
-  (let ((element (w3m-history-seek-element url newprops replace))
-	position class number branch)
-    (if element
-	(setcdr (cdr element) nil)
-      (setq element (list url (w3m-history-modify-properties newprops nil))))
-    (cond
-     ((null w3m-history)
-      ;; The dawn of the history.
-      (setq position (list nil (list 0) nil)
-	    w3m-history (list position element)
-	    w3m-history-flat (list (append element (list (list 0)))))
-      position)
+  (unless (string-match "^about://" url)
+    (let ((element (w3m-history-seek-element url newprops replace))
+	  position class number branch)
+      (if element
+	  (setcdr (cdr element) nil)
+	(setq element (list url (w3m-history-modify-properties newprops nil))))
+      (cond
+       ((null w3m-history)
+	;; The dawn of the history.
+	(setq position (list nil (list 0) nil)
+	      w3m-history (list position element)
+	      w3m-history-flat (list (append element (list (list 0)))))
+	position)
 
-     ((and w3m-history-reuse-history-elements
-	   (setq position (caddr (w3m-history-assoc url))))
-      ;; Reuse the existing history element assigned to the current one.
-      ;; The position pointers will be fixed with correct values after
-      ;; visiting a page when moving back, moving forward or jumping from
-      ;; the about://history/ page.
-      (w3m-history-set-current position))
-
-     (t
-      ;; Sprout a new history element.
-      (setq position (copy-sequence (cadar w3m-history))
-	    class (1- (length position))
-	    number 0
-	    branch (nthcdr (car position) (cdr w3m-history)))
-      (while (> class number)
-	(setq number (1+ number)
-	      branch (nth (nth number position) (cddar branch))
-	      number (1+ number)
-	      branch (nthcdr (nth number position) branch)))
-      (if (cdr branch)
-	  ;; We should sprout a new branch.
-	  (progn
-	    (setq number (1- (length (car branch))))
-	    (setcdr (nthcdr class position) (list (1- number) 0))
-	    (setcdr (nthcdr number (car branch)) (list (list element))))
-	;; The current position is the last of the branch.
-	(setcar (nthcdr class position)
-		(1+ (car (nthcdr class position))))
-	(setcdr branch (list element)))
-      (setq w3m-history-flat (nconc w3m-history-flat
-				    (list (append element (list position)))))
-      (setcar w3m-history (list (cadar w3m-history) position nil))))))
+       ((and w3m-history-reuse-history-elements
+	     (setq position (caddr (w3m-history-assoc url))))
+	;; Reuse the existing history element assigned to the current one.
+	;; The position pointers will be fixed with correct values after
+	;; visiting a page when moving back, moving forward or jumping from
+	;; the about://history/ page.
+	(w3m-history-set-current position))
+       (t
+	;; Sprout a new history element.
+	(setq position (copy-sequence (cadar w3m-history))
+	      class (1- (length position))
+	      number 0
+	      branch (nthcdr (car position) (cdr w3m-history)))
+	(while (> class number)
+	  (setq number (1+ number)
+		branch (nth (nth number position) (cddar branch))
+		number (1+ number)
+		branch (nthcdr (nth number position) branch)))
+	(if (cdr branch)
+	    ;; We should sprout a new branch.
+	    (progn
+	      (setq number (1- (length (car branch))))
+	      (setcdr (nthcdr class position) (list (1- number) 0))
+	      (setcdr (nthcdr number (car branch)) (list (list element))))
+	  ;; The current position is the last of the branch.
+	  (setcar (nthcdr class position)
+		  (1+ (car (nthcdr class position))))
+	  (setcdr branch (list element)))
+	(setq w3m-history-flat (nconc w3m-history-flat
+				      (list (append element (list position)))))
+	(setcar w3m-history (list (cadar w3m-history) position nil)))))))
 
 (defun w3m-history-copy (buffer)
   "Copy the history structure from BUFFER to the current buffer.
@@ -590,22 +587,17 @@ added to the global properties instead."
 	     newprops))
     (let ((element (w3m-history-element (cadar w3m-history) t))
 	  properties)
-      (if element
-	  (progn
-	    (setq properties (cdddr element)
-		  properties
-		  (if properties
-		      (w3m-history-modify-properties properties newprops)
-		    ;; Use `w3m-history-modify-properties' to remove
-		    ;; keyword-value pairs whose value is nil.
-		    (w3m-history-modify-properties newprops nil)))
-	    (unless (car properties) ;; check whether it is `(nil nil)'.
-	      (setq properties nil))
-	    (setcdr (cddr element) properties))
-	(message "\
-Warning: the history database in this session seems corrupted.")
-	(sit-for 1)
-	nil))))
+      (when element
+	(setq properties (cdddr element)
+	      properties (if properties
+			     (w3m-history-modify-properties properties
+							    newprops)
+			   ;; Use `w3m-history-modify-properties' to remove
+			   ;; keyword-value pairs whose value is nil.
+			   (w3m-history-modify-properties newprops nil)))
+	(unless (car properties) ;; check whether it is `(nil nil)'.
+	  (setq properties nil))
+	(setcdr (cddr element) properties)))))
 
 (defun w3m-history-plist-put (keyword value &optional not-buffer-local)
   "Put KEYWORD and VALUE into the current history element.

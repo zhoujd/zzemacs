@@ -1,6 +1,6 @@
 ;;; w3m-ems.el --- GNU Emacs stuff for emacs-w3m -*- lexical-binding: t -*-
 
-;; Copyright (C) 2001-2013, 2016-2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2013, 2016-2020 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Yuuichi Teranishi  <teranisi@gohome.org>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -34,14 +34,7 @@
 
 ;;; Code:
 
-(require 'cl-lib) ;; cl-incf
-
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, c[ad][ad][ad]+r are what subr.el provides.
-(eval-when-compile
-  (unless (>= emacs-major-version 26)
-    (require 'cl))) ;; c[ad][ad][ad]+r
-
+(require 'cl-lib) ;; cl-decf, cl-incf
 (require 'w3m-util)
 (require 'w3m-proc)
 (require 'w3m-image)
@@ -890,37 +883,60 @@ fast operation of mouse wheel."
 		     last-command-event))
   (w3m-tab-next-buffer (- (or n 1)) event))
 
-(defun w3m-tab-move-right (&optional n event)
+(defun w3m-tab-move-right (&optional mv-amt event)
   "Move the current tab right-ward (ie. next, higher number).
-Use the prefix argument to move the tab N positions right-ward.
+Use the prefix argument to move the tab MV-AMT positions right-ward.
 EVENT is an internal arg for mouse control."
   (interactive (list (prefix-numeric-value current-prefix-arg)
 		     last-command-event))
-  (unless n (setq n 1))
-  (when (and (/= n 0) (eq major-mode 'w3m-mode))
-    (let* ((buffers (if (> n 0)
-			(w3m-list-buffers)
-		      (setq n (- n))
-		      (nreverse (w3m-list-buffers))))
-	   (dest (or (nth n (memq (current-buffer) buffers))
-		     (car (last buffers))))
-	   (next (w3m-buffer-number dest))
-	   (cur (w3m-buffer-number (current-buffer))))
-      (rename-buffer "*w3m*<0>")
-      (w3m-buffer-set-number dest cur)
-      (w3m-buffer-set-number (current-buffer) next)
-      (w3m-select-buffer-update)
-      (w3m-tab-mouse-track-selected-tab event next t))))
+  (unless mv-amt (setq mv-amt 1))
+  (if (> 0 mv-amt)
+      (w3m-tab-move-left (- mv-amt) event)
+    (when (and (/= mv-amt 0) (eq major-mode 'w3m-mode))
+      (let* ((start-buf (current-buffer))
+	     (start-num (w3m-buffer-number start-buf))
+	     (buffers (w3m-list-buffers))
+	     (len (length buffers))
+	     (this-num (1- start-num))
+	     this-buf)
+	(setq mv-amt (min mv-amt (- len start-num)))
+	(when (> mv-amt 0)
+	  (setq buffers (last buffers (- len start-num)))
+	  (setq buffers (butlast buffers (- (length buffers) mv-amt)))
+	  (rename-buffer "*w3m*<0>")
+	  (while (setq this-buf (pop buffers))
+	    (w3m-buffer-set-number this-buf (cl-incf this-num)))
+	  (w3m-buffer-set-number start-buf (+ start-num mv-amt))
+	  (w3m-select-buffer-update)
+	  (w3m-tab-mouse-track-selected-tab event (+ start-num mv-amt) t))))))
 
 (defalias 'w3m-tab-move-next 'w3m-tab-move-right)
 
-(defun w3m-tab-move-left (&optional n event)
+(defun w3m-tab-move-left (&optional mv-amt event)
   "Move the current tab left-ward (ie. prior, lower number).
-Use the prefix argument to move the tab N positions left-ward.
+Use the prefix argument to move the tab MV-AMT positions left-ward.
 EVENT is an internal arg for mouse control."
   (interactive (list (prefix-numeric-value current-prefix-arg)
 		     last-command-event))
-  (w3m-tab-move-right (- n) event))
+  (unless mv-amt (setq mv-amt 1))
+  (if (> 0 mv-amt)
+      (w3m-tab-move-right (- mv-amt) event)
+    (when (and (/= mv-amt 0) (eq major-mode 'w3m-mode))
+      (let* ((start-buf (current-buffer))
+	     (start-num (w3m-buffer-number start-buf))
+	     (buffers (nreverse (w3m-list-buffers)))
+	     (this-num (1+ start-num))
+	     this-buf)
+	(setq mv-amt (min mv-amt (1- start-num)))
+	(when (> mv-amt 0)
+	  (setq buffers (last buffers (1- start-num)))
+	  (setq buffers (butlast buffers (- (length buffers) mv-amt)))
+	  (rename-buffer "*w3m*<0>")
+	  (while (setq this-buf (pop buffers))
+	    (w3m-buffer-set-number this-buf (cl-decf this-num)))
+	  (w3m-buffer-set-number start-buf (- start-num mv-amt))
+	  (w3m-select-buffer-update)
+	  (w3m-tab-mouse-track-selected-tab event (- start-num mv-amt) t))))))
 
 (defalias 'w3m-tab-move-prior 'w3m-tab-move-left)
 
@@ -944,12 +960,14 @@ tab-line if `w3m-use-tab-line' is nil."
 	   (prefix (if w3m-use-tab-line [tab-line] [header-line]))
 	   (cur (current-buffer))
 	   (f1 (lambda (fn) `(lambda (e) (interactive "e") (,fn e ,cur))))
-	   (f2 (lambda (fn) `(lambda (e)
-			       (interactive "e")
+	   (f2 (lambda (fn) `(lambda (n e)
+			       (interactive
+				(list (prefix-numeric-value current-prefix-arg)
+				      last-command-event))
 			       (select-window (posn-window (event-start e)))
 			       (switch-to-buffer ,cur)
 			       (setq this-command ',fn)
-			       (,fn 1 e))))
+			       (,fn n e))))
 	   (drag-action (funcall f1 'w3m-tab-drag-mouse-function))
 	   (single-action (funcall f1 'w3m-tab-click-mouse-function))
 	   (double-action1 (funcall f1 'w3m-tab-double-click-mouse1-function))

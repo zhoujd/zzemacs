@@ -1,6 +1,6 @@
 ;;; w3m-proc.el --- Functions and macros to control sub-processes -*- lexical-binding: t -*-
 
-;; Copyright (C) 2001-2005, 2007-2010, 2012, 2013, 2016-2019
+;; Copyright (C) 2001-2005, 2007-2010, 2012, 2013, 2016-2021
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -39,18 +39,6 @@
 ;;; Code:
 
 (require 'cl-lib) ;; cl-gensym (autoloaded from cl-macs), cl-incf, cl-labels
-
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, `gensym' is what subr.el provides.
-(eval-when-compile
-  (unless (and (fboundp 'gensym)
-	       (not (string-match "\\(?:\\`\\|/\\)cl[^/]*\\'"
-				  (symbol-file 'gensym))))
-    (defmacro gensym (&optional prefix)
-      "Generate a new uninterned symbol.
-The name is made by appending a number to PREFIX, default \"G\"."
-      `(cl-gensym ,prefix))))
-
 (require 'w3m-util)
 
 ;; External functions and variables used in this module,
@@ -324,7 +312,7 @@ which have no handler."
 When BODY is evaluated, the local variable `handler' keeps the null
 handler."
   (let ((var (gensym "--tempvar--")))
-    `(let ((,var (let (handler)
+    `(let ((,var (let ((handler nil))
 		   (ignore handler)
 		   ,@body)))
        (when (w3m-process-p ,var)

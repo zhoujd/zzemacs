@@ -1,6 +1,6 @@
 ;;; w3m-save.el --- Save the page to the local files
 
-;; Copyright (C) 2015-2017, 2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2015-2017, 2019, 2020 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: w3m, WWW, hypermedia
@@ -28,20 +28,7 @@
 
 ;;; Code:
 
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, c[ad][ad][ad]+r are what subr.el provides.
-(eval-when-compile
-  (unless (>= emacs-major-version 26)
-    (require 'cl))) ;; c[ad][ad][ad]+r
-
 (require 'w3m)
-
-(defcustom w3m-save-buffer-directory (expand-file-name
-				      "saved/"
-				      w3m-default-save-directory)
-  "Default directory for saved pages and their image files."
-  :group 'w3m
-  :type 'directory)
 
 (defcustom w3m-save-buffer-use-cache t
   "If non-nil, use cached data if available."
@@ -60,15 +47,15 @@ a prefix argument to function `w3m-save-buffer'."
 
 (defun w3m-save-buffer (name &optional no-images)
   "Save the current w3m buffer.
-Save the current buffer as `w3m-save-buffer-directory'/NAME.html,
-and optionally save the buffer's associated image files in
-folder `w3m-save-buffer-directory'/NAME-files/. Use of
-`w3m-save-buffer-directory' may be over-ridden by including a
-folder path in NAME. Variable `w3m-save-buffer-html-only'
-determines whether images will be saved by default, but that
-setting may be toggled using the prefix argument (the
-optional NO-IMAGES). The saved page will be added to the
-history list, and be viewable using `w3m-next-page'."
+Save the current buffer as `w3m-default-save-directory'/NAME.html,
+and optionally save the buffer's associated image files in folder
+`w3m-default-save-directory'/NAME-files/. The value of
+`w3m-default-save-directory' may be changed for the current
+session by including a folder path in NAME. Variable
+`w3m-save-buffer-html-only' determines whether images will be
+saved by default, but that setting may be toggled using the
+prefix argument (the optional NO-IMAGES). The saved page will be
+added to the history list, and be viewable using `w3m-next-page'."
   (interactive
    (if (and w3m-current-url
 	    (or (not (string-match "\\`[\C-@- ]*\\'\\|\\`about:\\|\\`file:"
@@ -86,11 +73,11 @@ history list, and be viewable using `w3m-next-page'."
 	     (case-fold-search t))
 	 (setq name (replace-regexp-in-string "[\C-@- \"*/:<>?\\|]+" "_" name))
 	 (list
-	  (read-file-name
+	  (w3m-read-file-name
 	   (if (not w3m-save-buffer-html-only)
 	       "Save this page (with images) to: "
 	     "Save this page (html only) to: ")
-	   (file-name-as-directory w3m-save-buffer-directory)
+	   (file-name-as-directory w3m-default-save-directory)
 	   name nil (concat name ".html"))
 	  current-prefix-arg))
      (error "No valid url for this page")))
@@ -116,7 +103,7 @@ history list, and be viewable using `w3m-next-page'."
 	  ((not (string-match "\\.html?\\'" name))
 	   (setq name (concat name ".html"))))
     (unless (file-name-directory name)
-      (setq name (expand-file-name name w3m-save-buffer-directory)))
+      (setq name (expand-file-name name w3m-default-save-directory)))
     (setq subdir (concat (file-name-sans-extension name) "-files"))
     (cond ((and (not no-images) (file-exists-p name) (file-exists-p subdir))
 	   (if (yes-or-no-p

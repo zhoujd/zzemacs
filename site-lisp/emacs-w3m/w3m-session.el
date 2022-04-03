@@ -1,6 +1,6 @@
 ;;; w3m-session.el --- Functions to operate session of w3m
 
-;; Copyright (C) 2001-2003, 2005-2013, 2017-2019
+;; Copyright (C) 2001-2003, 2005-2013, 2017-2021
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Hideyuki SHIRAI <shirai@meadowy.org>
@@ -85,12 +85,6 @@
 
 
 ;;; Code:
-
-;; Delete this section when emacs-w3m drops the Emacs 25 support.
-;; In Emacs 26 and greater, c[ad][ad][ad]+r are what subr.el provides.
-(eval-when-compile
-  (unless (>= emacs-major-version 26)
-    (require 'cl))) ;; c[ad][ad][ad]+r
 
 (require 'w3m-util)
 
@@ -515,6 +509,7 @@ buffer's url history."
 	   buffer-read-only nil
 	   major-mode 'w3m-session-select-mode
 	   w3m-session-select-sessions sessions
+	   buffer-quit-function 'w3m-session-select-quit
 	   buffer-read-only t)
      (setq w3m-session-group-open nil)
      (use-local-map w3m-session-select-mode-map)
@@ -1004,7 +999,7 @@ that session.  In that case delete the buffer entry."
   "Setup w3m session items in menubar."
   (unless (lookup-key w3m-mode-map [menu-bar Session])
     (easy-menu-define w3m-session-menu w3m-mode-map "" '("Session"))
-    (easy-menu-add w3m-session-menu)
+    (w3m-easy-menu-add w3m-session-menu)
     (add-hook 'menu-bar-update-hook 'w3m-session-menubar-update)))
 
 (defvar w3m-session-menu-items-pre nil)

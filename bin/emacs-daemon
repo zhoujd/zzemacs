@@ -38,8 +38,7 @@ start() {
 
 restart() {
     echo "Restart emacs daemon"
-    stop
-    start
+    systemctl --user restart --now emacs
 }
 
 status() {
@@ -52,16 +51,26 @@ status() {
 config() {
     echo "Config emacs daemon"
     mkdir -p $SERV_ROOT/emacs.service.d
-    tee $SERV_ROOT/emacs.service.d/override.conf <<EOF
+    
+    echo "Config lang"    
+    tee $SERV_ROOT/emacs.service.d/10-lang.conf <<EOF
 [Service]
 Environment="LANG=en_US.UTF-8"
 Environment="GTK_IM_MODULE=ibus"
 Environment="QT_IM_MODULE=ibus"
 Environment="XMODIFIERS=@im=ibus"
 EOF
+
+    echo "Config proxy"
+    tee $SERV_ROOT/emacs.service.d/50-proxy.conf <<EOF
+[Service]
+Environment="HTTP_PROXY=$HTTP_PROXY"
+Environment="HTTPS_PROXY=$HTTPS_PROXY"
+Environment="NO_PROXY=$NO_PROXY"
+EOF
+    
     echo echo "Reload emacs daemon"
     systemctl --user daemon-reload
-    systemctl --user restart --now emacs
 }
 
 case $1 in

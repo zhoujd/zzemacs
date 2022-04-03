@@ -1,6 +1,7 @@
 ;;;; w3m-setting.el --- w3m setting file
 ;;;http://emacs-w3m.namazu.org/index-en.html
 ;;;https://github.com/emacs-w3m/emacs-w3m
+;;;https://melpa.org/#/helm-w3m
 
 (zz:load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)

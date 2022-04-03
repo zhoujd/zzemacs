@@ -401,11 +401,3 @@ Linux something
     $ systemctl list-units --type=service --all
     $ systemctl list-unit-files --state=enabled
     $ systemctl list-unit-files --state=disabled
-
-## Disable sleep on Ubuntu or Red Hat Enterprise Linux 7
-
-    ## https://www.dell.com/support/kbdoc/zh-cn/000179566/how-to-disable-sleep-and-configure-lid-power-settings-for-ubuntu-or-red-hat-enterprise-linux-7
-    ## Disable sleep
-    $ sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-    ## Enable sleep
-    $ sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target

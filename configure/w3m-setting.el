@@ -6,6 +6,7 @@
 (zz:load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
+;;build w3m
 (defun zz:w3m-build-in-emacs ()
   "compile emacs-w3m"
   (interactive)
@@ -18,26 +19,40 @@
             (if-ms-windows (concat (getenv "EMACS_DIR") "/bin/emacs") "emacs"))))
   (message "build emacs-w3m ok"))
 
-;;;browser selecting
+;;browser selecting
 (setq browse-url-browser-function
       (list (cons (concat zzemacs-path "/doc/hyperspec/") 'w3m-browse-url)
             (cons "." 'browse-url-default-browser)))
 
-;;;allow browsing of local files:
+;;allow browsing of local files
 (setq w3m-dirlist-cgi-program (concat zzemacs-path "/site-lisp/emacs-w3m/dirlist.cgi"))
-;;;causes the return key to submit a form
+;;causes the return key to submit a form
 (setq w3m-use-form t)
 (setq w3m-use-mule-ucs t)
 (setq w3m-use-toolbar t)  
 (setq w3m-use-cookies t)
 
-;;;show images: Press "T"
+;;show images: Press "T"
 (setq w3m-toggle-inline-image t)
 
 (setq w3m-tab-width 4)
 (setq w3m-fill-column 120);;
 (setq w3m-home-page "http://www.google.com/")
 (setq w3m-view-this-url-new-session-in-background t)
+
+;;icons path
+(setq w3m-icon-directory (concat zzemacs-path "/site-lisp/emacs-w3m/icons"))
+
+;;http_proxy and no_proxy
+(defun zz:w3m-os-proxy ()
+  (interactive)  
+  (let ((http_proxy (getenv "HTTP_PROXY"))
+        (no_proxy (getenv "NO_PROXY")))
+    (when (and (> (length http_proxy) 0)
+               (> (length no_proxy) 0))
+      (setq w3m-command-arguments-alist
+            `(("-no-proxy" ,http_proxy)
+              ("-o" ,no_proxy))))))
 
 (defun zz:remove-w3m-output-garbages ()
       (interactive)
@@ -47,7 +62,6 @@
           (replace-match " "))
         (set-buffer-multibyte t))
       (set-buffer-modified-p nil)) 
-
 (add-hook 'w3m-fontify-after-hook 'zz:remove-w3m-output-garbages)
 
 

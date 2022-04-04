@@ -51,11 +51,14 @@
   (interactive)  
   (let ((http_proxy (getenv "HTTP_PROXY"))
         (no_proxy (getenv "NO_PROXY")))
-    (when (and (> (length http_proxy) 0)
-               (> (length no_proxy) 0))
-      (setq w3m-command-arguments-alist
-            `(("-no-proxy" ,http_proxy)
-              ("-o" ,no_proxy))))))
+    (when (> (length http_proxy) 0)
+      (setq w3m-command-arguments
+            (nconc w3m-command-arguments
+                   `("-o" ,(concat "http_proxy=" http_proxy))))
+      (message "w3m use os http_proxy"))
+    (when (> (length no_proxy) 0)
+      (setq w3m-no-proxy-domains (split-string no_proxy ","))
+      (message "w3m use os no_proxy"))))
 
 
 (provide 'w3m-setting)

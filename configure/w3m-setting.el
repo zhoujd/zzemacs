@@ -6,6 +6,9 @@
 (zz:load-path "site-lisp/emacs-w3m")
 (require 'w3m-load)
 
+(defvar zz:w3m-path (concat zzemacs-path "/site-lisp/emacs-w3m")
+  "emacs-w3m path")
+
 ;;build w3m
 (defun zz:w3m-build-in-emacs ()
   "compile emacs-w3m"
@@ -24,8 +27,9 @@
       (list (cons (concat zzemacs-path "/doc/hyperspec/") 'w3m-browse-url)
             (cons "." 'browse-url-default-browser)))
 
-;;allow browsing of local files
-(setq w3m-dirlist-cgi-program (concat zzemacs-path "/site-lisp/emacs-w3m/dirlist.cgi"))
+;;allow browsing of local files /usr/lib/w3m/cgi-bin/dirlist.cgi
+(setq w3m-dirlist-cgi-program (concat zz:w3m-path "/cgi-bin/dirlist.cgi"))
+
 ;;causes the return key to submit a form
 (setq w3m-use-form t)
 (setq w3m-use-mule-ucs t)
@@ -34,14 +38,13 @@
 
 ;;show images: Press "T"
 (setq w3m-toggle-inline-image t)
-
 (setq w3m-tab-width 4)
-(setq w3m-fill-column 120);;
+(setq w3m-fill-column 120)
 (setq w3m-home-page "http://www.google.com/")
 (setq w3m-view-this-url-new-session-in-background t)
 
 ;;icons path
-(setq w3m-icon-directory (concat zzemacs-path "/site-lisp/emacs-w3m/icons"))
+(setq w3m-icon-directory (concat zz:w3m-path "/icons"))
 
 ;;http_proxy and no_proxy
 (defun zz:w3m-os-proxy ()

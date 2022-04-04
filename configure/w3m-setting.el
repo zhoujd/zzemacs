@@ -54,16 +54,6 @@
             `(("-no-proxy" ,http_proxy)
               ("-o" ,no_proxy))))))
 
-(defun zz:remove-w3m-output-garbages ()
-      (interactive)
-      (let ((buffer-read-only))
-        (setf (point) (point-min))
-        (while (re-search-forward "[\200-\240]" nil t)
-          (replace-match " "))
-        (set-buffer-multibyte t))
-      (set-buffer-modified-p nil)) 
-(add-hook 'w3m-fontify-after-hook 'zz:remove-w3m-output-garbages)
-
 
 (provide 'w3m-setting)
 

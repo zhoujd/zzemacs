@@ -4,8 +4,8 @@
 ;;Dired-x is a build-in model
 (require 'dired-x)
 
-;;Show human-readable sizes and hidden files
-(setq dired-listing-switches "-alh")
+;;Show human-readable sizes, hidden files and dir first
+(setq dired-listing-switches "-aBhl --group-directories-first")
 
 ;;allow dired to be able to delete or copy a whole dir.
 (setq dired-recursive-copies (quote always)) ;;"always" means no asking
@@ -54,19 +54,6 @@
               ("g"   (zz:dired-sort zz:dired-sort-no-group "G"))
               ("h"   (zz:dired-sort zz:dired-sort-human    "h"))
               )))
-
-;;dir first
-(defun zz:dired-dir-first ()
-  "Dired sort hook to list directories first."
-  (save-excursion
-    (let (buffer-read-only)
-      (forward-line 2) ;; beyond dir. header
-      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max))))
-  (and (featurep 'xemacs)
-       (fboundp 'dired-insert-set-properties)
-       (dired-insert-set-properties (point-min) (point-max)))
-  (set-buffer-modified-p nil))
-(add-hook 'dired-after-readin-hook 'zz:dired-dir-first)
 
 ;;https://github.com/muennich/sxiv
 ;;https://wiki.archlinux.org/title/Sxiv

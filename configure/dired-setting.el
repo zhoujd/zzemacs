@@ -4,8 +4,12 @@
 ;;Dired-x is a build-in model
 (require 'dired-x)
 
-;;Show human-readable sizes, hidden files and dir first
+;;human-readable sizes, hidden files and dir first
 (setq dired-listing-switches "-aBhl --group-directories-first")
+
+;;total used in directory xxK available yyG
+(setq dired-free-space-program "df")
+(setq dired-free-space-args "-Pkh")
 
 ;;allow dired to be able to delete or copy a whole dir.
 (setq dired-recursive-copies (quote always)) ;;"always" means no asking

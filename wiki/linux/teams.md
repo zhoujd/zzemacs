@@ -13,8 +13,9 @@ teams
     EOF
     $ sudo chmod +x /usr/local/bin/teams
 
-## Fix the cursor
+## Fix cursor and font on flatseal
 
-    $ sudo flatpak override --env XCURSOR_THEME=DMZ-White
-    $ mkdir -p ~/.icons/default/cursors/
-    $ cp -R /usr/share/icons/DMZ-White/cursors/. ~/.icons/default/cursors/
+    $ flatpak run com.github.tchx84.Flatseal
+    ## switch to "Microsoft Teams"
+    All system files => ON
+    Environment -> XCURSOR_THEME=DMZ-White

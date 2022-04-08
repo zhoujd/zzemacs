@@ -12,3 +12,9 @@ teams
     exec flatpak run com.microsoft.Teams
     EOF
     $ sudo chmod +x /usr/local/bin/teams
+
+## Fix the cursor
+
+    $ sudo flatpak override --env XCURSOR_THEME=DMZ-White
+    $ mkdir -p ~/.icons/default/cursors/
+    $ cp -R /usr/share/icons/DMZ-White/cursors/. ~/.icons/default/cursors/

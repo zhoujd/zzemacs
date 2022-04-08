@@ -19,3 +19,5 @@ teams
     ## switch to "Microsoft Teams"
     All system files => ON
     Environment -> XCURSOR_THEME=DMZ-White
+    or
+    Environment -> XCURSOR_THEME=mintymac-cursors

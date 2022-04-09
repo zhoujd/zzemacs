@@ -4,7 +4,7 @@
 # pdfunite $* $OUTPUT
 
 if [ $# = 0 ]; then
-    echo "Usage: $0 <pdf1> ... <pdfn>"
+    echo "Usage: $(basename $0) <pdf1> ... <pdfn>"
     echo "Usage: the output is output.pdf"
     exit 1
 fi

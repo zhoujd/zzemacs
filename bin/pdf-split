@@ -9,7 +9,7 @@
 
 if [ $# != 2 ]; then
     echo "Usage: $(basename $0) <full-pdf> <page-range>"
-    echo "Page-range: 12-15"
+    echo "Usage: Page-range example is 12-15"
     exit 1
 fi
 

@@ -21,3 +21,4 @@ teams
     Environment -> XCURSOR_THEME=DMZ-White
     or
     Environment -> XCURSOR_THEME=mintymac-cursors
+    Environment -> GTK_THEME=Yaru-Blue-dark

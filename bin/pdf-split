@@ -1,0 +1,21 @@
+#!/bin/bash
+
+## use the default PDF reader, select "Print To File" and that's it!
+## sudo apt install pdftk-java
+
+# pdfseparate -f 1 -l 5 input.pdf output-page%d.pdf
+# pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf
+# pdfjam <input-file> 3,67-70,80 -o <output-file>
+
+if [ $# != 2 ]; then
+    echo "Usage: $(basename $0) <full-pdf> <page-range>"
+    echo "Page-range: 12-15"
+    exit 1
+fi
+
+INPUT=$1
+RANGE=$2
+OUTPUT=output_p${RANGE}.pdf
+pdftk $INPUT cat $RANGE output $OUTPUT
+
+echo "pdf split done"

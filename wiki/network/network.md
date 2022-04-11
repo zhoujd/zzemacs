@@ -247,3 +247,49 @@ Network
     $ ifconfig eth0 0.0.0.0 0.0.0.0 && dhclient
     ## dhcp -> static
     $ killall dhclient && ifconfig eth0 10.0.1.22 netmask 255.255.255.0
+
+## Setting up IP Aliasing
+
+    ## Setting up IP Aliasing on A Linux Machine Mini−HOWTO
+    ## 1. Load the IP Alias module (you can skip this step if you compiled the module into the kernel)
+    $ sudo /sbin/insmod /lib/modules/`uname −r`/ipv4/ip_alias.o
+
+    ## 2. Setup the loopback, eth0, and all the IP addresses beginning with the main IP address for the eth0 interface
+    $ sudo /sbin/ifconfig lo 127.0.0.1
+    $ sudo /sbin/ifconfig eth0 up
+    $ sudo /sbin/ifconfig eth0 172.16.3.1
+    $ sudo /sbin/ifconfig eth0:0 172.16.3.10
+    $ sudo /sbin/ifconfig eth0:1 172.16.3.100
+
+    ## 3. Setup the routes. First route the loopback, then the net, and finally, the various IP addresses starting with the default (originally allocated) one
+    $ sudo /sbin/ifconfig lo 127.0.0.1
+    $ sudo /sbin/ifconfig eth0 up
+    $ sudo /sbin/ifconfig eth0 172.16.3.1
+    $ sudo /sbin/ifconfig eth0:0 172.16.3.10
+    $ sudo /sbin/ifconfig eth0:1 172.16.3.100
+
+    ## And /proc/net/aliases:
+    device family address
+    eth0:0 2 172.16.3.10
+    eth0:1 2 172.16.3.100
+
+    ## And /proc/net/alias_types:
+    type name n_attach
+    2 ip 2
+
+    ## My /etc/rc.d/rc.local: (edited to show the relevant portions)
+    # setting up IP alias interfaces
+    echo "Setting 172.16.3.1, 172.16.3.10, 172.16.3.100 IP Aliases ..."
+    /sbin/ifconfig lo 127.0.0.1
+    /sbin/ifconfig eth0 up
+    /sbin/ifconfig eth0 172.16.3.1
+    /sbin/ifconfig eth0:0 172.16.3.10
+    /sbin/ifconfig eth0:1 172.16.3.100
+    # setting up the routes
+    echo "Setting IP routes ..."
+    /sbin/route add −net 127.0.0.0
+    /sbin/route add −net 172.16.3.0 dev eth0
+    /sbin/route add −host 172.16.3.1 eth0
+    /sbin/route add −host 172.16.3.10 eth0:0
+    /sbin/route add −host 172.16.3.100 eth0:1
+    /sbin/route add default gw 172.16.3.200

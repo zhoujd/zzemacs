@@ -251,6 +251,7 @@ Network
 ## Setting up IP Aliasing
 
     ## Setting up IP Aliasing on A Linux Machine Mini−HOWTO
+    ## https://tldp.org/HOWTO/IP-Alias/index.html
     ## 1. Load the IP Alias module (you can skip this step if you compiled the module into the kernel)
     $ sudo /sbin/insmod /lib/modules/`uname −r`/ipv4/ip_alias.o
 

@@ -22,3 +22,7 @@ teams
     or
     Environment -> XCURSOR_THEME=mintymac-cursors
     Environment -> GTK_THEME=Yaru-Blue-dark
+
+## Remove flatpak package
+
+    $ flatpak uninstall --user --delete-data com.microsoft.Teams

@@ -75,15 +75,15 @@
   (kbd "DEL")     'zz:get-shell
   (kbd "`")       'zz:switch-to-fn-shell
 
-  (kbd "C-1")     (zz:quick-buffer zz:shell-1  "*shell<1>*")
-  (kbd "C-2")     (zz:quick-buffer zz:shell-2  "*shell<2>*")
-  (kbd "C-3")     (zz:quick-buffer zz:shell-3  "*shell<3>*")
-  (kbd "C-4")     (zz:quick-buffer zz:shell-4  "*shell<4>*")
-  (kbd "C-5")     (zz:quick-buffer zz:shell-5  "*shell<5>*")
-  (kbd "C-6")     (zz:quick-buffer zz:shell-6  "*shell<6>*")
-  (kbd "C-7")     (zz:quick-buffer zz:shell-7  "*shell<7>*")
-  (kbd "C-8")     (zz:quick-buffer zz:shell-8  "*shell<8>*")
-  (kbd "C-9")     (zz:quick-buffer zz:shell-9  "*shell<9>*")
+  (kbd "C-1")     (zz:quick-shell zz:shell-1  "*shell<1>*")
+  (kbd "C-2")     (zz:quick-shell zz:shell-2  "*shell<2>*")
+  (kbd "C-3")     (zz:quick-shell zz:shell-3  "*shell<3>*")
+  (kbd "C-4")     (zz:quick-shell zz:shell-4  "*shell<4>*")
+  (kbd "C-5")     (zz:quick-shell zz:shell-5  "*shell<5>*")
+  (kbd "C-6")     (zz:quick-shell zz:shell-6  "*shell<6>*")
+  (kbd "C-7")     (zz:quick-shell zz:shell-7  "*shell<7>*")
+  (kbd "C-8")     (zz:quick-shell zz:shell-8  "*shell<8>*")
+  (kbd "C-9")     (zz:quick-shell zz:shell-9  "*shell<9>*")
   (kbd "C-0")     'zz:helm-cd-shell
   (kbd "C--")     'zz:helm-local-shell
   (kbd "C-=")     'zz:helm-remote-shell

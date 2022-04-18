@@ -3,7 +3,7 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 VENV_ROOT=$HOME/.venv
 VENV_PATH=$VENV_ROOT/emacs
-VENV_PARA=include-system-site-packages
+VENV_CONF=include-system-site-packages
 
 echo "For python venv start ..."
 
@@ -19,7 +19,7 @@ install() {
 
 config() {
     echo "venv config"
-    sed -i "s/$VENV_PARA.*/$VENV_PARA = true/g" $VENV_PATH/pyvenv.cfg
+    sed -i "s/$VENV_CONF.*/$VENV_CONF = true/g" $VENV_PATH/pyvenv.cfg
 }
 
 case $1 in

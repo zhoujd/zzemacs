@@ -59,6 +59,9 @@
       flycheck-python-flake8-executable "python3")
 
 ;;virtualenv
+;;python -m venv ~/.venv/emacs
+;;vim ~/.venv/emacs/pyvenv.cfg
+;;include-system-site-packages = true
 (let ((venv (expand-file-name "~/.venv/emacs")))
   (when (file-exists-p venv)
     (pyvenv-activate venv)))

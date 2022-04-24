@@ -187,16 +187,16 @@
                             (ido-read-directory-name "Directory: "))))
     (helm-do-ag default-directory)))
 
-(defun zz:ranger ()
+(defun zz:nnn ()
   (interactive)
   (let* ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: ")))
-         (cmd (list "urxvt" "-name" "Ranger" "-e" "ranger" default-directory)))
+         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
-(defun zz:helm-ranger (dir)
+(defun zz:helm-nnn (dir)
   (interactive "DDirectory: ")
-  (let ((cmd (list "urxvt" "-name" "Ranger" "-e" "ranger" dir)))
+  (let ((cmd (list "urxvt" "-name" "nnn" "-e" "nnn" dir)))
     (apply 'start-process "urxvt" nil cmd)))
 
 (require 'helm-cscope)

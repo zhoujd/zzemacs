@@ -189,9 +189,10 @@
 
 (defun zz:helm-ranger ()
   (interactive)
-  (let ((default-directory (file-name-as-directory
-                            (ido-read-directory-name "Directory: "))))
-    (shell-command (format "urxvt -e ranger %s" default-directory))))
+  (let* ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: ")))
+         (cmd (list "urxvt" "-name" "Ranger" "-e" "ranger" default-directory)))
+    (apply 'start-process  "urxvt" nil cmd)))
 
 (require 'helm-cscope)
 (require 'helm-bm)

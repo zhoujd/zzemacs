@@ -44,8 +44,9 @@
   (kbd "C-a")     'helm-world-time
   (kbd "M-a")     'world-time-list
   (kbd "b")       'helm-bm
-  (kbd "d")       'docker
+  (kbd "d")       'zz:ranger
   (kbd "C-d")     'zz:helm-ranger
+  (kbd "M-d")     'docker
   (kbd "n")       'neotree-toggle
   (kbd "o")       'zz:last-buffer-go
   (kbd "C-p")     'proced

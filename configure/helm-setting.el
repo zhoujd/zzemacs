@@ -191,12 +191,12 @@
   (interactive)
   (let* ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: ")))
-         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" default-directory)))
+         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
 (defun zz:helm-nnn (dir)
   (interactive "DDirectory: ")
-  (let ((cmd (list "urxvt" "-name" "nnn" "-e" "nnn" dir)))
+  (let ((cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" dir)))
     (apply 'start-process "urxvt" nil cmd)))
 
 (require 'helm-cscope)

@@ -196,7 +196,8 @@
 
 (defun zz:helm-nnn (dir)
   (interactive "DDirectory: ")
-  (let ((cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" dir)))
+  (let* ((default-directory dir)
+         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
 (require 'helm-cscope)

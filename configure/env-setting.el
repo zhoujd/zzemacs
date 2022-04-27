@@ -79,6 +79,9 @@
 
 (zz:use-os-proxy)
 
+(setenv "EDITOR" "emacsclient -t")
+(setenv "VISUAL" "emacsclient -c -a emacs")
+
 
 (provide 'env-setting)
 

@@ -41,3 +41,11 @@ Jenkins
     ## Click "New item" and select "Multibranch Pipeline" as type
     ## In Job Configuration select "GitHub" as branch source, select credentials and enter your GitHub HTTPS URL
     ## Kick off a PR
+
+## How to Reset Jenkins Admin users Password
+
+    ## https://stackoverflow.com/questions/6988849/how-to-reset-jenkins-security-settings-from-the-command-line
+    ## Change true to false in /var/lib/jenkins/config.xml file => <useSecurity>false</useSecurity>
+    $ cat /var/lib/jenkins/config.xml
+    $ sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/g' /var/lib/jenkins/config.xml
+    $ sudo service jenkins restart

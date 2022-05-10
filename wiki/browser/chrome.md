@@ -30,8 +30,8 @@ chrome
 
 ## Saved Passwords Issues
 
-    ## Turn off sync up with clean
-    ## Turn on sync will auto update
+    ## "Turn off" sync up with "clean"
+    ## "Turn on" sync will auto update
 
 ## Black theme
 

@@ -46,3 +46,19 @@ ssh
     ## https://lzone.de/cheat-sheet/rsync
     $ rsync -avz  src dest           # content of ./src/ transferred to ./dest/
     $ rsync -avz  src dest/          # content of ./src/ transferred to ./dest/src/
+
+## Generating Ed25519 Key
+
+    ## Generate a new SSH key that uses Ed25519 algorithm
+    $ ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519 -C "zach@example.com"
+    ## Adding Your Key to SSH Agent
+    $ eval "$(ssh-agent -s)"
+    $ ssh-add ~/.ssh/id_ed25519
+    $ cat ~/.ssh/config
+      Host *
+      AddKeysToAgent yes
+      UseKeychain yes
+      IdentityFile ~/.ssh/id_ed25519
+      IdentityFile ~/.ssh/id_rsa # Keep any old key files if you want
+    ## Specifying Specific Key to SSH into a Remote Server
+    $ ssh -i ~/.ssh/id_ed25519 zach@198.222.111.33

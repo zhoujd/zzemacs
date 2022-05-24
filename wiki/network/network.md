@@ -294,3 +294,10 @@ Network
     /sbin/route add −host 172.16.3.10 eth0:0
     /sbin/route add −host 172.16.3.100 eth0:1
     /sbin/route add default gw 172.16.3.200
+
+## Running in a network namespace
+
+    $ ip link set dev MY_DEVICE down
+    $ ip link set dev MY_DEVICE netns MY_NAMESPACE
+    $ ip netns exec MY_NAMESPACE NetworkManager
+    $ ip netns exec MY_NAMESPACE killall NetworkManager

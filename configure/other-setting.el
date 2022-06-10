@@ -218,6 +218,11 @@
   (ido-mode t)
   (ido-find-file))
 
+(defun zz:dired ()
+  (interactive)
+  (ido-mode t)
+  (ido-dired))
+
 ;;alias operate setting
 (fset 'rm 'delete-file)
 (fset 'mv 'rename-file)

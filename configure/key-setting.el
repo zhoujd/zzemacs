@@ -231,6 +231,7 @@
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-x C-f") 'zz:find-file
   (kbd "C-x C-r") 'zz:sudo-find-file
+  (kbd "C-x d")   'zz:dired
   (kbd "C-x g")   'magit-status
   (kbd "C-x C-g") 'helm-ls-git
   (kbd "C-x M-g") 'git-gutter+-mode

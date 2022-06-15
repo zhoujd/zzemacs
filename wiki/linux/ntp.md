@@ -54,3 +54,4 @@ ntp
     $ timedatectl set-timezone Asia/Shanghai
     $ sudo timedatectl --adjust-system-clock
     $ sudo hwclock --systohc --utc
+    $ sudo hwclock --show

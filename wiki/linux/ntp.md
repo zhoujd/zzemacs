@@ -55,3 +55,9 @@ ntp
     $ sudo timedatectl --adjust-system-clock
     $ sudo hwclock --systohc --utc
     $ sudo hwclock --show
+
+## Change Timezone and Date
+
+    $ tzselect
+    $ sudo date -s yyyy/mm/dd
+    $ sudo date -s hh:mm:ss

@@ -37,7 +37,7 @@ FreeBSD
 
     # pkg install nano bash bash-completion
 
-## Secure SSH on FreeBSD
+## Secure SSH allow root ssh login
 
     # nano /etc/ssh/sshd_config
     PermitRootLogin yes

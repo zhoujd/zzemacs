@@ -30,7 +30,7 @@ build_source() {
     pushd $EMACS_SRC
     build_started=`date`
     echo "//Starting build: $build_started"
-    ./configure --prefix=${EMACS_PREFIX}
+    ./configure --prefix=${EMACS_PREFIX} --with-modules
     make
     sudo make install
     build_finished=`date`

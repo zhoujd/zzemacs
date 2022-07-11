@@ -359,3 +359,11 @@ Network
     $ ip link add dummy1 type dummy
     $ ip addr add 1.1.1.1/24 dev dummy1
     $ ip link set dummy1 up
+
+## Ping using specific gateway interface
+
+    ## Pass the -I option
+    $ ping -I interface destination
+    $ ping -I eth0 www.cyberciti.biz
+    $ ping -I tun0 1.1.1.1
+    $ ping -I br0 8.8.8.8

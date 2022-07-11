@@ -301,3 +301,14 @@ Network
     $ ip link set dev MY_DEVICE netns MY_NAMESPACE
     $ ip netns exec MY_NAMESPACE NetworkManager
     $ ip netns exec MY_NAMESPACE killall NetworkManager
+
+## How can I clear the IP address
+
+    $ ip addr del 10.22.30.44/16 dev eth0
+    $ ip addr flush dev eth0
+    $ ifconfig eth0 0.0.0.0
+
+    ## To remove all adreses from all interfaces
+    $ for i in $(ls /sys/class/net/) ; do
+         /usr/sbin/ip addr flush $i &
+      done

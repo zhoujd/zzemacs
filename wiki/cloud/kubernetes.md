@@ -61,6 +61,8 @@ Kubernetes
 
     ## Step 8: Initialize Kubernetes on Master Node
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16
+
+    ## Specify a network interface when initialize the Kubernetes cluster
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --apiserver-advertise-address=<ip> --service-cidr=10.1.0.0/16
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --apiserver-advertise-address=<hostname>
     $ sudo kubeadm init --pod-network-cidr=10.245.0.0/16 --control-plane-endpoint=<ip>

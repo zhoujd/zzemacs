@@ -352,3 +352,10 @@ Network
     iface dummy0 inet static
     address 192.168.1.150
     netmask 255.255.255.0
+
+## Dummy interface
+
+    ## Dummy interface is mostly used for testing and debugging
+    $ ip link add dummy1 type dummy
+    $ ip addr add 1.1.1.1/24 dev dummy1
+    $ ip link set dummy1 up

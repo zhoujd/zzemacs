@@ -312,3 +312,43 @@ Network
     $ for i in $(ls /sys/class/net/) ; do
          /usr/sbin/ip addr flush $i &
       done
+
+## Creating dummy interfaces on Linux
+
+    ## Immediately create two dummyX interfaces
+    $ sudo modprobe -v dummy numdummies=2
+    $ lsmod | grep dummy
+    $ ifconfig -a | grep dummy
+
+    ## Add or remove an IP address
+    $ sudo ip addr add 192.168.1.150/24 dev dummy0
+    $ sudo ip addr del 192.168.1.150/24 dev dummy0
+
+    ## Change the MAC address
+    $ sudo ip link set dummy0 address 00:00:00:11:11:11
+
+    ## Interfaces are added or removed
+    $ sudo ip link add dummy2 type dummy
+    $ sudo ip link del dummy2 type dummy
+
+    ## Unload the dummy module (dummy interfaces will be deleted automatically)
+    $ sudo rmmod dummy
+
+    ## Add to the /etc/modules file (one dummy0 interface will be created at startup)
+    $ cat /etc/modules
+      dummy
+
+    ## Create for example two interfaces or more
+    $ cat /etc/rc.local
+    $ modprobe -v dummy numdummies=2
+
+    ## Or create a dummy.conf file
+    $ sudo su
+    $ echo "options dummy numdummies=2" > /etc/modprobe.d/dummy.conf
+
+    ## System starts on the dummy interface there is an IP address
+    $ sudo nano /etc/network/interfaces
+    auto dummy0
+    iface dummy0 inet static
+    address 192.168.1.150
+    netmask 255.255.255.0

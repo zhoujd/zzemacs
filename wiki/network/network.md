@@ -327,6 +327,9 @@ Network
     ## Change the MAC address
     $ sudo ip link set dummy0 address 00:00:00:11:11:11
 
+    ## Bring up dummy
+    $ sudo ip link set dev dummy0 up
+
     ## Interfaces are added or removed
     $ sudo ip link add dummy2 type dummy
     $ sudo ip link del dummy2 type dummy

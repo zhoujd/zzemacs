@@ -5,8 +5,9 @@
 (require 'multi-shell)
 (require 'multi-term)
 
-(zz:load-path "site-lisp/emacs-libvterm")
-(require 'multi-vterm)
+(when module-file-suffix
+  (zz:load-path "site-lisp/emacs-libvterm")
+  (require 'multi-vterm))
 
 (defvar helm-switchb-separator " "
   "helm switchb separator")

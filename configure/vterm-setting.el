@@ -2,10 +2,11 @@
 ;;;
 
 ;;vterm
-(zz:load-path "site-lisp/emacs-libvterm")
-(require 'vterm)
-(require 'multi-vterm)
-(require 'vterm-toggle)
+(when module-file-suffix
+  (zz:load-path "site-lisp/emacs-libvterm")
+  (require 'vterm)
+  (require 'multi-vterm)
+  (require 'vterm-toggle))
 
 
 (provide 'vterm-setting)

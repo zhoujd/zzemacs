@@ -18,9 +18,18 @@ build() {
 
     echo "clean libvterm"
     rm -rf emacs-libvterm
+
+    echo "Build done"
 }
 
-deps
-build
-
-echo "Build done"
+case $1 in
+    deps )
+        deps
+        ;;
+    build )
+        build
+        ;;
+    * )
+        echo "Usage: $(basename $0) {deps|build}"
+        ;;
+esac

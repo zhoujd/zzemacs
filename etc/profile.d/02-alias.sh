@@ -93,7 +93,6 @@ alias tks='tmux kill-session -t'
 
 ## others
 alias nano='nano -w'
-alias scrot='scrot ~/Pictures/screenshots/%b%d::%H%M%S.png'
 alias thunarpwd='thunar $PWD'
 alias xo='xdg-open'
 alias xup='xrdb ~/.Xresources'

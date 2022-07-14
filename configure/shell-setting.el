@@ -216,8 +216,8 @@ Dmitriy Igrishin's patched version of comint.el."
           )))
   (message "switch to %s" buf-name))
 
-;; switch to c shell
-(defun zz:switch-to-c-shell (buf-name)
+;; switch to shell
+(defun zz:switch-to-shell (buf-name)
   "switch to named shell buffer it not exist creat it by name"
   (interactive (list (ido-completing-read "Shell name: " (zz:shell-c-list))))
   (if (get-buffer buf-name)

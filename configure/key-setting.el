@@ -91,7 +91,7 @@
   (kbd "C-=")     'zz:helm-remote-shell
   (kbd "C-\\")    'zz:get-shell
   [C-backspace]   'zz:get-shell
-  (kbd "C-`")     'zz:switch-to-c-shell
+  (kbd "C-`")     'zz:switch-to-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
   (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
@@ -116,7 +116,6 @@
  (list
   [f4]            'kill-this-buffer
   (kbd "SPC")     'helm-ispell
-  (kbd "RET")     'multi-vterm
   (kbd "/")       'bongo
 
   (kbd "b")       'helm-switchb-shell-list
@@ -124,6 +123,7 @@
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
+  (kbd "v")       'multi-vterm
   (kbd "w")       'langtool-check
   (kbd "W")       'langtool-check-done
   (kbd "l")       'langtool-switch-default-language

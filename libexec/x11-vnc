@@ -61,7 +61,7 @@ start() {
             x11vnc -storepasswd $vnc_passwd $vnc_pw_file
         fi
 
-        echo "staring x11vnc"
+        echo "staring x11vnc in backgroud"
         x11vnc  -ncache 10 -forever -usepw -create &
         sleep 5s
     else

@@ -434,16 +434,38 @@ Linux something
 
 ## Snapshot (Deta Changes)
 
+    ## Have to run lvcreate to start the process and then either run lvconvert --merge or lvremove to end it
     ## Create snapshot
     $ lvcreate -s -c 64k -n $NAME /dev/centos/root --size $1
 
     ## Restore snapshot
+    ## Scenario #1: You want to revert changes
     $ sync
-    $ vgchange -ay
+    $ vgchange -ay  ## Activate all your volume groups
     $ lvconvert --merge /dev/centos/$NAME -y
+    $ reboot
 
     ## Merge snapshot
+    ## Scenario #2: You want to persist changes
     $ lvremove /dev/centos/$NAME -y
 
     ## Wait for revert
     $ lvs --select 'lv_name=root && lv_attr=~.*O.*'
+
+## Reduce size of your root volume to make some room for a snapshot volume
+
+    ## https://askubuntu.com/questions/988964/how-can-i-use-lvm-snapshots-in-ubuntu
+    ## Boot from Live CD
+    ## See name of your device
+    $ fdisk -l
+    ## Decrypt your volume
+    $ cryptsetup luksOpen /dev/sda3 crypt1
+    ## Find all volume groups
+    $ vgscan --mknodes
+    ## Activate all your volume groups
+    $ vgchange -ay
+    ## Reduce size of your root volume by 20 Gb
+    $ lvreduce -r -L -20G /dev/ubuntu-vg/root
+    ## See that you actually got 20G of free space
+    $ vgs
+    ## reboot

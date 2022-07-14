@@ -56,5 +56,5 @@ swap   ol   -wi-ao---                                                          /
 ```
 # reboot
 # ls
-bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr v
+bin boot dev etc home lib lib64 media mnt opt proc root run sbin srv sys tmp usr var
 ```

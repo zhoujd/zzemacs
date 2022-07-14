@@ -431,3 +431,19 @@ Linux something
     $ sudo timeshift --restore --snapshot "2020-02-19_18-32-36"
     ## Delete selected backup snapshot:
     $ sudo timeshift --delete  --snapshot '2014-10-12_16-29-08'
+
+## Snapshot
+
+    ## Create snapshot
+    $ lvcreate -s -c 64k -n $NAME /dev/centos/root --size $1
+
+    ## Restore snapshot
+    $ sync
+    $ vgchange -ay
+    $ lvconvert --merge /dev/centos/$NAME -y
+
+    ## Merge snapshot
+    $ lvremove /dev/centos/$NAME -y
+
+    ## Wait for revert
+    $ lvs --select 'lv_name=root && lv_attr=~.*O.*'

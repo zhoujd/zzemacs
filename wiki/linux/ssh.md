@@ -46,6 +46,8 @@ ssh
     ## https://lzone.de/cheat-sheet/rsync
     $ rsync -avz  src dest           # content of ./src/ transferred to ./dest/
     $ rsync -avz  src dest/          # content of ./src/ transferred to ./dest/src/
+    ## Full system backup
+    $ rsync -aAXHv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /path/to/backup
 
 ## Generating Ed25519 Key
 

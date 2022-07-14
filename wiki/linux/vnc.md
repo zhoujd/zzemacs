@@ -87,7 +87,10 @@ VNC More
     sudo vim /root/.vnc/xstartup
     twm& => "startkde &" or"gnome-session &"
 
-## VNC on Windows http://www.tightvnc.com/download.php
+## VNC on Windows
+
+    ## http://www.tightvnc.com/download.php
+
 ## Download x11vnc from http://www.karlrunge.com/x11vnc/
 
     $ export TZ=America/Los_Angeles

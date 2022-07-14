@@ -33,6 +33,9 @@ build_source() {
     ./configure --prefix=${EMACS_PREFIX} --with-modules
     make
     sudo make install
+    echo "//Install emacs binary"
+    sudo ln -sfvT /usr/local/${EMACS_SRC}/bin/emacs-${EMACS_VER} /usr/bin/emacs${EMACS_VER}
+    sudo ln -sfvt /usr/bin/emacs${EMACS_VER} /usr/bin/emacs
     build_finished=`date`
     echo
     echo "//build finished: $build_finished"

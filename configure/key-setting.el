@@ -90,7 +90,7 @@
   (kbd "C--")     'zz:helm-local-shell
   (kbd "C-=")     'zz:helm-remote-shell
   (kbd "C-\\")    'zz:get-shell
-  (kbd "C-DEL")   'zz:get-shell
+  [C-backspace]   'zz:get-shell
   (kbd "C-`")     'zz:switch-to-c-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
@@ -116,6 +116,8 @@
  (list
   [f4]            'kill-this-buffer
   (kbd "SPC")     'helm-ispell
+  (kbd "RET")     'multi-vterm
+  (kbd "/")       'bongo
 
   (kbd "b")       'helm-switchb-shell-list
   (kbd "M-b")     'helm-mt
@@ -148,8 +150,6 @@
   (kbd "M-r")     (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))
   (kbd "M-s")     (zz:exec-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
   (kbd "M-w")     (zz:exec-key zz:rofi-win    '("rofi" "-show" "window"))
-
-  (kbd "/")       'bongo
   ))
 
 ;;execute start-process key

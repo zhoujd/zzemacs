@@ -196,7 +196,7 @@
   (kbd "C--")     (lookup-key f4-map (kbd "C--"))
   (kbd "C-=")     (lookup-key f4-map (kbd "C-="))
   (kbd "C-\\")    (lookup-key f4-map (kbd "C-\\"))
-  (kbd "C-DEL")   (lookup-key f4-map (kbd "C-DEL"))
+  [C-backspace]   (lookup-key f4-map [C-backspace])
   (kbd "C-`")     (lookup-key f4-map (kbd "C-`"))
 
   (kbd "M-1")     (lookup-key f4-map (kbd "M-1"))

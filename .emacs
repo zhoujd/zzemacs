@@ -37,6 +37,7 @@
         dired-setting
         shell-setting
         term-setting
+        vterm-setting
         eshell-setting
         other-setting
         sample-setting

@@ -3,7 +3,7 @@
 
 ;;vterm
 (when module-file-suffix
-  (zz:load-path "site-lisp/emacs-libvterm")
+  (zz:load-path "site-lisp/emacs-vterm")
   (require 'vterm)
   (require 'multi-vterm)
   (require 'vterm-toggle))

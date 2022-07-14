@@ -5,6 +5,9 @@
 (require 'multi-shell)
 (require 'multi-term)
 
+(zz:load-path "site-lisp/emacs-libvterm")
+(require 'multi-vterm)
+
 (defvar helm-switchb-separator " "
   "helm switchb separator")
 
@@ -66,6 +69,12 @@
                          candidate helm-switchb-separator t)))))
     (multi-term)))
 
+(defun helm-switchb-vterm-new (candidate)
+  (let ((default-directory
+          (car (reverse (split-string
+                         candidate helm-switchb-separator t)))))
+    (multi-vterm)))
+
 (defun helm-switchb-kill-shell ()
   "kill shell buffer"
   (interactive)
@@ -86,6 +95,11 @@
   (interactive)
   (helm-switchb-term-new (helm-get-selection)))
 
+(defun helm-switchb-open-vterm ()
+  "open term buffer"
+  (interactive)
+  (helm-switchb-vterm-new (helm-get-selection)))
+
 (defvar helm-switchb-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
@@ -93,6 +107,7 @@
     (define-key map (kbd "C-c M-d") (helm-switchb-run (helm-switchb-open-dired)))
     (define-key map (kbd "C-c s")   (helm-switchb-run (helm-switchb-open-shell)))
     (define-key map (kbd "C-c t")   (helm-switchb-run (helm-switchb-open-term)))
+    (define-key map (kbd "C-c v")   (helm-switchb-run (helm-switchb-open-vterm)))
     map)
   "Keymap for `helm-switchb'.")
 
@@ -103,6 +118,7 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
+              ("New vterm" . helm-switchb-vterm-new)
               ("New terminal" . helm-switchb-term-new))
     :keymap helm-switchb-map
     ))
@@ -114,6 +130,19 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
+              ("New vterm" . helm-switchb-vterm-new)
+              ("New terminal" . helm-switchb-term-new))
+    :keymap helm-switchb-map
+    ))
+
+(defvar helm-switchb-vterm-source
+  (helm-build-sync-source "Multi-vterm buffers"
+    :candidates (helm-switchb-candidate 'vterm-mode)
+    :action '(("Switch to buffer" . helm-switchb-select)
+              ("Open dired" . helm-switchb-dired-open)
+              ("Kill buffer" . helm-switchb-kill)
+              ("New shell" . helm-switchb-shell-new)
+              ("New vterm" . helm-switchb-vterm-new)
               ("New terminal" . helm-switchb-term-new))
     :keymap helm-switchb-map
     ))
@@ -121,7 +150,8 @@
 (defun helm-switchb-shell-list ()
   (interactive)
   (helm :sources '(helm-switchb-shell-source
-                   helm-switchb-term-source)
+                   helm-switchb-term-source
+                   helm-switchb-vterm-source)
         :buffer "*helm shell*"
         :truncate-lines helm-buffers-truncate-lines
         ))

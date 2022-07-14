@@ -418,3 +418,16 @@ Linux something
     $ sudo systemctl status suspend.target
     $ sudo systemctl status hibernate.target
     $ sudo systemctl status hybrid-sleep.target
+
+## Ubuntu 20.04 System Backup and Restore
+
+    ## Install the Timeshift backup utility
+    $ sudo apt install timeshift
+    ## Create a first backup
+    $ sudo timeshift --create
+    ## List all your currently created system backup screenshots
+    $ sudo timeshift --list
+    ## Restore from the backup snapshot
+    $ sudo timeshift --restore --snapshot "2020-02-19_18-32-36"
+    ## Delete selected backup snapshot:
+    $ sudo timeshift --delete  --snapshot '2014-10-12_16-29-08'

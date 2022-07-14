@@ -432,7 +432,7 @@ Linux something
     ## Delete selected backup snapshot:
     $ sudo timeshift --delete  --snapshot '2014-10-12_16-29-08'
 
-## Snapshot
+## Snapshot (Deta Changes)
 
     ## Create snapshot
     $ lvcreate -s -c 64k -n $NAME /dev/centos/root --size $1

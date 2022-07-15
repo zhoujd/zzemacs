@@ -39,12 +39,17 @@ remove_service() {
     echo "remove service done"
 }
 
+install_timezone () {
+    TZ=Asia/Shanghai
+    sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+    sudo echo $TZ > /etc/timezone
+
+    echo "install timezone done"
+}
+
 install_deps() {
     if [ -z "$(pidof x11vnc)" ]; then
-        #TZ=Asia/Shanghai
-        #sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-        #sudo echo $TZ > /etc/timezone
-        sudo apt install -y x11vnc xvfb
+        sudo apt install -y x11vnc xvfb net-tools
     fi
 
     echo "install deps done"
@@ -62,7 +67,7 @@ start() {
         fi
 
         echo "staring x11vnc in backgroud"
-        x11vnc  -ncache 10 -forever -usepw -create &
+        x11vnc -ncache 10 -forever -usepw -create
         sleep 5s
     else
         echo "x11vnc already exist."
@@ -105,6 +110,6 @@ case "$1" in
         status
         ;;
     * )
-        echo "$0 [install|remove|deps|start|stop|status]"
+        echo "$(basename $0) [install|remove|deps|start|stop|status]"
         ;;
 esac

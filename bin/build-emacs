@@ -3,21 +3,22 @@
 ### $ build-emacs <version> <prefix>
 ### wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
 
-##Check run OS
+## Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
     echo "This script is not support on windows."
     exit 0
 fi
 
-##Get script path
+## Get script path
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
 EMACS_VER=${1:-26.3}
 EMACS_SRC=emacs-${EMACS_VER}
 EMACS_FILE=${EMACS_SRC}.tar.xz
 EMACS_PREFIX=/usr/local/${EMACS_SRC}
+EMACS_OPT="--with-modules"
 
-##Import vars and functions
+## Import vars and functions
 . $SCRIPT_ROOT/sample.sh
 
 echo "Build emacs begin ..."
@@ -30,12 +31,12 @@ build_source() {
     pushd $EMACS_SRC
     build_started=`date`
     echo "//Starting build: $build_started"
-    ./configure --prefix=${EMACS_PREFIX} --with-modules
+    ./configure --prefix=${EMACS_PREFIX} ${EMACS_OPT}
     make
     sudo make install
-    echo "//Install emacs binary"
+    echo "//Install emacs binary to /usr/bin/"
     sudo ln -sfvT /usr/local/${EMACS_SRC}/bin/emacs-${EMACS_VER} /usr/bin/emacs${EMACS_VER}
-    sudo ln -sfvt /usr/bin/emacs${EMACS_VER} /usr/bin/emacs
+    sudo ln -sfvT /usr/bin/emacs${EMACS_VER} /usr/bin/emacs
     build_finished=`date`
     echo
     echo "//build finished: $build_finished"
@@ -43,7 +44,7 @@ build_source() {
 }
 
 install_package() {
-    # dectect OS version
+    ## dectect OS version
     case "$OS_DISTRO" in
         "SUSE" )
             sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel

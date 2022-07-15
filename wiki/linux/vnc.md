@@ -102,6 +102,10 @@ VNC More
     $ x11vnc -storepasswd 1234 ~/.vnc/passwd
     $ x11vnc -forever -usepw -create
 
+    $ sudo x11vnc -storepasswd /etc/x11vnc.pass
+    $ sudo chmod 755 /etc/x11vnc.pass
+    $ x11vnc -auth guess -rfbauth /etc/x11vnc.pass -rfbport 5900 -forever -display :0
+
     ## Firewall on Ubuntu
     $ sudo ufw allow 5900
     $ sudo ufw allow OpenSSH

@@ -94,12 +94,14 @@
                                      (org-block-begin-line (:height 0.7) org-block)))
   (setq header-line-format " ")
   (org-display-inline-images)
+  (hide-mode-line)
   (zz:org-present-prepare-slide))
 
 (defun zz:org-present-quit-hook ()
   (setq-local face-remapping-alist '((default variable-pitch default)))
   (setq header-line-format nil)
   (org-present-small)
+  (show-mode-lines)
   (org-remove-inline-images))
 
 (defun zz:org-present-prev ()

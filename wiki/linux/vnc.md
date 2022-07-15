@@ -104,6 +104,8 @@ VNC More
 
     ## Firewall on Ubuntu
     $ sudo ufw allow 5900
+    $ sudo ufw allow OpenSSH
+    $ sudo ufw allow 5901:5910/tcp
     or
     $ sudo ufw disable
 

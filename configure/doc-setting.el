@@ -79,21 +79,41 @@
   '(require 'ox-gfm nil t))
 
 ;;https://github.com/rlister/org-present
-(autoload 'org-present "org-present" nil t)
-(eval-after-load "org-present"
-  '(progn
-     (add-hook 'org-present-mode-hook
-               (lambda ()
-                 (org-present-big)
-                 (org-display-inline-images)
-                 (org-present-hide-cursor)
-                 (org-present-read-only)))
-     (add-hook 'org-present-mode-quit-hook
-               (lambda ()
-                 (org-present-small)
-                 (org-remove-inline-images)
-                 (org-present-show-cursor)
-                 (org-present-read-write)))))
+(require 'org-present)
+(defun zz:org-present-prepare-slide ()
+  (org-overview)
+  (org-show-entry)
+  (org-show-children))
+
+(defun zz:org-present-hook ()
+  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                     (header-line (:height 4.5) variable-pitch)
+                                     (org-code (:height 1.55) org-code)
+                                     (org-verbatim (:height 1.55) org-verbatim)
+                                     (org-block (:height 1.25) org-block)
+                                     (org-block-begin-line (:height 0.7) org-block)))
+  (setq header-line-format " ")
+  (org-display-inline-images)
+  (zz:org-present-prepare-slide))
+
+(defun zz:org-present-quit-hook ()
+  (setq-local face-remapping-alist '((default variable-pitch default)))
+  (setq header-line-format nil)
+  (org-present-small)
+  (org-remove-inline-images))
+
+(defun zz:org-present-prev ()
+  (interactive)
+  (org-present-prev)
+  (zz:org-present-prepare-slide))
+
+(defun zz:org-present-next ()
+  (interactive)
+  (org-present-next)
+  (zz:org-present-prepare-slide))
+
+(add-hook 'org-present-mode-hook 'zz:org-present-hook)
+(add-hook 'org-present-mode-quit-hook 'zz:org-present-quit-hook)
 
 ;;org plantuml
 ;;https://plantuml.com/emacs

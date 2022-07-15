@@ -100,7 +100,12 @@ VNC More
 
     $ mkdir -p ~/.vnc
     $ x11vnc -storepasswd 1234 ~/.vnc/passwd
-    $ x11vnc -forever -usepw -create &
+    $ x11vnc -forever -usepw -create
+
+    ## Firewall on Ubuntu
+    $ sudo ufw allow 5900
+    or
+    $ sudo ufw disable
 
 ## VNC on Ubuntu 14.04
 

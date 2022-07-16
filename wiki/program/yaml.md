@@ -34,3 +34,15 @@ YAML
     .x.y.z = "foobar" |
     .person.name = strenv(NAME)
     ' file.yaml
+
+## Use case scenarios
+
+    ## Reading YAML values
+    $ yq r pod.yaml "spec.containers[0].env[0].value"
+    postgres://db_url:5432
+
+    ## Changing YAML values
+    $ yq w pod.yaml "spec.containers[0].env[0].value" "postgres://prod:5432"
+
+    ## Merging YAML files
+    $ yq m --append pod.yaml envoy-pod.yaml

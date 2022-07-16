@@ -29,3 +29,22 @@ JSON
 ## Updating JSON
 
     $ echo '{ "foo": "bar" }' | jq '.foo |= "baz"'
+
+## Checking if an object has a key
+
+    ## https://linuxconfig.org/how-to-parse-a-json-file-from-linux-command-line-using-jq
+    ## Use the has function
+    $ jq 'has("weapons")' characters.json
+    false
+
+    ## The “characters” array has only 3 elements
+    $ jq '.characters | has(3)' characters.json
+    false
+
+    ## The map function
+    $ jq '.characters | map(has("name"))' characters.json
+    [
+      true,
+      true,
+      true
+    ]

@@ -43,3 +43,72 @@ say() {
             -e "s/@u/$(tput sgr 0 1)/g"
 }
 #+end_src
+
+* How to use bash array in a shell script
+
+#+begin_src sh
+
+## Create an array
+$ declare -a my_array
+$ declare -A my_array
+$ my_array=(foo bar)
+$ my_array[0]=foo
+
+## Bash Array operations
+$ echo ${my_array[@]}
+$ echo ${my_array[*]}
+$ my_array=(foo bar)
+$ for i in "${my_array[@]}"; do echo "$i"; done
+foo
+bar
+$ for i in "${my_array[*]}"; do echo "$i"; done
+foo bar
+
+## Print the keys of a bash array
+$ my_array=(foo bar baz)
+$ for index in "${!my_array[@]}"; do echo "$index"; done
+0
+1
+2
+
+$ declare -A my_array
+$ my_array=([foo]=bar [baz]=foobar)
+$ for key in "${!my_array[@]}"; do echo "$key"; done
+baz
+foo
+
+## Getting the size of an bash array
+$ my_array=(foo bar baz)
+$ echo "the array contains ${#my_array[@]} elements"
+the array contains 3 elements
+
+## Adding elements to an bash array
+$ my_array=(foo bar)
+$ my_array+=(baz)
+$ echo "${my_array[@]}"
+foo bar baz
+
+## Multiple elements can be added at a time
+$ my_array=(foo bar)
+$ my_array+=(baz foobar)
+$ echo "${my_array[@]}"
+foo bar baz foobar
+
+## Deleting an element from the bash array
+$ my_array=(foo bar baz)
+$ unset my_array[1]
+$ echo ${my_array[@]}
+foo baz
+
+$ echo ${!my_array[@]}
+0 2
+
+$ declare -A my_array
+$ my_array+=([foo]=bar [baz]=foobar)
+$ unset my_array[foo]
+$ echo ${my_array[@]}
+foobar
+
+$ unset my_array
+$ echo ${!my_array[@]}
+#+end_src

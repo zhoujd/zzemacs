@@ -9,8 +9,8 @@ YAML
     ## Binary install
     $ VERSION=v4.26.1
     $ BINARY=yq_linux_amd64
-    $ wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq
-    $ chmod +x /usr/bin/yq
+    $ sudo wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/bin/yq
+    $ sudo chmod +x /usr/bin/yq
 
     ## Go install
     $ go install github.com/mikefarah/yq/v4@latest
@@ -37,12 +37,19 @@ YAML
 
 ## Use case scenarios
 
+    ## https://mikefarah.gitbook.io/yq/v/v2.x/write-update
+    ## https://github.com/mikefarah/yq
     ## Reading YAML values
-    $ yq r pod.yaml "spec.containers[0].env[0].value"
+    $ yq "spec.containers[0].env[0].value" pod.yaml
     postgres://db_url:5432
 
     ## Changing YAML values
-    $ yq w pod.yaml "spec.containers[0].env[0].value" "postgres://prod:5432"
+    $ yq -i "spec.containers[0].env[0].value" "postgres://prod:5432" pod.yaml
 
-    ## Merging YAML files
-    $ yq m --append pod.yaml envoy-pod.yaml
+## How to prevent yq removing comments and empty lines
+
+    ## https://stackoverflow.com/questions/57627243/how-to-prevent-yq-removing-comments-and-empty-lines
+    $ yq . input.yml > input.yml.1
+    $ yq e .env.recording=false input.yml > input.yml.2
+    $ diff input.yml.1 input.yml.2 > input.yml.diff
+    $ patch -o input.yml.new input.yml < input.yml.diff

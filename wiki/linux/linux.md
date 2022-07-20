@@ -11,6 +11,17 @@ Linux something
 
     $ yum list installed | grep kmd
 
+## Modify (extend) the LVM
+
+    ## Tell LVM the physical partition size has changed:
+    $ lsblk
+    $ sudo pvresize /dev/sda3
+    ## Find the actual path of the LVM logical volume:
+    $ sudo lvdisplay  # The LV Path is the value needed
+    ## Tell LVM to extend the logical volume to use all of the new partition size:
+    $ sudo lvextend -l +100%FREE /dev/COMPbase-vg/root  # Using the LV Path from above
+    ## Resize the file system:
+    $ sudo resize2fs /dev/COMPbase-vg/root
 ## linux cross reference
 
     <http://lxr.oss.org.cn/source/>

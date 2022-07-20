@@ -62,9 +62,11 @@
 ;;python3 -m venv ~/.venv/emacs
 ;;vim ~/.venv/emacs/pyvenv.cfg
 ;;include-system-site-packages = true
-(let ((venv (expand-file-name "~/.venv/emacs")))
-  (when (file-exists-p venv)
-    (pyvenv-activate venv)))
+(defun zz:venv ()
+  (interactive)
+  (let ((venv (expand-file-name "~/.venv/emacs")))
+    (when (file-exists-p venv)
+      (pyvenv-activate venv))))
 
 (defun zz:py-indent-4 ()
   (setq tab-width 4)

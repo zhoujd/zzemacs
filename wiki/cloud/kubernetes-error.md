@@ -24,3 +24,11 @@ Kubernetes Error
     $ sudo systemctl daemon-reload
     $ sudo systemctl restart docker
     $ sudo systemctl status docker
+
+## Reset cluster
+
+    $ sudo kubeadm reset
+    $ sudo rm -rf /etc/cni/net.d
+    ## If your cluster was setup to utilize IPVS
+    $ sudo ipvsadm --clear
+    $ rm -rf $HOME/.kube

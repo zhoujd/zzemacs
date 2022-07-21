@@ -1,7 +1,7 @@
 Proxy setting
 ==============
 
-## bash proxy setting
+## Bash proxy setting
 
     cat .bashrc
     cat /etc/profile
@@ -11,7 +11,7 @@ Proxy setting
     export ftp_proxy=
     export no_proxy=10.0.0.0/8,192.168.0.0/16,localhost,127.0.0.0/8,134.134.0.0/16
 
-## ubuntu apt-get
+## Ubuntu apt-get and apt
 
     cat /etc/apt/atp.conf
 
@@ -20,7 +20,24 @@ Proxy setting
     Acquire::ftp::proxy   "ftp://$proxyserveraddr:$proxyserverport/";
     Acquire::socks::proxy "socks://$proxyserveraddr:$proxyserverport/";
 
-## centos yum
+## Centos yum
 
     cat /etc/yum.conf
     proxy=http://$proxyserveraddr:$proxyserverport
+
+## Install And Setup TinyProxy
+
+    ## https://github.com/isabelcosta/testing-tiny-proxy
+    $ sudo apt install tinyproxy-bin
+    $ /etc/init.d/tinyproxy stop
+    $ /etc/init.d/tinyproxy start
+    $ /etc/init.d/tinyproxy status
+
+    ## Modify configure file for upstream
+    $ sudo vim /etc/tinyproxy/tinyproxy.conf
+    upstream http proxy-prc.*****.com:913
+    $ /etc/init.d/tinyproxy stop
+    $ /etc/init.d/tinyproxy start
+
+    ## Test tinyproxy
+    $ curl -v --proxy http://127.0.0.1:8888 www.baidu.com

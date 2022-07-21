@@ -480,20 +480,3 @@ Linux something
     ## See that you actually got 20G of free space
     $ vgs
     ## reboot
-
-## Install And Setup TinyProxy
-
-    ## https://github.com/isabelcosta/testing-tiny-proxy
-    $ sudo apt install tinyproxy-bin
-    $ /etc/init.d/tinyproxy stop
-    $ /etc/init.d/tinyproxy start
-    $ /etc/init.d/tinyproxy status
-
-    ## Modify configure file for upstream
-    $ sudo vim /etc/tinyproxy/tinyproxy.conf
-    upstream http proxy-prc.*****.com:913
-    $ /etc/init.d/tinyproxy stop
-    $ /etc/init.d/tinyproxy start
-
-    ## Test tinyproxy
-    $ curl -v --proxy http://127.0.0.1:8888 www.baidu.com

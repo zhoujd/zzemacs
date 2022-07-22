@@ -47,11 +47,9 @@
 (setq py-python-command "python3")
 (setq python-shell-interpreter "python3")
 (setq python-shell-interpreter-args "-i")
-(setq elpy-rpc-python-command "python3")
 (setq jedi:environment-root "jedi")
-(setq jedi:environment-virtualenv
-      (append python-environment-virtualenv
-              '("--python" "python3")))
+(setq jedi:environment-virtualenv (append python-environment-virtualenv
+                                          '("--python" "python3")))
 
 ;;flycheck
 (setq flycheck-python-pycompile-executable "python3"
@@ -62,9 +60,12 @@
 ;;python3 -m venv ~/.venv/emacs
 ;;vim ~/.venv/emacs/pyvenv.cfg
 ;;include-system-site-packages = true
+(setq elpy-rpc-python-command "python3")
+(setq elpy-rpc-virtualenv-path "~/.venv/emacs")
+
 (defun zz:venv ()
   (interactive)
-  (let ((venv (expand-file-name "~/.venv/emacs")))
+  (let ((venv (expand-file-name elpy-rpc-virtualenv-path)))
     (when (file-exists-p venv)
       (pyvenv-activate venv))))
 

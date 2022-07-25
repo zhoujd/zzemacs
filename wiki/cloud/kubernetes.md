@@ -193,3 +193,10 @@ Kubernetes
 
     $ kubectl get pods "${PodName}" -o json | jq .status.podIP | tr -d "\"")
     $ kubectl get pods "${PodName}" -o json | jq .status.hostIP | tr -d "\"")
+
+## Add a route for the NIC in container in POD
+
+    $ ContainerID=$(docker ps -f name=<app name> -q)
+    $ ProcessID=mdfPID=$(docker inspect -f {{.State.Pid}} $ContainerID)
+    $ nsenter -n -t $ProcessID
+    $ route add -net xxx.xxx.1.0 netmask 255.255.255.0 gw x.x.x.1

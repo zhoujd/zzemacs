@@ -404,3 +404,8 @@ Network
     $ sudo vim /etc/network/interfaces
     up route add -net 10.0.2.0 netmask 255.255.255.0 gw 192.168.43.1 dev enp0s3
     $ sudo ifdown enp0s3 && sudo ifup enp0s3
+
+## To reject network packets to a particular host or to a network
+
+    $ sudo route add -host 10.10.2.20 reject
+    $ route add -net 10.10.2.0 netmask 255.0.0.0 reject

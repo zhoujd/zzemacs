@@ -27,7 +27,7 @@ Kubernetes Error
 
 ## Reset cluster
 
-    $ sudo kubeadm reset
+    $ sudo kubeadm reset --force
     $ sudo rm -rf /etc/cni/net.d
     ## If your cluster was setup to utilize IPVS
     $ sudo ipvsadm --clear

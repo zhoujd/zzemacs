@@ -32,8 +32,10 @@ kubernetes cni
 
     ## Get Container ID
     $ docker ps | grep <app name>
+
     ## Get Container PID
     $ docker inspect --format '{{ .State.Pid }}' <CONTAINER_ID>
+
     ## Run Command in Namespace
     $ nsenter -t <CONTAINER_PID> -n ip addr
 
@@ -45,6 +47,7 @@ kubernetes cni
     ## Move back to system PID=1
     ## Entry all namespace
     $ nsenter -t <CONTAINER_PID> -a
+
     ## Entry network namespace
     $ nsenter -t <CONTAINER_PID> -n
     $ lsns -p <CONTAINER_PID>

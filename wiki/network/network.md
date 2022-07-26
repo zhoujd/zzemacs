@@ -409,3 +409,42 @@ Network
 
     $ sudo route add -host 10.10.2.20 reject
     $ route add -net 10.10.2.0 netmask 255.0.0.0 reject
+
+## Resolve hostname to ip address
+
+    ## https://www.linuxtutorials.org/resolve-hostname-to-ip-address-linux/
+    ## Method 1: use ping command
+    $ ping -q -c1 -t1 yourhostname | tr -d '()' | awk '/^PING/{print $3}'
+
+    ## Method 2: use getent command
+    $ getent ahostsv4 www.example.com     ## ipv4
+    $ getent ahostsv6 www.yahoo.com       ## ipv6
+    $ getent ahosts www.yahoo.com         ## both ipv4 and ipv6
+
+    ## Get one of the IP address
+    $ getent ahostsv4 www.bing.com | grep STREAM | head -n 1 | awk '{print $1}'
+
+    ## Method 3: use host command
+    $ host www.yahoo.com
+
+    ## Get one of the IP v4 address
+    $ host www.yahoo.com | grep "has address" | head -1 |awk '{print $NF}'
+
+    ## Method 4: use dig command
+    $ dig +short www.yahoo.com
+
+    ## Method 5: use resolveip command
+    $ resolveip www.yahoo.com
+
+    ## Method 6 : use command nslookup
+    $ nslookup www.yahoo.com
+
+    ## Bash script example
+    #!/bin/bash
+    hostname=www.yahoo.com
+    ip=$(ping -q -c1 -t1 $hostname 2>/dev/null | tr -d '()' | awk '/^PING/{print $3}')
+    if [ -n "$ip" ]; then
+        echo IP: $ip
+    else
+        echo "Could not resolve hostname $hostname."
+    fi

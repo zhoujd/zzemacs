@@ -392,6 +392,10 @@ Network
     $ sudo route add default gw 192.168.0.1
     $ sudo ip route add default via 192.168.0.1
 
+    ## Show how the linux kernel classifies the route
+    $ ip route get 1.2.3.4
+
+
 ## Permanently adding static route (RHEL, Fedora, CentOS)
 
     $ vim /etc/sysconfig/network-scripts/route-enps03

@@ -452,3 +452,9 @@ Network
     else
         echo "Could not resolve hostname $hostname."
     fi
+
+## Send a Message to Logged Users in Linux Terminal
+
+    $ who
+    $ wall "System will go down for 2 hours maintenance at 13:00 PM"
+    $ write root pts/2	#press Ctrl+D  after typing the message.

@@ -458,3 +458,10 @@ Network
     $ who
     $ wall "System will go down for 2 hours maintenance at 13:00 PM"
     $ write root pts/2	#press Ctrl+D  after typing the message.
+
+## Monitoring the pinged interface shows ICMP echo requests and ICMP echo replies
+
+    ## monitoring the pinged interface shows ICMP echo requests and ICMP echo replies;
+    ## for comparison: the tool doesn't show "internal" pings for a wired interface.
+    $ sudo apt install iptraf-ng
+    $ sudo iptraf-ng

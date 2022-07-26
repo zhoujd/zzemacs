@@ -197,6 +197,7 @@ Kubernetes
 ## Add a route for the NIC in container in POD
 
     $ ContainerID=$(docker ps -f name=<app name> -q)
-    $ ProcessID=mdfPID=$(docker inspect -f {{.State.Pid}} $ContainerID)
+    $ ContainerID=$(docker ps | grep <app name>
+    $ ProcessID=$(docker inspect -f {{.State.Pid}} $ContainerID)
     $ nsenter -n -t $ProcessID
     $ route add -net xxx.xxx.1.0 netmask 255.255.255.0 gw x.x.x.1

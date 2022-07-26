@@ -31,7 +31,7 @@ kubernetes cni
 ## How to View the Network Namespaces in Kubernetes
 
     ## Get Container ID
-    $ docker ps
+    $ docker ps | grep <app name>
     ## Get Container PID
     $ docker inspect --format '{{ .State.Pid }}' <CONTAINER_ID>
     ## Run Command in Namespace

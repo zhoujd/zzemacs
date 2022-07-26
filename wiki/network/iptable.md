@@ -62,3 +62,13 @@ iptables
     $ sudo iptables -t mangle -F
     $ sudo iptables -F
     $ sudo iptables -X
+
+## The solution with some comments
+
+    ## Add temporary rule with some comment
+    $ comment=$(cat /proc/sys/kernel/random/uuid | sed 's/\-//g')
+    $ iptables -A ..... -m comment --comment "${comment}" -j REQUIRED_ACTION
+
+    ## When the rule added and you wish to remove it (or everything with this comment),
+    $ iptables-save | grep -v "${comment}" | iptables-restore
+    $ iptables -S | grep "${comment}" | sed 's/^-A //' | while read rule; do iptables -D $rule; done

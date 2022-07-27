@@ -201,3 +201,32 @@ Kubernetes
     $ ProcessID=$(docker inspect -f {{.State.Pid}} $ContainerID)
     $ nsenter -n -t $ProcessID
     $ route add -net xxx.xxx.1.0 netmask 255.255.255.0 gw x.x.x.1
+
+## Configure a Security Context for a Pod or Container
+
+    ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: http
+    spec:
+      # run as not root
+      securityContext:
+        runAsGroup: 65535
+        runAsNonRoot: true
+        runAsUser: 65535
+      containers:
+        - name: http
+          image: http:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              # set permitted privileges
+              add:
+                - NET_BIND_SERVICE
+              # default drop all
+              drop:
+                - all
+            privileged: false
+            readOnlyRootFilesystem: true

@@ -239,3 +239,7 @@ Docker
     PING github.com (140.82.118.3) 56(84) bytes of data.
     64 bytes from lb-140-82-118-3-ams.github.com (140.82.118.3): icmp_seq=1 ttl=49 time=28.5 ms
     64 bytes from lb-140-82-118-3-ams.github.com (140.82.118.3): icmp_seq=2 ttl=49 time=27.4 ms
+
+## Commit Changes to Image
+
+    $ sudo docker commit [CONTAINER_ID] [new_image_name]

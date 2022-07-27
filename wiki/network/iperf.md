@@ -51,3 +51,37 @@ iperf
 
     ## Note: this comes in handy, but is not needed here.
     $ sysctl -w net.ipv4.ip_nonlocal_bind=1
+
+## iperf on two interfaces in once PC
+
+    ## IPs set to two different subnet
+    $ ifconfig eth2 10.50.0.1/24
+    $ ifconfig eth3 10.50.1.1/24
+
+    ## NAT transfer between source ip and targer ip
+    ## nat source IP 10.50.0.1 -> 10.60.0.1 when going to 10.60.1.1
+    $ iptables -t nat -A POSTROUTING -s 10.50.0.1 -d 10.60.1.1 -j SNAT --to-source 10.60.0.1
+    ## nat inbound 10.60.0.1 -> 10.50.0.1
+    $ iptables -t nat -A PREROUTING -d 10.60.0.1 -j DNAT --to-destination 10.50.0.1
+    ## nat source IP 10.50.1.1 -> 10.60.1.1 when going to 10.60.0.1
+    $ iptables -t nat -A POSTROUTING -s 10.50.1.1 -d 10.60.0.1 -j SNAT --to-source 10.60.1.1
+    ## nat inbound 10.60.1.1 -> 10.50.1.1
+    $ iptables -t nat -A PREROUTING -d 10.60.1.1 -j DNAT --to-destination 10.50.1.1
+
+    ## Config route and ARP
+    $ ip route add 10.60.1.1 dev eth2
+    $ arp -i eth2 -s 10.60.1.1 00:1B:21:C1:F6:0F # eth3's mac address
+    $ ip route add 10.60.0.1 dev eth3
+    $ arp -i eth3 -s 10.60.0.1 00:1B:21:C1:F6:0E # eth2's mac address
+
+    ## Check network
+    $ ping 10.60.1.1
+
+    ## Run iperf
+    ## server
+    $ iperf -B 10.50.1.1 -s
+    ## client: your destination is the other end's fake address
+    $ iperf -B 10.50.0.1 -c 10.50.1.1 -t 60 -i 10
+
+    ## Check with tcpdump
+    $ tcpdump -nn -i eth2 -c 500

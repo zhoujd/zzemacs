@@ -233,7 +233,6 @@
   (kbd "C-x C-r") 'zz:sudo-find-file
   (kbd "C-x d")   'zz:dired
   (kbd "C-x g")   'magit-status
-  (kbd "C-x C-g") 'helm-ls-git
   (kbd "C-x M-g") 'git-gutter+-mode
   (kbd "C-c w")   'compare-windows
   (kbd "C-c ;")   'iedit-mode
@@ -283,6 +282,7 @@
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf
   (kbd "C-c M-f") 'helm-sudo-find-file
+  (kbd "C-x M-l") 'helm-ls-git
   (kbd "C-M-z")   'helm-resume
   (kbd "M-x")     'helm-M-x
 

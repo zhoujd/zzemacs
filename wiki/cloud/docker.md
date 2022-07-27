@@ -247,7 +247,7 @@ Docker
 ## Linux kernel capabilities are restricted within containers
 
     ## https://man7.org/linux/man-pages/man7/capabilities.7.html
-    ## with “CAP_”. For example, CAP_CHOWN, CAP_NET_ADMIN, CAP_SETUID, CAP_SYSADMIN etc.
+    ## With “CAP_”. For example, CAP_CHOWN, CAP_NET_ADMIN, CAP_SETUID, CAP_SYSADMIN etc.
     ## By default, the capabilities below are applied to containers:
        AUDIT_WRITE
        CHOWN

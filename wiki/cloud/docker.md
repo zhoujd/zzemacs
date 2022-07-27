@@ -246,6 +246,7 @@ Docker
 
 ## Linux kernel capabilities are restricted within containers
 
+    ## https://dockerlabs.collabnix.com/advanced/security/capabilities/
     ## https://man7.org/linux/man-pages/man7/capabilities.7.html
     ## With “CAP_”. For example, CAP_CHOWN, CAP_NET_ADMIN, CAP_SETUID, CAP_SYSADMIN etc.
     ## By default, the capabilities below are applied to containers:
@@ -272,3 +273,7 @@ Docker
 
     ## To drop all capabilities and then explicitly add individual capabilities to the root account of a container
     $ sudo docker run --rm -it --cap-drop ALL --cap-add $CAP alpine sh
+
+    ## Testing Docker capabilities
+    $ docker container run --rm -it alpine chown nobody /
+    $ docker container run --rm -it --cap-drop ALL --cap-add CHOWN alpine chown nobody /

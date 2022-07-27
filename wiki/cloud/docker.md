@@ -277,3 +277,13 @@ Docker
     ## Testing Docker capabilities
     $ docker container run --rm -it alpine chown nobody /
     $ docker container run --rm -it --cap-drop ALL --cap-add CHOWN alpine chown nobody /
+
+    ## With docker-compose.
+    This works for version 2 and 3. For example:
+    ---
+    version: '2'
+    services:
+      myapp:
+        cap_add:
+        - SYS_ADMIN
+        - DAC_READ_SEARCH

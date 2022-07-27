@@ -32,6 +32,11 @@ Route
     ## Show how the linux kernel classifies the route
     $ ip route get 1.2.3.4
 
+    ## help
+    $ main route
+    $ route --help
+    $ ip route help
+
 ## Permanently adding static route (RHEL, Fedora, CentOS)
 
     $ vim /etc/sysconfig/network-scripts/route-enps03

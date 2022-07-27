@@ -243,3 +243,32 @@ Docker
 ## Commit Changes to Image
 
     $ sudo docker commit [CONTAINER_ID] [new_image_name]
+
+## Linux kernel capabilities are restricted within containers
+
+    ## https://man7.org/linux/man-pages/man7/capabilities.7.html
+    ## with “CAP_”. For example, CAP_CHOWN, CAP_NET_ADMIN, CAP_SETUID, CAP_SYSADMIN etc.
+    ## By default, the capabilities below are applied to containers:
+       AUDIT_WRITE
+       CHOWN
+       DAC_OVERRIDE
+       FOWNER
+       FSETID
+       KILL
+       MKNOD
+       NET_BIND_SERVICE
+       NET_RAW
+       SETFCAP
+       SETGID
+       SETPCAP
+       SETUID
+       SYS_CHROOT
+
+    ## To drop capabilities from the root account of a container
+    $ sudo docker run --rm -it --cap-drop $CAP alpine sh
+
+    ## To add capabilities to the root account of a container
+    $ sudo docker run --rm -it --cap-add $CAP alpine sh
+
+    ## To drop all capabilities and then explicitly add individual capabilities to the root account of a container
+    $ sudo docker run --rm -it --cap-drop ALL --cap-add $CAP alpine sh

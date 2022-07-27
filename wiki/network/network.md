@@ -465,20 +465,3 @@ Network
     ## for comparison: the tool doesn't show "internal" pings for a wired interface.
     $ sudo apt install iptraf-ng
     $ sudo iptraf-ng
-
-## Generate traffic with iPerf,
-
-    ## http://www.iperf.fr/
-    ## http://iperf.fr/download/iperf_2.0.5/iperf-2.0.5-2-win32.zip
-    ## -c makes iPerf run as a client. -s makes it run as a server
-    $ iperf.exe -c 172.16.0.1 -u -b 1m -t 10 -p 50000 -l 8k -q 2 -f m -i 2
-    $ iperf.exe -s -u -p 50000 -l 8k -q 2 -f m -i 2
-
-    ## server
-    $ iperf -s -p 12345 -i 1 -M -f “m”
-    ## client
-    $ iperf -c 192.168.19.200 -p 12345 -i 1 -t 60 -f “M”
-
-    ## udp test
-    $ iperf -s -u -i 1 -p 8000
-    $ iperf -u -c 192.168.19.253 -t 60 -i 1 -b 120M -p 8000

@@ -92,3 +92,30 @@ Route
 
     ## reject
     $ route add -net 224.0.0.0 netmask 240.0.0.0 reject
+
+## route table
+
+    ## create route tabls
+    $ sudo echo "10 eth1table" >> /etc/iproute2/rt_tables
+    $ sudo echo "20 eth2table" >> /etc/iproute2/rt_tables
+
+    ## Config default route table
+    ## default route
+    $ ip route add 192.168.1.0/24 dev eth1 table eth1table
+    $ ip route add 192.168.2.0/24 dev eth2 table eth2table
+    ## default gateway
+    $ ip route add default via 192.168.1.254 table eth1table
+    $ ip route add default via 192.168.2.254 table eth2table
+
+    ## stragetic route
+    $ ip rule add from 192.168.1.1/32 table eth1table
+    $ ip rule add from 192.168.2.1/32 table eth2table
+
+    ## Test
+    ## ARP
+    $ arp -s 192.168.1.254 aa:bb:cc:dd:ee:ff
+    $ arp -s 192.168.2.254 11:22:33:44:55:66
+
+    ## package send and dump
+    $ nc -s 192.168.1.1 -u 202.202.202.202
+    $ tcpdump -i p7p1 -e

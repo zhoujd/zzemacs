@@ -222,3 +222,23 @@ Ubuntu setting
     $ trash-put
     $ trash-rm
     $ trash-restore
+
+## Screen keyboard
+
+    ## GOK (Gnome screen keyboard)，kvkbd，onboard，Florence
+    $ sudo apt install florence
+    $ florence
+
+    ## lightdm
+    $ sudo apt install lightdm-gtk-greeter
+    $ sudo vi /etc/lightdm/lightdm-gtk-greeter.conf
+    [greeter]keyboard=florence --no-gnome --focus &
+
+    ## autostart
+    $ mkdir -p ~/.config/autostart
+    $ vi ~/.config/autostart/florence.desktop
+    [Desktop Entry]
+    Type=Application
+    Name=Virtual Keyboard
+    Comment=Auto-start virtual keyboard
+    Exec=florence --no-gnome

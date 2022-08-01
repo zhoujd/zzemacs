@@ -421,3 +421,18 @@ Network
     ## for comparison: the tool doesn't show "internal" pings for a wired interface.
     $ sudo apt install iptraf-ng
     $ sudo iptraf-ng
+
+## Change the linux host name for postfix
+
+    ## https://stackoverflow.com/questions/61437795/why-do-i-have-to-change-the-linux-host-name-for-postfix
+    $ cat /etc/hosts
+    127.0.0.1   myhostname localhost localhost.localdomain
+    ::1         myhostname localhost localhost.localdomain
+
+    ## Set the FQDN to make the hostname be an alias for it:
+    127.0.0.1   myhost.domain.com myhostname localhost localhost.localdomain
+    ::1         myhost.domain.com myhostname localhost localhost.localdomain
+
+    ## verify
+    $ hostname --fqdn
+    myhost.domain.com

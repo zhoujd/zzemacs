@@ -39,5 +39,14 @@ Proxy setting
     $ /etc/init.d/tinyproxy stop
     $ /etc/init.d/tinyproxy start
 
+    ## systemctl
+    $ sudo systemctl restart tinyproxy.service
+    $ sudo systemctl status tinyproxy.service
+
+    ## firewall
+    $ sudo ufw allow 8888
+
     ## Test tinyproxy
     $ curl -v --proxy http://127.0.0.1:8888 www.baidu.com
+    $ IP=127.0.0.1
+    $ curl -v --proxy http://${IP}:8888 www.baidu.com

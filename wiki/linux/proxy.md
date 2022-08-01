@@ -36,6 +36,12 @@ Proxy setting
     ## Modify configure file for upstream
     $ sudo vim /etc/tinyproxy/tinyproxy.conf
     upstream http proxy-prc.*****.com:913
+    Allow 127.0.0.1
+    Allow 192.168.0.0/16
+    Allow 172.16.0.0/12
+    Allow 10.0.0.0/8
+
+    ## restart
     $ /etc/init.d/tinyproxy stop
     $ /etc/init.d/tinyproxy start
 

@@ -434,6 +434,9 @@ Network
     127.0.0.1   myhost.domain.com myhostname localhost localhost.localdomain
     ::1         myhost.domain.com myhostname localhost localhost.localdomain
 
-    ## verify
+    ## Verify
     $ hostname --fqdn
     myhost.domain.com
+
+    ## Test FQDN
+    $ hostname --all-fqdn

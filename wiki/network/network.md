@@ -425,6 +425,7 @@ Network
 ## Change the linux host name for postfix
 
     ## https://stackoverflow.com/questions/61437795/why-do-i-have-to-change-the-linux-host-name-for-postfix
+    ## <IP address> myhost.mydomain.org aliases
     $ cat /etc/hosts
     127.0.0.1   myhostname localhost localhost.localdomain
     ::1         myhostname localhost localhost.localdomain

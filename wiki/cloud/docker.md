@@ -301,11 +301,11 @@ Docker
 
 ## Save all the images is like this
 
-    ## save to tar
+    ## save all images to tar
     $ docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o allimages.tar
     $ docker load -i allimages.tar
 
-    ## save to tar.gz
+    ## save all images to tar.gz
     $ OUT=$(docker images --format '{{.Repository}}:{{.Tag}}')
     $ OUTPUT=($OUT)
     $ docker save $(echo "${OUTPUT[*]}") -o /dir/images.tar

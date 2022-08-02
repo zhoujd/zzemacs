@@ -287,3 +287,14 @@ Docker
         cap_add:
         - SYS_ADMIN
         - DAC_READ_SEARCH
+
+## Save/load container using tgz file (tar.gz)
+
+    ## for not running docker, use save:
+    docker save <dockernameortag> | gzip > mycontainer.tgz
+
+    ## for running or paused docker, use export:
+    docker export <dockernameortag> | gzip > mycontainer.tgz
+
+    ## load
+    gunzip -c mycontainer.tgz | docker load

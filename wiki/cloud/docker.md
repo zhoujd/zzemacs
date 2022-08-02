@@ -298,3 +298,18 @@ Docker
 
     ## load
     gunzip -c mycontainer.tgz | docker load
+
+## Save all the images is like this
+
+    ## save to tar
+    $ docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o allimages.tar
+    $ docker load -i allimages.tar
+
+    ## save to tar.gz
+    $ OUT=$(docker images --format '{{.Repository}}:{{.Tag}}')
+    $ OUTPUT=($OUT)
+    $ docker save $(echo "${OUTPUT[*]}") -o /dir/images.tar
+    $ docker save $(echo "${OUTPUT[*]}") | gzip > images.tar.gz
+
+    ## load from tar.gz
+    $ tar xvf images.tar.gz -O | docker load

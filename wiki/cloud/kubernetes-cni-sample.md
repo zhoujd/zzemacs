@@ -1,5 +1,5 @@
-K8s CNI sample
-==============
+Kubernetes CNI sample
+=====================
 
 ## CNI test POD
 ```

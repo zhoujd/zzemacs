@@ -43,6 +43,7 @@ helm
 ## Hosting Chart Repositories
 
     ## https://chartmuseum.com/
+    ## https://github.com/helm/chartmuseum
     $ helm install stable/chartmuseum
 
     ## As a Docker image

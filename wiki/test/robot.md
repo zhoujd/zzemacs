@@ -1,6 +1,14 @@
 Robot
 =====
 
+## Some URLs
+
+    ## https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html
+    ## https://robotframework.org/
+    ## https://robotframework.org/#libraries
+    ## https://github.com/robotframework/robotframework
+    ## https://www.tutorialspoint.com/robot_framework/index.htm
+
 ## Robot Framework SSH tutorial with example
 
     ## https://medium.com/@avi.mehenwal/robot-framework-ssh-tutorial-with-example-348907cd871

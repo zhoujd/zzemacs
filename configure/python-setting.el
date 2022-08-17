@@ -45,10 +45,13 @@
 
 ;;python3
 (setq py-python-command "python3")
-(setq python-shell-interpreter "python3")
-(setq python-shell-interpreter-args "-i")
-(setq jedi:environment-root "jedi")
-(setq jedi:environment-virtualenv (append python-environment-virtualenv
+
+;;ipython or python3
+(setq python-shell-interpreter "python3"
+      python-shell-interpreter-args "-i")
+
+(setq jedi:environment-root "jedi"
+      jedi:environment-virtualenv (append python-environment-virtualenv
                                           '("--python" "python3")))
 
 ;;flycheck

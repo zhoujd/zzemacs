@@ -20,6 +20,9 @@ Route
     ## Syntax is: ip route add <network you want to connect to> via <ip used to reach the network> dev <interface name>
     $ sudo ip route add 10.0.2.0/24 via 192.168.0.1 dev enp0s3
 
+    ## With metric
+    $ sudo ip route add default via 192.168.1.1 dev eno1 proto static metric 201
+
     ## Removing routes
     $ sudo route del -net 10.0.2.0/24 gw 192.168.0.1 enp0s3
     $ sudo ip route del 10.0.2.0/24 via 192.168.0.1 dev enp0s3

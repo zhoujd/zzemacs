@@ -115,3 +115,17 @@ Python
     # package2/module3.py
     from . import class1
     from .subpackage1.module5 import function2
+
+## What does -> mean in Python function definitions
+
+    ## https://stackoverflow.com/questions/14379753/what-does-mean-in-python-function-definitions
+    ## https://peps.python.org/pep-3107/
+
+    ## The -> int just tells that f() returns an integer (but it doesn't force the function to return an integer)
+    ## It is called a return annotation, and can be accessed as f.__annotations__['return']
+    def f(x) -> int:
+        return int(x)
+
+    ## Python also supports parameter annotations:
+    def f(x: float) -> int:
+        return int(x)

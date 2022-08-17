@@ -108,3 +108,10 @@ Python
     from .some_module import some_class
     from ..some_package import some_function
     from . import some_class
+
+    # package1/module1.py
+    from .module2 import function1
+
+    # package2/module3.py
+    from . import class1
+    from .subpackage1.module5 import function2

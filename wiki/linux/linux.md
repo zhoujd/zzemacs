@@ -480,3 +480,7 @@ Linux something
     ## See that you actually got 20G of free space
     $ vgs
     ## reboot
+
+## Laptop Battery status
+
+    $ acpi -b | awk '{ print $3, $4 }' | tr -d ','

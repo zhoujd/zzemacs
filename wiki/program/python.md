@@ -83,3 +83,28 @@ Python
     (gdb) up
     (gdb) up
     (gdb) pyframe
+
+## Absolute vs Relative Imports in Python
+
+    ## https://realpython.com/absolute-vs-relative-python-imports/
+    └── project
+        ├── package1
+        │   ├── module1.py
+        │   └── module2.py
+        └── package2
+            ├── __init__.py
+            ├── module3.py
+            ├── module4.py
+            └── subpackage1
+                └── module5.py
+
+    ## Absolute Imports
+    from package1 import module1
+    from package1.module2 import function1
+    from package2 import class1
+    from package2.subpackage1.module5 import function2
+
+    ## Relative Imports
+    from .some_module import some_class
+    from ..some_package import some_function
+    from . import some_class

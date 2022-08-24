@@ -1,7 +1,7 @@
 VNC More
 ================
 
-## Install VNC server and client
+## Install VNC server and client on CentOS
 
     rpm -qa | grep tigervnc
     sudo yum install -y tigervnc-server
@@ -144,3 +144,66 @@ VNC More
     ## https://www.realvnc.com/en/connect/download/vnc/
     ## remove "Sign in" button
     File -> Preference -> Expert -> AllowSignin => false
+
+## VNCServer on Ubuntu
+
+    ## https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04
+    ## Step 1 — Installing the Desktop Environment and VNC Server
+    $ sudo apt update
+    $ sudo apt install xfce4 xfce4-goodies
+    $ sudo apt install tightvncserver
+    $ vncserver
+    $ vncpasswd
+
+    ## Step 2 — Configuring the VNC Server
+    $ vncserver -kill :1
+    $ mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+    $ nano ~/.vnc/xstartup
+    #!/bin/bash
+    xrdb $HOME/.Xresources
+    startxfce4 &
+    $ chmod +x ~/.vnc/xstartup
+
+    ## Binds the VNC server to loopback interface
+    ## Only allow connections that originate from the server on which it’s installed
+    $ vncserver -localhost
+
+    ## https://unix.stackexchange.com/questions/398905/vnc-server-only-listening-for-connections-from-localhost
+    $ vncserver -localhost no
+
+    ## Step 3 — Connecting to the VNC Desktop Securely
+    $ ssh -L 59000:localhost:5901 -C -N -l user your_server_ip
+    ## PuTTY Reconfiguration window. Expand the SSH branch and click on Tunnels.
+    ## On the Options controlling SSH port forwarding screen,
+    ## enter 59000 as the Source Port and localhost:5901 as the Destination,
+
+    ## Step 4 — Running VNC as a System Service
+    $ sudo nano /etc/systemd/system/vncserver@.service
+    [Unit]
+    Description=Start TightVNC server at startup
+    After=syslog.target network.target
+
+    [Service]
+    Type=forking
+    User=user
+    Group=user
+    WorkingDirectory=/home/user
+
+    PIDFile=/home/user/.vnc/%H:%i.pid
+    ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+    ExecStart=/usr/bin/vncserver -depth 24 -geometry 1920x1080 -localhost no :%i
+    ExecStop=/usr/bin/vncserver -kill :%i
+
+    [Install]
+    WantedBy=multi-user.target
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl enable vncserver@1.service
+    $ vncserver -kill :1
+    $ sudo systemctl start vncserver@1
+    $ sudo systemctl status vncserver@1
+
+## Use vncviewer on Ubuntu
+
+    $ sudo apt install tigervnc-viewer
+    $ vncviewer localhost:1

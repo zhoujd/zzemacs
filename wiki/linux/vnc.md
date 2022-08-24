@@ -164,11 +164,11 @@ VNC More
     startxfce4 &
     $ chmod +x ~/.vnc/xstartup
 
+    ## https://unix.stackexchange.com/questions/398905/vnc-server-only-listening-for-connections-from-localhost
     ## Binds the VNC server to loopback interface
     ## Only allow connections that originate from the server on which it’s installed
+    ## [-localhost yes|no]    Only accept VNC connections from localhost
     $ vncserver -localhost
-
-    ## https://unix.stackexchange.com/questions/398905/vnc-server-only-listening-for-connections-from-localhost
     $ vncserver -localhost no
 
     ## Step 3 — Connecting to the VNC Desktop Securely

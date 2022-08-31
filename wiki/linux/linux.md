@@ -422,13 +422,12 @@ Linux something
     Created symlink /etc/systemd/system/suspend.target → /dev/null.
     Created symlink /etc/systemd/system/hibernate.target → /dev/null.
     Created symlink /etc/systemd/system/hybrid-sleep.target → /dev/null.
+
     ## Enable sleep
     $ sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
     ## Status of the standby service
-    $ sudo systemctl status sleep.target
-    $ sudo systemctl status suspend.target
-    $ sudo systemctl status hibernate.target
-    $ sudo systemctl status hybrid-sleep.target
+    $ sudo systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
 
 ## Ubuntu 20.04 System Backup and Restore
 

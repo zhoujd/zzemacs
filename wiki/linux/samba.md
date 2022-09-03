@@ -6,6 +6,7 @@ Samba Server
     $ sudo apt update
     $ sudo apt install samba
     $ sudo apt install smbclient
+    $ sudo apt install cifs-utils
 
 ## Setting up Samba
 
@@ -59,3 +60,14 @@ Samba Server
     username=user1
     password=password
     domain=WORKGROUP
+
+## Mount CIFS Credentials File has Special Character
+
+    ## https://serverfault.com/questions/309429/mount-cifs-credentials-file-has-special-character
+    ## Solution is use credential file
+    $ cat > cifs.credo
+    username=myuser
+    password=PASS,WORD
+    domain=mydomain
+
+    $ sudo mount -t cifs -o credentials=path/to/cifs.credo //server/share localfolder --verbose

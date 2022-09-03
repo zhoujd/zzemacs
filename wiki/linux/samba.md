@@ -9,16 +9,17 @@ Samba Server
 
 ## Setting up Samba
 
-    $ mkdir /home/<username>/sambashare/
-    $ sudo cp /etc/samba/smb.conf{,.backup}
-    $ sudo nano /etc/samba/smb.conf
-     ## At the bottom of the file, add the following lines:
-     [sambashare]
-         comment = Samba on Ubuntu
-         path = /home/username/sambashare
-         read only = no
-         browsable = yes
-         valid users = jiandon
+    $ sudo mkdir -p /zach
+    $ sudo chown jiandon:jiandon /zach
+    $ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.origin
+    $ sudo vim /etc/samba/smb.conf
+    ## At the bottom of the file, add the following lines:
+    [zach]
+        comment = Samba on Ubuntu
+        path = /zach
+        read only = no
+        browsable = yes
+        valid users = jiandon
 
     $ sudo smbpasswd -a jiandon
     $ smbclient -L localhost

@@ -217,6 +217,7 @@ Kubernetes Operator
 
     ## 3. Customize the CRD and the controller
     ## Foo CRD customised (see api/v1/foo_types.go)
+    ## https://gist.github.com/leovct/aa3b494eafdc9bdbc2dc705936d9a451#file-foo_types-go
     $ make manifests
 
     ## 4. Run the controller

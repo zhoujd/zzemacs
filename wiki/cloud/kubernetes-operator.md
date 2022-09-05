@@ -201,3 +201,14 @@ Kubernetes Operator
     $ curl http://localhost:8001/api/v1/ | jq .resources[].name
     $ kubectl get pod kube-dns-1187388186-rr1jb -n kube-system -o yaml
     $ curl -XGET ../api/v1/namespaces/kube-system/pods/kube-dns-1187388186-rr1jb
+
+## Build a Kubernetes Operator in 10 Minutes
+
+    ## https://betterprogramming.pub/build-a-kubernetes-operator-in-10-minutes-11eec1492d30
+    ## 1. Set up your environment
+    ## Install kubebuilder
+    $ curl -L -o kubebuilder https://go.kubebuilder.io/dl/latest/$(go env GOOS)/$(go env GOARCH) && chmod +x kubebuilder && sudo mv kubebuilder /usr/local/bin/
+    $ kubebuilder version
+
+    ## 2. Create a simple operator
+    $ kubebuilder init --domain my.domain --repo my.domain/tutorial

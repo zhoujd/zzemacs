@@ -483,3 +483,10 @@ Linux something
 ## Laptop Battery status
 
     $ acpi -b | awk '{ print $3, $4 }' | tr -d ','
+
+
+## How do I find out what hard disks are in the system
+
+    $ sudo fdisk -l 2>/dev/null | grep "Disk \/" | grep -v "\/dev\/md" | awk '{print $2}' | sed -e 's/://g'
+    /dev/nvme0n1
+    /dev/nvme1n1

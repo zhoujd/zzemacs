@@ -18,6 +18,7 @@ install() {
     echo "Install go"
     pushd ~/Downloads/
     if [ -f $PKG_NAME ]; then
+        sudo rm -rf /usr/local/go
         sudo tar xf $PKG_NAME -C /usr/local/
     fi
 }

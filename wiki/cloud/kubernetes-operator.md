@@ -212,3 +212,19 @@ Kubernetes Operator
 
     ## 2. Create a simple operator
     $ kubebuilder init --domain my.domain --repo my.domain/tutorial
+    $ ls -a
+    $ kubebuilder create api --group tutorial --version v1 --kind Foo
+
+    ## 3. Customize the CRD and the controller
+    ## Foo CRD customised (see api/v1/foo_types.go)
+    $ make manifests
+
+    ## 4. Run the controller
+    $ make install
+    $ kubectl get crds
+    $ make run
+
+    ## 5. Test the controller
+    ## Foo custom resources manifests in config/sample
+    $ kubectl apply -f config/samples
+    $ kubectl describe foos

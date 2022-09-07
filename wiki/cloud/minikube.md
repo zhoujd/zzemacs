@@ -91,3 +91,18 @@ minikube
        2  10.107.154.9  1.222 ms  1.075 ms  0.994 ms
        3  10.107.154.9 [open]  1.026 ms  1.514 ms  1.334 ms
     $ open https://10.107.154.9/#/login
+
+## Install and Set Up kubectl on Linux
+
+    ## Download the latest release
+    $ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    $ curl -LO https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl
+
+    ## Validate the binary (optional)
+    $ curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+    $ echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+    kubectl: OK
+
+    $ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    $ kubectl version --client
+    $ kubectl version --client --output=yaml

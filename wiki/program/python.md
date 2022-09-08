@@ -138,10 +138,11 @@ Python
     from Cython.Build import cythonize
     setup(ext_modules = cythonize('add.py'))
 
-    $ cat add.py
+    $ cat > add.py <<EOF
     # cython: language_level=3
     def add_number(a, b):
         return a + b
+    EOF
 
     ## https://pypi.org/project/Cython/
     $ pip3 install Cython
@@ -154,3 +155,26 @@ Python
     ## test
     import add
     print(add.add_number(5, 10))
+
+## Compile py to so library
+
+    $ cat > add.py <<EOF
+    def add_number(a, b):
+        return a + b
+    EOF
+
+    $ cat > compile.py <<EOF
+    from distutils.core import setup
+    from distutils.extension import Extension
+    from Cython.Distutils import build_ext
+    ext_modules = [
+        Extension("test",  ["add.py"]),
+    ]
+    setup(
+        name = "test",
+        cmdclass = {'build_ext': build_ext},
+        ext_modules = ext_modules
+    )
+    EOF
+
+    $ python3 compile.py build_ext --inplace

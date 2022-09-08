@@ -143,6 +143,9 @@ Python
     def add_number(a, b):
         return a + b
 
+    ## https://pypi.org/project/Cython/
+    $ pip3 install Cython
+
     $ python setup.py build_ext --inplace
     from <.so> import <function>
     or

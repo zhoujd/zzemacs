@@ -3,9 +3,10 @@ Python
 
 ## Build python from source
 
-    $ wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz
-    $ tar xf Python-2.7.14.tgz
-    $ cd Python-2.7.14
+    $ VERSION=2.7.14
+    $ wget https://www.python.org/ftp/python/${VERSION}/Python-${VERSION}.tgz
+    $ tar xf Python-${VERSION}.tgz
+    $ cd Python-${VERSION}
     $ ./configure --prefix=$HOME/local
     $ make -j 4
     $ make install
@@ -129,3 +130,24 @@ Python
     ## Python also supports parameter annotations:
     def f(x: float) -> int:
         return int(x)
+
+## Create dymanic library (*.so)
+
+    $ cat setup.py
+    from distutils.core import setup
+    from Cython.Build import cythonize
+    setup(ext_modules = cythonize('add.py'))
+
+    $ cat add.py
+    # cython: language_level=3
+    def add_number(a, b):
+        return a + b
+
+    $ python setup.py build_ext --inplace
+    from <.so> import <function>
+    or
+    import <.so>
+
+    ## test
+    import add
+    print(add.add_number(5, 10))

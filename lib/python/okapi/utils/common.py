@@ -5,7 +5,7 @@
 
 import os
 import platform
-import framework.config as config
+from framework import config
 
 def path2unix(path):
     sysstr = platform.system()

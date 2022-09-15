@@ -1,6 +1,9 @@
 * Words
 
-** turmoil
-** moon-eyed
-** symtoms
-** brutal
+| Word      | Meaning                                                      | Note |
+|-----------+--------------------------------------------------------------+------|
+| turmoil   | [n] a state of great disturbance, confusion, or uncertainty. |      |
+| moon-eyed | [adj] having the eyes open wide, as in fear or wonder        |      |
+| symptoms  | [n] a physical or mental feature                             |      |
+| brutal    | [adj] savagely violent                                       |      |
+| brudy     | [n] dirty                                                    |      |

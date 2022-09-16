@@ -64,3 +64,49 @@ ssh
       IdentityFile ~/.ssh/id_rsa # Keep any old key files if you want
     ## Specifying Specific Key to SSH into a Remote Server
     $ ssh -i ~/.ssh/id_ed25519 zach@198.222.111.33
+
+## SSH jump host
+
+    ## https://wiki.gentoo.org/wiki/SSH_jump_host
+    ## Dynamic jump host list
+    ## Use the -J option to jump through a host
+    $ ssh -J host1 host2
+    $ ssh -J user1@host1:port1 user2@host2 -p port2
+    $ ssh -J user1@host1:port1,user2@host2:port2 user3@host3
+
+    ## Static jump host list
+    $ cat ~/.ssh/config <<EOF
+    ### First jump host. Directly reachable
+    Host betajump
+      HostName jumphost1.example.org
+
+    ### Host to jump to via jumphost1.example.org
+    Host behindbeta
+      HostName behindbeta.example.org
+      ProxyJump  betajump
+    EOF
+
+    $ ssh behindbeta
+
+    ## If usernames on machines differ, specify them by modifing the correspondent ProxyJump line
+    $ cat ~/.ssh/config <<EOF
+    ProxyJump  otheruser@behindalpha
+    EOF
+
+    ## Multiple jumps
+    $ cat ~/.ssh/config <<EOF
+    ### First jump host. Directly reachable
+    Host alphajump
+      HostName jumphost1.example.org
+
+    ### Second jumphost. Only reachable via jumphost1.example.org
+    Host betajump
+      HostName jumphost2.example.org
+      ProxyJump alphajump
+
+    ### Host only reachable via alphajump and betajump
+    Host behindalphabeta
+      HostName behindalphabeta.example.org
+      ProxyJump betajump
+    EOF
+    $ ssh behindalphabeta

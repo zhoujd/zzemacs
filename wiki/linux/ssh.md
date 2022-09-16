@@ -110,3 +110,17 @@ ssh
       ProxyJump betajump
     EOF
     $ ssh behindalphabeta
+
+## SSH Bastion/Jumphost configuration
+
+    ## https://blog.keyboardinterrupt.com/ansible-jumphost/
+    $ ssh -o ProxyCommand='ssh -W %h:%p your_user@bastion' your_user@target
+    $ ssh -o ProxyCommand='ssh -W %h:%p jd-desktop' 127.0.0.1
+
+    ## Add a bastion host configuration to your ansible inventory
+    ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q your_user@192.168.1.20"'
+
+## Use sshuttle instead of ssh port fowarding
+
+    $ sudo apt install sshuttle
+    $ sshuttle -r your_user@192.168.1.20 10.10.10.0/24

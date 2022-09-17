@@ -7,3 +7,4 @@
 | symptoms  | [n] a physical or mental feature                             |      |
 | brutal    | [adj] savagely violent                                       |      |
 | brudy     | [n] dirty                                                    |      |
+| paranoia  | [n] obsession                                                |      |

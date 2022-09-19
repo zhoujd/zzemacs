@@ -116,6 +116,7 @@ ssh
     ## https://blog.keyboardinterrupt.com/ansible-jumphost/
     $ ssh -o ProxyCommand='ssh -W %h:%p your_user@bastion' your_user@target
     $ ssh -o ProxyCommand='ssh -W %h:%p jd-desktop' 127.0.0.1
+    $ ssh -o ProxyCommand='ssh -W %h:%p -q jd-desktop' 127.0.0.1
 
     ## Add a bastion host configuration to your ansible inventory
     ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q your_user@192.168.1.20"'

@@ -36,7 +36,7 @@ Ansible
 
     $ ssh monster-3sky-dev
 
-    $ cat host.ini <<EOF
+    $ cat > host.ini <<EOF
     [gpu]
     monster-3sky-dev ansible_python_interpreter=/usr/bin/python3
     EOF
@@ -44,7 +44,7 @@ Ansible
     ##
     $ ANSIBLE_SSH_ARGS="-F /home/kuba/.ssh/config" ansible monster-3sky-dev -m ping -i host.ini
 
-    $ cat playbook.yml <<EOF
+    $ cat > playbook.yml <<EOF
     - name: Test Ping
       hosts: deployment
       tasks:

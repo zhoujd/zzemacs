@@ -36,3 +36,8 @@ chrome
 ## Black theme
 
     ## 'Just Black' theme
+
+## How to hide bookmarks from the new tab page in Chrome
+
+    ## https://superuser.com/questions/446424/how-to-hide-bookmarks-from-the-new-tab-page-in-chrome
+    ## https://chrome.google.com/webstore/detail/clear-new-tab/felphkbfjadmcejnibcmcncimlappdde

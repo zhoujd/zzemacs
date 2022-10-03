@@ -8,3 +8,4 @@
 | brutal    | [adj] savagely violent                                       |      |
 | brudy     | [n] dirty                                                    |      |
 | paranoia  | [n] obsession                                                |      |
+| trumble   | [v] make a continuous deep, resonant sound                   |      |

@@ -15,7 +15,10 @@ Recorder
 
 ## Simple recording
 
+    ## https://asciinema.org/docs/installation
+    ## https://asciinema.org/docs/usage
     $ sudo apt install asciinema
+    $ sudo pip3 install asciinema
     $ asciinema -h
 
     ## recorde

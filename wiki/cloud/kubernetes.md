@@ -237,3 +237,7 @@ Kubernetes
     $ kubectl cp example-pod:/tmp/example-dir ./example-dir
     $ kubectl cp example-pod:/tmp/example-dir ./example-dir -c second-container
     $ kubectl cp example-namespace/example-pod:/tmp/example-dir ./example-dir
+
+    ## list the files on our pod
+    $ kubectl exec -t <pod-name> -- ls -lrta
+    $ kubectl exec -t <pod-name> -- ls -lrta <folder-name>

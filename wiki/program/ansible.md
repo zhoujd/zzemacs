@@ -52,3 +52,8 @@ Ansible
     EOF
 
     $ ANSIBLE_SSH_ARGS="-F /home/kuba/.ssh/config" ansible-playbook playbook.yml -i host.ini
+
+## Install ansible modules
+
+    $ ansible-galaxy collection install ansible.posix
+    $ ansible-galaxy collection install community.general

@@ -230,3 +230,10 @@ Kubernetes
                 - all
             privileged: false
             readOnlyRootFilesystem: true
+
+## How to Copy Files Between Kubernetes Pods and Your Machine
+
+    ## https://www.howtogeek.com/devops/how-to-copy-files-between-kubernetes-pods-and-your-machine/
+    $ kubectl cp example-pod:/tmp/example-dir ./example-dir
+    $ kubectl cp example-pod:/tmp/example-dir ./example-dir -c second-container
+    $ kubectl cp example-namespace/example-pod:/tmp/example-dir ./example-dir

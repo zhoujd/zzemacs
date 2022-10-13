@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+    echo "Usage: Environment variable NR_USER and NR_PASSWD can be set before run the command line"
+    echo "Usage: $(basename $0) root@host"
+    echo "Usage: $(basename $0) '-J host1,host2 root@host'"
+    exit 1
+fi
+
+HOST=$1
+NR_USER=${NR_USER:-"smartedge-open"}
+NR_PASSWD=${NR_PASSWD:-"$NR_USER"}
+
+echo "HOST: $HOST"
+ssh -T $HOST <<EOFSSH
+adduser -gecos "" --disabled-password $NR_USER
+chpasswd <<<"$NR_USER:$NR_PASSWD"
+echo "$NR_USER  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$NR_USER
+EOFSSH
+
+echo "$NR_USER create done"

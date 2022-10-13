@@ -11,5 +11,5 @@ delay = 2 # Inital Delay in Seconds
 time.sleep(delay)
 
 interval = 0.07   # In Seconds
-cmd=r' '.join(sys.argv[1:]) + "\n"
+cmd = ' '.join(sys.argv[1:]) + "\n"
 pyautogui.write(cmd, interval=interval)

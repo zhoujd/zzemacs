@@ -1,9 +1,10 @@
 #!/bin/bash
 
 if [ $# != 1 ]; then
-    echo "Usage: Environment variable NR_USER and NR_PASSWD can be set before run the command line"
-    echo "Usage: $(basename $0) root@host"
-    echo "Usage: $(basename $0) '-J host1,host2 root@host'"
+    echo "Usage: Environment variable NR_USER and NR_PASSWD can be set before run the command line
+Examples -
+$ $(basename $0) root@host
+$ $(basename $0) '-J host1,host2 root@host'"
     exit 1
 fi
 

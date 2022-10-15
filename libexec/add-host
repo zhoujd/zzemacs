@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+   echo "Usage: $(basename $0) {host}"
+   exit 1
+fi
+
+HOST=$1
+FILE=/etc/hosts
+
+sudo sed -i "s/^127.*/& ${HOST}/g" $FILE
+sudo sed -i "s/^::1.*/& ${HOST}/g" $FILE
+
+cat $FILE
+
+echo "Update Host Done"

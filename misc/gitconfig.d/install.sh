@@ -24,14 +24,12 @@
 ### Get work root
 ## git rev-parse --show-toplevel
 
-echo git global setup start ...
+echo "git global setup start"
 
 if [ "$OS" = "Windows_NT" ] ; then
     SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
-    MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd -W)
 else
     SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-    MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
 fi
 
 ## clear ~/.gitconfig
@@ -123,8 +121,8 @@ git config --global alias.hub   '!git daemon --base-path=. --export-all --enable
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 
-## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $MISC_ROOT/cert/ca-bundle.crt
-## git config --global http.sslcainfo $MISC_ROOT/cert/ca-bundle.crt
+## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $SCRIPT_ROOT/cert/ca-bundle.crt
+## git config --global http.sslcainfo $SCRIPT_ROOT/cert/ca-bundle.crt
 ## export GIT_SSL_NO_VERIFY=1
 git config --global http.sslverify false
 
@@ -163,7 +161,12 @@ git config --global push.default simple
 ## requires git v1.7.10+
 GITCONFIG_URL=~/.gitconfig.url
 if [ -f $GITCONFIG_URL ]; then
-    git config --global include.path $GITCONFIG_URL
+    git config --global --add include.path $GITCONFIG_URL
+fi
+
+GITCONFIG_1S=~/.gitconfig.1source
+if [ -f $GITCONFIG_1S ]; then
+    git config --global --add include.path $GITCONFIG_1S
 fi
 
 ## update gitconfig for cmd using
@@ -173,4 +176,4 @@ if [ "$OS" = "Windows_NT" ] ; then
     fi
 fi
 
-echo git global setup end ...
+echo "git global setup end"

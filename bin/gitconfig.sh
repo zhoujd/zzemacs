@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-GITCONIF_ROOT=$(cd $SCRIPT_ROOT/../misc/gitconf && pwd)
+GITCONIF_ROOT=$(cd $SCRIPT_ROOT/../misc/gitconfig.d && pwd)
 GITCONFI_TGT=~/.gitconfig.d
 
 echo "Install $GITCONIF_ROOT to $GITCONFI_TGT"

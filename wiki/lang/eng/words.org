@@ -1,16 +1,17 @@
 * Words
 
-| Word      | Meaning                                                      | Note                          |
-|-----------+--------------------------------------------------------------+-------------------------------|
-| turmoil   | [n] a state of great disturbance, confusion, or uncertainty. |                               |
-| moon-eyed | [adj] having the eyes open wide, as in fear or wonder        |                               |
-| symptoms  | [n] a physical or mental feature                             |                               |
-| brutal    | [adj] savagely violent                                       |                               |
-| brudy     | [n] dirty                                                    |                               |
-| paranoia  | [n] obsession                                                |                               |
-| trumble   | [v] make a continuous deep, resonant sound                   |                               |
-| umpire    | [n] an official who watches a game or match closely          |                               |
-| provoke   |                                                              |                               |
-| rally     |                                                              |                               |
-| vulture   |                                                              | vultures prey on dead animals |
-| volley    |                                                              | give them a volley repid fire |
+| Word         | Meaning                                                      | Note                          |
+|--------------+--------------------------------------------------------------+-------------------------------|
+| turmoil      | [n] a state of great disturbance, confusion, or uncertainty. |                               |
+| moon-eyed    | [adj] having the eyes open wide, as in fear or wonder        |                               |
+| symptoms     | [n] a physical or mental feature                             |                               |
+| brutal       | [adj] savagely violent                                       |                               |
+| brudy        | [n] dirty                                                    |                               |
+| paranoia     | [n] obsession                                                |                               |
+| trumble      | [v] make a continuous deep, resonant sound                   |                               |
+| umpire       | [n] an official who watches a game or match closely          |                               |
+| provoke      |                                                              |                               |
+| rally        |                                                              |                               |
+| vulture      |                                                              | vultures prey on dead animals |
+| volley       |                                                              | give them a volley repid fire |
+| superstition |                                                              |                               |

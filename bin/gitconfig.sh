@@ -1,15 +1,16 @@
 #!/bin/bash
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-GITCONIF_ROOT=$(cd $SCRIPT_ROOT/../misc/gitconfig.d && pwd)
-GITCONFI_TGT=~/.gitconfig.d
+GITCONFIG_ROOT=$(cd $SCRIPT_ROOT/../misc/gitconfig.d && pwd)
+GITCONFIG_TARGET=~/.gitconfig.d
+GITCONFIG_FILE=~/.gitconfig
 
 install() {
-    echo "Install $GITCONIF_ROOT to $GITCONFI_TGT"
-    ln -sfvT $GITCONIF_ROOT $GITCONFI_TGT
+    echo "Install $GITCONFIG_ROOT to $GITCONFIG_TARGET"
+    ln -sfvT $GITCONFIG_ROOT $GITCONFIG_TARGET
 
-    echo "Install gitconfig"
-    pushd $GITCONFI_TGT
+    echo "Install $GITCONFIG_FILE"
+    pushd $GITCONFIG_TARGET
     ./install.sh
     popd
 
@@ -17,9 +18,11 @@ install() {
 }
 
 uninstall() {
-    echo "Uninstall $GITCONFI_TGT"
-    rm -f $GITCONFI_TGT
-    rm -f ~/.gitconfig
+    echo "Uninstall $GITCONFIG_TARGET"
+    rm -f $GITCONFIG_TARGET
+
+    echo "Uninstall $GITCONFIG_FILE"
+    rm -f $GITCONFIG_FILE
     
     echo "Uninstall done"
 }

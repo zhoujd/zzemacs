@@ -15,3 +15,6 @@
 | vulture      |                                                              | vultures prey on dead animals |
 | volley       |                                                              | give them a volley repid fire |
 | superstition |                                                              |                               |
+| sulking      |                                                              |                               |
+| dispute      |                                                              |                               |
+| morality     |                                                              |                               |

@@ -57,3 +57,20 @@ Ansible
 
     $ ansible-galaxy collection install ansible.posix
     $ ansible-galaxy collection install community.general
+
+## Execute command on the Ansible host - Ansible localhost
+
+    $ cat > localhost.yml <<EOF
+    ---
+    - name: localhost demo
+      hosts: localhost
+      vars:
+        ansible_connection: local
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
+      tasks:
+        - name: print hostname
+          ansible.builtin.debug:
+            msg: "{{ inventory_hostname }}"
+    EOF
+
+    $ ansible-playbook localhost.yml

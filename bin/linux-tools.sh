@@ -19,7 +19,7 @@ install_package_ubuntu() {
     sudo apt install -y rxvt-unicode
     sudo apt install -y openssh-server
     sudo apt install -y tree
-    sudo apt install -y tmux vim gvim-gtk3
+    sudo apt install -y tmux vim vim-gtk3
     sudo apt install -y sbcl
     sudo apt install -y wireless-tools
     sudo apt install -y connect-proxy

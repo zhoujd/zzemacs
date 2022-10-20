@@ -205,7 +205,7 @@ Xfce
     $ ninja -C build
     $ ninja -C build install
 
-## Prompt for the psasword from the user
+## Prompt for the password from the user
 
     ## https://blog.joshgordon.net/quick-and-dirty-rdp-from-linux/
     $ sudo apt install zenity

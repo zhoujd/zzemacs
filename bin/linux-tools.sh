@@ -46,6 +46,7 @@ install_package_ubuntu() {
     sudo apt install -y wireshark tshark
     sudo apt install -y dunst
     sudo apt install -y nnn
+    sudo apt install -y pinta
 }
 
 ##package for centos

@@ -17,3 +17,9 @@ Emacs Tips
     # Local Variables:
     # coding: utf-8
     # End:
+
+## How can I replace a character with a newline in Emacs
+
+    M-x replace-string RET ; RET C-q C-j.
+    C-q for quoted-insert,
+    C-j is a newline.

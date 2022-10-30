@@ -41,3 +41,7 @@ chrome
 
     ## https://superuser.com/questions/446424/how-to-hide-bookmarks-from-the-new-tab-page-in-chrome
     ## https://chrome.google.com/webstore/detail/clear-new-tab/felphkbfjadmcejnibcmcncimlappdde
+
+## Launch Google Chrome in Fullscreen mode
+
+    $ google-chrome --app=https://my_url.com

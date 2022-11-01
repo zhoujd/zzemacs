@@ -32,3 +32,6 @@ Emacs Tips
     M-x flush-lines, which removes lines matching a regexp
     M-x flush-lines RET ^$ RET
     M-x flush-lines RET ^\s-*$ RET
+
+    M-x delete-non-matching-lines
+    M-x delete-matching-lines

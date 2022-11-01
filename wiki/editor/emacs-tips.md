@@ -30,3 +30,5 @@ Emacs Tips
     (keep-lines REGEXP &optional RSTART REND INTERACTIVE)
 
     M-x flush-lines, which removes lines matching a regexp
+    M-x flush-lines RET ^$ RET
+    M-x flush-lines RET ^\s-*$ RET

@@ -242,3 +242,15 @@ Ubuntu setting
     Name=Virtual Keyboard
     Comment=Auto-start virtual keyboard
     Exec=florence --no-gnome
+
+## Stopping an Ubuntu 22.04 desktop from suspending at the login screen
+
+    ## https://utcc.utoronto.ca/~cks/space/blog/linux/Ubuntu2204DesktopStopSuspend
+    ## sleep.conf, or more likely a drop in file /etc/systemd/sleep.conf.d/nope.conf
+    $ cat /etc/systemd/sleep.conf.d/nope.conf
+    # Never sleep or hibernate
+    [Sleep]
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowSuspendThenHibernate=no
+    AllowHybridSleep=no

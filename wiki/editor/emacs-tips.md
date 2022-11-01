@@ -23,3 +23,10 @@ Emacs Tips
     M-x replace-string RET ; RET C-q C-j.
     C-q for quoted-insert,
     C-j is a newline.
+
+## Removing all lines that don't match
+
+    ## Delete all lines except those containing matches for REGEXP
+    (keep-lines REGEXP &optional RSTART REND INTERACTIVE)
+
+    M-x flush-lines, which removes lines matching a regexp

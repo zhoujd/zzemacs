@@ -129,6 +129,8 @@
   (kbd "l")       'langtool-switch-default-language
   (kbd "s")       'langtool-show-message-at-point
   (kbd "c")       'langtool-correct-buffer
+  (kbd "k")       'keep-lines
+  (kbd "f")       'flush-lines
 
   (kbd "C-b")     'browse-url
   (kbd "C-d")     (if-ms-windows (zz:exec-key zz:explorer '("explorer" "."))

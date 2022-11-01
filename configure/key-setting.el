@@ -131,10 +131,13 @@
   (kbd "c")       'langtool-correct-buffer
   (kbd "k")       'keep-lines
   (kbd "f")       'flush-lines
+  (kbd "r")       'vr/replace
+  (kbd "q")       'vr/query-replace
 
   (kbd "C-b")     'browse-url
-  (kbd "C-d")     (if-ms-windows (zz:exec-key zz:explorer '("explorer" "."))
-                                 (zz:exec-key zz:thunar '("thunar")))
+  (kbd "C-d")     (if-ms-windows
+                   (zz:exec-key zz:explorer '("explorer" "."))
+                   (zz:exec-key zz:thunar '("thunar")))
   (kbd "C-e")     'eshell
   (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history

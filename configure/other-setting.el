@@ -423,6 +423,9 @@
         "^\\*tramp\\b"
         "^\\*swiper\\*$"))
 
+;;https://github.com/benma/visual-regexp.el
+(require 'visual-regexp)
+
 
 (provide 'other-setting)
 

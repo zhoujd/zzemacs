@@ -1,3 +1,5 @@
 # -*- mode: shell-script -*-
 # copy emacs_bash to ~/.emacs_bash
+# ln -sfvT ${ZZEMACS_ROOT}/etc/emacs_bash ~/.emacs_bash
+
 [ -f ~/.emacs_profile ] && . ~/.emacs_profile

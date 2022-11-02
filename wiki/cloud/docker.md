@@ -354,3 +354,12 @@ Docker
     $ sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-compose-plugin
     $ sudo rm -rf /var/lib/docker
     $ sudo rm -rf /var/lib/containerd
+
+## Proxy docker /var/run/docker.sock to port 2375 with socat
+
+    $ docker run -d \
+      --volume /var/run/docker.sock:/var/run/docker.sock \
+      --name docker-http \
+      deb socat -d -d TCP-L:2375,fork UNIX:/var/run/docker.sock
+    DOCKER_URL=$(docker inspect -f "{{.NetworkSettings.IPAddress}}" docker-http):2375
+    curl $DOCKER_URL/_ping

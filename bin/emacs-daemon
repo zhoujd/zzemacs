@@ -16,6 +16,7 @@ SERV_ROOT=~/.config/systemd/user
 
 install() {
     echo "Install emacs daemon"
+    mkdir -p $SERV_ROOT
     ln -sf $MISC_ROOT/emacs/emacs.service $SERV_ROOT/emacs.service
     systemctl daemon-reload --user
     systemctl --user enable --now emacs

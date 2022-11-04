@@ -33,10 +33,10 @@ Grub
     }
 
     menuentry "Windows (on /dev/sda1)" {
-    	insmod chain
-	    insmod ntfs
-	    set root=(hd0,msdos1)
-	    chainloader +1
+        insmod chain
+        insmod ntfs
+        set root=(hd0,msdos1)
+        chainloader +1
     }
 
     ## For first extended partition of the first hard disk drive
@@ -51,8 +51,8 @@ Grub
 ## grub configfile
 
     title SLES 11 SP3 (/dev/sda9)
-	root (hd0,8)
-	configfile /boot/grub/menu.lst
+    root (hd0,8)
+    configfile /boot/grub/menu.lst
 
     menuentry "Grub2 config menu" {
         set root='hd0,msdos8'
@@ -88,3 +88,9 @@ Grub
     GRUB_DEFAULT="1>4"                      ##select default "grep menuentry /boot/grub/grub.cfg"
     #GRUB_DISABLE_LINUX_RECOVERY=true       ##If you want a "Recovery" option for only one kernel, make a special entry in /etc/grub/40_custom.
     GRUB_DISABLE_SUBMENU=y                  ##disable submenu on ubuntu 14.04
+
+## Change or Set Default Kernel Version
+
+    $ sudo nano /etc/default/grub
+    GRUB_SAVEDEFAULT=true
+    GRUB_DEFAULT=saved

@@ -254,3 +254,16 @@ Ubuntu setting
     AllowHibernation=no
     AllowSuspendThenHibernate=no
     AllowHybridSleep=no
+
+## How to install Linux kernel 5.19 on Ubuntu 22.04 or 20.04
+
+    ## https://www.how2shout.com/linux/how-to-install-linux-kernal-5-19-on-ubuntu-22-04-or-20-04/
+    $ wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh
+    $ chmod +x ubuntu-mainline-kernel.sh
+    $ sudo mv ubuntu-mainline-kernel.sh /usr/local/bin/
+    $ ubuntu-mainline-kernel.sh -c
+    $ ubuntu-mainline-kernel.sh -r
+    $ sudo ubuntu-mainline-kernel.sh -i v5.19.1
+    $ sudo ubuntu-mainline-kernel.sh -i
+    $ sudo ubuntu-mainline-kernel.sh -l
+    $ sudo ubuntu-mainline-kernel.sh -u

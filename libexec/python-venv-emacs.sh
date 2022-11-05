@@ -1,8 +1,12 @@
 #!/bin/bash
 
+# 3.8  -> Ubuntu 20.04
+# 3.10 -> Ubuntu 22.04
+VER=3.10
+
 install_deps() {
     echo "Install deps"
-    sudo apt install python3.8-venv
+    sudo apt install python${VER}-venv
 }
 
 install_venv() {

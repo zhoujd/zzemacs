@@ -267,3 +267,8 @@ Ubuntu setting
     $ sudo ubuntu-mainline-kernel.sh -i
     $ sudo ubuntu-mainline-kernel.sh -l
     $ sudo ubuntu-mainline-kernel.sh -u
+
+## Ubuntu start slow
+
+    $ systemd-analyze blame
+    $ snap list

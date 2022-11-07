@@ -1,4 +1,4 @@
-keyboard
+Keyboard
 ========
 
 ## Persistent Keyboard Mapping on Ubuntu using xmodmap
@@ -11,7 +11,7 @@ keyboard
     # or sudo apt install dconf-editor
     dconf write /org/gnome/settings-daemon/plugins/keyboard/active false
 
-## Moving The Ctrl Key
+## Moving The Ctrl Key on tty console
 
     https://www.emacswiki.org/emacs/MovingTheCtrlKey
 

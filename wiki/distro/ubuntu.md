@@ -272,3 +272,8 @@ Ubuntu setting
 
     $ systemd-analyze blame
     $ snap list
+
+## GDM remove xsessions
+
+    $ cd /usr/share/xsessions
+    $ cd /usr/share/wayland-sessions

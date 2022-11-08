@@ -277,3 +277,31 @@ Ubuntu setting
 
     $ cd /usr/share/xsessions
     $ cd /usr/share/wayland-sessions
+
+## Ubuntu 22.04 Desktop
+
+    $ sudo apt install gnome-tweaks gnome-shell-extension gnome-shell-extension-manage
+    $ sudo apt install gnome-shell-extension-desktop-icons-ng
+
+## How to Change the Default Terminal Emulator in Ubuntu 22.04
+
+    $ sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/urxvt 1
+    $ sudo update-alternatives --config x-terminal-emulator
+
+## How to Change Login Screen Background in Ubuntu 22.04
+
+    ## https://ubuntuhandbook.org/index.php/2022/04/login-screen-background-ubuntu-22-04/
+    $ sudo apt install libglib2.0-dev-bin
+    $ wget -qO - https://github.com/PRATAP-KUMAR/ubuntu-gdm-set-background/archive/main.tar.gz | tar zx --strip-components=1 ubuntu-gdm-set-background-main/ubuntu-gdm-set-background
+    $ sudo ./ubuntu-gdm-set-background --image /PATH/TO/YOUR/IMAGE
+    $ sudo ./ubuntu-gdm-set-background --reset
+    $ sudo mv ./ubuntu-gdm-set-background /usr/local/bin
+
+
+## How to MAKE Ubuntu 22.04 Look Like Mac OS Monterey
+
+    ## https://github.com/vinceliuice/WhiteSur-gtk-theme
+    ## ./install.sh -c Dark -t blue
+    $ sudo ./tweaks.sh -g -b "my picture.jpg" # use the custom background
+    $ sudo ./tweaks.sh -g -b default          # use the default background
+    $ sudo ./tweaks.sh -g -b blank            # make it blank

@@ -305,3 +305,21 @@ Ubuntu setting
     $ sudo ./tweaks.sh -g -b "my picture.jpg" # use the custom background
     $ sudo ./tweaks.sh -g -b default          # use the default background
     $ sudo ./tweaks.sh -g -b blank            # make it blank
+
+## SDDM Display manager
+
+    $ sudo apt install sddm
+    $ sudo apt install sddm-theme-maya
+    $ ls /usr/share/sddm/themes/
+    $ cat /etc/sddm.conf <<EOF
+    [Users]
+    HideUsers=sys_cert
+    [Theme]
+    ThemeDir=/usr/share/sddm/themes
+    Current=maya
+    EOF
+    $ sddm-greeter --test-mode --theme /usr/share/sddm/themes/maya
+
+    ## switch to gdm
+    $ sudo systemctl start gdm3
+    $ sudo dpkg-reconfigure gdm3

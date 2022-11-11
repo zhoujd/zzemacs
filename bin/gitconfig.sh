@@ -11,7 +11,8 @@ install() {
 
     echo "Install $GITCONFIG_FILE"
     pushd $GITCONFIG_TARGET
-    ./install.sh
+    ./install_cfg.sh
+    ./install_bin.sh
     popd
 
     echo "Install done"

@@ -176,4 +176,9 @@ if [ "$OS" = "Windows_NT" ] ; then
     fi
 fi
 
+## git tool
+if [ ! "$OS" = "Windows_NT" ] ; then
+    SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
+fi    
+
 echo "git global setup end"

@@ -341,7 +341,7 @@ Ubuntu setting
 
     $ cat /etc/sddm.conf <<EOF
       [Users]
-      HideUsers=sys_cert,user2
+      HideUsers=user1,user2
       [Theme]
       Current=chili
       EOF

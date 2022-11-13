@@ -175,6 +175,22 @@ the following functions:
   :type 'boolean
   :group 'elpy)
 
+(defcustom elpy-shell-darwin-use-pty nil
+  "Whether to connect to the Python shell through pty on MacOS.
+
+If nil, Elpy will connect to Python through a pipe. Any non-nil
+value will cause Elpy use a pseudo-terminal (pty) instead. This
+value should be set to nil when using a Python interpreter that
+uses the libedit version of Readline, such as the default MacOS
+Python interpreters. This value can be safely be set to true when
+using a version of Python that uses GNU Readline.
+
+This value is only used when `elpy-shell-get-or-create-process'
+creates a new Python process."
+  :type 'boolean
+  :group 'elpy)
+
+
 ;;;;;;;;;;;;;;;;;;
 ;;; Shell commands
 
@@ -258,18 +274,34 @@ If ASK-FOR-EACH-ONE is non-nil, ask before killing each python process."
      (t
       (message "No python shell to close")))))
 
+(defun elpy-executable-find-remote (command)
+  "Emulate 'executable-find' REMOTE.
+Since Emacs 27, 'executable-find' accepts the 2nd argument.
+REMOVE THIS when Elpy no longer supports Emacs 26."
+  (if (cdr (help-function-arglist 'executable-find)) ; 27+
+      (executable-find command t)
+    (if (file-remote-p default-directory)
+        (let ((res (locate-file ; code from files.el
+	            command
+	            (mapcar
+	             (lambda (x) (concat (file-remote-p default-directory) x))
+	             (exec-path))
+	            exec-suffixes 'file-executable-p)))
+          (when (stringp res) (file-local-name res)))
+      (executable-find command)))) ; local search
+
 (defun elpy-shell-get-or-create-process (&optional sit)
   "Get or create an inferior Python process for current buffer and return it.
 
 If SIT is non-nil, sit for that many seconds after creating a
 Python process. This allows the process to start up."
   (let* ((process-connection-type
-          (if (string-equal system-type "darwin") nil t))  ;; see https://github.com/jorgenschaefer/elpy/pull/1671
+          (if (string-equal system-type "darwin") elpy-shell-darwin-use-pty t))  ;; see https://github.com/jorgenschaefer/elpy/pull/1671
          (bufname (format "*%s*" (python-shell-get-process-name nil)))
          (proc (get-buffer-process bufname)))
     (if proc
         proc
-      (unless (executable-find python-shell-interpreter)
+      (unless (elpy-executable-find-remote python-shell-interpreter)
         (error "Python shell interpreter `%s' cannot be found. Please set `python-shell-interpreter' to a valid python binary."
                python-shell-interpreter))
       (let ((default-directory

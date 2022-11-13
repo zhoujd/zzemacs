@@ -3,7 +3,7 @@
 ;;https://elpy.readthedocs.io/en/latest/
 
 ;;elpy pkg deps
-;;pip2 install rope jedi flake8 importmagic
+;;sudo apt install python3-jedi black python3-autopep8 yapf3 python3-yapf
 ;;pip3 install rope jedi flake8 importmagic
 ;;git clone https://github.com/jorgenschaefer/elpy
 ;;M-x elpy-config

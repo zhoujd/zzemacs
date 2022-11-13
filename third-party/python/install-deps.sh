@@ -11,6 +11,7 @@ case $1 in
     ubuntu )
         sudo apt install -y python3-pip
         sudo apt install -y python3-venv
+        sudo apt install -y python3-virtualenv
         ;;
     * )
         echo "Usage: $0 {centos|ubuntu}"

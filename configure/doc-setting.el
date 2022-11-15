@@ -12,8 +12,6 @@
 (setq markdown-command "pandoc --from markdown --to html")
 (setq markdown-command-needs-filename t)
 
-markdown-coding-system
-
 ;;github markdown preview
 (zz:load-path "site-lisp/github-markdown-preview")
 (require 'github-markdown-preview)

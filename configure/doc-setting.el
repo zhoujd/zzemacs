@@ -2,7 +2,6 @@
 
 ;;markdown setting
 ;;https://github.com/jrblevin/markdown-mode
-(zz:load-path "site-lisp/markdown-mode")
 (require 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
@@ -12,7 +11,8 @@
 ;;(e.g. GitHub flavored markdown). Pandoc does, so let's use that.
 (setq markdown-command "pandoc --from markdown --to html")
 (setq markdown-command-needs-filename t)
-(setq markdown-coding-system "utf-8")
+
+markdown-coding-system
 
 ;;github markdown preview
 (zz:load-path "site-lisp/github-markdown-preview")

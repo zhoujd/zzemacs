@@ -25,7 +25,7 @@
 (zz:load-path "site-lisp/python-environment")
 (zz:load-path "site-lisp/epc")
 
-;;M-x jedi:install-server
+;;install Jedi.el via M-x jedi:install-server
 (zz:load-path "site-lisp/jedi-core")
 (require 'company-jedi)
 (add-to-list 'company-backends 'company-jedi)

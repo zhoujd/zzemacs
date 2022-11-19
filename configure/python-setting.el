@@ -52,7 +52,8 @@
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
 
-;;epc module via sudo pip3 install epc
+;;https://github.com/tkf/python-epc
+;;install python-epc via sudo pip3 install epc
 (setq jedi:server-command (list "python3" jedi:server-script))
 (setq jedi:environment-root "jedi"
       jedi:environment-virtualenv (append python-environment-virtualenv

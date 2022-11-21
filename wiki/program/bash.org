@@ -112,3 +112,27 @@ foobar
 $ unset my_array
 $ echo ${!my_array[@]}
 #+end_src
+
+* Joining bash arguments into single string with spaces
+
+#+begin_src sh
+## https://unix.stackexchange.com/questions/197792/joining-bash-arguments-into-single-string-with-spaces
+$ cat script.sh
+#!/bin/sh
+str="'$*'"
+echo "$str"
+
+$ sh script.sh one two three four 5
+'one two three four 5'
+
+$ cat script.sh
+#!/bin/sh
+old="$IFS"
+IFS='/'
+str="'$*'"
+echo "$str"
+IFS=$old
+
+$ sh script.sh one two three four
+'one/two/three/four'
+#+end_src

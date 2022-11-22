@@ -345,3 +345,7 @@ Ubuntu setting
       [Theme]
       Current=chili
       EOF
+
+## Hide APT news
+
+    $ sudo pro config set apt_news=false

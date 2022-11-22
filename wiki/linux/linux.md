@@ -490,3 +490,20 @@ Linux something
     $ sudo fdisk -l 2>/dev/null | grep "Disk \/" | grep -v "\/dev\/md" | awk '{print $2}' | sed -e 's/://g'
     /dev/nvme0n1
     /dev/nvme1n1
+
+## How to mount a new drive on startup
+
+    ## https://askubuntu.com/questions/154180/how-to-mount-a-new-drive-on-startup
+    $ sudo fdisk /dev/sdb
+    Press O and press Enter (creates a new table)
+    Press N and press Enter (creates a new partition)
+    Press P and press Enter (makes a primary partition)
+    Then press 1 and press Enter (creates it as the 1st partition)
+    Finally, press W (this will write any changes to disk)
+
+    $ sudo mkfs.ext4 /dev/sdb1
+    $ sudo vim /etc/fstab
+    #device        mountpoint             fstype    options  dump   fsck
+    /dev/sdb1      /home/yourname/mydata    ext4    defaults    0    1
+
+    $ sudo reboot

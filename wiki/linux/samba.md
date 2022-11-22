@@ -71,3 +71,10 @@ Samba Server
     domain=mydomain
 
     $ sudo mount -t cifs -o credentials=path/to/cifs.credo //server/share localfolder --verbose
+
+## Mount to non-root user
+
+    $ target=/data
+    $ source=//jiandon-pc/data
+    $ credo=/zach/script/cifs.credo
+    $ sudo mount -t cifs -o credentials=$credo,noperm,uid=jiandon,gid=jiandon $source $target

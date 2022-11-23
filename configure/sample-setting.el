@@ -419,6 +419,14 @@
     (find-file tramp-file-name)))
 
 
+;; Source: https://www.emacswiki.org/emacs/misc-cmds.el
+;; M-x: revert-buffer-with-coding-system <C-x RET r>
+(defun zz:revert-buffer ()
+  "Revert buffer without confirmation."
+  (interactive)
+  (revert-buffer :ignore-auto :noconfirm))
+
+
 (provide 'sample-setting)
 
 ;;; sample-setting.el ends here

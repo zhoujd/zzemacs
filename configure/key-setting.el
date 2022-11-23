@@ -50,6 +50,7 @@
   (kbd "n")       'neotree-toggle
   (kbd "o")       'zz:last-buffer-go
   (kbd "C-p")     'proced
+  (kbd "r")       'zz:revert-buffer
   (kbd "C-r")     'recentf-open-files
   (kbd "C-s")     'slime-selector
   (kbd "t")       'trashed

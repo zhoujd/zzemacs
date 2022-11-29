@@ -349,3 +349,16 @@ Ubuntu setting
 ## Hide APT news
 
     $ sudo pro config set apt_news=false
+
+## How to Fix ‘apt-key’ Deprecation Warning on Ubuntu
+
+    ## Method 1: the sensible way
+    $ sudo apt-key list
+    pub rsa4096 2020-01-29 [SC]
+    8CAE 012E BFAC 38B1 7A93  7CD8 C5E2 2450 0C12 89C0
+
+    $ sudo apt-key export 0C1289C0 | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/teamviewer.gpg
+
+    ## Method 2: the quick way
+    $ cd /etc/apt
+    $ sudo cp trusted.gpg trusted.gpg.d

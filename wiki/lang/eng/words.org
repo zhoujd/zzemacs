@@ -20,3 +20,4 @@
 | morality     |                                                              |                               |
 | overwhelming |                                                              |                               |
 | deuce        |                                                              |                               |
+| lemniscate   |                                                              |                               |

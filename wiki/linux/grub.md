@@ -94,3 +94,11 @@ Grub
     $ sudo nano /etc/default/grub
     GRUB_SAVEDEFAULT=true
     GRUB_DEFAULT=saved
+
+## Cannot get grub menu to timeout (or go away)
+
+    $ sudo nano /etc/default/grub
+    GRUB_TIMEOUT=5
+    GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT
+
+    $ sudo update-grub

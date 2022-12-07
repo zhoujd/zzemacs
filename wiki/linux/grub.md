@@ -105,18 +105,16 @@ Grub
 
 ## GNU GRUB Menu: Change the Default Boot OS
 
-    ## 1. Find the string for the OS you want to set as the default.
-    $ grep menuentry /boot/grub/grub.cfg
+    $ grep -m1 submenu /boot/grub/grub.cfg | cut -f4 -d "'"
+    gnulinux-advanced-594ab82a-3af6-46aa-bdf4-6b49be6818dc
 
-    ## 2. Highlight the string and copy it to the clipboard. (include the quotes.)
-    e.g. "Windows 10 (loader) (on /dev/sda1)"
+    $ grep menuentry /boot/grub/grub.cfg | cut -f4 -d "'" | grep gnulinux-5.14.0-1033-oem-advanced
+    gnulinux-5.14.0-1033-oem-advanced-981282df-93c0-471c-b6b8-4b4df476ad4d
 
-    ## 3. Edit /etc/default/grub
-    $ sudo vi /etc/default/grub
+    $ sudo vim /etc/default/grub
+    GRUB_DEFAULT=gnulinux-advanced-594ab82a-3af6-46aa-bdf4-6b49be6818dc>gnulinux-5.14.0-1033-oem-advanced-981282df-93c0-471c-b6b8-4b4df476ad4d
 
-    ## 4. Change the value of GRUB_DEFAULT from 0 to the OS string you copied from /boot/grub/grub.cfg, then save /etc/default/grub.
+    $ NEW=gnulinux-advanced-594ab82a-3af6-46aa-bdf4-6b49be6818dc>gnulinux-5.14.0-1033-oem-advanced-981282df-93c0-471c-b6b8-4b4df476ad4d
+    $ sudo sed -i 's/GRUB_DEFAULT=/GRUB_DEFAULT=$NEW/g' /etc/default/grub
 
-    ## 5. Regenerate the Grub menu, /boot/grub/grub.cfg, by running the following command:
     $ sudo update-grub
-
-    ## 6. Reboot the computer to verify the expected OS is the default.

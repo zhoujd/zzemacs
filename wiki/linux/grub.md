@@ -102,3 +102,21 @@ Grub
     GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT
 
     $ sudo update-grub
+
+## GNU GRUB Menu: Change the Default Boot OS
+
+    ## 1. Find the string for the OS you want to set as the default.
+    $ grep menuentry /boot/grub/grub.cfg
+
+    ## 2. Highlight the string and copy it to the clipboard. (include the quotes.)
+    e.g. "Windows 10 (loader) (on /dev/sda1)"
+
+    ## 3. Edit /etc/default/grub
+    $ sudo vi /etc/default/grub
+
+    ## 4. Change the value of GRUB_DEFAULT from 0 to the OS string you copied from /boot/grub/grub.cfg, then save /etc/default/grub.
+
+    ## 5. Regenerate the Grub menu, /boot/grub/grub.cfg, by running the following command:
+    $ sudo update-grub
+
+    ## 6. Reboot the computer to verify the expected OS is the default.

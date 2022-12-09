@@ -74,3 +74,13 @@ Ansible
     EOF
 
     $ ansible-playbook localhost.yml
+
+## Ansible lineinfile - modify a line
+
+    replace:
+      path: /etc/default/grub
+      regexp: '^(GRUB_CMDLINE_LINUX=(?:(?![" ]{{ option | regex_escape }}=).)*)(?:[" ]{{ option | regex_escape }}=\S+)?(.*")$'
+      replace: '\1 {{ option }}={{ value }}\2'
+    vars:
+      option: audit
+      value: 1

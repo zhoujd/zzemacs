@@ -362,3 +362,16 @@ Ubuntu setting
     ## Method 2: the quick way
     $ cd /etc/apt
     $ sudo cp trusted.gpg trusted.gpg.d
+
+## DebootstrapChroot
+
+    ## https://wiki.ubuntu.com/DebootstrapChroot
+    ## https://help.ubuntu.com/community/DebootstrapChroot
+    ## Getting and installing debootstrap
+    $ wget http://archive.ubuntu.com/ubuntu/pool/main/d/debootstrap/debootstrap_1.0.9~hardy1_all.deb
+    $ sudo dpkg --install debootstrap_1.0.9~hardy1_all.deb
+
+    ## Installing and configuring schroot
+    $ sudo apt-get install schroot
+    $ sudo mkdir /var/chroot # Remember, we assume our chroot is here
+    $ sudo editor /etc/schroot/schroot.conf

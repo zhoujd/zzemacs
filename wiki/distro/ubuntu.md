@@ -375,3 +375,16 @@ Ubuntu setting
     $ sudo apt-get install schroot
     $ sudo mkdir /var/chroot # Remember, we assume our chroot is here
     $ sudo editor /etc/schroot/schroot.conf
+
+## Setting up a Ubuntu chroot Environment using debootstrap tool
+
+    ## https://blog.knoldus.com/setting-up-a-ubuntu-chroot-environment-using-debootstrap-tool/
+    $ sudo apt update
+    $ sudo apt install debootstrap
+    $ mkdir newchroot-ubuntu
+    $ sudo mount -t proc /proc newchroot-ubuntu/proc
+    $ sudo mount --rbind /sys newchroot-ubuntu/sys
+    $ sudo mount --rbind /dev newchroot-ubuntu/dev
+    $ sudo chroot newchroot-ubuntu /bin/bash
+    $ sudo umount newchroot-ubuntu/proc newchroot-ubuntu/sys newchroot-ubuntu/dev
+    $ sudo rm -rf newchroot-ubuntu

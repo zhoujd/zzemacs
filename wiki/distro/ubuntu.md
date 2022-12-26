@@ -388,3 +388,21 @@ Ubuntu setting
     $ sudo chroot newchroot-ubuntu /bin/bash
     $ sudo umount newchroot-ubuntu/proc newchroot-ubuntu/sys newchroot-ubuntu/dev
     $ sudo rm -rf newchroot-ubuntu
+
+## Test and deploy individual CVE fixes with UA Client and Landscape
+
+    ## https://ubuntu.com/tutorials/test-and-deploy-individual-cve-fixes-with-ua-client-and-landscape#3-patch-individual-cves-via-the-command-line
+    $ sudo ua fix CVE-YYYY-XXXX
+
+    Add an example “ua fix CVE-2021-4034” script
+    Title: ua fix CVE-2021-4034
+
+    Code:
+
+    #!/bin/bash
+    ua fix CVE-2021-4034
+    Run as user: root
+
+    Time limit (seconds): 300
+
+    Access group: Global access

@@ -406,3 +406,13 @@ Ubuntu setting
     Time limit (seconds): 300
 
     Access group: Global access
+
+## Using CVEScan
+
+    $ sudo snap install cvescan
+
+    ## https://github.com/canonical/sec-cvescan
+    $ sudo apt install python3-apt python3-pip
+    $ git clone https://github.com/canonical/sec-cvescan
+    $ pip3 install --user sec-cvescan/
+    $ ~/.local/bin/cvescan

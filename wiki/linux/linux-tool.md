@@ -23,3 +23,56 @@ Linux Tool
     $ sudo apt install unar
     $ lsar
     $ unar
+
+## Quick Start for Moby and LinuxKit
+
+    ## https://www.atmosera.com/blog/quick-start-moby-linuxkit/
+    ## Need to be root
+    $ sudo -i
+
+    ## Now that you are root, create a shell script from the following code.
+    $ cat > yourfile.sh <<EOF
+    #!/bin/sh
+    #Install dependencies for the build
+    apt-get update
+    apt-get install apt-transport-https  ca-certificates curl software-properties-common build-essential git
+
+    # Install Docker
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable"
+    apt-get update
+    apt-get install docker-ce
+
+    # Install Go
+    wget https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz
+    tar xvf go1.8.1.linux-amd64.tar.gz
+    chown -R root:root ./go
+    sudo mv go /usr/local
+    echo "export GOPATH=$HOME/work" >> ~/.profile
+    echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.profile
+    source ~/.profile
+
+    # Install Moby
+    go get -u github.com/moby/tool/cmd/moby
+
+    # Install Linux Kit
+    git clone https://github.com/linuxkit/linuxkit
+    cd ./linuxkit
+    make
+    make install
+    EOF
+
+    ## Once the file is created, save it then run it. This will install all of the dependencies, Docker, Moby and Linux Kit.
+    sh /path/to/yourfile.sh
+
+    ## Change directories to the linuxkit directory, which is probably /root/linuxkit, then build the image.
+    cd ~/linuxkit
+
+    ## Now, build the image.
+    moby build linuxkit.yml
+
+    ## Now, run the image.
+    $ linuxkit run linuxkit
+
+    ## Once you’re done playing with it, you can type in halt to exit the image
+    $ halt

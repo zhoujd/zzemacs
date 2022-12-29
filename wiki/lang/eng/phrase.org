@@ -1,9 +1,10 @@
-* Phrases
+* Phrase
 
 | Phrase                                        | Meaning | Note |
 |-----------------------------------------------+---------+------|
-| Huge unconditional love                       |         |      |
-| Being a great man means living without chains |         |      |
+| huge unconditional love                       |         |      |
+| being a great man means living without chains |         |      |
 | quite literally                               |         |      |
 | pain and heal                                 |         |      |
 | unrequited love                               |         |      |
+| one-man operation                             |         |      |

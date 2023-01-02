@@ -90,13 +90,13 @@ Docker
 
     $ cat > ~/.docker/config.json <<EOF
     {
-     "proxies":
-     {
+      "proxies":
+      {
        "default":
        {
          "httpProxy": "http://<host>:<port>",
          "httpsProxy": "http://<host>:<port>",
-         "noProxy": "127.0.0.0/8"
+         "noProxy": "127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
        }
       }
     }
@@ -113,7 +113,7 @@ Docker
     Environment="HTTP_PROXY=http://$host:$port"
     Environment="HTTPS_PROXY=http://$host:$port"
     Environment="FTP_PROXY=http://$host:$port"
-    Environment="NO_PROXY=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8"
+    Environment="NO_PROXY=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
     EOF
 
 ## Docker daemon example
@@ -363,3 +363,10 @@ Docker
       deb socat -d -d TCP-L:2375,fork UNIX:/var/run/docker.sock
     DOCKER_URL=$(docker inspect -f "{{.NetworkSettings.IPAddress}}" docker-http):2375
     curl $DOCKER_URL/_ping
+
+## Podman
+
+    ## https://podman.io/getting-started/
+    ## https://podman.io/getting-started/installation
+    $ sudo apt install podman
+    $ podman --help

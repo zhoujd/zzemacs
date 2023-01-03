@@ -23,6 +23,7 @@ virt-manager
 
 ## Virsh commands cheatsheet
 
+    ## https://computingforgeeks.com/virsh-commands-cheatsheet/
     $ virsh nodeinfo
     $ virsh list --all
     $ virsh list
@@ -40,8 +41,54 @@ virt-manager
         sudo virsh shutdown $i
       done
     $ virsh reboot test
+
+    ## remove vm
+    $ virsh destroy test 2> /dev/null
+    $ virsh undefine  test
+    $ virsh pool-refresh default
+    $ virsh vol-delete --pool default test.qcow2
+    $ virsh undefine test --remove-all-storage
+
+    ## create a vm
+    $ virt-install \
+        --name centos7 \
+        --description "Test VM with CentOS 7" \
+        --ram=1024 \
+        --vcpus=2 \
+        --os-type=Linux \
+        --os-variant=rhel7 \
+        --disk path=/var/lib/libvirt/images/centos7.qcow2,bus=virtio,size=10 \
+        --graphics none \
+        --location $HOME/iso/CentOS-7-x86_64-Everything-1611.iso \
+        --network bridge:virbr0 \
+        --console pty,target_type=serial -x 'console=ttyS0,115200n8 serial'
     $ virsh console test
     $ virsh console test --force
+
+    ## edit vm xml file
+    $ export EDITOR=vim
+    $ virsh edit test
+
+    $ virsh suspend test
+    $ virsh resume test
+    $ virsh save test test.saved
+    $ virsh restore test.save
+
+    ## create volume
+    $ virsh vol-create-as default test_vol2.qcow2 2G
+    $ du -sh /var/lib/libvirt/images/test_vol2.qcow2
+    $ virsh vol-list --pool default
+    $ virsh vol-list --pool images
+
+    ## attach a volume to vm
+    $ virsh attach-disk --domain test \
+        --source /var/lib/libvirt/images/test_vol2.qcow2 \
+        --persistent --target vdb
+
+    ## detach a volume from vm
+    $ virsh detach-disk --domain test --persistent --live --target vdb
+    s ssh test
+    $ lsblk --output NAME,SIZE,TYPE
 
 ## How to fix "network 'default' is not active" error in libvirt
 

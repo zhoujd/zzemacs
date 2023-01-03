@@ -88,14 +88,17 @@ Docker
 
 ## Docker proxy for fetching package when building docker image
 
-    $ cat > ~/.docker/config.json <<EOF
+    $ host=child-prc.intel.com
+    $ port=913
+    $ mkdir -p ~/.docker
+    $ tee ~/.docker/config.json <<EOF
     {
       "proxies":
       {
        "default":
        {
-         "httpProxy": "http://<host>:<port>",
-         "httpsProxy": "http://<host>:<port>",
+         "httpProxy": "http://$host:$port",
+         "httpsProxy": "http://$host:$port",
          "noProxy": "127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
        }
       }
@@ -104,9 +107,8 @@ Docker
 
 ## Docker proxy for host pull images
 
-    local host=child-prc.intel.com
-    local port=913
-
+    $ host=child-prc.intel.com
+    $ port=913
     $ sudo mkdir /etc/systemd/system/docker.service.d
     $ sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf <<EOF
     [Service]
@@ -115,6 +117,11 @@ Docker
     Environment="FTP_PROXY=http://$host:$port"
     Environment="NO_PROXY=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
     EOF
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker
+    $ sudo systemctl show --property=Environment docker
+    $ sudo docker run hello-world
 
 ## Docker daemon example
 
@@ -125,13 +132,6 @@ Docker
         "storage-driver": "overlay2"
     }
     EOF
-
-## Docker restart service
-
-    $ sudo systemctl daemon-reload
-    $ sudo systemctl restart docker
-    $ sudo systemctl show --property=Environment docker
-    $ sudo docker run hello-world
 
 ## How Docker Container Networking Works - Mimic It Using Linux Network Namespaces
 

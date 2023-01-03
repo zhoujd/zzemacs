@@ -24,3 +24,10 @@ libreoffice
 ## Install Database
 
     $ sudo apt install libreoffice-base
+
+## Install OnlyOffice
+
+    ## https://github.com/ONLYOFFICE/appimage-desktopeditors
+    $ wget https://download.onlyoffice.com/install/desktop/editors/linux/DesktopEditors-x86_64.AppImage
+    $ chmod a+x DesktopEditors-x86_64.AppImage
+    $ ./DesktopEditors-x86_64.AppImage

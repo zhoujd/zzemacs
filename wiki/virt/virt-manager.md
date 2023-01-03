@@ -32,6 +32,8 @@ virt-manager
     $ virsh autostart test
     $ virsh autostart --disable test
     $ virsh dominfo test
+    $ virsh domifaddr test
+    $ virsh domiflist test
     $ virsh shutdown test
     $ virsh destroy test
     $ for i in `sudo virsh list | grep running | awk '{print $2}'` do

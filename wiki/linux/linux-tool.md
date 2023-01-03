@@ -34,14 +34,14 @@ Linux Tool
     $ cat > yourfile.sh <<EOF
     #!/bin/sh
     #Install dependencies for the build
-    apt-get update
-    apt-get install apt-transport-https  ca-certificates curl software-properties-common build-essential git
+    apt update
+    apt install apt-transport-https  ca-certificates curl software-properties-common build-essential git
 
     # Install Docker
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable"
-    apt-get update
-    apt-get install docker-ce
+    apt update
+    apt install docker-ce
 
     # Install Go
     wget https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz

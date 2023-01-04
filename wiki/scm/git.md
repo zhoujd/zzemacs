@@ -147,3 +147,9 @@ Git
     $ git log  ## run test
     $ git bisect bad
     $ git bisect reset
+
+## gitea
+
+    ## https://gitea.io/en-us/
+    ## https://docs.gitea.io/en-us/install-with-docker/
+    ## https://docs.gitea.io/en-us/install-from-binary/

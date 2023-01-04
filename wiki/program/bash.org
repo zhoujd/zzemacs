@@ -1,6 +1,6 @@
 #+title: Bash Tips
 
-* echo with colors
+* Echo with colors
 
 #+begin_src sh
 ## https://www.colorhexa.com/
@@ -135,4 +135,16 @@ IFS=$old
 
 $ sh script.sh one two three four
 'one/two/three/four'
+#+end_src
+
+* Parameter
+
+#+begin_src sh
+## http://mywiki.wooledge.org/BashGuide/Parameters
+## It means that if $ARGUMENT is set, it will be replaced by the string x
+$ echo  ${ARGUMENT+x}
+
+$ ARGUMENT=123
+$ echo  ${ARGUMENT+x}
+x
 #+end_src

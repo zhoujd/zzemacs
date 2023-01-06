@@ -445,3 +445,7 @@ Network
 
     $ dnsmasq_process_id=$(netstat -tunlp |grep dnsmasq |grep :67 | awk "{print \$6}" | sed "s#\/.*##")
     $ dnsmasq_process_id=$(lsof -i -P -n | grep dnsmasq | grep :67 | awk "{print \$2}" | sed "s#\/.*##")
+
+## Get IP address
+
+    $ ip route get 8.8.8.8

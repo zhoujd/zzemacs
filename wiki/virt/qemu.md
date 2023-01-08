@@ -85,3 +85,22 @@ QEMU
     ## Boot QEMU
     $ petalinux-boot --qemu --kernel --qemu-args="-net nic -net nic -net nic -net nic -net tap,ifname=tap0,script=no,downscript=no"
     $ petalinux-boot --qemu --kernel --qemu-args="-net nic -net nic -net tap,ifname=tap0,script=no,downscript=no"
+
+## Check if the virtual machine is already in required state or not
+
+    #!/bin/bash
+    tmp=$(virsh list --all | grep " vmtest " | awk '{ print $3}')
+    if ([ "x$tmp" == "x" ] || [ "x$tmp" != "xrunning" ])
+    then
+        echo "VM does not exist or is shut down!"
+        # Try additional commands here...
+    else
+        echo "VM is running!"
+    fi
+
+    #!/bin/bash
+    virsh domstate vmtest | grep running
+    if [ $? -ne 0 ] ; then
+      echo Starting VM vmtest
+      virsh start vmtest
+    fi

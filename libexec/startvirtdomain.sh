@@ -10,11 +10,29 @@ if [ $# -ne 1 ];then
     exit 1
 fi
 
-virsh domstate $1 | grep running 2>&1 1>/dev/null
-if [ $? -ne 0 ] ; then
-  echo Starting VM $1
-  virsh start $1       # domain must be known to virsh
+VM=$1
+VIEWER=virt-manager
 
+virsh domstate $VM | grep running 2>&1 1>/dev/null
+if [ $? -ne 0 ] ; then
+    echo Starting VM $VM
+    virsh start $VM       # domain must be known to virsh
 fi
 
-virt-viewer -w $1      # -w to wait until domain is running.
+case $VIEWER in
+    virt-manager )
+        virsh domstate $VM | grep running 2>&1 1>/dev/null
+        while [ $? -ne 0 ]; do
+            sleep 3
+            virsh domstate $VM | grep running 2>&1 1>/dev/null
+        done
+        virt-manager --connect=qemu:///system --show-domain-console $VM
+        ;;
+    virt-viewer )
+        virt-viewer -w $VM      # -w to wait until domain is running.
+        ;;
+    * )
+        echo "Unknown VIEWER setting $VIEWER"
+        exit 1
+        ;;
+esac

@@ -88,7 +88,7 @@ Docker
 
 ## Docker proxy for fetching package when building docker image
 
-    $ host=child-prc.intel.com
+    $ host=localhost
     $ port=913
     $ mkdir -p ~/.docker
     $ tee ~/.docker/config.json <<EOF
@@ -107,7 +107,7 @@ Docker
 
 ## Docker proxy for host pull images
 
-    $ host=child-prc.intel.com
+    $ host=localhost
     $ port=913
     $ sudo mkdir /etc/systemd/system/docker.service.d
     $ sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf <<EOF

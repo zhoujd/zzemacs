@@ -11,25 +11,6 @@ Linux something
 
     $ yum list installed | grep kmd
 
-## Modify (extend) the LVM
-
-    ## Extend guest VM disk
-    $ sudo qemu-img resize /var/lib/libvirt/images/rhel8.qcow2 +10G
-    $ sudo qemu-img info /var/lib/libvirt/images/rhel8.qcow2
-
-    ## Tell LVM the physical partition size has changed:
-    $ lsblk
-    $ sudo pvresize /dev/sda3
-
-    ## Find the actual path of the LVM logical volume:
-    $ sudo lvdisplay  # The LV Path is the value needed
-
-    ## Tell LVM to extend the logical volume to use all of the new partition size:
-    $ sudo lvextend -l +100%FREE /dev/name-of-volume-group/root  # Using the LV Path from above
-
-    ## Resize the file system:
-    $ sudo resize2fs /dev/name-of-volume-group/root
-
 ## linux cross reference
 
     <http://lxr.oss.org.cn/source/>
@@ -45,20 +26,6 @@ Linux something
 
     <http://androidxref.com/>
     <http://code.metager.de/source/xref/android/>
-
-## QEMU
-
-    [QEMU for windows]<http://qemu.weilnetz.de/>
-    [QEMU wiki]<http://wiki.qemu.org/Main_Page>
-
-    sudo apt-get install kvm qemu qemu-kvm virt-manager kernel-package linux-source kqemu-source build-essential
-    yum install kvm kmod-kvm qemu
-    modprobe kvm-intel or modprobe kvm-amd
-    /sbin/lsmod | grep kvm
-    #yum provides "*/qemu-kvm"
-    sudo qemu-img create –f qcow windows.img 8G
-    sudo kvm -localtime -cdrom /dev/cdrom -m 512 -boot d win2.img
-    sudo kvm -localtime -m 512 -hda windows.img -cdrom winxp.iso -boot d -clock -rtc -no-acpi
 
 ## Multi GCC
 

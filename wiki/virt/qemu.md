@@ -6,6 +6,20 @@ QEMU
     $ sudo apt install qemu qemu-utils qemu-kvm virt-manager libvirt-daemon-system libvirt-clients bridge-utils
     $ sudo usermod -aG kvm,libvirt,libvirt-qemu $USER
 
+## Install QEMU on CentOS
+
+    [QEMU for windows]<http://qemu.weilnetz.de/>
+    [QEMU wiki]<http://wiki.qemu.org/Main_Page>
+
+    $ sudo apt-get install kvm qemu qemu-kvm virt-manager kernel-package linux-source kqemu-source build-essential
+    $ sudo yum install kvm kmod-kvm qemu
+    $ modprobe kvm-intel or modprobe kvm-amd
+    $ /sbin/lsmod | grep kvm
+    $ sudo yum provides "*/qemu-kvm"
+    $ sudo qemu-img create –f qcow windows.img 8G
+    $ sudo kvm -localtime -cdrom /dev/cdrom -m 512 -boot d win2.img
+    $ sudo kvm -localtime -m 512 -hda windows.img -cdrom winxp.iso -boot d -clock -rtc -no-acpi
+
 ## Creating Virtual machines
 
     $ qemu-img create ubuntu.img 20G
@@ -22,27 +36,27 @@ QEMU
 
 ## The fun of routing to Wifi
 
-    # cat  /etc/sysctl.conf
+    $ sudo cat  /etc/sysctl.conf
       net.ipv4.ip_forward = 1
-    # sysctl -p /etc/sysctl.conf
+    $ sudo sysctl -p /etc/sysctl.conf
 
-    ##Now, in this example, the bridge interface is br0 and the host system is connected through wlan0.
-    ##First, help the traffic get through the wlan0
-    # iptables -A FORWARD -i br0 -o wlan0 -j ACCEPT
-    # iptables -A POSTROUTING -t nat -o wlan0 -j MASQUERADE
+    ## Now, in this example, the bridge interface is br0 and the host system is connected through wlan0.
+    ## First, help the traffic get through the wlan0
+    $ sudo iptables -A FORWARD -i br0 -o wlan0 -j ACCEPT
+    $ sudoiptables -A POSTROUTING -t nat -o wlan0 -j MASQUERADE
 
-    ##Then, let the system know that the known traffic can get back at br0:
+    ## Then, let the system know that the known traffic can get back at br0:
     # iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 ## Expanding the Filesystem
 
-    ##The qcow2 image is built such that, by running a simple command from within the VM environment,
-    ##you can resize the root filesystem to fill the partitioned space.
-    ##Note
-    ##In this example, the filesystem to be resized is /dev/vda2 but it will depend on the drives that are available in the VM image
+    ## The qcow2 image is built such that, by running a simple command from within the VM environment,
+    ## you can resize the root filesystem to fill the partitioned space.
+    ## Note
+    ## In this example, the filesystem to be resized is /dev/vda2 but it will depend on the drives that are available in the VM image
     ## – it could be /dev/sda2 or something similar.
-    ##Before the rootfs is resized, running df -h from within the VM environment will show you that /dev/vda2 has a size of 3.1G.
-    ##To grow the partition, resize the /dev/vda2 partition and then check df -h again to see that it is now 31G:
+    ## Before the rootfs is resized, running df -h from within the VM environment will show you that /dev/vda2 has a size of 3.1G.
+    ## To grow the partition, resize the /dev/vda2 partition and then check df -h again to see that it is now 31G:
 
     purism@pureos:~$ sudo resize2fs /dev/vda2
     resize2fs 1.44.4 (18-Aug-2018)
@@ -57,28 +71,35 @@ QEMU
 
 ## Qemu Guest Agent Integration
 
-    ##http://wiki.stoney-cloud.org/wiki/Qemu_Guest_Agent_Integration
-    ##https://wiki.libvirt.org/page/Qemu_guest_agent
+    ## http://wiki.stoney-cloud.org/wiki/Qemu_Guest_Agent_Integration
+    ## https://wiki.libvirt.org/page/Qemu_guest_agent
 
 ## Setting the TAP network for QEMU
 
     ## https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/862912682/Networking+in+QEMU
     $ sudo apt-get install bridge-utils
     $ sudo apt-get install uml-utilities
+
     ## Create a bridge named br0
     $ brctl addbr br0
+
     ## Add eth0 interface to bridge
     $ brctl addif br0 eth0
+
     ## Create tap interface.
     $ tunctl -t tap0 -u `whoami`
+
     ## Add tap0 interface to bridge.
     $ brctl addif br0 tap0
+
     ## Check/Bring up all interfaces.
     $ ifconfig eth0 up
     $ ifconfig tap0 up
     $ ifconfig br0 up
+
     ## Check if bridge is set properly.
     $ brctl show
+
     ## Assign IP address to bridge 'br0'.
     $ dhclient -v br0
 
@@ -104,3 +125,22 @@ QEMU
       echo Starting VM vmtest
       virsh start vmtest
     fi
+
+## Modify (extend) the LVM
+
+    ## Extend guest VM disk
+    $ sudo qemu-img resize /var/lib/libvirt/images/rhel8.qcow2 +10G
+    $ sudo qemu-img info /var/lib/libvirt/images/rhel8.qcow2
+
+    ## Tell LVM the physical partition size has changed:
+    $ lsblk
+    $ sudo pvresize /dev/sda3
+
+    ## Find the actual path of the LVM logical volume:
+    $ sudo lvdisplay  # The LV Path is the value needed
+
+    ## Tell LVM to extend the logical volume to use all of the new partition size:
+    $ sudo lvextend -l +100%FREE /dev/name-of-volume-group/root  # Using the LV Path from above
+
+    ## Resize the file system:
+    $ sudo resize2fs /dev/name-of-volume-group/root

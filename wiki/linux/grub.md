@@ -118,3 +118,10 @@ Grub
     $ sudo sed -i 's/GRUB_DEFAULT=/GRUB_DEFAULT=$NEW/g' /etc/default/grub
 
     $ sudo update-grub
+
+## How to get to the GRUB menu at boot-time
+
+    ## https://askubuntu.com/questions/16042/how-to-get-to-the-grub-menu-at-boot-time
+    ## You can get GRUB to show the menu even if the default GRUB_HIDDEN_TIMEOUT=0 setting is in effect:
+    ## If your computer uses BIOS for booting, then hold down the Shift key while GRUB is loading to get the boot menu.
+    ## If your computer uses UEFI for booting, press Esc several times while GRUB is loading to get the boot menu.

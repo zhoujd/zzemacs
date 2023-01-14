@@ -145,17 +145,22 @@ QEMU
     ## Resize the file system:
     $ sudo resize2fs /dev/name-of-volume-group/root
 
-## Running UEFI in QEMU
+## KVM UEFI boot for Virtual Machine
 
-    $ sudo apt install virt-manager libvirt-daemon ovmf
-    $ sudo apt install qemu-efi
+    ## Install UEFI Firmware for Virtual Machines
+    $ sudo apt install ovmf
 
-## Quick Start using virt-manager
+    ## Specify [--boot uefi] When creating Virtual Machine
+    $ sudo virt-install \
+        --name Win2k22 \
+        --ram 6144 \
+        --disk path=/var/kvm/images/Win2k22.img,size=100 \
+        --vcpus 4 \
+        --os-variant win2k22 \
+        --network bridge=br0 \
+        --graphics vnc,listen=0.0.0.0,password=password \
+        --video vga \
+        --cdrom /home/Win2022_EN-US_20348.169.210806-2348.fe.iso \
+        --boot uefi
 
-    ## https://wiki.ubuntu.com/UEFI/OVMF
-    ## Install packages
-    $ sudo apt-get install virt-manager libvirt-daemon ovmf
-
-    ## Start creating a new VM in virt-manager, but before finishing, click "Customize configuration before install"
-    ## Change the Firmware Option from BIOS to EUFI. (If it's not available do a systemctl restart libvirtd)
-    ## Do whatever normal VM things you want to do. Initial screen when booting should now show TianoCore.
+    ## Virtual Machine starts on UEFI mode

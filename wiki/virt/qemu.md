@@ -144,3 +144,18 @@ QEMU
 
     ## Resize the file system:
     $ sudo resize2fs /dev/name-of-volume-group/root
+
+## Running UEFI in QEMU
+
+    $ sudo apt install virt-manager libvirt-daemon ovmf
+    $ sudo apt install qemu-efi
+
+## Quick Start using virt-manager
+
+    ## https://wiki.ubuntu.com/UEFI/OVMF
+    ## Install packages
+    $ sudo apt-get install virt-manager libvirt-daemon ovmf
+
+    ## Start creating a new VM in virt-manager, but before finishing, click "Customize configuration before install"
+    ## Change the Firmware Option from BIOS to EUFI. (If it's not available do a systemctl restart libvirtd)
+    ## Do whatever normal VM things you want to do. Initial screen when booting should now show TianoCore.

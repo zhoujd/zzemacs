@@ -426,6 +426,9 @@
 ;;https://github.com/benma/visual-regexp.el
 (require 'visual-regexp)
 
+;;https://github.com/jschaf/powershell.el
+(require 'powershell)
+
 
 (provide 'other-setting)
 

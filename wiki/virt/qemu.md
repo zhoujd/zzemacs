@@ -46,7 +46,7 @@ QEMU
     $ sudo iptables -A POSTROUTING -t nat -o wlan0 -j MASQUERADE
 
     ## Then, let the system know that the known traffic can get back at br0:
-    # iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    # sudo iptables -A FORWARD -i wlan0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 ## Expanding the Filesystem
 
@@ -54,7 +54,7 @@ QEMU
     ## you can resize the root filesystem to fill the partitioned space.
     ## Note
     ## In this example, the filesystem to be resized is /dev/vda2 but it will depend on the drives that are available in the VM image
-    ## – it could be /dev/sda2 or something similar.
+    ## It could be /dev/sda2 or something similar.
     ## Before the rootfs is resized, running df -h from within the VM environment will show you that /dev/vda2 has a size of 3.1G.
     ## To grow the partition, resize the /dev/vda2 partition and then check df -h again to see that it is now 31G:
 
@@ -122,8 +122,8 @@ QEMU
     #!/bin/bash
     virsh domstate vmtest | grep running
     if [ $? -ne 0 ] ; then
-      echo Starting VM vmtest
-      virsh start vmtest
+        echo Starting VM vmtest
+        virsh start vmtest
     fi
 
 ## Modify (extend) the LVM

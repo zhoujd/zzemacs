@@ -144,6 +144,11 @@
 (setq mermaid-mmdc-location "docker")
 (setq mermaid-flags "run -u 1000 -v /tmp:/tmp ghcr.io/mermaid-js/mermaid-cli/mermaid-cli:latest")
 
+;;d2-mode
+;;https://github.com/andorsk/d2-mode
+(require 'd2-mode)
+(add-to-list 'auto-mode-alist '("\\.d2\\'" . d2-mode))
+
 
 (provide 'doc-setting)
 

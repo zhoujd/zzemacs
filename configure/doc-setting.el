@@ -138,6 +138,12 @@
 (require 'nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
+;;mermaid-mode
+;;https://github.com/abrochard/mermaid-mode
+(require 'mermaid-mode)
+(setq mermaid-mmdc-location "docker")
+(setq mermaid-flags "run -u 1000 -v /tmp:/tmp ghcr.io/mermaid-js/mermaid-cli/mermaid-cli:latest")
+
 
 (provide 'doc-setting)
 

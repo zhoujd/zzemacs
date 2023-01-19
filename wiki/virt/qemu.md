@@ -164,3 +164,46 @@ QEMU
         --boot uefi
 
     ## Virtual Machine starts on UEFI mode
+
+## Disable libvirt networking
+
+    ## https://docs.openstack.org/newton/networking-guide/misc-libvirt.html
+    ## Linux bridging for implementing a layer 2 network
+    ## dnsmasq for providing IP addresses to virtual machines using DHCP
+    ## iptables to implement SNAT so instances can connect out to the public internet,
+    ## and to ensure that virtual machines are permitted to communicate with dnsmasq using DHCP
+
+    ## By default, libvirt creates a network named default
+    ## a Linux bridge named virbr0 with an IP address of 192.168.122.1/24
+    ## a dnsmasq process that listens on the virbr0 interface and hands out IP addresses in the range 192.168.122.2-192.168.122.254
+    ## a set of iptables rules
+
+    ## On Ubuntu, the iptables ruleset that libvirt creates includes the following rules
+    *nat
+    -A POSTROUTING -s 192.168.122.0/24 -d 224.0.0.0/24 -j RETURN
+    -A POSTROUTING -s 192.168.122.0/24 -d 255.255.255.255/32 -j RETURN
+    -A POSTROUTING -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p tcp -j MASQUERADE --to-ports 1024-65535
+    -A POSTROUTING -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p udp -j MASQUERADE --to-ports 1024-65535
+    -A POSTROUTING -s 192.168.122.0/24 ! -d 192.168.122.0/24 -j MASQUERADE
+    *mangle
+    -A POSTROUTING -o virbr0 -p udp -m udp --dport 68 -j CHECKSUM --checksum-fill
+    *filter
+    -A INPUT -i virbr0 -p udp -m udp --dport 53 -j ACCEPT
+    -A INPUT -i virbr0 -p tcp -m tcp --dport 53 -j ACCEPT
+    -A INPUT -i virbr0 -p udp -m udp --dport 67 -j ACCEPT
+    -A INPUT -i virbr0 -p tcp -m tcp --dport 67 -j ACCEPT
+    -A FORWARD -d 192.168.122.0/24 -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -s 192.168.122.0/24 -i virbr0 -j ACCEPT
+    -A FORWARD -i virbr0 -o virbr0 -j ACCEPT
+    -A FORWARD -o virbr0 -j REJECT --reject-with icmp-port-unreachable
+    -A FORWARD -i virbr0 -j REJECT --reject-with icmp-port-unreachable
+    -A OUTPUT -o virbr0 -p udp -m udp --dport 68 -j ACCEPT
+
+    ## dnsmasq process
+    $ /usr/sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf
+
+    ## How to disable libvirt networks
+    $ virsh net-list
+    $ virsh net-destroy default
+    $ virsh net-autostart --network default --disable
+    $ virsh net-start default

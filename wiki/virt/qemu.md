@@ -227,3 +227,55 @@ QEMU
       /sbin/iptables -t nat -D POSTROUTING -s 192.168.0.32/28 ! -d 192.168.0.32/28 -p udp -j MASQUERADE --to-ports 1024-65535
       /sbin/iptables -t nat -D POSTROUTING -s 192.168.0.32/28 ! -d 192.168.0.32/28 -j MASQUERADE
     fi
+
+## libvirt in iptables
+
+    $ sudo iptables-save | grep -i libvirt
+    :LIBVIRT_PRT - [0:0]
+    -A POSTROUTING -j LIBVIRT_PRT
+    -A LIBVIRT_PRT -o virbr0 -p udp -m udp --dport 68 -j CHECKSUM --checksum-fill
+    :LIBVIRT_FWI - [0:0]
+    :LIBVIRT_FWO - [0:0]
+    :LIBVIRT_FWX - [0:0]
+    :LIBVIRT_INP - [0:0]
+    :LIBVIRT_OUT - [0:0]
+    -A INPUT -j LIBVIRT_INP
+    -A FORWARD -j LIBVIRT_FWX
+    -A FORWARD -j LIBVIRT_FWI
+    -A FORWARD -j LIBVIRT_FWO
+    -A OUTPUT -j LIBVIRT_OUT
+    -A LIBVIRT_FWI -d 192.168.122.0/24 -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A LIBVIRT_FWI -o virbr0 -j REJECT --reject-with icmp-port-unreachable
+    -A LIBVIRT_FWO -s 192.168.122.0/24 -i virbr0 -j ACCEPT
+    -A LIBVIRT_FWO -i virbr0 -j REJECT --reject-with icmp-port-unreachable
+    -A LIBVIRT_FWX -i virbr0 -o virbr0 -j ACCEPT
+    -A LIBVIRT_INP -i virbr0 -p udp -m udp --dport 53 -j ACCEPT
+    -A LIBVIRT_INP -i virbr0 -p tcp -m tcp --dport 53 -j ACCEPT
+    -A LIBVIRT_INP -i virbr0 -p udp -m udp --dport 67 -j ACCEPT
+    -A LIBVIRT_INP -i virbr0 -p tcp -m tcp --dport 67 -j ACCEPT
+    -A LIBVIRT_OUT -o virbr0 -p udp -m udp --dport 53 -j ACCEPT
+    -A LIBVIRT_OUT -o virbr0 -p tcp -m tcp --dport 53 -j ACCEPT
+    -A LIBVIRT_OUT -o virbr0 -p udp -m udp --dport 68 -j ACCEPT
+    -A LIBVIRT_OUT -o virbr0 -p tcp -m tcp --dport 68 -j ACCEPT
+    :LIBVIRT_PRT - [0:0]
+    -A POSTROUTING -j LIBVIRT_PRT
+    -A LIBVIRT_PRT -s 192.168.122.0/24 -d 224.0.0.0/24 -j RETURN
+    -A LIBVIRT_PRT -s 192.168.122.0/24 -d 255.255.255.255/32 -j RETURN
+    -A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p tcp -j MASQUERADE --to-ports 1024-65535
+    -A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p udp -j MASQUERADE --to-ports 1024-65535
+    -A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -j MASQUERADE
+
+## virbr0 in route
+
+    $ route -n
+    Kernel IP routing table
+    Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+    0.0.0.0         0.0.0.0         0.0.0.0         U     50     0        0 vpn0
+    0.0.0.0         192.168.1.1     0.0.0.0         UG    425    0        0 br0
+    10.254.212.0    0.0.0.0         255.255.252.0   U     50     0        0 vpn0
+    169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 virbr0
+    172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+    192.55.46.73    192.168.1.1     255.255.255.255 UGH   50     0        0 br0
+    192.168.1.0     0.0.0.0         255.255.255.0   U     425    0        0 br0
+    192.168.1.1     0.0.0.0         255.255.255.255 UH    50     0        0 br0
+    192.168.122.0   0.0.0.0         255.255.255.0   U     0      0        0 virbr0

@@ -370,3 +370,28 @@ Docker
     ## https://podman.io/getting-started/installation
     $ sudo apt install podman
     $ podman --help
+
+
+## Network docker0 in iptables
+
+    $ sudo iptables-save | grep -i docker
+    :DOCKER - [0:0]
+    :DOCKER-ISOLATION-STAGE-1 - [0:0]
+    :DOCKER-ISOLATION-STAGE-2 - [0:0]
+    :DOCKER-USER - [0:0]
+    -A FORWARD -j DOCKER-USER
+    -A FORWARD -j DOCKER-ISOLATION-STAGE-1
+    -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    -A FORWARD -o docker0 -j DOCKER
+    -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+    -A FORWARD -i docker0 -o docker0 -j ACCEPT
+    -A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2
+    -A DOCKER-ISOLATION-STAGE-1 -j RETURN
+    -A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP
+    -A DOCKER-ISOLATION-STAGE-2 -j RETURN
+    -A DOCKER-USER -j RETURN
+    :DOCKER - [0:0]
+    -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
+    -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
+    -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+    -A DOCKER -i docker0 -j RETURN

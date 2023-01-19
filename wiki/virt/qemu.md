@@ -207,3 +207,23 @@ QEMU
     $ virsh net-destroy default
     $ virsh net-autostart --network default --disable
     $ virsh net-start default
+
+## Automagically iptables rules added by libvirt
+
+    $ cat /etc/libvirt/hooks/qemu
+    #!/bin/bash
+
+    if [ "$2" = "prepare" ]; then
+      /sbin/iptables -D INPUT -i virbr0 -p udp --dport 53 -j ACCEPT
+      /sbin/iptables -D INPUT -i virbr0 -p tcp --dport 53 -j ACCEPT
+      /sbin/iptables -D INPUT -i virbr0 -p udp --dport 67 -j ACCEPT
+      /sbin/iptables -D INPUT -i virbr0 -p tcp --dport 67 -j ACCEPT
+      /sbin/iptables -D FORWARD -o virbr0 -d 192.168.0.32/28 -m state --state RELATED,ESTABLISHED -j ACCEPT
+      /sbin/iptables -D FORWARD -i virbr0 -s 192.168.0.32/28 -j ACCEPT
+      /sbin/iptables -D FORWARD -i virbr0 -o virbr0 -j ACCEPT
+      /sbin/iptables -D FORWARD -o virbr0 -j REJECT
+      /sbin/iptables -D FORWARD -i virbr0 -j REJECT
+      /sbin/iptables -t nat -D POSTROUTING -s 192.168.0.32/28 ! -d 192.168.0.32/28 -p tcp -j MASQUERADE --to-ports 1024-65535
+      /sbin/iptables -t nat -D POSTROUTING -s 192.168.0.32/28 ! -d 192.168.0.32/28 -p udp -j MASQUERADE --to-ports 1024-65535
+      /sbin/iptables -t nat -D POSTROUTING -s 192.168.0.32/28 ! -d 192.168.0.32/28 -j MASQUERADE
+    fi

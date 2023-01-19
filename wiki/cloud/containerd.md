@@ -76,3 +76,9 @@ containerd
 
     ## A sample command
     $ sudo nerdctl run -d -p 80:80 --name=nginx nginx
+
+## Use nerdctl for docker-compose.yaml
+
+    ## https://github.com/containerd/nerdctl
+    ## To run containers from docker-compose.yaml:
+    $ nerdctl compose -f ./examples/compose-wordpress/docker-compose.yaml up

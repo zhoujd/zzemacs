@@ -48,11 +48,15 @@
 (defun zz:go-indent4 ()
   (setq tab-width 4)
   (setq indent-tabs-mode 1))
+
 (defun zz:go-indent2 ()
   (setq tab-width 2)
   (setq standard-indent 2)
   (setq indent-tabs-mode nil))
 (add-hook 'go-mode-hook 'zz:go-indent4)
+
+;; enable lsp-mode
+(add-hook 'go-mode-hook 'lsp-deferred)
 
 
 (provide 'go-setting)

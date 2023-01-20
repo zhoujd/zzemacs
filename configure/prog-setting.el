@@ -332,6 +332,11 @@
           'yaml-mode-hook))
   (add-hook hook 'highlight-indent-guides-mode))
 
+;;lsp-mode
+;;https://emacs-lsp.github.io/lsp-mode/
+(zz:load-path "site-lisp/lsp-mode")
+(require 'lsp-mode)
+
 
 (provide 'prog-setting)
 

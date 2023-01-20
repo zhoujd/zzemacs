@@ -30,3 +30,8 @@ teams
 ## Download teams
 
     ## https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/
+    $ wget https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/teams_1.5.00.10453_amd64.deb
+    $ sudo dpkg -i teams_1.5.00.10453_amd64.deb
+
+    ## remove teams
+    $ sudo dpkg --remove teams

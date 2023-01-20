@@ -26,3 +26,7 @@ teams
 ## Remove flatpak package
 
     $ flatpak uninstall --user --delete-data com.microsoft.Teams
+
+## Download teams
+
+    ## https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/

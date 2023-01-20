@@ -5,10 +5,10 @@
 ;;     company-mode
 ;;     company-go
 ;; get the following go programs (run each line in your shell):
-;;     go get golang.org/x/tools/cmd/godoc
-;;     go get golang.org/x/tools/cmd/goimports
-;;     go get github.com/rogpeppe/godef
-;;     go get github.com/nsf/gocode
+;;     go install golang.org/x/tools/cmd/godoc@latest
+;;     go install golang.org/x/tools/cmd/goimports@latest
+;;     go install github.com/rogpeppe/godef@latest
+;;     go install github.com/nsf/gocode@latest
 
 ;; go-mode
 (zz:load-path "site-lisp/go-mode")

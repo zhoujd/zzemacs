@@ -235,6 +235,11 @@
 (require 'helm-switch-to-repl)
 (helm-switch-to-repl-setup)
 
+;;helm-lsp
+;;https://github.com/emacs-lsp/helm-lsp
+(require 'helm-lsp)
+(define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
+
 
 (provide 'helm-setting)
 

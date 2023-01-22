@@ -19,3 +19,24 @@ x11docker
     $ DISPLAY=:1 xterm
     $ DISPLAY=:1 spectrwm
     $ startx -- /usr/bin/Xephyr :1
+
+## Preconfiguration with --preset
+
+    $ cat ~/.config/x11docker/preset/multimedia
+    --desktop
+    --gpu
+    --webcam
+    --printer
+    --pulseaudio
+    --clipboard
+    --share ~/Videos
+    --share ~/Music
+
+    $ x11docker --preset=multimedia x11docker/xfce
+
+## Add xfce desktop with VLC media player
+
+    $ cat Dockerfile <<EOF
+    FROM x11docker/xfce
+    RUN apt-get update && apt-get install -y vlc
+    EOF

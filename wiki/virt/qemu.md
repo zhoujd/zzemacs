@@ -279,3 +279,9 @@ QEMU
     192.168.1.0     0.0.0.0         255.255.255.0   U     425    0        0 br0
     192.168.1.1     0.0.0.0         255.255.255.255 UH    50     0        0 br0
     192.168.122.0   0.0.0.0         255.255.255.0   U     0      0        0 virbr0
+
+## QEMU viewer
+
+    $ sudo apt install spice-client-gtk
+    $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}
+    $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}

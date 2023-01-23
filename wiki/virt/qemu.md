@@ -282,6 +282,7 @@ QEMU
 
 ## QEMU viewer
 
+    ## https://wiki.gentoo.org/wiki/QEMU/Windows_guest
     $ sudo apt install spice-client-gtk
     $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}
     $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}

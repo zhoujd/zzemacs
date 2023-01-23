@@ -14,6 +14,7 @@ libreoffice
 ## Install the default Sifr icons:
 
     $ sudo apt install libreoffice-style-sifr
+    $ sudo apt install libreoffice-style-breeze
     Tools->Options->Libreoffice->View->Icon style: Sifr
 
 ## Install suits

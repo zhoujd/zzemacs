@@ -482,3 +482,11 @@ Linux something
     /dev/sdb1      /home/yourname/mydata    ext4    defaults    0    1
 
     $ sudo reboot
+
+## Cannot remove a printer, keeps returning,
+
+    ## edit /etc/cups/cups-browsed.conf
+    ## Make the the following change:
+    BrowseRemoteProtocols none
+
+    $ sudo systemctl restart cups

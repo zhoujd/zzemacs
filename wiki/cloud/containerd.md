@@ -82,3 +82,58 @@ containerd
     ## https://github.com/containerd/nerdctl
     ## To run containers from docker-compose.yaml:
     $ nerdctl compose -f ./examples/compose-wordpress/docker-compose.yaml up
+
+
+## Pull images via Proxy
+
+    $ host=localhost
+    $ port=913
+    $ sudo mkdir /etc/systemd/system/containerd.service.d
+    $ sudo tee /etc/systemd/system/containerd.service.d/http-proxy.conf <<EOF
+    [Service]
+    Environment="HTTP_PROXY=http://$host:$port"
+    Environment="HTTPS_PROXY=http://$host:$port"
+    Environment="FTP_PROXY=http://$host:$port"
+    Environment="NO_PROXY=.intel.com,intel.com,localhost,127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+    EOF
+
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart containerd
+    $ sudo systemctl show --property=Environment containerd
+    $ sudo nerdctl run hello-world
+
+## Configuring nerdctl with nerdctl.toml
+
+    ## https://github.com/containerd/nerdctl/blob/main/docs/config.md
+    $ Rootful mode: /etc/nerdctl/nerdctl.toml
+    $ Rootless mode: ~/.config/nerdctl/nerdctl.toml
+
+## Using registry
+
+    ## https://github.com/containerd/nerdctl/blob/main/docs/registry.md
+    ## Using insecure registry
+    $ nerdctl --insecure-registry run --rm 192.168.12.34:5000/foo
+
+    ## Specifying certificates
+    ## Create ~/.config/containerd/certs.d/<HOST:PORT>/hosts.toml (or /etc/containerd/certs.d/... for rootful) to specify ca certificates.
+    # An example of ~/.config/containerd/certs.d/192.168.12.34:5000/hosts.toml
+    # (The path is "/etc/containerd/certs.d/192.168.12.34:5000/hosts.toml" for rootful)
+
+    server = "https://192.168.12.34:5000"
+    [host."https://192.168.12.34:5000"]
+      ca = "/path/to/ca.crt"
+
+    ## Accessing 127.0.0.1 from rootless nerdctl
+    ## Currently, rootless nerdctl cannot pull images from 127.0.0.1, because the pull operation occurs in RootlessKit's network namespace.
+
+    ## Docker Hub login
+    $ nerdctl login -u <USERNAME>
+    Enter Password: ********[Enter]
+
+    Login Succeeded
+
+    ## Quay.io
+    $ nerdctl login quay.io -u <USERNAME>
+    Enter Password: ********[Enter]
+
+    Login Succeeded

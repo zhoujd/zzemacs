@@ -34,6 +34,14 @@ containerd
     ## Restart the containerd service
     $ sudo systemctl restart containerd
 
+## Docker and Kubernetes use containerd
+
+    ## For Docker
+    ## docker->dockerd->containerd->container-shim->runc-container
+
+    ## For Kubernetes
+    ## kubectl->kubelet->containerd->container-shim->runc-container
+
 ## Install Containerd Using Docker Repository
 
     ## Setup Docker repository
@@ -82,7 +90,6 @@ containerd
     ## https://github.com/containerd/nerdctl
     ## To run containers from docker-compose.yaml:
     $ nerdctl compose -f ./examples/compose-wordpress/docker-compose.yaml up
-
 
 ## Pull images via Proxy
 

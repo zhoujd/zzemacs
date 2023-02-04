@@ -42,3 +42,4 @@
 | battalion    |                                                              |                               |   |
 | inhibitions  |                                                              |                               |   |
 | aura         |                                                              |                               |   |
+| sanction     |                                                              |                               |   |

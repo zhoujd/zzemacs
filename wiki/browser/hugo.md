@@ -37,6 +37,7 @@ Hugo
     $ nano content/posts/blog-post-1.md
 
     ## Hugo will automatically detect the change of the newly added
+    $ google-chrome http://localhost:1313/posts/blog-post-1/
 
 ## Carefull erases docsy-example to start new
 

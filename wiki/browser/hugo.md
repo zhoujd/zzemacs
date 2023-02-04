@@ -1,6 +1,11 @@
 Hugo
 ====
 
+## URLs
+
+    ## https://github.com/gohugoio/huog
+    ## https://github.com/gohugoio/hugo/releases
+
 ## Use Hugo to Generate a Static Website
 
     ## https://thenewstack.io/tutorial-use-hugo-to-generate-a-static-website/

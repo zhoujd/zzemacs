@@ -6,9 +6,9 @@
 # Tested Teams via flatpak package.
 #
 # How to use in terminal:
-# ./clear_cache_MS_Teams.sh ( deb-stable | deb-insider | snap | flatpak )
+# $0 (deb-stable | deb-insider | snap | flatpak)
 # or
-# bash clear_cache_MS_Teams.sh ( deb-stable | deb-insider | snap | flatpak )
+# bash $0 (deb-stable | deb-insider | snap | flatpak)
 
 # Variable process name is defined on case statement.
 

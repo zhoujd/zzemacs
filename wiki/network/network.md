@@ -449,3 +449,8 @@ Network
 ## Get IP address
 
     $ ip route get 8.8.8.8
+
+## Check if the system DNS setting
+
+    $ resolvectl status
+    $ resolvectl status | grep 'DNS Servers' -A2

@@ -15,7 +15,7 @@ virt-manager
     $ mv my-vm-backup.tar.bz2 /home/username/
 
     ## restore vm
-    $ tar -xvfp my-vm-backup.tar.bz2
+    $ tar -xvf my-vm-backup.tar.bz2
     $ cd vm-backup
     $ sudo -s
     $ virsh define --file nameofvm.xml

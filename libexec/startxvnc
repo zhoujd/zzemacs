@@ -93,11 +93,12 @@ status () {
 
 run() {
     local host=$1
+    shift
     if [ -z "$host" ]; then
         echo 'Usage: "$0 run <host>"'
     else
         ssh -C -f -L $vnc_rport:localhost:$vnc_rport $host \
-            x11vnc -safer -localhost -nopw -once -display :0 -rfbport $vnc_rport\
+            x11vnc -reopen -safer -localhost -nopw -once -display :0 -rfbport $vnc_rport "$@" \
             && sleep 5 \
             && vncviewer localhost:$vnc_rport
     fi

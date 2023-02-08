@@ -5,6 +5,7 @@
 
 vnc_passwd=password
 vnc_pw_file=~/.vnc/passwd
+vnc_rport=5909
 
 install_service() {
     echo -n "Please input x11-vnc Password: "
@@ -94,10 +95,10 @@ run() {
     if [ -z "$1" ]; then
         echo 'Usage: "$0 run <host>"'
     else
-        ssh -C -f -L 5909:localhost:5909 $1 \
-            x11vnc -safer -localhost -nopw -once -display :0 -rfbport 5909\
+        ssh -C -f -L $vnc_rport:localhost:$vnc_rport $1 \
+            x11vnc -safer -localhost -nopw -once -display :0 -rfbport $vnc_rport\
             && sleep 5 \
-            && vncviewer localhost:5909
+            && vncviewer localhost:$vnc_rport
     fi
 }
 

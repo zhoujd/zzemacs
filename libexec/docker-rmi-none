@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Docker images clean ..."
+## docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 img_list=$(docker images --filter "dangling=true" -q --no-trunc)
 if [ -n "$img_list" ]; then
     docker rmi $img_list

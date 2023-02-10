@@ -69,21 +69,23 @@ containerd
     ## Restart the containerd service
     $ sudo systemctl restart containerd
 
-## Install CNI Plugins For Containerd
+## Install nerdctl (CLI)
 
+    ## The nerdctl is a Docker-compliant command-line interface for containerd
+    $ wget https://github.com/containerd/nerdctl/releases/download/v0.19.0/nerdctl-0.19.0-linux-amd64.tar.gz
+    $ sudo tar Cxzvf /usr/local/bin nerdctl-0.19.0-linux-amd64.tar.gz
+
+    ## Install CNI Plugins For Containerd
     $ sudo mkdir -p /opt/cni/bin/
     $ wget https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
     $ sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
     $ sudo systemctl restart containerd
 
-## Install nerdctl (CLI)
-
-    ## nerdctl is a Docker-compliant command-line interface for containerd
-    $ wget https://github.com/containerd/nerdctl/releases/download/v0.19.0/nerdctl-0.19.0-linux-amd64.tar.gz
-    $ sudo tar Cxzvf /usr/local/bin nerdctl-0.19.0-linux-amd64.tar.gz
+    ## Set ENV CNI_PATH
+    export CNI_PATH=/opt/cni/bin
 
     ## A sample command
-    $ sudo nerdctl run -d -p 80:80 --name=nginx nginx
+    $ nerdctl run -d -p 80:80 --name=nginx nginx
 
 ## Use nerdctl for docker-compose.yaml
 

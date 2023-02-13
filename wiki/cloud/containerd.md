@@ -83,8 +83,14 @@ containerd
     $ sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-${VER}.tgz
     $ sudo systemctl restart containerd
 
+    ## Ubuntu 22.04
+    $ sudo apt install iptables apparmor apparmor-utils
+
     ## Set ENV CNI_PATH
-    export CNI_PATH=/opt/cni/bin
+    $ export CNI_PATH=/opt/cni/bin
+    or
+    $ echo 'export CNI_PATH=/opt/cni/bin' >> /etc/profile.d/zz-nerdctl.sh
+    $ source /etc/profile.d/zz-nerdctl.sh
 
     ## A sample command
     $ nerdctl run -d -p 80:80 --name=nginx nginx

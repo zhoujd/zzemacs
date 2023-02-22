@@ -17,6 +17,10 @@ iptables
     # iptables -t nat -A POSTROUTING -o internet0 -j MASQUERADE
     # iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     # iptables -A FORWARD -i net0 -o internet0 -j ACCEPT
+    
+    # iptables -P FORWARD ACCEPT
+    # iptables -t nat -A POSTROUTING -o internet0 -j MASQUERADE
+    # echo 1 > /proc/sys/net/ipv4/ip_forward
 
 ## How To List and Delete Iptables Firewall Rules
 

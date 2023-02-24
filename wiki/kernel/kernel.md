@@ -76,3 +76,9 @@ Linux kernel
 ## Build kernel with LOCALVERSION
 
     $ make -j $(nproc --all) targz-pkg LOCALVERSION="-xe-max"
+    
+## Linux kernel concurrency cheat sheet
+
+   ## https://blogs.oracle.com/content/published/api/v1.1/assets/CONT9D4F5CDE843C46A18665923C3DE0DC81/native?cb=_cache_c8c1&channelToken=3189ef66cf584820b5b19e6b10792d6f
+
+   

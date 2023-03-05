@@ -159,12 +159,12 @@ git config --global mergetool.keepBackup false
 git config --global push.default simple
 
 ## requires git v1.7.10+
-GITCONFIG_URL=~/.gitconfig.url
+GITCONFIG_URL=$HOME/.gitconfig-url
 if [ -f $GITCONFIG_URL ]; then
     git config --global --add include.path $GITCONFIG_URL
 fi
 
-GITCONFIG_1S=~/.gitconfig.1source
+GITCONFIG_1S=$HOME/.gitconfig-1source
 if [ -f $GITCONFIG_1S ]; then
     git config --global --add include.path $GITCONFIG_1S
 fi

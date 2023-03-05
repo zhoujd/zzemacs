@@ -7,11 +7,15 @@ else
 fi
 
 Install_bin() {
-    echo "Install git tools"
-    sudo ln -sfvT $SCRIPT_ROOT/bin/git-lmr /usr/bin/git-lmr
-    sudo ln -sfvT $SCRIPT_ROOT/bin/git-lpr /usr/bin/git-lpr
-    sudo ln -sfvT $SCRIPT_ROOT/bin/git-mr  /usr/bin/git-mr
-    sudo ln -sfvT $SCRIPT_ROOT/bin/git-pr  /usr/bin/git-pr
+    if [ "$OS" = "Windows_NT" ] ; then
+        echo "The script is not support on Windows"
+    else
+        echo "Install git tools on Linux"
+        sudo ln -sfvT $SCRIPT_ROOT/bin/git-lmr /usr/bin/git-lmr
+        sudo ln -sfvT $SCRIPT_ROOT/bin/git-lpr /usr/bin/git-lpr
+        sudo ln -sfvT $SCRIPT_ROOT/bin/git-mr  /usr/bin/git-mr
+        sudo ln -sfvT $SCRIPT_ROOT/bin/git-pr  /usr/bin/git-pr
+    fi
 }
 
 Install_bin

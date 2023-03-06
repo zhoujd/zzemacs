@@ -57,4 +57,6 @@ prompt() {
     export PS1
 }
 
-prompt
+if [ "$OS" != "Windows_NT" ]; then
+    prompt
+fi

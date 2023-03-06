@@ -6,24 +6,24 @@
 # ls colors setting
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 
-### color prompt
-## norm='\[\033[m\]'
-## bold='\[\033[1m\]'
-## underline='\[\033[4m\]'
-## bold='\[\033[5m\]'
-## inverted='\[\033[7m\]'
-## red='\[\033[0;31m\]'
-## lred='\[\033[1;31m\]'
-## green='\[\033[0;32m\]'
-## lgreen='\[\033[1;32m\]'
-## orange='\[\033[0;33m\]'
-## yellow='\[\033[1;33m\]'
-## blue='\[\033[0;34m\]'
-## lblue='\[\033[1;34m\]'
-## mangenta='\[\033[1;35m\]'
-## white='\[\033[1;37m\]'
-## gray='\[\033[0;37m\]'
-## lgray='\[\033[1;37m\]'
+## color prompt
+# norm='\[\033[m\]'
+# bold='\[\033[1m\]'
+# underline='\[\033[4m\]'
+# bold='\[\033[5m\]'
+# inverted='\[\033[7m\]'
+# red='\[\033[0;31m\]'
+# lred='\[\033[1;31m\]'
+# green='\[\033[0;32m\]'
+# lgreen='\[\033[1;32m\]'
+# orange='\[\033[0;33m\]'
+# yellow='\[\033[1;33m\]'
+# blue='\[\033[0;34m\]'
+# lblue='\[\033[1;34m\]'
+# mangenta='\[\033[1;35m\]'
+# white='\[\033[1;37m\]'
+# gray='\[\033[0;37m\]'
+# lgray='\[\033[1;37m\]'
 prompt() {
     local green='\[\033[0;32m\]'
     local lgreen='\[\033[1;32m\]'
@@ -57,6 +57,7 @@ prompt() {
     export PS1
 }
 
+## PS1 setting
 if [ "$OS" != "Windows_NT" ]; then
     prompt
 fi

@@ -23,73 +23,77 @@ bool cmp(int a,int b) {
 ## Bubble sort with C
 
 ```C
+
+// C program for implementation of Bubble sort
 #include <stdio.h>
-//交换 a 和 b 的位置的函数
-#define N 5
-int a[N] = { 5,1,4,2,8 };
-void swap(int *a, int *b);
-//这是带输出的冒泡排序实现函数，从输出结果可以分析冒泡的具体实现流程
-void BubSort_test();
-//这是不带输出的冒泡排序实现函数，通过此函数，可直接对数组 a 中元素进行排序
-void BubSort_pro();
+ 
+void swap(int* xp, int* yp)
+{
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
+ 
+// A function to implement bubble sort
+void bubbleSort(int arr[], int n)
+{
+    int i, j;
+    for (i = 0; i < n - 1; i++)
+        // Last i elements are already in place
+        for (j = 0; j < n - i - 1; j++)
+            if (arr[j] > arr[j + 1])
+                swap(&arr[j], &arr[j + 1]);
+}
+ 
+/* Function to print an array */
+void printArray(int arr[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+ 
+// Driver program to test above functions
 int main()
 {
-    BubSort_test();
+    int arr[] = { 5, 1, 4, 2, 8 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+    bubbleSort(arr, n);
+    printf("Sorted array: \n");
+    printArray(arr, n);
     return 0;
-}
-void swap(int *a, int *b) {
-    int temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
-}
-//这是带输出的冒泡排序实现函数，从输出结果，可以看到冒泡的具体实现流程
-void BubSort_test() {
-    for (int i = 0; i < N; i++) {
-        //对待排序序列进行冒泡排序
-        for (int j = 0; j + 1 < N - i; j++) {
-            //相邻元素进行比较，当顺序不正确时，交换位置
-            if (a[j] > a[j + 1]) {
-                swap(&a[j], &a[j + 1]);
-            }
-        }
-        //输出本轮冒泡排序之后的序列
-        printf("第%d轮冒泡排序：", i + 1);
-        for (int i = 0; i < N; i++) {
-            printf("%d ", a[i]);
-        }
-        printf("\n");
-    }
-}
-//这是不带输出的冒泡排序实现函数，通过此函数，可直接对数组 a 中元素进行排序
-void BubSort_pro() {
-    for (int i = 0; i < N; i++) {
-        //对待排序序列进行冒泡排序
-        for (int j = 0; j + 1 < N - i; j++) {
-            //相邻元素进行比较，当顺序不正确时，交换位置
-            if (a[j] > a[j + 1]) {
-                swap(&a[j], &a[j + 1]);
-            }
-        }
-    }
 }
 ```
 
 ## Bubble sort with Python
 
 ```Python
+# Python program for implementation of Bubble Sort
+ 
 def bubbleSort(arr):
-    n = len(arr) 
-    # 遍历所有数组元素
+    n = len(arr)
+ 
+    # Traverse through all array elements
     for i in range(n):
+ 
         # Last i elements are already in place
-        for j in range(0, n-i-1): 
-            if arr[j] > arr[j+1] :
+        for j in range(0, n-i-1):
+ 
+            # traverse the array from 0 to n-i-1
+            # Swap if the element found is greater
+            # than the next element
+            if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
  
-arr = [64, 34, 25, 12, 22, 11, 90] 
-bubbleSort(arr) 
-print ("排序后的数组:")
-for i in range(len(arr)):
-    print ("%d" %arr[i]),
+ 
+# Driver code to test above
+if __name__ == "__main__":
+  arr = [5, 1, 4, 2, 8]
+ 
+  bubbleSort(arr)
+ 
+  print("Sorted array is:")
+  for i in range(len(arr)):
+      print("%d" % arr[i], end=" ")
 ```

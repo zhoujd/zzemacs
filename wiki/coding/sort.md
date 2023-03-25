@@ -31,7 +31,6 @@ bool cmp(int a,int b) {
 ## Bubble sort with C
 
 ```C
-
 // C program for implementation of Bubble sort
 #include <stdio.h>
  
@@ -164,7 +163,6 @@ int main() {
 ## Merge sort with C
 
 ```C
-
 /* C program for Merge Sort */
 #include <stdio.h>
 #include <stdlib.h>
@@ -263,4 +261,3 @@ int main()
     return 0;
 }
 ```
-

@@ -94,3 +94,99 @@ void revert(char *s, int size)
     }       
 }       
 ```
+
+## Revert list
+
+```C++
+ListNode* reverse(ListNode* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+    ListNode* last = reverse(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return last;
+}
+```
+
+```python
+## return new head
+def reverse(head: ListNode) -> ListNode:
+    if not head or not head.next:
+        return head
+    last = reverse(head.next) 
+    head.next.next = head 
+    head.next = None 
+    return last
+```
+
+```golang
+func reverse(head *ListNode) *ListNode {
+    if head == nil || head.next == nil {
+        return head
+    }
+    last := reverse(head.next)
+    head.next.next = head
+    head.next = nil
+    return last
+}
+```
+
+## Revert list N
+
+```C++
+ListNode* successor = nullptr;
+// return new head
+ListNode* reverseN(ListNode* head, int n) {
+    if (n == 1) {
+        successor = head->next;
+        return head;
+    }
+    ListNode* last = reverseN(head->next, n - 1);
+    head->next->next = head;
+    head->next = successor;
+    return last;
+}
+```
+
+```Python
+successor = None
+# return new head
+def reverseN(head: ListNode, n: int) -> ListNode:
+    global successor
+    if n == 1:
+        # record n + 1 node
+        successor = head.next
+        return head
+    last = reverseN(head.next, n - 1)
+    head.next.next = head
+    head.next = successor
+    return last 
+```
+
+## Revert list M N
+
+```C++
+ListNode* reverseBetween(ListNode* head, int m, int n) {
+    // base case
+    if (m == 1) {
+        return reverseN(head, n);
+    }
+    // base case
+    head->next = reverseBetween(head->next, m - 1, n - 1);
+    return head;
+}
+```
+
+```Python
+def reverseBetween(head: ListNode, m: int, n: int) -> ListNode:
+    # base case
+    if m == 1:
+        return reverseN(head, n)
+    # base case
+    head.next = reverseBetween(head.next, m - 1, n - 1)
+    return head
+```
+
+
+

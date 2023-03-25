@@ -49,3 +49,12 @@ Jenkins
     $ cat /var/lib/jenkins/config.xml
     $ sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/g' /var/lib/jenkins/config.xml
     $ sudo service jenkins restart
+    
+## Jenkins with GitHub via webhook
+
+    ## https://zhuanlan.zhihu.com/p/519172176
+    ## 1. Install GitHub Plugin
+    ## 2. Config Github Plugin (token with 'admin:repo_hook', 'repo' and 'repo:status')
+    ## 3. Create a freestyle Job (checked 'Build when a change is pushed to GitHub')
+    ## 4. Config Webhook on Github (Settings >> Webhooos & services -> Just the push event -> Add webhook)
+

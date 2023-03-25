@@ -1,27 +1,35 @@
 Remove Douplicate 
 =================
 
-## Remove dou with C++
+## Remove douplicate with C
 
-```C++
-string remove_dou(string str) 
+```C
+#include <string.h>
+#include <stdio.h>
+
+int main(int argc, char* argv[])
 {
-    size_t i, j;
-    string temp_str;
-    temp_str.append(str, 0, 1);
-    
-    for (i = 1; i < str.length(); i++)
+    char a[] = "hello000";
+    int n, i, j, k;
+
+    printf("Before: %s\n", a);
+    for (i=0; a[i]; i++)
     {
-        for (j = 0; j < str.length(); j++)
+        for (j =i+1; a[j];)
         {
-            if (str[i] == temp_str[j])
-                break;    
+            if (a[i] == a[j])
+            {
+                for (k=j; a[k]; k++)
+                    a[k] = a[k+1];
+            }
+            else
+            {
+                j++;
+            }
         }
-        
-        if (j == temp_str.length())
-            temp_str.append(str, i, 1);
     }
+    printf("After: %s\n", a);
     
-    return temp_str;    
+    return 0;
 }
 ```

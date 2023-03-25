@@ -20,7 +20,7 @@ bool cmp(int a,int b) {
 }
 ```
 
-## Bub sort with C
+## Bubble sort with C
 
 ```C
 #include <stdio.h>

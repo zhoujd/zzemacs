@@ -178,3 +178,14 @@ Python
     EOF
 
     $ python3 compile.py build_ext --inplace
+
+## Python format
+
+    >>> X = '{motto}, {0} and {food}'.format(42, motto=3.14, food=[1, 2])
+    >>> X
+    '3.14, 42 and [1, 2]'
+    >>> X.split(' and ')
+    ['3.14, 42', '[1, 2]']
+    >>> Y = X.replace('and', 'but under no circumstances')
+    >>> Y
+    '3.14, 42 but under no circumstances [1, 2]'

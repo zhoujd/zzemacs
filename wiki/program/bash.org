@@ -157,6 +157,5 @@ $2 is the second argument
 $n is the nth argument
 "$@" expands as "$1" "$2" "$3" and so on
 "$*" expands as "$1c$2c$3" , where c is the first character of IFS
-"$@" is the most used one. "$*" is used rarely since it gives all arguments as a
-single string.
+"$@" is the most used one. "$*" is used rarely since it gives all arguments as a single string.
 #+end_src

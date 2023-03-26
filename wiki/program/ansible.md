@@ -41,8 +41,9 @@ Ansible
     monster-3sky-dev ansible_python_interpreter=/usr/bin/python3
     EOF
 
-    ##
+    ## run ansible
     $ ANSIBLE_SSH_ARGS="-F /home/kuba/.ssh/config" ansible monster-3sky-dev -m ping -i host.ini
+    $ ansible all --sudo --ask-sudo-pass -m raw -a 'sudo apt-get -y install python-simplejson'
 
     $ cat > playbook.yml <<EOF
     - name: Test Ping

@@ -400,7 +400,7 @@ Docker
 
     ## Define multible FROM in Dockerfile
     ## It gets last stage image, and this reduces the image size
-    $ cat Dockerfile <<EOF
+    $ docker build -<<EOF
     FROM centos：7.0.3 AS build_base
     ...
     COPY project /build/

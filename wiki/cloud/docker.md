@@ -395,3 +395,20 @@ Docker
     -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
     -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
     -A DOCKER -i docker0 -j RETURN
+
+## Creating a multi-stage dockerfile
+
+    ## Define multible FROM in Dockerfile
+    ## It gets last stage image, and this reduces the image size
+    $ cat Dockerfile <<EOF
+    FROM centos：7.0.3 AS build_base
+    ...
+    COPY project /build/
+    WORKDIR /build
+    ENTRYPOINT ["/build/server"]
+
+    FROM centos：7.0.3
+    COPY --from build_base ***.so .
+    COPY --from build_base /build/server .
+    ENV LD_LIBRARY_PATH=./
+    EOF

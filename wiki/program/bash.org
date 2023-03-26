@@ -159,3 +159,13 @@ $n is the nth argument
 "$*" expands as "$1c$2c$3" , where c is the first character of IFS
 "$@" is the most used one. "$*" is used rarely since it gives all arguments as a single string.
 #+end_src
+
+* String operations
+
+#+begin_src sh
+${file//RELEASE/"$1"}
+${file%.*}
+${file%%.*}
+${file#.*}
+${file##.*}
+#+end_src

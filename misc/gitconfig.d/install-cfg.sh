@@ -124,7 +124,7 @@ git config --global http.proxy $http_proxy
 ## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $SCRIPT_ROOT/cert/ca-bundle.crt
 ## git config --global http.sslcainfo $SCRIPT_ROOT/cert/ca-bundle.crt
 ## export GIT_SSL_NO_VERIFY=1
-git config --global http.sslverify false
+## git config --global http.sslverify false
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 if [ "$OS" = "Windows_NT" ] ; then

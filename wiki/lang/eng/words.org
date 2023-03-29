@@ -43,3 +43,5 @@
 | inhibitions  |                                                              |                               |   |
 | aura         |                                                              |                               |   |
 | sanction     |                                                              |                               |   |
+| austerity    |                                                              |                               |   |
+

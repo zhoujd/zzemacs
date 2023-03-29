@@ -1,6 +1,8 @@
 #!/bin/bash
-## Sharing an Internet connection (eth0: internet)
-## ./netsharing.sh eth0 wlan0
+## Sharing an Internet connection
+## eth0 is the interface which is connected to the Internet
+## wlan0 is the wireless interface which is supposed to share the Internet to other devices
+## netsharing.sh eth0 wlan0
 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 

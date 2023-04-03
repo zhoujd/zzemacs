@@ -107,3 +107,9 @@ virt-manager
     ## Start creating a new VM in virt-manager, but before finishing, click "Customize configuration before install"
     ## Change the Firmware Option from BIOS to EUFI. (If it's not available do a systemctl restart libvirtd)
     ## Do whatever normal VM things you want to do. Initial screen when booting should now show TianoCore.
+    
+## Proxmox and Portainer
+
+    ## https://www.proxmox.com/en/
+    ## https://github.com/portainer/portainer
+    $ docker pull portainer/portainer

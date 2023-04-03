@@ -113,3 +113,13 @@ virt-manager
     ## https://www.proxmox.com/en/
     ## https://github.com/portainer/portainer
     $ docker pull portainer/portainer
+    $ docker volume create portainer_data
+    $ docker run -d -p 8000:8000 -p 9443:9443 \
+          --name portainer \
+          --restart=always \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v portainer_data:/data \
+          portainer/portainer-ee:latest
+    $ docker ps
+    $ firefox https://localhost:9443
+

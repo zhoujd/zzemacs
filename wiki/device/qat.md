@@ -142,3 +142,11 @@ QAT
             }
         }
     }
+
+
+## K8s QAT Device Plugin
+
+    ## https://github.com/intel/intel-device-plugins-for-kubernetes#qat-device-plugin
+    ## https://github.com/intel/intel-device-plugins-for-kubernetes/blob/main/demo/readme.md#intel-quickassist-technology-device-plugin-with-dpdk-demo-video
+    ## Intel® QAT Device Plugin with DPDK:
+    ## https://asciinema.org/a/PoWOz4q2lX4AF4K9A2AV1RtSA

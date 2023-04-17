@@ -151,7 +151,7 @@ QAT
     ## Intel® QAT Device Plugin with DPDK:
     ## https://asciinema.org/a/PoWOz4q2lX4AF4K9A2AV1RtSA
 
-## DSA & RSA
+## DSA (Digital Signature Algorithm) & RSA (Rivest–Shamir–Adleman)
 
     ## ssh1 use RSA, ssh2 (latest) use DSA
     $ ssh-keygen -t rsa
@@ -177,3 +177,11 @@ QAT
     ## base64 & urlencode
     $ openssl enc -base64 -A
     $ openssl enc -d -base64 -A
+
+    ## For Java need do private key converstion
+    $ openssl pkcs8 -topk8 -nocrypt -in private.key -outform PEM -out java_private.key
+
+## RC4 (Rivest Cipher 4)
+
+    ## Implemention with C/C++/Java/Python/PHP
+    ## https://github.com/anthonywei/rc4

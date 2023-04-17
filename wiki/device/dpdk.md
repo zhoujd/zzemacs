@@ -17,7 +17,7 @@ DPDK
     ## Without DPDK:  NIC->(sk_buffer)(copy)->Kernel -> (copy) -> Ngnix
     ## With DPDK NIC->(DMA)->DPDK->KNI(Kernel Network Interface)-> Kernel
 
-    ## Write back to Kernel
+    ## Write back to Kernel /dev/kni
     ## kni = open_kni()  ## with attr
     ## write_kni
     ## read kni

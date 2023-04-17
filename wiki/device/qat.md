@@ -150,3 +150,30 @@ QAT
     ## https://github.com/intel/intel-device-plugins-for-kubernetes/blob/main/demo/readme.md#intel-quickassist-technology-device-plugin-with-dpdk-demo-video
     ## Intel® QAT Device Plugin with DPDK:
     ## https://asciinema.org/a/PoWOz4q2lX4AF4K9A2AV1RtSA
+
+## DSA & RSA
+
+    ## ssh1 use RSA, ssh2 (latest) use DSA
+    $ ssh-keygen -t rsa
+    $ ssh-keygen -t dsa
+
+    ## RSA: Public key is open, encode with PUBLIC key, private key only use decoce
+    $ openssl genrsa -out private.key 1024
+    $ openssl rsa -in private.key -pubout -out pub.key   ## get public key
+    $ echo -n "123456" | openssl rsautl -encrypt -inkey pub.key -pubin
+    $ cat encode.result | openssl rsautl -decrypt-inkey private.key
+
+    ## DSA: only for digital sign (not for encode/decode/(exchange keys))
+    $ openssl dsaparam -out dsaparam.pem 1024
+    $ openssl gendsa -out privkey.pem dsaparam.pem
+    ## DSA generate public key
+    $ openssl dsa -in privkey.pem -out pubkey.pem -pubout
+    $ rm -fr dsaparam.pem
+    ## use private key to sign
+    $ echo -n "123456" | openssl dgst -dss1 -sign privkey.pemsign.result
+    ## use public key to verify
+    $ echo -n "123456"| openssl dgst -dss1 -verify pubkey.pem -signature sign.result
+
+    ## base64 & urlencode
+    $ openssl enc -base64 -A
+    $ openssl enc -d -base64 -A

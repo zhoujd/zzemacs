@@ -8,6 +8,10 @@ DPDK
 
     ## Open("/dev/uioX", O_RDWR) -> VFS -> uio_fops->open -> uio_open -> igbuio_pci_open -> igbuio_pci_enable_interrupts
 
+    ## Kernel Space: vfIO (non-root can use vfio) for VF
+    ## PF can config VFs, VFs need map system memory
+    ## /dev/vfio/vfio
+
 ## DPDK Note
 
     ## Without DPDK:  NIC->(sk_buffer)(copy)->Kernel -> (copy) -> Ngnix

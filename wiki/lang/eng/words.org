@@ -44,4 +44,5 @@
 | aura         |                                                              |                               |   |
 | sanction     |                                                              |                               |   |
 | austerity    |                                                              |                               |   |
+| naive        |                                                              |                               |   |
 

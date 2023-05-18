@@ -412,3 +412,18 @@ Docker
     COPY --from build_base /build/server .
     ENV LD_LIBRARY_PATH=./
     EOF
+
+## GDB debug in Docker container
+
+    ## (gdb) attach 30721
+    ## Attaching to process 30721
+    ## ptrace: Operation not permitted.
+
+    ## 1. Close seccomp
+    $ docker run --security-opt seccomp=unconfined
+
+    ## 2. Priviledge mode
+    $ docker run --priviledged
+
+    ## 3. Only open pstrace limitation (prefer)
+    $ docker run --cap-add sys_pstrace

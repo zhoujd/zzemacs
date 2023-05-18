@@ -5,7 +5,7 @@
 
 import os
 import platform
-from okapi.framework import config
+from ..framework import config
 
 def path2unix(path):
     sysstr = platform.system()

@@ -263,6 +263,7 @@
 
 ;;cmake file support
 (require 'cmake-mode)
+(setq cmake-tab-width 4)
 (setq auto-mode-alist
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
                 ("\\.cmake\\'" . cmake-mode))

@@ -57,9 +57,7 @@ install_others() {
 ## install thirdparty
 install_thirdparty() {
     echo "install third party to $TARGET_TYPE"
-    ## install pymacs
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
-    ## install EPL
     ${ZZEMACS_ROOT}/third-party/perl/install.sh
 }
 

@@ -26,6 +26,9 @@
 
 ### GitHub Token
 ## git config --global url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
+## cat ~/.gitconfig-url
+## [url "https://${GITHUB_TOKEN}@github.com/zhoujd"]
+##	insteadOf = https://github.com/zhoujd
 
 echo "git global setup start"
 
@@ -165,11 +168,6 @@ git config --global push.default simple
 GITCONFIG_URL=$HOME/.gitconfig-url
 if [ -f $GITCONFIG_URL ]; then
     git config --global --add include.path $GITCONFIG_URL
-fi
-
-GITCONFIG_1S=$HOME/.gitconfig-1source
-if [ -f $GITCONFIG_1S ]; then
-    git config --global --add include.path $GITCONFIG_1S
 fi
 
 ## update gitconfig for cmd using

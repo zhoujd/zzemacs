@@ -24,6 +24,9 @@
 ### Get work root
 ## git rev-parse --show-toplevel
 
+### GitHub Token
+## git config --global url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
+
 echo "git global setup start"
 
 if [ "$OS" = "Windows_NT" ] ; then

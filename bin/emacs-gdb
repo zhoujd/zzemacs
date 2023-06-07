@@ -1,0 +1,8 @@
+#!/bin/bash
+
+ZZEMACS_ROOT=$(cd $(dirname $0)/.. && pwd)
+EMACS_BIN="emacs"
+
+$EMACS_BIN --quick \
+           --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
+           --eval "(message \"emacs gdb ready.\")"

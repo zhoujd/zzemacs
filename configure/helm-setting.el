@@ -173,9 +173,11 @@
   (message "helm-ag switch to grep exact"))
 
 ;;helm default using ag
-(if (executable-find "ag")
-    (zz:helm-ag-switch-to-ag-inexact)
-    (zz:helm-ag-switch-to-grep-inexact))
+(defun zz:helm-search-select()
+  (cond ((executable-find "ag") (zz:helm-ag-switch-to-ag-inexact))
+        ((executable-find "ack") (zz:helm-ag-switch-to-ack))
+        (t (zz:helm-ag-switch-to-grep-inexact))))
+(zz:helm-search-select)
 
 (require 'helm-grep)
 (custom-set-variables
@@ -185,9 +187,7 @@
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (if (executable-find "ag")
-        (zz:helm-ag-switch-to-ag-inexact)
-        (zz:helm-ag-switch-to-grep-inexact))
+    (zz:helm-search-select)
     (helm-do-ag default-directory)))
 
 (defun zz:nnn ()

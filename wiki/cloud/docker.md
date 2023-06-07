@@ -309,8 +309,11 @@ Docker
     ## for running or paused docker, use export:
     docker export <dockernameortag> | gzip > mycontainer.tgz
 
-    ## load
+    ## load from save
     gunzip -c mycontainer.tgz | docker load
+
+    ## load from export
+    gunzip -c mycontainer.tgz | docker import - <image:tag>
 
 ## Save all the images is like this
 

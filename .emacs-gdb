@@ -1,4 +1,4 @@
-;;;; .emacs --- emacs config file
+;;;; .emacs-gdb --- emacs gdb config file
 ;;;
 
 (defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))
@@ -35,4 +35,4 @@
         ))
 
 
-;;;; .emacs end here
+;;;; .emacs-gdb end here

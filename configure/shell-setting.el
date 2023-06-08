@@ -20,10 +20,11 @@
  '(comint-prompt-read-only t)           ; if this is t, it breaks shell-command
  )
 
-(set-face-foreground 'minibuffer-prompt       "green")
-(set-face-foreground 'comint-highlight-prompt "#8ae234")
-(set-face-foreground 'comint-highlight-input  "cyan")
-(setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
+(when (display-graphic-p)
+  (set-face-foreground 'minibuffer-prompt       "green")
+  (set-face-foreground 'comint-highlight-prompt "#8ae234")
+  (set-face-foreground 'comint-highlight-input  "cyan")
+  (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face))))
 
 ;;add shell-scripte-mode support
 (setq auto-mode-alist

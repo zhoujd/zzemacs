@@ -187,7 +187,6 @@
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (zz:helm-search-select)
     (helm-do-ag default-directory)))
 
 (defun zz:nnn ()

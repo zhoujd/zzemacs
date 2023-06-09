@@ -15,6 +15,18 @@
       company-selection-wrap-around t
       company-minimum-prefix-length 2)
 
+;;set default `company-backends'
+(setq company-backends
+      '((company-files          ; files & directory
+         company-keywords       ; keywords
+         company-capf
+         company-yasnippet
+         company-abbrev)
+        ))
+
+(setq company--disabled-backends
+      '(company-etags))
+
 ;;keys
 (defkeys-map company-active-map
   ([return]    nil)

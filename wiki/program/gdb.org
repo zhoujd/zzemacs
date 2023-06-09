@@ -61,3 +61,11 @@ gdb> bt full
 $ gdb -q `which program` --attach `pgrep -o  program`
 gdb> bt full
 #+END_SRC
+
+** execute command from file
+
+#+BEGIN_SRC sh
+$ gdb -x command_file_name
+or
+(gdb) source [-s] [-v] command_file_name
+#+END_SRC

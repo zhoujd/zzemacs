@@ -69,3 +69,19 @@ $ gdb -x command_file_name
 or
 (gdb) source [-s] [-v] command_file_name
 #+END_SRC
+
+** Debugging Individual Threads
+
+#+BEGIN_SRC sh
+## These can be added to .gdbinit
+set non-stop on
+set target-async on
+
+## Take note of the & at the end of the continue. This allows the GDB prompt to return so other commands can be executed.
+## Using the interrupt, execution can be stopped should thread 3 become interesting again.
+(gdb) info threads
+(gdb) thread <number>
+(gdb) next
+(gdb) continue &
+(gdb) interrupt
+#+END_SRC

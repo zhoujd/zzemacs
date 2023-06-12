@@ -166,5 +166,9 @@ end
 ## print to echo line for struct members
 set print pretty on
 
-## lib path for mdk-dev
+## lib path
 set solib-search-path /opt/zach/lib:/opt/zach/ffmpeg/lib:/opt/zach/mediasdk/lib
+
+## threads debugging
+set non-stop on
+set target-async on

@@ -73,6 +73,7 @@ or
 ** Debugging Individual Threads
 
 #+BEGIN_SRC sh
+## https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/developer_guide/gdbthreads
 ## These can be added to .gdbinit
 set non-stop on
 set target-async on

@@ -20,7 +20,8 @@
  '(comint-prompt-read-only t)           ; if this is t, it breaks shell-command
  )
 
-(when (display-graphic-p)
+(when (or (display-graphic-p)
+          (daemonp))
   (set-face-foreground 'minibuffer-prompt       "green")
   (set-face-foreground 'comint-highlight-prompt "#8ae234")
   (set-face-foreground 'comint-highlight-input  "cyan")

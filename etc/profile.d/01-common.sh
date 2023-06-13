@@ -46,6 +46,7 @@ prompt() {
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )
+            export LS_COLORS=$LS_COLORS:'di=01;35:ln=01;36'
             PS1="\u@\h \W\$ "
             ;;
         linux* )

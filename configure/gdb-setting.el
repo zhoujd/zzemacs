@@ -22,10 +22,12 @@
   (gdb-restore-windows)
   (gud-refresh))
 
+(setq gdb-use-separate-io-buffer t)
+
 (add-hook
  'gdb-mode-hook
  (lambda ()
-    (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
+   (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
 
 
 (provide 'gdb-setting)

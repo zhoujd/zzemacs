@@ -463,7 +463,8 @@
   (setq byte-compile-warnings '(cl-functions)))
 
 ;;xterm use mouse
-(xterm-mouse-mode 1)
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
 
 
 (provide 'common-setting)

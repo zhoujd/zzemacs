@@ -462,6 +462,9 @@
       (message "%s" file)))
   (setq byte-compile-warnings '(cl-functions)))
 
+;;xterm use mouse
+(xterm-mouse-mode 1)
+
 
 (provide 'common-setting)
 

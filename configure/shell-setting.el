@@ -101,8 +101,8 @@ Dmitriy Igrishin's patched version of comint.el."
   (cond
     ;;((string-match "j[ap].*" (getenv "LANG"))
     ;; (with-chinese-env (multi-shell-new)))
-    ((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
-     (with-chinese-env (multi-shell-new)))
+    ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
+    ;; (with-chinese-env (multi-shell-new)))
     (t
      (multi-shell-new))
     ))

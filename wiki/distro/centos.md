@@ -49,3 +49,8 @@ CentOS
     #gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 
     $ sudo yum install --disablerepo=* --enablerepo=myrepo -y docker-1.12.6-55.gitc4618fb.el7.centos
+
+## Existing lock /var/run/yum.pid: another copy is running as pid 2287
+
+    $ sudo rm -f /var/run/yum.pid
+    $ sudo yum clean all

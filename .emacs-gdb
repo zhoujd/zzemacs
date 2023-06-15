@@ -26,7 +26,7 @@
         common-setting
         company-setting
         sample-setting
-        ;shell-setting
+        shell-setting
         gdb-setting
         keymap-setting
         fn-setting

@@ -9,6 +9,8 @@
 ;;export LS_COLORS='di=01;33:ex=92:ln=04;93'
 ;;alias ls='ls --color=auto'
 
+(require 'comint)
+
 ;;shell settting
 (custom-set-variables
  '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
@@ -20,12 +22,10 @@
  '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command and gud-print
  )
 
-(when (or (display-graphic-p)
-          (daemonp))
-  (set-face-foreground 'minibuffer-prompt       "green")
-  (set-face-foreground 'comint-highlight-prompt "#8ae234")
-  (set-face-foreground 'comint-highlight-input  "cyan")
-  (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face))))
+(set-face-foreground 'minibuffer-prompt       "green")
+(set-face-foreground 'comint-highlight-prompt "#8ae234")
+(set-face-foreground 'comint-highlight-input  "cyan")
+(setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
 ;;add shell-scripte-mode support
 (setq auto-mode-alist

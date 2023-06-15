@@ -1,6 +1,7 @@
 ;;;; gdb-setting.el --- gdb common file
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
+;;(setq gdb-use-separate-io-buffer 1)
 
 (defun zz:gud-break-remove ()
   "Set/clear breakpoin."
@@ -21,8 +22,6 @@
   (interactive)
   (gdb-restore-windows)
   (gud-refresh))
-
-(setq gdb-use-separate-io-buffer t)
 
 (add-hook
  'gdb-mode-hook

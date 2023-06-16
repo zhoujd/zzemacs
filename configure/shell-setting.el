@@ -405,6 +405,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'shell-mode-hook
           (lambda ()
             (company-mode t)
+            (setq-local comint-prompt-read-only t)
             (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
 
 

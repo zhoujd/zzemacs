@@ -169,3 +169,26 @@ ${file%%.*}
 ${file#.*}
 ${file##.*}
 #+end_src
+
+* Sed to replace a multi-line string
+
+#+begin_src sh
+#!/bin/bash
+
+# https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
+# copy & paste content that you want to substitute
+
+AA=$( cat <<\EOF | sed -z -e 's#\([][^$*\.#]\)#\\\1#g' -e 's#\n#\\n#g'
+a test
+Please do not
+EOF
+)
+
+BB=$( cat <<\EOF | sed -z -e 's#\([&\#]\)#\\\1#g' -e 's#\n#\\n#g'
+not a test
+Be
+EOF
+)
+
+sed -z -i 's#'"${AA}"'#'"${BB}"'#g' *.txt   # apply to all *.txt files
+#+end_src

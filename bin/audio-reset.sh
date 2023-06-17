@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "please replug in the headset if it connecting"
-echo "reset audio start"
+echo "audio reset start"
 
 pulseaudio -k
 sudo alsa force-reload
 pulseaudio --start
 
-echo "reset audio end"
+echo "audio reset end"

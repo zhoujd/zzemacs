@@ -1,7 +1,21 @@
 #!/bin/sh
 
-## sudo yum install redhat-lsb-core
-## sudo pacman -S lsb-release
+## Get script path
+#script_path=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) ## only for bash
+#script_path=$(cd $(dirname $0) && pwd)
+
+## Install lsb_release
+# sudo yum install redhat-lsb-core
+# sudo pacman -S lsb-release
+
+## Note: using bash array for allow the comments for the arguments
+#cmd=(
+#   emacs  # run emacs
+#   -Q
+#   --quick
+#)
+#
+#"${cmd[@]}"
 
 export OS_DISTRO="unknown"
 export SYSARCH=64
@@ -144,17 +158,3 @@ case `uname -s` in
         echo "unknown os ..."
         ;;
 esac
-
-## Get script path
-#script_path=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd) ## only for bash
-#script_path=$(cd $(dirname $0) && pwd)
-
-## Note: using bash array for allow the comments for the arguments
-#cmd=(
-#	./emacs  # run emacs
-#   -Q
-#   --quick
-#)
-#
-#"${cmd[@]}"
-

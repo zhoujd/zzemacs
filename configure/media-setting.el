@@ -13,7 +13,7 @@
 
 ;;bingo
 ;;amixer: Mixer attach default error: No such file or directory
-(when (= (shell-command "amixer") 0)
+(when (= (shell-command "amixer > /dev/null") 0)
   (require 'bongo)
   (setq bongo-logo nil)
   (setq bongo-enabled-backends '(vlc mpv))

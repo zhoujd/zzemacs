@@ -3,6 +3,9 @@
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 ;;(setq gdb-use-separate-io-buffer 1)
 
+(zz:load-path "site-lisp/realgud")
+(require 'realgud)
+
 (defun zz:gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)

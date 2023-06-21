@@ -1,0 +1,5487 @@
+2019-05-26  rocky  <rocky@gnu.org>
+
+	el-get-install.el doesn't have an FSF copyright...
+
+	and wasn't written by me.
+
+2019-05-25  rocky  <rocky@gnu.org>
+
+	Get ready for release 1.4.8
+
+2019-05-25  rocky  <rocky@gnu.org>
+
+	Another pass over function declarations
+
+2019-05-09  rocky  <rocky@gnu.org>
+
+	buffer info org-mode tweaks
+
+2019-05-09  rocky  <rocky@gnu.org>
+
+	Add realgud:file-remove-ignore to remove a previously ignored entry.
+
+2019-05-04  rocky  <rocky@gnu.org>
+
+	Get ready for release 1.4.6
+
+2019-05-04  rocky  <rocky@gnu.org>
+
+	Compile linting
+
+2019-05-04  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #241 from beyondpie/pdb_pr_szu
+
+	change pdb to python -m pdb.
+
+2019-05-04  rocky  <rocky@gnu.org>
+
+	Some small tweaks
+
+2019-05-02  rocky  <rocky@gnu.org>
+
+	Handle location not found in bp-list for breakpoint buffer
+
+2019-04-29  rocky  <rocky@gnu.org>
+
+	Add 'B' key to get list of breakpoints
+
+2019-04-29  rocky  <rocky@gnu.org>
+
+	Add breakpoint-all regexps for most debuggers
+
+2019-04-25  rocky  <rocky@gnu.org>
+
+	remake and gdb breakpoint buffers + add to menu
+
+2019-04-25  rocky  <rocky@gnu.org>
+
+	Add breakpoint buffer tracking to source window
+
+2019-04-25  rocky  <rocky@gnu.org>
+
+	Initialize more debuggers with breakpoint buffer information
+
+2019-04-24  rocky  <rocky@gnu.org>
+
+	Remove some emacs compile warnings
+
+2019-04-24  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #244 from realgud/add-brpt-buffer
+
+	Add a breakpoint buffer analogous to backtrace
+
+2019-04-24  rocky  <rocky@gnu.org>
+
+	Add a breakpoint buffer analogous to backtrace
+
+2019-04-23  rocky  <rocky@gnu.org>
+
+	Add a comment
+
+2019-04-23  rocky  <rocky@gnu.org>
+
+	Lots of small changes...
+
+	Add completing read of debugger breakpoint numbers
+	*Describe*  -> *Describe Debugger Session* Command hash key underscores
+	are now dashes
+
+2019-04-20  rocky  <rocky@gnu.org>
+
+	Disable breakpoint file finding callback function for noww
+
+2019-04-20  rocky  <rocky@gnu.org>
+
+	keep history in attaching command-buffers ...
+
+	track.el: using breakpoint locate-file function marks breakpoint now 
+	send.el: fix bug in handling %U
+
+2019-04-20  rocky  <rocky@gnu.org>
+
+	cl-seq -> cl-lib
+
+2019-04-19  rocky  <rocky@gnu.org>
+
+	Improve realgud:attach-cmd-buffer...
+
+	And add %U specifier for url's
+
+2019-04-19  rocky  <rocky@gnu.org>
+
+	Fix improper breakpoint file-callback function parameters
+
+2019-04-14  rocky  <rocky@gnu.org>
+
+	Make sure to autoload attach functions
+
+2019-04-01  Alyssa Ross	 <hi@alyssa.is>
+
+	Fix wiki links in README
+
+2019-03-06  beyondpie  <panshi.pie@gmail.com>
+
+	change pdb to python -m pdb.
+
+2019-01-21  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2019-01-21  rocky  <rocky@gnu.org>
+
+	Adjust for v8 tracebacks inside a debugger console
+
+2018-12-10  Crane Chu  <cranechu@gmail.com>
+
+	add key 'h' for cmd-until-here: continue until the current line
+
+2018-11-26  rocky  <rocky@gnu.org>
+
+	ipdb need ANSI schmutz removed...
+
+	And it looks like ipdb adds some new kind of ANSI schmutz
+
+2018-10-31  Maxim Cournoyer  <maxim.cournoyer@gmail.com>
+
+	configure.ac: Fix NO_CHECK_EMACS_PACKAGES elisp.
+
+	Remove the extraneous trailing parenthesis.
+
+2018-09-24  rocky  <rocky@gnu.org>
+
+	Hoist syntax-checking kbd command
+
+2018-09-23  rocky  <rocky@gnu.org>
+
+	DRY a js regexp by hoisting it to lang/js.el
+
+2018-09-20  rocky  <rocky@gnu.org>
+
+	Add realgud:js-file-line-loc-pat
+
+2018-09-20  rocky  <rocky@gnu.org>
+
+	Adds ource-path to cmdbuf...
+
+	to track last source code file seen.
+
+	Don't require breakpoint-set messages to require a filename or a
+	breakpoint location.
+
+	Use the current source-code path if it is no source path is given.
+
+2018-07-10  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2018-07-10  rocky  <rocky@gnu.org>
+
+	Add alternate breakpoint match regexp...
+
+	allow regexp lists at least for breakpoint adding
+
+2018-07-05  Fangrui Song  <i@maskray.me>
+
+	gdb: parse -ex --eval-command
+
+2018-07-04  Fangrui Song  <i@maskray.me>
+
+	Add tbreak as per break
+
+2018-06-26  rocky  <rocky@gnu.org>
+
+	Last commit introduced a couple of bugs
+
+2018-06-26  rocky  <rocky@gnu.org>
+
+	Track breakpoing deletion
+
+2018-05-10  Andrey Kolomoets  <andreyk.mad@gmail.com>
+
+	Check major mode with derived-mode-p
+
+	Solves https://github.com/realgud/realgud/issues/216
+
+2018-05-03  Xu Chunyang	 <mail@xuchunyang.me>
+
+	Remove pdb alias
+
+	Since the command name "pdb" is already used by Emacs in gud.el
+
+2018-04-19  rocky  <rocky@gnu.org>
+
+	Bug in kshdb initialization
+
+2018-03-25  rocky  <rocky@gnu.org>
+
+	Remove debug message
+
+2018-03-25  rocky  <rocky@gnu.org>
+
+	Better Emacs compatibility
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	Tidy a bit
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	TravisCI 3rd try
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	CircleCI 2nd try
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	Administrivia Add seq to el-get...
+
+	For CircleCI testing.
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	Correct testing for API change...
+
+	We now need more complete command buffers
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	Customize compilation-find-file...
+
+	to say this is a source-code file, not a file with an error in it.
+
+2018-03-24  rocky  <rocky@gnu.org>
+
+	File remap is session specific...
+
+	finish session file-map ignore re's
+
+2018-03-22  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' into filter-lists
+
+2018-03-22  rocky  <rocky@gnu.org>
+
+	Sync with savanah ELPA
+
+2018-03-22  rocky  <rocky@gnu.org>
+
+	Commit stable version before a minor upheaval
+
+2018-03-13  rocky  <rocky@gnu.org>
+
+	Make calls consistent in light of changes
+
+2018-03-13  rocky  <rocky@gnu.org>
+
+	Large change to allow blacklisted files
+
+	ignore-re has been moved out of the loc struct and into the
+	realgud-cmdbuf-info. It is now a list of regexps/strings which can be
+	modified per debug session
+
+2018-03-12  rocky  <rocky@gnu.org>
+
+	Add format specifier %q a la ksh...
+
+	Used in nodejs exec(%q) for example
+
+2018-03-09  rocky  <rocky@gnu.org>
+
+	Start nodejs -> node debug rename...
+
+	node inspect: add "eval", fix "backtrace" and remove up/down/frame
+
+2018-03-08  rocky  <rocky@gnu.org>
+
+	Small typo
+
+2018-02-07  rocky  <rocky@gnu.org>
+
+	Small changes
+
+2018-02-07  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #209 from dangirsh/patch-2
+
+	Add "until" to correct command hash
+
+2018-02-07  Dan	 <dangirsh@users.noreply.github.com>
+
+	Add "until" to correct command hash
+
+	"until" was being added to the wrong hash table.
+
+2018-02-07  Dan	 <dangirsh@users.noreply.github.com>
+
+	Add pprint to command hash
+
+	In my debug mode, I'd like hitting "p" on a symbol to pretty print its
+	value in the debugger via realgud:cmd-run-command. For this, the command
+	hash must include an entry for "pp".
+
+2018-02-03  rocky  <rocky@gnu.org>
+
+	Make fringe arrows a little more colorful
+
+2018-01-15  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2018-01-15  rocky  <rocky@gnu.org>
+
+	small changes
+
+	debugger-(not)running now has realgud- namespace prefix inherit stopped
+	arrow color from debugger-running
+
+2018-01-14  rocky  <rocky@gnu.org>
+
+	Use boxed attributes in breakpoint enable/disable faces
+
+2018-01-02  rocky  <rocky@gnu.org>
+
+	Add realgud:bashdb-large to handle large bash files
+
+2017-12-28  rocky  <rocky@gnu.org>
+
+	Add realgud-populate-common-fn-keys-none to not set function keys...
+
+	Fixes #202
+
+	Change other remnants from ruby code and dbgr name heritage
+
+2017-12-18  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	fix spelling error
+
+2017-12-18  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	refactor breakpoints further
+
+2017-12-18  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	moving breakpoint functions to more central locations
+
+2017-12-17  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	fixed an error
+
+2017-12-17  rocky  <rocky@gnu.org>
+
+	Some test lint'ing
+
+2017-12-17  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	whitespace
+
+2017-12-17  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	extract method for breakpoint stuff in realgud:track-from-region
+
+2017-12-16  rocky  <rocky@gnu.org>
+
+	Administrivia
+
+2017-12-16  rocky  <rocky@gnu.org>
+
+	Get ready for 1.4.4 release. Admnistrivia
+
+	realgud.el: bump version number Remove/reduce messages of undefined
+	functions pdb: correct some variabes names Makefile.am: don't remove
+	.nosearch
+
+	Update copyright on files that have changed htis year
+
+2017-12-15  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	change E to put the thing at point in the eval buffer
+
+2017-12-11  rocky  <rocky@gnu.org>
+
+	Track changes in elpa:
+
+	From Stephan Monnier:
+
+	add-to-list -> cl-pushnew Reverse order of stack listing opt-buffer ->
+	_opt-buffer  (it's not used so maybe it should disappear? )
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	Be Explicit about eval command ...
+
+	In debuggers that have it
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	Comment better a track test
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	< -> <=. See comment before
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	I am also bad at match relations
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	I am really bad with Elisp syntax
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	More Emacs-gaurded handling of realgud:join-string
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	wrong 'let' syntax - caught thanks to the jodonnell's test!
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	Guard against nil (realgud:get-command-name "eval")
+
+2017-12-10  rocky  <rocky@gnu.org>
+
+	Merge branch 'print' of https://github.com/jodonnell/realgud into print
+
+2017-12-09  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	add eval at point and bind it to E in shortkey mode
+
+2017-12-09  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	making eval output truncate and saving all the current command hash 
+	instead of just eval for future usage
+
+2017-12-07  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	adding tests for print to message area
+
+2017-12-05  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	making join string not emacs 25 only
+
+2017-12-05  Jacob O'Donnell  <jacobodonnell@gmail.com>
+
+	making eval print to the message area
+
+2017-12-03  rocky  <rocky@gnu.org>
+
+	Add gdb "delete" template
+
+2017-12-03  rocky  <rocky@gnu.org>
+
+	Info ...
+
+	Document what's known about the backtrace-init infinite loop. Correct
+	and expand install instructions.
+
+2017-12-03  denin  <dvzubarev@yandex.ru>
+
+	Add test case for an error when realgud:backtrace-init is hanging at
+	startup
+
+	see #192
+
+2017-12-03  denin  <dvzubarev@yandex.ru>
+
+	Fix infinite loop in realgud:backtrace-init
+
+	match-end and match-begin is overriden in realgud:file-loc-from-line. It
+	is better to store them in variables.
+
+2017-10-06  rocky  <rocky@gnu.org>
+
+	Expand script path where appropriate
+
+2017-09-07  rocky  <rocky@gnu.org>
+
+	When a breakpoint is seen, add source...
+
+	to list of source buffers seen. May also go into track mode.
+
+	gdb/core.el: simple typo
+
+2017-08-30  rocky  <rocky@gnu.org>
+
+	Add more default commands modelled from gdb
+
+	Todo: adjust all of the debuggers!
+
+2017-08-25  rocky  <rocky@gnu.org>
+
+	Spelling typos
+
+2017-08-25  rocky  <rocky@gnu.org>
+
+	Fix misfeatures in install-from-git.sh...
+
+	Install .nosearch when install in from git. Fixes #187 Docuement
+	.nosearch in file Build code in /tmp realgud repo has changed:
+	rocky/emacs-dbgr -> realgud/realgud
+
+	command.el: use better org formatting
+
+2017-08-23  rocky  <rocky@gnu.org>
+
+	Bug in last commit.
+
+2017-08-23  rocky  <rocky@gnu.org>
+
+	Fix up breakpoint display
+
+2017-08-23  rocky  <rb@dustyfeet.com>
+
+	Improve Debugger Info org-mode buffer
+
+	- Elide entries initially
+	- Disable things that aren't set (for now)
+	- Format hash tables better
+
+2017-08-03  rocky  <rocky@gnu.org>
+
+	(realgud:load-features) now features loaded
+
+2017-08-03  Roy Mathew	<1578069+roymath@users.noreply.github.com>
+
+	return the set of features removed, in realgud:unload-features()
+
+2017-08-02  Roy Mathew	<1578069+roymath@users.noreply.github.com>
+
+	fixed unload; added ert-based tests for realgud
+
+2017-07-12  rocky  <rb@dustyfeet.com>
+
+	realgud-bp-line-{en/di}sabled-face change...
+
+	Make them both have underline property. Dont inherit from diff which
+	might not be set.
+
+2017-06-30  rocky  <rocky@gnu.org>
+
+	Add autoloads for defalias debugger invocations
+
+2017-06-29  rocky  <rocky@gnu.org>
+
+	Simplify and perhaps generalize
+
+2017-06-03  rocky  <rocky@gnu.org>
+
+	Match nested prompts in python trepan debuggers
+
+2017-05-29  rocky  <rocky@gnu.org>
+
+	Start macro for delayed-
+
+	and expand to cover pdb
+
+2017-05-22  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2017-05-22  rocky  <rocky@gnu.org>
+
+	Add trepan2-delayed and trepan3k-delayed
+
+2017-05-21  rocky  <rb@dustyfeet.com>
+
+	Typo
+
+2017-05-21  rocky  <rb@dustyfeet.com>
+
+	And a couple more
+
+2017-05-21  rocky  <rb@dustyfeet.com>
+
+	Last change distributed a bit over other debuggers
+
+2017-05-20  Apteryks  <maxim.cournoyer@gmail.com>
+
+	Honor debugger-name in trepan2-suggest-invocation
+
+	DEBUGGER-NAME in trepan2-suggest-invocation was not being considered.
+
+2017-03-16  rocky  <rb@dustyfeet.com>
+
+	travis 5th try
+
+2017-03-16  rocky  <rb@dustyfeet.com>
+
+	Set EMACSLOADPATH in travis run
+
+2017-03-16  rocky  <rb@dustyfeet.com>
+
+	Fix up automake install
+
+2017-02-18  rocky  <rocky@gnu.org>
+
+	Small cleanups
+
+2017-02-18  rocky  <rb@dustyfeet.com>
+
+	Add lang/java.el and ...
+
+	in that parse a maven error line
+
+2017-02-18  rocky  <rocky@gnu.org>
+
+	Initalize local-variable realgd:jdb-file-remap
+
+	See Issue # 171
+
+2017-02-18  rocky  <rb@dustyfeet.com>
+
+	Add jdb termination message
+
+2017-01-28  rocky  <rb@dustyfeet.com>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2017-01-28  rocky  <rb@dustyfeet.com>
+
+	Remove more lint messages
+
+2017-01-28  rocky  <rocky@gnu.org>
+
+	lint on test
+
+2017-01-28  rocky  <rocky@gnu.org>
+
+	caddr -> cl-caddr
+
+2017-01-25  rocky  <rb@dustyfeet.com>
+
+	realgud-file-find-function is in realgud group
+
+2017-01-17  rocky  <rb@dustyfeet.com>
+
+	Use cl-lib names
+
+2017-01-16  rocky  <rb@dustyfeet.com>
+
+	Allow nil as file parameter in realgud-exec-shell
+
+	Fixes #165
+
+2016-12-27  rocky  <rb@dustyfeet.com>
+
+	Fixes #164
+
+2016-12-27  rocky  <rb@dustyfeet.com>
+
+	Increase flake8 message coverage...
+
+	more test lint
+
+2016-12-27  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #163 from FelipeLema/master
+
+	Customizable "search for this (relative) bp file"
+
+2016-12-27  Felipe Lema	 <felipelema@mortemale.org>
+
+	Fixes PR review realgud/realgud#163
+
+2016-12-27  rocky  <rb@dustyfeet.com>
+
+	Revert column tracking change
+
+	except Makefile.am change for "check" targets
+
+2016-12-26  rocky  <rb@dustyfeet.com>
+
+	Restor column location...
+
+	Add more flake8 log types
+
+2016-12-25  rocky  <rb@dustyfeet.com>
+
+	Closer to getting column info used
+
+	Pass column parameter and rely less on command-buffer global settings 
+	but instead get those from the location structure.
+
+2016-12-24  rocky  <rb@dustyfeet.com>
+
+	field char-offset -> column
+
+2016-12-24  rocky  <rocky@gnu.org>
+
+	WIP: stab at positioning with column offsets
+
+2016-12-23  Felipe Lema	 <felipelema@mortemale.org>
+
+	Customizable "search for this (relative) bp file"
+
+	I personally don't like `compilation-find-file` prompting me at the
+	start of every gdb session when it can't find a relative breakpoint in a
+	large code base at a separate folder.
+
+2016-12-20  rocky  <rocky@gnu.org>
+
+	Fixes issue #33
+
+	Was using wrong debugger name in command-hash (pdb vs ipdb) Default eval
+	is pp now.
+
+2016-12-18  rocky  <rocky@gnu.org>
+
+	Add flake8 pattern
+
+2016-08-29  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #150 from realgud/breakpoint-display
+
+	Breakpoint display
+
+2016-08-29  rocky  <rocky@gnu.org>
+
+	describe-variable links to cmd-buf non-nil value
+
+2016-08-28  rocky  <rocky@gnu.org>
+
+	Tidy code a little
+
+2016-08-27  rocky  <rocky@gnu.org>
+
+	Towards tracking breakpoints more often
+
+	file.el: Create and set a source-file marker in the list of breakpoint 
+	track.el: Add source breakpoint annotations when we add the source-file 
+	maker in the list of breakpoints
+
+2016-08-13  rocky  <rocky@gnu.org>
+
+	more doc corrections:
+
+	Regluar expression that -> realgud-loc-pat that
+
+2016-08-13  rocky  <rocky@gnu.org>
+
+	Small docstring clarification
+
+2016-08-08  rocky  <rocky@gnu.org>
+
+	realgud:cmdbuf-buffers-describe shows field names
+
+2016-08-07  rocky  <rocky@gnu.org>
+
+	host removing ansi-schmutz to mode setting.
+
+2016-08-07  rocky  <rocky@gnu.org>
+
+	file remapping changes
+
+	* command.el: Show file remapping in Describe buffer; add cmdbuf-reset
+	* jdb.el: make file mapping hash buffer local
+
+2016-08-07  rocky  <rocky@gnu.org>
+
+	Bp tracking respects custom filename lookup ...
+
+	* track.el: use callback-loc-fn in realgud-track-bp-loc
+	* jdb/core.el: remove gud reference
+	* jdb/core.el: remove gud reference
+	* trepanjs.el: typo
+
+2016-08-06  rocky  <rocky@gnu.org>
+
+	Hoist remove-ansi-schmutz above just js
+
+2016-08-06  rocky  <rocky@gnu.org>
+
+	Fix up "make dist"
+
+	make distcheck now works
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	make install packaging Fixes #146. version 1.4.3
+
+2016-08-04  Alex Dunn  <dunn.alex@gmail.com>
+
+	configure.ac: default lispdir relative to prefix
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	Fix up INSTALL. Tolerate older emacs
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	Administrivia
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	Set EMACSLOADPATH in make. remove more .el lint
+
+2016-08-04  Stefan Monnier  <monnier@iro.umontreal.ca>
+
+	cl -> cl-lib and other goodies
+
+	* packages/realgud/realgud.el: Add missing cl-lib dependency
+	* <most-other-files>: Remove unneeded (require 'cl) and replace the
+	   other ones with (require 'cl-lib)
+	* packages/realgud/test/test-common-helper.el (realgud-test-info):
+	* packages/realgud/realgud/common/regexp.el (realgud-loc-pat):
+	* packages/realgud/realgud/common/lochist.el (realgud-loc-hist):
+	* packages/realgud/realgud/common/buffer/info.el
+	(realgud-backtrace-info):
+	* packages/realgud/realgud/common/loc.el (realgud-loc): Use
+	`cl-defstruct'.
+
+	* packages/realgud/test/test-track.el:
+	* packages/realgud/test/test-regexp.el:
+	* packages/realgud/test/test-regexp-ruby.el:
+	* packages/realgud/test/test-regexp-rdebug.el:
+	* packages/realgud/test/test-core.el: Use lexical-binding rather than
+	lexical-let.
+	* packages/realgud/realgud/common/run.el (realgud:run-process,
+	realgud:run-debugger): Use cl-remove-if and cl-remove-duplicates.
+	* packages/realgud/realgud/common/track.el (realgud-track-bp-loc): Fix
+	typo.
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	(require 'files) is unnecessary - preloaded
+
+2016-08-04  rocky  <rocky@gnu.org>
+
+	Add starting directory in info and...
+
+	set top-frame-num in various debuggers
+
+2016-08-03  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-08-03  rocky  <rocky@gnu.org>
+
+	Wrong require again.
+
+	Reduce warnings in remake regexp test
+
+2016-08-03  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-08-03  rocky  <rocky@gnu.org>
+
+	Ignore process send errors
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	I like the word "extensible"
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	Avoid reading a binary as a source file
+
+	* follow symlinks before running "file"
+	* don't find-file-noselect if file is large
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	Version 1.4.3
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	Fix deleting breakpoints
+
+	- Fix wrong delete-breakpoint command name
+	- add breakpoint deleted pattern
+
+2016-08-02  rocky  <rocky@gnu.org>
+
+	Remove ANSI schmutz from zshdb output
+
+2016-08-01  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-08-01  rocky  <rocky@gnu.org>
+
+	Wrong require - thanks stephan
+
+2016-08-01  Noam Postavsky  <npostavs@users.sourceforge.net>
+
+	Don't add subdirectories to load-path
+
+	* etc/.nosearch:
+	* realgud/.nosearch:
+	* test/.nosearch: Add .nosearch files to subdirectories to prevent
+	`normal-top-level-add-subdirs-to-load-path' from adding them to
+	`load-path'.  Some of the files in these subdirectories would shadow 
+	Emacs' own files if they were on the load-path.
+
+2016-08-01  rocky  <rocky@gnu.org>
+
+	ELPA packaging
+
+	Add lingo to express including subdirectories
+
+2016-07-31  rocky  <rocky@gnu.org>
+
+	Reinstate 24.3. That checks out and works
+
+2016-07-31  rocky  <rocky@gnu.org>
+
+	Increase minimum versions recorded
+
+2016-07-31  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #142 from dunn/helper-cl
+
+	common/helper: require cl
+
+2016-07-31  Alex Dunn  <dunn.alex@gmail.com>
+
+	common/helper: require cl
+
+	Otherwise `make check` can lead to this error:
+	https://gist.github.com/dunn/ee1080dd3b32aaf8594d3c8368da7bde
+
+2016-07-31  Alex Dunn  <dunn.alex@gmail.com>
+
+	el-get-install.el: remove list-utils
+
+	Follow-up to 
+	https://github.com/realgud/realgud/commit/b5d5f30780a2bcd13c90f3bf3643ef1509e8ee0b 
+	and
+	https://github.com/realgud/realgud/commit/a8bd8678db59322dac1015576716c4ebb2c628df
+
+2016-07-31  rocky  <rocky@gnu.org>
+
+	Sync with elpa
+
+2016-07-31  rocky  <rocky@gnu.org>
+
+	Remove use of list-utils package
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Remove list-utils dependency
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:realgud/realgud
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Bump min version to 24.4
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Release 1.4.0 which will be on melpa stable and elpa
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Need to put back el-get-install.el for travis
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Finish FSF Copyright assignments
+
+2016-07-30  rocky  <rocky@gnu.org>
+
+	Assign more copyrights to FSF
+
+2016-07-12  rocky  <rocky@gnu.org>
+
+	One more FSF copyright assignment
+
+2016-06-28  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #137 from realgud/gdb-mi-warning
+
+	Warn if gdb --interpreter=mi or -i mi is used
+
+2016-06-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Suppress irrelevant compilation warnings
+
+	`directory-files-recursively' is only present in recent Emacsen, but
+	since it should only be run on maintainers' machines that's not an
+	issue.
+
+2016-06-28  rocky  <rocky@gnu.org>
+
+	Warn if gdb --interpreter=mi or -i mi is used
+
+2016-06-27  rocky  <rocky@gnu.org>
+
+	Reassign more copyrights to FSF
+
+2016-06-18  rocky  <rocky@gnu.org>
+
+	Another small doc change
+
+2016-06-18  rocky  <rocky@gnu.org>
+
+	Improve realgud:run-process docstring
+
+2016-06-17  rocky  <rocky@gnu.org>
+
+	Remove code added by mistake
+
+2016-06-15  rocky  <rocky@gnu.org>
+
+	Simpler change to previous commit
+
+2016-06-15  rocky  <rocky@gnu.org>
+
+	Correct realgud:gdb-pid-associate call
+
+	Fixes #132
+
+	* Add more FSF copyrights.
+	* some 't -> t
+	* track.el: missing prototype in enable/disable use
+
+2016-06-13  rocky  <rocky@gnu.org>
+
+	Correct enable/disable pattern for trepan.pl
+
+2016-06-13  Derek  <dfeich@gmail.com>
+
+	Don't bind standard keys when disabled by config (#131)
+
+	The realgud-populate-common-fn-keys-standard map function was always 
+	run, even when realgud-populate-common-fn-keys-function was configured 
+	as nil. Fixes #129
+
+2016-06-12  rocky  <rocky@gnu.org>
+
+	Correct python trepan enable/disable patterns
+
+2016-06-12  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' into enable-disable
+
+2016-06-12  rocky  <rocky@gnu.org>
+
+	Broaden trepan breakpoint search
+
+2016-06-12  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Relax deleted breakpoint regexp in PDB to support Python 2 and 3
+
+	In Python 3, the deleted breakpoint message include a file path and a 
+	line number; it doesn't in Python 2.
+
+	Related to #115; thanks @ilohmar for reporting!
+
+2016-06-08  rocky  <rocky@gnu.org>
+
+	Restart should be a confirm command too.
+
+2016-06-08  rocky  <rocky@gnu.org>
+
+	Fill out pdb-remote execution
+
+	Fixes #128 ?
+
+2016-06-08  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #126 from realgud/103-jump
+
+	103 jump
+
+2016-06-07  rocky  <rocky@gnu.org>
+
+	Confirm on debugger quit.
+
+2016-06-06  rocky  <rocky@gnu.org>
+
+	Mark debuggers that don't have "jump".
+
+2016-06-06  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' into 103-jump
+
+2016-06-06  rocky  <rocky@gnu.org>
+
+	Correct cmd capabilities for perldb and trepanjs
+
+2016-06-06  rocky  <rocky@gnu.org>
+
+	Correct "breakpoint deleted" regexp
+
+	test-regexp-zshdb.el: beef up and sync to corresponding bashdb test. 
+	Makefile.am: make "make check-short" in this directory work
+
+2016-06-04  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Update Travis links
+
+2016-06-04  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	A few more link updates (+ small edits in Commentary)
+
+2016-06-04  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Revert "Revert "Manually generate "recursive" autoloads for
+	subdirectories""
+
+2016-06-02  rocky  <rocky@gnu.org>
+
+	Update doc links
+
+2016-06-02  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Fix invalid references to realgud:loc-follow
+
+	`follow-mark' was introduced in
+	dcc152aa6aea8d201596750c1b69b63e57c4fd43, but a few references to
+	loc-follow had remained since then.
+
+	Also replace a few instances of (interactive "") with (interactive).
+
+	Fixes #91.
+
+2016-06-02  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add basic support for jumping
+
+2016-06-01  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add a C-u interface to break and clear
+
+	Prefix either command with C-u now  prompts for a line number in the 
+	current file, which prefixing with a numeric argument acts on that line.
+
+2016-06-01  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Further cleanup in cmds.el: remove unused arguments
+
+	Affected commands: kill, next-no-arg, repeat-last, restart, and shell.
+
+2016-06-01  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Clarify %p in documentation of expand-format
+
+	Also ensure %s formats nil as an empty string (for consistency with %p).
+
+2016-06-01  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #114 from rocky/default-hash
+
+	Further refactor cmds.el
+
+2016-06-01  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add a bit of padding around the logo to make GitHub happy
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Ensure that the Github organization logo is a square
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Further refactor cmds.el
+
+	Instead of passing a default template in each individual call, collect 
+	all default templates in a single hash.	 Take that opportunity to clean 
+	up the two 'cmd-*-no-args' implementations.
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Remove unwanted argument in call to cmd-run-command
+
+	(this is a leftover from d2b8d132388d18c0ce865a21eafc666ecb7d2b03)
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	New RealGUD logo
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Update screenshot
+
+2016-05-31  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Slightly shorten setup instructions in README
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Fix file-column-to-string in the presence of composed characters
+
+	(- (current-column) (length source-text)) is not necessarily a valid 
+	source position: indeed, when a line contains composed characters, these 
+	characters do not count towards column numbers; thus, the largest column 
+	on a line containing n characters can be < n, and thus the existing code 
+	could return negative column numbers.
+
+	Concrete example: starting trepan2 on a buffer created by the following 
+	snippet would cause realgud to crash:
+
+	    (with-current-buffer (get-buffer-create "*python-prettified*")
+	     (python-mode)
+	     (erase-buffer)
+	     (setq-local prettify-symbols-alist '(("in" . ?∈)))
+	     (insert "for x in [1,2,3]:\n    pass")
+	     (prettify-symbols-mode)
+	     (pop-to-buffer (current-buffer)))
+
+2016-05-30  rocky  <rocky@gnu.org>
+
+	Add some enable/disble patterns
+
+	Note: code for perl, zshdb and bashdb will work right only after the
+	next releases of these packages.
+
+2016-05-30  Amelio Vazquez-Reina  <amelio.vazquez.reina@gmail.com>
+
+	Update README.md
+
+	Expanded installation instructions.
+
+2016-05-30  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #111 from rocky/better-breakpoint-highlighting
+
+	Improve visibility of breakpoints
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Remove leftover debugging message
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve visibility of breakpoints
+
+	Default to a (larger) rectangle instead of a circle, and highlight full 
+	line on active breakpoints.
+
+	Addresses parts of the discussion in #102.
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Allow realgud-track-bp-delete to recognize multiple breakpoints
+
+2016-05-30  rocky  <rocky@gnu.org>
+
+	Alway late on this kind of thing.
+
+2016-05-30  rocky  <rocky@gnu.org>
+
+	Typo
+
+2016-05-30  rocky  <rocky@gnu.org>
+
+	Handle enable/disable bp status messages - 1st cut
+
+2016-05-30  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #106 from rocky/75-ipdb-completion
+
+	Improve IPDB completion
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve IPDB completion
+
+	Fail gracefully if point isn't at prompt, and get prefix from iPython 
+	instead of relying on bounds-of-thing-at-point.
+
+	Fixes #75.
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Rewrite README
+
+	Closes #72. Screenshot is auto-generated using etc/screenshot.el.
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add python3 shebang to fringe-utils.py
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Fill in missing bits of Cask file
+
+2016-05-30  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Simplify the implementation of realgud:cmdbuf-associate
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Show default buffer when automatically attaching
+
+2016-05-29  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #104 from rocky/36-auto-attach
+
+	Automatically attach to a command buffer when enabling short-key-mode
+
+2016-05-29  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2016-05-29  rocky  <rocky@gnu.org>
+
+	Update commentary; e.g. link to debuggers handled
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Automatically attach to a command buffer when enabling short-key-mode
+
+	When enabling short-key-mode in an orphan source buffer (i.e. one that 
+	isn't attached to a command buffer), prompt the user for a command 
+	buffer to attach to instead of complaining (and complain only if there 
+	is no available command buffer).
+
+	Additionally make shortkey-mode-setup more robust by restoring the 
+	original local map properly disabling the toolbar after exiting.
+
+	Closes #36; thanks for the suggestion!
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Minor docstring and code cleanups
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Use `buffer-live-p' instead of `buffer-name' in `buffer-killed?'
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Refactor and improve breakpoint UI
+
+	Improvements:
+
+	* Support non-graphical displays
+	* Properly handle multiple breakpoints on the same line
+	* Use fringes instead of margins to display breakpoint icons on
+	 graphical displays (customizable with realgud-bp-use-fringe)
+	* Let users set or disable breakpoints by clicking on the fringe or
+	 in the margin
+	* Make breakpoint fringe icons customizable, and default to a hollow
+	 circle for disabled breakpoints
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Ignore safe-mode setting when clicking a toolbar button
+
+2016-05-29  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Remove key argument of realgud:cmd-remap
+
+	This argument had strange semantics (hence the FIXME: the KEY argument 
+	would only be bound to the corresponding command after running the 
+	command once).
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add a few bindings to shortkey-mode
+
+	This is in preparation for refactoring cmds.el.	 All keys were picked 
+	from calls to cmd-remap.
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Prepare for refactoring of realgud-cmd
+
+	* all: remove (declare-function cmd-remap)
+	* perldb: Remove custom binding for backtrace
+	* nodejs: Remove custom bindings for backtrace.	 Remove rebinding of
+	 “break” and update hash instead.
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Rename realgud:prompt-if-{prefix-or-,}safe-mode
+
+	The if-prefix part was an unfortunate choice.
+
+2016-05-28  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Revert "Manually generate "recursive" autoloads for subdirectories"
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Manually generate "recursive" autoloads for subdirectories
+
+	Fixes #84
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Small fixes in cmds.el
+
+	- Fix docstring of cmd-shell
+	- Remove unused arg of cmd-terminate
+	- Remove a call to local-set-key that affected the current buffer when
+	 realgud was loaded
+
+2016-05-28  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #89 from cpitclaudel/87-improve-delete-command
+
+	Improve behavior of delete, enable, and disable
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add a "safe mode" setting (on by default)
+
+	In safe mode, prompt and offer a tip on how to disable safe mode before 
+	running "continue".
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Add a prefix arg to "continue" command
+
+	Without it, "c" now just continues without prompting. Discussed in #82.
+
+2016-05-28  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve behavior of delete, enable, and disable
+
+	Interactively, these three commands now disable, enable, or delete a 
+	breakpoint found on the current line, and only prompt for a breakpoint 
+	number if they can't find one.
+
+	This default behavior is overridden in two cases:
+
+	* When a numeric prefix argument is given, in which case they use that
+	 as the breakpoint number (consistent with current behavior)
+	* When a generic prefix argument is given, in which case they always
+	 prompt, but offer a breakpoint number on the current line as the
+	 default.
+
+	Closes #87.
+
+2016-05-27  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve eval: run on region if active, and fall back to prompting
+
+	Part of #83: makes C-c e in realgud:gdb-short-key-mode-map mostly 
+	redundant.
+
+2016-05-27  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Update IPDB in accordance with PDB
+
+2016-05-27  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve command mappings in pdb-command-hash
+
+	This fixes parts of issue #82.
+
+2016-05-25  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #81 from rocky/ipdb-complete
+
+	Ipdb complete
+
+2016-05-25  Clément Pit--Claudel	 <clement.pitclaudel@live.com>
+
+	Improve completion and default value in realgud-query-cmdline
+
+2016-05-24  rocky  <rocky@gnu.org>
+
+	fake realgud:run-process better
+
+2016-05-24  rocky  <rocky@gnu.org>
+
+	Towards fixing up tab completion in ipdb.
+
+2016-05-23  rocky  <rocky@gnu.org>
+
+	Fix wrong setq call
+
+	[Fixes #79]
+
+2016-03-05  rocky  <rocky@gnu.org>
+
+	Reinstate ipdb support
+
+2016-03-03  rocky  <rocky@gnu.org>
+
+	Disable ipdb until melpa is updated
+
+	debugger*/*.el: standardize more on emacs 24.3 test-regexp-ipdb.el:
+	squelch warnings
+
+2016-03-02  rocky  <rocky@gnu.org>
+
+	Bump version
+
+	* Accumulates lots of past changes
+	* removes a number of older debuggers in realgud-old-debuggers
+	* adds ipdb
+
+2016-02-29  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #74 from rocky/ipdb
+
+	Add ipdb support and remove some of the older debuggers
+
+2016-02-28  rocky  <rocky@gnu.org>
+
+	Merge branch 'ipdb' of https://github.com/seanfarley/emacs-dbgr into
+	ipdb
+
+	Conflicts:
+	realgud/debugger/Makefile.am
+
+2016-02-21  rocky  <rocky@gnu.org>
+
+	Move older, lesser-used debuggers to another repo
+
+2016-02-17  rocky  <rocky@gnu.org>
+
+	Remove stray character
+
+	Thanks, seanfarley!
+
+2016-02-16  Sean Farley	 <sean@farley.io>
+
+	ipdb: add regex test
+
+2016-02-16  Sean Farley	 <sean@farley.io>
+
+	ipdb: add test
+
+2016-02-14  rocky  <rocky@gnu.org>
+
+	Add rspec loc pattern..
+
+	.. in the never-ending battle of again location reporting originality
+
+	init.el: DRY
+
+2016-01-26  Sean Farley	 <sean@farley.io>
+
+	ipdb: add tab completion to track-mode
+
+2016-01-24  Sean Farley	 <sean@farley.io>
+
+	ipdb: add hook for completion to initialization
+
+2016-01-26  Sean Farley	 <sean@farley.io>
+
+	ipdb: add tab completion
+
+2016-02-12  Sean Farley	 <sean@farley.io>
+
+	ipdb: add new debugger based on pdb
+
+2016-01-10  rocky  <rocky@gnu.org>
+
+	Not sure why this initialization was there, but it is syntactically 
+	wrong anyway.
+
+2016-01-10  rocky  <rocky@gnu.org>
+
+	Fix bug in picking out short-key variable name introduced by recent
+	changes
+
+2016-01-10  rocky  <rocky@gnu.org>
+
+	More cleanup from last two commits.
+
+2016-01-10  rocky  <rocky@gnu.org>
+
+	Redo previous commit handle base-variable determination from debugger
+	name. We now do it via a hash table where entries are set in
+	<debugger>/init.el Cleanup of old code is still needed.
+
+2016-01-09  rocky  <rocky@gnu.org>
+
+	track.el: Allow us to separate stem variable name to get debugger config
+	from debugger name. This will make it easier
+
+2015-12-15  rocky  <rocky@gnu.org>
+
+	Add pytest error message pattern in python debuggers
+
+2015-12-15  rocky  <rocky@gnu.org>
+
+	Travis emacs doesn't do font-lock-ensure. Use older form for now
+
+2015-12-15  rocky  <rocky@gnu.org>
+
+	Add C-c ! d in a command buffer to get from a debugger location line in 
+	the command buffer to the corresponding source. Add 
+	realgud:goto-debugger-loc-line. Revise doc strings.
+
+2015-12-11  rocky  <rocky@gnu.org>
+
+	Add ability to have alternate group location file and line numbers.
+
+	This is for perldb's all-over-the place location reporting.
+
+	perldb.el: adjust locations for perldb's complicated location regexps.
+	Probably broke debug output for older perldb, and probably slightly
+	improved it for current perldb.
+
+	remove various compiler warnings.
+
+2015-12-06  rocky  <rocky@gnu.org>
+
+	Last commit set wrong variables
+
+2015-12-06  rocky  <rocky@gnu.org>
+
+	Use quit! in python trepan debuggers
+
+2015-12-04  rocky  <rocky@gnu.org>
+
+	Add Kilian
+
+2015-12-04  rocky  <rocky@gnu.org>
+
+	Try to tidy badges a little
+
+2015-12-04  Kilian Kilger  <kkilger@gmail.com>
+
+	Fix several issues when calling gdb, Fixes #59
+
+2015-12-03  rocky  <rocky@gnu.org>
+
+	Change fringe arrow background colors based on dark or light background.
+
+2015-11-28  rocky  <rocky@gnu.org>
+
+	Don't try source buffer initialization if it doesn't exist. That just
+	creates a new buffer. Fixes #60
+
+2015-11-27  rocky  <rocky@gnu.org>
+
+	Partially addresses #61. Handling multiple breakpoints on a line still 
+	remains.
+
+2015-11-26  rocky  <rocky@gnu.org>
+
+	init.el: break and clear command use %X rather than %l Add some support
+	functions for invoking via gdb -p. Fixes issue #58
+
+2015-11-23  rocky  <rocky@gnu.org>
+
+	Typo
+
+2015-11-23  rocky  <rocky@gnu.org>
+
+	Go over perldb init re's. Attempt smaller cleanup of tests and note how 
+	to run non-interactively inside emacs.
+
+2015-11-23  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2015-11-23  rocky  <rocky@gnu.org>
+
+	A workaround: reinitialize shell mode when going out of
+	realgud-track-mode
+
+2015-11-22  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2015-11-22  rocky  <rocky@gnu.org>
+
+	Add melpa (nonstable) tag
+
+2015-11-21  rocky  <rocky@gnu.org>
+
+	Error on realgud:cmdbuf-associate if you assocate a non-command buffer. 
+	TODO: only suggest cmdbuf buffers.
+
+2015-11-21  rocky  <rocky@gnu.org>
+
+	realgud-exec-shell: Make sure we switch to cmdbuf even when there is an 
+	error. gdb.el: insert set-annotate only if process is running.
+
+2015-11-15  rocky  <rocky@gnu.org>
+
+	I said remove perl5db as an alias
+
+2015-11-11  rocky  <rocky@gnu.org>
+
+	Try cask
+
+2015-11-10  rocky  <rocky@gnu.org>
+
+	perl5db alias messes up realgud-track-mode, so drop that name.
+
+2015-11-02  rocky  <rocky@gnu.org>
+
+	wrong args in jdb invocation; issue #51. Disable some jdb commands we 
+	can't support.
+
+2015-10-25  rocky  <rocky@gnu.org>
+
+	Show failure in message and in cmdbuf when we fail to invoke a debugger
+
+2015-10-17  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2015-10-17  rocky  <rocky@gnu.org>
+
+	Try flycheck on this file.
+
+2015-10-06  rocky  <rocky@gnu.org>
+
+	Typo: Issue #45
+
+2015-07-29  rocky  <rocky@gnu.org>
+
+	Add realgud:pdb-remote for remote kinds of pdb execution, e.g. telnet 
+	hostname port-number. This hasn't been tested.
+
+2015-07-19  rocky  <rocky@gnu.org>
+
+	Fix typo poined out by dfelch.
+
+2015-06-05  rocky  <rocky@gnu.org>
+
+	Doc gdb regexp more.
+
+2015-05-17  rocky  <rocky@gnu.org>
+
+	Python trepan debuggers include instruction offset in location
+
+2015-05-06  rocky  <rocky@gnu.org>
+
+	trepanjs backtrace format changes next release
+
+2015-05-04  rocky  <rocky@gnu.org>
+
+	Revise trepanjs regexps and add regexp test.
+
+2015-04-30  rocky  <rocky@gnu.org>
+
+	DRY gub init captured numbered re's.
+
+2015-04-29  rocky  <rocky@gnu.org>
+
+	trepanjs location format has changed
+
+2015-04-29  rocky  <rocky@gnu.org>
+
+	Administrivia
+
+2015-04-28  rocky  <rocky@gnu.org>
+
+	trepanjs msg change: stop in -> call in
+
+2015-04-28  rocky  <rocky@gnu.org>
+
+	gdb: DRY captured number uses.
+
+2015-04-28  rocky  <rocky@gnu.org>
+
+	core.el: correct trepanjs options init.el: we can have "stop on" as well
+	as "break on" or "execption on"
+
+2015-04-26  rocky  <rocky@gnu.org>
+
+	caddr -> cl-caddr. Fill in %s on format.
+
+2015-04-26  rocky  <rocky@gnu.org>
+
+	bang on trepanjs and nodejs. cmds.el: Allow for debug commands not to be
+	implemented
+
+2015-04-24  rocky  <rocky@gnu.org>
+
+	DRY with respect to realgud:regexp-captured-num
+
+2015-04-24  rocky  <rocky@gnu.org>
+
+	trepanjs: handle eval properly test/gcd.js: more useful
+
+2015-04-23  rocky  <rocky@gnu.org>
+
+	posix-shell.el: sometimes I can't use (format) rest: More FSF copyrights
+
+2015-04-23  rocky  <rocky@gnu.org>
+
+	DRY realgud:regexp-capture-num and add more FSF copyrights
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	init.el: bracketed short name is optional
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	trepanjs/init.el: handle newly added fully-qualified paths 
+	common/regexp.el: start to DRY regexps lang/js.el: term escape is common
+	to nodejs and trepanjs
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	Remove node asci schmutz. put in lang/js.el Add more FSF copyrights
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	Revert "Squelch one of the many compiler warnings"
+
+	This reverts commit b8d8686a88429fb4d1fc603979b6574218ae858e.
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	Squelch one of the many compiler warnings
+
+2015-04-22  rocky  <rocky@gnu.org>
+
+	Start js lang. add js backtrace regexp
+
+2015-04-21  rocky  <rocky@gnu.org>
+
+	Correct nodejs/init.el bugs - sync with master
+
+2015-04-21  rocky  <rocky@gnu.org>
+
+	Add trepanjs
+
+2015-04-17  rocky  <rocky@gnu.org>
+
+	More copyright assignments to FSF
+
+2015-04-17  rocky  <rocky@gnu.org>
+
+	core.el: remove duplicate command buffer creation test-gdb.el: nuke
+	possibly a dubious gdb invocation
+
+2015-04-13  rocky  <rocky@gnu.org>
+
+	Make sure we go into realgud-track mode when we have custom mode hooks.
+	Issue #42.
+
+2015-04-10  rocky  <rocky@gnu.org>
+
+	backtrace.el: fix some bugs and remove some warnings posix-shell.el:
+	remove python constants nodejs/init.el Add backtrace regexp to nodejs 
+	Add more FSF copyrights
+
+2015-04-02  rocky  <rocky@gnu.org>
+
+	Update README.md to note that we can use in eshell
+
+2015-04-01  rocky  <rocky@gnu.org>
+
+	Small error message grammar correction
+
+2015-03-31  rocky  <rocky@gnu.org>
+
+	Respect shortkey mode setting Add FSF copyright
+
+2015-03-31  rocky  <rocky@gnu.org>
+
+	DRY Comment no longer relvant
+
+2015-03-31  rocky  <rocky@gnu.org>
+
+	Fix downcase.
+
+2015-03-30  rocky  <rocky@gnu.org>
+
+	Need more stringent cmdbuf setup
+
+2015-03-30  rocky  <rocky@gnu.org>
+
+	Simplify eshell/comint/shell mode testing.
+
+	Thanks to pythonnut: http://emacs.stackexchange.com/users/2642/pythonnut 
+	http://emacs.stackexchange.com/questions/10387/how-can-i-tell-if-a-buffer-is-a-comint-buffer-eshell-buffer-or-neither/10390?iemail=1&noredirect=1#10390
+
+2015-03-29  rocky  <rocky@gnu.org>
+
+	Minimal support for running under eshell More FSF copyrights
+
+2015-03-28  rocky  <rocky@gnu.org>
+
+	eval.el: issue #40 More FSF copyright assignment
+
+2015-03-28  rocky  <rocky@gnu.org>
+
+	More FSF copyright assignments. Include mode-map bindings in mode-map
+	variables
+
+2015-03-28  rocky  <rocky@gnu.org>
+
+	Try to fix travis #3
+
+2015-03-28  rocky  <rocky@gnu.org>
+
+	Try to fix travis #2
+
+2015-03-28  rocky  <rocky@gnu.org>
+
+	Fix logic for finding region to work on in tracking Possibly fixes issue
+	#40.
+
+2015-03-02  rocky  <rocky@gnu.org>
+
+	Reassign copyright to FSF in recently change files
+
+2015-03-02  rocky  <rocky@gnu.org>
+
+	gdb's "eval" is "print".
+
+2015-02-27  rocky  <rocky@gnu.org>
+
+	Make realugd:process-filter-save buffer local
+
+2015-02-27  rocky  <rocky@gnu.org>
+
+	Bind RET in shortkey to repeat-last; add FSF (C)
+
+2015-02-18  rocky  <rocky@gnu.org>
+
+	Work on filtering eval output
+
+2015-02-17  rocky  <rocky@gnu.org>
+
+	Move test helper into test
+
+2015-02-17  rocky  <rocky@gnu.org>
+
+	Remove another warning
+
+2015-02-17  rocky  <rocky@gnu.org>
+
+	In pdb, for to evaluate an expression use "p"
+
+2015-02-17  rocky  <rocky@gnu.org>
+
+	Experimental: mouse2 runs eval
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	Fix breakage from changing from realgud:string-starts-with to
+	string-prefix-p
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	realgud:string-starts-with -> string-prefix-p. Thanks to Stefan Monnier
+	for pointing this out.
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	Add interactive command realgud:cmdbuf-associate to associate a
+	source-code buffer with a command buffer. Probably not good enough, bujt
+	it's a start.
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	Separate utility functions into its own file
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	Add GPL COPYING file
+
+2015-02-13  rocky  <rocky@gnu.org>
+
+	Remove dependency on list-utils
+
+2015-02-11  rocky  <rocky@gnu.org>
+
+	A couple of trepan bugs.
+
+2015-02-07  rocky  <rocky@gnu.org>
+
+	find-file-noselect is a function, not a variable
+
+2015-02-07  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2015-02-07  rocky  <rocky@gnu.org>
+
+	core: don't try to load into a buffer an ELF binary backtrace.el: fix
+	parameter count mismatch
+
+2015-02-04  rocky  <rocky@gnu.org>
+
+	Small change: realgud-window-bt -> realgud:window-bt
+
+2015-01-26  rocky  <rocky@gnu.org>
+
+	In backtrace buffer create location structure after parsing lines. This
+	information will be used instead of running a "frame" command. Add
+	realgud:backtrace-describe
+
+2015-01-25  rocky  <rocky@gnu.org>
+
+	Dry trepan2/trepan3 and zshdb/bashdb code by putting more common code in
+	the lang files.
+
+2015-01-25  rocky  <rocky@gnu.org>
+
+	Work on trepan.pl backtrack patterns
+
+2015-01-25  rocky  <rocky@gnu.org>
+
+	DRY python trepan regexps. Add trepan3k regexp test.
+
+2015-01-25  rocky  <rocky@gnu.org>
+
+	follow.el loc..el: common routine mouse events to key off of text
+	properties for files, frames and marks. backtrace: Bang more on
+	backtrace buffer. Work on trepan2 backtrace regexp. Better trepan2
+	regexp testing.
+
+2015-01-25  rocky  <rocky@gnu.org>
+
+	init.el: Need minimum match in backtrace regexps. backtrace.el: need to
+	work off of unhighlighed strings
+
+2015-01-24  rocky  <rocky@gnu.org>
+
+	Remove coderwall endorse
+
+2015-01-24  rocky  <rocky@gnu.org>
+
+	Try not to delete prompot in diverting output. Add backtrack regexp for
+	trepan2 and trepan3k (will go into next release)
+
+2015-01-24  rocky  <rocky@gnu.org>
+
+	test/gcd.py: allow it to work on python3. trpean3k/init.el: fix prompt
+	pattern and allow backtrace, although this doesn't work properly.
+
+2015-01-22  rocky  <rocky@gnu.org>
+
+	Mostly add backtrace pattern for trepan2. Attempt to customize
+	backtrack/backtrace menus.
+
+2015-01-20  rocky  <rocky@gnu.org>
+
+	Back off realgud:loc-marker -> realgud-loc-marker. Didn't catch all
+	uses.
+
+2015-01-20  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2015-01-20  rocky  <rocky@gnu.org>
+
+	Start info mode as a derived mode off of org-mode. backtrace*.el Add
+	short keys to Info and quit in backtrace. Start buffer name with
+	*Backtrace.
+
+2015-01-19  rocky  <rocky@gnu.org>
+
+	mouse button in backtrace buffer works now. Name of buffer change to
+	start with *Backtrace
+
+2015-01-18  rocky  <rocky@gnu.org>
+
+	loc.el: Resolve problem where displayed window was not updating
+	goto-char location. window.el: simplify logic using loc code. test-*:
+	reduce more warnings
+
+2015-01-18  rocky  <rocky@gnu.org>
+
+	Redo debugger describe info as Org mode (from markdown mode)
+
+2015-01-18  rocky  <rocky@gnu.org>
+
+	Better tagging of filenames and marks inside command info describe.
+	We're now formatting this as markdown too. Thanks to wasamasa for the
+	suggestion to use buttons.el
+
+2015-01-18  rocky  <rocky@gnu.org>
+
+	Start to add text properties to command buffer description
+
+2015-01-17  rocky  <rocky@gnu.org>
+
+	Don't update history ring if source location position is the same as the
+	last position entered.
+
+2015-01-17  rocky  <rocky@gnu.org>
+
+	Save source text in location in for perldb and trepan.pl. Wrong
+	minibuffer-history variable name in perldb. Beef up regexp testing in
+	test-regexp-perldb. Same needs to be done in test-regexp-trepanp. 
+	require-relative -> load-relative (which is the right name)
+
+2015-01-17  rocky  <rocky@gnu.org>
+
+	Add ability to go back up to 9 places in history with number keys. "u"
+	and "d" shortkey binding messed up.
+
+2015-01-13  rocky  <rocky@gnu.org>
+
+	Add tool-bar. realgud-cmd- -> realgud:cmd-
+
+2015-01-13  rocky  <rocky@gnu.org>
+
+	Add NYC Emacs Meetup and Nicolas Dudebout
+
+2015-01-13  rocky  <rocky@gnu.org>
+
+	gdb: wasn't getting into mode correctly menu.el: up/down mixed up again 
+	jdb/file.el: should have added this a while ago
+
+2015-01-12  rocky  <rocky@gnu.org>
+
+	Better last-resort values for script to debug? Use cmd-name which many
+	times is written in the language the debugger accepts.
+
+2015-01-12  rocky  <rocky@gnu.org>
+
+	menu.el: add menu item for debugger information debugger/*.el wasn't
+	setting up track-mode properly.
+
+2015-01-10  rocky  <rocky@gnu.org>
+
+	Add key for "until". Disable shortkey commands that aren't relevant for
+	source or command buffers. Reduce compile warnings in tests.
+
+2015-01-08  rocky  <rocky@gnu.org>
+
+	Remove duplicate signal menu in shell, yet again. test-* remove compiler
+	warnings and correct a wrong variable it found.
+
+2015-01-08  rocky  <rocky@gnu.org>
+
+	remake: correct invocation. rest: respect custom variable
+	debugger-command-name
+
+2015-01-08  rocky  <rocky@gnu.org>
+
+	Think I now have debugger, and comint menus (signal, in/out.._)
+	appearing only once now. Remove some more compile warnings and fix a bug
+	it found in trepan/core.pl.
+
+2015-01-08  rocky  <rocky@gnu.org>
+
+	More robust zshdb and bashdb test: make outside variable buffer-local
+	for more replicable results
+
+2015-01-07  rocky  <rocky@gnu.org>
+
+	core.el: consider buffers with the right mode in suggest-invocation.
+	*shdb/core.el: The right mode is sh(-mode), not Shell-Script which is 
+	what is displayed.
+
+2015-01-07  rocky  <rocky@gnu.org>
+
+	Remove mode hook from run-debugger call. Remove some  __FILE__ warnings
+	in tests.
+
+2015-01-06  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+	Conflicts:
+	realgud/debugger/kshdb/kshdb.el
+
+2015-01-06  rocky  <rocky@gnu.org>
+
+	Start to redo our use of mode maps in order to reduce duplication in
+	menu bar.Thanks to Nicolas Dudebout and then New York Emacs Meetup for
+	help and pointing me in the right direction.
+
+2015-01-03  rocky  <rocky@gnu.org>
+
+	Cut-and-paste Typo in hash name.
+
+2015-01-03  rocky  <rocky@gnu.org>
+
+	Add Go language traceback pattern
+
+2015-01-02  rocky  <rocky@gnu.org>
+
+	Had a stupid bug, wrong variable name,	in trepan.pl transformation.
+
+2014-12-31  rocky  <rocky@gnu.org>
+
+	Add realgud:gdb-executable: attempt to see if a file is a binary using
+	the "file" command.
+
+2014-12-31  rocky  <rocky@gnu.org>
+
+	Travis doesn't have emacs24 without sudo yet. Reinstate sudo.
+
+2014-12-31  rocky  <rocky@gnu.org>
+
+	Try docker non-sudo testing
+
+2014-12-31  rocky  <rocky@gnu.org>
+
+	Redo realgud:gdb-suggest-invocation
+
+2014-12-30  rocky  <rocky@gnu.org>
+
+	Need to back off of stripping filename extensions from trepan.pl.
+
+2014-12-28  rocky  <rocky@gnu.org>
+
+	Remove zsh name references
+
+2014-12-28  rocky  <rocky@gnu.org>
+
+	helper.el: in debugger-name transformation use basically the basename
+	without the extension. kshdb.el: realgud-run-process ->
+	realgud:run-process
+
+2014-12-27  rocky  <rocky@gnu.org>
+
+	When checking debugger use just the suffix. Could also try something 
+	like basename sans prefix.
+
+2014-12-24  rocky  <rocky@gnu.org>
+
+	realgud-run-process -> realgud:run-process
+
+2014-12-22  rocky  <rocky@gnu.org>
+
+	Need to transform "tortoise" into "gub" for realgud:track-set-debugger
+
+2014-12-17  rocky  <rocky@gnu.org>
+
+	Administrivia to make in stable Melpa work. realgud.el: update version
+	numbers Makefile.am: remove duplicate code that snuck in. remove
+	ChangeLog before remaking
+
+2014-12-16  rocky  <rocky@gnu.org>
+
+	Bump version and add melpa stable badge
+
+2014-12-16  rocky  <rocky@gnu.org>
+
+	Release 1.0
+
+2014-11-22  rocky  <rocky@gnu.org>
+
+	With recent find-file additon to trepan, the test needs now to load
+	trepan/core.el
+
+2014-11-22  rocky  <rocky@gnu.org>
+
+	strip leading (and trailing) blanks in trepan and trepan2 for their
+	respective find files. Correct trepan2's call to
+	realgud-file-loc-from-line. trepan now has its own find-file. Adjust
+	some tests for current conditions.
+
+2014-11-19  rocky  <rocky@gnu.org>
+
+	Do a little better about saving column position information by stripping
+	blanks and saving the column number in the position. The fringe arrow
+	however still messes moving the column to something other than 0.
+
+2014-11-18  rocky  <rocky@gnu.org>
+
+	gdb: Guard against buffer-file-name returning nil
+
+2014-11-16  rocky  <rocky@gnu.org>
+
+	helper.el: transform jdb to realgud:jdb core.el: use langauge-specific
+	extensions in compilation-find-file track-mode.el: remove defvaralias
+	for now.
+
+2014-11-16  rocky  <rocky@gnu.org>
+
+	Bugs, bugs, bugs: file.el: wasn't passing filename on callback. 
+	track.el: stop ansi colors from source string core.el: wrong else
+	nesting, wrong signature for realgud-file-loc-from-line track-mode.el:
+	alias variable workaround test-regexp-gdb.el: reduce warnings
+
+2014-11-15  rocky  <rocky@gnu.org>
+
+	{trepan2,jdb}/{core,init}.el: Start adding debugger-specific find-file
+	routines. jdb needs it the most. trepan2 we are trying out now. Add
+	debugger-specific file remaping hashes. test/*.el: reduce warnings.
+
+2014-11-15  rocky  <rocky@gnu.org>
+
+	Correct jdb backtrace location pattern
+
+2014-11-15  rocky  <rocky@gnu.org>
+
+	better prompt matching. Fix some track-mode handling bugs.
+
+2014-11-14  rocky  <rocky@gnu.org>
+
+	realgud.el: Add autoloads for jdb. jdb/track-mode: add realgud: prefix
+	to mode map vars test/*: reduce warnings
+
+2014-11-14  rocky  <rocky@gnu.org>
+
+	Update commentary.
+
+2014-11-13  rocky  <rocky@gnu.org>
+
+	More work on jdb. Track source text and make track-mode work.
+
+2014-11-13  rocky  <rocky@gnu.org>
+
+	common/track.el realgud-track-loc: correct if/else nesting 
+	core.eljdb.el: Use gud filename resolution via classpath gdb.el,jdb.el:
+	reduce warnings treapn.pl: preface mode variables with realgud:trepanpl
+	rather than trepanpl remove variable access error.
+
+2014-11-12  rocky  <rocky@gnu.org>
+
+	Merge branch 'jdb'
+
+2014-11-12  rocky  <rocky@gnu.org>
+
+	First semblance of a working jdb debugger interface.
+
+2014-11-12  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' into jdb
+
+	Conflicts:
+	realgud/debugger/jdb/init.el
+	realgud/debugger/zshdb/init.el
+
+2014-11-06  rocky  <rocky@gnu.org>
+
+	bashdb, zshdb: correct setting cmd-hash. realgud-cmd-remap key is
+	optional.
+
+2014-11-06  rocky  <rocky@gnu.org>
+
+	Track trepan2 source code lines
+
+2014-11-06  rocky  <rocky@gnu.org>
+
+	Sync zshdb with bashdb. Get column numbers from source text if we can.
+
+2014-11-06  rocky  <rocky@gnu.org>
+
+	run.el: remove stray character in error message zshdb: fix some stray
+	typos, allow saving source code text.
+
+2014-11-06  rocky  <rocky@gnu.org>
+
+	Strip out ansi color codes when saving source text.
+
+2014-11-05  rocky  <rocky@gnu.org>
+
+	Match on bashdb source text if that is there
+
+2014-11-05  rocky  <rocky@gnu.org>
+
+	Match on bashdb source text if that's there.
+
+2014-11-01  rocky  <rocky@gnu.org>
+
+	track.el: "Unable to match.." message was wrong. Deal with no source-str
+	better
+	/init.el: start adding clear command send.el: start to add class name
+	for upcoming jdb
+
+2014-11-01  rocky  <rocky@gnu.org>
+
+	track.el: "Unable to match.." message was wrong. Deal with no source-str
+	better
+	/init.el: start adding clear command send.el: start to add class name
+	for jdb
+
+2014-10-14  rocky  <rocky@gnu.org>
+
+	regexp.el: add field for class name, and stop event command.el: add
+	callback to get parse location info. Needed for java trepan2,trepan3k:
+	note that <string> is a pseudo-fiile jdb: closer, but not functional
+	yet.
+
+2014-10-13  rocky  <rocky@gnu.org>
+
+	First cut at dealing with jdb
+
+2014-09-25  rocky  <rocky@gnu.org>
+
+	remake/init.el: Try source line tracking
+	*: realgud-track-from-region -> realgud:track-from-region track.el:
+	correct garbled message to something grammatically correct but sometimes
+	still garbled.
+
+2014-09-24  rocky  <rocky@gnu.org>
+
+	Start storing source text in location structures. Use this for seeing if
+	we are out of sync with the source.
+
+2014-09-17  rocky  <rocky@gnu.org>
+
+	Add key bindings for realgud:goto-lang-backtrace-line and
+	realgud:goto-debugger-backtrace-line to trepan-track-mode.
+
+2014-09-14  rocky  <rocky@gnu.org>
+
+	More aggressive about clearing source-buffer marks on termination. More
+	realgud- -> realgud: name changes. Try to remove more warnings
+
+2014-08-31  rocky  <rocky@gnu.org>
+
+	Correct name of trepan2 minibuffer history variable
+
+2014-08-26  rocky  <rocky@gnu.org>
+
+	A better (but still not ideal) realgud:gdb-suggest-invocation
+
+2014-08-26  rocky  <rocky@gnu.org>
+
+	helper.el: add realgud:debugger-name-transform to adjust between the
+	descrepancies between our internal debugger-name prefix and the real
+	debugger name bp.el an "if" was previously erroreously translated into
+	"when" shortkey.el: use realgud:debugger-name-transform gdb.el: missing
+	a parameter on realgud:run-process
+
+	See also issue #31.
+
+2014-08-20  rocky  <rocky@gnu.org>
+
+	realgud-track-set-debugger->realgud:track-set-debugger.	 Namespace one
+	command-name at a time. track.el: remove undeclared fn warnings.
+
+2014-08-16  rocky  <rocky@gnu.org>
+
+	Makefile.am: more .PHONY targets. Set realgud:trepan-command-name
+
+2014-08-03  rocky  <rocky@gnu.org>
+
+	realgud:kill-buffer-hook : Only terminate if we are in a command buffer.
+	Don't do anything for killing source buffers.
+
+2014-08-03  rocky  <rocky@gnu.org>
+
+	Work around "trepan-short-key-mode-map undefined problem in
+	tests-srcbuf; add yet another definition in fringe to make a warning go
+	away
+
+2014-08-03  Nikolay Martynov  <mar.kolya@gmail.com>
+
+	Clean things up when debugger buffer is killed
+
+	When debugger buffer is killed with C-x k the buffer is already gone by
+	the time we get to 'realgud-term-sentinel' and cleanup didn't happen.
+
+	This patch adds kill-buffer-hook that cleans things up before buffer is
+	gone.
+
+2014-08-03  Nikolay Martynov  <mar.kolya@gmail.com>
+
+	Do not enable short key mode if debugger is not running
+
+	If debugger is not running short key mode should not be enabled and
+	variable that says that is is enabled should not be set.
+
+	This fixes the problem when desktop module restores shortkey mode of
+	long gone debuggers.
+
+2014-07-27  rocky  <rocky@gnu.org>
+
+	Remove last vestiges of use of "dbgr" in doc strings and a couple of
+	defcustom group fixes
+
+2014-07-27  rocky  <rocky@gnu.org>
+
+	Commands to associate a source buffer to a command buffer and vice
+	versa.
+
+2014-07-26  rocky  <rocky@gnu.org>
+
+	Go over customization groups and add realgud: namespace. Assume a
+	minimum of Emacs 24 now
+
+2014-07-26  rocky  <rocky@gnu.org>
+
+	nodejs.el: remove nodejs alias since nodejs is a command in nodejs-repl. 
+	Ignore npmp-debug.log. Corret nodejs minibuffer variable name. zshdb.el:
+	correct name for location of zshdb-track-mode gcd.js: make interactive
+	which forces us to stop.
+
+2014-07-26  rocky  <rocky@gnu.org>
+
+	nodejs/core.el: Add nodemon as an acceptable debugger name for nodejs
+	*/core.el: customize-... -> realgud:customize-...
+
+2014-07-25  rocky  <rocky@gnu.org>
+
+	defcustom names use realgud: prefix, e.g. realgud:pdb instead of pdb. 
+	realgud-track-mode-{enable,disable} ->
+	realgud:track-mode-{enable,disable}.
+
+2014-07-25  rocky  <rocky@gnu.org>
+
+	lochist.el: loc ation indexing was off by one (is zero origin) and we
+	were testing out of bounds after access. track-mode.el: remove undefined
+	function warnings. Don't go in to comint-mode if we are already in
+	comint mode.
+
+2014-07-21  rocky  <rocky@gnu.org>
+
+	Make rdebug more like the others: use realgud:run-debugger and set name
+	realgud:rdebug. In debugger docstrings, mention realgud:expand-with-file
+	rather than expand-with-file.
+
+2014-07-12  rocky  <rocky@gnu.org>
+
+	Debugger name in test changed: realgud:trepanpl -> realgud:trpan.pl
+
+2014-07-12  rocky  <rocky@gnu.org>
+
+	Properly set the minibuffer history for each debugger.
+
+2014-07-09  rocky  <rocky@gnu.org>
+
+	DRY/fix debugger invocation code. This time, mostly for remake and gdb
+
+2014-07-07  rocky  <rocky@gnu.org>
+
+	Fix up pydbgr and remake somewhat for recent changes
+
+2014-07-06  rocky  <rocky@gnu.org>
+
+	Guard more against bad data and set test to better reflect incomplete
+	data. Should fix test-trepanpl test
+
+2014-07-06  rocky  <rocky@gnu.org>
+
+	trepanpl.el: experiment in setting the debugger-specific minibuffer
+	history.
+
+2014-07-06  rocky  <rocky@gnu.org>
+
+	run.el: run realgud-track-set-debugger after creating a new command
+	buffer. make-rb-check-filter.rb: was failing in non-unicode strings
+	(Elisp byte-compile code) when run with Ruby 1.9. rest: remove more
+	warnings.
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	DRY perldb and regularize debugger code more.
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Update copyright for this year on recently changed files
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Go over trepan2 and trepan3k to DRY top-level command and expand script
+	names
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Small bug in trepan.pl parsing
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	DRY top-level invocation realgud:trepan. Only expand trepan.pl's script
+	name if expansion finds the file. Otherwise, leave unchanged. core.el:
+	add reaglud:expand-file-name-if-exists
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Fix bugs in realgud-exec shell and nodejs-test.
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Small bashdb doc changes
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	Remove FIXME comment
+
+2014-07-04  rocky  <rocky@gnu.org>
+
+	DRY nodejs top-level command with newly-created realgud:run-debugger.
+	Improve bashdb parsing to handle bash --debugger variant. Improve error
+	messages when a shell command invoking a debugger fails
+
+2014-07-03  rocky  <rocky@gnu.org>
+
+	Start to DRY top-level debugger run code.
+
+2014-07-01  rocky  <rocky@gnu.org>
+
+	Add Filename expansion on nodejs script name
+
+2014-06-30  rocky  <rocky@gnu.org>
+
+	Expand path elements in zshdb
+
+2014-06-30  rocky  <rocky@gnu.org>
+
+	Expand path-like elements in trepan.pl. Use trepan.pl command parsing
+	routine more fully now.
+
+2014-06-30  rocky  <rocky@gnu.org>
+
+	Expand path elements in bashdb
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	Change leading - to : for namespace separation more
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	Correct docstring for pdb-parse-args
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	pdb.el: Expand script name in pdb via pdb parseing routine. rest: this
+	Adds a dependency on the list-utils package for list-utils-flatten
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	Make sure we keep separate two invocations that cannonicalize to the
+	same command buffer. For example "bashdb /etc/profile" and "bashdb
+	/tmp/profile" will canonicalize to buffer
+	"*bashdb profile shell*", but these must remain distinct. We uniquify
+	the former buffer.
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	More ignore
+
+2014-06-29  rocky  <rocky@gnu.org>
+
+	source.el: Remove srcbuf-describe in source which was duplicated in
+	helper. Remove a compiler warning for buffer-killed? core.el: Add
+	debugger name in error a comint shell error message rest: Use colon (:)
+	for package delimiter on some "describe" functions.
+
+2014-06-28  rocky  <rocky@gnu.org>
+
+	Mostly minor doc changes on top-level debugger invocation. TODO: add an
+	auxiliary function to realgud-run-process that can handle interpreter
+	(perl, python, ruby) + debugger name or just debugger name
+
+2014-05-12  rocky  <rocky@gnu.org>
+
+	Use json to show command remap hash. Document fake-output-filter(process
+	string.
+
+2014-05-11  rocky  <rocky@gnu.org>
+
+	Use realgud:*debugger* rather than realgud-*debugger* for remaining
+	debuggers.
+
+2014-05-10  rocky  <rocky@gnu.org>
+
+	Go over remake and gdb
+
+2014-05-10  rocky  <rocky@gnu.org>
+
+	Work on zshdb and gdb for newer naming conventions
+
+2014-05-10  rocky  <rocky@gnu.org>
+
+	start to use : to separate pacakge from reset. e.g.k realgud-trepan ->
+	realgud:trepan
+
+2014-04-05  rocky  <rocky@gnu.org>
+
+	shortkey has to nuke its local map when going out of shortkey-mode.
+
+2014-03-31  rocky  <rocky@gnu.org>
+
+	Add backtrace to zshdb
+
+2014-03-31  rocky  <rocky@gnu.org>
+
+	shortkey.el: remove '.' from mode var name (for trepan.pl). remake: misc
+	fixes and add backtrace cmds.el: correct docstring for
+	realgud-cmd-backtrace nodejs/init.el: correct regexp for brkpt-set 
+	trepan.pl, perldb: correct langauge used.
+
+2014-03-30  rocky  <rocky@gnu.org>
+
+	Go over specific short-key-mode maps. Had to nuke realgud- prefix in
+	some cases. Add shortkey T for backtrace.
+
+2014-03-30  rocky  <rocky@gnu.org>
+
+	Reduce warnings
+
+2014-03-29  rocky  <rocky@gnu.org>
+
+	nodejs/core.el: match js-mode properly on file recommendations. lang.el:
+	use when and unless better. realgud.el: force a load ao custom.el
+
+2014-03-29  rocky  <rocky@gnu.org>
+
+	Forgot to pull in node.js debugger code.
+
+2014-03-28  rocky  <rocky@gnu.org>
+
+	Some small fixes.
+
+2014-03-28  rocky  <rocky@gnu.org>
+
+	Hook in nodejs.
+
+2014-03-28  rocky  <rocky@gnu.org>
+
+	Work on nodejs debug invocation. gdb fixes.
+
+2014-03-28  rocky  <rocky@gnu.org>
+
+	Can't use snapshot. I don't think we need to pull in emacswiki
+
+2014-03-28  rocky  <rocky@gnu.org>
+
+	Try emacs snapshot
+
+2014-03-27  rocky  <rocky@gnu.org>
+
+	Merge commit 'd02a47b' into nodejs
+
+2014-03-26  rocky  <rocky@gnu.org>
+
+	Add test of new function get-short-key-mode-map
+
+2014-03-26  rocky  <rocky@gnu.org>
+
+	core.el: qualify names with realgud- more often track-mode.el: add
+	routine to filter extraneous ansi escape sequences in "node debug".
+
+2014-03-26  rocky  <rocky@gnu.org>
+
+	Make sure custom.el gets pulled in.
+
+2014-03-26  rocky  <rocky@gnu.org>
+
+	shortkey.el: Allow for shortkey mode to be custom to the particular
+	debugger. cmds.el: Add no-arg versions of step and next perldb: typo in
+	variable name. But more work is needed.
+
+2014-03-25  rocky  <rocky@gnu.org>
+
+	A couple more "declare-function"s
+
+2014-03-24  rocky  <rocky@gnu.org>
+
+	Sync with master branch
+
+2014-03-24  rocky  <rocky@gnu.org>
+
+	More conversion
+
+2014-03-24  rocky  <rocky@gnu.org>
+
+	Get source location tracking working. Short-mode keys still need a bit
+	of work.
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	Start to handle nodejs debugger. Not nearly done though.
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	Better return value on prompt-match()
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	Comments reflected Ruby inheritence. Simplify regexp.
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	Went too far last if->when commit.
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	(if ... (progn ...)) => (when ... ) where appropriate.
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	One more package doc change
+
+2014-03-23  rocky  <rocky@gnu.org>
+
+	Finish and Beef up track-mode docstrings. Remove more warnings
+
+2014-03-22  rocky  <rocky@gnu.org>
+
+	Add key bindings track-mode doc -- up to debugger pydbgr; the other
+	debuggers I still need to do.
+
+2014-03-21  rocky  <rocky@gnu.org>
+
+	One more URL tag.
+
+2014-03-21  rocky  <rocky@gnu.org>
+
+	Need to add URL to docstring URLs
+
+2014-03-21  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2014-03-21  rocky  <rocky@gnu.org>
+
+	Improve package documentation
+
+2014-03-19  rocky  <rocky@gnu.org>
+
+	debugger/<name>/<name>.el Group name changed from dbgr to realgud
+
+2014-03-13  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2014-03-13  Pete Beardmore  <pete.beardmore@msn.com>
+
+	add customisable variable to control source buffer locking
+
+	-allow users to control whether the source buffers associated with the
+	debugger process(es) are locked (read-only mode enabled) when debugging
+	is in progress
+
+2014-03-12  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2014-03-12  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Merge pull request #23 from elbeardmorez/shortkey-hook
+
+	Shortkey hook
+
+2014-03-12  rocky  <rocky@gnu.org>
+
+	A couple more warnings removed
+
+2014-03-12  Pete Beardmore  <pete.beardmore@msn.com>
+
+	fix source buffer erroneously receiving focus
+
+	-after running commands from the source buffer (e.g. via Short-Key mode)
+	the source buffer always receives point focus following a command,
+	regardless of where that command came from. this makes executing
+	concurrent commands from the command buffer very tedious
+
+	-it appears 'realgud-cmd-remap' is only called when executing commands
+	from the source buffer, but this function is the only place where
+	'in-srcbuf' (which ultimately determines which buffer obtains focus) is
+	set:
+
+	(realgud-cmdbuf-info-in-srcbuf?= (not (realgud-cmdbuf? buffer)))
+
+	hence 'in-srcbuf' is only ever set 't' from its initial 'nil' value, 
+	resulting in the behaviour described
+
+	-this commit simply resets the 'in-srcbuf' variable at an appropriate 
+	point in the command execution stack
+
+2014-03-12  Pete Beardmore  <pete.beardmore@msn.com>
+
+	shortkey, add mode hook call at setup
+
+	-enable 'realgud-short-key-mode-hook' for those who might need it
+
+2014-03-12  Pete Beardmore  <pete.beardmore@msn.com>
+
+	shortkey, clean up 'realgud-short-key-mode-setup' (whitespace only)
+
+	-give nesting a chance by removing mix of tabs and spaces
+
+2014-03-08  rocky  <rocky@gnu.org>
+
+	Remove more warnings
+
+2014-03-08  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2014-03-08  rocky  <rocky@gnu.org>
+
+	Correct trepan.pl location regexp
+
+2014-02-27  rocky  <rocky@gnu.org>
+
+	Yet another attempt to narrow the track region and reduce compile
+	warnings.
+
+2014-02-23  rocky  <rocky@gnu.org>
+
+	I hate conflicted merges
+
+2014-02-23  rocky  <rocky@gnu.org>
+
+	Set in debugger after debugger process gets started.
+
+2014-02-23  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Update README.md
+
+2014-02-23  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Update README.md
+
+2014-02-23  R. Bernstein  <rocky@users.noreply.github.com>
+
+	Update README.md
+
+2014-02-17  rocky  <rocky@gnu.org>
+
+	Think I have the reappearing breakpoint problem solved, by setting
+	last-input-end set properly. Should this be called last-input-start
+	instead?
+
+2014-02-17  rocky  <rocky@gnu.org>
+
+	Reduce warnings
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	Save last end position. More warnings removed.
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	Add go debugger gub. (MELPA recipe is now in git.) Remove Carton
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	Reduce warnings
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	core.el: srcbuf-init function call had simplified and I missed this
+	call. helper.el: add more declare-functions.
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	reinstate Travis
+
+2014-02-16  rocky  <rocky@gnu.org>
+
+	Add help to Makefile
+
+2014-02-15  rocky  <rocky@gnu.org>
+
+	Travis yet again. Try to get emacs24 in there at least
+
+2014-02-15  rocky  <rocky@gnu.org>
+
+	Yet another try to get travis working
+
+2014-02-14  rocky  <rocky@gnu.org>
+
+	4th travis try via el-get
+
+2014-02-14  rocky  <rocky@gnu.org>
+
+	3rd travis try via el-get
+
+2014-02-14  rocky  <rocky@gnu.org>
+
+	2nd try via el-get at travis
+
+2014-02-14  rocky  <rocky@gnu.org>
+
+	See if travis works via el-get
+
+2014-02-12  rocky  <rocky@gnu.org>
+
+	Yet another attempt to get package-requires correct for MELPA
+
+2014-02-12  rocky  <rocky@gnu.org>
+
+	Extraneous ' on loc-change symbol
+
+2014-02-11  rocky  <rocky@gnu.org>
+
+	Remove debugger-name and cmd-args fields from srcbuf. If you need it,
+	get it from the command buffer.
+
+2014-02-11  rocky  <rocky@gnu.org>
+
+	core.el: nil out breakpoints. test-regexp-bashdb.el: was picking up
+	wrong regexp pat in test
+
+2014-02-10  rocky  <rocky@gnu.org>
+
+	correct regexp for matching a bashdb deleted breakpoint.
+
+2014-02-10  rocky  <rocky@gnu.org>
+
+	Package names should be symbols, not strings.
+
+2014-02-09  rocky  <rocky@gnu.org>
+
+	Messed up on let syntax.
+
+2014-02-09  rocky  <rocky@gnu.org>
+
+	realgud.el: forgot quotes fournd required package name. cmds.el: reduce
+	warnings.
+
+2014-02-09  rocky  <rocky@gnu.org>
+
+	elisp-comp: recompile only if necessary. realgud.el: add dependent
+	packages. rest: reduce warnings by adding declare-function.
+
+2014-02-09  rocky  <rocky@gnu.org>
+
+	Give a message when we try we run deletel breakpoint on a line with no
+	breakpoints on it
+
+2014-02-08  rocky  <rocky@gnu.org>
+
+	source.el: realgud-srcbuf-init-or-update - add source buffer to command
+	buffers's list of source buffers. cmds.el: delete can sometimes prompt.
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Add [delete] as a breakpoint delete key
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Make realgud-cmd-delete really work when tied to a key.
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Work on "delete" shortkey
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Add interface for debugger "delete" "enable" and "disable"
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Reduce warnings. See previous commit
+
+2014-02-06  rocky  <rocky@gnu.org>
+
+	Try to reduce some of the warnings. I hate the Emacs compiler's spurious
+	warnings.
+
+2014-02-05  rocky  <rocky@gnu.org>
+
+	Deleting breakpoints now implemented.
+
+2014-02-05  rocky  <rocky@gnu.org>
+
+	Work in Progress. Move a little forward on parsing breakpoint deletions
+
+2014-02-05  rocky  <rocky@gnu.org>
+
+	Modify "Failed to invoke shell command" to be more explicit about args
+
+2013-12-22  rocky  <rocky@gnu.org>
+
+	reduce gratuitous warnings which prevented us from catching a real one
+	that we 've just also fixed.
+
+2013-12-13  rocky  <rocky@gnu.org>
+
+	Reduce warnings
+
+2013-12-12  rocky  <rocky@gnu.org>
+
+	Reduce warnings focused mostly in directory debugger
+
+2013-12-11  rocky  <rocky@gnu.org>
+
+	Reduce warnings in tests.
+
+2013-12-10  rocky  <rocky@gnu.org>
+
+	Remove more warnings in test programs
+
+2013-12-10  rocky  <rocky@gnu.org>
+
+	Mostly more declare-function statements
+
+2013-12-07  rocky  <rocky@gnu.org>
+
+	Add gub panic backtrace line
+
+2013-12-02  rocky  <rocky@gnu.org>
+
+	Reduce the number of warnings in the test directiory. One legit bug in
+	realgud/bashdb/init.el was found/fixed though.
+
+2013-12-01  rocky  <rocky@gnu.org>
+
+	Fix gub parse args - this time, for sure! Fix tests to reduce warnings
+	although they are still run rampant.
+
+2013-12-01  rocky  <rocky@gnu.org>
+
+	core.el: fix bugs in parsing gub command. gub.el: Set default gub
+	command to something reasonable track-mode.el: remove some warnings by
+	defining non-local functions
+
+2013-12-01  rocky  <rocky@gnu.org>
+
+	Add golang backtrace regexp
+
+2013-11-18  rocky  <rocky@gnu.org>
+
+	Fix up spelling when giving an error and regularize options given to
+	emacs between compute-lispdir.sh and configure.ac
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	I hate travis
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	carton is now called cask? (travis yet again)
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	Wrong path for cask in .travis
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	Wrong version number for emacs in .travis
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	Looks like "carton" install now uses python rather than sh
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	I said use 24.3 for emacs testing
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	Try only emacs 24 for now. See github.com/magit for how we might use
+	emacs 23
+
+2013-11-17  rocky  <rocky@gnu.org>
+
+	realgud.el: Don't try to load gub for now. It's broken and melpa doesn't
+	know about it either. install-from-git.sh remove old git repositories
+	before (re-)pulling them. Use https protocol by default on git command. 
+	configure.ac: add --with-emacs option. Check for cl-lib in emacs.
+
+2013-09-23  Pete Beardmore  <pete.beardmore@msn.com>
+
+	autoconf, fall back to default datadir install location
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	More travis hacking.
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	Carton moved around stuff
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2013-08-24  rocky  <rocky@gnu.org>
+
+	Attempt to fix running trepanx-track-mode in shell. DRY code a little.
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Include travis build status in README.md
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Travis 6th try
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Travis 5th try
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Travis 4th try
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Travis 3rd try
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Travis 2nd try
+
+2013-07-26  rocky  <rocky@gnu.org>
+
+	Try travis
+
+2013-07-23  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2013-07-23  rocky  <rocky@gnu.org>
+
+	Change pattern for gub deleted breakpoint
+
+2013-07-23  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2013-07-23  rocky  <rocky@gnu.org>
+
+	Use long command names in gub
+
+2013-07-12  rocky  <rocky@gnu.org>
+
+	Top-level gub.sh to run the debugger from the outset now works.
+
+2013-07-12  rocky  <rocky@gnu.org>
+
+	Attempt to fix up gub invocation
+
+2013-07-10  rocky  <rocky@gnu.org>
+
+	Small changes: update version, list of debuggers supported and ignore
+	package (*-pkg.el) files.
+
+2013-07-10  rocky  <rocky@gnu.org>
+
+	Try using Carton instead of realgud-pkg.el as suggested by Steve Purcell
+
+2013-07-10  rocky  <rocky@gnu.org>
+
+	Make MELPA happy at the expense of making emacs's byte compiler less
+	happy.
+
+2013-07-01  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2013-07-01  rocky  <rocky@gnu.org>
+
+	gub prompt changed. Address some of the too-numerous elisp-warnings
+
+2013-07-01  rocky  <rocky@gnu.org>
+
+	Remove more free-variable warnings
+
+2013-07-01  rocky  <rocky@gnu.org>
+
+	More testing stuff
+
+2013-07-01  rocky  <rocky@gnu.org>
+
+	Reduce test warnings.
+
+2013-06-30  rocky  <rocky@gnu.org>
+
+	More gub customization
+
+2013-06-30  rocky  <rocky@gnu.org>
+
+	Disallow filenames in location tracking that start with a blank.
+
+2013-06-29  rocky  <rocky@gnu.org>
+
+	See above.
+
+2013-06-29  rocky  <rocky@gnu.org>
+
+	Add C-x C-q to turn off shortkey mode.
+
+2013-06-27  rocky  <rocky@gnu.org>
+
+	Correct gub regexp
+
+2013-06-27  rocky  <rocky@gnu.org>
+
+	Better (but not good) gub invocation settings
+
+2013-06-26  rocky  <rocky@gnu.org>
+
+	Start Go language interpreter debugger gub.
+
+2013-06-14  rocky  <rocky@gnu.org>
+
+	Add a coderwall endorse
+
+2013-06-08  rocky  <rocky@gnu.org>
+
+	Administration build stuff
+
+2013-06-08  rocky  <rocky@gnu.org>
+
+	file.el, test-file.el: when we remap files remember what we answered.
+	debugger/*: make (interactive) and testing work together. track.el:
+	start ansi-term tolerance.
+
+2013-04-07  rocky  <rocky@gnu.org>
+
+	One more typo
+
+2013-04-06  rocky  <rocky@gnu.org>
+
+	compute-lispdir.sh, configure.ac: Figure out a reasonable lisp directory
+	(--with-lispdir). realgud/common/*.el: group is 'realgud, not 'dbgr
+
+2013-04-06  rocky  <rocky@gnu.org>
+
+	Add trepan2 for Python 2.x - -really copied/renamed from pydbgr.
+
+2013-04-04  rocky  <rocky@gnu.org>
+
+	Revise description so it doesn't say the same thing as the summary.
+
+2013-04-04  rocky  <rocky@gnu.org>
+
+	realgud-pkg.el: add dependency on cl-lib.
+
+2013-04-02  rocky  <rocky@gnu.org>
+
+	realgud.el: More doc tweaking. test-regexp-pydbgr.el: remove artifact
+	from dbgr->realgud rename.
+
+2013-04-02  rocky  <rocky@gnu.org>
+
+	Small doc-like changes.
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	Why did I take so long to include this THANKS file?
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	More name change artifacts
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	Fix markup
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	Move table to wiki.
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	realgud.el, autogen.el: More things to make dbgr->realgud renmaming
+	work. README.textile->README.md: revise.
+
+2013-04-01  rocky  <rocky@gnu.org>
+
+	Start the massive rename dbgr -> realgud
+
+2013-03-30  expez  <expez@expez.com>
+
+	Fix typo in package declaration.
+
+2013-03-27  Expez  <mrgrandmother@gmail.com>
+
+	Package description.
+
+2013-03-25  rocky  <rocky@gnu.org>
+
+	Don't create elc files in a temp directory. This messes up the load
+	relative stuff.
+
+2013-03-17  rocky  <rocky@gnu.org>
+
+	Add trepan3k debugger
+
+2013-02-20  rocky  <rocky@gnu.org>
+
+	Don't use -v on ln -s command
+
+2013-02-20  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2013-02-20  rocky  <rocky@gnu.org>
+
+	Add GIT_PROTOCOL env var to specify git:// vs http://. Document this
+	stuff better
+
+2013-02-17  rocky  <rocky@gnu.org>
+
+	Tidy and comment Makefile.am
+
+2013-02-17  rocky  <rocky@gnu.org>
+
+	Allow ENV vars to influence git2cl and ruby. Add install-short target.
+
+2013-02-17  John K. Luebs  <jkluebs@luebsphoto.com>
+
+	Fix incorrect load paths in perldb
+
+2013-02-17  John K. Luebs  <jkluebs@luebsphoto.com>
+
+	Add missing eval-when-compile cl to regexp.el
+
+2013-01-12  rocky  <rocky@gnu.org>
+
+	Allow file remapping in newer pydbgr
+
+2012-12-28  rocky  <rocky@gnu.org>
+
+	Had forgot to turn on mode location tracking.
+
+2012-12-26  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2012-12-26  rocky  <rocky@gnu.org>
+
+	configure.ac: test-unit isn't required anymore. test-simple is.
+
+2012-12-26  rocky  <rocky@gnu.org>
+
+	More pydb debugger fixes. Think it works now.
+
+2012-12-26  rocky  <rocky@gnu.org>
+
+	Remove old init directory and convert last debugger pydb to new format.
+
+2012-11-24  rocky  <rocky@gnu.org>
+
+	Allow configure options to get passed to "install-from-git.sh"
+
+2012-09-25  rocky  <rocky@gnu.org>
+
+	Correct trepan.pl breakpoint command. Change fringe string in
+	preparation for toggling breakpoint fringe area.
+
+2012-09-22  rocky  <rocky@gnu.org>
+
+	Delay testing display until first use. More work is needed.
+
+2012-09-22  rocky  <rocky@gnu.org>
+
+	Allow more image formats and separate it into its own file. cmds.el:
+	remove function warning compile message.
+
+2012-09-22  rocky  <rocky@gnu.org>
+
+	Allow more image formats and separate it into its own file. cmds.el:
+	remove function warning compile message.
+
+2012-09-22  rocky  <rocky@gnu.org>
+
+	Guard against trying to show a breakpoint enabed/disabled image when
+	find-image couldn't find one. Issue #4.
+
+2012-09-21  rocky  <rocky@gnu.org>
+
+	dbgr-rdebug wasn't running commit-mode track hooks. Issue #4. Also
+	suggest rdebug as a Ruby program to debug when we can't find anything
+	else.
+
+2012-09-04  rocky  <rocky@gnu.org>
+
+	Small change - trepanx suggests trepanx when it can't find another ruby
+	program.
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	Add last-resort parameter to suggest a file to run inrepan.pl: core
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	Small changes.
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	Untabify
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	One more wafer-thin change
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	Should have been part of last commit.
+
+2012-09-03  rocky  <rocky@gnu.org>
+
+	Fix bug in showing breakpoint location when we have a display and not
+	when we don't. This time, for sure!
+
+2012-08-21  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+	Conflicts:
+	dbgr/debugger/trepan.pl/init.el
+	test/test-regexp-trepanpl.el
+
+2012-08-12  rocky  <rocky@gnu.org>
+
+	trepan.pl location regexp has changed. Start tests for trepan.pl too.
+
+2012-07-02  rocky  <rocky@gnu.org>
+
+	trepan.pl/init.el: correct breakpoint regexp. test-regexp-trepan*.el:
+	DRY code by putting more in regexp-helper.el
+
+2012-07-02  rocky  <rocky@gnu.org>
+
+	More on prompt regexps start trepan.pl regexp test.
+
+2012-07-02  rocky  <rocky@gnu.org>
+
+	DRY test backtace code by putting more common stuff in bt-helper.el
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	DRY more.
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	DRY code. Make "make distcheck" work.
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	DRY test code.
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	DRY regexp tests a tiny bit.
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	No more test-unit. Yay!
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-07-01  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-06-30  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-06-30  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-06-29  rocky  <rocky@gnu.org>
+
+	Allow running on Emacs where we can't display images.
+
+2012-06-26  rocky  <rocky@gnu.org>
+
+	finge.el: another gaurd around defining a fringe bitmap. configure.ac:
+	make sure we don't smash INSTALL et all.
+
+2012-06-15  rocky  <rocky@gnu.org>
+
+	Install test-simple as a prerequisite
+
+2012-06-15  rocky  <rocky@gnu.org>
+
+	make-check-filter.rb: filter out some "remake" lines. test-unit ->
+	test-simple
+
+2012-06-15  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-06-14  rocky  <rocky@gnu.org>
+
+	One more test-unit->test-simple
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	Small change
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	Start to use buffer-local-variable's in tests. This reduces the global
+	scope pollution.
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	One more test-unit -> test-simple
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	A couple more test-unit tests converted to test-simple
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	test-unit -> test-simple
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	test-simple-clear -> test-simple-start
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2012-06-13  rocky  <rocky@gnu.org>
+
+	Convert two more tests from test-unit to test-simple.
+
+2012-06-10  rocky  <rocky@gnu.org>
+
+	A couple more tests converted to test-simple.
+
+2012-06-10  rocky  <rocky@gnu.org>
+
+	Start replacing test-unit with test-simple.
+
+2012-06-02  rocky  <rocky@gnu.org>
+
+	Make use of return value of defvar's return value in
+	make-buffer-local-variable.
+
+2012-05-20  rocky  <rocky@gnu.org>
+
+	Makefile.am: adjust options because in Emacs 24 --quick doesn't include
+	site file loc.el: small grammar thing.
+
+2012-05-14  rocky  <rocky@gnu.org>
+
+	Defensive programming
+
+2012-05-13  rocky  <rocky@gnu.org>
+
+	An experiment in gettint both track-mode working from shell invocation
+	and emacs invocation.
+
+2012-05-13  rocky  <rocky@gnu.org>
+
+	loc.el: we don't need no stinking id's. test-regexp-pdb.el: correct typo
+	prompt_str -> prompt-str test-trepan: add initialization of promp-str
+
+2012-05-12  rocky  <rocky@gnu.org>
+
+	Add stock Python debugger.
+
+2012-05-12  rocky  <rocky@gnu.org>
+
+	Set debug-track-mode properly.
+
+2012-05-12  rocky  <rocky@gnu.org>
+
+	One more incorrect use of dbgr-track-mode call.
+
+2012-05-12  rocky  <rocky@gnu.org>
+
+	Add describe funciton to loc. Show full history ring described.
+
+2012-05-11  rocky  <rocky@gnu.org>
+
+	Add dbgr-srcbuf-info-describe(). And revise dbgr-cmdbuf-info-describe.
+
+2012-05-09  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2012-05-09  rocky  <rocky@gnu.org>
+
+	I think I'vce now addressed this annoying bug where leaving debuggers
+	leaves the source window in short-key-mode (and read only).
+
+2012-04-23  rocky  <rocky@gnu.org>
+
+	Better wording"
+
+2012-04-23  rocky  <rocky@gnu.org>
+
+	Add link to "how to use"
+
+2012-04-15  rocky  <rocky@gnu.org>
+
+	Use long form options to pass to emacs
+
+2012-04-06  rocky  <rocky@gnu.org>
+
+	Add doc comment to "check-short" target.
+
+2012-03-31  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2012-03-31  rocky  <rocky@gnu.org>
+
+	Document Makefile (via Makefile.am and remake)
+
+2012-03-24  rocky  <rocky@gnu.org>
+
+	Note we support Devel::Trepan. shortkey.el: some change from a while
+	ago.
+
+2012-03-09  Erkan Yilmaz  <erkan77@gmail.com>
+
+	fix link + add missing word
+
+2011-12-31  rocky  <rocky@gnu.org>
+
+	Futzing around.
+
+2011-12-29  rocky  <rocky@gnu.org>
+
+	dbgr-terminate, dbg-terminate-srcbuf Coerce string buffer name into a
+	buffer.
+
+2011-12-21  rocky  <rocky@gnu.org>
+
+	use dbgr-track-mode-off instead of passing 0 to dbgr-track-mode.
+	declare-function arguments seem to have added a "file" parameter?
+
+2011-12-16  rocky  <rocky@gnu.org>
+
+	Add command that's like "q" quit that gets you out of shortkey mode, but
+	doesn't issue a debugger command.
+
+2011-12-01  rocky  <rocky@gnu.org>
+
+	trepanpl directory rename to trepan.pl
+
+2011-11-30  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr trepanpl ->
+	trepan.pl
+
+	Conflicts:
+	dbgr/common/track.el
+
+2011-11-30  rocky  <rocky@gnu.org>
+
+	Use completing read on debugger name. trepanpl-> trepan.pl. Possibly
+	more uses of trepanpl -> trepan.pl later.
+
+2011-11-13  rocky  <rocky@gnu.org>
+
+	Add perldb and perl5db aliases.
+
+2011-11-01  rocky  <rocky@gnu.org>
+
+	 Allow the use of "su - root" if sudo is not found of if we just want to
+	"su - root" instead of using sudo.
+
+2011-10-26  rocky  <rocky@gnu.org>
+
+	Add ability to ignore file in tracking based on a re. For example
+	(eval) in Ruby 1.8 or (eval 10)[../foo/bar.pl:10] in Perl. Todo: add
+	<string> in Python.
+
+2011-10-23  rocky  <rocky@gnu.org>
+
+	Create common Perl language file. Add pattern for Perl error message.
+
+2011-09-05  rocky  <rocky@gnu.org>
+
+	Start perl trepan debugger mode (trepanpl).
+
+2011-06-30  rocky  <rocky@gnu.org>
+
+	Reinstate old elisp-comp. WE NEED A MODIFIED elisp-comp!
+
+2011-06-29  rocky  <rocky@gnu.org>
+
+	More clear about Ruby 1.8
+
+2011-06-29  rocky  <rocky@gnu.org>
+
+	Add rb8-trepanning to list of debuggers we support.
+
+2011-06-19  rocky  <rocky@gnu.org>
+
+	Add a simple enable and disable of track mode which is useful in a rails
+	console.
+
+2011-06-03  rocky  <rocky@gnu.org>
+
+	More administrivia
+
+2011-06-03  rocky  <rocky@gnu.org>
+
+	Administrivia.
+
+2011-06-03  rocky  <rocky@gnu.org>
+
+	Start support for trepan8 which is mostly like trepanx and rdebug (but
+	probably will later have a bit of trepan in it.)
+
+2011-05-29  rocky  <rocky@gnu.org>
+
+	A couple of rdebug/ruby pattern name and variable fixes.
+
+2011-05-24  rocky  <rocky@gnu.org>
+
+	dbgr-cmd-quit resets source information in source buffers whenone can't
+	find a command buffer for it.
+
+2011-05-24  rocky  <rocky@gnu.org>
+
+	Add bidinng "C-c S" to go into source window from command window.
+	("frame 0" is lame.) Add commnd to reset source window.
+
+2011-05-24  rocky  <rocky@gnu.org>
+
+	'C' dbgr-window-undisturb-src should select the command window, not just
+	show it. Be more agressive about not using a minibuffer window, even if
+	it is active.
+
+2011-05-03  rocky  <rocky@gnu.org>
+
+	In track-mode, silence failing re position matching messages.
+
+2011-05-01  rocky  <rocky@gnu.org>
+
+	Two bugs and a Makefile change. track hook can be called twice with
+	second time no change. Guard for that. (use-local-map) returns nil so
+	use (current-local-map) again. In Makefiles: add "short" targets via an
+	included common.mk more often.
+
+2011-04-26  rocky  <rocky@gnu.org>
+
+	ruby.el, trepan/init.el: Add syntax error pattern for 1.9 YARV track.el:
+	when loc-matching fails show message returned.
+
+2011-04-24  rocky  <rocky@gnu.org>
+
+	Go over customization groups. Add top-level dbgr group and individual
+	debuggers hang off of this now.
+
+2011-04-24  rocky  <rocky@gnu.org>
+
+	track.el: give a messages if location regexp fails to match a position. 
+	file.el: use compilation-find-file to resolve partial filenames.
+
+2011-04-23  rocky  <rocky@gnu.org>
+
+	Switch to buffer even when dbgr-exec-shell fails.
+
+2011-04-23  rocky  <rocky@gnu.org>
+
+	Another cut-and-paste error from trepan to trepanx
+
+2011-04-23  rocky  <rocky@gnu.org>
+
+	ruby-goto-dollar-bang-line not rubinius-goto-dollar-bang-line
+
+2011-04-23  rocky  <rocky@gnu.org>
+
+	C-c!! for is a dollar-bang line, not a lang line. Don't go into shortkey
+	automatically unless called from a shell hook. Add more sanity checks to
+	handle error conditions better such as recovery from setting a bad
+	debugger name.
+
+2011-04-23  rocky  <rocky@gnu.org>
+
+	Add Ruby dollar-bang as its own thing.
+
+2011-04-20  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2011-04-20  rocky  <rocky@gnu.org>
+
+	Guard against struct not getting set in setter macro.
+
+2011-04-19  rocky  <rocky@gnu.org>
+
+	Tweak gdb expression for those encountered.
+
+2011-04-19  rocky  <rocky@gnu.org>
+
+	Attempt to address recently-encountered another window position bug.
+
+2011-04-19  rocky  <rocky@gnu.org>
+
+	Guard against an uninitialized marker variable in window selection
+
+2011-04-17  rocky  <rocky@gnu.org>
+
+	Add routine to toggle cmdbuf in-debugger? state. Add temporary key for
+	backtrace. Workaround bug in turning off dbgr-track-mode. Test shortkey
+	customization per debugger. As always much more is needed.
+
+2011-04-17  rocky  <rocky@gnu.org>
+
+	Look for termination message in track mode and use that to terminate
+	debugging.
+
+2011-04-17  rocky  <rocky@gnu.org>
+
+	Makefile.am: Add --tasks/tasks and *short targets. move routine from
+	source to helper to remove compile warning.
+
+2011-04-17  rocky  <rocky@gnu.org>
+
+	YARV 1.9.2 regexp for lang backtrace
+
+2011-04-16  rocky  <rocky@gnu.org>
+
+	Give a message if we fail to find a backtrace position
+
+2011-04-16  rocky  <rocky@gnu.org>
+
+	Beef up describe for source buffers.
+
+2011-04-16  rocky  <rocky@gnu.org>
+
+	Possibly some of the source update redisplay problems has been fixed. 
+	Add ability to understand what frame we might be in. Done for trepan.el.
+	Others may follow. Add Emacs command to toggle whether we stay in source
+	or not and better support for cmdbuf-info-describe. gdb/init.d fix
+	cut-and-paste error.
+
+2011-04-16  rocky  <rocky@gnu.org>
+
+	Somehow had lost hash key for gdb debugger.
+
+2011-04-16  rocky  <rocky@gnu.org>
+
+	Correct default "break" command. Add a "kill" command. Correct some
+	docstrings.
+
+2011-04-15  rocky  <rocky@gnu.org>
+
+	Add "make check-short" which reduces unuseful output from "make check". 
+	Correct problem in trepan init.el: (format ...) doesn't work here.
+
+2011-04-15  rocky  <rocky@gnu.org>
+
+	Put color in running status for track mode.
+
+2011-04-15  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2011-04-15  rocky  <rocky@gnu.org>
+
+	Add mark in command buffer to indicate whether it thinks we are running
+	a debugger.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Supprse insert keys in sparse, read-only keymaps shortkey, and
+	backtrace. Add backtrace tests for gdb. Other small cleanups.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Font-lock for gdb.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Add gdb debugger backtrace regexpl. More to come
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Set selected frame indicator re in init.el Add font-lock for Perl
+	frames.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	More perl backtrace hacking. trepan.el: DRY like the others.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Some more small perldb customizations.
+
+2011-04-14  rocky  <rocky@gnu.org>
+
+	Start dealing with debuggers that don't give a frame number like Perl. 
+	DRY debugger invocations for kshdb, and zshdb. cmds.el: add a backtrace
+	command.
+
+2011-04-13  rocky  <rocky@gnu.org>
+
+	DRY initial debugger-start code somewhat.
+
+	Add keys for buffer switching in backtrace-buffer.
+
+	Try to guard against sending to process via comint when it is dead and
+	set comint-last-output-start to avoid a ansi-color-apply-on-region
+	doesn't bomb.
+
+2011-04-13  rocky  <rocky@gnu.org>
+
+	Use macro to create defstruct setters. Add describe routine for
+	defstruct.
+
+2011-04-13  rocky  <rocky@gnu.org>
+
+	Add macro to create defstruct setter functions. source.el changed.
+	command.el needs to be changed.
+
+2011-04-13  rocky  <rocky@gnu.org>
+
+	Simplify dbgr-srcbuf-info field setters
+
+2011-04-12  rocky  <rocky@gnu.org>
+
+	regexp key "backtrace" -> "lang-backtrace" to distinguis better from
+	"debugger-backtrace". Remove more redundant code.
+
+2011-04-12  rocky  <rocky@gnu.org>
+
+	regexp key "frame" -> "debugger-backtrace". Remove some redundant
+	goto-backtrace routines.
+
+2011-04-12  rocky  <rocky@gnu.org>
+
+	Add remake-goto-backtrace-line. Note weird distinction between debugger
+	backtrace and programming lanugage backtrace. Need to do more here.
+
+2011-04-12  rocky  <rocky@gnu.org>
+
+	Correct font-lock regexps for remake backtrace.
+
+2011-04-12  rocky  <rocky@gnu.org>
+
+	Add bracktrace buffer regexps for remake debugger. font-lock regexps are
+	not right though.
+
+2011-04-11  rocky  <rocky@gnu.org>
+
+	Backtrace buffer now has debugger menu and is listed in the debugger
+	mentu. Add command to show the backtrace frame without distribuing the
+	source buffer. Remove verbosity in command buffer field setting
+	routines.
+
+2011-04-11  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2011-04-11  rocky  <rocky@gnu.org>
+
+	Strip shell* from backtrace buffer name. Add a pointer to the backtrace
+	buffer from the command buffer. Start to simplificy cmdbuf-info
+	assignment routines.
+
+2011-04-10  rocky  <rocky@gnu.org>
+
+	Internal function is *not* a command
+
+2011-04-10  rocky  <rocky@gnu.org>
+
+	Only update arrows if they are set.
+
+2011-04-09  rocky  <rocky@gnu.org>
+
+	Add a test for the part that was failin gin the last commit. A bit
+	hoaky, but better than nothing I guess.
+
+2011-04-09  rocky  <rocky@gnu.org>
+
+	Set a default filename for the process show buffer name
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Add short-key to go to source window. Reorder menu items.
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Add key C to go into a command window from a source window
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Add dbg-cmd-eval-region. Add %s to dbgr-expand-format. Add goto arrows
+	1, 2, and 3. More items in Debugger menu.
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Update list of suppported debuggers and add more reference links.
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Clean up command handling somewhat. We now should handle custom commands
+	via the command has (e.g. for perldb) more correctly. More debugger menu
+	items.
+
+2011-04-07  rocky  <rocky@gnu.org>
+
+	Add custom remake "break" command. Add "up" and "down" in debugger
+	menus.
+
+2011-04-06  rocky  <rocky@gnu.org>
+
+	Add positioning on fringe arrows 1,2,3: C-c-l or shortkey 'l'. Add
+	custom remake "break" command.
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	Add "Debugger" menu in track-mode
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	Breakpoint text for trepan and trepanx have changed. Other small
+	changes.
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	Messed up on some parameters in 'dbgr-define-command'
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	One more small step towards DRYing code.
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	Start to DRY POSIX shell code. Add a shell command.
+
+2011-04-05  rocky  <rocky@gnu.org>
+
+	More complete customization of command strings used for basic (gdb-like)
+	command set. This is much needed in perldb which is very different. More
+	complete dbgr-perldb mode. Add positioning at a backtrace line in POSIX
+	shells and perldb.
+
+2011-04-04  rocky  <rocky@gnu.org>
+
+	Provide a way to remap common commands like quit->quit!. This was a
+	longstanding annoyance.
+
+	Disabling shortkey in a source buffer doesn't disable it in the command
+	bugger. Use dbgr-cmdbuf-set-shortkey for that.
+
+2011-04-04  rocky  <rocky@gnu.org>
+
+	Better GNU Makefile file selection priorities. Shorter Makefile patter
+	suggested by Yaroslav Halchenko.
+
+2011-04-04  rocky  <rocky@gnu.org>
+
+	Start perldb track mode. I don't think there's another one out there. 
+	Makefile.am: DRY check code - thanks to "remake" for helping me figure
+	this out.
+
+2011-03-24  rocky  <rocky@gnu.org>
+
+	We can now run "dbgr-remake" to get a top-level remake shell.
+
+2011-03-22  rocky  <rocky@gnu.org>
+
+	Correct remake location tracking.
+
+2011-03-22  rocky  <rocky@gnu.org>
+
+	Added event icons
+
+2011-03-20  rocky  <rocky@gnu.org>
+
+	Minor fixes from cut-n-paste
+
+2011-03-20  rocky  <rocky@gnu.org>
+
+	Load remake debugger.
+
+2011-03-19  rocky  <rocky@gnu.org>
+
+	Improve breakpoint tracking for remake 3.82.
+
+2011-03-16  rocky  <rocky@gnu.org>
+
+	Add program to install from git - full list this time
+
+2011-03-16  rocky  <rocky@gnu.org>
+
+	Add program to install from git
+
+2011-03-14  rocky  <rocky@gnu.org>
+
+	Add kshdb to list of full-support debuggers. Moved and expanded from
+	common/init/kshdb.el
+
+2011-02-23  rocky  <rocky@gnu.org>
+
+	Start to make GNU Makefile debugger, remake a full-fledged entry.
+	Previously we just had a couple of regexps.
+
+2011-02-21  rocky  <rocky@gnu.org>
+
+	backtrack-mode: like track-mode but there doesn't have to be an
+	associated process. This could be used for log files or processes that
+	have terminated.
+
+2011-02-10  rocky  <rocky@gnu.org>
+
+	Keymaps for more of the kinds of backtraces
+
+2011-02-10  rocky  <rocky@gnu.org>
+
+	Add rubinius X-agent backtrace regexp.
+
+2011-02-09  rocky  <rocky@gnu.org>
+
+	Start a language file for Python (even though right now we only have one
+	debugger pydbgr).
+
+2011-01-27  rocky  <rocky@gnu.org>
+
+	dbgr-track-set-debugger: handle setting dbg-gdb-track-mode as a special
+	case
+
+2010-12-26  rocky  <rocky@gnu.org>
+
+	ruby.el: add pattern for rails traceback. source.el: don't assume we
+	have a local keymap test-* DRY a little.
+
+2010-12-14  rocky  <rocky@gnu.org>
+
+	Command name typo: should be dbgr-trepanx rather than trepanx.
+
+2010-12-05  rocky  <rocky@gnu.org>
+
+	location regexp for trepan changed. Also add zshdb regexp test.
+
+2010-12-05  rocky  <rocky@gnu.org>
+
+	Update trepanx location regexp which recently changed.
+
+2010-11-30  rocky  <rocky@gnu.org>
+
+	Add  zshdb "backtrace"/frame regexp. So dbgr-backtrace-init now works
+	for zshdb.
+
+2010-11-29  rocky  <rocky@gnu.org>
+
+	Add backtrace parsing for bashdb. Make backtrace parsing more robust.
+	Add keys for display refresh and to move to selected frame.
+
+2010-11-28  rocky  <rocky@gnu.org>
+
+	Create ring of frame positions. Next/prev motion uses this. Also we have 
+	places to store additional properties.
+
+2010-11-27  rocky  <rocky@gnu.org>
+
+	Add trepan frame regexp tests.
+
+2010-11-27  rocky  <rocky@gnu.org>
+
+	Go over rdebug for backtrace buffer regexp and improve other regexps.
+
+2010-11-27  rocky  <rocky@gnu.org>
+
+	Work on trepanx regexps for backtrace. (Might have broken trepan
+	regexps)
+
+2010-11-26  rocky  <rocky@gnu.org>
+
+	Parses backtrace lines (more) correctly now. Add text property for frame
+	number and. goto-frame now works.
+
+2010-11-26  rocky  <rocky@gnu.org>
+
+	Start to add text properties to backtrace buffer. Much more is needed. 
+	Start adding string examples of things matching trepan regexps.
+
+2010-11-26  rocky  <rocky@gnu.org>
+
+	Add emacs debugger as a full-fledged front-end.
+
+2010-11-22  rocky  <rocky@gnu.org>
+
+	Work on trepanx regexp test
+
+2010-11-22  rocky  <rocky@gnu.org>
+
+	Small Doc string fixes from cut-and-paste.
+
+2010-11-22  rocky  <rocky@gnu.org>
+
+	track.el: call up debugger-specific track mode track-mode.el: experiment
+	with more robust mode hook.
+
+2010-11-22  rocky  <rocky@gnu.org>
+
+	Parent map of track-mode come from shell, not comint. Correct rubinius
+	backtrace regexp.
+
+2010-11-21  rocky  <rocky@gnu.org>
+
+	Fix some small bugs
+
+2010-11-21  rocky  <rocky@gnu.org>
+
+	keybindings now work properly for specific debugger track modes. Could
+	be better, but this is a start and a big improvement.
+
+2010-11-21  rocky  <rocky@gnu.org>
+
+	Keymap definition (which was probably improper) is messing up
+	define-minor-mode so leave that out for now. rename keymap variable to a
+	value which I hope is picked up automagically.
+
+2010-11-21  rocky  <rocky@gnu.org>
+
+	This time, for sure?
+
+2010-11-21  rocky  <rocky@gnu.org>
+
+	Fix an annoying bug where we weren't tracking changes in the source
+	buffer.
+
+2010-11-04  rocky  <rockyb@rubyforge.org>
+
+	This time, for sure!
+
+2010-11-04  rocky  <rockyb@rubyforge.org>
+
+	Now redundant (and wrong) line.
+
+2010-11-04  rocky  <rockyb@rubyforge.org>
+
+	One more place to fold in ruby-specific traceback key bindings.
+
+2010-11-04  rocky  <rockyb@rubyforge.org>
+
+	Dry some code bound to ruby keys. Should do the same for others...
+
+2010-11-03  rocky  <rocky@gnu.org>
+
+	Remove output for internal-status commands like dbgr-backtrace-init. 
+	Front-end command names now universally start dbgr-, e.g. dbgr-trepan 
+	with most having aliases to shorter name, e.g. trepan. The exception is
+	"gdb" which doesn't have an alias, since "gdb" is a well-established and
+	Emacs command. Go over Makefile's yet again.
+
+2010-11-03  rocky  <rocky@gnu.org>
+
+	common/init/gdb.el -> debugger/gdb/init.el gdb-pat-hash ->
+	dbgr-gdb-pat-hash
+
+2010-11-02  rocky  <rockyb@rubyforge.org>
+
+	move debugger-specific code down to a debugger directory.
+
+2010-11-02  rocky  <rockyb@rubyforge.org>
+
+	DRY Makefile.am code.
+
+2010-11-02  rocky  <rockyb@rubyforge.org>
+
+	Remove rbdbgr. Nevering-ending struggle to DRY code more.
+
+2010-11-02  rocky  <rockyb@rubyforge.org>
+
+	traceback->backtrace Start to DRY common language regular expressions.
+
+2010-11-02  rocky  <rocky@gnu.org>
+
+	common/init/trepanx.el -> trepanx/init.el Add font-lock-default test.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	Start font lock for zshdb.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	Work on pydbgr font-lock-defaults. Comments regexps better.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	Better backtrace font-lock defaults. Start working on pydbgr backtrace
+	font-lock.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	trepan backtrace font-lock-default is more correct.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	More regourous rdebug backtrace font-lock-default tests. Start work on
+	trepan backtrace font-lock-default.
+
+2010-11-01  rocky  <rockyb@rubyforge.org>
+
+	Add 1st fontify test.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Add font-lock faces to backtrace buffer. Attempt to do for command, but 
+	more work is needed.
+
+2010-10-31  rocky  <rocky@gnu.org>
+
+	common/init/trepan.el -> trepan/init.el backtrace.el: remove compile
+	warnings by commenting out future code
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Work on backtrace buffer and mode. More to come...
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	common/init/rdebug.el -> rdebug/init.el
+
+2010-10-31  rocky  <rocky@gnu.org>
+
+	Move init/pydbgr.el to pydbgr/init.el. zshdb/*.el: Correct some mistakes
+	in moving from before. buffer/backtrace.el: Make this loadable without
+	error.
+
+2010-10-31  rocky  <rocky@gnu.org>
+
+	Start to move init/*.el into respective debugger-specific directories.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Move buffer-related files into a separate directory. Will help future
+	growth.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Administrivia around adding zshdb properly.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Start zshdb debugger support.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Start to add copyright.
+
+2010-10-31  rocky  <rockyb@rubyforge.org>
+
+	Fix problem with divert-output sequencing problem which caused old
+	output to be used.
+
+2010-10-30  rocky  <rockyb@rubyforge.org>
+
+	More progress on diverting output.
+
+2010-10-30  rocky  <rockyb@rubyforge.org>
+
+	Add dbgr-reload-features which is really what we probably want rather
+	than dbgr-unload-features.
+
+2010-10-30  rocky  <rockyb@rubyforge.org>
+
+	Fix dbgr-track-mode-vars macro.
+
+2010-10-30  rocky  <rocky@gnu.org>
+
+	Work on sending commands for status whose output needs to be diverted
+	and sent to a special buffer, like "backtrace"
+
+2010-10-29  rocky  <rocky@gnu.org>
+
+	Start working on commands that divert output. We will use this for
+	auxiliary status buffers for breakponts or backtrace, etc.
+
+2010-10-16  rocky  <rocky@gnu.org>
+
+	Small bug in recognizing if pydbgr or cli.py given
+
+2010-10-16  rocky  <rocky@gnu.org>
+
+	DRY via dbgr-suggest-lang-file. Fix up tests related to this region.
+
+2010-10-16  rocky  <rockyb@rubyforge.org>
+
+	Better initial suggestion of language file to debug by searching visited
+	buffers.
+
+	DRY some of the code a little. Much much much more is DRYness is needed.
+	Start putting in Programming-language-specific code into common/lang.el
+
+2010-10-06  rocky  <rockyb@rubyforge.org>
+
+	Tolerate .exe on ruby interpreter for Microsoft.
+
+2010-10-06  rocky  <rockyb@rubyforge.org>
+
+	Work on terminating gracefully. cmds.el: Add dbgr-terminate (reset
+	debugger information) to dbgr-cmd-quit. core.el: Create dbgr-terminate
+	to encapsulate what needs to be done on reset. shortkey.el: use 0 to
+	turn off mode. debugger/cmds.el: call define-gdb-like-commands
+	explicitly trepan/cmds.el: use quit! instead of quit.
+
+2010-10-05  rocky  <rocky@gnu.org>
+
+	Suppress and emacs warning.
+
+2010-10-05  rocky  <rockyb@rubyforge.org>
+
+	core.el: Allow python.exe as an interpreter name on Microsoft.
+		Allow cli.py as alternative to pydbgr rdebug/*: Adminstrivia
+
+2010-10-01  rocky  <rockyb@rubyforge.org>
+
+	short-key-on-tracing? -> dbgr-short-key-on-tracing?
+
+2010-10-01  rocky  <rockyb@rubyforge.org>
+
+	Do better with respect to cleaning up on process end: Remove fringe
+	arrows, short-key-mode and breakpoints in source buffers.
+
+2010-09-30  rocky  <rockyb@rubyforge.org>
+
+	Add customizable variable "short-key-on-tracing?" which will set
+	short-key mode for any source buffer that is traced into.
+
+2010-09-30  rocky  <rockyb@rubyforge.org>
+
+	Use expanded file name in 'break' command. See also previous commit
+	message since it appears that many changes didn't get pushed from that.
+
+2010-09-29  rocky  <rockyb@rubyforge.org>
+
+	DRY track mode code. Add M-kp-up and M-kp-down in standard keys.
+
+2010-09-29  rocky  <rockyb@rubyforge.org>
+
+	rbdbgr -> trepanning
+
+2010-09-29  rocky  <rockyb@rubyforge.org>
+
+	Work on getting debugger-specific minor-mode keymaps working. Some of
+	the prior workarounds were remove. Still really need to DRY code. Try
+	C-c SPC for break.
+
+2010-09-29  rocky  <rockyb@rubyforge.org>
+
+	Debugger common keys are now set in source-code windows. Figured out how 
+	to use debugger keymaps in command window, and setting debugger-specific
+	command buffer keys.  However more work is needed here and we really
+	need to DRY code.
+
+2010-09-29  rocky  <rockyb@rubyforge.org>
+
+	key.el: Add "b" for break in shortkey mode. test-rdebug.el: fix up
+	faulty cut-n-paste: python -> ruby; pydbgr => rdebug pydbgr.el,
+	test-regexp-pydbgr.el traceback -> backtrace
+
+2010-09-24  rocky  <rocky@gnu.org>
+
+	Growing pains related to adding trepan(x).
+
+2010-09-24  rocky  <rocky@gnu.org>
+
+	Add trepan and trepanx debuggers.
+
+2010-09-24  rocky  <rockyb@rubyforge.org>
+
+	Wasn't picking up variable set by xxx-command-name. See comment in
+	http://stackoverflow.com/questions/3764575/using-pydbgr-with-emacs
+
+2010-09-18  rocky  <rockyb@rubyforge.org>
+
+	Add <module> onto the end - just in case.
+
+2010-09-18  rocky  <rockyb@rubyforge.org>
+
+	Add test for MS prompt locations (with drive letter and backslash) and
+	non-MS prompt location without drive and forward slash.
+
+2010-09-09  rocky  <rocky@gnu.org>
+
+	init/rbdbgr.el: lfp and dfp are *hex* addresses. Makefile.am: clean now
+	removes compiled lisp files teste-regexp-rbdbgr.el: previously renamed
+	key from traceback to backtrace -- Ooops
+
+2010-08-27  rocky  <rocky@gnu.org>
+
+	Found one more C-c! -> C-c!!
+
+2010-08-22  rocky  <rockyb@rubyforge.org>
+
+	More keys for M-up. My PC keyboard has a messed-up up-arrow. So allow
+	Kp-up as well.
+
+2010-08-20  R. Bernstein  <rocky@gnu.org>
+
+	traceback -> backtrace which is what I think it's called in Ruby (i.e. 
+	rb_backtrace) and use C-c!b which I think is more mnemonic than C-c!e.
+
+2010-08-20  R. Bernstein  <rocky@gnu.org>
+
+	rbdbgr/core.el Match function name listed in init/rbdbgr.el
+
+2010-08-20  R. Bernstein  <rocky@gnu.org>
+
+	Add command to position on control-frame traceback.
+
+2010-08-17  R. Bernstein  <rocky@gnu.org>
+
+	Customize more for Emacs.
+
+2010-08-17  rocky  <rockyb@rubyforge.org>
+
+	Check for required prerequisite packages.
+
+2010-08-17  rocky  <rockyb@rubyforge.org>
+
+	Set default value for EMACS to, well, "emacs".
+
+2010-08-17  rocky  <rockyb@rubyforge.org>
+
+	Test to make sure we have emacs 23 or greater.
+
+2010-08-13  R. Bernstein  <rocky@gnu.org>
+
+	More specific installation instructions.
+
+2010-08-12  rocky  <rockyb@rubyforge.org>
+
+	Typo
+
+2010-08-12  rocky  <rockyb@rubyforge.org>
+
+	Better textile linking.
+
+2010-08-12  rocky  <rockyb@rubyforge.org>
+
+	Add link to detailed installation instructions. Thanks to Andrea Crotti
+	for the suggestion.
+
+2010-08-09  R. Bernstein  <rocky@gnu.org>
+
+	M-[insert] toggles dbgr-short-key-mode as well. And when you aren't in
+	short-key mode, it works too -- provided the buffer has an associated
+	debugger.
+
+2010-08-05  rocky  <rocky@gnu.org>
+
+	shortkey.el: Add 'c' for 'continue.
+
+2010-08-05  rocky  <rocky@gnu.org>
+
+	shortkey.el: Shortkey 'b' to set a breakpoint. (Don't have delete or
+	toggle yet). pydbgr.el Add regexp for breakpoint set and deleted.
+
+2010-08-04  rocky  <rocky@gnu.org>
+
+	.rb -> .py
+
+2010-08-03  rocky  <rocky@gnu.org>
+
+	As suggesting a Ruby file in pydbgr. Add test for this now.
+
+2010-08-01  rocky  <rocky@gnu.org>
+
+	M-x rdebug -> M-x dbgr-rdebug so as not to conflict with the older
+	rdebug code.
+
+2010-06-15  rocky  <rocky@gnu.org>
+
+	automess needs a README.
+
+2010-06-11  rocky  <rockyb@rubyforge.org>
+
+	Merge branch 'master' of github.com:rocky/emacs-dbgr
+
+2010-06-11  rocky  <rockyb@rubyforge.org>
+
+	Update README to note dependencies and what debugger's we've got.
+
+2010-06-07  R. Bernstein  <rocky@gnu.org>
+
+	Comment typo
+
+2010-05-23  rocky  <rocky@gnu.org>
+
+	Add routine from rdebug to parse out command line options and get script
+	name.
+
+2010-05-22  rocky  <rocky@gnu.org>
+
+	Add "provide-me" for pydb
+
+2010-05-06  rocky  <rocky@gnu.org>
+
+	common/init/rbdbgr.el: prompt pattern has changed Makefile.am: wasn't
+	testing rbdbgr reset: Add more provide's in init files.
+
+2010-03-20  rocky  <rockyb@rubyforge.org>
+
+	Forgot one python->pydbgr
+
+2010-03-19  R. Bernstein  <rocky@gnu.org>
+
+	Add "dbgr-" prefix to keep namespace separate from other standalones,
+	e.g. dbg-gdb vs gdb.
+
+2010-03-19  rocky  <rockyb@rubyforge.org>
+
+	One more python->pydbgr
+
+2010-03-19  R. Bernstein  <rocky@gnu.org>
+
+	directory python -> pydbgr. Debugger-specific file anme simplifications.
+
+2010-03-19  R. Bernstein  <rocky@gnu.org>
+
+	All common code now pushed to common directory one level don. First part
+	an overall filesystem reorganization. Later on we will remove init, and
+	rename python to pydbgr, and add pydb.
+
+2010-03-13  rocky  <rockyb@rubyforge.org>
+
+	key.el: add key to set breakpoints lochist.el: larger default history
+	ring
+	.gitignore, Makefile: is derived from Makefile.am
+
+2010-03-12  R. Bernstein  <rocky@gnu.org>
+
+	Base the specific debugger track-mode-maps on the generic track-mode
+	map. Start a track-mode unit test.
+
+2010-03-04  R. Bernstein  <rocky@gnu.org>
+
+	Start rdebug. Will probably reorganize directories down the line.
+
+2010-01-31  rocky  <rockyb@rubyforge.org>
+
+	Move forward on breakpoints. Add breakpoint list to cmdbuf and menu
+	items for breakpoint
+
+	track.el Reduce use of depreciated fields in cmdbuf
+
+	ruby/*.el: simplify names.
+
+2010-01-31  rocky  <rockyb@rubyforge.org>
+
+	Move forward towards handling breakpoints: Keep a list of breakpoints in 
+	cmdbuf, add menu item to set a breakpoint
+
+	ruby/*: simplify names track.el: reduce use of depricated loc-regex,
+	file-group, line-group fields.
+
+2010-01-30  rocky  <rockyb@rubyforge.org>
+
+	Start to remove dbgr-cmdbuf-info loc-regexp, file-group and line-group.
+	Add pat for in rbdbgr a deleted breakpoint.
+
+2010-01-27  rocky  <rocky@gnu.org>
+
+	dbr.el: dbgr-loaded-features is a command.
+
+2010-01-27  R. Bernstein  <rocky@gnu.org>
+
+	dbgr.el test-dbgr.el: Add ability to get list of feature loaded with
+	dbgr and unload them. This makes it possible to reload dbgr without
+	leaving the Emacs. bp.el: More work needed on testing.
+
+2010-01-27  rocky  <rocky@gnu.org>
+
+	Add reset by default to dbg-exec-shell.
+
+2010-01-26  rocky  <rocky@gnu.org>
+
+	Start a reset routine.
+
+2010-01-26  rocky  <rockyb@rubyforge.org>
+
+	cmdbuf.el: Save source buffers associated with a given command buffer. 
+	track.el: ditto. dbgr-track-from-region(): check that cmdbuf is a
+	cmdbuf.
+
+2010-01-24  rocky  <rockyb@rubyforge.org>
+
+	gdb.el: expand script filename. core.el: docstring fix.
+
+2010-01-24  rocky  <rockyb@rubyforge.org>
+
+	Add fields for address, and character offset.
+
+2010-01-21  R. Bernstein  <rocky@gnu.org>
+
+	Tolerate missing source file. Need to do better though between file.el:
+	dbgr-file-loc-from-line and dbgr/track.el
+
+2010-01-20  rocky  <rockyb@rubyforge.org>
+
+	Administrivia
+
+2010-01-20  rocky  <rockyb@rubyforge.org>
+
+	Fill out more gdb interaction via dbgr.
+
+2010-01-18  rocky  <rockyb@rubyforge.org>
+
+	loc.el: add place holder for column number test-regexp-gdb.el: start
+	unit test for gdb.
+
+2010-01-18  R. Bernstein  <rocky@gnu.org>
+
+	Start gdb mode.
+
+2010-01-09  rocky  <rockyb@rubyforge.org>
+
+	Breakpont fixes. Show only one breakpoint icon in margin. Store
+	breakpoint number as a number, not a string. Show breakpoint in help
+	string. Add a dbgr-track-bp-loc test.
+
+2010-01-02  rocky  <rockyb@rubyforge.org>
+
+	Add breakpoint tracking regexp.
+
+2010-01-01  rocky  <rocky@gnu.org>
+
+	Add breakpoint regexp for rdebug.
+
+2010-01-01  rocky  <rocky@gnu.org>
+
+	Add breakpoint tracking for rdebug.
+
+2010-01-01  rocky  <rocky@gnu.org>
+
+	Makefile is derived
+
+2010-01-01  rocky  <rockyb@rubyforge.org>
+
+	Remove erroneous message.
+
+2010-01-01  rocky  <rockyb@rubyforge.org>
+
+	Attempt to move forward in tracking breakpoints setting.
+
+2009-12-28  rocky  <rockyb@rubyforge.org>
+
+	Add breakpoint handling test.
+
+2009-12-28  rocky  <rockyb@rubyforge.org>
+
+	More display/remove cleanup.
+
+2009-12-27  rocky  <rockyb@rubyforge.org>
+
+	Small improvements (?) towards getting breakpoint icons working.
+
+2009-12-27  rocky  <rockyb@rubyforge.org>
+
+	Start working on breakpoint icons. "make test" works inside dbgr
+	directory.
+
+2009-12-22  rocky  <rockyb@rubyforge.org>
+
+	Some debugger commands prompt. So we need to make sure we show the 
+	command buffer for those.
+
+2009-12-21  rocky  <rockyb@rubyforge.org>
+
+	Get menus under control. Works now in "short-key" mode. Help is provided
+	too!
+
+2009-12-20  rocky  <rockyb@rubyforge.org>
+
+	Start to add menu commands. gdb command "finish" added.
+
+2009-12-18  rocky  <rocky@gnu.org>
+
+	Don't overwrite elisp-comp.
+
+2009-12-16  rocky  <rockyb@rubyforge.org>
+
+	Use loc-changes-goto of new package loc-changes to find line number
+	positions. loc-changes-goto is more tolerant of buffer modifications.
+
+2009-12-16  rocky  <rockyb@rubyforge.org>
+
+	dbgr.el - loads everything (via load-relative). Push dbgr source files
+	into dbgr which is where they are installed. Cleaner this way.
+
+2009-12-14  rocky  <rockyb@rubyforge.org>
+
+	behave -> test-unit
+
+2009-12-13  rocky  <rocky@gnu.org>
+
+	Remove local behave.el in favor of new test-unit package.
+
+2009-12-10  rocky  <rocky@gnu.org>
+
+	Give error message when track-from-region on a non-debugger command
+	buffer.
+
+2009-12-10  rocky  <rocky@gnu.org>
+
+	dbgr-fringe-history-unset -> dbgr-fringe-erase-history-arrows. Also let
+	it be used as a command.
+
+	Update some docstrings.
+
+2009-12-10  rocky  <rocky@gnu.org>
+
+	Make dbgr-track-from-region more interactive useful: call the location
+	tracking routine adjust the display.
+
+2009-12-09  rocky  <rocky@gnu.org>
+
+	rdebug.el: make more user-friendly for interactive
+	dbgr-track-from-region calls.
+
+2009-12-08  rocky  <rocky@gnu.org>
+
+	Small changes.
+
+2009-12-06  rocky  <rockyb@rubyforge.org>
+
+	track.el: Fix bug in dbgr-goto-line-for-loc-pat key.el, track-mode.el:
+	temporary workaround for VMware keybinding mess up.
+
+2009-12-06  rocky  <rockyb@rubyforge.org>
+
+	Make rbdbgr-track-mode.el stand on its own.
+
+2009-11-29  rocky  <rockyb@rubyforge.org>
+
+	Start adding flags to command-send to indicate whether to record
+	history, and whether we have a frame-changing command. Do more error
+	checking in command-send for running processes and so on. Add more
+	commands and keys bindings to short-key.
+
+	core.el: consider source and command buffer past history *only* if it
+	was run with the same debugger as we want to currently run.
+
+2009-11-29  rocky  <rockyb@rubyforge.org>
+
+	Make gdb commands more short-key friendly - that is can be called from
+	the source window. Add newer-frame: "<" and older frame ">".
+
+2009-11-29  rocky  <rockyb@rubyforge.org>
+
+	Handle some error cases, and fix source tracking created in DRYing code. 
+	fringe.el: handle deleting the buffer we are trying to update the fringe
+	arrow for track-mode.el: handle error case where we invoke
+	dbgr-track-mode in a non-process buffer. track.el: need to switch to
+	source buffer to query overlay arrow.
+
+2009-11-29  rocky  <rockyb@rubyforge.org>
+
+	Keep command buffer position and source location position in sync when
+	moving back in the history of positions. See docstring of
+	dbgr-track-hist-fn-internal for which windows get displayed. DRY code a
+	little.
+
+2009-11-29  rocky  <rocky@gnu.org>
+
+	Fix up and simplify short-key mode so the setting is saved in the
+	process buffer and propagated to the source buffers encountered.
+
+	key.el: add 's' for step. test/behave.el: add assert-raises!
+
+	track-mode.el: use standard name -setup instead of -body. Pass an
+	explicit parameter.
+
+	window.el: remove older, now-unused code.
+
+2009-11-27  rocky  <rocky@gnu.org>
+
+	Bang on (source) window update and display. Less disruption of windows
+	on update. Add variable in cmdbuf to track shortkey mode.
+
+	file.el (dbgr-file-line-count): remove bug. save-current isn't what we
+	want. Use find-file-noselect so we don't disrupt current buffer.
+
+	cmdbuf.el, cmds,el: at ? to ends of boolean variables.
+
+	loc.el: don't change the selected buffer.
+
+	test-cmdbuf.el: fix improper call to dbgr-cmdbuf-info-cmd-args=
+
+2009-11-26  rocky  <rocky@gnu.org>
+
+	Remove spurious warning.
+
+2009-11-26  rocky  <rocky@gnu.org>
+
+	elisp-comp: remove temp script. Makefile.am: Wasn't running cmdbuf test. 
+	helper.el: current best guess at a setter method.
+
+2009-11-25  rocky  <rocky@gnu.org>
+
+	behave.el: fix incorrect initializion of assert count. test-send.el:
+	Check docstring is set on dbgr-define-command
+
+2009-11-24  rocky  <rocky@gnu.org>
+
+	send.el: docstring elaboration. test-send.el: Add test of
+	dbgr-define-command. Show number of assertions run.
+
+2009-11-24  rocky  <rocky@gnu.org>
+
+	Need to use require-relative-list with prefix?
+
+2009-11-24  rocky  <rocky@gnu.org>
+
+	Force going to the current source-code line when in the case that buffer
+	is already visible. No doubt there will be more work on this.
+
+2009-11-23  rocky  <rockyb@rubyforge.org>
+
+	dbgr-loc.el -> dbgr.el
+
+2009-11-23  R. Bernstein  <rocky@gnu.org>
+
+	Deal with process sentinel as part of turning on dbgr-track-mode so that
+	we catch process hangup dbgr-track-mode (as well as running the debugger
+	from the outset).
+
+2009-11-23  R. Bernstein  <rocky@gnu.org>
+
+	docstring name regularization.
+
+2009-11-22  rocky  <rockyb@rubyforge.org>
+
+	Remove dbgr- from filenames, although the files still provide with a
+	dbgr- prefix thanks to recent changes to load-relative.
+
+2009-11-22  rocky  <rockyb@rubyforge.org>
+
+	Bang on short-key mode. Add variable in command buffer which tell
+	whether to add a cmmand to the history or and to end up in the command
+	buffer. Bugs in dbgr-define-command fixed. provide-me used more often.
+
+2009-11-20  rocky  <rockyb@rubyforge.org>
+
+	(provide 'xxx) -> (provide-me). This ensures we get it right. Start to
+	fold in Anders' shortkey mode and keybindings and all that other great
+	stuff.
+
+2009-11-20  rocky  <rockyb@rubyforge.org>
+
+	dbgr-send-process: send a debugger command and redirect output to a
+	temporary buffer. The hope is that this is will be a cleaner way to make
+	a request and get an answer - no comint filters are involved.
+
+2009-11-20  R. Bernstein  <rocky@gnu.org>
+
+	Set fringe arrows for dedicated command buffers.
+
+2009-11-20  R. Bernstein  <rocky@gnu.org>
+
+	Test changes since we no longer remove duplicate locations.
+
+2009-11-20  R. Bernstein  <rocky@gnu.org>
+
+	dbgr-fringe.el: remove duplicate test. This needs to be done at a higher
+	level. Empirically get fringe history access correct, until I better
+	understand what's wrong. dbgr-cmds.el: add more gdb commands. Use them
+	in the python and ruby debuggers.
+
+2009-11-20  rocky  <rockyb@rubyforge.org>
+
+	Don't set older marks if the are at the same position as newer ones.
+
+2009-11-20  rocky  <rockyb@rubyforge.org>
+
+	Add history of locations stopped (last 3) in the fringe. Also some
+	associated simplification and cleanup around this code.
+
+2009-11-19  R. Bernstein  <rocky@gnu.org>
+
+	dbgr-arrow -> dbgr-fringe. Simplify a tad more.
+
+2009-11-19  rocky  <rockyb@rubyforge.org>
+
+	Improve arrow interface to just the essentials. Remove arrow when
+	leaving dbgr-track-mode.
+
+2009-11-19  rocky  <rockyb@rubyforge.org>
+
+	Fringe arrow cleanup and simplification in advance of reworking to add a
+	source buffer-local variable of ring of history positions and marking
+	them in the fringe in both the source and command buffers.
+
+	list of positions
+
+2009-11-19  rocky  <rockyb@rubyforge.org>
+
+	rbdbgr-core.el: fix invalid fn name dbgr-arrow.el: start allow location
+	history in fringe.
+
+2009-11-18  rocky  <rockyb@rubyforge.org>
+
+	Attempt more realistic tests.
+
+2009-11-18  R. Bernstein  <rocky@gnu.org>
+
+	Bugs I probably would have caught if I had done more thorough unit
+	testing.
+
+2009-11-18  R. Bernstein  <rocky@gnu.org>
+
+	Small bugfix.
+
+2009-11-18  R. Bernstein  <rocky@gnu.org>
+
+	Since elisp-comp has been fixed we can use require-relative-list in
+	subdirectories. Reinstate compiling them. DRY code some.
+
+2009-11-18  rocky  <rockyb@rubyforge.org>
+
+	Correct bugs in and clean up track-mode setting and debugger invocation.
+
+	Suggested debugger invocation command is now the last invocation unless
+	the buffer has a better idea.
+
+	elisp-comp: we now need our own since we don't want to compile in a
+	directory. Makefile.am: no subdirs until I have more time to go over
+	this.
+
+2009-11-17  rocky  <rockyb@rubyforge.org>
+
+	Create a global hash which contains regular expression information for 
+	each of the debuggers. Each debugger has a regular expression to match a
+	prompt location and a regular expression for the prompt string that 
+	comint uses. However there may be other regular expressions for things
+	like stack traces.
+
+	Part of a long-needed refactoring. More to follow. Expect breakage.
+
+2009-11-17  R. Bernstein  <rocky@gnu.org>
+
+	I think the bug in load-relative may have been the cause of some of the
+	weirdness found here.
+
+2009-11-17  R. Bernstein  <rocky@gnu.org>
+
+	Add dbgr-define-command and some common gdb-commands.
+
+2009-11-17  R. Bernstein  <rocky@gnu.org>
+
+	Don't issue message if we are in a command buffer Fill in test cases
+	more.
+
+2009-11-17  rocky  <rockyb@rubyforge.org>
+
+	Make dbgr-command interactive.
+
+2009-11-17  rocky  <rockyb@rubyforge.org>
+
+	Add dbgr-expand-format-string
+
+2009-11-17  rocky  <rockyb@rubyforge.org>
+
+	dbgr-set-arrow: add optional indicator pair
+
+2009-11-16  rocky  <rockyb@rubyforge.org>
+
+	Minor
+
+2009-11-16  rocky  <rockyb@rubyforge.org>
+
+	Hoist some common code. Missing a require in rbdbgr.el and remove an
+	extra prvide in pydbgr.el
+
+2009-11-16  rocky  <rockyb@rubyforge.org>
+
+	Simpilify struct access even more by removing "dbgr-" prefix. I like
+	things to look real simple.
+
+2009-11-16  rocky  <rockyb@rubyforge.org>
+
+	Push forward with simpler access to struct fields. pydbgr, rbdbgr:
+	remove compilation bug/warning.
+
+2009-11-16  R. Bernstein  <rocky@gnu.org>
+
+	dbgr-cmdbuf: minor fixes. SMake more use simplified defstruct access, 
+	add dbgr-cmdbuf? rbdbgr: pass in pat-hash to get set correctly.
+
+2009-11-16  rocky  <rockyb@rubyforge.org>
+
+	dbgr-sget: start to simplify access to defstruct fields. More cmdbuf
+	tests.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	dbgr-command-send now echos its output. prompt is set correctly for 
+	rbdbgr and pydbgr.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	Bug fix: minibuffer history was not saving prior of debugger
+	invocations. scriptbuf -> srcbuf.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	Add with-current-buffer-safe to guard against deleted buffers. Set/save
+	comint-prompt-regexp. Correct debugger prompts which are not the same as
+	location matching patterns. Workaround problem in loading pydbg/rbdbgr
+	not pulling in all files. Include python regexp test.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	Start routines which allow us to send commands to the debugger process:
+	dbgr-send-command. Right now though, It is not inserting into the buffer
+	nor the output filter function to kick in.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	Start to use require-relative-list more. Note: require-relative-list has
+	problems when used in subdirectories python or ruby. But for
+	'.' -like require relative, it is fine.
+
+2009-11-15  rocky  <rockyb@rubyforge.org>
+
+	dbg-buffer.el: Start buffer access routines Start to reduce
+	declare-functions by getting definitions more directly.
+
+2009-11-14  rocky  <rockyb@rubyforge.org>
+
+	Start cmdbuf tests. Add predicates to see if a buffer is a debugger
+	script or command.
+
+2009-11-13  R. Bernstein  <rocky@gnu.org>
+
+	Fix up install so that we go to our own directory and have
+	language-specific directories underneath that.
+
+2009-11-13  R. Bernstein  <rocky@gnu.org>
+
+	Mostly administrivia.
+
+2009-11-13  rockyb  <rocky@gnu.org>
+
+	Sentinel should detect deleted buffers. comint output hooks were not
+	installed in pydbgr and rbdbgr.
+
+2009-11-13  R. Bernstein  <rocky@gnu.org>
+
+	Add Makefiles in python and ruby. Remove byte-compile warnings in python
+	and ruby. dbgr-track.el: goto-... -> dbgr-goto
+
+2009-11-13  rocky  <rockyb@rubyforge.org>
+
+	Switch to using require-relative instead of load-realative.
+
+2009-11-13  rocky  <rockyb@rubyforge.org>
+
+	Used in testing require-relative
+
+2009-11-11  rocky  <rockyb@rubyforge.org>
+
+	*/*-core.el Common routine to query for command line. dbgr-cmdf.el: fix
+	bugs in command-line retrieval.
+
+2009-11-11  R. Bernstein  <rocky@gnu.org>
+
+	First cut at saving command arguments in script buffer. Much improved
+	but More work needed.
+
+2009-11-11  R. Bernstein  <rocky@gnu.org>
+
+	procbuf -> cmdbuf
+
+2009-11-11  rocky  <rockyb@rubyforge.org>
+
+	behave.el: was not passing assertion message to assert-t Store debugger
+	name inside script buffers. Command invocation to come... 
+	dbgr-window.el: add provide for my name. Start helper file. xx-p -> xx?
+	because it is cooler.
+
+2009-11-10  rocky  <rockyb@rubyforge.org>
+
+	dbgr-loc.el: fix M-up/down motion in command buffer to match mark 
+	ruby/rbdbgr.el: remove bogus (shell-mode).
+
+2009-11-10  R. Bernstein  <rocky@gnu.org>
+
+	Move command process mark into location structure. More work is needed.
+
+2009-11-10  rocky  <rockyb@rubyforge.org>
+
+	Keep (historical) process buffer position in sync with historical source
+	buffer position. Warning: this needs refactorization.
+
+2009-11-10  rocky  <rockyb@rubyforge.org>
+
+	switch-buffer -> set-buffer so we don't mess up window positions.
+
+2009-11-09  rocky  <rockyb@rubyforge.org>
+
+	dbgr-exec-shell Deal with nil directory in command invocation
+
+2009-11-09  R. Bernstein  <rocky@gnu.org>
+
+	Remove byte-compile warnings.
+
+2009-11-09  R. Bernstein  <rocky@gnu.org>
+
+	Better load-relative uses and remove a failing require.
+
+2009-11-09  rocky  <rockyb@rubyforge.org>
+
+	Use require-relative now.
+
+2009-11-09  rocky  <rockyb@rubyforge.org>
+
+	Use load-relative with lists of files when possible.
+
+2009-11-09  rocky  <rockyb@rubyforge.org>
+
+	Start to use load-relative. dbgr-core.el: fix bug in dbgr-term-sentinal
+
+2009-11-08  rocky  <rockyb@rubyforge.org>
+
+	Clean up code with sets buffer-local variables in scriptbuf and procbuf.
+	Although this is a big improvement, more work is needed.
+
+2009-11-08  rocky  <rockyb@rubyforge.org>
+
+	Set debugger buffer-local variables for command/process and source
+	buffers. Set default directory in command buffer. Source buffer now has
+	last command invocation and a pointer to the process buffer.
+
+2009-11-07  rocky  <rockyb@rubyforge.org>
+
+	Put overla/arrow/fringe arrow on current location in source window.
+
+2009-11-02  rocky  <rockyb@rubyforge.org>
+
+	dbgr-regexp.el: regexp bug fixes for rdebug. dbgr-track-mode.el:
+	docstring typo dbgr-track.el: don't run hooks if dbgr-track-mode is not
+	set.
+
+2009-11-02  R. Bernstein  <rocky@gnu.org>
+
+	Keep history of pydbgr, rbdbgr invocations and modify minibuffer mode
+	map to do filename completion. FIXME: need to DRY this code.
+
+2009-11-02  rocky  <rockyb@rubyforge.org>
+
+	Save the last invocation as a buffer-local variable in the process
+	buffer.
+
+2009-11-01  rocky  <rockyb@rubyforge.org>
+
+	Add an optional message parmater on assert-... .
+
+2009-11-01  rocky  <rockyb@rubyforge.org>
+
+	Tidy behave.el a little bit more.
+
+2009-11-01  rocky  <rockyb@rubyforge.org>
+
+	behave.el: expect- => assert- . DRY assert-t.
+
+2009-11-01  rocky  <rockyb@rubyforge.org>
+
+	Add a 2nd debugger. In the process DRY and make common some code.
+
+2009-10-31  rocky  <rockyb@rubyforge.org>
+
+	Don't kill existing processes in processe buffers when rerunning the
+	same command Showing location negotiates the buffers correctly now.
+
+2009-10-31  rocky  <rockyb@rubyforge.org>
+
+	rbdbgr via comint now works.
+
+2009-10-30  R. Bernstein  <rocky@gnu.org>
+
+	More work on term mode.
+
+2009-10-30  rocky  <rockyb@rubyforge.org>
+
+	For now rbdbgr uses term.el for its process buffer. However term.el
+	doesn't have an output filter function - yet.
+
+2009-10-29  R. Bernstein  <rocky@gnu.org>
+
+	More detailed command-line parsing. Warning - is in intermediate state.
+
+2009-10-29  R. Bernstein  <rocky@gnu.org>
+
+	Closer to having command rbdbgr working.
+
+2009-10-29  R. Bernstein  <rocky@gnu.org>
+
+	Start dbgr-exec-shell and dbgr-term-sential - creation of an eterm shell
+	to run debugger in.
+
+2009-10-29  rocky  <rockyb@rubyforge.org>
+
+	Use save-current-buffer. clean up dbgr-track-mode.el and misc small
+	fixes.
+
+2009-10-29  rocky  <rockyb@rubyforge.org>
+
+	test/behave.el: add expect-equal, expect-t, expect-nil and show actual +
+	expected on error dbgr-core.el: move option parsing here rbdbgr-core.el:
+	fn-name typo; adjust for new dbgr-core test-core.el: add more
+	rbdbgr-file-mode tests
+
+2009-10-28  rocky  <rockyb@rubyforge.org>
+
+	dbgr-track-mode.el: simplify mode hook code by using define-minor-mode 
+	macro more effectively.
+
+	dbgr-track.el: we'll see if we can get away with not having dbg-info 
+	global.
+
+	ruby/*.el: rbdbgr-track-mode now works again
+
+2009-10-28  rocky  <rocky@sanchez.(none)>
+
+	dbgr-track-mode sets status dynamically based on debugger name.
+
+2009-10-28  rockyb  <rocky@gnu.org>
+
+	dbgr-track-mode minimally works.
+
+2009-10-28  rockyb  <rocky@gnu.org>
+
+	Start the Grand Unified Debugger Rewrite.
+

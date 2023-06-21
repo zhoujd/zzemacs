@@ -23,8 +23,6 @@
 ;;function key setting on console
 ;;suspend-frame ctrl-x ctrl-z
 (defvar ctrl-z-map       (make-sparse-keymap) "ctrl-z-map for self functions.")
-(defvar ctrl-map         (make-sparse-keymap) "C-1/+")
-(defvar meta-map         (make-sparse-keymap) "M-1/+")
 (defvar ctrl-x-fn-map    (make-sparse-keymap) "ctrl-x f1/f12")
 (defvar ctrl-c-fn-map    (make-sparse-keymap) "ctrl-c f1/f12")
 (defvar fn-map           (make-sparse-keymap) "f1/f12")

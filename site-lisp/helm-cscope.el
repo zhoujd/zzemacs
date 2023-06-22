@@ -4,7 +4,6 @@
 
 ;; Author: alpha22jp <alpha22jp@gmail.com>
 ;; URL: https://github.com/alpha22jp/helm-cscope.el
-;; Package-Version: 0.1.1
 ;; Keywords: cscope, helm
 ;; Version: 0.1.1
 ;; Package-Requires: ((xcscope "1.0") (helm "1.6.7") (cl-lib "0.5") (emacs "24.1"))
@@ -21,6 +20,9 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Contributors:
+;; Sanjeev Sivasankaran <kalasalatemp at gmail.com> in 2019 added no-prompt versions.
 
 ;;; Commentary:
 
@@ -51,6 +53,12 @@
   "Face used to highlight line number in the *helm-cscope* buffer."
   :group 'helm-cscope)
 
+(defvar helm-cscope-execute-action-if-one nil
+  "Automatically perform action if result consists of only one row.")
+
+(defvar helm-cscope-after-display-hook nil
+  "Call hook after the select action has been processed.")
+
 (defconst helm-cscope--parse-regexp
   "\\`\\([^ ]+\\) \\([^ ]+\\) \\([0-9]+\\) \\(.*\\)")
 
@@ -75,7 +83,8 @@
   (save-restriction
     (widen)
     (goto-char (point-min))
-    (forward-line (1- line-number)))
+    (forward-line (1- line-number))
+    (run-hooks 'helm-cscope-after-display-hook))
 
   (when cscope-fuzzy-search-range
     (let ((fuzzy-search-text-regexp
@@ -119,11 +128,11 @@
 
 (defun helm-cscope--open-file (dir line &optional persistent)
   (when (string-match helm-cscope--parse-regexp line)
-    (let ((file (concat dir (match-string 1 line)))
+    (let ((file (match-string 1 line))
           (line-number (string-to-number (match-string 3 line)))
           (text (match-string 4 line)))
       (unless persistent (ring-insert cscope-marker-ring (point-marker)))
-      (find-file file)
+      (find-file (if (file-name-absolute-p file) file (concat dir file)))
       (helm-cscope--goto-line text line-number)
       (if persistent (helm-highlight-current-line)))))
 
@@ -132,20 +141,23 @@
    (lambda (e) (string-match helm-cscope--parse-regexp (cdr e)))
    candidates))
 
-(defun helm-cscope--transform (line)
+(defun helm-cscope--transform (dir line)
   (when (string-match helm-cscope--parse-regexp line)
-    (format "%s: %s(%s) %s"
-            (propertize (match-string 1 line) 'face 'helm-cscope-file-face)
-            (propertize (match-string 2 line) 'face 'helm-cscope-function-face)
-            (propertize (match-string 3 line) 'face 'helm-cscope-lineno-face)
-            (match-string 4 line))))
+    (let ((file (match-string 1 line)))
+      (format "%s: %s(%s) %s"
+              (propertize (if (file-name-absolute-p file)
+                              (replace-regexp-in-string dir "" file)
+                            file) 'face 'helm-cscope-file-face)
+              (propertize (match-string 2 line) 'face 'helm-cscope-function-face)
+              (propertize (match-string 3 line) 'face 'helm-cscope-lineno-face)
+              (match-string 4 line)))))
 
 (defun helm-cscope--make-source (dir db-name search-type-arg search-text args)
   (helm-build-in-buffer-source dir
     :init (lambda () (helm-cscope--search
                       dir db-name search-type-arg search-text args))
     :filtered-candidate-transformer 'helm-cscope--filter-candidates
-    :real-to-display 'helm-cscope--transform
+    :real-to-display (lambda (line) (helm-cscope--transform dir line))
     :fuzzy-match t
     :action (lambda (line) (helm-cscope--open-file dir line))
     :persistent-action (lambda (line) (helm-cscope--open-file dir line t))))
@@ -183,12 +195,28 @@
   (helm-cscope--find-common "-0" symbol))
 
 ;;;###autoload
+(defun helm-cscope-find-this-symbol-no-prompt()
+  "Locate a symbol in source code [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-0" symbol)))
+
+;;;###autoload
 (defun helm-cscope-find-global-definition (symbol)
   "Find a symbol's global definition."
   (interactive
    (list (cscope-prompt-for-symbol
           "Find this global definition " nil nil t)))
   (helm-cscope--find-common "-1" symbol))
+
+;;;###autoload
+(defun helm-cscope-find-global-definition-no-prompt()
+  "Find a symbol's global definition [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-1" symbol)))
 
 ;;;###autoload
 (defun helm-cscope-find-called-function (symbol)
@@ -199,12 +227,28 @@
   (helm-cscope--find-common "-2" symbol))
 
 ;;;###autoload
-(defun helm-cscope-find-calling-this-funtcion (symbol)
+(defun helm-cscope-find-called-function-no-prompt ()
+  "Display functions called by a function [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-2" symbol)))
+
+;;;###autoload
+(defun helm-cscope-find-calling-this-function (symbol)
   "Display functions calling a function."
   (interactive
    (list (cscope-prompt-for-symbol
           "Find functions calling this function " nil nil t)))
   (helm-cscope--find-common "-3" symbol))
+
+;;;###autoload
+(defun helm-cscope-find-calling-this-function-no-prompt()
+  "Display functions calling a function [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-3" symbol)))
 
 ;;;###autoload
 (defun helm-cscope-find-this-text-string (symbol)
@@ -213,6 +257,14 @@
    (list (cscope-prompt-for-symbol
           "Find this text string " nil t nil)))
   (helm-cscope--find-common "-4" symbol))
+
+;;;###autoload
+(defun helm-cscope-find-this-text-string-no-prompt()
+  "Locate where a text string occurs [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-4" symbol)))
 
 ;;;###autoload
 (defun helm-cscope-find-egrep-pattern (symbol)
@@ -233,6 +285,14 @@
   (helm-cscope--find-common "-7" symbol))
 
 ;;;###autoload
+(defun helm-cscope-find-this-file-no-prompt ()
+  "Locate a file [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+    (helm-cscope--find-common "-7" symbol)))
+
+;;;###autoload
 (defun helm-cscope-find-files-including-file (symbol)
   "Locate all files #including a file."
   (interactive
@@ -241,6 +301,13 @@
             "Find files #including this file " t nil nil))))
   (helm-cscope--find-common "-8" symbol))
 
+(defun helm-cscope-find-files-including-file-no-prompt ()
+  "Locate all files #including a file [no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+  (helm-cscope--find-common "-8" symbol)))
+
 ;;;###autoload
 (defun helm-cscope-find-assignments-to-this-symbol (symbol)
   "Locate assignments to a symbol in the source code."
@@ -248,6 +315,14 @@
    (list (cscope-prompt-for-symbol
           "Find assignments to this symbol " nil nil t)))
   (helm-cscope--find-common "-9" symbol))
+
+;;;###autoload
+(defun helm-cscope-find-assignments-to-this-symbol-no-prompt ()
+  "Locate assignments to a symbol in the source code[no user prompting]."
+  (interactive)
+  (let ((symbol (cscope-extract-symbol-at-cursor nil nil))
+        (helm-execute-action-at-once-if-one helm-cscope-execute-action-if-one))
+  (helm-cscope--find-common "-9" symbol)))
 
 (defvar helm-cscope-mode-name " Helm cscope")
 (defvar helm-cscope-mode-map (make-sparse-keymap))

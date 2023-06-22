@@ -202,7 +202,16 @@
          (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
+;;https://github.com/alpha22jp/helm-cscope.el
 (require 'helm-cscope)
+(add-hook 'c-mode-common-hook 'helm-cscope-mode)
+(add-hook 'helm-cscope-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-.") 'helm-cscope-find-global-definition)
+            (local-set-key (kbd "M-@") 'helm-cscope-find-calling-this-funtcion)
+            (local-set-key (kbd "M-s") 'helm-cscope-find-this-symbol)
+            (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
+
 (require 'helm-bm)
 
 (require 'helm-shell)

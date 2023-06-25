@@ -207,10 +207,10 @@
 (add-hook 'c-mode-common-hook 'helm-cscope-mode)
 (add-hook 'helm-cscope-mode-hook
           (lambda ()
-            (local-set-key (kbd "M-.") 'helm-cscope-find-global-definition)
-            (local-set-key (kbd "M-@") 'helm-cscope-find-calling-this-funtcion)
-            (local-set-key (kbd "M-s") 'helm-cscope-find-this-symbol)
-            (local-set-key (kbd "M-,") 'helm-cscope-pop-mark)))
+            (local-set-key (kbd "M-s M-.") 'helm-cscope-find-global-definition)
+            (local-set-key (kbd "M-s M-@") 'helm-cscope-find-calling-this-funtcion)
+            (local-set-key (kbd "M-s M-s") 'helm-cscope-find-this-symbol)
+            (local-set-key (kbd "M-s M-,") 'helm-cscope-pop-mark)))
 
 (require 'helm-bm)
 

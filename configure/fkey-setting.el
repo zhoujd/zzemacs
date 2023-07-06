@@ -216,6 +216,23 @@
   (kbd "M-`")     (lookup-key f4-map (kbd "M-`"))
   ))
 
+(apply-keys-to-map
+ esc-map
+ (list
+  (kbd "M-1")     (lookup-key global-map (kbd "C-1"))
+  (kbd "M-2")     (lookup-key global-map (kbd "C-2"))
+  (kbd "M-3")     (lookup-key global-map (kbd "C-3"))
+  (kbd "M-4")     (lookup-key global-map (kbd "C-4"))
+  (kbd "M-5")     (lookup-key global-map (kbd "C-5"))
+  (kbd "M-6")     (lookup-key global-map (kbd "C-6"))
+  (kbd "M-7")     (lookup-key global-map (kbd "C-7"))
+  (kbd "M-8")     (lookup-key global-map (kbd "C-8"))
+  (kbd "M-9")     (lookup-key global-map (kbd "C-9"))
+  (kbd "M-0")     (lookup-key global-map (kbd "C-0"))
+  (kbd "M--")     (lookup-key global-map (kbd "C--"))
+  (kbd "M-=")     (lookup-key global-map (kbd "C-="))
+  ))
+
 
 (provide 'fkey-setting)
 

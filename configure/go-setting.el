@@ -64,6 +64,9 @@
 (require 'lsp-go)
 (add-hook 'go-mode-hook 'lsp-deferred)
 
+;;go debug with gud
+(require 'go-dlv)
+
 
 (provide 'go-setting)
 

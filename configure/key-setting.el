@@ -57,6 +57,8 @@
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
   (kbd "C-z")     'repeat
+  (kbd ",")       'winner-undo
+  (kbd ".")       'winner-redo
   ))
 
 (apply-keys-to-map
@@ -220,7 +222,7 @@
   (kbd "M-2")     'delete-other-frames
   (kbd "M-3")     'zz:last-buffer-go
   (kbd "M-4")     'zz:kill-this-buffer
-  (kbd "M-5")     'gud-go
+  (kbd "M-5")     'gud-cont
   (kbd "M-6")     'gud-break
   (kbd "M-7")     'gud-next
   (kbd "M-8")     'gud-step

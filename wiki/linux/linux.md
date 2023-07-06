@@ -326,15 +326,16 @@ Linux something
     # tune2fs -l /dev/sdc1 | grep UUID
     # dumpe2fs /dev/sdc1 | grep UUID
 
-## Upgrade GCC (gcc)
+## Upgrade GCC (gcc) via build from source
 
     # sudo yum install libmpc-devel mpfr-devel gmp-devel
     # cd ~/Downloads
-    # curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O
-    # curl https://ftp.gnu.org/gnu/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2 -O
+    # ver=7.5.0
+    # curl ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-${ver}/gcc-${ver}.tar.gz -O
+    # curl https://ftp.gnu.org/gnu/gcc/gcc-${ver}/gcc-${ver}.tar.gz -O
 
-    # tar xvfj gcc-4.9.2.tar.bz2
-    # cd gcc-4.9.2
+    # tar xvf gcc-${ver}.tar.gz
+    # cd gcc-${ver}
     # ./configure --disable-multilib --enable-languages=c,c++
     # make -j 4
     # make install

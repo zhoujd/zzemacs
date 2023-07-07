@@ -28,6 +28,11 @@
  (lambda ()
    (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
 
+(add-hook
+ 'gud-mode-hook
+ (lambda ()
+   (company-mode 0)))
+
 (when-emacs25
  (zz:load-path "site-lisp/realgud")
  (require 'realgud))

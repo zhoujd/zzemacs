@@ -1,5 +1,15 @@
 ### self function setting
 
+## chmod on files and directory
+#find -type f -print0 | xargs -0 chmod -v 760
+#find -type f -exec chmod 760 {} \;
+#find -type d -print0 | xargs -0 chmod -v 770
+#find -type d -exec chmod 770 {} \;
+
+## delete or list invalite soft link
+#find -L /path -type l -exec rm -i {} \;
+#find -xtype l -delete
+
 ## useful function like alias
 ipaddr() { ifconfig $1 | grep inet | awk '{print $2}' | sed 's/^addr://g'; }
 cdl()    { cd "$@";  l; }
@@ -100,12 +110,15 @@ testmicrophone() {
     arecord -vvv -d 3 -f dat /dev/null
 }
 
-## chmod on files and directory
-#find -type f -print0 | xargs -0 chmod -v 760
-#find -type f -exec chmod 760 {} \;
-#find -type d -print0 | xargs -0 chmod -v 770
-#find -type d -exec chmod 770 {} \;
-
-## delete or list invalite soft link
-#find -L /path -type l -exec rm -i {} \;
-#find -xtype l -delete
+pathmunge () {
+    case ":${PATH}:" in
+        *:"$1":*)
+            ;;
+        *)
+            if [ "$2" = "after" ] ; then
+                PATH=$PATH:$1
+            else
+                PATH=$1:$PATH
+            fi
+    esac
+}

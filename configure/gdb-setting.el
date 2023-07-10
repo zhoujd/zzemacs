@@ -26,12 +26,7 @@
 (add-hook
  'gdb-mode-hook
  (lambda ()
-   (gud-def gud-break-main "break main" nil "Set breakpoint at main.")))
-
-(add-hook
- 'gud-mode-hook
- (lambda ()
-   (define-key (current-local-map) "\t" 'company-complete-selection)))
+   (define-key gud-mode-map [tab] 'company-complete-selection)))
 
 (when-emacs25
  (zz:load-path "site-lisp/realgud")

@@ -14,6 +14,9 @@
 ;;kubernetes helm
 (require 'kubernetes-helm)
 
+;;kubernets tramp
+(require 'kubernetes-tramp)
+
 
 (provide 'kube-setting)
 

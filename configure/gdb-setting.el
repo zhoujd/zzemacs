@@ -31,7 +31,7 @@
 (add-hook
  'gud-mode-hook
  (lambda ()
-   (company-mode 0)))
+   (define-key (current-local-map) "\t" 'company-complete-selection)))
 
 (when-emacs25
  (zz:load-path "site-lisp/realgud")

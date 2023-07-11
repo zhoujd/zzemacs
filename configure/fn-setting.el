@@ -101,7 +101,7 @@
   "f7 key binding")
 
 (define-fn-key (gethash "f8" fn-key-table)
-  [f8]              'gdb
+  [f8]              'gud-gdb
   [S-f8]            'gud-stop-subjob
   [C-f8]            'gdb-restore-windows
   [M-f8]            'gud-refresh

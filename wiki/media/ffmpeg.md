@@ -79,3 +79,8 @@ FFMPEG
     $ ffmpeg -y -init_hw_device qsv=hw -filter_hw_device hw -f rawvideo -pix_fmt yuv420p -s:v 320x240 -i test.yuv -vf hwupload=extra_hw_frames=64,format=qsv -c:v h264_qsv -b:v 5M test.mp4
     $ ffprobe -v error -show_streams test.mp4
     $ ffmpeg -hwaccel qsv -c:v h264_qsv -i test.mp4 -f null /dev/null
+
+## Get frame type for specific frame using ffmpeg
+
+    $ ffprobe video.mp4 -show_frames | grep -E 'pict_type|coded_picture_number'
+    $ ffprobe video.mp4 -show_frames | grep -w -E 'coded_picture_number=8' -B 1

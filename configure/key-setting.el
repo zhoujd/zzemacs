@@ -327,6 +327,13 @@
   ))
 
 (apply-keys-to-map
+ esc-map
+ (list
+  (kbd "M-,")     'gud-up
+  (kbd "M-.")     'gud-down
+  ))
+
+(apply-keys-to-map
  help-map
  (list
   (kbd "M-a")     'helm-apropos

@@ -430,3 +430,8 @@ Docker
 
     ## 3. Only open pstrace limitation (prefer)
     $ docker run --cap-add sys_pstrace
+
+## Inside a docker container on a remote host
+
+    C-x C-f /docker:redis_container:/
+    C-x C-f /ssh:root@ssb.willschenk.com|docker:ssb-pub:/

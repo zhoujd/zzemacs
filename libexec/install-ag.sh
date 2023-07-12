@@ -8,7 +8,7 @@ install() {
     pushd ~/Downloads/
     git clone https://github.com/ggreer/the_silver_searcher.git
     cd the_silver_searcher
-    ./build.sh
+    ./build.sh --prefix=/usr
     make
     sudo make install
     popd

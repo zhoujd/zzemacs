@@ -89,9 +89,16 @@ set target-async on
 
 ** C Preprocessor Macros
 
-#+BEGIN_SRC s
+#+BEGIN_SRC sh
 (gdb) info macro [-a|-all] [--] macro
 
 ## Pass the -gdwarf-214 and -g3 flags to ensure the compiler includes information about preprocessor macros in the debugging information
 $ gcc -gdwarf-2 -g3 sample.c -o sample
+#+END_SRC
+
+** Multi-Thread Debugging
+
+#+BEGIN_SRC sh
+(gdb) break file:line thread thrNum if ...
+(gdb) thread apply thrNum1 thrNum2 ... continue
 #+END_SRC

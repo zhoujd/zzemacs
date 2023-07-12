@@ -6,7 +6,9 @@
 ## Python: pip install pss
 
 VER=v3.5.0
-sudo wget -O /usr/local/bin/ack https://beyondgrep.com/ack-$VER
-sudo chmod +x /usr/local/bin/ack
+PREFIX=/usr/bin
 
-echo "Install ack to /usr/local/bin/ done"
+sudo wget -O $PREFIX/ack https://beyondgrep.com/ack-$VER
+sudo chmod +x $PREFIX/ack
+
+echo "Install ack to $PREFIX done"

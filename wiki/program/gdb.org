@@ -86,3 +86,12 @@ set target-async on
 (gdb) continue &
 (gdb) interrupt
 #+END_SRC
+
+** C Preprocessor Macros
+
+#+BEGIN_SRC s
+(gdb) info macro [-a|-all] [--] macro
+
+## Pass the -gdwarf-214 and -g3 flags to ensure the compiler includes information about preprocessor macros in the debugging information
+$ gcc -gdwarf-2 -g3 sample.c -o sample
+#+END_SRC

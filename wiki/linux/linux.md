@@ -491,3 +491,25 @@ Linux something
     BrowseRemoteProtocols none
 
     $ sudo systemctl restart cups
+
+## Limit folder size
+
+    $ touch 2gbarea
+    $ truncate -s 2G 2gbarea
+    $ mke2fs -t ext4 -F 2gbarea
+    mke2fs 1.43.3 (04-Sep-2016)
+    Discarding device blocks: done
+    Creating filesystem with 524288 4k blocks and 131072 inodes
+    Filesystem UUID: bf1b2ee8-a7df-4a57-9d05-a8b60323e2bf
+    Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912
+
+    Allocating group tables: done
+    Writing inode tables: done
+    Creating journal (16384 blocks): done
+    Writing superblocks and filesystem accounting information: done
+
+    $ sudo mount 2gbarea up
+    $ df -h up
+    Filesystem      Size  Used Avail Use% Mounted on
+    /dev/loop0      2.0G  6.0M  1.8G   1% /home/muru/up

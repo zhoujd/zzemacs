@@ -38,11 +38,12 @@
 ;;     Use "+" to expand a collapsed tree
 ;;     Use "-" to collapse a tree
 
-;; Available global commands (bound by default to C-c s [gstCcia])
+;; Available global commands (bound by default to C-c s [gstfCcia])
 ;;
 ;; M-x rscope-find-global-definition
 ;; M-x rscope-find-this-symbol
 ;; M-x rscope-find-this-text-string
+;; M-x rscope-find-this-file
 ;; M-x rscope-find-functions-calling-this-function
 ;; M-x rscope-find-called-functions
 ;; M-x rscope-find-files-including-file
@@ -77,6 +78,8 @@
 
 (require 'outline nil t)
 (require 'tramp)
+(require 'rscope-nav)
+(require 'cl-lib)
 
 (defgroup rscope nil
   "Cscope interface for (X)Emacs.
@@ -114,6 +117,17 @@ as would have been gotten by using unix basename."
 (defcustom rscope-overlay-arrow-string "=>"
   "*The overlay string to use when displaying arrow overlays."
   :type 'string
+  :group 'rscope)
+
+(defcustom rscope-keymap-prefix (kbd "C-c s")
+  "Rscope keymap prefix"
+  :type 'string
+  :group 'rscope
+)
+
+(defcustom rscope-auto-reinit nil
+  "Automatically run `rscope-init' when the process cscope died."
+  :type 'boolean
   :group 'rscope)
 
 (defface rscope-file-face
@@ -168,21 +182,21 @@ Must end with a newline.")
     nil
   (setq rscope-list-entry-keymap (make-keymap))
   (suppress-keymap rscope-list-entry-keymap)
+  (define-key rscope-list-entry-keymap "N" 'rscope-nav)
   (define-key rscope-list-entry-keymap "n" 'rscope-next-symbol)
   (define-key rscope-list-entry-keymap "p" 'rscope-prev-symbol)
   (define-key rscope-list-entry-keymap "q" 'rscope-close-results)
   (define-key rscope-list-entry-keymap " " 'rscope-preview-entry-other-window)
   (define-key rscope-list-entry-keymap (kbd "RET") 'rscope-select-entry-other-window)
   (define-key rscope-list-entry-keymap (kbd "S-<return>") 'rscope-select-entry-current-window)
-  (define-key rscope-list-entry-keymap "R" 'rscope-regenerate-database)
   (when (featurep 'outline)
-    (define-key rscope-list-entry-keymap "0" (lambda() (interactive) (show-all)))
-    (define-key rscope-list-entry-keymap "1" (lambda() (interactive) (hide-sublevels 1)))
-    (define-key rscope-list-entry-keymap "2" (lambda() (interactive) (hide-sublevels 2)))
-    (define-key rscope-list-entry-keymap "3" (lambda() (interactive) (hide-sublevels 3)))
-    (define-key rscope-list-entry-keymap "4" (lambda() (interactive) (hide-sublevels 4)))
-    (define-key rscope-list-entry-keymap "-" (function hide-subtree))
-    (define-key rscope-list-entry-keymap "+" (function show-subtree)))
+    (define-key rscope-list-entry-keymap "0" (lambda() (interactive) (outline-show-all)))
+    (define-key rscope-list-entry-keymap "1" (lambda() (interactive) (outline-hide-sublevels 1)))
+    (define-key rscope-list-entry-keymap "2" (lambda() (interactive) (outline-hide-sublevels 2)))
+    (define-key rscope-list-entry-keymap "3" (lambda() (interactive) (outline-hide-sublevels 3)))
+    (define-key rscope-list-entry-keymap "4" (lambda() (interactive) (outline-hide-sublevels 4)))
+    (define-key rscope-list-entry-keymap "-" (function outline-hide-subtree))
+    (define-key rscope-list-entry-keymap "+" (function outline-show-subtree)))
   )
 
 (defvar rscope-autoinit-cscope-dir-hooks nil
@@ -212,15 +226,25 @@ The first hook returning a non nil value wins.")
     (define-key 'rscope:map "c" 'rscope-find-functions-calling-this-function)
     (define-key 'rscope:map "C" 'rscope-find-called-functions)
     (define-key 'rscope:map "t" 'rscope-find-this-text-string)
+    (define-key 'rscope:map "f" 'rscope-find-this-file)
     (define-key 'rscope:map "i" 'rscope-find-files-including-file)
     (define-key 'rscope:map "h" 'rscope-find-calling-hierarchy)
+    (define-key 'rscope:map "n" 'rscope-nav)
+    (define-key 'rscope:map "p" 'rscope-pop-mark)
+    (define-key 'rscope:map "R" 'rscope-regenerate-database)
     )
+
+(defvar rscope-init-buffers nil
+  "List of buffers created by rscope-init")
 
 (defvar preview-buffers)
 (defvar preview-already-opened-buffers)
 (defvar rscope-level)
 (defvar rscope-auto-open)
 (defvar proc-buffer)
+
+(defvar rscope-database-name "cscope.out"
+  "Name of the cscope database, relative to the toplevel directory")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; High-level user usable functions (init + queries)
@@ -231,12 +255,13 @@ The first hook returning a non nil value wins.")
 	 (buffer-name (format "*rscope-%s*" dir))
 	 (rscope-buffer (get-buffer-create buffer-name))
 	 process)
+    (add-to-list 'rscope-init-buffers rscope-buffer)
     (with-current-buffer rscope-buffer
       (if (get-buffer-process buffer-name)
 	  (kill-process (get-buffer-process buffer-name)))
       (setq default-directory dir)
       (setq process (start-file-process buffer-name buffer-name
-				   "cscope" "-ld" "-f" "cscope.out"))
+				   "cscope" "-ld" "-f" rscope-database-name))
       (set-process-filter process 'rscope-filter)
       (set-process-query-on-exit-flag process nil)
       (accept-process-output process 3)
@@ -271,7 +296,7 @@ The first hook returning a non nil value wins.")
 (defun rscope-find-functions-calling-this-function (symbol)
   "Display functions calling a function."
   (interactive (rscope-interactive
-		(list (cons "Find functions calling by this function: " (current-word)))))
+		(list (cons "Find functions calling this function: " (current-word)))))
   (rscope-handle-query (concat "3" symbol "\n")))
 
 (defun rscope-find-this-text-string (symbol)
@@ -279,6 +304,12 @@ The first hook returning a non nil value wins.")
   (interactive (rscope-interactive
 		(list (cons "Find this text string: " (current-word)))))
   (rscope-handle-query (concat "4" symbol "\n")))
+
+(defun rscope-find-this-file (symbol)
+  "Locate a file."
+  (interactive (rscope-interactive
+		(list (cons "Find this file name: " (current-word)))))
+  (rscope-handle-query (concat "7" symbol "\n")))
 
 (defun rscope-find-files-including-file (symbol)
   "Locate all files #including a file."
@@ -313,8 +344,9 @@ The first hook returning a non nil value wins.")
     (setq old-buffer-killable
 	  (and (with-current-buffer old-buffer
 		 (and (boundp 'rscope-auto-open) rscope-auto-open))
+	       (not (equal marker-buffer old-buffer))
 	       (not (rscope-ring-bufferp old-buffer))))
-    
+
     (if marker-buffer
 	(progn
 	  (when old-buffer-killable (kill-buffer old-buffer))
@@ -421,12 +453,14 @@ with an optionnal arrow to show what was found."
 (defun rscope-regenerate-database ()
   "Regenerate the cscope database."
   (interactive)
-  (let* ((result-buffer (current-buffer))
-	 (dir (buffer-local-value 'default-directory result-buffer))
-	 (procbuf (buffer-local-value 'proc-buffer result-buffer)))
-    (rscope-regenerate-cscope-database dir)
-    (kill-buffer result-buffer)
-    (kill-buffer procbuf)))
+  (let* ((result-buffer (get-buffer rscope-output-buffer-name))
+	 (procbuf (get-buffer (rscope-find-cscope-process (current-buffer))))
+	 (dir (buffer-local-value 'default-directory procbuf)))
+    (when procbuf
+      (rscope-regenerate-cscope-database dir)
+      (kill-buffer procbuf))
+    (when result-buffer
+      (kill-buffer result-buffer))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Result buffer helpers: internal navigation, buffer spawning
@@ -573,8 +607,10 @@ Returns the buffer containing the file."
 	(mapcar (lambda (x) (when (string-prefix-p prefix x) x)) list)))
 
 (defun rscope-get-cscope-buffers ()
-  (get-strings-prefixed-by "*rscope-"
-			   (mapcar (function buffer-name) (buffer-list))))
+  "Return rscope-init-buffers after having removed all killed buffers"
+  (setq rscope-init-buffers
+	(delq nil (mapcar (lambda(buf)(and (buffer-live-p buf) buf))
+			  rscope-init-buffers))))
 
 (defun rscope-find-cscope-process (buffer)
   "Find the initialized (through rscope-init) cscope buffer for buffer.
@@ -589,14 +625,14 @@ use it."
     (setq exact-match
 	  (car (delq nil (mapcar (lambda(buf)
 				   (when (string-prefix-p
-					  (expand-file-name (buffer-local-value 'default-directory (get-buffer buf)))
+					  (expand-file-name (buffer-local-value 'default-directory buf))
 					  (expand-file-name (buffer-local-value 'default-directory (get-buffer buffer))))
-				     buf))
+				     (buffer-name buf)))
 				 rscope-buffers))))
     (cond
      (exact-match exact-match)
      ((setq exact-match (rscope-find-cscope-process-run-hooks buffer)) exact-match)
-     ((= 1 (length rscope-buffers)) (car rscope-buffers))
+     ((= 1 (length rscope-buffers)) (buffer-name (car rscope-buffers)))
      ((error "No rscope initialized found, did you call rscope-init ?")))))
 
 (defun rscope-find-cscope-process-run-hooks (buffer)
@@ -616,13 +652,21 @@ The first hook returning non nil wins."
       (setq file-name (nth 0 l))
       (setq line-number (nth 1 l))
       (if (and file-name line-number)
-	  (rscope-select-entry-other-window)
+	  (rscope-select-entry-current-window)
 	(error "No cscope unique entry found, that's abnormal")))))
+
+(defun rscope-check-process-and-init (buf)
+  (with-current-buffer buf
+    (unless (get-buffer-process buf)
+      (when (or rscope-auto-reinit
+		(y-or-n-p "The cscope process died, would you like to run rscope-init ?"))
+	(rscope-init default-directory)))))
 
 (defun rscope-handle-query (query)
   "Launch the query in the rscope process."
   (let (nb-results result-buf
 		   (rscope-process (rscope-find-cscope-process (current-buffer))))
+    (rscope-check-process-and-init rscope-process)
     (setq result-buf
 	  (rscope-create-result-buffer rscope-action-message rscope-process))
     (when rscope-process
@@ -633,13 +677,14 @@ The first hook returning non nil wins."
 				      result-buf 'rscope-results-organize-filename)
 	  (when (>= nb-results 1)
 	    (ring-insert rscope-marker-ring (point-marker)))
-	  (rscope-finish-result-buffer result-buf)
+	  (rscope-finish-result-buffer result-buf (= 1 nb-results))
 	  (when (= 1 nb-results) (rscope-select-unique-result))))))
 
 (defun rscope-handle-query-call-hierarchy (function-name levels)
   "Launch the query to get a calling hierarchy in rscope process."
   (let (result-buf regexp found nb-lines
 		   (rscope-process (rscope-find-cscope-process (current-buffer))))
+    (rscope-check-process-and-init rscope-process)
     (when rscope-process
 	(progn
 	  (setq result-buf (rscope-create-result-buffer
@@ -676,7 +721,8 @@ Only consider *.c and *.h files."
   (let* ((default-directory (if (string-suffix-p "/" dir) dir (concat dir "/")))
 	 (exit-code
 	  (process-file-shell-command
-	   (format "find -name '*.[ch]' -o -name '*.cpp' > cscope.files && cscope -b -q %s"
+	   (format "find -name '*.[ch]' -o -name '*.cpp' > cscope.files && cscope -b -q -f %s %s"
+                   (concat default-directory rscope-database-name)
 		   (concat args)))))
     (if (and (numberp exit-code) (= 0 exit-code))
 	(concat dir "/")
@@ -684,11 +730,11 @@ Only consider *.c and *.h files."
 
 (defun rscope-autoinit-path-upwards-cscope_out (buffer)
   "Look the directory tree upwards, and report the first directory containing
-a file named cscope.out."
+a database file as named by rscope-database-name."
   (let (found old-dir (dir (buffer-local-value 'default-directory buffer)))
     (while (and dir (not found) (not (string= old-dir dir)))
       (setq old-dir dir)
-      (if (file-readable-p (concat dir "cscope.out"))
+      (if (file-readable-p (concat dir rscope-database-name))
 	  (setq found dir)
 	(setq dir (file-name-directory (directory-file-name dir)))))
     found))
@@ -705,6 +751,11 @@ a file named configure.ac."
 	(setq dir (file-name-directory (directory-file-name dir)))))
     found))
 
+(defun rscope-make-tramp-file-name (method user host localname &optional hop)
+  (cond ((string< emacs-version "26.0.90")
+	 (tramp-make-tramp-file-name method user host localname hop))
+	((tramp-make-tramp-file-name method user nil host nil localname hop))))
+
 ;; Advanced cscope.out generator looking for git toplevel tree
 (defun rscope-autoinit-git-toplevel (buffer)
   "If in a git tree, generate the cscope database at git toplevel."
@@ -714,7 +765,7 @@ a file named configure.ac."
 	(tramp-vec))
     (when (and (featurep 'tramp) (tramp-tramp-file-p default-directory))
       (setq tramp-vec (tramp-dissect-file-name default-directory))
-      (setq toplevel (tramp-make-tramp-file-name
+      (setq toplevel (rscope-make-tramp-file-name
 		      (tramp-file-name-method tramp-vec)
 		      (tramp-file-name-user tramp-vec)
 		      (tramp-file-name-host tramp-vec)
@@ -822,7 +873,7 @@ call organizer to handle them within resultbuf."
 	       (propertize function-name 'face 'rscope-function-face)
 	       "() ["
 	       (when write-file-p
-		 (concat 
+		 (concat
 		  (propertize displayed-file-name 'face 'rscope-file-face)
 		  ":"))
 	       (propertize (number-to-string line-number) 'face 'rscope-line-number-face)
@@ -837,16 +888,16 @@ call organizer to handle them within resultbuf."
 	(tramp-file
 	 (when (tramp-tramp-file-p default-directory)
 	   (with-parsed-tramp-file-name default-directory tp
-	     (tramp-make-tramp-file-name tp-method tp-user tp-host
-					 (if (file-name-absolute-p file)
-					     file
-					   (concat tp-localname file)))))))
+	     (rscope-make-tramp-file-name tp-method tp-user tp-host
+					  (if (file-name-absolute-p file)
+					      file
+					    (concat tp-localname file)))))))
     (with-current-buffer (get-buffer-create buf)
       ;; Find the file in buf if already present
       (goto-char (point-min))
       (setq found (re-search-forward (format "^\* %s" file) nil t))
       (forward-line +0)
-      
+
       ;;; If found the file, move to the next line, beggining of line
       ;;; Else insert the new filename
       (unless found
@@ -866,10 +917,10 @@ call organizer to handle them within resultbuf."
 	(tramp-file
 	 (when (tramp-tramp-file-p default-directory)
 	   (with-parsed-tramp-file-name default-directory tp
-	     (tramp-make-tramp-file-name tp-method tp-user tp-host
-					 (if (file-name-absolute-p file)
-					     file
-					   (concat tp-localname file)))))))
+	     (rscope-make-tramp-file-name tp-method tp-user tp-host
+					  (if (file-name-absolute-p file)
+					      file
+					    (concat tp-localname file)))))))
     (with-current-buffer buf
       (rscope-results-insert-function function-name rscope-level line-number content
 				      (or tramp-file file) t))))
@@ -887,19 +938,19 @@ call organizer to handle them within resultbuf."
       (setq preview-buffers '()
 	    preview-already-opened-buffers '())
       (setq default-directory
-	    (buffer-local-value 'default-directory (get-buffer  procbuf)))
+	    (buffer-local-value 'default-directory (get-buffer procbuf)))
       (setq proc-buffer procbuf)
       (when header
 	(insert header "\n"))
       (insert rscope-separator-line "\n"))
     result-buf))
 
-(defun rscope-finish-result-buffer (result-buf)
+(defun rscope-finish-result-buffer (result-buf &optional nodisplay)
   (with-current-buffer result-buf
     (goto-char (point-max))
     (insert rscope-separator-line "\n")
     (insert "Search complete.")
-    (pop-to-buffer result-buf)
+    (unless nodisplay (pop-to-buffer result-buf))
     (goto-char (point-min))
     (rscope-get-relative-entry (current-buffer) +1)
     (rscope-list-entry-mode)))
@@ -908,7 +959,7 @@ call organizer to handle them within resultbuf."
 ;; Rscope minor mode hook: provides rscope:keymap for key shortcuts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun rscope:hook ()
-  (global-set-key (kbd "\C-cs") 'rscope:map))
+  (global-set-key rscope-keymap-prefix 'rscope:map))
 
 (add-hook 'c-mode-hook (function rscope:hook))
 (add-hook 'c++-mode-hook (function rscope:hook))
@@ -929,4 +980,3 @@ call organizer to handle them within resultbuf."
 
 (provide 'rscope)
 ;;; rscope.el ends here
-

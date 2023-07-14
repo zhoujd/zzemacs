@@ -500,7 +500,7 @@
 ;;
 ;;; Code:
 
-(require 'easymenu)
+(autoload 'easy-menu-define "easymenu")
 
 
 (defgroup cscope nil
@@ -1051,7 +1051,8 @@ selected for it")
 
 \\{cscope-list-entry-keymap}"
   (use-local-map cscope-list-entry-keymap)
-  (easy-menu-add cscope-buffer-menu cscope-list-entry-keymap)
+  (when (featurep 'xemacs)
+    (easy-menu-add cscope-buffer-menu cscope-list-entry-keymap))
   (setq mode-name "cscope"
 	major-mode 'cscope-list-entry-mode
 	overlay-arrow-string cscope-overlay-arrow-string)
@@ -2114,8 +2115,7 @@ overrides the current directory, which would otherwise be used."
   "Clean up cscope, if necessary, and bury the buffer."
   (interactive)
   (cscope-cleanup-overlay-arrow)
-  (bury-buffer)
-  (delete-window))
+  (quit-window))
 
 
 
@@ -2144,6 +2144,18 @@ concatenation of ARGS is returned"
 	     (expand-file-name (substitute-in-file-name dir))))
   dir
   )
+
+
+(defun cscope--expand-file-name-with-absolute-remote (file)
+  "Returns an expanded filename, with the remote prefix.
+This is just like `expand-file-name', but will always contain the
+remote prefix if `default-directory' has one. `expand-file-name'
+will not do this if FILE is an absolute (but local) path"
+  (let ((file-expanded (expand-file-name file)))
+    (if (file-remote-p file-expanded)
+        file-expanded
+      (concat (or (file-remote-p default-directory) "")
+              file-expanded))))
 
 (defun cscope-construct-custom-options-list ()
   "Returns a list of cscope options defined by the
@@ -2362,7 +2374,7 @@ using the mouse."
                                                  str))
                           (cscope-insert-with-text-properties
                            str
-                           (expand-file-name file))
+                           (cscope--expand-file-name-with-absolute-remote file))
                           (insert "\n")))
 
                     (if cscope-first-match-point
@@ -2375,7 +2387,7 @@ using the mouse."
                      (cscope-make-entry-line function-name
                                              line-number
                                              line)
-                     (expand-file-name file)
+                     (cscope--expand-file-name-with-absolute-remote file)
                      line-number
                      line)
                     (insert "\n")
@@ -2743,7 +2755,16 @@ indexer"
            (concat "echo 'Creating list of files to index ...'\n"
 
                    "find "
-                   (mapconcat 'identity findargs " ") " > "
+                   (mapconcat 'identity findargs " ") " | "
+                   ;; From cscope(1): filenames in the namefile that contain
+                   ;; whitespace have to be enclosed in "double quotes".
+                   ;; Inside such quoted filenames, any double-quote and
+                   ;; backslash characters have to be escaped by backslashes.
+                   (mapconcat 'identity
+                              (mapcar 'shell-quote-argument
+                                      '("sed" "-e" "s/\\\\/\\\\\\\\/g"
+                                        "-e" "s/\"/\\\\\"/g"
+                                        "-e" "s/.*/\"&\"/")) " ") " > "
                    (shell-quote-argument cscope-index-file) "\n"
 
                    "echo 'Creating list of files to index ... done'\n"))
@@ -3081,9 +3102,10 @@ functions more accessible.
 
 Key bindings:
 \\{cscope-minor-mode-keymap}"
-  nil nil cscope-minor-mode-keymap
+  :init-value nil :lighter nil :keymap cscope-minor-mode-keymap
   (when cscope-minor-mode
-    (easy-menu-add cscope-global-menu cscope-minor-mode-keymap)
+    (when (featurep 'xemacs)
+      (easy-menu-add cscope-global-menu cscope-minor-mode-keymap))
     (run-hooks 'cscope-minor-mode-hooks)))
 
 ;;;###autoload

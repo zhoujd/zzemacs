@@ -8,9 +8,13 @@
 (c-set-offset 'substatement-open 0)
 
 ;;https://github.com/dkogan/xcscope.el
-(require 'xcscope)
-(setq cscope-option-use-inverted-index t)
-(cscope-setup)
+;(require 'xcscope)
+;(setq cscope-option-use-inverted-index t)
+;(cscope-setup)
+
+;;https://github.com/rjarzmik/rscope
+(require 'rscope)
+(require 'rscope-nav)
 
 ;;gtags global
 ;;$sudo apt-get install global

@@ -102,3 +102,31 @@ $ gcc -gdwarf-2 -g3 sample.c -o sample
 (gdb) break file:line thread thrNum if ...
 (gdb) thread apply thrNum1 thrNum2 ... continue
 #+END_SRC
+
+** Remote debugging with GDB
+
+#+BEGIN_SRC sh
+abc$ ssh xyz.example.com
+xyz$ gdbserver :9999 --attach 5312
+Attached; pid = 5312
+Listening on port 9999
+
+abc$ gdb -q
+(gdb) target remote xyz.example.com:9999
+
+(gdb) target remote | ssh -T xyz.example.com gdbserver - --attach 5312
+(gdb) target remote | docker exec -i e0c1afa81e1d gdbserver - --attach 58
+(gdb) target remote | docker exec -i e0c1afa81e1d gdbserver - /bin/sh
+(gdb) target extended-remote | ssh -T root@xyz.example.com gdbserver --multi -
+(gdb) attach 774
+(gdb) add-inferior
+Added inferior 2
+(gdb) inferior 2
+[Switching to inferior 2 [<null>] (<noexec>)]
+(gdb) attach 871
+...messages...
+(gdb) info inferiors
+Num Description Executable
+* 2 process 871 target:/usr/sbin/httpd
+  1 process 774 target:/usr/libexec/mysqld
+#+END_SRC

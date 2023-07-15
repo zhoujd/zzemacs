@@ -26,7 +26,7 @@
 
 (defvar zz:proj-list (list zzemacs-path)
   "project directory list")
-(defvar zz:tag-root (format "%s/.emacs.d/tag" (getenv "HOME"))
+(defvar zz:tag-root (format "%s/.emacs.d/tags" (getenv "HOME"))
   "tag directory root")
 
 (unless (file-exists-p zz:tag-root)

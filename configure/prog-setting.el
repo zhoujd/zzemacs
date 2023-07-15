@@ -11,14 +11,12 @@
 (defvar zz:dev-set-file (format "%s/.emacs.d/temp-setting.el"
                                 (getenv "HOME"))
   "temp project setting")
-(when (file-exists-p zz:dev-set-file)
-  (load-file zz:dev-set-file))
 
 ;;generate temp-setting.el
 (defun zz:create-file (fpath content)
   "Process the file at path FPATH ..."
   (let ((tmp-buf-name (file-name-nondirectory fpath)))
-    (set-buffer (get-buffer-create tmp-buf-name))  
+    (set-buffer (get-buffer-create tmp-buf-name))
     (goto-char 0)
     (dolist (item content)
       (insert item)
@@ -26,8 +24,13 @@
     (write-file fpath)
     (kill-buffer tmp-buf-name)))
 
-;;project list
-(defvar zz:proj-list (list zzemacs-path) "project directory list")
+(defvar zz:proj-list (list zzemacs-path)
+  "project directory list")
+(defvar zz:tag-root (format "%s/.emacs.d/tag" (getenv "HOME"))
+  "tag directory root")
+
+(unless (file-exists-p zz:tag-root)
+  (make-directory zz:tag-root))
 
 ;;temp setting template
 (defconst zz:temp-template
@@ -37,25 +40,12 @@
     ";; set project direcitory list"
     "(setq zz:proj-list '("
     "                     \"/usr/include\""
-    "                     \"/usr/local/include\""    
+    "                     \"/usr/local/include\""
     "                     \"~/work/project-1\""
-    "                     \"~/work/project-2\""    
+    "                     \"~/work/project-2\""
     "                     ))"
     ""
-    ";; tags project setting"
-    "(setq tags-table-list '("
-    "                        \"~/work/tag/TAGS\""
-    "                        ))"
-    ""
-    ";; cscope project setting"
-    "(setq cscope-initial-directory \"~/work/tag\")"
-    ""
-    ";; go to tag folder 'cd ~/work/tag'"
-    ";; create etags & cscope"
-    ";(zz:create-proj-etags)"
-    ";(zz:create-proj-cscope)"
-    ""
-    "(mapc #'zz:add-os-path"
+     "(mapc #'zz:add-os-path"
     "      '("
     "        \"~/work/script\""
     "        ))"
@@ -136,6 +126,7 @@
 (require 'etags-select)
 (require 'etags-table)
 (require 'etags-stack)
+(add-to-list 'tags-table-list (concat zz:tag-root "/TAGS"))
 
 ;;make ctags
 (defun zz:gen-ctags-cmd (dir-name)
@@ -176,8 +167,17 @@
       (zz:run-command (zz:gen-etags-cmd dir-name))
       (message "no etags, please install it")))
 
+;;https://github.com/dkogan/xcscope.el
+;(require 'xcscope)
+;(setq cscope-option-use-inverted-index t)
+;(cscope-setup)
+
+;;https://github.com/rjarzmik/rscope
+(require 'rscope)
+(require 'rscope-nav)
+
 ;;make cscope
-; #!/bin/bash  
+; #!/bin/bash
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
 (defun zz:gen-cscope-cmd (dir-name)
@@ -211,7 +211,18 @@
 
 (defun zz:create-proj-cscope ()
   (interactive)
-  (zz:create-cscope (zz:gen-proj-find-path zz:proj-list)))
+  (progn
+    (zz:create-cscope (zz:gen-proj-find-path zz:proj-list))
+    (rscope-init zz:tag-root)))
+
+;; create etags & cscope
+(defun zz:create-proj-tag()
+  (interactive)
+  (let ((default-directory zz:tag-root))
+    (unless (file-exists-p zz:tag-root)
+      (make-directory zz:tag-root))
+    (zz:create-proj-etags)
+    (zz:create-proj-cscope)))
 
 ;;add  mode support
 (setq auto-mode-alist
@@ -250,8 +261,8 @@
 ;;rgrep for c/c++
 (defvar zz:rgrep-c-file-regex "*.[hc]")
 (defun zz:rgrep-c (term &optional dir)
-  (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word)))) 
-  (grep-compute-defaults) 
+  (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word))))
+  (grep-compute-defaults)
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
     (rgrep term zz:rgrep-c-file-regex dir)))
 
@@ -339,10 +350,13 @@
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/
-
 (zz:load-path "site-lisp/lsp-mode")
 (require 'lsp-mode)
 (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+
+;;load temp setting
+(when (file-exists-p zz:dev-set-file)
+  (load-file zz:dev-set-file))
 
 
 (provide 'prog-setting)

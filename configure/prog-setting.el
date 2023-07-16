@@ -26,11 +26,9 @@
 
 (defvar zz:proj-list (list zzemacs-path)
   "project directory list")
-(defvar zz:tag-root (format "%s/.emacs.d/tags" (getenv "HOME"))
+(defvar zz:tag-root (format "%s/.emacs.d"
+                            (getenv "HOME"))
   "tag directory root")
-
-(unless (file-exists-p zz:tag-root)
-  (make-directory zz:tag-root))
 
 ;;temp setting template
 (defconst zz:temp-template
@@ -211,12 +209,10 @@
 
 (defun zz:create-proj-cscope ()
   (interactive)
-  (progn
-    (zz:create-cscope (zz:gen-proj-find-path zz:proj-list))
-    (rscope-init zz:tag-root)))
+  (zz:create-cscope (zz:gen-proj-find-path zz:proj-list)))
 
 ;; create etags & cscope
-(defun zz:create-proj-tag()
+(defun zz:create-proj-tags()
   (interactive)
   (let ((default-directory zz:tag-root))
     (unless (file-exists-p zz:tag-root)

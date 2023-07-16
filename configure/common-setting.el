@@ -360,7 +360,7 @@
 (defadvice display-buffer (around async-shell-command activate)
    "If BUFFER is named *Async Shell Command*, don't display it."
    (or (and (bufferp (ad-get-arg 0))
-            (equal (buffer-name (ad-get-arg 0)) "*Async Shell Command*"))
+            (equal (buffer-name (ad-get-arg 0)) "\\*Async Shell Command\\*.*"))
        ad-do-it))
 
 ;;recentf

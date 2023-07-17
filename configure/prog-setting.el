@@ -26,9 +26,12 @@
 
 (defvar zz:proj-list (list zzemacs-path)
   "project directory list")
-(defvar zz:tag-root (format "%s/.emacs.d"
+(defvar zz:tag-root (format "%s/.emacs.d/tags"
                             (getenv "HOME"))
   "tag directory root")
+
+(unless (file-exists-p zz:tag-root)
+  (make-directory zz:tag-root))
 
 ;;temp setting template
 (defconst zz:temp-template
@@ -166,22 +169,26 @@
       (message "no etags, please install it")))
 
 ;;https://github.com/dkogan/xcscope.el
-;(require 'xcscope)
-;(setq cscope-option-use-inverted-index t)
-;(cscope-setup)
+(require 'xcscope)
+(setq cscope-option-use-inverted-index t)
+(setq cscope-initial-directory zz:tag-root)
+(cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
-(require 'rscope)
-(require 'rscope-nav)
+;(require 'rscope)
+;(require 'rscope-nav)
 
 ;;make cscope
 ; #!/bin/bash
+; find -type f -not -path '*/\.git/*'
+; find -type f -not -path '*/\.svn/*'
+; find -type f -not -path '*/\.*'
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
 (defun zz:gen-cscope-cmd (dir-name)
-  (let ((files-path (concat default-directory "cscope.files")))
+  (let ((files-path (concat default-directory "/cscope.files")))
     (concat
-     (format "%s %s -type f \\( %s \\) -print > %s;"
+     (format "%s %s -type f -not -path '*/\.git/*' \\( %s \\) -print > %s;"
              find-program
              dir-name
              (zz:gen-find-parts zz:find-regex)
@@ -211,13 +218,20 @@
   (interactive)
   (zz:create-cscope (zz:gen-proj-find-path zz:proj-list)))
 
-;; create etags & cscope
-(defun zz:create-proj-tags()
+;; create etags to zz:tag-root
+(defun zz:create-proj-etags-1 ()
   (interactive)
   (let ((default-directory zz:tag-root))
     (unless (file-exists-p zz:tag-root)
       (make-directory zz:tag-root))
-    (zz:create-proj-etags)
+    (zz:create-proj-etags)))
+
+;; create cscope to zz:tag-root
+(defun zz:create-proj-cscope-1 ()
+  (interactive)
+  (let ((default-directory zz:tag-root))
+    (unless (file-exists-p zz:tag-root)
+      (make-directory zz:tag-root))
     (zz:create-proj-cscope)))
 
 ;;add  mode support

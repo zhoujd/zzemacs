@@ -431,6 +431,13 @@
 ;;https://github.com/jschaf/powershell.el
 (require 'powershell)
 
+;;https://github.com/deb0ch/emacs-winum/
+(require 'winum)
+(defun winum-assign-0-to-neotree ()
+  (when (string-match-p (buffer-name) ".*\\*NeoTree\\*.*") 10))
+(add-to-list 'winum-assign-functions #'winum-assign-0-to-neotree)
+(winum-mode)
+
 
 (provide 'other-setting)
 

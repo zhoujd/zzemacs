@@ -169,7 +169,7 @@ See Info node `(emacs) Regexps' or Info node `(elisp) Regular Expressions'"
 (defvar winum-base-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "`") 'winum-select-window-by-number)
-    (define-key map (kbd "²") 'winum-select-window-by-number)
+    (define-key map (kbd "@") 'winum-select-window-by-number)
     (define-key map (kbd "0") 'winum-select-window-0-or-10)
     (define-key map (kbd "1") 'winum-select-window-1)
     (define-key map (kbd "2") 'winum-select-window-2)

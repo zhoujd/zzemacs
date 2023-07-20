@@ -13,6 +13,15 @@
 ;;start Emacs and execute gtags-mode function.
 ;(autoload 'gtags-mode "gtags" "" t)
 
+;;rtags
+;;https://github.com/Andersbakken/rtags
+;$ rdm &
+;$ cd /path/to/project/root
+;$ cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+;$ rc -J .
+;(zz:load-path "site-lisp/rtags")
+;(require 'rtags)
+
 ;;holding #if
 (load-library "hideif")
 

@@ -50,6 +50,7 @@
         perl-setting
         python-setting
         go-setting
+        sql-setting
         groovy-setting
         docker-setting
         virt-setting

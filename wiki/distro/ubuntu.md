@@ -313,7 +313,7 @@ Ubuntu setting
     $ ls /usr/share/sddm/themes/
     $ cat /etc/sddm.conf <<EOF
     [Users]
-    HideUsers=sys_cert
+    HideUsers=user1,user2
     [Theme]
     ThemeDir=/usr/share/sddm/themes
     Current=maya
@@ -345,6 +345,9 @@ Ubuntu setting
       [Theme]
       Current=chili
       EOF
+
+    ## Apply theme
+    $ reboot
 
 ## Hide APT news
 

@@ -41,7 +41,7 @@
   [f1]              help-map
   [S-f1]            'zz:evil-toggle
   [C-f1]            'magit-status
-  [M-f1]            'monky-status
+  [M-f1]            'git-gutter+-mode
   (kbd "C-x <f1>")  nil
   (kbd "C-c <f1>")  nil
   "f1 key binding")

@@ -438,6 +438,9 @@
 (add-to-list 'winum-assign-functions #'winum-assign-0-to-neotree)
 (winum-mode)
 
+;;with-editor
+(require 'with-editor)
+
 
 (provide 'other-setting)
 

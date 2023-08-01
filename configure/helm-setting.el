@@ -254,6 +254,12 @@
 (require 'helm-lsp)
 (define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
 
+;;helm-mode-manager
+;;M-x: helm-switch-major-mode
+;;M-x: helm-enable-minor-mode
+;;M-x: helm-disable-minor-mode
+(require 'helm-mode-manager)
+
 
 (provide 'helm-setting)
 

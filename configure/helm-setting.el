@@ -260,6 +260,9 @@
 ;;M-x: helm-disable-minor-mode
 (require 'helm-mode-manager)
 
+;;helm-themes
+(require 'helm-themes)
+
 
 (provide 'helm-setting)
 

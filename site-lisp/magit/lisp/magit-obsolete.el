@@ -1,12 +1,14 @@
 ;;; magit-obsolete.el --- obsolete definitions  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2010-2019  The Magit Project Contributors
+;; Copyright (C) 2010-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file which
 ;; lists all contributors.  If not, see http://magit.vc/authors.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; Magit is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -29,25 +31,31 @@
 
 (require 'magit)
 
-;;; Obsolete since v2.91.0
+;;; Obsolete since v3.0.0
 
 (define-obsolete-function-alias 'magit-diff-visit-file-worktree
-  'magit-diff-visit-worktree-file "Magit 2.91.0")
+  'magit-diff-visit-worktree-file "Magit 3.0.0")
 
 (define-obsolete-function-alias 'magit-status-internal
-  'magit-status-setup-buffer "Magit 2.91.0")
+  'magit-status-setup-buffer "Magit 3.0.0")
 
 (define-obsolete-variable-alias 'magit-mode-setup-hook
-  'magit-setup-buffer-hook "Magit 2.91.0")
+  'magit-setup-buffer-hook "Magit 3.0.0")
 
 (define-obsolete-variable-alias 'magit-branch-popup-show-variables
-  'magit-branch-direct-configure "Magit 2.91.0")
+  'magit-branch-direct-configure "Magit 3.0.0")
 
 (define-obsolete-function-alias 'magit-dispatch-popup
-  'magit-dispatch "Magit 2.91.0")
+  'magit-dispatch "Magit 3.0.0")
 
 (define-obsolete-function-alias 'magit-repolist-column-dirty
-  'magit-repolist-column-flag "Magit 2.91.0")
+  'magit-repolist-column-flag "Magit 3.0.0")
+
+(define-obsolete-variable-alias 'magit-disable-line-numbers
+  'magit-section-disable-line-numbers "Magit 3.0.0")
+
+(define-obsolete-variable-alias 'inhibit-magit-refresh
+  'magit-inhibit-refresh "Magit 3.0.0")
 
 (defun magit--magit-popup-warning ()
   (display-warning 'magit "\

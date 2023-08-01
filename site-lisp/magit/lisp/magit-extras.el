@@ -1,9 +1,14 @@
 ;;; magit-extras.el --- additional functionality for Magit  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2008-2019  The Magit Project Contributors
+;; Copyright (C) 2008-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file which
 ;; lists all contributors.  If not, see http://magit.vc/authors.
+
+;; Author: Jonas Bernoulli <jonas@bernoul.li>
+;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; Magit is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -24,15 +29,19 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'subr-x))
-
 (require 'magit)
 
+(declare-function change-log-insert-entries "add-log" (changelogs))
+(declare-function diff-add-log-current-defuns "diff-mode" ())
 (declare-function dired-read-shell-command "dired-aux" (prompt arg files))
+;; For `magit-project-status'.
+(declare-function project-root "project" (project))
+(declare-function vc-git-command "vc-git" (buffer okstatus file-or-list &rest flags))
 
 (defvar ido-exit)
 (defvar ido-fallback)
+(defvar project-prefix-map)
+(defvar project-switch-commands)
 
 (defgroup magit-extras nil
   "Additional functionality for Magit."
@@ -56,8 +65,7 @@
 (defun magit-run-git-gui ()
   "Run `git gui' for the current git repository."
   (interactive)
-  (magit-with-toplevel
-    (magit-process-file magit-git-executable nil 0 nil "gui")))
+  (magit-with-toplevel (magit-process-git 0 "gui")))
 
 ;;;###autoload
 (defun magit-run-git-gui-blame (commit filename &optional linenum)
@@ -79,10 +87,10 @@ blame to center around the line point is on."
                          (magit-file-relative-name buffer-file-name)))
                 (line-number-at-pos)))))
   (magit-with-toplevel
-    (apply #'magit-process-file magit-git-executable nil 0 nil "gui" "blame"
-           `(,@(and linenum (list (format "--line=%d" linenum)))
-             ,commit
-             ,filename))))
+    (magit-process-git 0 "gui" "blame"
+                       (and linenum (list (format "--line=%d" linenum)))
+                       commit
+                       filename)))
 
 ;;;###autoload
 (defun magit-run-gitk ()
@@ -132,6 +140,30 @@ like pretty much every other keymap:
   (exit-minibuffer))
 
 ;;;###autoload
+(defun magit-project-status ()
+  "Run `magit-status' in the current project's root."
+  (interactive)
+  (magit-status-setup-buffer (project-root (project-current t))))
+
+(defvar magit-bind-magit-project-status t
+  "Whether to bind \"m\" to `magit-project-status' in `project-prefix-map'.
+If so, then an entry is added to `project-switch-commands' as
+well.  If you want to use another key, then you must set this
+to nil before loading Magit to prevent \"m\" from being bound.")
+
+(with-eval-after-load 'project
+  ;; Only more recent versions of project.el have `project-prefix-map' and
+  ;; `project-switch-commands', though project.el is available in Emacs 25.
+  (when (and magit-bind-magit-project-status
+             (boundp 'project-prefix-map)
+             ;; Only modify if it hasn't already been modified.
+             (equal project-switch-commands
+                    (eval (car (get 'project-switch-commands 'standard-value))
+                          t)))
+    (define-key project-prefix-map "m" #'magit-project-status)
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit") t)))
+
+;;;###autoload
 (defun magit-dired-jump (&optional other-window)
   "Visit file at point using Dired.
 With a prefix argument, visit in another window.  If there
@@ -163,6 +195,21 @@ is no file at point, then instead visit `default-directory'."
            (mapcar #'file-relative-name files))
          magit-log-buffer-file-locked))
     (magit--not-inside-repository-error)))
+
+;;;###autoload
+(defun magit-dired-am-apply-patches (repo &optional arg)
+  "In Dired, apply the marked (or next ARG) files as patches.
+If inside a repository, then apply in that.  Otherwise prompt
+for a repository."
+  (interactive (list (or (magit-toplevel)
+                         (magit-read-repository t))
+                     current-prefix-arg))
+  ;; Note: The ERROR argument of `dired-get-marked-files' isn't
+  ;; available until Emacs 27.
+  (let ((files (or (dired-get-marked-files nil arg)
+                   (user-error "No files specified"))))
+    (magit-status-setup-buffer repo)
+    (magit-am-apply-patches files)))
 
 ;;;###autoload
 (defun magit-do-async-shell-command (file)
@@ -250,6 +297,44 @@ with two prefix arguments remove ignored files only.
 
 ;;; ChangeLog
 
+(defun magit-generate-changelog (&optional amending)
+  "Insert ChangeLog entries into the current buffer.
+
+The entries are generated from the diff being committed.
+If prefix argument, AMENDING, is non-nil, include changes
+in HEAD as well as staged changes in the diff to check."
+  (interactive "P")
+  (unless (magit-commit-message-buffer)
+    (user-error "No commit in progress"))
+  (require 'diff-mode) ; `diff-add-log-current-defuns'.
+  (require 'vc-git)    ; `vc-git-diff'.
+  (require 'add-log)   ; `change-log-insert-entries'.
+  (unless (and (fboundp 'change-log-insert-entries)
+               (fboundp 'diff-add-log-current-defuns))
+    (user-error "`magit-generate-changelog' requires Emacs 27 or better"))
+  (setq default-directory
+        (if (and (file-regular-p "gitdir")
+                 (not (magit-git-true "rev-parse" "--is-inside-work-tree"))
+                 (magit-git-true "rev-parse" "--is-inside-git-dir"))
+            (file-name-directory (magit-file-line "gitdir"))
+          (magit-toplevel)))
+  (let ((rev1 (if amending "HEAD^1" "HEAD"))
+        (rev2 nil))
+    ;; Magit may have updated the files without notifying vc, but
+    ;; `diff-add-log-current-defuns' relies on vc being up-to-date.
+    (mapc #'vc-file-clearprops (magit-staged-files))
+    (change-log-insert-entries
+     (with-temp-buffer
+       (vc-git-command (current-buffer) 1 nil
+                       "diff-index" "--exit-code" "--patch"
+                       (and (magit-anything-staged-p) "--cached")
+                       rev1 "--")
+       ;; `diff-find-source-location' consults these vars.
+       (defvar diff-vc-revisions)
+       (setq-local diff-vc-revisions (list rev1 rev2))
+       (setq-local diff-vc-backend 'Git)
+       (diff-add-log-current-defuns)))))
+
 ;;;###autoload
 (defun magit-add-change-log-entry (&optional whoami file-name other-window)
   "Find change log file and add date entry and item for current change.
@@ -260,7 +345,11 @@ a position in a file-visiting buffer."
                      (prompt-for-change-log-name)))
   (pcase-let ((`(,buf ,pos) (magit-diff-visit-file--noselect)))
     (magit--with-temp-position buf pos
-      (add-change-log-entry whoami file-name other-window))))
+      (let ((add-log-buffer-file-name-function
+             (lambda ()
+               (or magit-buffer-file-name
+                   (buffer-file-name)))))
+        (add-change-log-entry whoami file-name other-window)))))
 
 ;;;###autoload
 (defun magit-add-change-log-entry-other-window (&optional whoami file-name)
@@ -344,8 +433,15 @@ use `magit-rebase-edit-command' instead of this command."
 
 ;;; Reshelve
 
+(defcustom magit-reshelve-since-committer-only nil
+  "Whether `magit-reshelve-since' changes only the committer dates.
+Otherwise the author dates are also changed."
+  :package-version '(magit . "3.0.0")
+  :group 'magit-commands
+  :type 'boolean)
+
 ;;;###autoload
-(defun magit-reshelve-since (rev)
+(defun magit-reshelve-since (rev keyid)
   "Change the author and committer dates of the commits since REV.
 
 Ask the user for the first reachable commit whose dates should
@@ -355,53 +451,71 @@ values.  The next commit will be created one minute later and so
 on.
 
 This command is only intended for interactive use and should only
-be used on highly rearranged and unpublished history."
-  (interactive (list nil))
-  (cond
-   ((not rev)
-    (let ((backup (concat "refs/original/refs/heads/"
-                          (magit-get-current-branch))))
+be used on highly rearranged and unpublished history.
+
+If KEYID is non-nil, then use that to sign all reshelved commits.
+Interactively use the value of the \"--gpg-sign\" option in the
+list returned by `magit-rebase-arguments'."
+  (interactive (list nil
+                     (transient-arg-value "--gpg-sign="
+                                          (magit-rebase-arguments))))
+  (let* ((current (or (magit-get-current-branch)
+                      (user-error "Refusing to reshelve detached head")))
+         (backup (concat "refs/original/refs/heads/" current)))
+    (cond
+     ((not rev)
       (when (and (magit-ref-p backup)
                  (not (magit-y-or-n-p
-                       "Backup ref %s already exists.  Override? " backup)))
-        (user-error "Abort")))
-    (magit-log-select 'magit-reshelve-since
-      "Type %p on a commit to reshelve it and the commits above it,"))
-   (t
-    (cl-flet ((adjust (time offset)
-                      (format-time-string
-                       "%F %T %z"
-                       (+ (floor time)
-                          (* offset 60)
-                          (- (car (decode-time time)))))))
-      (let* ((start (concat rev "^"))
-             (range (concat start ".." (magit-get-current-branch)))
-             (time-rev (adjust (float-time (string-to-number
-                                            (magit-rev-format "%at" start)))
-                               1))
-             (time-now (adjust (float-time)
-                               (- (string-to-number
-                                   (magit-git-string "rev-list" "--count"
-                                                     range))))))
-        (push time-rev magit--reshelve-history)
-        (let ((date (floor
-                     (float-time
-                      (date-to-time
-                       (read-string "Date for first commit: "
-                                    time-now 'magit--reshelve-history))))))
-          (magit-with-toplevel
-            (magit-run-git-async
-             "filter-branch" "--force" "--env-filter"
-             (format "case $GIT_COMMIT in %s\nesac"
-                     (mapconcat (lambda (rev)
-                                  (prog1 (format "%s) \
-export GIT_AUTHOR_DATE=\"%s\"; \
-export GIT_COMMITTER_DATE=\"%s\";;" rev date date)
-                                    (cl-incf date 60)))
-                                (magit-git-lines "rev-list" "--reverse"
-                                                 range)
-                                " "))
-             range "--")
+                       (format "Backup ref %s already exists.  Override? " backup))))
+        (user-error "Abort"))
+      (magit-log-select
+        (lambda (rev)
+          (magit-reshelve-since rev keyid))
+        "Type %p on a commit to reshelve it and the commits above it,"))
+     (t
+      (cl-flet ((adjust (time offset)
+                        (format-time-string
+                         "%F %T %z"
+                         (+ (floor time)
+                            (* offset 60)
+                            (- (car (decode-time time)))))))
+        (let* ((start (concat rev "^"))
+               (range (concat start ".." current))
+               (time-rev (adjust (float-time (string-to-number
+                                              (magit-rev-format "%at" start)))
+                                 1))
+               (time-now (adjust (float-time)
+                                 (- (string-to-number
+                                     (magit-git-string "rev-list" "--count"
+                                                       range))))))
+          (push time-rev magit--reshelve-history)
+          (let ((date (floor
+                       (float-time
+                        (date-to-time
+                         (read-string "Date for first commit: "
+                                      time-now 'magit--reshelve-history)))))
+                (process-environment process-environment))
+            (push "FILTER_BRANCH_SQUELCH_WARNING=1" process-environment)
+            (magit-with-toplevel
+              (magit-run-git-async
+               "filter-branch" "--force" "--env-filter"
+               (format
+                "case $GIT_COMMIT in %s\nesac"
+                (mapconcat
+                 (lambda (rev)
+                   (prog1 (concat
+                           (format "%s) " rev)
+                           (and (not magit-reshelve-since-committer-only)
+                                (format "export GIT_AUTHOR_DATE=\"%s\"; " date))
+                           (format "export GIT_COMMITTER_DATE=\"%s\";;" date))
+                     (cl-incf date 60)))
+                 (magit-git-lines "rev-list" "--reverse" range)
+                 " "))
+               (and keyid
+                    (list "--commit-filter"
+                          (format "git commit-tree --gpg-sign=%s \"$@\";"
+                                  keyid)))
+               range "--"))
             (set-process-sentinel
              magit-this-process
              (lambda (process event)
@@ -410,16 +524,16 @@ export GIT_COMMITTER_DATE=\"%s\";;" rev date date)
                      (magit-process-sentinel process event)
                    (process-put process 'inhibit-refresh t)
                    (magit-process-sentinel process event)
-                   (magit-run-git "update-ref" "-d"
-                                  (concat "refs/original/refs/heads/"
-                                          (magit-get-current-branch))))))))))))))
+                   (magit-run-git "update-ref" "-d" backup))))))))))))
 
 ;;; Revision Stack
 
 (defvar magit-revision-stack nil)
 
 (defcustom magit-pop-revision-stack-format
-  '("[%N: %h] " "%N: %H\n   %s\n" "\\[\\([0-9]+\\)[]:]")
+  '("[%N: %h] "
+    "%N: %cs %H\n   %s\n"
+    "\\[\\([0-9]+\\)[]:]")
   "Control how `magit-pop-revision-stack' inserts a revision.
 
 The command `magit-pop-revision-stack' inserts a representation
@@ -450,7 +564,7 @@ The expansion of POINT-FORMAT is inserted at point, and the
 expansion of EOB-FORMAT is inserted at the end of the buffer (if
 the buffer ends with a comment, then it is inserted right before
 that)."
-  :package-version '(magit . "2.3.0")
+  :package-version '(magit . "3.2.0")
   :group 'magit-commands
   :type '(list (choice (string :tag "Insert at point format")
                        (cons (string :tag "Insert at point format")
@@ -462,6 +576,12 @@ that)."
                        (const :tag "Don't insert at eob" nil))
                (choice (regexp :tag "Find index regexp")
                        (const :tag "Don't number entries" nil))))
+
+(defcustom magit-copy-revision-abbreviated nil
+  "Whether to save abbreviated revision to `kill-ring' and `magit-revision-stack'."
+  :package-version '(magit . "3.0.0")
+  :group 'magit-miscellaneous
+  :type 'boolean)
 
 ;;;###autoload
 (defun magit-pop-revision-stack (rev toplevel)
@@ -544,7 +664,7 @@ the minibuffer too."
   (kbd "C-c C-w") 'magit-pop-revision-stack)
 
 ;;;###autoload
-(defun magit-copy-section-value ()
+(defun magit-copy-section-value (arg)
   "Save the value of the current section for later use.
 
 Save the section value to the `kill-ring', and, provided that
@@ -552,24 +672,34 @@ the current section is a commit, branch, or tag section, push
 the (referenced) revision to the `magit-revision-stack' for use
 with `magit-pop-revision-stack'.
 
+When `magit-copy-revision-abbreviated' is non-nil, save the
+abbreviated revision to the `kill-ring' and the
+`magit-revision-stack'.
+
 When the current section is a branch or a tag, and a prefix
 argument is used, then save the revision at its tip to the
 `kill-ring' instead of the reference name.
 
 When the region is active, then save that to the `kill-ring',
 like `kill-ring-save' would, instead of behaving as described
-above.  If a prefix argument is used and the region is within a
-hunk, strip the outer diff marker column."
-  (interactive)
+above.  If a prefix argument is used and the region is within
+a hunk, then strip the diff marker column and keep only either
+the added or removed lines, depending on the sign of the prefix
+argument."
+  (interactive "P")
   (cond
-   ((and current-prefix-arg
+   ((and arg
          (magit-section-internal-region-p)
          (magit-section-match 'hunk))
-    (deactivate-mark)
-    (kill-new (replace-regexp-in-string
-               "^[ \\+\\-]" ""
-               (buffer-substring-no-properties
-                (region-beginning) (region-end)))))
+    (kill-new
+     (thread-last (buffer-substring-no-properties
+                   (region-beginning)
+                   (region-end))
+       (replace-regexp-in-string
+        (format "^\\%c.*\n?" (if (< (prefix-numeric-value arg) 0) ?+ ?-))
+        "")
+       (replace-regexp-in-string "^[ \\+\\-]" "")))
+    (deactivate-mark))
    ((use-region-p)
     (call-interactively #'copy-region-as-kill))
    (t
@@ -586,7 +716,9 @@ hunk, strip the outer diff marker column."
                     (file-name-as-directory
                      (expand-file-name (magit-section-parent-value section)
                                        (magit-toplevel))))))
-           (setq value (magit-rev-parse value))
+           (setq value (magit-rev-parse
+                        (and magit-copy-revision-abbreviated "--short")
+                        value))
            (push (list value default-directory) magit-revision-stack)
            (kill-new (message "%s" (or (and current-prefix-arg ref)
                                        value)))))
@@ -613,7 +745,11 @@ the current section instead, using `magit-copy-section-value'.
 
 When the region is active, then save that to the `kill-ring',
 like `kill-ring-save' would, instead of behaving as described
-above."
+above.
+
+When `magit-copy-revision-abbreviated' is non-nil, save the
+abbreviated revision to the `kill-ring' and the
+`magit-revision-stack'."
   (interactive)
   (if (use-region-p)
       (call-interactively #'copy-region-as-kill)
@@ -626,9 +762,60 @@ above."
                              magit-buffer-range))
                           (magit-status-mode "HEAD")))))
       (when (magit-commit-p rev)
-        (setq rev (magit-rev-parse rev))
+        (setq rev (magit-rev-parse
+                   (and magit-copy-revision-abbreviated "--short")
+                   rev))
         (push (list rev default-directory) magit-revision-stack)
         (kill-new (message "%s" rev))))))
+
+;;; Buffer Switching
+
+;;;###autoload
+(defun magit-display-repository-buffer (buffer)
+  "Display a Magit buffer belonging to the current Git repository.
+The buffer is displayed using `magit-display-buffer', which see."
+  (interactive (list (magit--read-repository-buffer
+                      "Display magit buffer: ")))
+  (magit-display-buffer buffer))
+
+;;;###autoload
+(defun magit-switch-to-repository-buffer (buffer)
+  "Switch to a Magit buffer belonging to the current Git repository."
+  (interactive (list (magit--read-repository-buffer
+                      "Switch to magit buffer: ")))
+  (switch-to-buffer buffer))
+
+;;;###autoload
+(defun magit-switch-to-repository-buffer-other-window (buffer)
+  "Switch to a Magit buffer belonging to the current Git repository."
+  (interactive (list (magit--read-repository-buffer
+                      "Switch to magit buffer in another window: ")))
+  (switch-to-buffer-other-window buffer))
+
+;;;###autoload
+(defun magit-switch-to-repository-buffer-other-frame (buffer)
+  "Switch to a Magit buffer belonging to the current Git repository."
+  (interactive (list (magit--read-repository-buffer
+                      "Switch to magit buffer in another frame: ")))
+  (switch-to-buffer-other-frame buffer))
+
+(defun magit--read-repository-buffer (prompt)
+  (if-let ((topdir (magit-rev-parse-safe "--show-toplevel")))
+      (read-buffer
+       prompt (magit-get-mode-buffer 'magit-status-mode) t
+       (pcase-lambda (`(,_ . ,buf))
+         (and buf
+              (with-current-buffer buf
+                (and (or (derived-mode-p 'magit-mode
+                                         'magit-repolist-mode
+                                         'magit-submodule-list-mode
+                                         'git-rebase-mode)
+                         (and buffer-file-name
+                              (string-match-p git-commit-filename-regexp
+                                              buffer-file-name)))
+                     (equal (magit-rev-parse-safe "--show-toplevel")
+                            topdir))))))
+    (user-error "Not inside a Git repository")))
 
 ;;; Miscellaneous
 

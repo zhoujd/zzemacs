@@ -1,12 +1,14 @@
 ;;; magit-status.el --- the grand overview  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2010-2019  The Magit Project Contributors
+;; Copyright (C) 2010-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file which
 ;; lists all contributors.  If not, see http://magit.vc/authors.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; Magit is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -26,9 +28,6 @@
 ;; This library implements the status buffer.
 
 ;;; Code:
-
-(eval-when-compile
-  (require 'subr-x))
 
 (require 'magit)
 
@@ -132,7 +131,7 @@ no effect.
 
 The command `magit-status-here' tries to go to that position,
 regardless of the value of this option."
-  :package-version '(magit . "2.91.0")
+  :package-version '(magit . "3.0.0")
   :group 'magit-status
   :type 'boolean)
 
@@ -175,6 +174,33 @@ AUTHOR-WIDTH has to be an integer.  When the name of the author
   :initialize 'magit-custom-initialize-reset
   :set-after '(magit-log-margin)
   :set (apply-partially #'magit-margin-set-variable 'magit-status-mode))
+
+(defcustom magit-status-use-buffer-arguments 'selected
+  "Whether `magit-status' reuses arguments when the buffer already exists.
+
+This option has no effect when merely refreshing the status
+buffer using `magit-refresh'.
+
+Valid values are:
+
+`always': Always use the set of arguments that is currently
+  active in the status buffer, provided that buffer exists
+  of course.
+`selected': Use the set of arguments from the status
+  buffer, but only if it is displayed in a window of the
+  current frame.  This is the default.
+`current': Use the set of arguments from the status buffer,
+  but only if it is the current buffer.
+`never': Never use the set of arguments from the status
+  buffer."
+  :package-version '(magit . "3.0.0")
+  :group 'magit-buffers
+  :group 'magit-commands
+  :type '(choice
+          (const :tag "always use args from buffer" always)
+          (const :tag "use args from buffer if displayed in frame" selected)
+          (const :tag "use args from buffer if it is current" current)
+          (const :tag "never use args from buffer" never)))
 
 ;;; Commands
 
@@ -242,8 +268,9 @@ prefix arguments:
   (interactive
    (let ((magit--refresh-cache (list (cons 0 0))))
      (list (and (or current-prefix-arg (not (magit-toplevel)))
-                (magit-read-repository
-                 (>= (prefix-numeric-value current-prefix-arg) 16)))
+                (progn (magit--assert-usable-git)
+                       (magit-read-repository
+                        (>= (prefix-numeric-value current-prefix-arg) 16))))
            magit--refresh-cache)))
   (let ((magit--refresh-cache (or cache (list (cons 0 0)))))
     (if directory
@@ -282,6 +309,29 @@ also contains other useful hints.")
 
 (put 'magit-status-here 'interactive-only 'magit-status-setup-buffer)
 
+(defun magit-status-quick ()
+  "Show the status of the current Git repository, maybe without refreshing.
+
+If the status buffer of the current Git repository exists but
+isn't being displayed in the selected frame, then display it
+without refreshing it.
+
+If the status buffer is being displayed in the selected frame,
+then also refresh it.
+
+Prefix arguments have the same meaning as for `magit-status',
+and additionally cause the buffer to be refresh.
+
+To use this function instead of `magit-status', add this to your
+init file: (global-set-key (kbd \"C-x g\") 'magit-status-quick)."
+  (interactive)
+  (if-let ((buffer
+            (and (not current-prefix-arg)
+                 (not (magit-get-mode-buffer 'magit-status-mode nil 'selected))
+                 (magit-get-mode-buffer 'magit-status-mode))))
+      (magit-display-buffer buffer)
+    (call-interactively #'magit-status)))
+
 (defvar magit--remotes-using-recent-git nil)
 
 (defun magit--tramp-asserts (directory)
@@ -290,52 +340,66 @@ also contains other useful hints.")
       (if-let ((version (let ((default-directory directory))
                           (magit-git-version))))
           (if (version<= magit--minimal-git version)
-              (push version magit--remotes-using-recent-git)
+              (push remote magit--remotes-using-recent-git)
             (display-warning 'magit (format "\
 Magit requires Git >= %s, but on %s the version is %s.
 
 If multiple Git versions are installed on the host, then the
 problem might be that TRAMP uses the wrong executable.
 
-First check the value of `magit-git-executable'.  Its value is
-used when running git locally as well as when running it on a
-remote host.  The default value is \"git\", except on Windows
-where an absolute path is used for performance reasons.
-
-If the value already is just \"git\" but TRAMP never-the-less
-doesn't use the correct executable, then consult the info node
-`(tramp)Remote programs'.\n" magit--minimal-git remote version) :error))
+Check the value of `magit-remote-git-executable' and consult
+the info node `(tramp)Remote programs'.
+" magit--minimal-git remote version) :error))
         (display-warning 'magit (format "\
 Magit cannot find Git on %s.
 
-First check the value of `magit-git-executable'.  Its value is
-used when running git locally as well as when running it on a
-remote host.  The default value is \"git\", except on Windows
-where an absolute path is used for performance reasons.
-
-If the value already is just \"git\" but TRAMP never-the-less
-doesn't find the executable, then consult the info node
-`(tramp)Remote programs'.\n" remote) :error)))))
+Check the value of `magit-remote-git-executable' and consult
+the info node `(tramp)Remote programs'." remote) :error)))))
 
 ;;; Mode
 
 (defvar magit-status-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map magit-mode-map)
-    (define-key map "jz" 'magit-jump-to-stashes)
-    (define-key map "jt" 'magit-jump-to-tracked)
-    (define-key map "jn" 'magit-jump-to-untracked)
-    (define-key map "ju" 'magit-jump-to-unstaged)
-    (define-key map "js" 'magit-jump-to-staged)
-    (define-key map "jfu" 'magit-jump-to-unpulled-from-upstream)
-    (define-key map "jfp" 'magit-jump-to-unpulled-from-pushremote)
-    (define-key map "jpu" 'magit-jump-to-unpushed-to-upstream)
-    (define-key map "jpp" 'magit-jump-to-unpushed-to-pushremote)
-    (define-key map "ja" 'magit-jump-to-assume-unchanged)
-    (define-key map "jw" 'magit-jump-to-skip-worktree)
+    (define-key map "j" 'magit-status-jump)
     (define-key map [remap dired-jump] 'magit-dired-jump)
     map)
   "Keymap for `magit-status-mode'.")
+
+(transient-define-prefix magit-status-jump ()
+  "In a Magit-Status buffer, jump to a section."
+  ["Jump to"
+   [("z " "Stashes" magit-jump-to-stashes
+     :if (lambda () (memq 'magit-insert-stashes magit-status-sections-hook)))
+    ("t " "Tracked" magit-jump-to-tracked
+     :if (lambda () (memq 'magit-insert-tracked-files magit-status-sections-hook)))
+    ("n " "Untracked" magit-jump-to-untracked
+     :if (lambda () (memq 'magit-insert-untracked-files magit-status-sections-hook)))
+    ("u " "Unstaged" magit-jump-to-unstaged
+     :if (lambda () (memq 'magit-insert-unstaged-changes magit-status-sections-hook)))
+    ("s " "Staged" magit-jump-to-staged
+     :if (lambda () (memq 'magit-insert-staged-changes magit-status-sections-hook)))]
+   [("fu" "Unpulled from upstream" magit-jump-to-unpulled-from-upstream
+     :if (lambda () (memq 'magit-insert-unpulled-from-upstream magit-status-sections-hook)))
+    ("fp" "Unpulled from pushremote" magit-jump-to-unpulled-from-pushremote
+     :if (lambda () (memq 'magit-insert-unpulled-from-pushremote magit-status-sections-hook)))
+    ("pu" magit-jump-to-unpushed-to-upstream
+     :if (lambda ()
+           (or (memq 'magit-insert-unpushed-to-upstream-or-recent magit-status-sections-hook)
+               (memq 'magit-insert-unpushed-to-upstream magit-status-sections-hook)))
+     :description (lambda ()
+                    (let ((upstream (magit-get-upstream-branch)))
+                      (if (or (not upstream)
+                              (magit-rev-ancestor-p "HEAD" upstream))
+                          "Recent commits"
+                        "Unmerged into upstream"))))
+    ("pp" "Unpushed to pushremote" magit-jump-to-unpushed-to-pushremote
+     :if (lambda () (memq 'magit-insert-unpushed-to-pushremote magit-status-sections-hook)))
+    ("a " "Assumed unstaged" magit-jump-to-assume-unchanged
+     :if (lambda () (memq 'magit-insert-assume-unchanged-files magit-status-sections-hook)))
+    ("w " "Skip worktree" magit-jump-to-skip-worktree
+     :if (lambda () (memq 'magit-insert-skip-worktree-files magit-status-sections-hook)))]
+   [("i" "Using Imenu" imenu)]])
 
 (define-derived-mode magit-status-mode magit-mode "Magit"
   "Mode for looking at Git status.
@@ -379,8 +443,10 @@ Type \\[magit-commit] to create a commit.
     (setq directory default-directory))
   (magit--tramp-asserts directory)
   (let* ((default-directory directory)
-         (d (magit-diff--get-value 'magit-status-mode))
-         (l (magit-log--get-value  'magit-status-mode))
+         (d (magit-diff--get-value 'magit-status-mode
+                                   magit-status-use-buffer-arguments))
+         (l (magit-log--get-value 'magit-status-mode
+                                  magit-status-use-buffer-arguments))
          (file (and magit-status-goto-file-position
                     (magit-file-relative-name)))
          (line (and file (line-number-at-pos)))
@@ -570,12 +636,13 @@ arguments are for internal use only."
               ((magit--valid-upstream-p remote merge)
                (if (equal remote ".")
                    (concat
-                    (propertize merge 'font-lock-face 'magit-branch-local)
-                    (propertize " does not exist"
+                    (propertize merge 'font-lock-face 'magit-branch-local) " "
+                    (propertize "does not exist"
                                 'font-lock-face 'font-lock-warning-face))
-                 (concat
+                 (format
+                  "%s %s %s"
                   (propertize merge 'font-lock-face 'magit-branch-remote)
-                  (propertize " does not exist on "
+                  (propertize "does not exist on"
                               'font-lock-face 'font-lock-warning-face)
                   (propertize remote 'font-lock-face 'magit-branch-remote))))
               (t
@@ -602,11 +669,11 @@ arguments are for internal use only."
                                          "(no commit message)"))))
          (let ((remote (magit-get-push-remote branch)))
            (if (magit-remote-p remote)
-               (concat target
-                       (propertize " does not exist"
+               (concat target " "
+                       (propertize "does not exist"
                                    'font-lock-face 'font-lock-warning-face))
-             (concat remote
-                     (propertize " remote does not exist"
+             (concat remote " "
+                     (propertize "remote does not exist"
                                  'font-lock-face 'font-lock-warning-face))))))
       (insert ?\n))))
 
@@ -704,7 +771,7 @@ value of that variable can be set using \"D -- DIRECTORY RET g\"."
                     (--mapcat (and (eq (aref it 0) ??)
                                    (list (substring it 3)))
                               (magit-git-items "status" "-z" "--porcelain"
-                                               (magit-ignore-submodules-p)
+                                               (magit-ignore-submodules-p t)
                                                "--" base))))
           (magit-insert-section (untracked)
             (magit-insert-heading "Untracked files:")

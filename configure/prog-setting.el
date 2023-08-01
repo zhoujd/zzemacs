@@ -127,7 +127,9 @@
 (require 'etags-select)
 (require 'etags-table)
 (require 'etags-stack)
-(add-to-list 'tags-table-list (concat zz:tag-root "/TAGS"))
+(setq tags-table-list
+      (list
+       (concat zz:tag-root "/TAGS")))
 
 ;;make ctags
 (defun zz:gen-ctags-cmd (dir-name)

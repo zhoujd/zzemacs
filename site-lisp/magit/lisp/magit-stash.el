@@ -1,12 +1,14 @@
 ;;; magit-stash.el --- stash support for Magit  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2008-2019  The Magit Project Contributors
+;; Copyright (C) 2008-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file which
 ;; lists all contributors.  If not, see http://magit.vc/authors.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; Magit is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -27,11 +29,11 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'subr-x))
-
 (require 'magit)
 (require 'magit-reflog)
+
+;; For `magit-stash-drop'.
+(defvar helm-comp-read-use-marked)
 
 ;;; Options
 
@@ -86,7 +88,7 @@ AUTHOR-WIDTH has to be an integer.  When the name of the author
 ;;; Commands
 
 ;;;###autoload (autoload 'magit-stash "magit-stash" nil t)
-(define-transient-command magit-stash ()
+(transient-define-prefix magit-stash ()
   "Stash uncommitted changes."
   :man-page "git-stash"
   ["Arguments"
@@ -123,7 +125,14 @@ AUTHOR-WIDTH has to be an integer.  When the name of the author
 Untracked files are included according to infix arguments.
 One prefix argument is equivalent to `--include-untracked'
 while two prefix arguments are equivalent to `--all'."
-  (interactive (magit-stash-read-args))
+  (interactive
+   (progn (when (and (magit-merge-in-progress-p)
+                     (not (magit-y-or-n-p "\
+Stashing and resetting during a merge conflict. \
+Applying the resulting stash won't restore the merge state. \
+Proceed anyway? ")))
+            (user-error "Abort"))
+          (magit-stash-read-args)))
   (magit-stash-save message t t include-untracked t))
 
 ;;;###autoload
@@ -214,6 +223,7 @@ are staged changes, apply without preserving the stash index."
       (magit-refresh)
     (magit-run-git "stash" "apply" stash)))
 
+;;;###autoload
 (defun magit-stash-pop (stash)
   "Apply a stash to the working tree and remove it from stash list.
 Try to preserve the stash index.  If that fails because there
@@ -231,20 +241,15 @@ When the region is active offer to drop all contained stashes."
   (interactive
    (list (--if-let (magit-region-values 'stash)
              (magit-confirm 'drop-stashes nil "Drop %i stashes" nil it)
-           (magit-read-stash "Drop stash"))))
+           (let ((helm-comp-read-use-marked t))
+             (magit-read-stash "Drop stash")))))
   (dolist (stash (if (listp stash)
                      (nreverse (prog1 stash (setq stash (car stash))))
                    (list stash)))
     (message "Deleted refs/%s (was %s)" stash
              (magit-rev-parse "--short" stash))
     (magit-call-git "rev-parse" stash)
-    (magit-call-git "reflog" "delete" "--updateref" "--rewrite" stash))
-  (when-let ((ref (and (string-match "\\(.+\\)@{[0-9]+}$" stash)
-                       (match-string 1 stash))))
-    (unless (string-match "^refs/" ref)
-      (setq ref (concat "refs/" ref)))
-    (unless (magit-rev-verify (concat ref "@{0}"))
-      (magit-run-git "update-ref" "-d" ref)))
+    (magit-call-git "stash" "drop" stash))
   (magit-refresh))
 
 ;;;###autoload
@@ -269,7 +274,7 @@ The branch is created using `magit-branch-and-checkout', using the
 current branch or `HEAD' as the start-point."
   (interactive (list (magit-read-stash "Branch stash")
                      (magit-read-string-ns "Branch name")))
-  (let ((inhibit-magit-refresh t))
+  (let ((magit-inhibit-refresh t))
     (magit-branch-and-checkout branch (or (magit-get-current-branch) "HEAD")))
   (magit-stash-apply stash))
 
@@ -375,11 +380,12 @@ instead of \"Stashes:\"."
   (let ((verified (magit-rev-verify ref))
         (autostash
          (and (magit-rebase-in-progress-p)
-              (magit-file-line
-               (magit-git-dir
-                (-> (if (file-directory-p (magit-git-dir "rebase-merge"))
-                        "rebase-merge/autostash"
-                      "rebase-apply/autostash")))))))
+              (thread-first
+                  (if (file-directory-p (magit-git-dir "rebase-merge"))
+                      "rebase-merge/autostash"
+                    "rebase-apply/autostash")
+                magit-git-dir
+                magit-file-line))))
     (when (or autostash verified)
       (magit-insert-section (stashes ref)
         (magit-insert-heading heading)

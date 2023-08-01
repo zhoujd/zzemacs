@@ -19,6 +19,10 @@
 ;;crux
 (require 'crux)
 
+;;compat
+(zz:load-path "site-lisp/compat")
+(require 'compat)
+
 
 (provide 'lib-setting)
 

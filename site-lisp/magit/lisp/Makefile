@@ -11,7 +11,7 @@ all: lisp
 
 git-commit.elc:
 magit-utils.elc:
-magit-section.elc:      magit-utils.elc
+magit-section.elc:
 ifeq "$(BUILD_MAGIT_LIBGIT)" "true"
 magit-libgit.elc:
 magit-git.elc:          magit-utils.elc magit-section.elc magit-libgit.elc
@@ -61,6 +61,7 @@ magit-patch.elc:        magit.elc
 magit-subtree.elc:      magit.elc
 magit-ediff.elc:        magit.elc
 magit-gitignore.elc:    magit.elc
+magit-bunlde.elc:       magit.elc
 magit-extras.elc:       magit.elc magit-merge.elc
 git-rebase.elc:         magit.elc
 magit-imenu.elc:        magit.elc git-rebase.elc

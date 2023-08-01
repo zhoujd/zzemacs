@@ -1,12 +1,14 @@
 ;;; magit-reflog.el --- inspect ref history  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2010-2019  The Magit Project Contributors
+;; Copyright (C) 2010-2021  The Magit Project Contributors
 ;;
 ;; You should have received a copy of the AUTHORS.md file which
 ;; lists all contributors.  If not, see http://magit.vc/authors.
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; Magit is free software; you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by
@@ -30,16 +32,13 @@
 (require 'magit-core)
 (require 'magit-log)
 
-(eval-when-compile
-  (require 'subr-x))
-
 ;;; Options
 
 (defcustom magit-reflog-limit 256
   "Maximal number of entries initially shown in reflog buffers.
 The limit in the current buffer can be changed using \"+\"
 and \"-\"."
-  :package-version '(magit . "2.91.0")
+  :package-version '(magit . "3.0.0")
   :group 'magit-commands
   :type 'number)
 
@@ -137,8 +136,8 @@ If `HEAD' is detached, then show the reflog for that instead."
 (defvar magit-reflog-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map magit-log-mode-map)
-    (define-key map "\C-c\C-n" 'undefined)
-    (define-key map "L" 'magit-margin-settings)
+    (define-key map (kbd "C-c C-n") 'undefined)
+    (define-key map (kbd "L")       'magit-margin-settings)
     map)
   "Keymap for `magit-reflog-mode'.")
 

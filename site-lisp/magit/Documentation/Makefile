@@ -18,12 +18,13 @@ epub: $(EPUBFILES)
 	@printf "Generating $@\n"
 	@$(MAKEINFO) --no-split $< -o $@
 
-dir: magit.info
+dir: magit.info magit-section.info
 	@printf "Generating dir\n"
 	@echo $^ | xargs -n 1 $(INSTALL_INFO) --dir=$@
 
 HTML_FIXUP_CSS    = '/<link rel="stylesheet" type="text\/css" href="\/assets\/page.css">/a\
-<link class="s-css-s--style" rel="stylesheet"           title="Default"               href="/assets/themes/default.css">\
+<link rel="icon" href="/assets/magit_alt1.ico">\
+\n<link class="s-css-s--style" rel="stylesheet"           title="Default"               href="/assets/themes/default.css">\
 \n<link class="s-css-s--style" rel="stylesheet alternate" title="Default high contrast" href="/assets/themes/default-high-contrast.css">\
 \n<link class="s-css-s--style" rel="stylesheet alternate" title="Solarized dark xterm"  href="/assets/themes/solarized-dark-xterm.css">\
 \n<link class="s-css-s--style" rel="stylesheet alternate" title="Black on white"        href="/assets/themes/black-on-white.css">\
@@ -40,6 +41,11 @@ html-dir: $(TEXIFILES)
 	@printf "Generating magit/*.html\n"
 	@$(MAKEINFO) --html $(MANUAL_HTML_ARGS) magit.texi
 	@for f in $$(find magit -name '*.html') ; do \
+	sed -i -e $(HTML_FIXUP_CSS) -e $(HTML_FIXUP_ONLOAD) -e $(HTML_FIXUP_MENU) $$f ; \
+	done
+	@printf "Generating magit-section/*.html\n"
+	@$(MAKEINFO) --html $(MANUAL_HTML_ARGS) magit-section.texi
+	@for f in $$(find magit-section -name '*.html') ; do \
 	sed -i -e $(HTML_FIXUP_CSS) -e $(HTML_FIXUP_ONLOAD) -e $(HTML_FIXUP_MENU) $$f ; \
 	done
 
@@ -77,10 +83,9 @@ clean:
 
 ## Release management ################################################
 
-ORG_ARGS  = --batch -Q $(ORG_LOAD_PATH)
-ORG_ARGS += -l magit-utils.el -l ox-extra -l ox-texinfo+.el
+ORG_ARGS  = --batch -Q $(ORG_LOAD_PATH) -l magit-utils.el -l ox-texinfo+.el
 ORG_ARGS += --eval "(or (require 'org-man nil t) (require 'ol-man))"
-ORG_EVAL  = --eval "(ox-extras-activate '(ignore-headlines))"
+ORG_EVAL  = --eval "(setq org-texinfo+-dissolve-noexport-headlines t)"
 ORG_EVAL += --eval "(setq indent-tabs-mode nil)"
 ORG_EVAL += --eval "(setq org-src-preserve-indentation nil)"
 ORG_EVAL += --funcall org-texinfo-export-to-texinfo
@@ -96,10 +101,13 @@ texi:
 	@$(EMACSBIN) $(ORG_ARGS) $(PKG).org $(ORG_EVAL)
 	@printf "\n" >> $(PKG).texi
 	@rm -f $(PKG).texi~
+	@$(EMACSBIN) $(ORG_ARGS) magit-section.org $(ORG_EVAL)
+	@printf "\n" >> magit-section.texi
+	@rm -f magit-section.texi~
 
 stats:
 	@printf "Generating statistics\n"
-	@gitstats -c style=/assets/stats.css -c max_authors=999 $(TOP) $(statsdir)
+	@gitstats -c style=https://magit.vc/assets/stats.css -c max_authors=999 $(TOP) $(statsdir)
 
 authors: AUTHORS.md
 
@@ -141,6 +149,11 @@ publish-manuals: $(PUBLISH_TARGETS)
 	@aws s3 cp $(PKG).epub $(PUBLISH_TARGET)
 	@printf "upload: ./$(PKG)/* to $(PUBLISH_TARGET)*\n"
 	@aws s3 sync --delete $(PKG) $(PUBLISH_TARGET)$(PKG)/ > /dev/null
+	@aws s3 cp magit-section.html $(PUBLISH_TARGET)
+	@aws s3 cp magit-section.pdf  $(PUBLISH_TARGET)
+	@aws s3 cp magit-section.epub $(PUBLISH_TARGET)
+	@printf "upload: ./magit-section/* to $(PUBLISH_TARGET)*\n"
+	@aws s3 sync --delete magit-section $(PUBLISH_TARGET)magit-section/ > /dev/null
 	@printf "Generating CDN invalidation\n"
 	@aws cloudfront create-invalidation --distribution-id $(CFRONT_DIST) --paths \
 	"$(subst $(space),$(comma),$(addprefix $(PUBLISH_PATH),$(CFRONT_PATHS)))" > /dev/null
@@ -152,6 +165,13 @@ release-manuals: $(PUBLISH_TARGETS)
 	@aws s3 cp $(PKG).epub $(RELEASE_TARGET)
 	@printf "upload: ./$(PKG)/* to $(RELEASE_TARGET)*\n"
 	@aws s3 sync --delete $(PKG) $(RELEASE_TARGET)$(PKG)/ > /dev/null
+	@aws s3 cp magit-section.html $(RELEASE_TARGET)
+	@aws s3 cp magit-section.pdf  $(RELEASE_TARGET)
+	@aws s3 cp magit-section.epub $(RELEASE_TARGET)
+	@printf "upload: ./magit-section/* to $(RELEASE_TARGET)*\n"
+	@aws s3 sync --delete magit-section $(RELEASE_TARGET)magit-section/ > /dev/null
+	@aws s3 cp $(PUBLISH_TARGET)dir.html $(RELEASE_TARGET)dir.html
+	@aws s3 cp $(PUBLISH_TARGET)dir/index.html $(RELEASE_TARGET)dir/index.html
 	@printf "Generating CDN invalidation\n"
 	@aws cloudfront create-invalidation --distribution-id $(CFRONT_DIST) --paths \
 	"$(subst $(space),$(comma),$(addprefix $(RELEASE_PATH),$(CFRONT_PATHS)))" > /dev/null

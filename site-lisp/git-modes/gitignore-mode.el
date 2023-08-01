@@ -1,27 +1,27 @@
-;;; gitignore-mode.el --- Major mode for editing .gitignore files -*- lexical-binding: t; -*-
+;;; gitignore-mode.el --- Major mode for editing .gitignore files  -*- lexical-binding:t -*-
 
-;; Copyright (c) 2012-2013  Sebastian Wiesner
-;; Copyright (C) 2012-2014  The Magit Project Developers
+;; Copyright (c) 2012-2013 Sebastian Wiesner
+;; Copyright (C) 2012-2023 The Magit Project Contributors
 
 ;; Author: Sebastian Wiesner <lunaryorn@gmail.com>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/magit/git-modes
 ;; Keywords: convenience vc git
 
-;; This file is not part of GNU Emacs.
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
-;; This file is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 3, or (at your option)
-;; any later version.
-
+;; This file is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published
+;; by the Free Software Foundation, either version 3 of the License,
+;; or (at your option) any later version.
+;;
 ;; This file is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
-;; along with this file.  If not, see <http://www.gnu.org/licenses/>.
+;; along with this file.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -29,6 +29,7 @@
 
 ;;; Code:
 
+(require 'compat)
 (require 'conf-mode)
 
 (defvar gitignore-mode-font-lock-keywords
@@ -45,14 +46,15 @@
   ;; Disable syntactic font locking, because comments are only valid at
   ;; beginning of line.
   (setq font-lock-defaults '(gitignore-mode-font-lock-keywords t t))
-  (set (make-local-variable 'conf-assignment-sign) nil))
+  (setq-local conf-assignment-sign nil))
 
 ;;;###autoload
 (dolist (pattern (list "/\\.gitignore\\'"
-                       "/\\.git/info/exclude\\'"
+                       "/info/exclude\\'"
                        "/git/ignore\\'"))
   (add-to-list 'auto-mode-alist (cons pattern 'gitignore-mode)))
 
+;;; _
 (provide 'gitignore-mode)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

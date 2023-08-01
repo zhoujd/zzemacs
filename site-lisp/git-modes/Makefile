@@ -1,38 +1,59 @@
-EMACS_BIN  ?= emacs
-EFLAGS ?=
-BATCH   = $(EMACS_BIN) $(EFLAGS) -batch -Q -L .
-BATCHE  = $(BATCH) -eval
-BATCHC  = $(BATCH) -f batch-byte-compile
+-include .config.mk
 
-ELS  = git-commit-mode.el
-ELS += git-rebase-mode.el
-ELS += gitattributes-mode.el
-ELS += gitconfig-mode.el
-ELS += gitignore-mode.el
-ELCS = $(ELS:.el=.elc)
+PKG = git-modes
 
-.PHONY: lisp
-lisp: $(ELCS)
+ELS   = $(PKG).el
+ELS  += gitattributes-mode.el
+ELS  += gitconfig-mode.el
+ELS  += gitignore-mode.el
+ELCS  = $(ELS:.el=.elc)
 
-.PHONY: clean
-clean:
-	@echo "Cleaning..."
-	@rm -f $(ELCS)
+DEPS  = compat
+
+EMACS      ?= emacs
+EMACS_ARGS ?=
+
+LOAD_PATH  ?= $(addprefix -L ../,$(DEPS))
+LOAD_PATH  += -L .
+
+all: lisp
+
+help:
+	$(info make all          - generate byte-code and autoloads)
+	$(info make lisp         - generate byte-code and autoloads)
+	$(info make clean        - remove generated files)
+	@printf "\n"
+
+lisp: $(ELCS) loaddefs check-declare
+
+loaddefs: $(PKG)-autoloads.el
 
 %.elc: %.el
-	@$(BATCHC) $<
+	@printf "Compiling $<\n"
+	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) -f batch-byte-compile $<
 
-.PHONY: test
-test:
-	@$(BATCHE) "(progn\
-	(require 'cl) \
-	(put 'flet 'byte-obsolete-info nil))" \
-	-l tests/git-commit-tests.el -f ert-run-tests-batch-and-exit
+check-declare:
+	@printf " Checking function declarations\n"
+	@$(EMACS) -Q --batch $(EMACS_ARGS) $(LOAD_PATH) \
+	--eval "(check-declare-directory default-directory)"
 
-.PHONY: test-interactive
-test-interactive:
-	@$(EMACS) $(EFLAGS) -Q -L "." --eval "(progn\
-	(require 'cl)\
-	(put 'flet 'byte-obsolete-info nil)\
-	(load-file \"tests/git-commit-tests.el\")\
-	(ert t))"
+CLEAN  = $(ELCS) $(PKG)-autoloads.el
+
+clean:
+	@printf " Cleaning...\n"
+	@rm -rf $(CLEAN)
+
+$(PKG)-autoloads.el: $(ELS)
+	@printf " Creating $@\n"
+	@$(EMACS) -Q --batch -l autoload -l cl-lib --eval "\
+(let ((file (expand-file-name \"$@\"))\
+      (autoload-timestamps nil) \
+      (backup-inhibited t)\
+      (version-control 'never)\
+      (coding-system-for-write 'utf-8-emacs-unix))\
+  (write-region (autoload-rubric file \"package\" nil) nil file nil 'silent)\
+  (cl-letf (((symbol-function 'progress-reporter-do-update) (lambda (&rest _)))\
+            ((symbol-function 'progress-reporter-done) (lambda (_))))\
+    (let ((generated-autoload-file file))\
+      (update-directory-autoloads default-directory))))" \
+	2>&1 | sed "/^Package autoload is deprecated$$/d"

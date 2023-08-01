@@ -263,6 +263,10 @@
 ;;helm-themes
 (require 'helm-themes)
 
+;;helm-gitignore
+(zz:load-path "site-lisp/git-modes")
+(require 'helm-gitignore)
+
 
 (provide 'helm-setting)
 

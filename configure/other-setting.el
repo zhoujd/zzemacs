@@ -441,6 +441,9 @@
 ;;with-editor
 (require 'with-editor)
 
+;;easy-kill
+(require 'easy-kill)
+
 
 (provide 'other-setting)
 

@@ -56,6 +56,7 @@
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
+  (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo
   (kbd ".")       'winner-redo

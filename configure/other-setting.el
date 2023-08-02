@@ -169,12 +169,16 @@
       uniquify-after-kill-buffer-p t)
 
 ;;ibuffer setting
+(require 'ibuf-ext)
 (setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-default-sorting-mode 'major-mode)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("Helm" (predicate string-match "Hmm" mode-name))
                ("Dired" (mode . dired-mode))
+               ("Shell" (or
+                         (mode . term-mode)
+                         (mode . shell-mode)
+                         (mode . eshell-mode)))
                ("Emacs" (or
                           (name . "^\\*.*\\*$")
                           (name . "^\\*.*\\*<[0-9]+>$")

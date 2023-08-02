@@ -179,6 +179,7 @@
                          (mode . term-mode)
                          (mode . shell-mode)
                          (mode . eshell-mode)))
+               ("Magit" (name . "^magit"))
                ("Emacs" (or
                           (name . "^\\*.*\\*$")
                           (name . "^\\*.*\\*<[0-9]+>$")

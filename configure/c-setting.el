@@ -88,7 +88,8 @@
 
 ;; my c setting hook
 (defun zz:c-mode-common-hook()
-  (setq tab-width 4 indent-tabs-mode nil)
+  (setq tab-width 4
+        indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
     ((kbd "M-o")     'eassist-switch-h-cpp)
     ((kbd "M-m")     'eassist-list-methods)

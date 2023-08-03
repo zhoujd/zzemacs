@@ -9,6 +9,10 @@
 ;;export LS_COLORS='di=01;33:ex=92:ln=04;93'
 ;;alias ls='ls --color=auto'
 
+;;;Modify indent for shell mode
+;;M-x eval-expression
+;;(setq sh-basic-offset 2)
+
 (require 'comint)
 
 ;;shell settting

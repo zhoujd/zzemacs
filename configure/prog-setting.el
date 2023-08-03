@@ -158,10 +158,13 @@
 ;              ))
 
 (defun zz:gen-etags-cmd (dir-name)
-  (format "%s %s -type f \\( %s \\) -print | etags -"
-          find-program
-          dir-name
-          (zz:gen-find-parts zz:find-regex)))
+  (concat
+   (format "rm -f %s;"
+           (concat default-directory "/TAGS"))
+   (format "%s %s -type f \\( %s \\) -print | etags -"
+           find-program
+           dir-name
+           (zz:gen-find-parts zz:find-regex))))
 
 (defun zz:create-etags (dir-name)
   "Create tags file."
@@ -177,8 +180,9 @@
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
-;(require 'rscope)
-;(require 'rscope-nav)
+(require 'rscope)
+(require 'rscope-nav)
+(setq rscope-keymap-prefix (kbd "C-c C-s"))
 
 ;;make cscope
 ; #!/bin/bash
@@ -190,6 +194,8 @@
 (defun zz:gen-cscope-cmd (dir-name)
   (let ((files-path (concat default-directory "/cscope.files")))
     (concat
+     (format "rm -f %s;"
+             (concat default-directory "/cscope.*"))
      (format "%s %s -type f -not -path '*/\.git/*' \\( %s \\) -print > %s;"
              find-program
              dir-name

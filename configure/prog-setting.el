@@ -26,7 +26,7 @@
 
 (defvar zz:proj-list (list zzemacs-path)
   "project directory list")
-(defvar zz:tag-root (format "%s/.emacs.d/tags"
+(defvar zz:tag-root (format "%s/.emacs.d/tags/"
                             (getenv "HOME"))
   "tag directory root")
 
@@ -160,7 +160,7 @@
 (defun zz:gen-etags-cmd (dir-name)
   (concat
    (format "rm -f %s;"
-           (concat default-directory "/TAGS"))
+           (concat default-directory "TAGS"))
    (format "%s %s -type f \\( %s \\) -print | etags -"
            find-program
            dir-name
@@ -180,9 +180,8 @@
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
-(require 'rscope)
-(require 'rscope-nav)
-(setq rscope-keymap-prefix (kbd "C-c C-s"))
+;(require 'rscope)
+;(require 'rscope-nav)
 
 ;;make cscope
 ; #!/bin/bash
@@ -192,10 +191,10 @@
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./csope.files
 (defun zz:gen-cscope-cmd (dir-name)
-  (let ((files-path (concat default-directory "/cscope.files")))
+  (let ((files-path (concat default-directory "cscope.files")))
     (concat
      (format "rm -f %s;"
-             (concat default-directory "/cscope.*"))
+             (concat default-directory "cscope.*"))
      (format "%s %s -type f -not -path '*/\.git/*' \\( %s \\) -print > %s;"
              find-program
              dir-name

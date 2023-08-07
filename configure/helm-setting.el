@@ -38,6 +38,8 @@
       helm-tramp-default-method         "sshz"
       helm-move-to-line-cycle-in-source t
       helm-lisp-fuzzy-completion        t
+      helm-semantic-fuzzy-match         t
+      helm-imenu-fuzzy-match            t
       helm-ff-preferred-shell-mode      'shell-mode
       helm-mini-default-sources         '(helm-source-buffers-list
                                           helm-source-recentf

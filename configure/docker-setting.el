@@ -8,12 +8,6 @@
 ;;C-x C-f /docker:user@container:/path/to/file
 ;;C-x C-f /ssh:user@remotehost|docker:user@container:/etc/passwd RET
 (require 'docker-tramp)
-(push (cons "docker"
-            '((tramp-login-program "docker")
-              (tramp-login-args (("exec" "-it") ("%h") ("/bin/bash")))
-              (tramp-remote-shell "/bin/sh")
-              (tramp-remote-shell-args ("-i") ("-c"))))
-      tramp-methods)
 
 (defadvice tramp-completion-handle-file-name-all-completions
     (around dotemacs-completion-docker activate)

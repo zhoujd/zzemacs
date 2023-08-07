@@ -37,6 +37,7 @@
       helm-tramp-verbose                0
       helm-tramp-default-method         "sshz"
       helm-move-to-line-cycle-in-source t
+      helm-lisp-fuzzy-completion        t
       helm-ff-preferred-shell-mode      'shell-mode
       helm-mini-default-sources         '(helm-source-buffers-list
                                           helm-source-recentf
@@ -268,6 +269,9 @@
 ;;helm-gitignore
 (zz:load-path "site-lisp/git-modes")
 (require 'helm-gitignore)
+
+;;helm-systemd
+(require 'helm-systemd)
 
 
 (provide 'helm-setting)

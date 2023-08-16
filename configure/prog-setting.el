@@ -226,7 +226,7 @@
   (zz:create-cscope (zz:gen-proj-find-path zz:proj-list)))
 
 ;; create etags to zz:tag-root
-(defun zz:create-proj-etags-1 ()
+(defun zz:create-root-etags ()
   (interactive)
   (let ((default-directory zz:tag-root))
     (unless (file-exists-p zz:tag-root)
@@ -234,7 +234,7 @@
     (zz:create-proj-etags)))
 
 ;; create cscope to zz:tag-root
-(defun zz:create-proj-cscope-1 ()
+(defun zz:create-root-cscope ()
   (interactive)
   (let ((default-directory zz:tag-root))
     (unless (file-exists-p zz:tag-root)

@@ -8,10 +8,9 @@
 (c-set-offset 'substatement-open 0)
 
 ;;gtags global
-;;$sudo apt-get install global
-;;$gtags -v
-;;start Emacs and execute gtags-mode function.
-;(autoload 'gtags-mode "gtags" "" t)
+;$ apt install global
+;$ gtags -v
+;(require 'gtags)
 
 ;;rtags
 ;;https://github.com/Andersbakken/rtags

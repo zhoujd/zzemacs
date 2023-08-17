@@ -275,6 +275,9 @@
 ;;helm-systemd
 (require 'helm-systemd)
 
+;;helm-gtags
+(require 'helm-gtags)
+
 
 (provide 'helm-setting)
 

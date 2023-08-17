@@ -176,7 +176,7 @@
 ;;https://github.com/dkogan/xcscope.el
 (require 'xcscope)
 (setq cscope-option-use-inverted-index t)
-(setq cscope-initial-directory zz:tag-root)
+(cscope-set-initial-directory zz:tag-root)
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope

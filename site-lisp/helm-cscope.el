@@ -59,6 +59,9 @@
 (defvar helm-cscope-after-display-hook nil
   "Call hook after the select action has been processed.")
 
+(defvar helm-cscope-search-dir-init nil
+  "Init search directory")
+
 (defconst helm-cscope--parse-regexp
   "\\`\\([^ ]+\\) \\([^ ]+\\) \\([0-9]+\\) \\(.*\\)")
 
@@ -168,13 +171,15 @@
   (let ((cur-dir (cscope-search-directory-hierarchy
                   (file-name-directory (buffer-file-name))))
         (search-dir-list
-         (cl-remove-if-not
-          (lambda (e) (and (listp e) (stringp (car e))))
-          (cscope-find-info (file-name-directory (buffer-file-name))))))
-    (unless (cl-loop for e in search-dir-list
-                     thereis (string= cur-dir
-                                      (cscope-canonicalize-directory (car e))))
-      (push (list cur-dir) search-dir-list))
+         (or helm-cscope-search-dir-init
+             (cl-remove-if-not
+              (lambda (e) (and (listp e) (stringp (car e))))
+              (cscope-find-info (file-name-directory (buffer-file-name)))))))
+    (unless helm-cscope-search-dir-init
+      (unless (cl-loop for e in search-dir-list
+                       thereis (string= cur-dir
+                                        (cscope-canonicalize-directory (car e))))
+        (push (list cur-dir) search-dir-list)))
     (helm :sources
           (mapcar (lambda (e)
                     (helm-cscope--make-source

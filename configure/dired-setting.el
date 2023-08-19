@@ -124,8 +124,8 @@
 
 
 ;;dirvish
-(zz:load-path "site-lisp/dirvish")
-(require 'dirvish)
+;(zz:load-path "site-lisp/dirvish")
+;(require 'dirvish)
 
 
 (provide 'dired-setting)

@@ -248,22 +248,21 @@
 ;;https://www.emacswiki.org/emacs/BookmarkPlus
 (zz:load-path "site-lisp/bookmarkplus")
 (require 'bookmark+)
-;;auto-save bookmarks flag, toggle this option using 'M-~’
-(setq bookmark-save-flag t)
-(setq bookmark-bmenu-file-column 50)
 
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
 
-(setq bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
-      bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el")
-
 (defun zz:bmkp-default-name ()
   (let* ((ff    (thing-at-point 'symbol))
          (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
     (if ff (concat ff ":" line) line)))
-(setq bmkp-new-bookmark-default-names (list 'zz:bmkp-default-name))
+
+(setq bookmark-save-flag t              ;;toggle this option using 'M-~’
+      bookmark-bmenu-file-column 50
+      bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
+      bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el"
+      bmkp-new-bookmark-default-names (list 'zz:bmkp-default-name))
 
 ;;expand-region
 (zz:load-path "site-lisp/expand-region")

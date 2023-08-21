@@ -166,6 +166,7 @@
 ;;on duplicate filenames, show path names, not foo.x<2>, foo.x<3>, etc.
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse
+      uniquify-ignore-buffers-re "^\\*"
       uniquify-after-kill-buffer-p t)
 
 ;;ibuffer setting
@@ -249,11 +250,21 @@
 (require 'bookmark+)
 ;;auto-save bookmarks flag, toggle this option using 'M-~’
 (setq bookmark-save-flag t)
+(setq bookmark-bmenu-file-column 50)
+
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
+
 (setq bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
       bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el")
+
+(defun zz:bmkp-default-name ()
+  (let* ((ff    (function-called-at-point))
+         (ff    (and ff (symbolp ff) (symbol-name ff)))
+         (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
+    (if ff (concat ff ":" line) line)))
+(setq bmkp-new-bookmark-default-names (list 'zz:bmkp-default-name))
 
 ;;expand-region
 (zz:load-path "site-lisp/expand-region")

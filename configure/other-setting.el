@@ -260,8 +260,7 @@
       bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el")
 
 (defun zz:bmkp-default-name ()
-  (let* ((ff    (function-called-at-point))
-         (ff    (and ff (symbolp ff) (symbol-name ff)))
+  (let* ((ff    (thing-at-point 'symbol))
          (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
     (if ff (concat ff ":" line) line)))
 (setq bmkp-new-bookmark-default-names (list 'zz:bmkp-default-name))

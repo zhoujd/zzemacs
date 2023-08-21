@@ -125,7 +125,124 @@ Added inferior 2
 (gdb) attach 871
 ...messages...
 (gdb) info inferiors
-Num Description Executable
-* 2 process 871 target:/usr/sbin/httpd
-  1 process 774 target:/usr/libexec/mysqld
+ Num Description Executable
+ * 2 process 871 target:/usr/sbin/httpd
+   1 process 774 target:/usr/libexec/mysqld
+#+END_SRC
+
+** 8 gdb tricks you should know
+
+#+BEGIN_SRC sh
+## https://blogs.oracle.com/linux/post/8-gdb-tricks-you-should-know
+## 1.break WHERE if COND
+(gdb) break context_switch if next == init_task
+
+## 2.command In addition to conditional breakpoints
+(gdb) b do_mmap_pgoff
+Breakpoint 1 at 0xffffffff8111a441: file mm/mmap.c, line 940.
+(gdb) command 1
+Type commands for when breakpoint 1 is hit, one per line.
+End with a line saying just "end".
+>print addr
+>print len
+>print prot
+>end
+(gdb)
+
+## 3.gdb --args This one is simple, but a huge timesaver if you didn't know it
+[~]$ gdb --args pizzamaker --deep-dish --toppings=pepperoni
+...
+(gdb) show args
+Argument list to give program being debugged when it is started is
+  " --deep-dish --toppings=pepperoni".
+(gdb) b main
+Breakpoint 1 at 0x45467c: file oven.c, line 123.
+(gdb) run
+...
+
+## 4.Finding source files
+## Download debug symbols and add the source directory
+[~/src]$ apt-get source coreutils
+[~/src]$ sudo apt-get install coreutils-dbgsym
+[~/src]$ gdb /bin/ls
+GNU gdb (GDB) 7.1-ubuntu
+(gdb) list main
+1192    ls.c: No such file or directory.
+    in ls.c
+(gdb) directory ~/src/coreutils-7.4/src/
+Source directories searched: /home/nelhage/src/coreutils-7.4:$cdir:$cwd
+(gdb) list main
+1192        }
+1193    }
+1194
+1195    int
+1196    main (int argc, char **argv)
+1197    {
+1198      int i;
+1199      struct pending *thispend;
+1200      int n_files;
+1201
+
+## set substitute-path to tell gdb how to translate paths
+[~/src]$ apt-get source linux-image-2.6.32-25-generic
+[~/src]$ sudo apt-get install linux-image-2.6.32-25-generic-dbgsym
+[~/src]$ gdb /usr/lib/debug/boot/vmlinux-2.6.32-25-generic
+(gdb) list schedule
+5519    /build/buildd/linux-2.6.32/kernel/sched.c: No such file or directory.
+    in /build/buildd/linux-2.6.32/kernel/sched.c
+(gdb) set substitute-path /build/buildd/linux-2.6.32 /home/nelhage/src/linux-2.6.32/
+(gdb) list schedule
+5519
+5520    static void put_prev_task(struct rq *rq, struct task_struct *p)
+5521    {
+5522        u64 runtime = p->se.sum_exec_runtime - p->se.prev_sum_exec_runtime;
+5523
+5524        update_avg(&p->se.avg_running, runtime);
+5525
+5526        if (p->state == TASK_RUNNING) {
+5527            /*
+5528             * In order to avoid avg_overlap growing stale when we are
+
+## 5.Debugging macros
+$ make KCFLAGS=-ggdb3
+...
+(gdb) break schedule
+(gdb) continue
+(gdb) p/x GFP_ATOMIC
+$1 = 0x20
+(gdb) p task_is_stopped_or_traced(init_task)
+$2 = 0
+
+(gdb) macro expand task_is_stopped_or_traced(init_task)
+expands to: ((init_task->state & (4 | 8)) != 0)
+(gdb) info macro task_is_stopped_or_traced
+Defined at include/linux/sched.h:218
+  included at include/linux/nmi.h:7
+  included at kernel/sched.c:31
+#define task_is_stopped_or_traced(task) ((task->state & (__TASK_STOPPED | __TASK_TRACED)) != 0)
+
+## 6.gdb variables Whenever you print a variable in gdb
+(gdb) set $foo = 4
+(gdb) p $foo
+$3 = 4
+
+## 7.Register variables
+(gdb) break write if $rsi == 2
+
+## 8.The x command
+x/FMT ADDRESS
+[~]$ grep saved_command /proc/kallsyms
+ffffffff81946000 B saved_command_line
+(gdb) x/s 0xffffffff81946000
+ffffffff81946000 <>:     "root=/dev/sda1 quiet"
+
+## x/i is invaluable as a quick way to disassemble memory
+(gdb) x/5i schedule
+   0xffffffff8154804a <schedule>:   push   %rbp
+   0xffffffff8154804b <schedule+1>: mov    $0x11ac0,%rdx
+   0xffffffff81548052 <schedule+8>: mov    %gs:0xb588,%rax
+   0xffffffff8154805b <schedule+17>:    mov    %rsp,%rbp
+   0xffffffff8154805e <schedule+20>:    push   %r15
+</schedule+20></schedule+17></schedule+8></schedule+1></schedule>
+
 #+END_SRC

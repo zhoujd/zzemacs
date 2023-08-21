@@ -219,8 +219,7 @@
         (backward-char 1)
     (next-line 2)
     (beginning-of-line 0)
-    )
-  )
+    ))
 
 (defun zz:trans-path-sep (path origin-sep target-sep)
   (let ((tmp ""))

@@ -40,6 +40,7 @@
       helm-lisp-fuzzy-completion        t
       helm-semantic-fuzzy-match         t
       helm-imenu-fuzzy-match            t
+      helm-buffer-max-length            32
       helm-ff-preferred-shell-mode      'shell-mode
       helm-mini-default-sources         '(helm-source-buffers-list
                                           helm-source-recentf

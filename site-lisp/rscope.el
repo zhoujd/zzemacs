@@ -229,6 +229,7 @@ The first hook returning a non nil value wins.")
     (define-key 'rscope:map "f" 'rscope-find-this-file)
     (define-key 'rscope:map "i" 'rscope-find-files-including-file)
     (define-key 'rscope:map "h" 'rscope-find-calling-hierarchy)
+    (define-key 'rscope:map "=" 'rscope-all-symbol-assignments)
     (define-key 'rscope:map "n" 'rscope-nav)
     (define-key 'rscope:map "p" 'rscope-pop-mark)
     (define-key 'rscope:map "R" 'rscope-regenerate-database)
@@ -320,8 +321,8 @@ The first hook returning a non nil value wins.")
 (defun rscope-all-symbol-assignments (symbol)
   "Find all the assignments of the symbol"
   (interactive (rscope-interactive
-		(list (cons "this don't work due to the bug of cscope, Find all assignments of symbol: " (current-word)))))
-  (rscope-handle-query (concat "10" symbol "\n")))
+		(list (cons "Find all assignments of symbol: " (current-word)))))
+  (rscope-handle-query (concat "9" symbol "\n")))
 
 (defun rscope-find-calling-hierarchy (symbol depth)
   "Find all functions calling a function, then functions calling these ones, etc ..."

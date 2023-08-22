@@ -184,7 +184,10 @@
 (require 'rscope-nav)
 
 (defun zz:rscope-autoinit-path (buffer)
-  zz:tag-root)
+  "Look the directory from zz:tag-root"
+  (when (file-readable-p (concat zz:tag-root rscope-database-name))
+    zz:tag-root))
+
 (add-hook 'rscope-autoinit-cscope-dir-hooks
           (function zz:rscope-autoinit-path))
 

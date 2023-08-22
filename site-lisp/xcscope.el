@@ -959,9 +959,9 @@ at the start of a line, so the leading ^ must be omitted")
 
 (defface cscope-separator-face
   '((((class color) (background dark))
-     (:bold t :overline t :underline t :foreground "red"))
+     (:bold t :foreground "red"))
     (((class color) (background light))
-     (:bold t :overline t :underline t :foreground "red"))
+     (:bold t :foreground "red"))
     (t (:bold t)))
   "Face used to highlight the separator in the *cscope* buffer."
   :group 'cscope)

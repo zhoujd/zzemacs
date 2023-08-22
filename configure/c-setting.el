@@ -24,11 +24,8 @@
 ;;holding #if
 (load-library "hideif")
 
-;;source pair
-(require 'sourcepair)
-(setq sourcepair-source-path    '( "." "../*" "../../*" ))
-(setq sourcepair-header-path    '( "." "include" "../include" "../*" "../../*"))
-(setq sourcepair-recurse-ignore '( "CVS"  "Debug" "Release" ))
+;;find source pair
+(require 'cff)
 
 ;;add linux kernel style
 (c-add-style "kernel"

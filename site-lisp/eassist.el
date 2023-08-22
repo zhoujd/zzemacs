@@ -1,8 +1,9 @@
 ;;; eassist.el --- EmacsAssist, C/C++/Java/Python/ELisp method/function navigator.
 
 ;; Copyright (C) 2006, 2007, 2010 Anton V. Belyaev
+;;               2013 Yuan Liu
 ;; Author: Anton V. Belyaev <anton.belyaev at the gmail.com>
-
+;;         Yuan Liu <xiaolang001 at the gmail.com>
 ;; This file is *NOT* part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or
@@ -20,10 +21,10 @@
 ;; Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 ;; MA 02111-1307 USA
 
-;; Version: 0.9
-;; CEDET CVS Version: $Id: eassist.el,v 1.7 2010-02-08 23:29:59 zappo Exp $
+;; Version: 0.10
+;; CEDET CVS Version: $Id: eassist.el,v 1.7 2010/02/08 23:29:59 zappo Exp $
 
-;; Compatibility: Emacs 22 or 23, CEDET 1.0pre4
+;; Compatibility: Emacs 22, 23 or 24, CEDET 1.0pre4
 
 ;;; Commentary:
 
@@ -99,6 +100,8 @@
 ;;                     Thanks to Alekseenko Dimitry for great feature suggestion.
 ;; 23 feb 2008 -- v0.9 "M-m" buffer comes up with current function highlighted.
 ;;                     Thanks to Christoph Conrad for great suggestions and patches.
+;;
+;; 26 mar 2013 -- v0.10 Fix bug of `eassist-list-methods' the nested namespace appear in c++ files. By Yuan.Liu
 
 ;;; Code:
 
@@ -193,6 +196,36 @@ structure as toplevel function tags."
        (semantic-find-tags-by-class 'function (semantic-tag-type-members type))))
     (semantic-find-tags-by-class 'type (semantic-something-to-tag-table eassist-buffer)))))
 
+
+(defun eassist-function-tags-recursive (buffer)
+  "Same as `eassist-function-tags', recursively call when meet type(namespace in c++)"
+  (nconc
+   ;; for C++/C
+   (semantic-find-tags-by-class 'function (semantic-something-to-tag-table buffer))
+   ;; for Java and Python: getting classes and then methods for each class.
+   ;; Adding parent property for each method, beacause semantic does not provide parents for
+   ;; methods which are inside body of the class. This is true for Java class methods,
+   ;; for C++ header definitions and for Python class methods.
+   (mapcan
+    (lambda (type)
+      (mapcar
+         (lambda (tag)
+           (semantic-tag-put-attribute-no-side-effect
+            tag :parent (concat (semantic-tag-name type)
+                                (let ((parent-local (semantic-tag-get-attribute tag :parent)))
+                                  (if parent-local
+                                      (concat "::" parent-local))))))
+         (let (function-buffer variable-buffer type-buffer)
+           (nconc (if (setq function-buffer (semantic-find-tags-by-class 'function (semantic-tag-type-members type)))
+                      (mapcar
+                       (lambda (func)
+                         (semantic-tag-put-attribute-no-side-effect func :parent nil))
+                       function-buffer))
+                  (if (setq type-buffer (semantic-find-tags-by-class 'type (semantic-tag-type-members type)))
+                      (eassist-function-tags-recursive type-buffer))))))
+
+    (semantic-find-tags-by-class 'type (semantic-something-to-tag-table buffer)))))
+
 (defun eassist-car-if-list (thing)
   "Return car of THING if it is a list or THING itself, if not."
   (cond ((listp thing) (car thing))
@@ -219,7 +252,8 @@ F - list of triplets of tag type, parent and name."
              (name (caddr tri)))
          (setq retrn (if retrn (propertize retrn 'face 'font-lock-type-face) ""))
          (if class
-             (setq class (propertize class 'face 'font-lock-type-face)))
+             ;; (setq class (propertize class 'face 'font-lock-type-face)))
+             (setq class (propertize class 'face 'font-lock-constant-face)))
          (setq name (propertize name 'face 'font-lock-function-name-face))
          (cond
           (class (format (format "%%%ds  %%%ds :: %%s\n" return-width class-width) retrn class name))
@@ -351,9 +385,9 @@ buffer and sets the point to a method/function, corresponding the line."
   (make-local-variable 'eassist-overlays)        ;; overlays used to highligh search string matches in method names
   (setq eassist-overlays nil)
   (setq eassist-search-string "")
-
+  
   (setq eassist-methods
-        (let* ((method-tags (eassist-function-tags))
+        (let* ((method-tags (eassist-function-tags-recursive eassist-buffer))
                (method-triplets (mapcar 'eassist-function-string-triplet method-tags)))
           (mapcar* '(lambda (full-line name position tag)
                       (make-eassist-method :full-line full-line :name name :position position :tag tag))

@@ -87,6 +87,7 @@
   (setq tab-width 4
         indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
+    ((kbd "C-c o")   'cff-find-other-file)
     ((kbd "M-o")     'eassist-switch-h-cpp)
     ((kbd "M-m")     'eassist-list-methods)
     ([(control tab)] 'ac-complete-clang))

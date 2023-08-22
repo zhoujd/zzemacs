@@ -220,7 +220,10 @@
             (local-set-key (kbd "M-s M-C") 'helm-cscope-find-called-function)
             (local-set-key (kbd "M-s M-s") 'helm-cscope-find-this-symbol)
             (local-set-key (kbd "M-s M-f") 'helm-cscope-find-this-file)
+            (local-set-key (kbd "M-s M-t") 'helm-cscope-find-this-text-string)
+            (local-set-key (kbd "M-s M-e") 'helm-cscope-find-egrep-pattern)
             (local-set-key (kbd "M-s M-i") 'helm-cscope-find-files-including-file)
+            (local-set-key (kbd "M-s M-=") 'helm-cscope-find-assignments-to-this-symbol)
             (local-set-key (kbd "M-s M-,") 'helm-cscope-pop-mark)))
 
 (require 'helm-bm)

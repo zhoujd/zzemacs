@@ -174,14 +174,19 @@
       (message "no etags, please install it")))
 
 ;;https://github.com/dkogan/xcscope.el
-(require 'xcscope)
-(setq cscope-option-use-inverted-index t)
-(cscope-set-initial-directory zz:tag-root)
-(cscope-setup)
+;(require 'xcscope)
+;(setq cscope-option-use-inverted-index t)
+;(cscope-set-initial-directory zz:tag-root)
+;(cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
-;(require 'rscope)
-;(require 'rscope-nav)
+(require 'rscope)
+(require 'rscope-nav)
+
+(defun zz:rscope-autoinit-path (buffer)
+  zz:tag-root)
+(add-hook 'rscope-autoinit-cscope-dir-hooks
+          (function zz:rscope-autoinit-path))
 
 ;;make cscope
 ; #!/bin/bash

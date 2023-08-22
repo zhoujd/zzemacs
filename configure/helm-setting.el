@@ -8,12 +8,13 @@
 (require 'helm-config)
 
 ;;https://github.com/emacs-helm/helm/blob/master/helm.el#L1432
-;;| M-o     | left   | Previous source                                   |
-;;| C-o     | right  | Next source                                       |
-;;| C-j     |        | Persistent action (Execute and keep Helm session) |
-;;| C-c ?   |        | helm help                                         |
-;;| C-c r   |        | sudo open                                         |
-;;| C-]     |        | toggle between showing filenames or full pathnames|
+;;| M-o     | left   | Previous source                                     |
+;;| C-o     | right  | Next source                                         |
+;;| C-j     |        | Persistent action (Execute and keep Helm session)   |
+;;| C-c ?   |        | helm help                                           |
+;;| C-c r   |        | sudo open                                           |
+;;| C-]     |        | toggle between showing filenames or full pathnames  |
+;;| C-u     | C-M-Z  | choose between different Helm sessions (helm-resume)|
 (helm-mode t)
 
 ;;no completion

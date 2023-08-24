@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+    echo "Usage: `basename $0` <1.rpm>"
+    exit 1
+fi
+
+rpm -qlp "$1"

@@ -5,5 +5,4 @@ if [ $# != 1 ]; then
     exit 1
 fi
 
-ar vx $1
-tar xf data.tar.xz
+dpkg --contents "$1"

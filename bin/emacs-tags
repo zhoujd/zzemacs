@@ -2,18 +2,24 @@
 #set -x
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-TAG_ROOT=$HOME/work/tag
-mkdir -p $TAG_ROOT
-
-projects=(
-    $HOME/work/mdk-dev
-    $HOME/work/mdk-mola
+TAGS_ROOT=$HOME/.emacs.d/tags
+PROJ_LIST=(
+    /usr/include
+    /usr/local/include
+    $*
 )
+
+create_init() {
+    echo "create init..."
+    mkdir -p $TAGS_ROOT
+    rm -f $TAGS_ROOT/TAGS
+    rm -f $TAGS_ROOT/cscope.*
+}
 
 create_etags() {
     echo "create etags to $TAG_ROOT..."
-    pushd $TAG_ROOT > /dev/null
-    find ${projects[*]} $* -type f    \
+    pushd $TAGS_ROOT > /dev/null
+    find ${PROJ_LIST[*]} $* -type f    \
          \( -name "*.[chCH]"  \
          -o -name "*.cc"      \
          -o -name "*.[ch]xx"  \
@@ -27,8 +33,8 @@ create_etags() {
 
 create_cscope() {
     echo "create cscope to $TAG_ROOT..."
-    pushd $TAG_ROOT > /dev/null
-    find ${projects[*]} $* -type f    \
+    pushd $TAGS_ROOT > /dev/null
+    find ${PROJ_LIST[*]} $* -type f    \
          \( -name "*.[chCH]"  \
          -o -name "*.cc"      \
          -o -name "*.[ch]xx"  \
@@ -42,5 +48,13 @@ create_cscope() {
     popd > /dev/null
 }
 
-create_etags
-create_cscope
+case $1 in
+    -h|--help )
+        echo "Usage: $(basename $0) {dir1} {dir2} ... {dirN}"
+        ;;
+    * )
+        create_init
+        create_etags
+        create_cscope
+        ;;
+esac

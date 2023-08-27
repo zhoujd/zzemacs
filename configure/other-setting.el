@@ -326,6 +326,7 @@
 (require 'ssh-tunnels)
 
 ;;backlight
+;(zz:load-path "site-lisp/backlight")
 ;(require 'backlight)
 
 ;;whitespace cleanup mode

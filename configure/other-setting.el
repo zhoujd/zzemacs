@@ -326,7 +326,7 @@
 (require 'ssh-tunnels)
 
 ;;backlight
-(require 'backlight)
+;(require 'backlight)
 
 ;;whitespace cleanup mode
 (require 'whitespace-cleanup-mode)

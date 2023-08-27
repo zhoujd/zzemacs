@@ -4,6 +4,11 @@
 ## $1 => $LOCAL
 ## $2 => $REMOTE
 
+if [ $# != 2 ]; then
+    echo Usage: $(basename $0) {local} {remote}
+    exit 1
+fi
+
 # Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
     ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)

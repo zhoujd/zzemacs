@@ -20,7 +20,7 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%-27s%s%s"
+        (format "%-40s%s%s"
                 (buffer-name buf)
                 helm-switchb-separator
                 (with-current-buffer (buffer-name buf)

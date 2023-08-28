@@ -9,8 +9,8 @@
   (zz:load-path "site-lisp/emacs-vterm")
   (require 'multi-vterm))
 
-(defvar helm-switchb-separator " "
-  "helm switchb separator")
+(defvar helm-switchb-separator "  "
+  "helm switchb separator, default with two spaces")
 
 (defvar helm-switchb-ignores '("*Async Shell Command*")
   "helm switchb ignores buffers")
@@ -44,8 +44,9 @@
 
 (defun helm-switchb-select (candidate)
   (switch-to-buffer
-   (car (split-string
-         candidate helm-switchb-separator t))))
+   (string-trim
+    (car (split-string
+          candidate helm-switchb-separator t)))))
 
 (defun helm-switchb-dired-open (candidate)
   (dired (car (reverse

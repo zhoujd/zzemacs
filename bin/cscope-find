@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# != 2 ]; then
+    echo "Usage: $(basename $0) {n} {text}
+
+## The list of possible values for {n}
+0: Find this C symbol
+1: Find this definition
+2: Find functions called by this function
+3: Find functions calling this function
+4: Find this text string
+6: Find this egrep pattern
+7: Find this file
+8: Find files #including this file
+9: Find places where this symbol is assigned a value
+"
+    exit 1
+fi
+
+TAG_FILE=~/.emacs.d/tags/cscope.out
+cscope -d -f $TAG_FILE -R -L${1} ${2}

@@ -6,7 +6,7 @@ import os
 import sys
 
 coredirname = "zz-core"
-okapidirname = "../lib/python"  # okapi path
+topdir = "../lib/python"  # okapi top directory
 helpdoc = None
 
 
@@ -14,7 +14,7 @@ def main():
     # add import path
     srcdir = os.path.dirname(os.path.realpath(__file__))
     srcdir = srcdir.replace("\\", "/")
-    sys.path.append(os.path.join(srcdir, okapidirname))
+    sys.path.append(os.path.join(srcdir, topdir))
 
     from okapi.utils import common
     from okapi.framework import dispatch

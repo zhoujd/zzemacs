@@ -196,12 +196,11 @@
 ; find -type f -not -path '*/\.svn/*'
 ; find -type f -not -path '*/\.*'
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
-; cscope -bq -i ./csope.files
+; cscope -bq -i ./cscope.files
 (defun zz:gen-cscope-cmd (dir-name)
   (let ((files-path (concat default-directory "cscope.files")))
     (concat
-     (format "rm -f %s;"
-             (concat default-directory "cscope.*"))
+     (format "rm -f %s;" (concat default-directory "cscope.*"))
      (format "%s %s -type f -not -path '*/\.git/*' \\( %s \\) -print > %s;"
              find-program
              dir-name

@@ -439,6 +439,7 @@ Docker
 ## Delete all dangling volumes
 
     $ docker volume rm $(docker volume ls -qf dangling=true)
+    $ docker volume prune
 
 ## Tell the terminal in the container its size
 

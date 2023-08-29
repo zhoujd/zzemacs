@@ -322,11 +322,6 @@
 ;;Minibuffer complete help
 (icomplete-mode t)
 
-;;mouse wheel support
-(if (display-graphic-p)
-    (setq mouse-wheel-mode t)
-    (xterm-mouse-mode 1))
-
 ;;ensure abbrev mode is always on
 (setq-default abbrev-mode t)
 ;;do not bug me about saving my abbreviations

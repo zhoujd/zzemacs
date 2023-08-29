@@ -435,3 +435,7 @@ Docker
 
     C-x C-f /docker:redis_container:/
     C-x C-f /ssh:root@ssb.willschenk.com|docker:ssb-pub:/
+
+## Delete all dangling volumes
+
+    $ docker volume rm $(docker volume ls -qf dangling=true)

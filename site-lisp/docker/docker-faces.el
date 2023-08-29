@@ -1,4 +1,4 @@
-;;; docker-group.el --- Docker group  -*- lexical-binding: t -*-
+;;; docker-faces.el --- Docker faces  -*- lexical-binding: t -*-
 
 ;; Author: Philippe Vaucher <philippe.vaucher@gmail.com>
 
@@ -23,10 +23,41 @@
 
 ;;; Code:
 
-(defgroup docker nil
-  "Docker customization group."
-  :group 'convenience)
+(require 's)
+(require 'dash)
 
-(provide 'docker-group)
+(require 'docker-core)
 
-;;; docker-group.el ends here
+(defgroup docker-faces nil
+  "Docker faces customization group."
+  :group 'docker
+  :group 'faces)
+
+(defface docker-face-status-up
+  '((t :inherit success))
+  "Face used when the status is up."
+  :group 'docker-faces)
+
+(defface docker-face-status-down
+  '((t :inherit error))
+  "Face used when the status is down."
+  :group 'docker-faces)
+
+(defface docker-face-status-other
+  '((t :inherit warning))
+  "Face used when the status is not up/down."
+  :group 'docker-faces)
+
+(defface docker-face-dangling
+  '((t :inherit shadow))
+  "Face for dangling items."
+  :group 'docker-faces)
+
+(defface docker-face-active
+  '((t :inherit bold))
+  "Face for active items."
+  :group 'docker-faces)
+
+(provide 'docker-faces)
+
+;;; docker-faces.el ends here

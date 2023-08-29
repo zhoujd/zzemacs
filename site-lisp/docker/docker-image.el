@@ -1,4 +1,4 @@
-;;; docker-image.el --- Emacs interface to docker-image  -*- lexical-binding: t -*-
+;;; docker-image.el --- Interface to docker-image  -*- lexical-binding: t -*-
 
 ;; Author: Philippe Vaucher <philippe.vaucher@gmail.com>
 
@@ -24,18 +24,25 @@
 ;;; Code:
 
 (require 's)
+(require 'aio)
 (require 'dash)
 (require 'json)
 (require 'tablist)
-(require 'magit-popup)
+(require 'transient)
 
-(require 'docker-group)
-(require 'docker-process)
+(require 'docker-core)
+(require 'docker-faces)
 (require 'docker-utils)
 
 (defgroup docker-image nil
   "Docker images customization group."
   :group 'docker)
+
+(defconst docker-image-id-template
+  "[{{ json .Repository }},{{ json .Tag }},{{ json .ID }}]"
+  "This Go template defines what will be passed to transient commands.
+
+This value is processed by `docker-image-make-id'.")
 
 (defcustom docker-image-default-sort-key '("Repository" . nil)
   "Sort key for docker images.
@@ -44,215 +51,270 @@ This should be a cons cell (NAME . FLIP) where
 NAME is a string matching one of the column names
 and FLIP is a boolean to specify the sort order."
   :group 'docker-image
-  :type '(cons (choice (const "Repository")
-                       (const "Tag")
-                       (const "Id")
-                       (const "Created")
-                       (const "Size"))
+  :type '(cons (string :tag "Column Name"
+                       :validate (lambda (widget)
+                                   (unless (--any-p (equal (plist-get it :name) (widget-value widget)) docker-image-columns)
+                                     (widget-put widget :error "Default Sort Key must match a column name")
+                                     widget)))
                (choice (const :tag "Ascending" nil)
                        (const :tag "Descending" t))))
 
-(defcustom docker-image-run-arguments '("-i" "-t" "--rm")
-  "Default arguments for `docker-image-run-popup'."
+(defcustom docker-image-columns
+  '((:name "Repository" :width 30 :template "{{ json .Repository }}" :sort nil :format nil)
+    (:name "Tag" :width 20 :template "{{ json .Tag }}" :sort nil :format nil)
+    (:name "Id" :width 16 :template "{{ json .ID }}" :sort nil :format nil)
+    (:name "Created" :width 24 :template "{{ json .CreatedAt }}" :sort nil :format (lambda (x) (format-time-string "%F %T" (date-to-time x))))
+    (:name "Size" :width 10 :template "{{ json .Size }}" :sort docker-utils-human-size-predicate :format nil))
+  "Column specification for docker images.
+
+The order of entries defines the displayed column order.
+'Template' is the Go template passed to `docker-image-ls' to create the column
+data.   It should return a string delimited with double quotes.
+'Sort function' is a binary predicate that should return true when the first
+argument should be sorted before the second.
+'Format function' is a function from string to string that transforms the
+displayed values in the column."
   :group 'docker-image
-  :type '(repeat (string :tag "Argument")))
+  :set 'docker-utils-columns-setter
+  :get 'docker-utils-columns-getter
+  :type '(repeat (list :tag "Column"
+                       (string :tag "Name")
+                       (integer :tag "Width")
+                       (string :tag "Template")
+                       (sexp :tag "Sort function")
+                       (sexp :tag "Format function"))))
 
-(defun docker-image-parse (line)
-  "Convert a LINE from \"docker image ls\" to a `tabulated-list-entries' entry."
-  (condition-case nil
-      (let* ((data (json-read-from-string line))
-             (name (format "%s:%s" (aref data 0) (aref data 1))))
-        (setf (aref data 3) (format-time-string "%F %T" (date-to-time (aref data 3))))
-        (list (if (s-contains? "<none>" name) (aref data 2) name) data))
-    (json-readtable-error
-     (error "Could not read following string as json:\n%s" line))))
+(defcustom docker-image-run-default-args
+  '("-i" "-t" "--rm")
+  "Default infix args used when docker run is invoked.
 
-(defun docker-image-entries ()
+Note this can be overriden for specific images using
+`docker-image-run-custom-args'."
+  :group 'docker-image
+  :type '(repeat string))
+
+(make-obsolete-variable 'docker-run-default-args 'docker-image-run-default-args "Docker 2.1.0")
+
+(defcustom docker-image-run-custom-args
+  nil
+  "List which can be used to customize the default arguments for docker run.
+
+Its elements should be of the form (REGEX ARGS) where
+REGEX is a (string) regular expression and ARGS is a list of strings
+corresponding to arguments.
+
+Also note if you do not specify `docker-run-default-args', they will be ignored."
+  :type '(repeat (list string (repeat string))))
+
+(defalias 'docker-image-inspect 'docker-inspect)
+
+(defun docker-image-make-id (parsed-line)
+  "Fix the id string of the entry and return the fixed entry.
+
+PARSED-LINE is the output of `docker-utils-parse', the car is expected to
+be the list (repository tag id).  See `docker-image-id-template'."
+  ;; This could be written as a complex go template,
+  ;; however the literal '<none>' causes havoc in the windows shell.
+  (-let* ((([repo tag id] rest) parsed-line)
+          (new-id (if (or (equal repo "<none>") (equal tag "<none>"))
+                      id
+                    (format "%s:%s" repo tag))))
+    (list new-id rest)))
+
+(aio-defun docker-image-entries (&rest args)
   "Return the docker images data for `tabulated-list-entries'."
-  (let* ((fmt "[{{json .Repository}},{{json .Tag}},{{json .ID}},{{json .CreatedAt}},{{json .Size}}]")
-         (data (docker-run "image ls" docker-image-ls-arguments (format "--format=\"%s\"" fmt)))
+  (let* ((fmt (docker-utils-make-format-string docker-image-id-template docker-image-columns))
+         (data (aio-await (docker-run-docker-async "image" "ls" args (format "--format=\"%s\"" fmt))))
          (lines (s-split "\n" data t)))
-    (-map #'docker-image-parse lines)))
+    (--map (docker-image-make-id (docker-utils-parse docker-image-columns it)) lines)))
 
-(defun docker-image-refresh ()
+(aio-defun docker-image-entries-propertized (&rest args)
+  "Return the propertized docker images data for `tabulated-list-entries'."
+  (let ((entries (aio-await (docker-image-entries args)))
+        (dangling (aio-await (docker-image-entries args "--filter dangling=true"))))
+    (--map-when (-contains? dangling it) (docker-image-entry-set-dangling it) entries)))
+
+(defun docker-image-dangling-p (entry-id)           ;
+  "Predicate for if ENTRY-ID is dangling.
+
+For example (docker-image-dangling-p (tabulated-list-get-id)) is t when the entry under point is dangling."
+  (get-text-property 0 'docker-image-dangling entry-id))
+
+(defun docker-image-entry-set-dangling (entry)
+  "Mark ENTRY (output of `docker-image-entries') as dangling.
+
+The result is the tabulated list id for an entry is propertized with
+'docker-image-dangling and the entry is fontified with 'docker-face-dangling."
+  (list (propertize (car entry) 'docker-image-dangling t)
+        (apply #'vector (--map (propertize it 'font-lock-face 'docker-face-dangling) (cadr entry)))))
+
+(aio-defun docker-image-update-status-async ()
+  "Write the status to `docker-status-strings'."
+  (plist-put docker-status-strings :images "Images")
+  (when docker-show-status
+    (let* ((entries (aio-await (docker-image-entries-propertized (docker-image-ls-arguments))))
+           (dangling (--filter (docker-image-dangling-p (car it)) entries)))
+      (plist-put docker-status-strings
+                 :images
+                 (format "Images (%s total, %s dangling)"
+                         (number-to-string (length entries))
+                         (propertize (number-to-string (length dangling)) 'face 'docker-face-dangling)))
+      (transient--redisplay))))
+
+(add-hook 'docker-open-hook #'docker-image-update-status-async)
+
+(aio-defun docker-image-refresh ()
   "Refresh the images list."
-  (setq tabulated-list-entries (docker-image-entries)))
+  (docker-utils-refresh-entries
+   (docker-image-entries-propertized (docker-image-ls-arguments))))
 
 (defun docker-image-read-name ()
   "Read an image name."
-  (completing-read "Image: " (-map #'car (docker-image-entries))))
+  (completing-read "Image: " (-map #'car (aio-wait-for (docker-image-entries)))))
 
-(defun docker-image-human-size-predicate (a b)
-  "Sort A and B by image size."
-  (let* ((a-size (elt (cadr a) 4))
-         (b-size (elt (cadr b) 4)))
-    (< (docker-utils-human-size-to-bytes a-size) (docker-utils-human-size-to-bytes b-size))))
-
-;;;###autoload
-(defun docker-pull (name &optional all)
+;;;###autoload (autoload 'docker-image-pull-one "docker-image" nil t)
+(aio-defun docker-image-pull-one (name &optional all)
   "Pull the image named NAME.  If ALL is set, use \"-a\"."
   (interactive (list (docker-image-read-name) current-prefix-arg))
-  (docker-run "pull" (when all "-a ") name))
-
-;;;###autoload
-(defun docker-push (name)
-  "Push the image named NAME."
-  (interactive (list (docker-image-read-name)))
-  (docker-run "push" name))
-
-;;;###autoload
-(defun docker-rmi (name &optional force no-prune)
-  "Destroy or untag the image named NAME.
-
-Force removal of the image when FORCE is set.
-Do not delete untagged parents when NO-PRUNE is set."
-  (interactive (list (docker-image-read-name) current-prefix-arg))
-  (docker-run "rmi" (when force "-f") (when no-prune "--no-prune") name))
-
-;;;###autoload
-(defun docker-tag (image name)
-  "Tag IMAGE using NAME."
-  (interactive (list (docker-image-read-name) (read-string "Name: ")))
-  (docker-run "tag" image name))
-
-(defun docker-image-inspect-selection ()
-  "Run \"docker inspect\" on the images selection."
-  (interactive)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-utils-with-buffer (format "inspect %s" it)
-      (insert (docker-run "inspect" (docker-image-inspect-arguments) it))
-      (json-mode))))
-
-(defun docker-image-pull-selection ()
-  "Run \"docker pull\" on the images selection."
-  (interactive)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-run "pull" (docker-image-pull-arguments) it))
-  (tablist-revert))
-
-(defun docker-image-push-selection ()
-  "Run \"docker push\" on the images selection."
-  (interactive)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-run "push" (docker-image-push-arguments) it)))
-
-(defun docker-image-rm-selection ()
-  "Run \"docker rmi\" on the images selection."
-  (interactive)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-run "rmi" (docker-image-rm-arguments) it))
+  (aio-await (docker-run-docker-async "pull" (when all "-a") name))
   (tablist-revert))
 
 (defun docker-image-run-selection (command)
-  "Run \"docker run\" with COMMAND on the images selection."
+  "Run \"docker image run\" with COMMAND on the images selection."
   (interactive "sCommand: ")
-  (let ((default-directory (if (and docker-run-as-root
-                                    (not (file-remote-p default-directory)))
-                               "/sudo::"
-                             default-directory)))
-    (--each (docker-utils-get-marked-items-ids)
-      (async-shell-command
-       (format "%s run %s %s %s" docker-command (s-join " " (docker-image-run-arguments)) it command)
-       (generate-new-buffer (format "*run %s*" it))))))
+  (docker-utils-ensure-items)
+  (--each (docker-utils-get-marked-items-ids)
+    (docker-run-docker-async-with-buffer "container" "run" (transient-args 'docker-image-run) it command)))
 
-(defun docker-image-tag-selection ()
+(aio-defun docker-image-tag-selection ()
   "Tag images."
   (interactive)
-  (docker-utils-select-if-empty)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-tag it (read-string (format "Tag for %s: " it))))
-  (tablist-revert))
+  (docker-utils-ensure-items)
+  (let* ((ids (docker-utils-get-marked-items-ids))
+         (promises (--map (docker-run-docker-async "tag" it (read-string (format "Tag for %s: " it))) ids)))
+    (aio-await (aio-all promises))
+    (tablist-revert)))
 
-(magit-define-popup docker-image-inspect-popup
-  "Popup for inspecting images."
-  'docker-image
-  :man-page "docker-inspect"
-  :actions  '((?I "Inspect" docker-image-inspect-selection))
-  :setup-function #'docker-utils-setup-popup)
+(defun docker-image-mark-dangling ()
+  "Mark only the dangling images listed in *docker-images*.
 
-(magit-define-popup docker-image-ls-popup
-  "Popup for listing images."
-  'docker-image
+This clears any user marks first and respects any tablist filters
+applied to the buffer."
+  (interactive)
+  (switch-to-buffer "*docker-images*")
+  (tablist-unmark-all-marks)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (eobp))
+      (when (docker-image-dangling-p (tabulated-list-get-id))
+        (tablist-put-mark))
+      (forward-line))))
+
+(docker-utils-define-transient-arguments docker-image-ls)
+
+(transient-define-prefix docker-image-ls ()
+  "Transient for listing images."
   :man-page "docker-image-ls"
-  :switches  '((?a "All" "--all")
-               (?d "Dangling" "-f dangling=true")
-               (?n "Don't truncate" "--no-trunc"))
-  :options   '((?f "Filter" "--filter "))
-  :actions   `((?l "List" ,(docker-utils-set-then-call 'docker-image-ls-arguments 'tablist-revert))))
+  ["Arguments"
+   ("a" "All" "--all")
+   ("d" "Dangling" "--filter dangling=true")
+   ("f" "Filter" "--filter " read-string)
+   ("n" "Don't truncate" "--no-trunc")]
+  ["Actions"
+   ("l" "List" tablist-revert)])
 
-(magit-define-popup docker-image-pull-popup
-  "Popup for pulling images."
-  'docker-image
-  :man-page "docker-pull"
-  :switches '((?a "All" "-a"))
-  :actions  '((?F "Pull" docker-image-pull-selection))
-  :setup-function #'docker-utils-setup-popup)
+(transient-define-prefix docker-image-pull ()
+  "Transient for pulling images."
+  :man-page "docker-image-pull"
+  ["Arguments"
+   ("a" "All" "-a")]
+  [:description docker-generic-action-description
+   ("F" "Pull selection" docker-generic-action)
+   ("N" "Pull a new image" docker-image-pull-one)])
 
-(magit-define-popup docker-image-push-popup
-  "Popup for pushing images."
-  'docker-image
-  :man-page "docker-push"
-  :actions  '((?P "Push" docker-image-push-selection))
-  :setup-function #'docker-utils-setup-popup)
+(docker-utils-transient-define-prefix docker-image-push ()
+  "Transient for pushing images."
+  :man-page "docker-image-push"
+  [:description docker-generic-action-description
+   ("P" "Push" docker-generic-action)])
 
-(magit-define-popup docker-image-rm-popup
-  "Popup for removing images."
-  'docker-image
-  :man-page "docker-rmi"
-  :switches '((?f "Force" "-f")
-              (?n "Don't prune" "--no-prune"))
-  :actions  '((?D "Remove" docker-image-rm-selection))
-  :setup-function #'docker-utils-setup-popup)
+(docker-utils-transient-define-prefix docker-image-rm ()
+  "Transient for removing images."
+  :man-page "docker-image-rm"
+  ["Arguments"
+   ("-f" "Force" "-f")
+   ("-n" "Don't prune" "--no-prune")]
+  [:description docker-generic-action-description
+   ("D" "Remove" docker-generic-action-multiple-ids)])
 
-(magit-define-popup docker-image-run-popup
-  "Popup for running images."
-  'docker-image
-  :man-page "docker-run"
-  :switches '((?D "With display" "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY")
-              (?T "Synchronize time" "-v /etc/localtime:/etc/localtime:ro")
-              (?W "Web ports" "-p 80:80 -p 443:443 -p 8080:8080")
-              (?d "Daemonize" "-d")
-              (?i "Interactive" "-i")
-              (?o "Read only" "--read-only")
-              (?p "Privileged" "--privileged")
-              (?r "Remove container when it exits" "--rm")
-              (?t "TTY" "-t"))
-  :options  '((?e "environment" "-e ")
-              (?m "name" "--name ")
-              (?n "entrypoint" "--entrypoint ")
-              (?p "port" "-p ")
-              (?u "user" "-u ")
-              (?v "volume" "-v ")
-              (?w "workdir" "-w "))
-  :actions  '((?R "Run images" docker-image-run-selection))
-  :setup-function #'docker-utils-setup-popup)
+(defclass docker-run-prefix (transient-prefix) nil)
 
-(magit-define-popup docker-image-help-popup
-  "Help popup for docker images."
-  'docker-image
-  :actions '("Docker images help"
-             (?D "Remove"  docker-image-rm-popup)
-             (?F "Pull"    docker-image-pull-popup)
-             (?I "Inspect" docker-image-inspect-popup)
-             (?P "Push"    docker-image-push-popup)
-             (?R "Run"     docker-image-run-popup)
-             (?T "Tag"     docker-image-tag-selection)
-             (?l "List"    docker-image-ls-popup)))
+(cl-defmethod transient-init-value ((obj docker-run-prefix))
+  "Helper that modify OBJ DOCKER-RUN-PREFIX to handle `docker-image-run-custom-args'."
+  (oset obj value
+        (let* ((images (tablist-get-marked-items))
+               (matched-args (let ((repo-name (caar images)))
+                               (if repo-name
+                                   (--first (string-match (car it) repo-name)
+                                            docker-image-run-custom-args)
+                                 nil))))
+          (if matched-args
+              (cadr matched-args)
+            docker-image-run-default-args))))
+
+(docker-utils-transient-define-prefix docker-image-run ()
+  "Transient for running images."
+  :man-page "docker-image-run"
+  :class 'docker-run-prefix
+  ["Arguments"
+   ("D" "With display" "-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY")
+   ("M" "Mount volume" "--mount=" read-string)
+   ("N" "Network" "--network " read-string)
+   ("P" "Privileged" "--privileged")
+   ("T" "Synchronize time" "-v /etc/localtime:/etc/localtime:ro")
+   ("W" "Web ports" "-p 80:80 -p 443:443 -p 8080:8080")
+   ("d" "Detach" "-d")
+   ("e" "environment" "-e " read-string)
+   ("i" "Interactive" "-i")
+   ("m" "name" "--name " read-string)
+   ("n" "entrypoint" "--entrypoint " read-string)
+   ("o" "Read only" "--read-only")
+   ("p" "port" "-p " read-string)
+   ("r" "Remove container when it exits" "--rm")
+   ("t" "TTY" "-t")
+   ("u" "user" "-u " read-string)
+   ("v" "volume" "-v " read-string)
+   ("w" "workdir" "-w " read-string)]
+  [:description docker-generic-action-description
+   ("R" "Run" docker-image-run-selection)])
+
+(transient-define-prefix docker-image-help ()
+  "Help transient for docker images."
+  ["Docker images help"
+   ("D" "Remove"        docker-image-rm)
+   ("F" "Pull"          docker-image-pull)
+   ("I" "Inspect"       docker-image-inspect)
+   ("P" "Push"          docker-image-push)
+   ("R" "Run"           docker-image-run)
+   ("T" "Tag"           docker-image-tag-selection)
+   ("d" "Mark Dangling" docker-image-mark-dangling)
+   ("l" "List"          docker-image-ls)])
 
 (defvar docker-image-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "?" 'docker-image-help-popup)
-    (define-key map "D" 'docker-image-rm-popup)
-    (define-key map "F" 'docker-image-pull-popup)
-    (define-key map "I" 'docker-image-inspect-popup)
-    (define-key map "P" 'docker-image-push-popup)
-    (define-key map "R" 'docker-image-run-popup)
+    (define-key map "?" 'docker-image-help)
+    (define-key map "D" 'docker-image-rm)
+    (define-key map "F" 'docker-image-pull)
+    (define-key map "I" 'docker-image-inspect)
+    (define-key map "P" 'docker-image-push)
+    (define-key map "R" 'docker-image-run)
     (define-key map "T" 'docker-image-tag-selection)
-    (define-key map "l" 'docker-image-ls-popup)
+    (define-key map "d" 'docker-image-mark-dangling)
+    (define-key map "l" 'docker-image-ls)
     map)
   "Keymap for `docker-image-mode'.")
 
-;;;###autoload
+;;;###autoload (autoload 'docker-images "docker-image" nil t)
 (defun docker-images ()
   "List docker images."
   (interactive)
@@ -262,7 +324,7 @@ Do not delete untagged parents when NO-PRUNE is set."
 
 (define-derived-mode docker-image-mode tabulated-list-mode "Images Menu"
   "Major mode for handling a list of docker images."
-  (setq tabulated-list-format [("Repository" 30 t)("Tag" 20 t)("Id" 16 t)("Created" 23 t)("Size" 10 docker-image-human-size-predicate)])
+  (setq tabulated-list-format (docker-utils-columns-list-format docker-image-columns))
   (setq tabulated-list-padding 2)
   (setq tabulated-list-sort-key docker-image-default-sort-key)
   (add-hook 'tabulated-list-revert-hook 'docker-image-refresh nil t)

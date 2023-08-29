@@ -1,10 +1,10 @@
-;;; docker.el --- Emacs interface to Docker  -*- lexical-binding: t -*-
+;;; docker.el --- Interface to Docker  -*- lexical-binding: t -*-
 
 ;; Author: Philippe Vaucher <philippe.vaucher@gmail.com>
 ;; URL: https://github.com/Silex/docker.el
 ;; Keywords: filename, convenience
-;; Version: 1.3.0
-;; Package-Requires: ((emacs "24.5") (dash "2.14.1") (docker-tramp "0.1") (magit-popup "2.12.4") (s "1.12.0") (tablist "0.70") (json-mode "1.7.0"))
+;; Version: 2.2.0
+;; Package-Requires: ((aio "1.0") (dash "2.19.1") (emacs "26.1") (s "1.12.0") (tablist "1.0") (transient "0.3.7"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -25,36 +25,16 @@
 
 ;;; Commentary:
 
-;; # Emacs interface to Docker!
-;;
 ;; This package allows you to manipulate docker images, containers & more from Emacs.
 
 ;;; Code:
 
-(require 'magit-popup)
-
-(require 'docker-group)
-(require 'docker-utils)
+(require 'docker-compose)
 (require 'docker-container)
 (require 'docker-image)
-(require 'docker-machine)
 (require 'docker-network)
 (require 'docker-volume)
-
-;;;###autoload (autoload 'docker "docker" nil t)
-(magit-define-popup docker
-  "Popup for docker."
-  'docker
-  :man-page "docker"
-  :options  '((?H "Host" "--host "))
-  :actions  `("Docker"
-              (?c "Containers" ,(docker-utils-set-then-call 'docker-arguments 'docker-containers))
-              (?i "Images"     ,(docker-utils-set-then-call 'docker-arguments 'docker-images))
-              (?n "Networks"   ,(docker-utils-set-then-call 'docker-arguments 'docker-networks))
-              (?v "Volumes"    ,(docker-utils-set-then-call 'docker-arguments 'docker-volumes))
-              "Other"
-              (?C "Compose"    docker-compose)
-              (?M "Machines"   docker-machines)))
+(require 'docker-context)
 
 (provide 'docker)
 

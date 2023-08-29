@@ -1,4 +1,4 @@
-;;; docker-network.el --- Emacs interface to docker-network  -*- lexical-binding: t -*-
+;;; docker-network.el --- Interface to docker-network  -*- lexical-binding: t -*-
 
 ;; Author: Philippe Vaucher <philippe.vaucher@gmail.com>
 
@@ -24,18 +24,23 @@
 ;;; Code:
 
 (require 's)
+(require 'aio)
 (require 'dash)
 (require 'json)
 (require 'tablist)
-(require 'magit-popup)
+(require 'transient)
 
-(require 'docker-group)
-(require 'docker-process)
+(require 'docker-core)
+(require 'docker-faces)
 (require 'docker-utils)
 
 (defgroup docker-network nil
   "Docker network customization group."
   :group 'docker)
+
+(defconst docker-network-id-template
+  "{{ json .ID }}"
+  "This Go template extracts the id which will be passed to transient commands.")
 
 (defcustom docker-network-default-sort-key '("Name" . nil)
   "Sort key for docker networks.
@@ -44,79 +49,143 @@ This should be a cons cell (NAME . FLIP) where
 NAME is a string matching one of the column names
 and FLIP is a boolean to specify the sort order."
   :group 'docker-network
-  :type '(cons (choice (const "Network ID")
-                       (const "Name")
-                       (const "Driver"))
+  :type '(cons (string :tag "Column Name"
+                       :validate (lambda (widget)
+                                   (unless (--any-p (equal (plist-get it :name) (widget-value widget)) docker-network-columns)
+                                     (widget-put widget :error "Default Sort Key must match a column name")
+                                     widget)))
                (choice (const :tag "Ascending" nil)
                        (const :tag "Descending" t))))
 
-(defun docker-network-parse (line)
-  "Convert a LINE from \"docker network ls\" to a `tabulated-list-entries' entry."
-  (condition-case nil
-      (let ((data (json-read-from-string line)))
-        (list (aref data 1) data))
-    (json-readtable-error
-     (error "Could not read following string as json:\n%s" line))))
+(defcustom docker-network-columns
+  '((:name "Network ID" :width 20 :template "{{ json .ID }}" :sort nil :format nil)
+    (:name "Name" :width 50 :template "{{ json .Name }}" :sort nil :format nil)
+    (:name "Driver" :width 10 :template "{{ json .Driver }}" :sort nil :format nil)
+    (:name "Scope" :width 10 :template "{{ json .Scope }}" :sort nil :format nil))
+  "Column specification for docker networks.
 
-(defun docker-network-entries ()
+The order of entries defines the displayed column order.
+'Template' is the Go template passed to `docker-network-ls' to create the column
+data.   It should return a string delimited with double quotes.
+'Sort function' is a binary predicate that should return true when the first
+argument should be sorted before the second.
+'Format function' is a function from string to string that transforms the
+displayed values in the column."
+  :group 'docker-network
+  :set 'docker-utils-columns-setter
+  :get 'docker-utils-columns-getter
+  :type '(repeat (list :tag "Column"
+                       (string :tag "Name")
+                       (integer :tag "Width")
+                       (string :tag "Template")
+                       (sexp :tag "Sort function")
+                       (sexp :tag "Format function"))))
+
+(defalias 'docker-network-inspect 'docker-inspect)
+
+(aio-defun docker-network-entries (&rest args)
   "Return the docker networks data for `tabulated-list-entries'."
-  (let* ((fmt "[{{json .ID}},{{json .Name}},{{json .Driver}},{{json .Scope}}]")
-         (data (docker-run "network ls" docker-network-ls-arguments (format "--format=\"%s\"" fmt)))
+  (let* ((fmt (docker-utils-make-format-string docker-network-id-template docker-network-columns))
+         (data (aio-await (docker-run-docker-async "network" "ls" args (format "--format=\"%s\"" fmt))))
          (lines (s-split "\n" data t)))
-    (-map #'docker-network-parse lines)))
+    (-map (-partial #'docker-utils-parse docker-network-columns) lines)))
 
-(defun docker-network-refresh ()
+(aio-defun docker-network-entries-propertized (&rest args)
+  "Return the propertized docker networks data for `tabulated-list-entries'."
+  (let ((entries (aio-await (docker-network-entries args)))
+        (dangling (aio-await (docker-network-entries args "--filter dangling=true"))))
+    (--map-when (-contains? dangling it) (docker-network-entry-set-dangling it) entries)))
+
+(defun docker-network-dangling-p (entry-id)
+  "Predicate for if ENTRY-ID is dangling.
+
+For example (docker-network-dangling-p (tabulated-list-get-id)) is t when the entry under point is dangling."
+  (get-text-property 0 'docker-network-dangling entry-id))
+
+(defun docker-network-entry-set-dangling (entry)
+  "Mark ENTRY (output of `docker-network-entries') as dangling.
+
+The result is the tabulated list id for an entry is propertized with
+'docker-network-dangling and the entry is fontified with 'docker-face-dangling."
+  (list (propertize (car entry) 'docker-network-dangling t)
+        (apply #'vector (--map (propertize it 'font-lock-face 'docker-face-dangling) (cadr entry)))))
+
+(aio-defun docker-network-update-status-async ()
+  "Write the status to `docker-status-strings'."
+  (plist-put docker-status-strings :networks "Networks")
+  (when docker-show-status
+    (let* ((entries (aio-await (docker-network-entries-propertized (docker-network-ls-arguments))))
+           (dangling (--filter (docker-network-dangling-p (car it)) entries)))
+      (plist-put docker-status-strings
+                 :networks
+                 (format "Networks (%s total, %s dangling)"
+                         (number-to-string (length entries))
+                         (propertize (number-to-string (length dangling)) 'face 'docker-face-dangling)))
+      (transient--redisplay))))
+
+(add-hook 'docker-open-hook #'docker-network-update-status-async)
+
+(aio-defun docker-network-refresh ()
   "Refresh the networks list."
-  (setq tabulated-list-entries (docker-network-entries)))
+  (docker-utils-refresh-entries
+   (docker-network-entries-propertized (docker-network-ls-arguments))))
 
 (defun docker-network-read-name ()
   "Read a network name."
-  (completing-read "Network: " (-map #'car (docker-network-entries))))
+  (completing-read "Network: " (-map #'car (aio-wait-for (docker-network-entries)))))
 
-;;;###autoload
-(defun docker-network-rm (name)
-  "Destroy the network named NAME."
-  (interactive (list (docker-network-read-name)))
-  (docker-run "network rm" name))
+(defun docker-network-mark-dangling ()
+  "Mark only the dangling networks listed in *docker-networks*.
 
-(defun docker-network-rm-selection ()
-  "Run \"docker network rm\" on the selection."
+This clears any user marks first and respects any tablist filters
+applied to the buffer."
   (interactive)
-  (--each (docker-utils-get-marked-items-ids)
-    (docker-run "network rm" it))
-  (tablist-revert))
+  (switch-to-buffer "*docker-networks*")
+  (tablist-unmark-all-marks)
+  (save-excursion
+    (goto-char (point-min))
+    (while (not (eobp))
+      (when (docker-network-dangling-p (tabulated-list-get-id))
+        (tablist-put-mark))
+      (forward-line))))
 
-(magit-define-popup docker-network-ls-popup
-  "Popup for listing networks."
-  'docker-network
+(docker-utils-define-transient-arguments docker-network-ls)
+
+(transient-define-prefix docker-network-ls ()
+  "Transient for listing networks."
   :man-page "docker-network-ls"
-  :switches  '((?n "Don't truncate" "--no-trunc"))
-  :options   '((?f "Filter" "--filter "))
-  :actions   `((?l "List" ,(docker-utils-set-then-call 'docker-network-ls-arguments 'tablist-revert))))
+  ["Arguments"
+   ("d" "Dangling" "--filter dangling=true")
+   ("f" "Filter" "--filter " read-string)
+   ("n" "Don't truncate" "--no-trunc")]
+  ["Actions"
+   ("l" "List" tablist-revert)])
 
-(magit-define-popup docker-network-rm-popup
-  "Popup for removing networks."
-  'docker-network
+(docker-utils-transient-define-prefix docker-network-rm ()
+  "Transient for removing networks."
   :man-page "docker-network-rm"
-  :actions  '((?D "Remove" docker-network-rm-selection))
-  :setup-function #'docker-utils-popup-setup)
+  [:description docker-generic-action-description
+   ("D" "Remove" docker-generic-action-multiple-ids)])
 
-(magit-define-popup docker-network-help-popup
-  "Help popup for docker networks."
-  'docker-network
-  :actions '("Docker networks help"
-             (?D "Remove"     docker-network-rm-popup)
-             (?l "List"       docker-network-ls-popup)))
+(transient-define-prefix docker-network-help ()
+  "Help transient for docker networks."
+  ["Docker networks help"
+   ("D" "Remove"        docker-network-rm)
+   ("I" "Inspect"       docker-network-inspect)
+   ("d" "Mark Dangling" docker-network-mark-dangling)
+   ("l" "List"          docker-network-ls)])
 
 (defvar docker-network-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "?" 'docker-network-help-popup)
-    (define-key map "D" 'docker-network-rm-popup)
-    (define-key map "l" 'docker-network-ls-popup)
+    (define-key map "?" 'docker-network-help)
+    (define-key map "D" 'docker-network-rm)
+    (define-key map "I" 'docker-network-inspect)
+    (define-key map "d" 'docker-network-mark-dangling)
+    (define-key map "l" 'docker-network-ls)
     map)
   "Keymap for `docker-network-mode'.")
 
-;;;###autoload
+;;;###autoload (autoload 'docker-networks "docker-network" nil t)
 (defun docker-networks ()
   "List docker networks."
   (interactive)
@@ -126,7 +195,7 @@ and FLIP is a boolean to specify the sort order."
 
 (define-derived-mode docker-network-mode tabulated-list-mode "Networks Menu"
   "Major mode for handling a list of docker networks."
-  (setq tabulated-list-format [("Network ID" 20 t)("Name" 50 t)("Driver" 10 t)("Scope" 10 t)])
+  (setq tabulated-list-format (docker-utils-columns-list-format docker-network-columns))
   (setq tabulated-list-padding 2)
   (setq tabulated-list-sort-key docker-network-default-sort-key)
   (add-hook 'tabulated-list-revert-hook 'docker-network-refresh nil t)

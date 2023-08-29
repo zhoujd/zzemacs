@@ -1,4 +1,4 @@
-;;; docker-compose.el --- Emacs interface to docker-compose  -*- lexical-binding: t -*-
+;;; docker-compose.el --- Interface to docker-compose  -*- lexical-binding: t -*-
 
 ;; Author: Philippe Vaucher <philippe.vaucher@gmail.com>
 
@@ -24,350 +24,314 @@
 ;;; Code:
 
 (require 's)
+(require 'aio)
 (require 'dash)
-(require 'tablist)
-(require 'magit-popup)
+(require 'transient)
 
 (require 'docker-group)
 (require 'docker-utils)
+(require 'docker-process)
 
 (defgroup docker-compose nil
   "Docker compose customization group."
   :group 'docker)
 
-(defcustom docker-compose-arguments '()
-  "Arguments to use when calling \"docker-compose\"."
+(defcustom docker-compose-command "docker-compose"
+  "The `docker-compose' binary."
   :group 'docker-compose
-  :type '(repeat (string :tag "Argument")))
+  :type 'string)
 
-(defcustom docker-compose-run-arguments '("--rm")
-  "Default arguments for `docker-compose-run-popup'."
-  :group 'docker-compose
-  :type '(repeat (string :tag "Argument")))
+(defun docker-compose-run-docker-compose-async (action &rest args)
+  "Execute \"`docker-compose-command' ACTION ARGS\" and return a promise with the results."
+  (apply #'docker-run-async docker-compose-command (docker-compose-arguments) action args))
 
-(defcustom docker-compose-run-buffer-name-function 'docker-compose-make-buffer-name
-  "Names a docker-compose run buffer based on `action' and `args'"
-  :group 'docker-compose
-  :type 'function)
+(defun docker-compose-run-docker-compose-async-with-buffer (action &rest args)
+  "Execute \"`docker-compose-command' ACTION ARGS\" and display output in a new buffer."
+  (apply #'docker-run-async-with-buffer docker-compose-command (docker-compose-arguments) action args))
 
-(defun docker-compose--run (action &rest args)
-  "Execute docker ACTION passing arguments ARGS."
-  (let ((command (format "docker-compose %s %s %s"
-                         (s-join " " docker-compose-arguments)
-                         action
-                         (s-join " " (-flatten (-non-nil args))))))
-    (message command)
-    (shell-command-to-string command)))
-
-(defun docker-compose--run-async (action &rest args)
-  "Execute docker ACTION passing arguments ARGS."
-  (let ((command (format "docker-compose %s %s %s"
-                         (s-join " " docker-compose-arguments)
-                         action
-                         (s-join " " (-flatten (-non-nil args))))))
-    (message command)
-    (async-shell-command command (funcall docker-compose-run-buffer-name-function action (-flatten args)))))
-
-(defun docker-compose-parse (line)
-  "Convert a LINE from \"docker-compose ps\" to a `tabulated-list-entries' entry."
-  (let ((data (s-split " \\{3,\\}" line)))
-    (list (car data) (apply #'vector data))))
-
-(defun docker-compose-entries ()
-  "Return the docker compose data for `tabulated-list-entries'."
-  (let* ((data (docker-compose--run "ps"))
-         (lines (-slice (s-split "\n" data t) 2)))
-    (-map #'docker-compose-parse lines)))
-
-(defun docker-compose-refresh ()
-  "Refresh the docker-compose entries."
-  (setq tabulated-list-entries (docker-compose-entries)))
-
-(defun docker-compose-services ()
+(aio-defun docker-compose-services ()
   "Return the list of services."
-  (s-split "\n" (docker-compose--run "config" "--services") t))
+  (s-split "\n" (aio-await (docker-compose-run-docker-compose-async "config" "--services" "2>/dev/null")) t))
 
-(defun docker-compose-read-services-names ()
+(aio-defun docker-compose-read-services-names ()
   "Read the services names."
-  (read-string (format "Services (%s or RET): " (s-join "," (docker-compose-services)))))
+  (completing-read-multiple "Services: " (aio-await (docker-compose-services))))
 
-(defun docker-compose-read-service-name ()
+(aio-defun docker-compose-read-service-name ()
   "Read one service name."
-  (completing-read "Service: " (docker-compose-services)))
+  (completing-read "Service: " (aio-await (docker-compose-services))))
 
-(defun docker-compose-read-log-level (&rest _ignore)
-  "Read the docker-compose log level."
-  (completing-read "Level: " '(DEBUG INFO WARNING ERROR CRITICAL)))
+(defun docker-compose-read-project (prompt &rest _args)
+  "Read the `docker-compose' project forwarding PROMPT."
+  (completing-read
+   prompt
+   ;; in docker compose v2, we can obtain the list of
+   ;; projects with 'ls' argument
+   (if (string-match-p "*?docker compose*?" docker-compose-command)
+       (split-string
+	(shell-command-to-string
+	 (concat docker-compose-command " ls" " --all" " -q"))
+	"\n"
+	t))))
 
-(defun docker-compose-read-directory (&rest _ignore)
-  "Wrapper around `read-directory-name'."
-  (read-directory-name "Directory: "))
+(defun docker-compose-read-log-level (prompt &rest _args)
+  "Read the `docker-compose' log level forwarding PROMPT."
+  (completing-read prompt '(DEBUG INFO WARNING ERROR CRITICAL)))
 
-(defun docker-compose-read-compose-file (&rest _ignore)
-  "Wrapper around `read-file-name'."
-  (read-file-name "Compose file: " nil nil t nil (apply-partially 'string-match ".*\\.yml")))
+(defun docker-compose-read-directory (prompt &optional initial-input _history)
+  "Wrapper around `read-directory-name' forwarding PROMPT and INITIAL-INPUT."
+  (read-directory-name prompt nil nil t initial-input))
 
-(defun docker-compose-make-buffer-name (action args)
-  "Make a buffer name based on ACTION and ARGS."
-  (format "*docker-compose %s %s*" action (s-join " " (-non-nil args))))
+(defun docker-compose-read-environment-file (prompt &optional initial-input _history)
+  "Wrapper around `read-file-name' forwarding PROMPT and INITIAL-INPUT."
+  (read-file-name prompt nil nil t initial-input))
 
-;;;###autoload
-(defun docker-compose-build (services args)
-  "Run \"docker-compose build ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-build-arguments)))
-  (docker-compose--run-async "build" args services))
+(defun docker-compose-read-compose-file (prompt &optional initial-input _history)
+  "Wrapper around `read-file-name' forwarding PROMPT and INITIAL-INPUT."
+  (read-file-name prompt nil nil t initial-input (apply-partially 'string-match ".*\\.yml\\|.*\\.yaml")))
 
-;;;###autoload
-(defun docker-compose-create (services args)
-  "Run \"docker-compose create ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-create-arguments)))
-  (docker-compose--run-async "create" args services))
+(aio-defun docker-compose-run-action-for-one-service (action args services)
+  "Run \"docker-compose ACTION ARGS SERVICES\"."
+  (interactive (list
+                (-last-item (s-split "-" (symbol-name transient-current-command)))
+                (transient-args transient-current-command)
+                nil))
+  (setq services (aio-await (docker-compose-read-services-names)))
+  (docker-compose-run-docker-compose-async-with-buffer action args services))
 
-;;;###autoload
-(defun docker-compose-down (services args)
-  "Run \"docker-compose down ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-down-arguments)))
-  (docker-compose--run-async "down" args services))
+(defun docker-compose-run-action-for-all-services (action args)
+  "Run \"docker-compose ACTION ARGS\"."
+  (interactive (list
+                (-last-item (s-split "-" (symbol-name transient-current-command)))
+                (transient-args transient-current-command)))
+  (docker-compose-run-docker-compose-async-with-buffer action args))
 
-;;;###autoload
-(defun docker-compose-exec (service command args)
-  "Run \"docker-compose exec ARGS SERVICE COMMAND\"."
-  (interactive (list (docker-compose-read-service-name) (read-string "Command: ") (docker-compose-exec-arguments)))
-  (docker-compose--run-async "exec" args service command))
+(aio-defun docker-compose-run-action-with-command (action args service command)
+  "Run \"docker-compose ACTION ARGS SERVICE COMMAND\"."
+  (interactive (list
+                (-last-item (s-split "-" (symbol-name transient-current-command)))
+                (transient-args transient-current-command)
+                nil
+                (read-string "Command: ")))
+  (setq service (aio-await (docker-compose-read-service-name)))
+  (docker-compose-run-docker-compose-async-with-buffer action args service command))
 
-;;;###autoload
-(defun docker-compose-logs (services args)
-  "Run \"docker-compose logs ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-logs-arguments)))
-  (docker-compose--run-async "logs" args services))
-
-;;;###autoload
-(defun docker-compose-pull (services args)
-  "Run \"docker-compose pull ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-pull-arguments)))
-  (docker-compose--run "pull" args services))
-
-;;;###autoload
-(defun docker-compose-push (services args)
-  "Run \"docker-compose push ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-push-arguments)))
-  (docker-compose--run "push" args services))
-
-;;;###autoload
-(defun docker-compose-restart (services args)
-  "Run \"docker-compose restart ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-restart-arguments)))
-  (docker-compose--run "restart" args services))
-
-;;;###autoload
-(defun docker-compose-rm (services args)
-  "Run \"docker-compose rm ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-rm-arguments)))
-  (docker-compose--run "rm" args services))
-
-;;;###autoload
-(defun docker-compose-run (service command args)
-  "Run \"docker-compose run ARGS SERVICE COMMAND\"."
-  (interactive (list (docker-compose-read-service-name) (read-string "Command: ") (docker-compose-run-arguments)))
-  (docker-compose--run-async "run" args service command))
-
-;;;###autoload
-(defun docker-compose-start (services args)
-  "Run \"docker-compose start ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-start-arguments)))
-  (docker-compose--run "start" args services))
-
-;;;###autoload
-(defun docker-compose-stop (services args)
-  "Run \"docker-compose stop ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-stop-arguments)))
-  (docker-compose--run "stop" args services))
-
-;;;###autoload
-(defun docker-compose-up (services args)
-  "Run \"docker-compose up ARGS SERVICES\"."
-  (interactive (list (docker-compose-read-services-names) (docker-compose-up-arguments)))
-  (docker-compose--run-async "up" args services))
-
-;;;###autoload
-(defun docker-compose-config (args)
-  "Run \"docker-compose config ARGS\"."
-  (interactive (list (docker-compose-up-arguments)))
-  (docker-compose--run-async "config" args))
-
-(defmacro docker-compose--all (command)
-  "Return a lambda running COMMAND for all services."
-  `(lambda (args)
-     (interactive (list (,(intern (format "%s-arguments" command)))))
-     (,command nil args)))
-
-(magit-define-popup docker-compose-build-popup
-  "Popup for \"docker-compose build\"."
-  'docker-compose
+(transient-define-prefix docker-compose-build ()
+  "Transient for \"docker-compose build\"."
   :man-page "docker-compose build"
-  :switches '((?c "Compress build context" "--compress")
-              (?f "Always remove intermediate containers" "--force-rm")
-              (?n "Do not use cache" "--no-cache")
-              (?p "Attempt to pull a newer version of the image" "--pull")
-              (?r "Build images in parallel" "--parallel"))
-  :options  '((?b "Build argument" "--build-arg ")
-              (?m "Memory limit" "--memory "))
-  :actions  `((?B "Build" docker-compose-build)
-              (?A "All services" ,(docker-compose--all docker-compose-build))))
+  ["Arguments"
+   ("b" "Build argument" "--build-arg " read-string)
+   ("c" "Compress build context" "--compress")
+   ("f" "Always remove intermediate containers" "--force-rm")
+   ("m" "Memory limit" "--memory " transient-read-number-N0)
+   ("n" "Do not use cache" "--no-cache")
+   ("p" "Attempt to pull a newer version of the image" "--pull")
+   ("r" "Build images in parallel" "--parallel")]
+  ["Actions"
+   ("B" "Build" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-create-popup
-  "Popup for \"docker-compose create\"."
-  'docker-compose
+(transient-define-prefix docker-compose-config ()
+  "Transient for \"docker-compose config\"."
+  :man-page "docker-compose config"
+  ["Arguments"
+
+   ("r" "Pin image tags to digests" "--resolve-image-digests")
+   ("s" "Print the service names" "--services")
+   ("v" "Print the volume names" "--volumes")]
+  ["Actions"
+   ("V" "Config" docker-compose-run-action-for-all-services)])
+
+(transient-define-prefix docker-compose-create ()
+  "Transient for \"docker-compose create\"."
   :man-page "docker-compose create"
-  :switches '((?b "Build" "--build")
-              (?f "Force recreate" "--force-recreate")
-              (?n "No recreate" "--no-recreate"))
-  :actions  `((?C "Create" docker-compose-create)
-              (?A "All services" ,(docker-compose--all docker-compose-create))))
+  ["Arguments"
+   ("b" "Build" "--build")
+   ("f" "Force recreate" "--force-recreate")
+   ("n" "No recreate" "--no-recreate")]
+  ["Actions"
+   ("C" "Create" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-down-popup
-  "Popup for \"docker-compose down\"."
-  'docker-compose
+(transient-define-prefix docker-compose-down ()
+  "Transient for \"docker-compose down\"."
   :man-page "docker-compose down"
-  :switches '((?o "Remove orphans" "--remove-orphans")
-              (?v "Remove volumes" "--volumes"))
-  :options  '((?t "Timeout" "--timeout "))
-  :actions  `((?W "Down" docker-compose-down)
-              (?A "All services" ,(docker-compose--all docker-compose-down))))
+  ["Arguments"
+   ("o" "Remove orphans" "--remove-orphans")
+   ("t" "Timeout" "--timeout " transient-read-number-N0)
+   ("v" "Remove volumes" "--volumes")]
+  ["Actions"
+   ("W" "Down" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-exec-popup
-  "Popup for \"docker-compose exec\"."
-  'docker-compose
+(transient-define-prefix docker-compose-exec ()
+  "Transient for \"docker-compose exec\"."
   :man-page "docker-compose exec"
-  :switches '((?T "Disable pseudo-tty" "-T")
-              (?d "Detach" "--detach")
-              (?p "Privileged" "--privileged"))
-  :options  '((?e "Env KEY=VAL" "-e ")
-              (?u "User " "--user ")
-              (?w "Workdir" "--workdir "))
-  :actions  '((?E "Exec" docker-compose-exec)))
+  ["Arguments"
+   ("P" "Privileged" "--privileged")
+   ("T" "Disable pseudo-tty" "-T")
+   ("d" "Detach" "-d")
+   ("e" "Env KEY=VAL" "-e " read-string)
+   ("u" "User " "--user " read-string)
+   ("w" "Workdir" "--workdir " read-string)]
+  ["Actions"
+   ("E" "Exec" docker-compose-run-action-with-command)])
 
-(magit-define-popup docker-compose-logs-popup
-  "Popup for \"docker-compose logs\"."
-  'docker-compose
+(transient-define-prefix docker-compose-logs ()
+  "Transient for \"docker-compose logs\"."
   :man-page "docker-compose logs"
-  :switches '((?f "Follow" "--follow")
-              (?n "No color" "--no-color")
-              (?t "Timestamps" "--timestamps"))
-  :options  '((?T "Tail" "--tail="))
-  :actions  `((?L "Logs" docker-compose-logs)
-              (?A "All services" ,(docker-compose--all docker-compose-logs))))
+  ["Arguments"
+   ("T" "Tail" "--tail=" read-string)
+   ("f" "Follow" "--follow")
+   ("n" "No color" "--no-color")
+   ("t" "Timestamps" "--timestamps")]
+  ["Actions"
 
-(magit-define-popup docker-compose-pull-popup
-  "Popup for \"docker-compose pull\"."
-  'docker-compose
+   ("L" "Logs" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
+
+(transient-define-prefix docker-compose-pull ()
+  "Transient for \"docker-compose pull\"."
   :man-page "docker-compose pull"
-  :switches '((?d "Include dependencies" "--include-deps")
-              (?i "Ignore pull failures" "--ignore-pull-failures")
-              (?n "No parallel" "--no-parallel"))
-  :actions  `((?F "Pull" docker-compose-pull)
-              (?A "All services" ,(docker-compose--all docker-compose-pull))))
+  ["Arguments"
+   ("d" "Include dependencies" "--include-deps")
+   ("i" "Ignore pull failures" "--ignore-pull-failures")
+   ("n" "No parallel" "--no-parallel")]
+  ["Actions"
+   ("F" "Pull" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-push-popup
-  "Popup for \"docker-compose push\"."
-  'docker-compose
+(transient-define-prefix docker-compose-push ()
+  "Transient for \"docker-compose push\"."
   :man-page "docker-compose push"
-  :switches '((?i "Ignore push failures" "--ignore-push-failures"))
-  :actions  `((?P "Push" docker-compose-push)
-              (?A "All services" ,(docker-compose--all docker-compose-push))))
+  ["Arguments"
+   ("i" "Ignore push failures" "--ignore-push-failures")]
+  ["Actions"
+   ("P" "Push" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-restart-popup
-  "Popup for \"docker-compose restart\"."
-  'docker-compose
+(transient-define-prefix docker-compose-restart ()
+  "Transient for \"docker-compose restart\"."
   :man-page "docker-compose restart"
-  :options  '((?t "Timeout" "--timeout "))
-  :actions  `((?T "Restart" docker-compose-restart)
-              (?A "All services" ,(docker-compose--all docker-compose-restart))))
+  ["Arguments"
+   ("t" "Timeout" "--timeout " transient-read-number-N0)]
+  ["Actions"
+   ("T" "Restart" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-rm-popup
-  "Popup for \"docker-compose rm\"."
-  'docker-compose
+(transient-define-prefix docker-compose-rm ()
+  "Transient for \"docker-compose rm\"."
   :man-page "docker-compose rm"
-  :switches '((?f "Force" "--force")
-              (?s "Stop" "--stop")
-              (?v "Remove anonymous volumes" "-v"))
-  :actions  `((?D "Remove" docker-compose-rm)
-              (?A "All services" ,(docker-compose--all docker-compose-rm))))
+  ["Arguments"
+   ("f" "Force" "--force")
+   ("s" "Stop" "--stop")
+   ("v" "Remove anonymous volumes" "-v")]
+  ["Actions"
+   ("D" "Remove" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-run-popup
-  "Popup for \"docker-compose run\"."
-  'docker-compose
+(transient-define-prefix docker-compose-run ()
+  "Transient for \"docker-compose run\"."
   :man-page "docker-compose run"
-  :switches '((?T "Disable pseudo-tty" "-T")
-              (?d "Detach" "--detach")
-              (?n "No deps" "--no-deps")
-              (?r "Remove container when it exits" "--rm")
-              (?s "Enable services ports" "--service-ports"))
-  :options  '((?E "Entrypoint" "--entrypoint ")
-              (?e "Env KEY=VAL" "-e ")
-              (?l "Label" "--label ")
-              (?n "Name" "--name ")
-              (?u "User " "--user ")
-              (?w "Workdir" "--workdir "))
-  :actions  '((?R "Run" docker-compose-run)))
+  :value '("--rm")
+  ["Arguments"
+   ("E" "Entrypoint" "--entrypoint " read-string)
+   ("N" "Name" "--name " read-string)
+   ("T" "Disable pseudo-tty" "-T")
+   ("d" "Detach" "-d")
+   ("e" "Env KEY=VAL" "-e " read-string)
+   ("l" "Label" "--label " read-string)
+   ("n" "No deps" "--no-deps")
+   ("r" "Remove container when it exits" "--rm")
+   ("s" "Enable services ports" "--service-ports")
+   ("u" "User " "--user " read-string)
+   ("w" "Workdir" "--workdir " read-string)]
+  ["Actions"
+   ("R" "Run" docker-compose-run-action-with-command)])
 
-(magit-define-popup docker-compose-start-popup
-  "Popup for \"docker-compose start\"."
-  'docker-compose
+(transient-define-prefix docker-compose-start ()
+  "Transient for \"docker-compose start\"."
   :man-page "docker-compose start"
-  :actions  `((?S "Start" docker-compose-start)
-              (?A "All services" ,(docker-compose--all docker-compose-start))))
+  ["Actions"
+   ("S" "Start" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-stop-popup
-  "Popup for \"docker-compose stop\"."
-  'docker-compose
+(transient-define-prefix docker-compose-stop ()
+  "Transient for \"docker-compose stop\"."
   :man-page "docker-compose stop"
-  :options  '((?t "Timeout" "--timeout "))
-  :actions  `((?O "Stop" docker-compose-stop)
-              (?A "All services" ,(docker-compose--all docker-compose-stop))))
+  ["Arguments"
+   ("t" "Timeout" "--timeout " transient-read-number-N0)]
+  ["Actions"
+   ("O" "Stop" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
 
-(magit-define-popup docker-compose-up-popup
-  "Popup for \"docker-compose up\"."
-  'docker-compose
+(transient-define-prefix docker-compose-up ()
+  "Transient for \"docker-compose up\"."
   :man-page "docker-compose up"
-  :switches '((?b "Build" "--build")
-              (?d "Detach" "--detach")
-              (?f "Force recreate" "--force-recreate")
-              (?n "No deps" "--no-deps")
-              (?r "Remove orphans" "--remove-orphans"))
-  :options  '((?c "Scale" "--scale ")
-              (?t "Timeout" "--timeout "))
-  :actions  `((?U "Up" docker-compose-up)
-              (?A "All services" ,(docker-compose--all docker-compose-up))))
+  ["Arguments"
+   ("b" "Build" "--build")
+   ("c" "Scale" "--scale " transient-read-number-N0)
+   ("d" "Detach" "-d")
+   ("f" "Force recreate" "--force-recreate")
+   ("n" "No deps" "--no-deps")
+   ("q" "Quiet pull" "--quiet-pull")
+   ("r" "Remove orphans" "--remove-orphans")
+   ("t" "Timeout" "--timeout " transient-read-number-N0)]
+  ["Actions"
+   ("U" "Up" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
+
+(transient-define-prefix docker-compose-pause ()
+  "Transient for \"docker-compose pause\"."
+  :man-page "docker-compose pause"
+  ["Actions"
+   ("P" "Pause" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
+
+(transient-define-prefix docker-compose-unpause ()
+  "Transient for \"docker-compose unpause\"."
+  :man-page "docker-compose unpause"
+  ["Actions"
+   ("N" "Unpause" docker-compose-run-action-for-one-service)
+   ("A" "All services" docker-compose-run-action-for-all-services)])
+
+(docker-utils-define-transient-arguments docker-compose)
 
 ;;;###autoload (autoload 'docker-compose "docker-compose" nil t)
-(magit-define-popup docker-compose
-  "Popup for docker-compose."
-  'docker-compose
+(transient-define-prefix docker-compose ()
+  "Transient for docker-compose."
   :man-page "docker-compose"
-  :switches '((?a "No ANSI" "--no-ansi")
-              (?c "Compatibility" "--compatibility")
-              (?v "Verbose" "--verbose"))
-  :options  `((?d "Project directory" "--project-directory " docker-compose-read-directory)
-              (?f "Compose file" "--file " docker-compose-read-compose-file)
-              (?h "Host" "--host ")
-              (?l "Log level" "--log-level " docker-compose-read-log-level)
-              (?p "Project name" "--project-name "))
-  :actions  `("Docker-compose"
-              (?B "Build"      ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-build-popup))
-              (?C "Create"     ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-create-popup))
-              (?D "Remove"     ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-rm-popup))
-              (?E "Exec"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-exec-popup))
-              (?F "Pull"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-pull-popup))
-              (?L "Logs"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-logs-popup))
-              (?O "Stop"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-stop-popup))
-              (?P "Push"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-push-popup))
-              (?R "Run"        ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-run-popup))
-              (?S "Start"      ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-start-popup))
-              (?T "Restart"    ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-restart-popup))
-              (?U "Up"         ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-up-popup))
-              (?V "Config"     ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-config))
-              (?W "Down"       ,(docker-utils-set-then-call 'docker-compose-arguments 'docker-compose-down-popup))))
+  ["Arguments"
+   ("a" "No ANSI" "--no-ansi")
+   ("c" "Compatibility" "--compatibility")
+   ("d" "Project directory" "--project-directory " docker-compose-read-directory)
+   ("e" "Environment file" "--env-file " docker-compose-read-environment-file)
+   ("f" "Compose file" "--file " docker-compose-read-compose-file)
+   ("h" "Host" "--host " read-string)
+   ("l" "Log level" "--log-level " docker-compose-read-log-level)
+   ("p" "Project name" "--project-name " docker-compose-read-project)
+   ("r" "Profile" "--profile " read-string)
+   ("v" "Verbose" "--verbose")]
+  [["Images"
+    ("B" "Build"      docker-compose-build)
+    ("F" "Pull"       docker-compose-pull)
+    ("P" "Push"       docker-compose-push)]
+   ["Containers"
+    ("C" "Create"     docker-compose-create)
+    ("D" "Remove"     docker-compose-rm)
+    ("N" "Unpause"    docker-compose-unpause)
+    ("P" "Pause"      docker-compose-pause)
+    ("U" "Up"         docker-compose-up)
+    ("W" "Down"       docker-compose-down)]
+   ["State"
+    ("O" "Stop"       docker-compose-stop)
+    ("S" "Start"      docker-compose-start)
+    ("T" "Restart"    docker-compose-restart)]
+   ["Other"
+    ("E" "Exec"       docker-compose-exec)
+    ("L" "Logs"       docker-compose-logs)
+    ("R" "Run"        docker-compose-run)
+    ("V" "Config"     docker-compose-config)]])
 
 (provide 'docker-compose)
 

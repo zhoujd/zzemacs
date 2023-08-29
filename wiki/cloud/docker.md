@@ -439,3 +439,7 @@ Docker
 ## Delete all dangling volumes
 
     $ docker volume rm $(docker volume ls -qf dangling=true)
+
+## Tell the terminal in the container its size
+
+    $ docker exec -it -e COLUMNS="`tput cols`" -e LINES="`tput lines`" container bash

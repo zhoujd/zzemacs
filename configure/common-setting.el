@@ -323,7 +323,9 @@
 (icomplete-mode t)
 
 ;;mouse wheel support
-(setq mouse-wheel-mode t)
+(if (display-graphic-p)
+    (setq mouse-wheel-mode t)
+    (xterm-mouse-mode 1))
 
 ;;ensure abbrev mode is always on
 (setq-default abbrev-mode t)

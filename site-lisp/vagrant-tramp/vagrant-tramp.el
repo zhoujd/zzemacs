@@ -56,14 +56,16 @@
   "List of VMs per `vagrant global-status` as alists."
   (let* ((status-cmd "vagrant global-status --machine-readable")
          (status-raw (shell-command-to-string status-cmd))
-         (status-lines (-drop 7 (split-string status-raw "\n")))
+         (status-lines (split-string status-raw "\n"))
+         (separator-position (cl-position "------" status-lines :test 'cl-search))
+         (status-lines-dropped (-drop-last 3 (-drop (1+ separator-position) status-lines)))
          (status-data-raw (--map (mapconcat 'identity
                                             (-drop 4 (split-string it ",")) ",")
-                                 status-lines))
+                                 status-lines-dropped))
          (status-data (--map (replace-regexp-in-string " " "" it) status-data-raw))
-         (status-groups (-butlast (-split-on "" status-data)))
+         (status-groups (-split-on "" status-data))
          (vm-attrs '(id name provider state dir)))
-    (--map (-zip vm-attrs it) status-groups)))
+    (--map (-zip-pair vm-attrs it) status-groups)))
 
 (defun vagrant-tramp--box-running-p (box)
   "True if BOX is reported as running."
@@ -88,16 +90,26 @@
          (-map 'vagrant-tramp--box-name
                (vagrant-tramp--running-boxes))))
 
+(defun vagrant-tramp--get-or-prompt-for-box-name ()
+  "Get box name if only one box is running, otherwise prompt the user to choose."
+  (let* ((boxes (vagrant-tramp--running-boxes))
+         (names (-map 'vagrant-tramp--box-name boxes)))
+    (if (eq 1 (length names))
+        (car names)
+      (completing-read "vagrant ssh to: " names))))
+
+;;;###autoload
+(defun vagrant-tramp-shell (box-name)
+  "SSH into BOX-NAME using a `shell'."
+  (interactive (list (vagrant-tramp--get-or-prompt-for-box-name)))
+  (let ((buffer-name (concat "*vagrant shell:" box-name "*"))
+        (default-directory (format "/vagrant:%s:" box-name)))
+    (shell buffer-name)))
+
 ;;;###autoload
 (defun vagrant-tramp-term (box-name)
   "SSH into BOX-NAME using an `ansi-term'."
-  (interactive
-   (list
-    (let* ((boxes (vagrant-tramp--running-boxes))
-           (names (-map 'vagrant-tramp--box-name boxes)))
-      (if (eq 1 (length names))
-          (car names)
-        (completing-read "vagrant ssh to: " names)))))
+  (interactive (list (vagrant-tramp--get-or-prompt-for-box-name)))
   (let* ((name (concat "vagrant terminal:" box-name))
          (buffer (get-buffer-create (concat "*" name "*"))))
     (unless (term-check-proc buffer)

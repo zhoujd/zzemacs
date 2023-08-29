@@ -42,7 +42,7 @@
 
 (defun docker-utils-generate-new-buffer-name (program &rest args)
   "Wrapper around `generate-new-buffer-name' using PROGRAM and ARGS."
-  (generate-new-buffer-name (format "* %s %s *" program (s-join " " args))))
+  (generate-new-buffer-name (format "*%s %s*" program (s-join " " args))))
 
 (defun docker-utils-generate-new-buffer (program &rest args)
   "Wrapper around `generate-new-buffer' using PROGRAM and ARGS."

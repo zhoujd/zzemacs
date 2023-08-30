@@ -1,6 +1,7 @@
 ;;;; gdb-setting.el --- gdb common file
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
+(require 'gdb-mi)
 (setq gud-gdb-command-name "gdb -q --fullname")
 
 (defun zz:gud-break-remove ()

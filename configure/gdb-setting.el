@@ -31,11 +31,9 @@
 ;;realgud
 (when-emacs25
  (zz:load-path "site-lisp/realgud")
- (require 'realgud))
-
-;;realgud-lldb
-(zz:load-path "site-lisp/realgud-lldb")
-(require 'realgud-lldb)
+ (require 'realgud)
+ (zz:load-path "site-lisp/realgud-lldb")
+ (require 'realgud-lldb))
 
 
 (provide 'gdb-setting)

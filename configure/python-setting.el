@@ -108,6 +108,10 @@
 (add-hook 'python-mode-hook
           'zz:python-mode-hook)
 
+;;helm-pydoc
+(zz:load-path "site-lisp/helm-pydoc")
+(require 'helm-pydoc)
+
 
 (provide 'python-setting)
 

@@ -53,40 +53,41 @@
 (add-hook 'sepia-mode-hook 'zz:sepia-mode-hook t)
 
 ;;perl code style
+(add-to-list
+ 'cperl-style-alist
+ '("MYPerlStyle2"
+   (cperl-auto-newline                         . nil)
+   (cperl-brace-offset                         . 0)
+   (cperl-close-paren-offset                   . -2)
+   (cperl-continued-brace-offset               . 0)
+   (cperl-continued-statement-offset           . 0)
+   (cperl-extra-newline-before-brace           . nil)
+   (cperl-extra-newline-before-brace-multiline . nil)
+   (cperl-indent-level                         . 2)
+   (cperl-indent-parens-as-block               . t)
+   (cperl-label-offset                         . -2)
+   (cperl-merge-trailing-else                  . t)
+   (cperl-tab-always-indent                    . t)))
+
+(add-to-list
+ 'cperl-style-alist
+ '("MYPerlStyle4"
+   (cperl-auto-newline                         . nil)
+   (cperl-brace-offset                         . 0)
+   (cperl-close-paren-offset                   . -4)
+   (cperl-continued-brace-offset               . 0)
+   (cperl-continued-statement-offset           . 0)
+   (cperl-extra-newline-before-brace           . nil)
+   (cperl-extra-newline-before-brace-multiline . nil)
+   (cperl-indent-level                         . 4)
+   (cperl-indent-parens-as-block               . t)
+   (cperl-label-offset                         . -4)
+   (cperl-merge-trailing-else                  . t)
+   (cperl-tab-always-indent                    . t)))
+
 (add-hook  'cperl-mode-hook
            (lambda ()
-             (add-to-list
-              'cperl-style-alist
-              '("MYPerlStyle2"
-                (cperl-auto-newline                         . nil)
-                (cperl-brace-offset                         . 0)
-                (cperl-close-paren-offset                   . -2)
-                (cperl-continued-brace-offset               . 0)
-                (cperl-continued-statement-offset           . 0)
-                (cperl-extra-newline-before-brace           . nil)
-                (cperl-extra-newline-before-brace-multiline . nil)
-                (cperl-indent-level                         . 2)
-                (cperl-indent-parens-as-block               . t)
-                (cperl-label-offset                         . -2)
-                (cperl-merge-trailing-else                  . t)
-                (cperl-tab-always-indent                    . t)))
-             (add-to-list
-              'cperl-style-alist
-              '("MYPerlStyle4"
-                (cperl-auto-newline                         . nil)
-                (cperl-brace-offset                         . 0)
-                (cperl-close-paren-offset                   . -4)
-                (cperl-continued-brace-offset               . 0)
-                (cperl-continued-statement-offset           . 0)
-                (cperl-extra-newline-before-brace           . nil)
-                (cperl-extra-newline-before-brace-multiline . nil)
-                (cperl-indent-level                         . 4)
-                (cperl-indent-parens-as-block               . t)
-                (cperl-label-offset                         . -4)
-                (cperl-merge-trailing-else                  . t)
-                (cperl-tab-always-indent                    . t)))
              (cperl-set-style "MYPerlStyle4")))
-
 
 ;;perl mode
 ;;Ubuntu: sudo apt install plsense

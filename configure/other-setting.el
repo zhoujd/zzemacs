@@ -154,6 +154,7 @@
 
 ;;bookmark setting
 (require 'bm)
+(require 'bm-sync)
 (setq bm-marker 'bm-marker-left)
 (setq bm-highlight-style 'bm-highlight-only-fringe)
 

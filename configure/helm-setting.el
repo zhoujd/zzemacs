@@ -29,6 +29,7 @@
 (require 'helm-tramp)
 
 ;;https://writequit.org/eos/eos-helm.html
+(setq completions-detailed t)
 (setq helm-display-header-line          nil
       helm-echo-input-in-header-line    nil
       helm-always-two-windows           nil

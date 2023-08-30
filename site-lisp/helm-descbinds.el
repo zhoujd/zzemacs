@@ -106,6 +106,19 @@ This function will be called with two arguments KEY and BINDING."
   "A list of section order by name regexp."
   :type '(repeat (regexp :tag "Regexp")))
 
+(defvar helm-descbinds-prefix-help
+  "This is a prefix key, hit RET to see all bindings using this prefix.
+
+A “prefix key” is a key sequence whose binding is a keymap.  The keymap
+defines what to do with key sequences that extend the prefix key.  For
+example, ‘C-x’ is a prefix key, and it uses a keymap that is also stored
+in the variable ‘ctl-x-map’.  This keymap defines bindings for key
+sequences starting with ‘C-x’.
+See (info \"(elisp) Prefix Keys\") for more infos."
+  "A brief documentation of what is a prefix key.
+This string is extracted from Elisp manual,
+see (info \"(elisp) Prefix Keys\").")
+
 (defvar helm-descbinds-Orig-describe-bindings (symbol-function 'describe-bindings))
 (defvar helm-descbind--initial-full-frame helm-full-frame)
 
@@ -191,12 +204,27 @@ This function will be called with two arguments KEY and BINDING."
       ;; directly `call-interactively'.
       (call-interactively x)))))
 
+(defun helm-descbinds-display-string-in-help (str)
+  (with-current-buffer (help-buffer)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (insert str))
+    (help-mode)
+    (display-buffer (current-buffer))))
+
 (defun helm-descbinds-action:describe (candidate)
   "An action that describe selected CANDIDATE function."
   (let ((name (cdr candidate)))
-    (if (equal name "Keyboard Macro")
-        (describe-key (kbd (car candidate)))
-      (describe-function name))))
+    (when (member name '("ignore" "ignore-event"))
+      (setq name 'ignore))
+    (pcase name
+      ((pred (string= "Keyboard Macro"))
+       (describe-key (kbd (car candidate))))
+      ((pred (string= "Prefix Command"))
+       (helm-descbinds-display-string-in-help
+        helm-descbinds-prefix-help))
+      ((guard (and (symbolp name) (fboundp name)))
+       (describe-function name)))))
 
 (defun helm-descbinds-action:find-func (candidate)
   "An action that find selected CANDIDATE function."
@@ -228,7 +256,10 @@ Provide a useful behavior for prefix commands."
       (helm-make-actions
        "helm-descbinds this prefix"
        (lambda (cand)
-         (describe-bindings (kbd (car cand)))))
+         (let ((binding (car cand)))
+           (if (member binding '("<make-frame-visible>" "<iconify-frame>"))
+               (message "Key is bound to `ignore' because there is nothing to do")
+             (describe-bindings (kbd binding))))))
       actions))
 
 (defun helm-descbinds-sources (buffer &optional prefix menus)

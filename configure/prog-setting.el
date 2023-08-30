@@ -83,17 +83,17 @@
       ))
 
 ;; holding
-(require 'hideshow)
-(dolist (hook
-         (list
-          'java-mode-hook
-          'c++-mode-hook
-          'python-mode-hook
-          'c-mode-hook
-          'perl-mode-hook
-          'php-mode-hook
-          'emacs-lisp-mode-hook))
-  (add-hook hook 'hs-minor-mode))
+;(require 'hideshow)
+;(dolist (hook
+;         (list
+;          'java-mode-hook
+;          'c++-mode-hook
+;          'python-mode-hook
+;          'c-mode-hook
+;          'perl-mode-hook
+;          'php-mode-hook
+;          'emacs-lisp-mode-hook))
+;  (add-hook hook 'hs-minor-mode))
 
 (defun zz:newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."

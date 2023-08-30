@@ -80,8 +80,8 @@ you will not have anymore separators between candidates."
 (defvar helm-comint-prompts-keymap
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-c o")   'helm-comint-prompts-other-window)
-    (define-key map (kbd "C-c C-o") 'helm-comint-prompts-other-frame)
+    (define-key map (kbd "C-c o")   #'helm-comint-prompts-other-window)
+    (define-key map (kbd "C-c C-o") #'helm-comint-prompts-other-frame)
     map)
   "Keymap for `helm-comint-prompt-all'.")
 
@@ -102,7 +102,7 @@ If BUFFER is nil, use current buffer."
                                   (funcall it)
                                 (comint-next-prompt 1)))
               (push (list (buffer-substring-no-properties
-                           it (point-at-eol))
+                           it (pos-eol))
                           it (buffer-name) count)
                     result)
               (setq count (1+ count))))
@@ -149,27 +149,23 @@ See `helm-comint-prompts-list'."
 (defun helm-comint-prompts-goto-other-frame (candidate)
   (helm-comint-prompts-goto candidate 'switch-to-buffer-other-frame))
 
-(defun helm-comint-prompts-other-window ()
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-comint-prompts-goto-other-window)))
-(put 'helm-comint-prompts-other-window 'helm-only t)
+(helm-make-command-from-action helm-comint-prompts-other-window
+    "Switch to comint prompt in other window."
+  'helm-comint-prompts-goto-other-window)
 
-(defun helm-comint-prompts-other-frame ()
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-comint-prompts-goto-other-frame)))
-(put 'helm-comint-prompts-other-frame 'helm-only t)
+(helm-make-command-from-action helm-comint-prompts-other-frame
+    "Switch to comint prompt in other frame."
+  'helm-comint-prompts-goto-other-frame)
 
 ;;;###autoload
 (defun helm-comint-prompts ()
   "Pre-configured `helm' to browse the prompts of the current comint buffer."
   (interactive)
-  (if (apply 'derived-mode-p helm-comint-mode-list)
+  (if (apply #'derived-mode-p helm-comint-mode-list)
       (helm :sources
             (helm-build-sync-source "Comint prompts"
               :candidates (helm-comint-prompts-list major-mode)
-              :candidate-transformer 'helm-comint-prompts-transformer
+              :candidate-transformer #'helm-comint-prompts-transformer
               :action '(("Go to prompt" . helm-comint-prompts-goto)))
             :buffer "*helm comint prompts*")
     (message "Current buffer is not a comint buffer")))
@@ -178,11 +174,11 @@ See `helm-comint-prompts-list'."
 (defun helm-comint-prompts-all ()
   "Pre-configured `helm' to browse the prompts of all comint sessions."
   (interactive)
-  (if (apply 'derived-mode-p helm-comint-mode-list)
+  (if (apply #'derived-mode-p helm-comint-mode-list)
       (helm :sources
             (helm-build-sync-source "All comint prompts"
               :candidates (helm-comint-prompts-list-all major-mode)
-              :candidate-transformer 'helm-comint-prompts-all-transformer
+              :candidate-transformer #'helm-comint-prompts-all-transformer
               :action (quote (("Go to prompt" . helm-comint-prompts-goto)
                               ("Go to prompt in other window `C-c o`" .
                                helm-comint-prompts-goto-other-window)
@@ -222,7 +218,7 @@ See `helm-comint-prompts-list'."
             (member major-mode helm-comint-mode-list))
     (helm :sources 'helm-source-comint-input-ring
           :input (buffer-substring-no-properties (comint-line-beginning-position)
-                                                 (point-at-eol))
+                                                 (pos-eol))
           :buffer "*helm comint history*")))
 
 (provide 'helm-comint)

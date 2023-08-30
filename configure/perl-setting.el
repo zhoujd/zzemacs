@@ -98,6 +98,19 @@
       (company-plsense-start-server-quiet)))
 
 
+;;helm-perldoc
+(zz:load-path "site-lisp/helm-perldoc")
+(require 'helm-perldoc)
+
+;;helm-perldoc:setup takes long time on low power platform
+(eval-after-load "cperl-mode"
+  '(progn
+    (helm-perldoc:setup)))
+
+;;auto carton setup
+(add-hook 'cperl-mode-hook 'helm-perldoc:carton-setup)
+
+
 (provide 'perl-setting)
 
 ;;;; perl-setting.el end here

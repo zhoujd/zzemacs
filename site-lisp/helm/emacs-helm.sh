@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 
-## Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+## Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ test -z "$TEMP" && TEMP="/tmp"
 
 CONF_FILE="$TEMP/helm-cfg.el"
 EMACS=emacs
+QUICK=-Q
 TOOLBARS=-1
 LOAD_PACKAGES=
 
@@ -126,6 +127,9 @@ for a in "$@"; do
             LOAD_PACKAGES="$1"
             shift 1
             ;;
+        -Q | -q)
+            QUICK="$a"
+            ;;
         -h)
             usage
             exit 1
@@ -139,8 +143,8 @@ cd "${0%/*}" || exit 1
 
 # Check if autoload file exists.
 # It may be in a different directory if emacs-helm.sh is a symlink.
-TRUENAME=$(ls -l "$0" | awk '{print $11}')
-if [ ! -z "$TRUENAME" ]; then
+TRUENAME=$(find "${0%/*}" -path "$0" -printf "%l")
+if [ -n "$TRUENAME" ]; then
     AUTO_FILE="${TRUENAME%/*}/helm-autoloads.el"
 else
     AUTO_FILE="helm-autoloads.el"
@@ -177,15 +181,22 @@ cat > $CONF_FILE <<EOF
 (setq load-path (quote $LOAD_PATH))
 
 (defvar default-package-manager nil)
+;; /home/you/.emacs.d/.local/straight/build-27.1/helm
+(defvar initial-package-directory (file-name-directory (file-truename "$0")))
+
 (defvar bootstrap-version)
 (let* ((packages "$LOAD_PACKAGES")
        (pkg-list (and packages
                       (not (equal packages ""))
                       (split-string packages ",")))
-       (straight-path (expand-file-name "straight/build/" user-emacs-directory))
-       (async-path (expand-file-name "straight/build/async" user-emacs-directory))
+       ;; /home/you/.emacs.d/.local/straight/build-27.1
+       (straight-path (file-name-directory (directory-file-name initial-package-directory)))
+       ;; /home/you/.emacs.d/.local/straight/build-27.1/async
+       (async-path (expand-file-name "async" straight-path))
+       ;; /home/you/.emacs.d/.local/straight/repos/straight.el/bootstrap.el
        (bootstrap-file
-        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (expand-file-name "repos/straight.el/bootstrap.el"
+                          (file-name-directory (directory-file-name straight-path))))
        (bootstrap-version 5))
   (when (file-exists-p bootstrap-file)
     (setq default-package-manager 'straight)
@@ -208,9 +219,12 @@ cat > $CONF_FILE <<EOF
   ;; Modify \`package-directory-list' instead of \`package-user-dir'
   ;; in case the user starts Helm from a non-ELPA installation.
   (unless (file-equal-p package-user-dir (locate-user-emacs-file "elpa"))
+    ;; Something like  /home/you/.emacs.d/somedir/else/elpa/
+    ;; starting from default-directory is wrong in case helm.sh is a symlink
+    ;; or e.g. helm --chdir foo have been used.
     (add-to-list 'package-directory-list (directory-file-name
                                           (file-name-directory
-                                           (directory-file-name default-directory)))))
+                                           (directory-file-name initial-package-directory)))))
 
   (let* ((str-lst "$LOAD_PACKAGES")
          (load-packages (and str-lst
@@ -224,7 +238,7 @@ cat > $CONF_FILE <<EOF
 
   (package-initialize))
 
-(add-to-list 'load-path (file-name-directory (file-truename "$0")))
+(add-to-list 'load-path initial-package-directory)
 
 (unless (> $TOOLBARS 0)
    (setq default-frame-alist '((vertical-scroll-bars . nil)
@@ -232,8 +246,10 @@ cat > $CONF_FILE <<EOF
                                (menu-bar-lines . 0)
                                (fullscreen . nil))))
 (blink-cursor-mode -1)
-(require 'helm-config)
+(load "helm-autoloads" nil t)
 (helm-mode 1)
+(with-eval-after-load 'tramp-cache (setq tramp-cache-read-persistent-data t))
+(with-eval-after-load 'auth-source (setq auth-source-save-behavior nil))
 (define-key global-map [remap find-file] 'helm-find-files)
 (define-key global-map [remap occur] 'helm-occur)
 (define-key global-map [remap list-buffers] 'helm-buffers-list)
@@ -246,4 +262,4 @@ cat > $CONF_FILE <<EOF
 (add-hook 'kill-emacs-hook #'(lambda () (and (file-exists-p "$CONF_FILE") (delete-file "$CONF_FILE"))))
 EOF
 
-$EMACS -Q -l "$CONF_FILE" "$@"
+$EMACS "$QUICK" -l "$CONF_FILE" "$@"

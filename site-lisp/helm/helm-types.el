@@ -1,8 +1,8 @@
 ;;; helm-types.el --- Helm types classes and methods. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2020  Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2020  Thierry Volpiatto 
 
-;; Author: Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Author: Thierry Volpiatto 
 ;; URL: http://github.com/emacs-helm/helm
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -135,6 +135,7 @@
    "Jump to bookmark" 'helm-bookmark-jump
    "Jump to BM other window" 'helm-bookmark-jump-other-window
    "Jump to BM other frame" 'helm-bookmark-jump-other-frame
+   "Jump to BM other tab" 'helm-bookmark-jump-other-tab
    "Bookmark edit annotation" 'bookmark-edit-annotation
    "Bookmark show annotation" 'bookmark-show-annotation
    "Delete bookmark(s)" 'helm-delete-marked-bookmarks
@@ -170,15 +171,19 @@
    "Switch to buffer(s)" 'helm-buffer-switch-buffers
    "Switch to buffer(s) other window `C-c o'"
    'helm-buffer-switch-buffers-other-window
-   "Switch to buffer other frame `C-c C-o'"
-   'switch-to-buffer-other-frame
+   "Switch to buffer(s) other frame `C-c C-o'"
+   'helm-buffer-switch-to-buffer-other-frame
+   "Raise buffer frame maybe"
+   'helm-buffers-maybe-raise-buffer-frame
    (lambda () (and (fboundp 'tab-bar-mode)
-                   "Switch to buffer other tab `C-c C-t'"))
+                   "Switch to buffer(s) other tab `C-c C-t'"))
    'helm-buffers-switch-to-buffer-other-tab
    "Switch to buffer at line number"
    'helm-switch-to-buffer-at-linum
    "Browse project `C-x C-d'"
    'helm-buffers-browse-project
+   "Switch to shell"
+   'helm-buffer-switch-to-shell
    "Query replace regexp `C-M-%'"
    'helm-buffer-query-replace-regexp
    "Query replace `M-%'" 'helm-buffer-query-replace
@@ -227,7 +232,7 @@
 (defcustom helm-type-function-actions
   (helm-make-actions
    "Describe function" 'helm-describe-function
-   "Find function" 'helm-find-function
+   "Find function (C-u for source)" 'helm-find-function
    "Info lookup" 'helm-info-lookup-symbol
    "Debug on entry" 'debug-on-entry
    "Cancel debug on entry" 'cancel-debug-on-entry

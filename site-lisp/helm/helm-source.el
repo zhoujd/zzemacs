@@ -1,8 +1,8 @@
 ;;; helm-source.el --- Helm source creation. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2020  Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2020  Thierry Volpiatto 
 
-;; Author: Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Author: Thierry Volpiatto 
 ;; URL: http://github.com/emacs-helm/helm
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -36,22 +36,24 @@
 (defvar helm-fuzzy-match-fn)
 (defvar helm-fuzzy-search-fn)
 
-(declare-function helm-init-candidates-in-buffer "helm.el")
-(declare-function helm-interpret-value "helm.el")
-(declare-function helm-fuzzy-highlight-matches "helm.el")
+(declare-function helm-init-candidates-in-buffer "helm-core.el")
+(declare-function helm-interpret-value "helm-core.el")
+(declare-function helm-fuzzy-highlight-matches "helm-core.el")
+(declare-function helm-marked-candidates "helm-core.el")
 
 ;;; Advice Emacs fn
 ;;  Make Classes's docstrings more readable by removing al the
 ;;  unnecessary crap.
 
-(defun helm-source--cl--print-table (_header rows)
+(defun helm-source--cl--print-table (&rest args)
   "Advice for `cl--print-table' to make readable class slots docstrings."
-  (let ((format "%s\n\n  Initform=%s\n\n%s"))
-    (dolist (row rows)
-      (setcar row (propertize (car row) 'face 'bold))
-      (setcdr row (nthcdr 1 (cdr row)))
-      (insert "\n* " (apply #'format format row) "\n"))))
-
+  (cl-flet ((print-rows (rows)
+              (let ((format "%s\n\n  Initform=%s\n\n%s"))
+                (dolist (row rows)
+                  (setcar row (propertize (car row) 'face 'bold))
+                  (setcdr row (nthcdr 1 (cdr row)))
+                  (insert "\n* " (apply #'format format row) "\n")))))
+    (print-rows (cadr args))))
 
 (cl-defgeneric helm--setup-source (source)
   "Prepare slots and handle slot errors before creating a helm source.")
@@ -186,9 +188,9 @@
     (defun foo-persistent-action (candidate)
        (do-something candidate))
 
-    :persistent-action '(foo-persistent-action . never-split) ; Don't split
+    :persistent-action \\='(foo-persistent-action . never-split) ; Don't split
   or
-    :persistent-action 'foo-persistent-action ; Split
+    :persistent-action \\='foo-persistent-action ; Split
 
   When specifying :persistent-action by slot directly, foo-persistent-action
   will be executed without quitting helm when hitting `C-j'.
@@ -204,8 +206,8 @@
        \"Delete current candidate without quitting.\"
        (interactive)
        (with-helm-alive-p
-         (helm-set-attr 'quick-delete '(helm-ff-quick-delete . never-split))
-         (helm-execute-persistent-action 'quick-delete)))
+         (helm-set-attr \\='quick-delete \\='(helm-ff-quick-delete . never-split))
+         (helm-execute-persistent-action \\='quick-delete)))
 
   This function is then bound in `helm-find-files-map'.")
 
@@ -224,13 +226,13 @@
               ;; Don't split helm-window.
               (cons (lambda (_ignore)
                       (do-something candidate))
-                    'no-split))
+                    \\='no-split))
              ;; Split helm-window.
              (something-else
               (lambda (_ignore)
                 (do-something-else candidate)))))
 
-     :persistent-action-if 'foo-persistent-action
+     :persistent-action-if \\='foo-persistent-action
 
   Here when hitting `C-j' one of the lambda's will be executed
   depending on something or something-else condition, splitting or not
@@ -242,8 +244,11 @@
     :initform nil
     :custom string
     :documentation
-    "  A string to explain persistent-action of this source. It also
-  accepts a function or a variable name.
+    "  A string to explain persistent-action of this source.
+  It is a facility to display what persistent action does in
+  header-line, once your source is loaded don't use it directly, it will
+  have no effect, use instead `header-line' attribute.
+  It also accepts a function or a variable name.
   It will be displayed in `header-line' or in `minibuffer' depending
   of value of `helm-echo-input-in-header-line' and `helm-display-header-line'.")
 
@@ -359,7 +364,7 @@
   Example:
 
     (helm :sources (helm-build-sync-source \"test\"
-                 :candidates '(a b c d e)
+                 :candidates \\='(a b c d e)
                  :display-to-real (lambda (c) (concat c \":modified by d-t-r\")))
       :buffer \"*helm test*\")
 
@@ -380,7 +385,7 @@
   Example:
 
     (helm :sources (helm-build-sync-source \"test\"
-                 :candidates '((\"foo\" . 1) (\"bar\" . 2) (\"baz\". 3))
+                 :candidates \\='((\"foo\" . 1) (\"bar\" . 2) (\"baz\". 3))
                  :real-to-display (lambda (c) (format \"%s\" (1+ c))))
       :buffer \"*helm test*\")
 
@@ -393,7 +398,7 @@
     :documentation
     "  Get candidates with their properties in `helm-marked-candidates'.
   Allow using the FORCE-DISPLAY-PART of `helm-get-selection' in marked
-  candidates, use t or 'withprop to pass it to `helm-get-selection'.")
+  candidates, use t or \\='withprop to pass it to `helm-get-selection'.")
 
    (action-transformer
     :initarg :action-transformer
@@ -472,6 +477,13 @@
 
   Note that FUZZY-MATCH slot will overhide value of this slot.")
 
+   (diacritics
+    :initarg :diacritics
+    :initform nil
+    :custom boolean
+    :documentation
+    "  Ignore diacritics when searching.")
+
    (match-on-real
     :initarg :match-on-real
     :initform nil
@@ -487,9 +499,14 @@
     "  Enable fuzzy matching in this source.
   This will overwrite settings in MATCH slot, and for
   sources built with child class `helm-source-in-buffer' the SEARCH slot.
+  This also add a `filtered-candidate-transformer' function to sort candidates
+  (see `helm-fuzzy-sort-fn') according to the score of each candidate which is
+  computed with `helm-fuzzy-default-score-fn'. 
   This is an easy way of enabling fuzzy matching, but you can use the MATCH
   or SEARCH slots yourself if you want something more elaborated, mixing
-  different type of match (See `helm-source-buffers' class for example).
+  different type of match (See `helm-source-buffers' class for example), you
+  will have in this case to provide as well a sort fn
+  in `filtered-candidate-transformer' yourself.
 
   This attribute is not supported for asynchronous sources
   since they perform pattern matching themselves.")
@@ -588,8 +605,8 @@
     :documentation
     "  Function called with no parameters at end of initialization
   when `helm-resume' is started.
-  If this function try to do something against `helm-buffer', \(e.g updating,
-  searching etc...\) probably you should run it in a timer to ensure
+  If this function try to do something against `helm-buffer', (e.g updating,
+  searching etc...) probably you should run it in a timer to ensure
   `helm-buffer' is ready.")
 
    (follow
@@ -644,9 +661,11 @@
     "  A local hook that run at beginning of initilization of this source.
   i.e Before the creation of `helm-buffer'.
 
-  Should be a variable (defined with defvar).
-  Can be also an anonymous function or a list of functions
-  directly added to slot, this is not recommended though.")
+  Should be a variable (a symbol) bound to a list of
+  functions or a single function (see `run-hooks' documentation).
+  Even better is to use `add-hook' to feed this variable.
+  Usage of an anonymous function, or a list of functions is still
+  supported but not recommended.")
 
    (after-init-hook
     :initarg :after-init-hook
@@ -655,10 +674,12 @@
     :documentation
     "  A local hook that run at end of initilization of this source.
   i.e After the creation of `helm-buffer'.
-
-  Should be a variable.
-  Can be also an anonymous function or a list of functions
-  directly added to slot, this is not recommended though.")
+  
+  Should be a variable (a symbol) bound to a list of
+  functions or a single function (see `run-hooks' documentation).
+  Even better is to use `add-hook' to feed this variable.
+  Usage of an anonymous function, or a list of functions is still
+  supported but not recommended.")
 
    (delayed
     :initarg :delayed
@@ -712,7 +733,7 @@
     :custom boolean
     :documentation
     "  Enable migemo.
-  When multimatch is disabled, you can give the symbol 'nomultimatch as value
+  When multimatch is disabled, you can give the symbol \\='nomultimatch as value
   to force not using generic migemo matching function.
   In this case you have to provide your own migemo matching funtion
   that kick in when `helm-migemo-mode' is enabled.
@@ -741,6 +762,8 @@
     "  Disable all helm matching functions when non nil.
   The :candidates function in this case is in charge of fetching
   candidates dynamically according to `helm-pattern'.
+  If you want to make your :candidates function working with `completion-styles'
+  use the function `helm-dynamic-completion'. 
   Note that :volatile is automatically enabled when using this, so no
   need to specify it."))
 
@@ -800,7 +823,7 @@ inherit from `helm-source'.")
     :custom boolean
     :documentation
     "  Enable migemo.
-  When multimatch is disabled, you can give the symbol 'nomultimatch as value
+  When multimatch is disabled, you can give the symbol \\='nomultimatch as value
   to force not using generic migemo matching function.
   In this case you have to provide your own migemo matching funtion
   that kick in when `helm-migemo-mode' is enabled.
@@ -815,7 +838,7 @@ inherit from `helm-source'.")
 
    (match
     :initform '(identity))
-
+   
    (get-line
     :initarg :get-line
     :initform 'buffer-substring-no-properties
@@ -904,21 +927,26 @@ See `helm-candidates-in-buffer' for more infos.")
                        (with-current-buffer (helm-candidate-buffer 'global)
                          (insert-file-contents file)
                          (goto-char (point-min))
-                         (while (not (eobp))
-                           (add-text-properties
-                            (point-at-bol) (point-at-eol)
-                            `(helm-linum ,count))
-                           (cl-incf count)
-                           (forward-line 1))))))
+                         (when (helm-get-attr 'linum)
+                           (while (not (eobp))
+                             (add-text-properties
+                              (pos-bol) (pos-eol)
+                              `(helm-linum ,count))
+                             (cl-incf count)
+                             (forward-line 1)))))))
    (get-line :initform #'buffer-substring)
    (candidates-file
     :initarg :candidates-file
     :initform nil
     :custom string
     :documentation
-    "  A filename.
-  Each line number of FILE is accessible with helm-linum property
-  from candidate display part."))
+    "  The file used to fetch candidates.")
+   (linum
+    :initarg :linum
+    :initform nil
+    :documentation
+    "  Store line number in each candidate when non nil.
+  Line number is stored in `helm-linum' text property."))
 
   "The contents of the FILE will be used as candidates in buffer.")
 
@@ -966,30 +994,51 @@ Arguments ARGS are keyword value pairs as defined in CLASS."
 (defvar helm-mm-default-match-functions)
 
 (defun helm-source-mm-get-search-or-match-fns (source method)
-  (let ((defmatch         (helm-aif (slot-value source 'match)
-                              (helm-mklist it)))
-        (defmatch-strict  (helm-aif (and (eq method 'match)
-                                         (slot-value source 'match-strict))
-                              (helm-mklist it)))
-        (defsearch        (helm-aif (and (eq method 'search)
-                                         (slot-value source 'search))
-                              (helm-mklist it)))
-        (defsearch-strict (helm-aif (and (eq method 'search-strict)
-                                         (slot-value source 'search-strict))
-                              (helm-mklist it)))
-        (migemo           (slot-value source 'migemo)))
+  "Prepare match or search functions for class SOURCE.
+Argument METHOD is the matching method used by SOURCE either `match'
+or `search'."
+  (let* ((diacritics       (slot-value source 'diacritics))
+         (defmatch         (helm-aif (slot-value source 'match)
+                               (helm-mklist it)))
+         (defmatch-strict  (helm-aif (and (eq method 'match)
+                                          (slot-value source 'match-strict))
+                               (helm-mklist it)))
+         (defsearch        (helm-aif (and (eq method 'search)
+                                          (slot-value source 'search))
+                               (helm-mklist it)))
+         (defsearch-strict (helm-aif (and (eq method 'search-strict)
+                                          (slot-value source 'search-strict))
+                               (helm-mklist it)))
+         (migemo           (slot-value source 'migemo)))
     (cl-case method
       (match (cond (defmatch-strict)
+                   ((and migemo diacritics)
+                    (append (list 'helm-mm-exact-match
+                                  'helm-mm-3-match-on-diacritics)
+                            defmatch '(helm-mm-3-migemo-match)))
                    (migemo
                     (append helm-mm-default-match-functions
                             defmatch '(helm-mm-3-migemo-match)))
+                   (diacritics
+                    (delq nil
+                          `(helm-mm-exact-match
+                            ,@defmatch helm-mm-3-match-on-diacritics)))
                    (defmatch
                     (append helm-mm-default-match-functions defmatch))
                    (t helm-mm-default-match-functions)))
       (search (cond (defsearch-strict)
+                    ((and migemo diacritics)
+                     (append '(helm-mm-exact-search)
+                             defsearch
+                             '(helm-mm-3-migemo-search
+                               helm-mm-3-search-on-diacritics)))
                     (migemo
                      (append helm-mm-default-search-functions
                              defsearch '(helm-mm-3-migemo-search)))
+                    (diacritics
+                     (delq nil
+                           `(helm-mm-exact-search
+                             ,@defsearch helm-mm-3-search-on-diacritics)))
                     (defsearch
                      (append helm-mm-default-search-functions defsearch))
                     (t helm-mm-default-search-functions))))))
@@ -1005,11 +1054,12 @@ an eieio class."
   (let* ((actions     (slot-value source 'action))
          (action-transformers (slot-value source 'action-transformer))
          (new-action  (list (cons name fn)))
-         (transformer (lambda (actions candidate)
-                        (cond ((funcall predicate candidate)
-                               (helm-append-at-nth
-                                actions new-action index))
-                              (t actions)))))
+         (transformer (lambda (actions _candidate)
+                        (let ((candidate (car (helm-marked-candidates))))
+                          (cond ((funcall predicate candidate)
+                                 (helm-append-at-nth
+                                  actions new-action index))
+                                (t actions))))))
     (cond ((functionp actions)
            (setf (slot-value source 'action) (list (cons "Default action" actions))))
           ((listp actions)
@@ -1023,11 +1073,14 @@ an eieio class."
 ;;; Methods to build sources.
 ;;
 ;;
-(defun helm-source--persistent-help-string (string source)
+(defun helm-source--persistent-help-string (value source)
+  "Format `persistent-help' VALUE in SOURCE.
+Argument VALUE can be a string, a variable or a function."
   (substitute-command-keys
-   (concat "\\<helm-map>\\[helm-execute-persistent-action]: "
-           (or (format "%s (keeping session)" string)
-               (slot-value source 'header-line)))))
+   (format "\\<helm-map>\\[helm-execute-persistent-action]: %s (keeping session)"
+           (helm-aif value
+               (helm-interpret-value value source)
+             (slot-value source 'header-line)))))
 
 (defun helm-source--header-line (source)
   "Compute a default header line for SOURCE.
@@ -1115,7 +1168,16 @@ The header line is based on one of `persistent-action-if',
       (let ((val (if (symbolp it)
                      (symbol-value it)
                    it)))
-        (setf (slot-value source 'requires-pattern) val))))
+        (setf (slot-value source 'requires-pattern) val)))
+  (let ((sname (slot-value source 'name)))
+    (pcase (slot-value source 'before-init-hook)
+      ((or (and val (pred (functionp)) (guard (not (symbolp val))))
+           (pred (consp)))
+       (warn "Helm source `%s': before-init-hook Should be defined as a symbol" sname)))
+    (pcase (slot-value source 'after-init-hook)
+      ((or (and val (pred (functionp)) (guard (not (symbolp val))))
+           (pred (consp)))
+       (warn "Helm source `%s': after-init-hook Should be defined as a symbol" sname)))))
 
 (cl-defmethod helm-setup-user-source ((_source helm-source)))
 

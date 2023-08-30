@@ -3,7 +3,7 @@
 ;; Original Author: Tamas Patrovics
 
 ;; Copyright (C) 2007 Tamas Patrovics
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -34,13 +34,11 @@
 When nil history is not saved nor restored after Emacs restart
 unless you save/restore `helm-adaptive-history' with something
 else like psession or desktop."
-  :type 'string
-  :group 'helm-adapt)
+  :type 'string)
 
 (defcustom helm-adaptive-history-length 50
   "Maximum number of candidates stored for a source."
-  :type 'number
-  :group 'helm-adapt)
+  :type 'number)
 
 (defcustom helm-adaptive-sort-by-frequent-recent-usage t
   "Try to sort on an average of frequent and recent usage when non-nil.
@@ -55,7 +53,6 @@ Frequency+recent:
 Even with a low frequency, candidate go up on top. If a candidate
 have a high frequency but it is not used since some time, it goes
 down slowly, but as soon you reuse it it go up on top quickly."
-  :group 'helm-adapt
   :type 'boolean)
 
 ;; Internal
@@ -65,7 +62,8 @@ selection.")
 
 (defvar helm-adaptive-history nil
   "Contains the stored history information.
-Format: ((SOURCE-NAME (SELECTED-CANDIDATE (PATTERN . NUMBER-OF-USE) ...) ...) ...)")
+Format: ((SOURCE-NAME
+         (SELECTED-CANDIDATE (PATTERN . NUMBER-OF-USE) ...) ...) ...)")
 
 (defconst helm-adaptive-freq-coefficient 5)
 (defconst helm-adaptive-recent-coefficient 2)
@@ -76,26 +74,24 @@ Format: ((SOURCE-NAME (SELECTED-CANDIDATE (PATTERN . NUMBER-OF-USE) ...) ...) ..
 ;;;###autoload
 (define-minor-mode helm-adaptive-mode
   "Toggle adaptive sorting in all sources."
-  :group 'helm-adapt
-  :require 'helm-adaptive
   :global t
   (if helm-adaptive-mode
       (progn
         (unless helm-adaptive-history
           (helm-adaptive-maybe-load-history))
-        (add-hook 'kill-emacs-hook 'helm-adaptive-save-history)
+        (add-hook 'kill-emacs-hook #'helm-adaptive-save-history)
         ;; Should run at beginning of `helm-initial-setup'.
-        (add-hook 'helm-before-initialize-hook 'helm-adaptive-done-reset)
+        (add-hook 'helm-before-initialize-hook #'helm-adaptive-done-reset)
         ;; Should run at beginning of `helm-exit-minibuffer'.
-        (add-hook 'helm-before-action-hook 'helm-adaptive-store-selection)
+        (add-hook 'helm-before-action-hook #'helm-adaptive-store-selection)
         ;; Should run at beginning of `helm-select-action'.
-        (add-hook 'helm-select-action-hook 'helm-adaptive-store-selection))
+        (add-hook 'helm-select-action-hook #'helm-adaptive-store-selection))
     (helm-adaptive-save-history)
     (setq helm-adaptive-history nil)
-    (remove-hook 'kill-emacs-hook 'helm-adaptive-save-history)
-    (remove-hook 'helm-before-initialize-hook 'helm-adaptive-done-reset)
-    (remove-hook 'helm-before-action-hook 'helm-adaptive-store-selection)
-    (remove-hook 'helm-select-action-hook 'helm-adaptive-store-selection)))
+    (remove-hook 'kill-emacs-hook #'helm-adaptive-save-history)
+    (remove-hook 'helm-before-initialize-hook #'helm-adaptive-done-reset)
+    (remove-hook 'helm-before-action-hook #'helm-adaptive-store-selection)
+    (remove-hook 'helm-select-action-hook #'helm-adaptive-store-selection)))
 
 (defun helm-adapt-use-adaptive-p (&optional source-name)
   "Return current source only if it use adaptive history, nil otherwise."
@@ -162,7 +158,7 @@ Format: ((SOURCE-NAME (SELECTED-CANDIDATE (PATTERN . NUMBER-OF-USE) ...) ...) ..
           ;; Truncate history if needed.
           (if (> (length (cdr selection-info)) helm-adaptive-history-length)
               (setcdr selection-info
-                      (cl-subseq (cdr selection-info) 0 helm-adaptive-history-length))))))))
+                      (helm-take (cdr selection-info) helm-adaptive-history-length))))))))
 
 (defun helm-adaptive-maybe-load-history ()
   "Load `helm-adaptive-history-file' which contain `helm-adaptive-history'.
@@ -234,7 +230,19 @@ This is a filtered candidate transformer you can use with the
                        for info = (or (and (assq 'multiline source)
                                            (replace-regexp-in-string
                                             "\n\\'" "" cand))
-                                      cand)
+                                      ;; Some transformers like in
+                                      ;; bookmarks may add a leading
+                                      ;; space to provide additional
+                                      ;; infos like an icon as a
+                                      ;; display prop, strip out this
+                                      ;; leading space for
+                                      ;; comparison. Same for a
+                                      ;; trailing space (helm
+                                      ;; boookmark add bmk location as
+                                      ;; a display prop when
+                                      ;; displaying it).
+                                      (helm-aand (replace-regexp-in-string "\\` " "" cand)
+                                                 (replace-regexp-in-string " \\'" "" it)))
                        when (cl-member info candidates
                                        :test 'helm-adaptive-compare)
                        collect (car it) into sorted
@@ -258,7 +266,9 @@ Useful when you have a old or corrupted
   (interactive)
   (when (y-or-n-p "Really delete all your `helm-adaptive-history'? ")
     (setq helm-adaptive-history nil)
-    (delete-file helm-adaptive-history-file)))
+    (when (and helm-adaptive-history-file
+               (file-exists-p helm-adaptive-history-file))
+      (delete-file helm-adaptive-history-file))))
 
 (defun helm-adaptive-compare (x y)
   "Compare display parts if some of candidates X and Y.

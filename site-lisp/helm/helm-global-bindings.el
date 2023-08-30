@@ -1,6 +1,6 @@
 ;;; helm-global-bindings.el --- Bind global helm commands -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,22 +17,32 @@
 
 ;;; Code:
 
+(require 'helm-lib) ; For helm-aif (bug #2520).
+
 
 ;;; Command Keymap
 ;;
 ;;
-(defcustom helm-command-prefix-key "C-x c"
-  "The key `helm-command-prefix' is bound to in the global map."
+(defgroup helm-global-bindings nil
+  "Global bindings for Helm."
+  :group 'helm)
+
+(defcustom helm-command-prefix-key
+  (helm-aif (car (where-is-internal 'Control-X-prefix (list global-map)))
+      (concat it [?c]))
+  "The prefix key used to call Helm commands from the `global-map'.
+
+Its default value is `C-x c'.
+This key is bound to the function `helm-command-prefix' in the global map.
+The definition of `helm-command-prefix' is the keymap `helm-command-map'.
+Using `setq' to modify this variable will have no effect."
   :type '(choice (string :tag "Key") (const :tag "no binding"))
-  :group 'helm-config
   :set
   (lambda (var key)
-    (when (and (boundp var) (symbol-value var))
-      (define-key (current-global-map)
-          (read-kbd-macro (symbol-value var)) nil))
+    (helm-aif (and (boundp var) (symbol-value var))
+        (global-unset-key (read-kbd-macro it)))
     (when key
-      (define-key (current-global-map)
-          (read-kbd-macro key) 'helm-command-prefix))
+      (global-set-key (read-kbd-macro key) 'helm-command-prefix))
     (set var key)))
 
 (defvar helm-command-map
@@ -73,15 +83,12 @@
     (define-key map (kbd "C-c C-x")   'helm-run-external-command)
     (define-key map (kbd "b")         'helm-resume)
     (define-key map (kbd "M-g i")     'helm-gid)
-    (define-key map (kbd "@")         'helm-list-elisp-packages)
-    map))
+    (define-key map (kbd "@")         'helm-packages)
+    map)
+  "Default keymap for \\[helm-command-prefix] commands.
+The normal global definition of the character \\[helm-command-prefix] indirects to this keymap.")
 
-;; Don't override the keymap we just defined with an empty
-;; keymap.  This also protect bindings changed by the user.
-(defvar helm-command-prefix)
-(define-prefix-command 'helm-command-prefix)
 (fset 'helm-command-prefix helm-command-map)
-(setq  helm-command-prefix helm-command-map)
 
 
 ;;; Menu

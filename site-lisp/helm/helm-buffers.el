@@ -1,6 +1,6 @@
 ;;; helm-buffers.el --- helm support for buffers. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,9 +28,14 @@
 
 (declare-function helm-comp-read "helm-mode")
 (declare-function helm-browse-project "helm-files")
+(declare-function helm-ff-switch-to-shell "helm-files")
+(declare-function all-the-icons-icon-for-file "ext:all-the-icons.el")
+(declare-function all-the-icons-octicon "ext:all-the-icons.el")
 
+(defvar all-the-icons-mode-icon-alist)
 (defvar dired-buffers)
 (defvar org-directory)
+(defvar helm-ff-default-directory)
 
 
 (defgroup helm-buffers nil
@@ -43,56 +48,47 @@
 Buffer candidates matching these regular expression will be
 filtered from the list of candidates if the
 `helm-skip-boring-buffers' candidate transformer is used."
-  :type  '(repeat (choice regexp))
-  :group 'helm-buffers)
+  :type  '(repeat (choice regexp)))
 
 (defcustom helm-white-buffer-regexp-list nil
   "The regexp list of not boring buffers.
 These buffers will be displayed even if they match one of
 `helm-boring-buffer-regexp-list'."
-  :type '(repeat (choice regexp))
-  :group 'helm-buffers)
+  :type '(repeat (choice regexp)))
 
 (defcustom helm-buffers-favorite-modes '(lisp-interaction-mode
                                          emacs-lisp-mode
                                          text-mode
                                          org-mode)
   "List of preferred mode to open new buffers with."
-  :type '(repeat (choice function))
-  :group 'helm-buffers)
+  :type '(repeat (choice function)))
 
 (defcustom helm-buffer-max-length 20
   "Max length of buffer names before truncate.
 When disabled (nil) use the longest `buffer-name' length found."
-  :group 'helm-buffers
   :type  '(choice (const :tag "Disabled" nil)
            (integer :tag "Length before truncate")))
 
 (defcustom helm-buffer-details-flag t
   "Always show details in buffer list when non-nil."
-  :group 'helm-buffers
   :type 'boolean)
 
 (defcustom helm-buffers-fuzzy-matching nil
   "Fuzzy matching buffer names when non-nil.
 Only buffer names are fuzzy matched when this is enabled,
 `major-mode' matching is not affected by this."
-  :group 'helm-buffers
   :type 'boolean)
 
 (defcustom helm-buffer-skip-remote-checking nil
   "Ignore checking for `file-exists-p' on remote files."
-  :group 'helm-buffers
   :type 'boolean)
 
 (defcustom helm-buffers-truncate-lines t
   "Truncate lines in `helm-buffers-list' when non-nil."
-  :group 'helm-buffers
   :type 'boolean)
 
 (defcustom helm-buffers-left-margin-width helm-left-margin-width
   "`left-margin-width' value for `helm-mini' and `helm-buffers-list'."
-  :group 'helm-buffers
   :type 'integer)
 
 (defcustom helm-mini-default-sources '(helm-source-buffers-list
@@ -102,18 +98,15 @@ Only buffer names are fuzzy matched when this is enabled,
 
 When adding a source here it is up to you to ensure the library
 of this source is accessible and properly loaded."
-  :group 'helm-buffers
   :type '(repeat (choice symbol)))
 
 (defcustom helm-buffers-end-truncated-string "..."
   "The string to display at end of truncated buffer names."
-  :type 'string
-  :group 'helm-buffers)
+  :type 'string)
 
 (defcustom helm-buffers-column-separator "  "
   "Separator for columns in buffer listing."
-  :type 'string
-  :group 'helm-buffers)
+  :type 'string)
 
 (defcustom helm-buffer--pretty-names '((dired-mode . "Dired")
                                        (lisp-interaction-mode . "Lisp Inter"))
@@ -124,13 +117,11 @@ may be a mode-line specification which may be costly to compute,
 in this case add here the pretty name as a string to avoid this
 costly computation.  Also if some pretty names are too long you
 can add your own abbreviation here."
-  :type '(alist :key-type symbol :value-type string)
-  :group 'helm-buffers)
+  :type '(alist :key-type symbol :value-type string))
 
 (defcustom helm-buffers-maybe-switch-to-tab nil
   "Switch to buffer in its tab when non nil.
 This has no effect when `tab-bar-mode' is not available."
-  :group 'helm-buffers
   :type 'boolean)
 
 (defcustom helm-buffer-list-reorder-fn #'helm-buffers-reorder-buffer-list
@@ -142,7 +133,6 @@ You can write a function that reorder VISIBLES and OTHERS as you
 want.
 Default function returns OTHERS buffers on top and VISIBLES
 buffer at the end.  See `helm-buffers-reorder-buffer-list'."
-  :group 'helm-buffers
   :type 'function)
 
 (defcustom helm-buffers-sort-fn helm-fuzzy-sort-fn
@@ -151,8 +141,17 @@ buffer at the end.  See `helm-buffers-reorder-buffer-list'."
 Default to `helm-fuzzy-sort-fn' you can use
 `helm-fuzzy-matching-sort-fn-preserve-ties-order' as alternative if
 you want to keep the recentest order when narrowing candidates."
-  :type 'function
-  :group 'helm-buffers)
+  :type 'function)
+
+(defcustom helm-buffers-show-icons nil
+  "Prefix buffer names with an icon when non nil.
+Don't use `setq' to set this."
+  :type 'boolean
+  :set (lambda (var val)
+         (if (featurep 'all-the-icons)
+             (set var val)
+           (set var nil))))
+
 
 ;;; Faces
 ;;
@@ -250,30 +249,29 @@ Note that this variable is buffer-local.")
     ;; No need to have separate command for grep and zgrep
     ;; as we don't use recursivity for buffers.
     ;; So use zgrep for both as it is capable to handle non--compressed files.
-    (define-key map (kbd "M-g s")     'helm-buffer-run-zgrep)
-    (define-key map (kbd "C-s")       'helm-buffers-run-occur)
-    (define-key map (kbd "C-x C-d")   'helm-buffers-run-browse-project)
-    (define-key map (kbd "C-c o")     'helm-buffer-switch-other-window)
-    (define-key map (kbd "C-c C-o")   'helm-buffer-switch-other-frame)
-    (define-key map (kbd "M-g M-g")   'helm-buffer-run-goto-line)
-    (define-key map (kbd "C-c =")     'helm-buffer-run-ediff)
-    (define-key map (kbd "M-=")       'helm-buffer-run-ediff-merge)
-    (define-key map (kbd "C-=")       'helm-buffer-diff-persistent)
-    (define-key map (kbd "M-G")       'helm-buffer-revert-persistent)
-    (define-key map (kbd "C-c d")     'helm-buffer-run-kill-persistent)
-    (define-key map (kbd "M-D")       'helm-buffer-run-kill-buffers)
-    (define-key map (kbd "C-x C-s")   'helm-buffer-save-persistent)
-    (define-key map (kbd "C-x s")     'helm-buffer-run-save-some-buffers)
-    (define-key map (kbd "C-M-%")     'helm-buffer-run-query-replace-regexp)
-    (define-key map (kbd "M-%")       'helm-buffer-run-query-replace)
-    (define-key map (kbd "M-R")       'helm-buffer-run-rename-buffer)
-    (define-key map (kbd "M-m")       'helm-toggle-all-marks)
-    (define-key map (kbd "M-a")       'helm-mark-all)
-    (define-key map (kbd "C-]")       'helm-toggle-buffers-details)
-    (define-key map (kbd "C-c a")     'helm-buffers-toggle-show-hidden-buffers)
-    (define-key map (kbd "C-M-SPC")   'helm-buffers-mark-similar-buffers)
+    (define-key map (kbd "M-g s")     #'helm-buffer-run-zgrep)
+    (define-key map (kbd "C-s")       #'helm-buffers-run-occur)
+    (define-key map (kbd "C-x C-d")   #'helm-buffers-run-browse-project)
+    (define-key map (kbd "C-c o")     #'helm-buffer-switch-other-window)
+    (define-key map (kbd "C-c C-o")   #'helm-buffer-switch-other-frame)
+    (define-key map (kbd "M-g M-g")   #'helm-buffer-run-goto-line)
+    (define-key map (kbd "C-c =")     #'helm-buffer-run-ediff)
+    (define-key map (kbd "M-=")       #'helm-buffer-run-ediff-merge)
+    (define-key map (kbd "C-=")       #'helm-buffer-diff-persistent)
+    (define-key map (kbd "M-G")       #'helm-buffer-revert-persistent)
+    (define-key map (kbd "C-c d")     #'helm-buffer-run-kill-persistent)
+    (define-key map (kbd "M-D")       #'helm-buffer-run-kill-buffers)
+    (define-key map (kbd "C-x C-s")   #'helm-buffer-save-persistent)
+    (define-key map (kbd "C-x s")     #'helm-buffer-run-save-some-buffers)
+    (define-key map (kbd "C-M-%")     #'helm-buffer-run-query-replace-regexp)
+    (define-key map (kbd "M-%")       #'helm-buffer-run-query-replace)
+    (define-key map (kbd "M-R")       #'helm-buffer-run-rename-buffer)
+    (define-key map (kbd "M-e")       #'helm-buffer-run-switch-to-shell)
+    (define-key map (kbd "C-]")       #'helm-toggle-buffers-details)
+    (define-key map (kbd "C-c a")     #'helm-buffers-toggle-show-hidden-buffers)
+    (define-key map (kbd "C-M-SPC")   #'helm-buffers-mark-similar-buffers)
     (when (fboundp 'tab-bar-mode)
-      (define-key map (kbd "C-c C-t") 'helm-buffers-switch-to-buffer-new-tab))
+      (define-key map (kbd "C-c C-t") #'helm-buffers-switch-to-buffer-new-tab))
     map)
   "Keymap for buffer sources in helm.")
 
@@ -292,7 +290,7 @@ Note that this variable is buffer-local.")
   ;; directly so that each list of candidates is local to source.
   (helm-set-attr 'candidates (funcall (helm-get-attr 'buffer-list)))
   (let ((result (cl-loop with allbufs = (memq 'helm-shadow-boring-buffers
-                                              (helm-attr
+                                              (helm-get-attr
                                                'filtered-candidate-transformer
                                                helm-source-buffers-list))
                          for b in (if allbufs
@@ -348,28 +346,22 @@ Note that this variable is buffer-local.")
 (defun helm-buffers-create-new-buffer-ow (candidate)
   (helm-buffers-create-new-buffer-1 candidate 'switch-to-buffer-other-window))
 
-(defun helm-buffers-not-found-run-switch-ow ()
+(helm-make-command-from-action helm-buffers-not-found-run-switch-ow
   "Run create new buffer other window action from keymap."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffers-create-new-buffer-ow)))
-(put 'helm-buffers-not-found-run-switch-ow 'helm-only t)
+  'helm-buffers-create-new-buffer-ow)
 
 (defun helm-buffers-create-new-buffer-of (candidate)
   (helm-buffers-create-new-buffer-1 candidate 'switch-to-buffer-other-frame))
 
-(defun helm-buffers-not-found-run-switch-of ()
+(helm-make-command-from-action helm-buffers-not-found-run-switch-of
   "Run create new buffer other frame action from keymap."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffers-create-new-buffer-of)))
-(put 'helm-buffers-not-found-run-switch-of 'helm-only t)
+  'helm-buffers-create-new-buffer-of)
 
 (defvar helm-buffer-not-found-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-c o")   'helm-buffers-not-found-run-switch-ow)
-    (define-key map (kbd "C-c C-o") 'helm-buffers-not-found-run-switch-of)
+    (define-key map (kbd "C-c o")   #'helm-buffers-not-found-run-switch-ow)
+    (define-key map (kbd "C-c C-o") #'helm-buffers-not-found-run-switch-of)
     map)
   "Keymap for `helm-source-buffer-not-found' source.")
 
@@ -430,19 +422,29 @@ The list is reordered with `helm-buffer-list-reorder-fn'."
                                   proc details type)
   (append
    (list
-    (concat prefix
-            (let* ((buf-fname (buffer-file-name (get-buffer buf-name)))
-                   (ext (if buf-fname (helm-file-name-extension buf-fname) ""))
-                   (buf-name (propertize buf-name 'face face1
-                                         'help-echo help-echo
-                                         'type type)))
-              (when (condition-case _err
-                                (string-match (format "\\.\\(%s\\)" ext) buf-name)
-                              (invalid-regexp nil))
-                        (add-face-text-property
-                         (match-beginning 1) (match-end 1)
-                         'helm-ff-file-extension nil buf-name))
-              buf-name)))
+    (let* ((buf-fname (buffer-file-name (get-buffer buf-name)))
+           (ext (if buf-fname (helm-file-name-extension buf-fname) ""))
+           (bmode (with-current-buffer buf-name major-mode))
+           (icon (when helm-buffers-show-icons
+                   (helm-aif (assq bmode all-the-icons-mode-icon-alist)
+                       (apply (cadr it) (cddr it))
+                     (cond ((eq type 'dired)
+                            (all-the-icons-octicon "file-directory"))
+                           (buf-fname
+                            (all-the-icons-icon-for-file buf-fname))
+                           (t (all-the-icons-octicon "star" :v-adjust 0.0))))))
+           (buf-name (propertize buf-name 'face face1
+                                 'help-echo help-echo
+                                 'type type)))
+      (when (condition-case _err
+                (string-match (format "\\.\\(%s\\)" ext) buf-name)
+              (invalid-regexp nil))
+        (add-face-text-property
+         (match-beginning 1) (match-end 1)
+         'helm-ff-file-extension nil buf-name))
+      (if icon
+          (concat icon " " prefix buf-name)
+        (concat prefix buf-name))))
    (and details
         (list size mode
               (propertize
@@ -576,19 +578,22 @@ buffers)."
                            (get-buffer i)))))
 
 (defun helm-buffer--get-preselection (buffer)
-  (let ((bufname (buffer-name buffer)))
+  (let* ((bufname     (buffer-name buffer))
+         (dispbuf     (car (helm-buffer--details buffer)))
+         (len-dispbuf (string-width dispbuf))
+         (len-prefix  (- len-dispbuf (string-width bufname))))
     (when (and bufname
                (file-remote-p (with-current-buffer bufname
                                 default-directory)))
       (setq bufname (concat "@ " (helm-url-unhex-string bufname))))
-    (concat "^"
+    (concat "^[[:multibyte:] ]*"
             (if (and (null helm-buffer-details-flag)
                      (numberp helm-buffer-max-length)
-                     (> (string-width bufname)
-                        helm-buffer-max-length))
+                     (> len-dispbuf helm-buffer-max-length))
                 (regexp-quote
                  (helm-substring-by-width
-                  bufname helm-buffer-max-length
+                  bufname
+                  (- helm-buffer-max-length len-prefix)
                   helm-buffers-end-truncated-string))
               (concat (regexp-quote bufname)
                       (if helm-buffer-details-flag
@@ -611,7 +616,7 @@ buffers)."
   (cl-loop for p in (helm-mm-split-pattern helm-pattern)
            unless (member (substring p 0 1) '("*" "/" "@" "!"))
            collect p into lst
-           finally return (mapconcat 'identity lst (or separator " "))))
+           finally return (mapconcat #'identity lst (or separator " "))))
 
 (defun helm-buffers-sort-transformer (candidates source)
   (cl-assert helm-buffers-sort-fn nil "Wrong type argument functionp: nil")
@@ -623,26 +628,14 @@ buffers)."
 (defun helm-buffers-mark-similar-buffers-1 (&optional type)
   (with-helm-window
     (let* ((src (helm-get-current-source))
-           (type (or type
-                     (get-text-property
-                      0 'type (helm-get-selection nil 'withprop src)))))
-      (save-excursion
-        (goto-char (helm-get-previous-header-pos))
-        (helm-next-line)
-        (let* ((next-head (helm-get-next-header-pos))
-               (end       (and next-head
-                               (save-excursion
-                                 (goto-char next-head)
-                                 (forward-line -1)
-                                 (point))))
-               (maxpoint  (or end (point-max))))
-          (while (< (point) maxpoint)
-            (helm-mark-current-line)
-            (let ((cand (helm-get-selection nil 'withprop src)))
-              (when (and (not (helm-this-visible-mark))
-                         (eq (get-text-property 0 'type cand) type))
-                (helm-make-visible-mark)))
-            (forward-line 1) (end-of-line))))
+           (sel (helm-get-selection nil 'withprop src))
+           (type (or type (get-text-property
+                           (min 2 (length sel)) 'type sel))))
+      (helm-map-candidates-in-source src
+        (lambda (_cand) (helm-make-visible-mark))
+        (lambda (cand)
+          (and (not (helm-this-visible-mark))
+               (eq (get-text-property 2 'type cand) type))))
       (helm-mark-current-line)
       (helm-display-mode-line src t)
       (when helm-marked-candidates
@@ -732,7 +725,7 @@ I.e. same color."
                            for p in (helm-mm-split-pattern pat)
                            when (string-match "\\`@\\(.*\\)" p)
                            collect (match-string 1 p) into lst
-                           finally return (mapconcat 'identity lst " ")))
+                           finally return (mapconcat #'identity lst " ")))
          (patterns (helm-mm-3-get-patterns pattern)))
     (if (and buf patterns)
         (with-current-buffer buf
@@ -809,13 +802,9 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
         (user-error "Buffer `%s' is not associated to a file"
                     (buffer-name buf))))))
 
-(defun helm-buffer-diff-persistent ()
+(helm-make-persistent-command-from-action helm-buffer-diff-persistent
   "Toggle diff buffer without quitting helm."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'diff-action 'helm-buffer-toggle-diff)
-    (helm-execute-persistent-action 'diff-action)))
-(put 'helm-buffer-diff-persistent 'helm-only t)
+  'diff-action 'helm-buffer-toggle-diff)
 
 (defun helm-revert-buffer (candidate)
   (with-current-buffer candidate
@@ -823,7 +812,7 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
         (and (file-exists-p it) (revert-buffer t t)))))
 
 (defun helm-revert-marked-buffers (_ignore)
-  (mapc 'helm-revert-buffer (helm-marked-candidates)))
+  (mapc #'helm-revert-buffer (helm-marked-candidates)))
 
 (defun helm-buffer-revert-and-update (_candidate)
   (with-helm-buffer
@@ -834,13 +823,9 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
       (when helm-marked-candidates (helm-unmark-all))
       (helm-force-update preselect))))
 
-(defun helm-buffer-revert-persistent ()
+(helm-make-persistent-command-from-action helm-buffer-revert-persistent
   "Revert buffer without quitting helm."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'revert-action '(helm-buffer-revert-and-update . never-split))
-    (helm-execute-persistent-action 'revert-action)))
-(put 'helm-buffer-revert-persistent 'helm-only t)
+  'revert-action 'helm-buffer-revert-and-update)
 
 (defun helm-buffer-save-and-update (_candidate)
   (with-helm-buffer
@@ -858,32 +843,21 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
   (helm-buffers-mark-similar-buffers-1 'mod)
   (helm-buffer-save-and-update nil))
 
-(defun helm-buffer-run-save-some-buffers ()
+(helm-make-persistent-command-from-action helm-buffer-run-save-some-buffers
   "Save unsaved file buffers without quitting Helm."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'save-some-action '(helm-buffer-save-some-buffers . never-split))
-    (helm-execute-persistent-action 'save-some-action)))
-(put 'helm-buffer-run-save-some-buffers 'helm-only t)
+  'save-some-action 'helm-buffer-save-some-buffers)
 
-(defun helm-buffer-save-persistent ()
+(helm-make-persistent-command-from-action helm-buffer-save-persistent
   "Save buffer without quitting Helm."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'save-action '(helm-buffer-save-and-update . never-split))
-    (helm-execute-persistent-action 'save-action)))
-(put 'helm-buffer-save-persistent 'helm-only t)
+'save-action 'helm-buffer-save-and-update)
 
 (defun helm-buffers-rename-buffer (candidate)
   (with-current-buffer candidate
     (rename-buffer (helm-read-string "New name: " (buffer-name)) t)))
 
-(defun helm-buffer-run-rename-buffer ()
+(helm-make-command-from-action helm-buffer-run-rename-buffer
   "Run rename buffer action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffers-rename-buffer)))
-(put 'helm-buffer-run-rename-buffer 'helm-only t)
+  'helm-buffers-rename-buffer)
 
 (defun helm-switch-to-buffer-at-linum (candidate)
   (let ((linum (read-number
@@ -894,20 +868,13 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
     (goto-char (point-min))
     (forward-line (1- linum))))
 
-(defun helm-buffer-run-goto-line ()
+(helm-make-command-from-action helm-buffer-run-goto-line
   "Switch to buffer at line number."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-switch-to-buffer-at-linum)))
-(put 'helm-buffer-run-goto-line 'helm-only t)
+  'helm-switch-to-buffer-at-linum)
 
-(defun helm-buffer-run-kill-persistent ()
+(helm-make-persistent-command-from-action helm-buffer-run-kill-persistent
   "Kill buffer without quitting Helm."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'kill-action '(helm-buffers-persistent-kill . never-split))
-    (helm-execute-persistent-action 'kill-action)))
-(put 'helm-buffer-run-kill-persistent 'helm-only t)
+  'kill-action 'helm-buffers-persistent-kill)
 
 (defun helm-kill-marked-buffers (_ignore)
   (let* ((bufs (helm-marked-candidates))
@@ -918,54 +885,58 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
               helm-visible-mark-overlays nil)))
     (message "Killed %s buffer(s)" killed-bufs)))
 
-(defun helm-buffer-run-kill-buffers ()
+(helm-make-command-from-action helm-buffer-run-kill-buffers
   "Run kill buffer action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-kill-marked-buffers)))
-(put 'helm-buffer-run-kill-buffers 'helm-only t)
+  'helm-kill-marked-buffers)
 
-(defun helm-buffer-run-grep ()
+(defun helm-buffer-switch-to-shell (candidate)
+  (require 'helm-files)
+  (let ((helm-ff-default-directory
+         (with-current-buffer candidate
+           default-directory)))
+    (helm-ff-switch-to-shell nil)))
+
+(helm-make-command-from-action helm-buffer-run-switch-to-shell
+    "Run switch to shell action from helm-buffers-list."
+  'helm-buffer-switch-to-shell)
+
+(helm-make-command-from-action helm-buffer-run-grep
   "Run Grep action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-grep-buffers)))
-(put 'helm-buffer-run-grep 'helm-only t)
+  'helm-grep-buffers)
 
-(defun helm-buffer-run-zgrep ()
+(helm-make-command-from-action helm-buffer-run-zgrep
   "Run Grep action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-zgrep-buffers)))
-(put 'helm-buffer-run-zgrep 'helm-only t)
+  'helm-zgrep-buffers)
 
-(defun helm-buffer-run-query-replace-regexp ()
+(helm-make-command-from-action helm-buffer-run-query-replace-regexp
   "Run Query replace regexp action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffer-query-replace-regexp)))
-(put 'helm-buffer-run-query-replace-regexp 'helm-only t)
+'helm-buffer-query-replace-regexp)
 
-(defun helm-buffer-run-query-replace ()
+(helm-make-command-from-action helm-buffer-run-query-replace
   "Run Query replace action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffer-query-replace)))
-(put 'helm-buffer-run-query-replace 'helm-only t)
+'helm-buffer-query-replace)
 
-(defun helm-buffer-switch-other-window ()
+(helm-make-command-from-action helm-buffer-switch-other-window
   "Run switch to other window action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffer-switch-buffers-other-window)))
-(put 'helm-buffer-switch-other-window 'helm-only t)
+  'helm-buffer-switch-buffers-other-window)
 
-(defun helm-buffer-switch-other-frame ()
+(defun helm-buffer-switch-to-buffer-other-frame (_candidate)
+  "Display marked buffers in other frame."
+  (let ((bufs (helm-marked-candidates)))
+    (select-frame (make-frame))
+    (helm-window-show-buffers bufs)))
+
+(defun helm-buffers-maybe-raise-buffer-frame (candidate)
+  "Raise buffer frame handling buffer CANDIDATE and switch to it."
+  (let ((oframe (window-frame (get-buffer-window candidate 0))))
+    (unless (eql oframe (selected-frame))
+      (raise-frame oframe))
+    (with-selected-frame oframe
+      (switch-to-buffer candidate))))
+
+(helm-make-command-from-action helm-buffer-switch-other-frame
   "Run switch to other frame action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'switch-to-buffer-other-frame)))
-(put 'helm-buffer-switch-other-frame 'helm-only t)
+  'helm-buffer-switch-to-buffer-other-frame)
 
 (defun helm-buffers-switch-to-buffer-other-tab (_candidate)
   (when (fboundp 'switch-to-buffer-other-tab)
@@ -973,13 +944,10 @@ If REGEXP-FLAG is given use `query-replace-regexp'."
       (cl-loop for buf in bufs
                do (switch-to-buffer-other-tab buf)))))
 
-(defun helm-buffers-switch-to-buffer-new-tab ()
+(helm-make-command-from-action helm-buffers-switch-to-buffer-new-tab
   "Run switch to buffer in other tab action from `helm-source-buffers-list'."
-  (interactive)
-  (cl-assert (fboundp 'tab-bar-mode) nil "Tab-bar-mode not available")
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-buffers-switch-to-buffer-other-tab)))
-(put 'helm-buffers-switch-to-buffer-new-tab 'helm-only t)
+  'helm-buffers-switch-to-buffer-other-tab
+  (cl-assert (fboundp 'tab-bar-mode) nil "Tab-bar-mode not available"))
 
 (defun helm-buffer-switch-buffers (_candidate)
   "Switch to buffer candidates and replace current buffer.
@@ -995,19 +963,13 @@ vertically."
   (let ((buffers (helm-marked-candidates)))
     (helm-window-show-buffers buffers t)))
 
-(defun helm-buffer-run-ediff ()
+(helm-make-command-from-action helm-buffer-run-ediff
   "Run ediff action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-ediff-marked-buffers)))
-(put 'helm-buffer-run-ediff 'helm-only t)
+  'helm-ediff-marked-buffers)
 
-(defun helm-buffer-run-ediff-merge ()
+(helm-make-command-from-action helm-buffer-run-ediff-merge
   "Run ediff action from `helm-source-buffers-list'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-ediff-marked-buffers-merge)))
-(put 'helm-buffer-run-ediff-merge 'helm-only t)
+  'helm-ediff-marked-buffers-merge)
 
 (defun helm-buffers-persistent-kill-1 (buffer-or-name)
   "Persistent action to kill buffer."
@@ -1113,12 +1075,9 @@ Can be used by any source that list buffers."
                                      (match-string 1 i)))))
     (helm-multi-occur-1 buffers input)))
 
-(defun helm-buffers-run-occur ()
+(helm-make-command-from-action helm-buffers-run-occur
   "Run `helm-multi-occur-as-action' by key."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-multi-occur-as-action)))
-(put 'helm-buffers-run-occur 'helm-only t)
+  'helm-multi-occur-as-action)
 
 (defun helm-buffers-toggle-show-hidden-buffers ()
   (interactive)
@@ -1145,13 +1104,11 @@ Can be used by any source that list buffers."
   (with-current-buffer buf
     (helm-browse-project helm-current-prefix-arg)))
 
-(defun helm-buffers-run-browse-project ()
-  "Run `helm-buffers-browse-project' from key."
-  (interactive)
-  (with-helm-alive-p
-      (if helm-buffers-in-project-p
-          (user-error "You are already browsing this project")
-          (helm-exit-and-execute-action 'helm-buffers-browse-project))))
+(helm-make-command-from-action helm-buffers-run-browse-project
+    "Run `helm-buffers-browse-project' from key."
+  'helm-buffers-browse-project
+  (cl-assert (not helm-buffers-in-project-p)
+             nil "You are already browsing this project"))
 
 (defun helm-buffers-quit-and-find-file-fn (source)
   (let* ((sel (helm-get-selection nil nil source))
@@ -1194,7 +1151,6 @@ displayed with the `file-name-shadow' face if available."
   (helm :sources '(helm-source-buffers-list
                    helm-source-buffer-not-found)
         :buffer "*helm buffers*"
-        :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines
         :left-margin-width helm-buffers-left-margin-width))
 

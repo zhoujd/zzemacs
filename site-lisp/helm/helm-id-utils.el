@@ -1,6 +1,6 @@
 ;;; helm-id-utils.el --- Helm interface for id-utils. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015 ~ 2020 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2015 ~ 2020 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ MacPorts to install id-utils, it should be `gid32'."
                                                0))
                                   'face 'helm-locate-finish))))
                   (force-mode-line-update))
-                (helm-log "Error: Gid %s"
+                (helm-log "helm-gid-candidates-process" "Error: Gid %s"
                           (replace-regexp-in-string "\n" "" event))))))))
 
 (defun helm-gid-filtered-candidate-transformer (candidates _source)

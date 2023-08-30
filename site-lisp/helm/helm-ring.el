@@ -1,6 +1,6 @@
 ;;; helm-ring.el --- kill-ring, mark-ring, and register browsers for helm. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -121,12 +121,13 @@ will not have separators between candidates any more."
     (setq helm-kill-ring--truncated-flag (not helm-kill-ring--truncated-flag))
     (let* ((cur-cand (helm-get-selection))
            (presel-fn (lambda ()
-                        (helm-kill-ring--preselect-fn cur-cand))))
+                        (helm-kill-ring--preselect-fn cur-cand)))
+           helm-display-source-at-screen-top)
       (helm-set-attr 'multiline
-                    (if helm-kill-ring--truncated-flag
-                        15000000
-                        helm-kill-ring-max-offset))
-        (helm-update presel-fn))))
+                     (if helm-kill-ring--truncated-flag
+                         15000000
+                       helm-kill-ring-max-offset))
+      (helm-update presel-fn))))
 (put 'helm-kill-ring-toggle-truncated 'helm-only t)
 
 (defun helm-kill-ring-kill-selection ()
@@ -222,11 +223,9 @@ yanked string."
      (list (current-buffer))
      (regexp-quote (substring-no-properties str)))))
 
-(defun helm-kill-ring-run-search-from-string ()
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-kill-ring-search-from-string)))
-(put 'helm-kill-ring-run-search-from-string 'helm-only t)
+(helm-make-command-from-action helm-kill-ring-run-search-from-string
+    "Run helm-occur from kill ring."
+  'helm-kill-ring-search-from-string)
 
 (defun helm-kill-ring-action-delete (_candidate)
   "Delete marked candidates from `kill-ring'."
@@ -247,22 +246,13 @@ yanked string."
             helm-visible-mark-overlays nil))
     (helm-force-update (helm-aif (helm-get-selection nil t) (regexp-quote it)))))
 
-(defun helm-kill-ring-run-persistent-delete ()
+(helm-make-persistent-command-from-action helm-kill-ring-run-persistent-delete
   "Delete current candidate without quitting."
-  (interactive)
-  (with-helm-alive-p
-    (helm-set-attr 'quick-delete '(helm-kill-ring-persistent-delete . never-split))
-    (helm-execute-persistent-action 'quick-delete)))
-(put 'helm-kill-ring-run-persistent-delete 'helm-only t)
+  'quick-delete 'helm-kill-ring-persistent-delete)
 
-(defun helm-kill-ring-delete ()
-  "Delete marked candidates from `kill-ring'.
-
-This is a command for `helm-kill-ring-map'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-kill-ring-action-delete)))
-(put 'helm-kill-ring-delete 'helm-only t)
+(helm-make-command-from-action helm-kill-ring-delete
+  "Delete marked candidates from `kill-ring'."
+  'helm-kill-ring-action-delete)
 
 
 ;;;; <Mark ring>
@@ -301,7 +291,7 @@ This is a command for `helm-kill-ring-map'."
     (helm-aif (marker-buffer candidate)
         (progn
           (switch-to-buffer it)
-          (helm-log-run-hook 'helm-goto-line-before-hook)
+          (helm-log-run-hook "helm-mark-ring-default-action" 'helm-goto-line-before-hook)
           (helm-match-line-cleanup)
           (with-helm-current-buffer
             (unless helm-yank-point (setq helm-yank-point (point))))
@@ -495,7 +485,8 @@ This is a command for `helm-kill-ring-map'."
 
 ;;;###autoload
 (defun helm-all-mark-rings ()
-  "Preconfigured `helm' for `helm-source-global-mark-ring' and \
+  "Preconfigured `helm' for mark rings.
+Source used are `helm-source-global-mark-ring' and
 `helm-source-mark-ring'."
   (interactive)
   (helm :sources '(helm-source-mark-ring
@@ -522,6 +513,7 @@ First call open the kill-ring browser, next calls move to next line."
   (let ((enable-recursive-minibuffers t))
     (helm :sources helm-source-kill-ring
           :buffer "*helm kill ring*"
+          ;; :display-source-at-screen-top nil
           :resume 'noresume
           :allow-nest t)))
 
@@ -529,8 +521,7 @@ First call open the kill-ring browser, next calls move to next line."
 (defun helm-execute-kmacro ()
   "Preconfigured helm for keyboard macros.
 Define your macros with `f3' and `f4'.
-See (info \"(emacs) Keyboard Macros\") for detailed infos.
-This command is useful when used with persistent action."
+See (info \"(emacs) Keyboard Macros\") for detailed infos."
   (interactive)
   (let ((helm-quit-if-no-candidate
          (lambda () (message "No kbd macro has been defined"))))
@@ -547,7 +538,8 @@ This command is useful when used with persistent action."
               (cl-loop for c in candidates collect
                        (propertize (help-key-description (car c) nil)
                                    'helm-realvalue c)))
-            :persistent-help "Execute kmacro"
+            :persistent-action 'ignore
+            :persistent-help "Do nothing"
             :help-message 'helm-kmacro-help-message
             :action
             (helm-make-actions
@@ -558,15 +550,44 @@ This command is useful when used with persistent action."
              "Delete marked macros"
              'helm-kbd-macro-delete-macro
              "Edit marked macro"
-             'helm-kbd-macro-edit-macro)
+             'helm-kbd-macro-edit-macro
+             "Insert kbd macro"
+             'helm-kbd-macro-insert-macro)
             :group 'helm-ring)
           :buffer "*helm kmacro*")))
 
-(defun helm-kbd-macro-execute (candidate)
-  ;; Move candidate on top of list for next use.
+(defun helm-kbd-macro-make-current (candidate)
+  "Make CANDIDATE macro the current one."
   (setq kmacro-ring (delete candidate kmacro-ring))
   (kmacro-push-ring)
-  (kmacro-split-ring-element candidate)
+  (kmacro-split-ring-element candidate))
+
+(defun helm-kbd-macro-insert-macro (candidate)
+  "Insert macro at point in `helm-current-buffer'."
+  (let ((desc (read-string "Describe macro briefly: "))
+        name key)
+    (while (fboundp (setq name (intern (read-string "New name for macro: "))))
+      (message "Symbol `%s' already exists, choose another name" name)
+      (sit-for 1.5))
+    (helm-kbd-macro-make-current candidate)
+    (kmacro-name-last-macro name)
+    (when (y-or-n-p "Bind macro to a new key?")
+      (helm-awhile (key-binding
+                    (setq key (read-key-sequence-vector "Bind macro to key: ")))
+        (message "`%s' already run command `%s', choose another one"
+                 (help-key-description key nil) it)
+        (sit-for 1.5))
+      (global-set-key key name))
+    (with-helm-current-buffer
+      (insert (format ";; %s%s\n"
+                      desc
+                      (and key (format " (bound to `%s')"
+                                       (help-key-description key nil)))))
+      (insert-kbd-macro name (not (null key))))))
+
+(defun helm-kbd-macro-execute (candidate)
+  ;; Move candidate on top of list for next use.
+  (helm-kbd-macro-make-current candidate)
   (kmacro-exec-ring-item
    candidate helm-current-prefix-arg))
 

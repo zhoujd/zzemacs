@@ -1,6 +1,6 @@
 ;;; helm-for-files.el --- helm-for-files and related. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ small.")
          (let ((helm-fuzzy-sort-fn 'helm-fuzzy-matching-sort-fn-preserve-ties-order))
            (setq helm-source-recentf
                  (helm-make-source "Recentf" 'helm-recentf-source
-                   :fuzzy-match helm-recentf-fuzzy-match)))))
+                   :fuzzy-match val)))))
 
 
 ;;; Files in current dir
@@ -164,7 +164,7 @@ Colorize only symlinks, directories and files."
                             'identity)
            for i in files
            for disp = (if (and helm-ff-transformer-show-only-basename
-                               (not (helm-dir-is-dot i))
+                               (not (helm-ff-dot-file-p i))
                                (not (and helm--url-regexp
                                          (string-match helm--url-regexp i)))
                                (not (string-match helm-ff-url-regexp i)))

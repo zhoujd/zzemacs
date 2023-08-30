@@ -1,6 +1,6 @@
 ;;; helm-misc.el --- Various functions for helm -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -198,11 +198,11 @@ It is added to `extended-command-history'.
     map))
 
 (defcustom helm-minibuffer-history-must-match t
-  "Allow inserting non matching elements when nil or 'confirm."
+  "Allow inserting non matching elements when nil or \\='confirm."
   :group 'helm-misc
   :type '(choice
           (const :tag "Must match" t)
-          (const :tag "Confirm" 'confirm)
+          (const :tag "Confirm" confirm)
           (const :tag "Always allow" nil)))
 
 (defcustom helm-minibuffer-history-key "C-r"
@@ -230,7 +230,7 @@ This mode is enabled by `helm-mode', so there is no need to enable it directly."
   :global t
   (if helm-minibuffer-history-mode
       (let ((key helm-minibuffer-history-key))
-        (cl-dolist (map '(minibuffer-local-completion-map
+        (dolist (map '(minibuffer-local-completion-map
                           minibuffer-local-filename-completion-map
                           minibuffer-local-filename-must-match-map ; Emacs 23.1.+
                           minibuffer-local-isearch-map
@@ -250,7 +250,7 @@ This mode is enabled by `helm-mode', so there is no need to enable it directly."
                 (define-key (symbol-value map)
                     (if (stringp key) (read-kbd-macro key) key)
                   'helm-minibuffer-history))))))
-    (cl-dolist (map '(minibuffer-local-completion-map
+    (dolist (map '(minibuffer-local-completion-map
                       minibuffer-local-filename-completion-map
                       minibuffer-local-filename-must-match-map
                       minibuffer-local-isearch-map

@@ -1,6 +1,6 @@
 ;;; helm-tags.el --- Helm for Etags. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 (require 'helm-grep)
 
 (defvar helm-etags-fuzzy-match)
-(declare-function ring-insert "ring")
+(declare-function xref-push-marker-stack "xref")
 
 
 (defgroup helm-tags nil
@@ -33,31 +33,27 @@
 
 (defcustom helm-etags-tag-file-name "TAGS"
   "Etags tag file name."
-  :type  'string
-  :group 'helm-tags)
+  :type  'string)
 
 (defcustom helm-etags-tag-file-search-limit 10
   "The limit level of directory to search tag file.
 Don't search tag file deeply if outside this value."
-  :type  'number
-  :group 'helm-tags)
+  :type  'number)
 
 (defcustom helm-etags-match-part-only 'tag
   "Allow choosing the tag part of CANDIDATE in `helm-source-etags-select'.
 A tag looks like this:
-    filename: \(defun foo
+    filename: (defun foo
 You can choose matching against the tag part (i.e \"(defun foo\"),
 or against the whole candidate (i.e \"(filename:5:(defun foo\")."
   :type '(choice
           (const :tag "Match only tag" tag)
-          (const :tag "Match all file+tag" all))
-  :group 'helm-tags)
+          (const :tag "Match all file+tag" all)))
 
 (defcustom helm-etags-execute-action-at-once-if-one t
   "Whether to jump straight to the selected tag if there's only
 one match."
-  :type 'boolean
-  :group 'helm-tags)
+  :type 'boolean)
 
 
 (defgroup helm-tags-faces nil
@@ -77,23 +73,25 @@ one match."
 ;;; Etags
 ;;
 ;;
-(defun helm-etags-run-switch-other-window ()
-  "Run switch to other window action from `helm-source-etags-select'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action
-     (lambda (c)
-       (helm-etags-action-goto 'find-file-other-window c)))))
-(put 'helm-etags-run-switch-other-window 'helm-only t)
+(defun helm-etags-find-file (candidate)
+  "Find file CANDIDATE from helm etags buffer."
+  (helm-etags-action-goto 'find-file candidate))
 
-(defun helm-etags-run-switch-other-frame ()
+(defun helm-etags-find-file-other-window (candidate)
+  "Find file other window from helm etags buffer."
+  (helm-etags-action-goto 'find-file-other-window candidate))
+
+(defun helm-etags-find-file-other-frame (candidate)
+  "Find file other frame from helm etags buffer."
+  (helm-etags-action-goto 'find-file-other-frame candidate))
+
+(helm-make-command-from-action helm-etags-run-switch-other-window
+  "Run switch to other window action from `helm-source-etags-select'."
+  'helm-etags-find-file-other-window)
+
+(helm-make-command-from-action helm-etags-run-switch-other-frame
   "Run switch to other frame action from `helm-source-etags-select'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action
-     (lambda (c)
-       (helm-etags-action-goto 'find-file-other-frame c)))))
-(put 'helm-etags-run-switch-other-frame 'helm-only t)
+  'helm-etags-find-file-other-frame)
 
 (defvar helm-etags-map
   (let ((map (make-sparse-keymap)))
@@ -122,8 +120,10 @@ Look recursively in parents directorys for a
       (expand-file-name helm-etags-tag-file-name current-dir))))
 
 (defun helm-etags-all-tag-files ()
-  "Return files from the following sources:
-  1) An automatically located file in the parent directories, by `helm-etags-get-tag-file'.
+  "Find Etags files.
+Return files from the following sources:
+  1) An automatically located file in the parent directories,
+     by `helm-etags-get-tag-file'.
   2) `tags-file-name', which is commonly set by `find-tag' command.
   3) `tags-table-list' which is commonly set by `visit-tags-table' command."
   (helm-fast-remove-dups
@@ -228,16 +228,9 @@ If there is no entry in cache, create one."
     :fuzzy-match helm-etags-fuzzy-match
     :help-message 'helm-etags-help-message
     :keymap helm-etags-map
-    :action '(("Go to tag" . (lambda (c)
-                               (helm-etags-action-goto 'find-file c)))
-              ("Go to tag in other window" . (lambda (c)
-                                               (helm-etags-action-goto
-                                                'find-file-other-window
-                                                c)))
-              ("Go to tag in other frame" . (lambda (c)
-                                              (helm-etags-action-goto
-                                               'find-file-other-frame
-                                               c))))
+    :action '(("Go to tag" . helm-etags-find-file)
+              ("Go to tag in other window" . helm-etags-find-file-other-window)
+              ("Go to tag in other frame" . helm-etags-find-file-other-frame))
     :group 'helm-tags
     :persistent-help "Go to line"
     :persistent-action (lambda (candidate)
@@ -253,8 +246,6 @@ If there is no entry in cache, create one."
          (setq helm-source-etags-select
                 (helm-etags-build-source))))
 
-(defvar find-tag-marker-ring)
-
 (defsubst helm-etags--file-from-tag (fname)
   (cl-loop for ext in
            (cons "" (remove "" tags-compression-info-list))
@@ -266,7 +257,7 @@ If there is no entry in cache, create one."
   "Helm default action to jump to an etags entry in other window."
   (require 'etags)
   (deactivate-mark t)
-  (helm-log-run-hook 'helm-goto-line-before-hook)
+  (helm-log-run-hook "helm-etags-action-goto " 'helm-goto-line-before-hook)
   (let* ((split (helm-grep-split-line candidate))
          (fname (cl-loop for tagf being the hash-keys of helm-etags-cache
                          for f = (expand-file-name
@@ -278,7 +269,7 @@ If there is no entry in cache, create one."
          (linum (string-to-number (cadr split))))
     (if (null fname)
         (error "file %s not found" fname)
-      (ring-insert find-tag-marker-ring (point-marker))
+      (xref-push-marker-stack)
       (funcall switcher fname)
       (helm-goto-line linum t)
       (when (search-forward elm nil t)

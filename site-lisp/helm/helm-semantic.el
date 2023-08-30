@@ -1,7 +1,7 @@
 ;;; helm-semantic.el --- Helm interface for Semantic -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2012 ~ 2017 Daniel Hackney <dan@haxney.org>
-;;               2012 ~ 2021  Thierry Volpiatto<thierry.volpiatto@gmail.com>
+;;               2012 ~ 2023  Thierry Volpiatto
 
 ;; Author: Daniel Hackney <dan@haxney.org>
 
@@ -83,7 +83,7 @@ you have completion on these functions with `C-M i' in the customize interface."
         (stylefn (or (with-helm-current-buffer
                        (assoc-default major-mode helm-semantic-display-style))
                      #'semantic-format-tag-summarize)))
-    (cl-dolist (tag tags)
+    (dolist (tag tags)
       (when (listp tag)
         (cl-case (setq cur-type (semantic-tag-class tag))
           ((function variable type)
@@ -119,11 +119,12 @@ you have completion on these functions with `C-M i' in the customize interface."
 (defun helm-semantic-default-action (_candidate &optional persistent)
   ;; By default, helm doesn't pass on the text properties of the selection.
   ;; Fix this.
-  (helm-log-run-hook 'helm-goto-line-before-hook)
+  (helm-log-run-hook "helm-semantic-default-action"
+                     'helm-goto-line-before-hook)
   (with-current-buffer helm-buffer
     (when (looking-at " ")
       (goto-char (next-single-property-change
-                  (point-at-bol) 'semantic-tag nil (point-at-eol))))
+                  (pos-bol) 'semantic-tag nil (pos-eol))))
     (let ((tag (get-text-property (point) 'semantic-tag)))
       (semantic-go-to-tag tag)
       (unless persistent

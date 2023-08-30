@@ -1,6 +1,6 @@
 ;;; helm-color.el --- colors and faces -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto 
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -86,37 +86,29 @@
 (defun helm-color-kill-rgb (candidate)
   (kill-new (helm-colors-get-rgb candidate)))
 
-(defun helm-color-run-insert-name ()
+(helm-make-command-from-action helm-color-run-insert-name
   "Insert name of color from `helm-source-colors'."
-  (interactive)
-  (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-insert-name)))
-(put 'helm-color-run-insert-name 'helm-only t)
+  'helm-color-insert-name)
 
-(defun helm-color-run-kill-name ()
+(helm-make-command-from-action helm-color-run-kill-name
   "Kill name of color from `helm-source-colors'."
-  (interactive)
-  (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-kill-name)))
-(put 'helm-color-run-kill-name 'helm-only t)
+  'helm-color-kill-name)
 
-(defun helm-color-run-insert-rgb ()
+(helm-make-command-from-action helm-color-run-insert-rgb
   "Insert RGB of color from `helm-source-colors'."
-  (interactive)
-  (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-insert-rgb)))
-(put 'helm-color-run-insert-rgb 'helm-only t)
+  'helm-color-insert-rgb)
 
-(defun helm-color-run-kill-rgb ()
+(helm-make-command-from-action helm-color-run-kill-rgb
   "Kill RGB of color from `helm-source-colors'."
-  (interactive)
-  (with-helm-alive-p (helm-exit-and-execute-action 'helm-color-kill-rgb)))
-(put 'helm-color-run-kill-rgb 'helm-only t)
+  'helm-color-kill-rgb)
 
 (defvar helm-color-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map helm-map)
-    (define-key map (kbd "C-c n") 'helm-color-run-insert-name)
-    (define-key map (kbd "C-c N") 'helm-color-run-kill-name)
-    (define-key map (kbd "C-c r") 'helm-color-run-insert-rgb)
-    (define-key map (kbd "C-c R") 'helm-color-run-kill-rgb)
+    (define-key map (kbd "C-c n") #'helm-color-run-insert-name)
+    (define-key map (kbd "C-c N") #'helm-color-run-kill-name)
+    (define-key map (kbd "C-c r") #'helm-color-run-insert-rgb)
+    (define-key map (kbd "C-c R") #'helm-color-run-kill-rgb)
     map))
 
 (defvar helm-source-colors

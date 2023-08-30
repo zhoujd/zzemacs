@@ -1,6 +1,6 @@
 ;;; helm-occur.el --- Incremental Occur for Helm. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2012 ~ 2021 Thierry Volpiatto <thierry.volpiatto@gmail.com>
+;; Copyright (C) 2012 ~ 2023 Thierry Volpiatto
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 (declare-function helm-grep-split-line "helm-grep")
 (declare-function helm-grep-highlight-match "helm-grep")
 (declare-function helm-comp-read "helm-mode")
+
+(defvar helm-current-error)
 
 ;;; Internals
 ;;
@@ -65,7 +67,6 @@ Don't set it to any value, it will have no effect.")
     ("Save buffer" . helm-occur-save-results)
     )
   "Actions for helm-occur."
-  :group 'helm-occur
   :type '(alist :key-type string :value-type function))
 
 (defcustom helm-occur-use-ioccur-style-keys nil
@@ -73,7 +74,6 @@ Don't set it to any value, it will have no effect.")
 
 Note that if you define this variable with `setq' your change will
 have no effect, use customize instead."
-  :group 'helm-occur
   :type 'boolean
   :set (lambda (var val)
          (set var val)
@@ -86,12 +86,10 @@ have no effect, use customize instead."
 
 (defcustom helm-occur-always-search-in-current nil
   "Helm multi occur always search in current buffer when non--nil."
-  :group 'helm-occur
   :type 'boolean)
 
 (defcustom helm-occur-truncate-lines t
   "Truncate lines in occur buffer when non nil."
-  :group 'helm-occur
   :type 'boolean)
 
 (defcustom helm-occur-auto-update-on-resume nil
@@ -100,7 +98,6 @@ noask => Always update without asking
 nil   => Don't update but signal buffer needs update
 never => Never update and do not signal buffer needs update
 Any other non--nil value update after confirmation."
-  :group 'helm-regexp
   :type '(radio :tag "Allow auto updating helm-occur buffer when outdated."
           (const :tag "Always update without asking" noask)
           (const :tag "Never update and do not signal buffer needs update" never)
@@ -109,38 +106,62 @@ Any other non--nil value update after confirmation."
 
 (defcustom helm-occur-candidate-number-limit 99999
   "Value of `helm-candidate-number-limit' for helm-occur."
-  :group 'helm-occur
   :type 'integer)
 
 (defcustom helm-occur-buffer-substring-fn-for-modes
   '((mu4e-headers-mode . buffer-substring))
-  "Function to use to display buffer contents for major-mode.
+  "Function used to display buffer contents per major-mode.
 
-Can be one of `buffer-substring' or `buffer-substring-no-properties'.
+Use this to display lines with their text properties in helm-occur
+buffer. Can be one of `buffer-substring' or `buffer-substring-no-properties'.
+See `helm-occur-buffer-substring-default-mode' to setup this globally. 
 
 Note that when using `buffer-substring' initialization will be slower."
-  :group 'helm-regexp
   :type '(alist :key-type (symbol :tag "Mode")
-                :value-type (radio (const :tag "With text properties" buffer-substring)
-                                   (const :tag "Without text properties" buffer-substring-no-properties))))
+                :value-type (radio (const :tag "With text properties"
+                                    buffer-substring)
+                                   (const :tag "Without text properties"
+                                    buffer-substring-no-properties))))
+
+(defcustom helm-occur-buffer-substring-default-mode
+  'buffer-substring-no-properties
+  "Function used to display buffer contents in helm-occur buffer.
+
+Default mode for major modes not defined in
+`helm-occur-buffer-substring-fn-for-modes'.
+Can be one of `buffer-substring' or `buffer-substring-no-properties'.
+
+Note that when using `buffer-substring' initialization will be
+slower.  If buffer-substring, all buffers with the modes not
+defined in helm-occur-buffer-substring-fn-for-modes will be
+displayed with colors and properties in the helm-occur buffer"
+  :type '(radio
+          (const :tag "With text properties" buffer-substring)
+          (const :tag "Without text properties" buffer-substring-no-properties)))
 
 (defcustom helm-occur-keep-closest-position t
   "When non nil select closest candidate from point after update.
-This happen only in `helm-source-occur' which is always related to `current-buffer'."
-  :group 'helm-regexp
+This happen only in `helm-source-occur' which is always related to
+`current-buffer'."
+  :type 'boolean)
+
+(defcustom helm-occur-ignore-diacritics nil
+  "When non nil helm-occur will ignore diacritics in patterns."
+  :type 'boolean)
+
+(defcustom helm-occur-match-shorthands nil
+  "Transform pattern according to `read-symbol-shorthands' when non nil."
   :type 'boolean)
 
 (defface helm-moccur-buffer
   `((t ,@(and (>= emacs-major-version 27) '(:extend t))
        :foreground "DarkTurquoise" :underline t))
-  "Face used to highlight occur buffer names."
-  :group 'helm-occur)
+  "Face used to highlight occur buffer names.")
 
 (defface helm-resume-need-update
   `((t ,@(and (>= emacs-major-version 27) '(:extend t))
        :background "red"))
-  "Face used to flash occur buffer when it needs update."
-  :group 'helm-occur)
+  "Face used to flash occur buffer when it needs update.")
 
 
 (defun helm-occur--select-closest-candidate ()
@@ -158,7 +179,7 @@ This happen only in `helm-source-occur' which is always related to `current-buff
                     end (point-max))
             (helm-awhile (helm-get-next-header-pos)
               (when (string= name (buffer-substring-no-properties
-                                   (point-at-bol) (point-at-eol)))
+                                   (pos-bol) (pos-eol)))
                 (forward-line 1)
                 (setq beg (point)
                       end (or (helm-get-next-header-pos) (point-max)))
@@ -214,11 +235,15 @@ engine beeing completely different and also much faster."
         ;; When user mark defun with `mark-defun' with intention of
         ;; using helm-occur on this region, it is relevant to use the
         ;; thing-at-point located at previous position which have been
-        ;; pushed to `mark-ring'.
-        (setq def (save-excursion
-                    (goto-char (setq pos (car mark-ring)))
-                    (helm-aif (thing-at-point 'symbol) (regexp-quote it))))
-        (narrow-to-region (region-beginning) (region-end)))
+        ;; pushed to `mark-ring', if it's within the active region.
+        (let ((beg (region-beginning))
+              (end (region-end))
+              (prev-pos (car mark-ring)))
+          (when (and prev-pos (>= prev-pos beg) (< prev-pos end))
+            (setq def (save-excursion
+                        (goto-char (setq pos prev-pos))
+                        (helm-aif (thing-at-point 'symbol) (regexp-quote it)))))
+          (narrow-to-region beg end)))
       (unwind-protect
            (helm :sources 'helm-source-occur
                  :buffer "*helm occur*"
@@ -246,17 +271,45 @@ engine beeing completely different and also much faster."
 (defun helm-occur-transformer (candidates source)
   "Return CANDIDATES prefixed with line number."
   (cl-loop with buf = (helm-get-attr 'buffer-name source)
-           for c in candidates collect
-           (when (string-match helm-occur--search-buffer-regexp c)
-             (let ((linum (match-string 1 c))
-                   (disp (match-string 2 c)))
-               (cons (format "%s:%s"
-                             (propertize
-                              linum 'face 'helm-grep-lineno
-                              'help-echo (buffer-file-name
-                                          (get-buffer buf)))
-                             disp)
-                     (string-to-number linum))))))
+           for c in candidates
+           for disp-linum = (when (string-match helm-occur--search-buffer-regexp c)
+                              (let ((linum (match-string 1 c))
+                                    (disp (match-string 2 c)))
+                                (list
+                                 linum
+                                 (format "%s:%s"
+                                         (propertize
+                                          linum 'face 'helm-grep-lineno
+                                          'help-echo (buffer-file-name
+                                                      (get-buffer buf)))
+                                         disp))))
+           for linum = (car disp-linum)
+           for disp = (cadr disp-linum)
+           when (and disp (not (string= disp "")))
+           collect (cons disp (string-to-number linum))))
+
+(defvar helm-occur--gshorthands nil)
+(defun helm-occur-symbol-shorthands-pattern-transformer (pattern buffer gshorthands)
+  "Maybe transform PATTERN to its `read-symbol-shorthands' counterpart in BUFFER.
+
+GSHORTHANDS is the concatenation of all `read-symbol-shorthands' value found in
+all buffers i.e. `buffer-list'.
+When GSHORTHANDS is nil use PATTERN unmodified."
+  (if gshorthands
+      (let* ((lshorthands (buffer-local-value 'read-symbol-shorthands buffer))
+             (prefix (cl-loop for (k . v) in gshorthands
+                              if (string-match (concat "\\`" k) pattern)
+                              return k
+                              else
+                              if (string-match (concat "\\`" v) pattern)
+                              return v))
+             (lgstr (cdr (or (assoc prefix gshorthands)
+                             (rassoc prefix gshorthands)))))
+        (if (and lgstr lshorthands)
+            (concat (car (rassoc lgstr lshorthands))
+                    (replace-regexp-in-string prefix "" pattern))
+          pattern))
+    pattern))
 
 (defclass helm-moccur-class (helm-source-in-buffer)
   ((buffer-name :initarg :buffer-name
@@ -267,59 +320,73 @@ engine beeing completely different and also much faster."
 
 (defun helm-occur-build-sources (buffers &optional source-name)
   "Build sources for `helm-occur' for each buffer in BUFFERS list."
-  (cl-loop for buf in buffers
-           for bname = (buffer-name buf)
-           collect
-           (helm-make-source (or source-name bname)
-               'helm-moccur-class
-             :header-name (lambda (name)
-                            (format "HO [%s]" (if (string= name "Helm occur")
-                                                  bname name)))
-             :buffer-name bname
-             :match-part
-             (lambda (candidate)
-               ;; The regexp should match what is in candidate buffer,
-               ;; not what is displayed in helm-buffer e.g. "12 foo"
-               ;; and not "12:foo".
-               (when (string-match helm-occur--search-buffer-regexp
-                                   candidate)
-                 (match-string 2 candidate)))
-             :search (lambda (pattern)
-                       (when (string-match "\\`\\^\\([^ ]*\\)" pattern)
-                         (setq pattern (concat "^[0-9]* \\{1\\}" (match-string 1 pattern))))
-                       (condition-case _err
-                           (re-search-forward pattern nil t)
-                         (invalid-regexp nil)))
-             :init `(lambda ()
-                      (with-current-buffer ,buf
-                        (let* ((bsfn (or (cdr (assq
-                                               major-mode
-                                               helm-occur-buffer-substring-fn-for-modes))
-                                         #'buffer-substring-no-properties))
-                               (contents (funcall bsfn (point-min) (point-max))))
-                          (helm-set-attr 'get-line bsfn)
-                          (with-current-buffer (helm-candidate-buffer 'global)
-                            (insert contents)
-                            (goto-char (point-min))
-                            (let ((linum 1))
-                              (insert (format "%s " linum))
-                              (while (re-search-forward "\n" nil t)
-                                (cl-incf linum)
-                                (insert (format "%s " linum))))))))
-             :filtered-candidate-transformer 'helm-occur-transformer
-             :help-message 'helm-moccur-help-message
-             :nomark t
-             :migemo t
-             ;; Needed for resume.
-             :history 'helm-occur-history
-             :candidate-number-limit helm-occur-candidate-number-limit
-             :action 'helm-occur-actions
-             :requires-pattern 2
-             :follow 1
-             :group 'helm-occur
-             :keymap helm-occur-map
-             :resume 'helm-occur-resume-fn
-             :moccur-buffers buffers)))
+  (setq helm-occur--gshorthands nil)
+  (and helm-occur-match-shorthands
+       (setq helm-occur--gshorthands
+             (cl-loop for b in (buffer-list)
+                      for rss = (buffer-local-value
+                                 'read-symbol-shorthands
+                                 b)
+                      when rss append rss)))
+  (let (sources)
+    (dolist (buf buffers)
+      (let ((bname (buffer-name buf)))
+        (push (helm-make-source (or source-name bname)
+                  'helm-moccur-class
+                :header-name (lambda (name)
+                               (format "HO [%s]" (if (string= name "Helm occur")
+                                                     bname name)))
+                :buffer-name bname
+                :match-part
+                (lambda (candidate)
+                  ;; The regexp should match what is in candidate buffer,
+                  ;; not what is displayed in helm-buffer e.g. "12 foo"
+                  ;; and not "12:foo".
+                  (when (string-match helm-occur--search-buffer-regexp
+                                      candidate)
+                    (match-string 2 candidate)))
+                :diacritics helm-occur-ignore-diacritics
+                :search (lambda (pattern)
+                          (when (string-match "\\`\\^\\([^ ]*\\)" pattern)
+                            (setq pattern (concat "^[0-9]* \\{1\\}" (match-string 1 pattern))))
+                          (condition-case _err
+                              (re-search-forward pattern nil t)
+                            (invalid-regexp nil)))
+                :pattern-transformer (lambda (pattern)
+                                       (helm-occur-symbol-shorthands-pattern-transformer
+                                        pattern buf helm-occur--gshorthands))
+                :init (lambda ()
+                        (with-current-buffer buf
+                          (let* ((bsfn (or (cdr (assq
+                                                 major-mode
+                                                 helm-occur-buffer-substring-fn-for-modes))
+                                           helm-occur-buffer-substring-default-mode))
+                                 (contents (funcall bsfn (point-min) (point-max))))
+                            (helm-set-attr 'get-line bsfn)
+                            (with-current-buffer (helm-candidate-buffer 'global)
+                              (insert contents)
+                              (goto-char (point-min))
+                              (let ((linum 1))
+                                (insert (format "%s " linum))
+                                (while (re-search-forward "\n" nil t)
+                                  (cl-incf linum)
+                                  (insert (format "%s " linum))))))))
+                :filtered-candidate-transformer 'helm-occur-transformer
+                :help-message 'helm-moccur-help-message
+                :nomark t
+                :migemo t
+                ;; Needed for resume.
+                :history 'helm-occur-history
+                :candidate-number-limit helm-occur-candidate-number-limit
+                :action 'helm-occur-actions
+                :requires-pattern 2
+                :follow 1
+                :group 'helm-occur
+                :keymap helm-occur-map
+                :resume 'helm-occur-resume-fn
+                :moccur-buffers buffers)
+              sources)))
+    (nreverse sources)))
 
 (defun helm-multi-occur-1 (buffers &optional input)
   "Run `helm-occur' on a list of buffers.
@@ -358,7 +425,8 @@ Each buffer's result is displayed in a separated source."
         (helm :sources sources
               :buffer "*helm moccur*"
               :history 'helm-occur-history
-              :default (helm-aif (thing-at-point 'symbol) (regexp-quote it))
+              :default (helm-aif (thing-at-point 'symbol)
+                           (regexp-quote it))
               :input input
               :truncate-lines helm-occur-truncate-lines)
       (remove-hook 'helm-after-update-hook 'helm-occur--select-closest-candidate))))
@@ -381,12 +449,14 @@ METHOD can be one of buffer, buffer-other-window, buffer-other-frame."
     (with-current-buffer buf
       (helm-goto-line lineno)
       ;; Move point to the nearest matching regexp from bol.
-      (cl-loop for reg in split-pat
+      (cl-loop for str in split-pat
+               for reg = (helm-occur-symbol-shorthands-pattern-transformer
+                          str (get-buffer buf) helm-occur--gshorthands)
                when (save-excursion
                       (condition-case _err
                           (if helm-migemo-mode
-                              (helm-mm-migemo-forward reg (point-at-eol) t)
-                            (re-search-forward reg (point-at-eol) t))
+                              (helm-mm-migemo-forward reg (pos-eol) t)
+                            (re-search-forward reg (pos-eol) t))
                         (invalid-regexp nil)))
                collect (match-beginning 0) into pos-ls
                finally (when pos-ls (goto-char (apply #'min pos-ls)))))))
@@ -408,32 +478,21 @@ Same as `helm-occur-goto-line' but go in new frame."
   (helm-occur-action
    candidate 'buffer-other-frame))
 
-(defun helm-occur-run-goto-line-ow ()
+(helm-make-command-from-action helm-occur-run-goto-line-ow
   "Run goto line other window action from `helm-occur'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-occur-goto-line-ow)))
-(put 'helm-occur-run-goto-line-ow 'helm-only t)
+  'helm-occur-goto-line-ow)
 
-(defun helm-occur-run-goto-line-of ()
+(helm-make-command-from-action helm-occur-run-goto-line-of
   "Run goto line new frame action from `helm-occur'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-occur-goto-line-of)))
-(put 'helm-occur-run-goto-line-of 'helm-only t)
+  'helm-occur-goto-line-of)
 
-(defun helm-occur-run-default-action ()
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-occur-goto-line)))
-(put 'helm-occur-run-default-action 'helm-only t)
+(helm-make-command-from-action helm-occur-run-default-action
+    "Goto matching line from helm-occur buffer."
+    'helm-occur-goto-line)
 
-(defun helm-occur-run-save-buffer ()
+(helm-make-command-from-action helm-occur-run-save-buffer
   "Run moccur save results action from `helm-moccur'."
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'helm-occur-save-results)))
-(put 'helm-moccur-run-save-buffer 'helm-only t)
+  'helm-occur-save-results)
 
 (defun helm-occur-right ()
   "`helm-occur' action for right arrow.
@@ -474,11 +533,15 @@ persistent action."
 
 (defun helm-occur-mode-goto-line ()
   (interactive)
+  (setq next-error-last-buffer (current-buffer))
+  (setq-local helm-current-error (point-marker))
   (helm-aif (get-text-property (point) 'helm-realvalue)
     (progn (helm-occur-goto-line it) (helm-match-line-cleanup-pulse))))
 
 (defun helm-occur-mode-goto-line-ow ()
   (interactive)
+  (setq next-error-last-buffer (current-buffer))
+  (setq-local helm-current-error (point-marker))
   (helm-aif (get-text-property (point) 'helm-realvalue)
     (progn (helm-occur-goto-line-ow it) (helm-match-line-cleanup-pulse))))
 
@@ -534,8 +597,8 @@ persistent action."
           (forward-line -2)
           (while (not (eobp))
             (if (helm-pos-header-line-p)
-                (let ((beg (point-at-bol))
-                      (end (point-at-eol)))
+                (let ((beg (pos-bol))
+                      (end (pos-eol)))
                   (set-text-properties beg (1+ end) nil)
                   (delete-region (1- beg) end))
               (helm-aif (setq buf-name (assoc-default
@@ -546,10 +609,10 @@ persistent action."
                                         'face 'helm-moccur-buffer
                                         'helm-realvalue (get-text-property (point) 'helm-realvalue)))
                     (add-text-properties
-                     (point-at-bol) (point-at-eol)
+                     (pos-bol) (pos-eol)
                      `(buffer-name ,buf-name))
                     (add-text-properties
-                     (point-at-bol) (point-at-eol)
+                     (pos-bol) (pos-eol)
                      `(keymap ,map
                               help-echo ,(concat
                                           (buffer-file-name
@@ -564,6 +627,7 @@ persistent action."
       (buffer-enable-undo)
       (helm-occur-mode))
     (pop-to-buffer buf)
+    (setq next-error-last-buffer (get-buffer buf))
     (message "Helm occur Results saved in `%s' buffer" buf)))
 
 (defun helm-occur-mode-mouse-goto-line (event)
@@ -583,7 +647,7 @@ persistent action."
 
 (defun helm-occur-buffer-substring-with-linums ()
   "Return current-buffer contents as a string with all lines
-numbered.  The property 'buffer-name is added to the whole string."
+numbered.  The property \\='buffer-name is added to the whole string."
   (let ((bufstr (buffer-substring-no-properties (point-min) (point-max)))
         (bufname (buffer-name)))
     (with-temp-buffer
@@ -634,11 +698,11 @@ numbered.  The property 'buffer-name is added to the whole string."
                                 ;; `helm-mm-search' puts point at eol.
                                 (forward-line 0)
                                 (re-search-forward "^\\([0-9]*\\)\\s-\\{1\\}\\(.*\\)$"
-                                                   (point-at-eol) t))
+                                                   (pos-eol) t))
                           (setq linum (string-to-number (match-string 1))
                                 mpart (match-string 2)))
                      ;; Match part after line number.
-                     when (and mpart (string-match pattern mpart))
+                     when (and mpart (helm-mm-match mpart pattern))
                      for line = (format "%s:%d:%s"
                                         (get-text-property (point) 'buffer-name)
                                         linum
@@ -652,7 +716,8 @@ numbered.  The property 'buffer-name is added to the whole string."
                            "\n"))))
           (when (fboundp 'wgrep-cleanup-overlays)
             (wgrep-cleanup-overlays (point-min) (point-max)))
-          (message "Reverting buffer done"))))))
+          (message "Reverting buffer done")
+          (when executing-kbd-macro (sit-for 1)))))))
 
 (defun helm-occur-filter-one-by-one (candidate)
   "`filter-one-by-one' function for `helm-source-moccur'."
@@ -684,9 +749,34 @@ Special commands:
     (set (make-local-variable 'revert-buffer-function)
          #'helm-occur-mode--revert-buffer-function)
     (set (make-local-variable 'helm-occur-mode--last-pattern)
-         helm-input))
+         helm-input)
+    (set (make-local-variable 'next-error-function)
+         #'helm-occur-next-error)
+    (set (make-local-variable 'helm-current-error) nil))
 (put 'helm-moccur-mode 'helm-only t)
 
+(defun helm-occur-next-error (&optional argp reset)
+  "Goto ARGP position from a `helm-occur-mode' buffer.
+RESET non-nil means rewind to the first match.
+This is the `next-error-function' for `helm-occur-mode'."
+  (interactive "p")
+  (goto-char (cond (reset (point-min))
+		   ((and (< argp 0) helm-current-error)
+                    (line-beginning-position))
+		   ((and (> argp 0) helm-current-error)
+                    (line-end-position))
+		   ((point))))
+  (let ((fun (if (> argp 0)
+                 #'next-single-property-change
+               #'previous-single-property-change)))
+    (helm-aif (funcall fun (point) 'buffer-name)
+        (progn
+          (goto-char it)
+          (forward-line 0)
+          ;; `helm-current-error' is set in
+          ;; `helm-occur-mode-goto-line'.
+          (helm-occur-mode-goto-line))
+      (user-error "No more matches"))))
 
 ;;; Resume
 ;;
@@ -735,7 +825,8 @@ Special commands:
                                            (point))
                                          (point-max))))
                    (overlay-put ov 'face 'helm-resume-need-update)
-                   (sit-for 0.3) (delete-overlay ov)
+                   (sit-for 0)
+                   (delete-overlay ov)
                    (message "[Helm occur Buffer outdated (C-c C-u to update)]")))))
             (unless buffer-is-modified
               (with-helm-after-update-hook

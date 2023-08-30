@@ -78,6 +78,18 @@
     (when (file-exists-p venv)
       (pyvenv-activate venv))))
 
+;;custom indent
+(defun zz:python-indent (num)
+  (interactive "nIndent: ")
+  (eval-expression
+   '(progn
+      (setq tab-width num)
+      (setq python-shift-right num)
+      (setq python-shift-left num)
+      (setq python-indent num)
+      ))
+  (message "Select and press TAB to indent: %d" num))
+
 (defun zz:py-indent-4 ()
   (setq tab-width 4)
   (setq python-shift-right 4)

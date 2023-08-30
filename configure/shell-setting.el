@@ -12,6 +12,8 @@
 ;;;Modify indent for shell mode
 ;;M-x eval-expression
 ;;(setq sh-basic-offset 2)
+;;(setq-default sh-indent-for-case-label 0)
+;;(setq-default sh-indent-for-case-alt '+)
 
 (require 'comint)
 
@@ -400,6 +402,14 @@ Dmitriy Igrishin's patched version of comint.el."
         (zz:create-shell-buffer "*trans shell*")
         (message "Cannot find trans!"))
     ))
+
+;;custom indent
+(defun zz:shell-indent (num)
+  (interactive "nIndent: ")
+  (eval-expression
+   '(progn
+      (setq sh-basic-offset num)))
+  (message "Select and press TAB to indent: %d" num))
 
 ;;company-shell
 ;(require 'company-shell)

@@ -1,7 +1,7 @@
 ;;;; gdb-setting.el --- gdb common file
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
-;;(setq gdb-use-separate-io-buffer 1)
+(setq gud-gdb-command-name "gdb -q --fullname")
 
 (defun zz:gud-break-remove ()
   "Set/clear breakpoin."
@@ -23,17 +23,17 @@
   (gdb-restore-windows)
   (gud-refresh))
 
-(add-hook
- 'gdb-mode-hook
- (lambda ()
-   (define-key gud-mode-map [tab] 'company-complete-selection)))
-
 ;;realgud
 (when-emacs25
  (zz:load-path "site-lisp/realgud")
  (require 'realgud)
  (zz:load-path "site-lisp/realgud-lldb")
  (require 'realgud-lldb))
+
+(add-hook
+ 'gdb-mode-hook
+ (lambda ()
+   (define-key gud-mode-map [tab] 'company-complete-selection)))
 
 
 (provide 'gdb-setting)

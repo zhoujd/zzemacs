@@ -19,6 +19,7 @@ install_package() {
             sudo apt install -y w3m
             sudo apt install -y silversearcher-ag
             sudo apt install -y socat
+            sudo apt install -y perl-doc
             ;;
         "CentOS" )
             sudo yum install -y cscope

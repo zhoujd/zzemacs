@@ -99,6 +99,7 @@
 
 
 ;;helm-perldoc
+;;Ubuntu: sudo apt install perl-doc
 (zz:load-path "site-lisp/helm-perldoc")
 (require 'helm-perldoc)
 

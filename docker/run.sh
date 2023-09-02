@@ -22,25 +22,31 @@ RUN_PARAM=(
     -v $ZZEMACS_ROOT/.emacs:$REMOTE_HOME/.emacs
 )
 
+EXEC_PARAM=(
+    -e DISPLAY=$DISPLAY
+    -e SHELL=/bin/bash
+    -u $REMOTE_USER
+)
+
 EMACS_PARAM=(
     -nw
 )
 
 CTN_NAME=zzemacs-001
+IMG_NAME=ubuntu:zach
 
 case $1 in
     start )
-        docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ubuntu:zach
+        docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ${IMG_NAME}
         ;;
     stop )
-        docker stop ${CTN_NAME}
-        docker rm ${CTN_NAME}
+        docker stop ${CTN_NAME} && docker rm ${CTN_NAME}
         ;;
     emacs )
-        docker exec -it ${CTN_NAME} emacs ${EMACS_PARAM[@]}
+        docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} emacs ${EMACS_PARAM[@]}
         ;;
     shell )
-        docker exec -it ${CTN_NAME} bash -l
+        docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} bash -l
         ;;
     status )
         docker ps | grep ${CTN_NAME}

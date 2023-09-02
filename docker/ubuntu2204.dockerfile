@@ -10,7 +10,6 @@ RUN apt-get update \
         && apt-get install -y emacs perl-doc \
         && apt-get autoclean
 
-## Setup User
 ARG USER=zach
 ARG HOME=/home/$USER
 ARG UID=1000
@@ -20,10 +19,8 @@ RUN groupadd -g $GID $USER
 RUN useradd -d $HOME -s /bin/bash -m $USER -u $UID -g $GID \
         && echo $USER:$PASSWD | chpasswd \
         && adduser $USER sudo
-
 RUN echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER
 
-## Setup SSH
 RUN mkdir -p /var/run/sshd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
@@ -32,15 +29,12 @@ RUN sed -i 's/#X11Forwarding yes/X11Forwarding yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#X11DisplayOffset 10/X11DisplayOffset 10/g' /etc/ssh/sshd_config
 RUN sed -i 's/#X11UseLocalhost yes/X11UseLocalhost yes/g' /etc/ssh/sshd_config
 
-## Setup Docker
 ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER
 
-## Setup Run
 WORKDIR $HOME
 USER $USER
 ENV HOME $HOME
 
-## Run CMD
 CMD ["sudo", "-H", "/usr/sbin/sshd", "-D"]

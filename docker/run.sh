@@ -8,6 +8,7 @@ REMOTE_USER=$USER
 REMOTE_HOME=$HOME
 
 RUN_PARAM=(
+    --privileged
     -e DISPLAY=$DISPLAY
     -e SHELL=/bin/bash
     -h $REMOTE_HOST
@@ -24,4 +25,23 @@ EMACS_PARAM=(
     -nw
 )
 
-docker run -it --rm --name=zzemacs-001 ${RUN_PARAM[@]} ubuntu:zach emacs ${EMACS_PARAM[@]}
+CTN_NAME=zzemacs-001
+
+case $1 in
+    start )
+        docker run -d -u root --name=${CTN_NAME} ${RUN_PARAM[@]} ubuntu:zach
+        ;;
+    stop )
+        docker stop ${CTN_NAME}
+        docker rm ${CTN_NAME}
+        ;;
+    emacs )
+        docker exec -it ${CTN_NAME} emacs ${EMACS_PARAM[@]}
+        ;;
+    shell )
+        docker exec -it ${CTN_NAME} bash -l
+        ;;
+    * )
+        echo "Usage: $(basename $0) {start|stop|shell|emacs}"
+        ;;
+esac

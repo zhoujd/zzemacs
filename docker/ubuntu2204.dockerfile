@@ -16,11 +16,12 @@ ARG HOME=/home/$USER
 ARG UID=1000
 ARG GID=1000
 ARG PASSWD=123456
-
 RUN groupadd -g $GID $USER
 RUN useradd -d $HOME -s /bin/bash -m $USER -u $UID -g $GID \
         && echo $USER:$PASSWD | chpasswd \
         && adduser $USER sudo
+
+RUN echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER
 
 ## Setup SSH
 RUN mkdir -p /var/run/sshd
@@ -35,6 +36,5 @@ WORKDIR $HOME
 USER $USER
 ENV HOME $HOME
 
-RUN touch ~/.sudo_as_admin_successful
-
-CMD ["/usr/sbin/sshd", "-D"]
+## Run CMD
+CMD ["sudo", "-H", "/usr/sbin/sshd", "-D"]

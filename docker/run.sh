@@ -24,4 +24,4 @@ EMACS_PARAM=(
     -nw
 )
 
-docker run -it ${RUN_PARAM[@]} ubuntu:zach emacs ${EMACS_PARAM[@]}
+docker run -it --rm --name=zzemacs-001 ${RUN_PARAM[@]} ubuntu:zach emacs ${EMACS_PARAM[@]}

@@ -29,7 +29,7 @@ CTN_NAME=zzemacs-001
 
 case $1 in
     start )
-        docker run -d -u root --name=${CTN_NAME} ${RUN_PARAM[@]} ubuntu:zach
+        docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ubuntu:zach
         ;;
     stop )
         docker stop ${CTN_NAME}

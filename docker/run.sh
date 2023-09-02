@@ -32,8 +32,8 @@ EMACS_PARAM=(
     -nw
 )
 
-CTN_NAME=zzemacs-001
-IMG_NAME=ubuntu:zach
+CTN_NAME=zzemacs
+IMG_NAME=ubuntu-22.04-zzemacs:zach
 
 case $1 in
     start )

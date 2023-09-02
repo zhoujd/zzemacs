@@ -32,24 +32,24 @@ EMACS_PARAM=(
     -nw
 )
 
-CTN_NAME=zzemacs
-IMG_NAME=ubuntu-22.04-zzemacs:zach
+CTN=${CTN:-"zzemacs"}
+IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
 case $1 in
     start )
-        docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ${IMG_NAME}
+        docker run -d --name=${CTN} ${RUN_PARAM[@]} ${IMG}
         ;;
     stop )
-        docker stop ${CTN_NAME} && docker rm ${CTN_NAME}
+        docker stop ${CTN} && docker rm ${CTN}
         ;;
     emacs )
-        docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} emacs ${EMACS_PARAM[@]}
+        docker exec -it ${EXEC_PARAM[@]} ${CTN} emacs ${EMACS_PARAM[@]}
         ;;
     shell )
-        docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} bash -l
+        docker exec -it ${EXEC_PARAM[@]} ${CTN} bash -l
         ;;
     status )
-        docker ps | grep ${CTN_NAME}
+        docker ps | grep ${CTN}
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|shell|emacs|status}"

@@ -4,8 +4,8 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 
 REMOTE_HOST=$HOSTNAME
-REMOTE_USER=zach
-REMOTE_HOME=/home/$REMOTE_USER
+REMOTE_USER=$USER
+REMOTE_HOME=$HOME
 
 RUN_PARAM=(
     -e DISPLAY=$DISPLAY
@@ -19,4 +19,8 @@ RUN_PARAM=(
     -v $ZZEMACS_ROOT/.emacs:$REMOTE_HOME/.emacs
 )
 
-docker run ${RUN_PARAM[@]} ubuntu:zach emacs
+EMACS_PARAM=(
+    -nw
+)
+
+docker run -it ${RUN_PARAM[@]} ubuntu:zach emacs ${EMACS_PARAM[@]}

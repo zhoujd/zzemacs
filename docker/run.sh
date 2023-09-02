@@ -13,6 +13,7 @@ RUN_PARAM=(
     -e SHELL=/bin/bash
     -h $REMOTE_HOST
     -u $REMOTE_USER
+    -p 2222:22
     -v /tmp/.X11-unix:/tmp/.X11-unix
     -v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
     -v /var/run/docker.sock:/var/run/docker.sock
@@ -41,7 +42,10 @@ case $1 in
     shell )
         docker exec -it ${CTN_NAME} bash -l
         ;;
+    status )
+        docker ps | grep ${CTN_NAME}
+        ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|shell|emacs}"
+        echo "Usage: $(basename $0) {start|stop|shell|emacs|status}"
         ;;
 esac

@@ -14,6 +14,7 @@ RUN_PARAM=(
     -u $REMOTE_USER
     -v /tmp/.X11-unix:/tmp/.X11-unix
     -v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
+    -v /var/run/docker.sock:/var/run/docker.sock
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
     -v $ZZEMACS_ROOT/font:$REMOTE_HOME/.fonts
     -v $ZZEMACS_ROOT/.emacs:$REMOTE_HOME/.emacs

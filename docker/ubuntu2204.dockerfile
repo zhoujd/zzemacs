@@ -8,7 +8,7 @@ RUN apt-get update \
         && apt-get install -y silversearcher-ag cscope markdown pandoc w3m texinfo \
         && apt-get install -y iproute2 inetutils-ping net-tools socat dnsutils curl \
         && apt-get install -y gdb gdbserver openssh-server git docker.io vim \
-        && apt-get install -y emacs perl-doc rxvt-unicode \
+        && apt-get install -y emacs perl-doc rxvt-unicode tmux \
         && apt-get autoclean
 
 ARG USER_NAME=zach

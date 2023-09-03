@@ -6,6 +6,8 @@ ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
 REMOTE_HOME=$HOME
+CTN=${CTN:-"zzemacs"}
+IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
 ## Use local X11 Server
 #-e DISPLAY=$DISPLAY
@@ -32,9 +34,6 @@ EXEC_PARAM=(
 EMACS_PARAM=(
     -nw
 )
-
-CTN=${CTN:-"zzemacs"}
-IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
 case $1 in
     start )

@@ -38,10 +38,11 @@ IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
 case $1 in
     start )
-        docker run -d --name=${CTN} ${RUN_PARAM[@]} ${IMG}
+        docker run -d --name=${CTN} ${RUN_PARAM[@]} ${IMG} &> /dev/null
         ;;
     stop )
-        docker stop ${CTN} && docker rm ${CTN}
+        docker stop ${CTN} &> /dev/null
+        docker rm ${CTN} &> /dev/null
         ;;
     emacs )
         docker exec -it ${EXEC_PARAM[@]} ${CTN} emacs ${EMACS_PARAM[@]}

@@ -7,15 +7,16 @@ REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
 REMOTE_HOME=$HOME
 
+## Use local X11 Server
+#-e DISPLAY=$DISPLAY
+#-e SHELL=/bin/bash
+#-v /tmp/.X11-unix:/tmp/.X11-unix
+#-v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
 RUN_PARAM=(
     --privileged
-    -e DISPLAY=$DISPLAY
-    -e SHELL=/bin/bash
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p 2222:22
-    -v /tmp/.X11-unix:/tmp/.X11-unix
-    -v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
     -v /var/run/docker.sock:/var/run/docker.sock
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
     -v $ZZEMACS_ROOT/font:$REMOTE_HOME/.fonts

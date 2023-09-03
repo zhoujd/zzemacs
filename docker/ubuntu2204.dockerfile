@@ -27,7 +27,7 @@ RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#X11Forwarding yes/X11Forwarding yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#X11DisplayOffset 10/X11DisplayOffset 10/g' /etc/ssh/sshd_config
-RUN sed -i 's/#X11UseLocalhost yes/X11UseLocalhost yes/g' /etc/ssh/sshd_config
+RUN sed -i 's/#X11UseLocalhost yes/X11UseLocalhost no/g' /etc/ssh/sshd_config
 
 ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
@@ -36,5 +36,6 @@ RUN usermod -aG docker $USER
 WORKDIR $HOME
 USER $USER
 ENV HOME $HOME
+RUN touch ~/.Xauthority
 
 CMD ["sudo", "-H", "/usr/sbin/sshd", "-D"]

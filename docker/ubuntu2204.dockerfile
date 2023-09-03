@@ -37,11 +37,10 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER_NAME
 
-COPY entrypoint.sh /
-
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME $USER_HOME
 RUN touch ~/.Xauthority
 
+COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]

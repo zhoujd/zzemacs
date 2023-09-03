@@ -25,8 +25,6 @@ RUN_PARAM=(
     -p $SSH_PORT:22
     -v /var/run/docker.sock:/var/run/docker.sock
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
-    -v $ZZEMACS_ROOT/font:$REMOTE_HOME/.fonts
-    -v $ZZEMACS_ROOT/.emacs:$REMOTE_HOME/.emacs
 )
 
 EXEC_PARAM=(

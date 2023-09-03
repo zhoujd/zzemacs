@@ -19,6 +19,7 @@ IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
+    --env-file=env.sh
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22

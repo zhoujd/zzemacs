@@ -6,6 +6,8 @@ ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
 REMOTE_HOME=$HOME
+SSH_PORT=2222
+
 CTN=${CTN:-"zzemacs"}
 IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
@@ -19,7 +21,7 @@ RUN_PARAM=(
     --cap-add=ALL
     -h $REMOTE_HOST
     -u $REMOTE_USER
-    -p 2222:22
+    -p $SSH_PORT:22
     -v /var/run/docker.sock:/var/run/docker.sock
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
     -v $ZZEMACS_ROOT/font:$REMOTE_HOME/.fonts
@@ -44,16 +46,19 @@ case $1 in
         docker stop ${CTN} &> /dev/null
         docker rm ${CTN} &> /dev/null
         ;;
+    status )
+        docker ps | grep ${CTN}
+        ;;
     emacs )
         docker exec -it ${EXEC_PARAM[@]} ${CTN} emacs ${EMACS_PARAM[@]}
         ;;
     shell )
         docker exec -it ${EXEC_PARAM[@]} ${CTN} bash -l
         ;;
-    status )
-        docker ps | grep ${CTN}
+    ssh )
+        ssh -X localhost -p $SSH_PORT
         ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|shell|emacs|status}"
+        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh}"
         ;;
 esac

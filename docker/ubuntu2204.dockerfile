@@ -5,10 +5,9 @@ USER root
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
         && apt-get install -y apt-utils sudo libterm-readkey-perl \
-        && apt-get install -y silversearcher-ag iproute2 cscope \
-        && apt-get install -y inetutils-tools net-tools \
-        && apt-get install -y gdb openssh-server \
-        && apt-get install -y git docker.io vim \
+        && apt-get install -y silversearcher-ag cscope markdown pandoc w3m texinfo \
+        && apt-get install -y iproute2 inetutils-ping net-tools socat dnsutils curl \
+        && apt-get install -y gdb gdbserver openssh-server git docker.io vim \
         && apt-get install -y emacs perl-doc \
         && apt-get autoclean
 

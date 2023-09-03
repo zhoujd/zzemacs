@@ -15,7 +15,8 @@ IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 #-v /tmp/.X11-unix:/tmp/.X11-unix
 #-v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
 RUN_PARAM=(
-    --privileged
+    --privileged=true
+    --cap-add=ALL
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p 2222:22

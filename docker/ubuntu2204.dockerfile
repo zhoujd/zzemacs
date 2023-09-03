@@ -2,6 +2,7 @@ FROM ubuntu:22.04
 
 USER root
 
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
         && apt-get install -y apt-utils sudo libterm-readkey-perl \
         && apt-get install -y silversearcher-ag iproute2 cscope \

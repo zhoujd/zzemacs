@@ -5,6 +5,7 @@ USER root
 RUN apt-get update \
         && apt-get install -y apt-utils sudo libterm-readkey-perl \
         && apt-get install -y silversearcher-ag iproute2 cscope \
+        && apt-get install -y inetutils-tools net-tools \
         && apt-get install -y gdb openssh-server \
         && apt-get install -y git docker.io vim \
         && apt-get install -y emacs perl-doc \

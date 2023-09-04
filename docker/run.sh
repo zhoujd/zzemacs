@@ -7,8 +7,8 @@ ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
 REMOTE_HOME=$HOME
-SSH_PORT=2222
-
+SSH_HOST=${SSH_HOST-:localhost}
+SSH_PORT=${SSH_PORT-:2222}
 CTN=${CTN:-"zzemacs"}
 IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
@@ -56,7 +56,7 @@ case $1 in
         docker exec -it ${EXEC_PARAM[@]} ${CTN} bash -l
         ;;
     ssh )
-        ssh -X localhost -p $SSH_PORT
+        ssh -X $SSH_HOST -p $SSH_PORT
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh}"

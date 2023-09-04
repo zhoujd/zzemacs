@@ -28,7 +28,7 @@
       '(company-etags))
 
 (setq company-global-modes
-      '(not shell-mode))
+      '(not org-mode))
 
 ;;keys
 (defkeys-map company-active-map

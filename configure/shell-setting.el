@@ -303,11 +303,7 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;https://github.com/szermatt/emacs-bash-completion
 (unless-ms-windows
  (require 'bash-completion)
- (autoload 'bash-completion-dynamic-complete
-   "bash-completion"
-   "BASH completion hook")
- (add-hook 'shell-dynamic-complete-functions
-           'bash-completion-dynamic-complete))
+ (bash-completion-setup))
 
 (defun zz:cd ()
   "cd with ido"
@@ -414,12 +410,14 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;company-shell
 ;(require 'company-shell)
 ;(add-to-list 'company-backends 'company-shell)
-;(add-hook 'shell-mode-hook
-;          (lambda ()
-;            (company-mode t)
-;            (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
 
 ;;shell-mode use company-mode
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (company-mode t)
+            (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
+
+;;readonly prompt
 (add-hook 'shell-mode-hook
           (lambda ()
             (setq-local comint-prompt-read-only t)))

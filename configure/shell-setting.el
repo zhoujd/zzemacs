@@ -110,9 +110,7 @@ Dmitriy Igrishin's patched version of comint.el."
     ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
     ;; (with-chinese-env (multi-shell-new)))
     (t
-     (multi-shell-new)
-     (comint-simple-send (get-buffer-process (current-buffer))
-                        (concat "export PS1='[\\u@\\h \\W]\\$ '")))
+     (multi-shell-new))
     ))
 
 (defun zz:get-current-shell ()

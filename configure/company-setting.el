@@ -27,6 +27,9 @@
 (setq company--disabled-backends
       '(company-etags))
 
+(setq company-global-modes
+      '(not shell-mode))
+
 ;;keys
 (defkeys-map company-active-map
   ([return]    nil)

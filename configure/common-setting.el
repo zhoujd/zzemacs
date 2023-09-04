@@ -95,7 +95,9 @@
 (require 'emacs-color-themes)
 (if (display-graphic-p)
     (load-theme 'zz t)
-    (load-theme 'tango-dark t))
+    (progn
+      (set-face-background 'default "undefined")
+      ))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")

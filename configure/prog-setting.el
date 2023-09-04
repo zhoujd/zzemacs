@@ -354,6 +354,7 @@
 ;;highlight-indent-guides
 (require 'highlight-indent-guides)
 (setq highlight-indent-guides-method 'character)
+(setq highlight-indent-guides-suppress-auto-error t)
 (dolist (hook
          (list
           'prog-mode-hook

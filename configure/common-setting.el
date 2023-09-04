@@ -94,12 +94,8 @@
 (zz:load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
 (if (display-graphic-p)
-    (progn
-      (load-theme 'zz t))
-    (progn
-      ;;color for console
-      (set-face-background 'default "black")
-      (set-face-foreground 'default "gray")))
+    (load-theme 'zz t)
+    (load-theme 'tango-dark t))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")

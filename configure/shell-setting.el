@@ -414,13 +414,15 @@ Dmitriy Igrishin's patched version of comint.el."
 ;;company-shell
 ;(require 'company-shell)
 ;(add-to-list 'company-backends 'company-shell)
+;(add-hook 'shell-mode-hook
+;          (lambda ()
+;            (company-mode t)
+;            (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
 
 ;;shell-mode use company-mode
 (add-hook 'shell-mode-hook
           (lambda ()
-            (company-mode t)
-            (setq-local comint-prompt-read-only t)
-            (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
+            (setq-local comint-prompt-read-only t)))
 
 
 (provide 'shell-setting)

@@ -10,6 +10,7 @@ REMOTE_USER=$USER
 REMOTE_HOME=$HOME
 SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
+DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 CTN=${CTN:-"zzemacs"}
 IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 
@@ -25,7 +26,7 @@ RUN_PARAM=(
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22
-    -v /var/run/docker.sock:/var/run/docker.sock
+    -v $DID_SOCK:$DID_SOCK
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
     -v $ZZEMACS_TOP/work:$REMOTE_HOME/work
 )

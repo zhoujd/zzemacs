@@ -13,6 +13,7 @@ SSH_PORT=${SSH_PORT:-10022}
 DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 CTN=${CTN:-"zzemacs"}
 IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
+MYHOST=myhost:$(ip addr show docker0 | grep -Po 'inet \K[\d.]+')
 
 ## Use local X11 Server
 #-e DISPLAY=$DISPLAY
@@ -23,6 +24,7 @@ RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
     --env-file=env.sh
+    --add-host=$MYHOST
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22
@@ -60,11 +62,7 @@ case $1 in
     ssh )
         ssh -X $SSH_HOST -p $SSH_PORT
         ;;
-    host )
-        HOSTIP=$(ip route show | awk '/default/ {print $3}')
-        ssh $HOSTIP
-        ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"
+        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh}"
         ;;
 esac

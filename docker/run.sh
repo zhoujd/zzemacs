@@ -8,8 +8,8 @@ ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
 REMOTE_HOME=$HOME
-SSH_HOST=${SSH_HOST-:localhost}
-SSH_PORT=${SSH_PORT-:2222}
+SSH_HOST=${SSH_HOST:-localhost}
+SSH_PORT=${SSH_PORT:-10022}
 CTN=${CTN:-"zzemacs"}
 IMG=${IMG:-"ubuntu-22.04-zzemacs:zach"}
 

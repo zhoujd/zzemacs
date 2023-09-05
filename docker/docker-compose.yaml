@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  zzemacs:
+    image: "ubuntu-22.04-zzemacs:zach"
+    restart: always
+    build:
+      context: .
+      dockerfile: ubuntu2204.dockerfile
+      args:
+        USER_NAME: "${USER_NAME}"
+        USER_ID: "${USER_ID}"
+        USER_GID: "${USER_GID}"
+        DOCKER_GID: "${DOCKER_GID}"
+    ports:
+      - "22:2222"
+    privileged: true
+    cap_add:
+      - ALL
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/${USER}/zzemacs:/home/${USER}/zzemacs
+      - /home/${USER}/work:/home/${USER}/work
+    env_file:
+      - env.sh
+    network_mode:
+    environment:
+      - USER_NAME="${USER}"
+      - USER_ID="$(id -u ${USER})"
+      - USER_GID="$(id -g ${USER})"
+      - DOCKER_GID="$(getent group docker | cut -d: -f3)"

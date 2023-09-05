@@ -4,13 +4,17 @@ USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-        && apt-get install -y apt-utils sudo libterm-readkey-perl \
-        && apt-get install -y silversearcher-ag cscope markdown pandoc w3m texinfo \
-        && apt-get install -y iproute2 inetutils-ping net-tools socat dnsutils curl \
-        && apt-get install -y gdb gdbserver openssh-server git docker.io vim \
-        && apt-get install -y emacs perl-doc rxvt-unicode tmux nnn \
-        && apt-get autoremove \
-        && apt-get autoclean
+        && \
+        apt-get install -y --no-install-recommends \
+        apt-utils sudo libterm-readkey-perl \
+        silversearcher-ag cscope markdown pandoc w3m texinfo \
+        iproute2 inetutils-ping net-tools socat dnsutils curl \
+        gdb gdbserver openssh-server git docker.io vim \
+        emacs perl-doc rxvt-unicode tmux nnn \
+        && \
+        apt-get autoremove \
+        && \
+        apt-get clean
 
 ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
@@ -38,11 +42,14 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER_NAME
 
-RUN apt-get install -y python3-pip \
-        && apt-get install -y python3-venv \
-        && apt-get install -y python3-virtualenv \
-        && apt-get autoremove \
-        && apt-get autoclean
+RUN apt-get install -y --no-install-recommends \
+        python3-pip \
+        python3-venv \
+        python3-virtualenv \
+        && \
+        apt-get autoremove \
+        && \
+        apt-get clean
 RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
 
 WORKDIR $USER_HOME

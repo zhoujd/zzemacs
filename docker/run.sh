@@ -64,8 +64,7 @@ case $1 in
         ssh -X $SSH_HOST -p $SSH_PORT
         ;;
     host )
-        echo "Remote access: $MYHOST, only in container"
-        ssh $MYHOST
+        ssh $MYHOST_IP
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"

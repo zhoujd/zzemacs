@@ -4,7 +4,7 @@ USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get install -y \
         apt-utils sudo libterm-readkey-perl \
         silversearcher-ag cscope markdown pandoc w3m texinfo \
         iproute2 inetutils-ping net-tools socat dnsutils curl \
@@ -39,7 +39,7 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER_NAME
 
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get install -y \
         python3-pip \
         python3-venv \
         python3-virtualenv \

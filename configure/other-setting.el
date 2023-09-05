@@ -411,8 +411,10 @@
 (mood-line-mode t)
 
 ;;ssh-config-mode
+(zz:load-path "site-lisp/ssh-config")
 (require 'ssh-config-mode)
-(add-to-list 'auto-mode-alist '("/\\.ssh/config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
+(add-to-list 'auto-mode-alist
+             '("/\\.ssh/config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))
 
 ;;M-x world-time-list
 (require 'world-time-mode)

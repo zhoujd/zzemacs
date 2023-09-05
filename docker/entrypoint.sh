@@ -23,11 +23,11 @@ setup_sshd() {
 }
 
 case $1 in
-    help )
-        echo "$(basename $0) {help}"
-        ;;
-    * )
+    init )
         setup_emacs
         setup_sshd
+        ;;
+    * )
+        echo "$(basename $0) {init}"
         ;;
 esac

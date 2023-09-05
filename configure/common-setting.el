@@ -463,7 +463,7 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
-(when (version< emacs-version 28)
+(when (version< emacs-version "28")
   (defvar completions-detailed nil))
 
 

@@ -3,7 +3,7 @@
 all: ubuntu2204
 
 CTN_USER ?= ${USER}
-BUILD_PARM += --no-cache
+BUILD_PARM += ## --no-cache
 BUILD_PARM += --build-arg USER_NAME=$(CTN_USER)
 BUILD_PARM += --build-arg USER_ID=$(shell id -u ${USER})
 BUILD_PARM += --build-arg USER_GID=$(shell id -g ${USER})

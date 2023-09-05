@@ -3,6 +3,7 @@
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
+ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
 REMOTE_HOST=$HOSTNAME
 REMOTE_USER=$USER
@@ -26,6 +27,7 @@ RUN_PARAM=(
     -p $SSH_PORT:22
     -v /var/run/docker.sock:/var/run/docker.sock
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
+    -v $ZZEMACS_TOP/work:$REMOTE_HOME/work
 )
 
 EXEC_PARAM=(
@@ -40,11 +42,10 @@ EMACS_PARAM=(
 
 case $1 in
     start )
-        docker run -d --name=${CTN} ${RUN_PARAM[@]} ${IMG} &> /dev/null
+        docker run -d --name=${CTN} ${RUN_PARAM[@]} ${IMG}
         ;;
     stop )
-        docker stop ${CTN} &> /dev/null
-        docker rm ${CTN} &> /dev/null
+        docker stop ${CTN} && docker rm ${CTN}
         ;;
     status )
         docker ps | grep ${CTN}

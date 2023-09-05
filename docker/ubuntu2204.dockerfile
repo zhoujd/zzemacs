@@ -9,6 +9,7 @@ RUN apt-get update \
         && apt-get install -y iproute2 inetutils-ping net-tools socat dnsutils curl \
         && apt-get install -y gdb gdbserver openssh-server git docker.io vim \
         && apt-get install -y emacs perl-doc rxvt-unicode tmux nnn \
+        && apt-get autoremove \
         && apt-get autoclean
 
 ARG USER_NAME=zach
@@ -40,7 +41,8 @@ RUN usermod -aG docker $USER_NAME
 RUN apt-get install -y python3-pip \
         && apt-get install -y python3-venv \
         && apt-get install -y python3-virtualenv \
-        && apt-get autoremove
+        && apt-get autoremove \
+        && apt-get autoclean
 RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
 
 WORKDIR $USER_HOME

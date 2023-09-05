@@ -10,10 +10,8 @@ RUN apt-get install -y --no-install-recommends \
         iproute2 inetutils-ping net-tools socat dnsutils curl \
         gdb gdbserver openssh-server git docker.io vim \
         emacs perl-doc rxvt-unicode tmux nnn \
-        && \
-        apt-get autoremove \
-        && \
-        apt-get clean
+        && apt-get autoremove \
+        && apt-get clean
 
 ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
@@ -45,10 +43,8 @@ RUN apt-get install -y --no-install-recommends \
         python3-pip \
         python3-venv \
         python3-virtualenv \
-        && \
-        apt-get autoremove \
-        && \
-        apt-get clean
+        && apt-get autoremove \
+        && apt-get clean
 RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
 
 WORKDIR $USER_HOME

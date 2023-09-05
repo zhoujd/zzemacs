@@ -98,8 +98,8 @@
       (load-theme 'zz t))
     (progn
       ;;color for console
-      (set-face-background 'default "undefined")
-      (set-face-foreground 'default "undefined")))
+      (set-face-background 'default "black")
+      (set-face-foreground 'default "gray")))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")

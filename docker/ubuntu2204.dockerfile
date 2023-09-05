@@ -3,9 +3,8 @@ FROM ubuntu:22.04
 USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
-        && \
-        apt-get install -y --no-install-recommends \
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
         apt-utils sudo libterm-readkey-perl \
         silversearcher-ag cscope markdown pandoc w3m texinfo \
         iproute2 inetutils-ping net-tools socat dnsutils curl \

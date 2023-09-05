@@ -62,7 +62,7 @@ case $1 in
         ;;
     host )
         HOSTIP=$(ip route show | awk '/default/ {print $3}')
-        ssh $HOSTIP bash -l
+        ssh $HOSTIP
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"

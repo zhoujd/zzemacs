@@ -159,8 +159,8 @@
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
-;;mouset avoidance
-;(mouse-avoidance-mode 'animate)
+;;mouse avoidance
+;;opt:animate,exile
 (mouse-avoidance-mode 'exile)
 (setq mouse-avoidance-threshold 10)
 
@@ -463,7 +463,7 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
-(when (version< emacs-version "28")
+(when (version< emacs-version 28)
   (defvar completions-detailed nil))
 
 

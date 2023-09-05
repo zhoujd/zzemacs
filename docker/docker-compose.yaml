@@ -6,6 +6,10 @@ services:
     hostname: zzemacs
     image: "ubuntu-22.04-zzemacs:zach"
     network_mode: bridge
+    env_file:
+      - env.sh
+    extra_hosts:
+      - "myhost:172.17.0.1"
     restart: always
     ports:
       - "10022:22"
@@ -16,5 +20,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USER}/zzemacs:/home/${USER}/zzemacs
       - /home/${USER}/work:/home/${USER}/work
-    env_file:
-      - env.sh

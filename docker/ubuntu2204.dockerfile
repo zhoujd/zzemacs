@@ -37,6 +37,12 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER_NAME
 
+RUN apt-get install -y python3-pip \
+        && apt-get install -y python3-venv \
+        && apt-get install -y python3-virtualenv \
+        && apt-get autoremove
+RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
+
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME $USER_HOME

@@ -60,7 +60,11 @@ case $1 in
     ssh )
         ssh -X $SSH_HOST -p $SSH_PORT
         ;;
+    host )
+        HOSTIP=$(ip route show | awk '/default/ {print $3}')
+        ssh $HOSTIP bash -l
+        ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh}"
+        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"
         ;;
 esac

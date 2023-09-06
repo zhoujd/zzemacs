@@ -5,12 +5,12 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
-CTN=${CTN:-"zzemacs"}
-IMG=${IMG:-"ubuntu-2004-zzemacs"}
-TAG=${TAG:-"zach"}
-REMOTE_HOST=${REMOTE_HOST:-"$IMG"}
-REMOTE_USER=${REMOTE_USER:-"$USER"}
-REMOTE_HOME=${REMOTE_HOME:-"/home/$USER"}
+CTN=${CTN:-zzemacs}
+IMG=${IMG:-ubuntu-2004-zzemacs}
+TAG=${TAG:-zach}
+REMOTE_HOST=${REMOTE_HOST:-$IMG}
+REMOTE_USER=${REMOTE_USER:-$USER}
+REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}
 SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
 DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
@@ -29,6 +29,7 @@ RUN_PARAM=(
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22
+    -v /dev:/dev
     -v $DID_SOCK:$DID_SOCK
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
     -v $ZZEMACS_TOP/lab:$REMOTE_HOME/lab

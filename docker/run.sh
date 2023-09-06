@@ -15,7 +15,7 @@ SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
 DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 MYHOST_NAME=myhost
-MYHOST_IP=$(ip addr show docker0 | grep -Po 'inet \K[\d.]+')
+MYHOST_IP=host-gateway
 
 ## Use local X11 Server
 #-e DISPLAY=$DISPLAY

@@ -3,14 +3,14 @@ version: "3"
 services:
   emacs:
     container_name: zzemacs
-    hostname: zzemacs
-    image: "ubuntu-2004-zzemacs:zach"
+    hostname: ubuntu-2004-zzemacs
+    image: ubuntu-2004-zzemacs:zach
     network_mode: bridge
     extra_hosts:
-      - "myhost:${MYHOST}"
+      - "myhost:host-gateway"
     restart: always
     ports:
-      - "10022:22"
+      - 10022:22
     privileged: true
     cap_add:
       - ALL

@@ -1,5 +1,6 @@
 ### Emacs in Docker
 
+.PHONY: all
 all: ubuntu2004 ubuntu2204 ubuntu2004-dev ubuntu2204-dev
 
 CTN_USER ?= ${USER}

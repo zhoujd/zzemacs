@@ -21,3 +21,13 @@ ubuntu2204: ubuntu2204.dockerfile
 clean:
 	docker rmi $(Ubuntu2004_TAG)
 	docker rmi $(Ubuntu2204_TAG)
+
+.PHONY: help
+help:
+	@echo "Usage:"
+	@echo "$$ make"
+	@echo "$$ make clean"
+	@echo "$$ make help"
+	@echo "$$ make ubuntu2004"
+	@echo "$$ make ubuntu2204"
+	@echo "$$ make ubuntu2004 CTN_USER=zach"

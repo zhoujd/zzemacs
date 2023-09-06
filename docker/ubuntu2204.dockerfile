@@ -25,7 +25,7 @@ RUN useradd -d $USER_HOME -s /bin/bash -m $USER_NAME -u $USER_ID -g $USER_GID \
         && adduser $USER_NAME sudo
 RUN echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 
-ARG ROOT_PASSWD=123456
+ARG ROOT_PASSWD=$USER_PASSWD
 RUN echo root:$ROOT_PASSWD | chpasswd
 
 RUN mkdir -p /app

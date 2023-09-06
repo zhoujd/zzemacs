@@ -49,7 +49,7 @@ RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
 
 RUN apt-get install -y --no-install-recommends \
         libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
-        autoconf libtool cmake g++ pkg-config \
+        make automake autoconf libtool cmake g++ pkg-config \
         libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev \
         nasm yasm xutils-dev libsdl2-dev \
         gcc-multilib g++-multilib module-assistant ccache \

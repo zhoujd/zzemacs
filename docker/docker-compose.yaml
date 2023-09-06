@@ -15,6 +15,7 @@ services:
     cap_add:
       - ALL
     volumes:
+      - /dev:/dev
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USER}/zzemacs:/home/${USER}/zzemacs
       - /home/${USER}/lab:/home/${USER}/lab

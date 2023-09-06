@@ -4,7 +4,7 @@ services:
   emacs:
     container_name: zzemacs
     hostname: zzemacs
-    image: "ubuntu-22.04-zzemacs:zach"
+    image: "ubuntu-2204-zzemacs:zach"
     network_mode: bridge
     extra_hosts:
       - "myhost:${MYHOST}"

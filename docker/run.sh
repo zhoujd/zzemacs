@@ -13,15 +13,19 @@ REMOTE_USER=${REMOTE_USER:-$USER}
 REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}
 SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
+SSH_USER=${REMOTE_USER}
 DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 MYHOST_NAME=myhost
 MYHOST_IP=host-gateway
+MYHOST_USER=${REMOTE_USER}
 
 ## Use local X11 Server
-#-e DISPLAY=$DISPLAY
-#-e SHELL=/bin/bash
-#-v /tmp/.X11-unix:/tmp/.X11-unix
-#-v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
+X11_PARAM=(
+    -e DISPLAY=$DISPLAY
+    -v /tmp/.X11-unix:/tmp/.X11-unix
+    -v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
+)
+
 RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
@@ -42,7 +46,13 @@ EXEC_PARAM=(
 )
 
 EMACS_PARAM=(
+    emacs
     -nw
+)
+
+SHELL_PARAM=(
+    bash
+    -l
 )
 
 case $1 in
@@ -56,16 +66,16 @@ case $1 in
         docker ps | grep ${CTN}
         ;;
     emacs )
-        docker exec -it ${EXEC_PARAM[@]} ${CTN} emacs ${EMACS_PARAM[@]}
+        docker exec -it ${EXEC_PARAM[@]} ${CTN} ${EMACS_PARAM[@]}
         ;;
     shell )
-        docker exec -it ${EXEC_PARAM[@]} ${CTN} bash -l
+        docker exec -it ${EXEC_PARAM[@]} ${CTN} ${SHELL_PARAM[@]}
         ;;
     ssh )
-        ssh -X $SSH_HOST -p $SSH_PORT
+        ssh -X -l $SSH_USER $SSH_HOST -p $SSH_PORT
         ;;
     host )
-        ssh $MYHOST_IP
+        ssh -l $MYHOST_USER $MYHOST_IP
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"

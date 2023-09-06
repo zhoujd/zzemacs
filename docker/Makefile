@@ -26,8 +26,10 @@ clean:
 help:
 	@echo "Usage:"
 	@echo "$$ make"
+	@echo "$$ make CTN_USER=zach"
 	@echo "$$ make clean"
 	@echo "$$ make help"
 	@echo "$$ make ubuntu2004"
 	@echo "$$ make ubuntu2204"
 	@echo "$$ make ubuntu2004 CTN_USER=zach"
+	@echo "$$ make ubuntu2204 CTN_USER=zach"

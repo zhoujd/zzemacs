@@ -47,6 +47,20 @@ RUN apt-get install -y --no-install-recommends \
         && apt-get clean
 RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
 
+RUN apt-get install -y --no-install-recommends \
+        libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
+        autoconf libtool cmake g++ pkg-config \
+        libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev \
+        nasm yasm xutils-dev libsdl2-dev \
+        gcc-multilib g++-multilib module-assistant ccache \
+        texi2html bison flex libssl-dev \
+        libkmod-dev libprocps-dev libunwind-dev libdw-dev \
+        gtk-doc-tools \
+        libgudev-1.0-dev \
+        libgtest-dev \
+        && apt-get autoremove \
+        && apt-get clean
+
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME $USER_HOME

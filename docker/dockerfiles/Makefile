@@ -7,7 +7,7 @@ CTN_USER ?= ${USER}
 
 BUILD_PAR += --rm ## --no-cache
 BUILD_PAR += --build-arg USER_NAME=$(CTN_USER)
-BUILD_PAR += --build-arg USER_ID=$(shell id -u ${USER})
+BUILD_PAR += --build-arg USER_UID=$(shell id -u ${USER})
 BUILD_PAR += --build-arg USER_GID=$(shell id -g ${USER})
 BUILD_PAR += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 

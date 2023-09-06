@@ -16,11 +16,11 @@ RUN apt-get install -y --no-install-recommends \
 
 ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
-ARG USER_ID=1000
+ARG USER_UID=1000
 ARG USER_GID=1000
 ARG USER_PASSWD=123456
 RUN groupadd -g $USER_GID $USER_NAME
-RUN useradd -d $USER_HOME -s /bin/bash -m $USER_NAME -u $USER_ID -g $USER_GID \
+RUN useradd -d $USER_HOME -s /bin/bash -m $USER_NAME -u $USER_UID -g $USER_GID \
         && echo $USER_NAME:$USER_PASSWD | chpasswd \
         && adduser $USER_NAME sudo
 RUN echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME

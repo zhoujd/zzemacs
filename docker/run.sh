@@ -31,7 +31,7 @@ RUN_PARAM=(
     -p $SSH_PORT:22
     -v $DID_SOCK:$DID_SOCK
     -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
-    -v $ZZEMACS_TOP/work:$REMOTE_HOME/work
+    -v $ZZEMACS_TOP/lab:$REMOTE_HOME/lab
 )
 
 EXEC_PARAM=(

@@ -4,7 +4,7 @@ services:
   emacs:
     container_name: zzemacs
     hostname: zzemacs
-    image: "ubuntu-2204-zzemacs:zach"
+    image: "ubuntu-2004-zzemacs:zach"
     network_mode: bridge
     extra_hosts:
       - "myhost:${MYHOST}"
@@ -17,4 +17,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/${USER}/zzemacs:/home/${USER}/zzemacs
-      - /home/${USER}/work:/home/${USER}/work
+      - /home/${USER}/lab:/home/${USER}/lab

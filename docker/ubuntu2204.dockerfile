@@ -45,13 +45,16 @@ RUN apt-get install -y --no-install-recommends \
         python3-virtualenv \
         && apt-get autoremove \
         && apt-get clean
-RUN pip3 install virtualenv epc rope jedi flake8 importmagic autopep8 yapf black
+
+RUN mkdir -p /app
+COPY requirements.txt /app
+RUN pip install --requirement /app/requirements.txt
 
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME $USER_HOME
 RUN touch ~/.Xauthority
 
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+COPY entrypoint.sh /app
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["init"]

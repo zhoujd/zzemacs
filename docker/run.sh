@@ -7,7 +7,7 @@ ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
 CTN=${CTN:-zzemacs}
 IMG=${IMG:-ubuntu-2004-zzemacs}
-TAG=${TAG:-zach}
+TAG=${TAG:-dev}
 REMOTE_HOST=${REMOTE_HOST:-$IMG}
 REMOTE_USER=${REMOTE_USER:-$USER}
 REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}

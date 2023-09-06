@@ -4,7 +4,7 @@ services:
   emacs:
     container_name: zzemacs
     hostname: ubuntu-2004-zzemacs
-    image: ubuntu-2004-zzemacs:zach
+    image: ubuntu-2004-zzemacs:dev
     network_mode: bridge
     extra_hosts:
       - "myhost:host-gateway"

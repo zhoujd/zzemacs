@@ -11,7 +11,6 @@ BUILD_PAR += --build-arg USER_GID=$(shell id -g ${USER})
 BUILD_PAR += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 
 BUILD_DEV += --rm ## --no-cache
-BUILD_DEV += --build-arg USER_NAME=$(CTN_USER)
 
 Ubuntu2004_TAG := ubuntu-2004-zzemacs:latest
 Ubuntu2204_TAG := ubuntu-2204-zzemacs:latest

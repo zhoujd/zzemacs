@@ -6,6 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
         apt-utils sudo xauth \
+        python3-pip python3-venv python3-virtualenv \
         silversearcher-ag cscope markdown pandoc w3m texinfo \
         iproute2 inetutils-ping net-tools socat dnsutils curl \
         gdb gdbserver openssh-server git docker.io vim \
@@ -27,7 +28,9 @@ RUN echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 ARG ROOT_PASSWD=123456
 RUN echo root:$ROOT_PASSWD | chpasswd
 
+RUN mkdir -p /app
 RUN mkdir -p /var/run/sshd
+
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
 RUN sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
@@ -39,21 +42,14 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker
 RUN usermod -aG docker $USER_NAME
 
-RUN apt-get install -y --no-install-recommends \
-        python3-pip \
-        python3-venv \
-        python3-virtualenv \
-        && apt-get autoremove \
-        && apt-get clean
-
-RUN mkdir -p /app
-COPY requirements.txt /app
-RUN pip install --requirement /app/requirements.txt
-
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME $USER_HOME
-RUN touch ~/.Xauthority
+RUN touch $HOME/.Xauthority
+
+ENV PATH $PATH:$HOME/.local/bin
+COPY requirements.txt /app
+RUN pip3 install --requirement /app/requirements.txt
 
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]

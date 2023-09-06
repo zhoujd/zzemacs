@@ -1,8 +1,7 @@
 FROM ubuntu-2204-zzemacs:latest
 
-ARG DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
-RUN sudo apt-get install -y --no-install-recommends \
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
         make automake autoconf libtool cmake g++ pkg-config \
         libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev \

@@ -72,10 +72,10 @@ case $1 in
         docker exec -it ${EXEC_PARAM[@]} ${CTN} ${SHELL_PARAM[@]}
         ;;
     ssh )
-        ssh -X -l $SSH_USER $SSH_HOST -p $SSH_PORT
+        ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
         ;;
     host )
-        ssh -l $MYHOST_USER $MYHOST_IP
+        ssh -l ${MYHOST_USER} ${MYHOST_NAME}
         ;;
     * )
         echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"

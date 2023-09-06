@@ -5,29 +5,36 @@ ZZEMACS_ROOT=$HOME/zzemacs
 
 setup_emacs() {
     if [ -d $ZZEMACS_ROOT ]; then
-        echo "Setup emacs"
+        echo "Setup emacs ..."
         ln -sfvT $ZZEMACS_ROOT/.emacs $HOME/.emacs
-        echo "Setup fonts"
+        echo "Setup fonts ..."
         ln -sfvT $ZZEMACS_ROOT/font $HOME/.fonts
-        echo "Setup bashrc"
+        echo "Setup bashrc ..."
         $ZZEMACS_ROOT/bin/bashrc-setup.sh
-        echo "Setup git"
+        echo "Setup git ..."
         $ZZEMACS_ROOT/misc/gitconfig.d/install-bin.sh
         $ZZEMACS_ROOT/misc/gitconfig.d/install-cfg.sh
     fi
 }
 
 setup_sshd() {
-    echo "Setup sshd"
+    echo "Setup sshd ..."
     sudo /usr/sbin/sshd -D
 }
 
-case $1 in
+setup_sleep() {
+    echo "Setup sleep ..."
+    sleep infinity
+}
+
+CMD=${1:-""}
+case $CMD in
     init )
         setup_emacs
         setup_sshd
         ;;
     * )
-        echo "$(basename $0) {init}"
+        setup_emacs
+        setup_sleep
         ;;
 esac

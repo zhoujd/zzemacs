@@ -24,7 +24,6 @@ MYHOST_IP=$(ip addr show docker0 | grep -Po 'inet \K[\d.]+')
 RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
-    --env-file=env.sh
     --add-host=$MYHOST_NAME:$MYHOST_IP
     -h $REMOTE_HOST
     -u $REMOTE_USER

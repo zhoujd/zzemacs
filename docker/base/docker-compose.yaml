@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  emacs:
+    container_name: zzemacs
+    hostname: ubuntu-2004-zzemacs
+    image: ubuntu-2004-zzemacs:latest
+    network_mode: bridge
+    extra_hosts:
+      - "myhost:host-gateway"
+    restart: always
+    ports:
+      - 10022:22
+    privileged: true
+    cap_add:
+      - ALL
+    volumes:
+      - /dev:/dev
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/${USER}/zzemacs:/home/${USER}/zzemacs
+      - /home/${USER}/lab:/home/${USER}/lab

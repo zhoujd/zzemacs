@@ -1,8 +1,7 @@
 FROM ubuntu-2204-zzemacs:latest
 
 RUN sudo apt-get update \
-        && \
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
         make automake autoconf libtool cmake g++ pkg-config \
         libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev \
@@ -13,18 +12,14 @@ RUN sudo apt-get update \
         gtk-doc-tools \
         libgudev-1.0-dev \
         libgtest-dev \
-        && \
-        sudo apt-get autoremove \
-        && \
-        sudo apt-get clean
+        && sudo apt-get autoremove \
+        && sudo apt-get clean
 
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         ./google-chrome-stable_current_amd64.deb \
-        && \
-        sudo apt-get autoremove \
-        && \
-        sudo apt-get clean
+        && sudo apt-get autoremove \
+        && sudo apt-get clean
 RUN rm -f google-chrome-stable_current_amd64.deb
 RUN echo -n "Chrome: " && google-chrome --version

@@ -23,3 +23,10 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         && sudo apt-get clean
 RUN rm -f google-chrome-stable_current_amd64.deb
 RUN echo -n "Chrome: " && google-chrome --version
+
+
+ARG COMPOSE_VER=v2.21.0
+RUN sudo curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VER/docker-compose-$(uname -s)-$(uname -m)" \
+        -o /usr/local/bin/docker-compose
+RUN sudo chmod +x /usr/local/bin/docker-compose
+RUN docker-compose --version

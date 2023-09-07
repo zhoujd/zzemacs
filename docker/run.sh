@@ -5,9 +5,9 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
-CTN=${CTN:-zzemacs-dev}
 IMG=${IMG:-ubuntu-2004-zzemacs}
 TAG=${TAG:-dev}
+CTN=${CTN:-zzemacs-$TAG}
 REMOTE_HOST=${REMOTE_HOST:-$IMG}
 REMOTE_USER=${REMOTE_USER:-$USER}
 REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}

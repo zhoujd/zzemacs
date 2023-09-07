@@ -17,7 +17,6 @@ SSH_USER=${REMOTE_USER}
 DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 MYHOST_NAME=myhost
 MYHOST_IP=host-gateway
-MYHOST_USER=${REMOTE_USER}
 
 ## Use local X11 Server
 X11_PARAM=(
@@ -74,13 +73,10 @@ case $1 in
     ssh )
         ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
         ;;
-    host )
-        ssh -l ${MYHOST_USER} ${MYHOST_NAME}
-        ;;
     build )
         make -C dockerfiles
         ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host|build}"
+        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|build}"
         ;;
 esac

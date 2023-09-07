@@ -17,7 +17,7 @@ RUN sudo apt-get update \
 
 
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        gitk meld
+        gitk meld psmisc
 
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

@@ -1,4 +1,4 @@
-FROM ubuntu-2004-zzemacs:latest
+FROM ubuntu-2004-zzemacs:base
 
 RUN sudo apt-get update \
         && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \

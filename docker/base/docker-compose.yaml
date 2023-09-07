@@ -3,7 +3,7 @@ version: "3"
 services:
   zzemacs:
     hostname: ubuntu-2004-zzemacs
-    image: ubuntu-2004-zzemacs:latest
+    image: ubuntu-2004-zzemacs:base
     network_mode: bridge
     extra_hosts:
       - "myhost:host-gateway"

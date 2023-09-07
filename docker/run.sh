@@ -29,6 +29,7 @@ RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
     --add-host=$MYHOST_NAME:$MYHOST_IP
+    --ulimit nofile=655360:655360
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22

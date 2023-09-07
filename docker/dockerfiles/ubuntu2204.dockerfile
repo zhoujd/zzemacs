@@ -3,16 +3,32 @@ FROM ubuntu:22.04
 USER root
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
-        apt-utils sudo xauth \
+RUN apt-get update \
+        && \
+        apt-get install -y --no-install-recommends \
+        apt-utils sudo xauth gnupg ca-certificates lsb-release curl wget \
         python3-pip python3-venv python3-virtualenv \
-        silversearcher-ag cscope markdown pandoc w3m texinfo \
-        iproute2 inetutils-ping net-tools socat dnsutils curl wget \
-        gdb gdbserver openssh-server git docker.io vim \
-        emacs perl-doc rxvt-unicode tmux nnn \
-        && apt-get autoremove \
-        && apt-get clean
+        silversearcher-ag cscope markdown pandoc w3m texinfo perl-doc \
+        iproute2 inetutils-ping net-tools socat dnsutils \
+        gdb gdbserver openssh-server git \
+        emacs vim rxvt-unicode tmux nnn \
+        && \
+        apt-get autoremove \
+        && \
+        apt-get clean
+
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+        | sudo tee /etc/apt/sources.list.d/docker.list
+RUN apt-get update \
+        && \
+        apt-get install -y --no-install-recommends \
+        docker-ce docker-ce-cli containerd.io docker-compose-plugin \
+        && \
+        apt-get autoremove \
+        && \
+        apt-get clean
 
 ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
@@ -21,8 +37,10 @@ ARG USER_GID=1000
 ARG USER_PASSWD=123456
 RUN groupadd -g $USER_GID $USER_NAME
 RUN useradd -d $USER_HOME -s /bin/bash -m $USER_NAME -u $USER_UID -g $USER_GID \
-        && echo $USER_NAME:$USER_PASSWD | chpasswd \
-        && adduser $USER_NAME sudo
+        && \
+        echo $USER_NAME:$USER_PASSWD | chpasswd \
+        && \
+        adduser $USER_NAME sudo
 RUN echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 
 ARG ROOT_PASSWD=$USER_PASSWD

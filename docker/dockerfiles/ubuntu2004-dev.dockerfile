@@ -1,7 +1,8 @@
 FROM ubuntu-2004-zzemacs:latest
 
-RUN sudo apt-get update
-RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN sudo apt-get update \
+        && \
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
         make automake autoconf libtool cmake g++ pkg-config \
         libncurses5-dev libpthread-stubs0-dev libpciaccess-dev libxvmc-dev \
@@ -12,21 +13,18 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         gtk-doc-tools \
         libgudev-1.0-dev \
         libgtest-dev \
-        && sudo apt-get autoremove \
-        && sudo apt-get clean
+        && \
+        sudo apt-get autoremove \
+        && \
+        sudo apt-get clean
 
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         ./google-chrome-stable_current_amd64.deb \
-        && sudo apt-get autoremove \
-        && sudo apt-get clean
+        && \
+        sudo apt-get autoremove \
+        && \
+        sudo apt-get clean
 RUN rm -f google-chrome-stable_current_amd64.deb
 RUN echo -n "Chrome: " && google-chrome --version
-
-
-ARG COMPOSE_VER=v2.21.0
-RUN sudo curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VER/docker-compose-$(uname -s)-$(uname -m)" \
-        -o /usr/local/bin/docker-compose
-RUN sudo chmod +x /usr/local/bin/docker-compose
-RUN docker-compose --version

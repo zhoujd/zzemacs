@@ -9,7 +9,7 @@ RUN apt-get update \
         python3-pip python3-venv python3-virtualenv \
         silversearcher-ag cscope markdown pandoc w3m texinfo perl-doc \
         iproute2 inetutils-ping net-tools socat dnsutils \
-        gdb gdbserver openssh-server git \
+        gdb gdbserver openssh-server git patch \
         emacs vim rxvt-unicode tmux nnn \
         && apt-get autoremove \
         && apt-get clean

@@ -16,6 +16,10 @@ RUN sudo apt-get update \
         && sudo apt-get clean
 
 
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        gitk meld
+
+
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         ./google-chrome-stable_current_amd64.deb \
@@ -23,3 +27,14 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         && sudo apt-get clean
 RUN rm -f google-chrome-stable_current_amd64.deb
 RUN echo -n "Chrome: " && google-chrome --version
+
+
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/vscode.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" \
+        | sudo tee /etc/apt/sources.list.d/vscode.list
+RUN sudo apt-get update \
+        && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        code \
+        && sudo apt-get autoremove \
+        && sudo apt-get clean

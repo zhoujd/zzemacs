@@ -22,3 +22,4 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         && sudo apt-get autoremove \
         && sudo apt-get clean
 RUN rm -f google-chrome-stable_current_amd64.deb
+RUN echo -n "Chrome: " && google-chrome --version

@@ -41,12 +41,14 @@ RUN echo root:$ROOT_PASSWD | chpasswd
 RUN mkdir -p /app
 RUN mkdir -p /var/run/sshd
 
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config
-RUN sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
-RUN sed -i 's/#X11Forwarding yes/X11Forwarding yes/g' /etc/ssh/sshd_config
-RUN sed -i 's/#X11DisplayOffset 10/X11DisplayOffset 10/g' /etc/ssh/sshd_config
-RUN sed -i 's/#X11UseLocalhost yes/X11UseLocalhost no/g' /etc/ssh/sshd_config
+RUN sed -i \
+        -e 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' \
+        -e 's/#PermitRootLogin yes/PermitRootLogin yes/g' \
+        -e 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/g' \
+        -e 's/#X11Forwarding yes/X11Forwarding yes/g' \
+        -e 's/#X11DisplayOffset 10/X11DisplayOffset 10/g' \
+        -e 's/#X11UseLocalhost yes/X11UseLocalhost no/g' \
+        /etc/ssh/sshd_config
 
 ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker

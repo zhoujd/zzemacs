@@ -14,3 +14,11 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         libgtest-dev \
         && sudo apt-get autoremove \
         && sudo apt-get clean
+
+
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ./google-chrome-stable_current_amd64.deb \
+        && sudo apt-get autoremove \
+        && sudo apt-get clean
+RUN rm -f google-chrome-stable_current_amd64.deb

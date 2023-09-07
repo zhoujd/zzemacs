@@ -8,7 +8,7 @@ RUN apt-get install -y --no-install-recommends \
         apt-utils sudo xauth \
         python3-pip python3-venv python3-virtualenv \
         silversearcher-ag cscope markdown pandoc w3m texinfo \
-        iproute2 inetutils-ping net-tools socat dnsutils curl \
+        iproute2 inetutils-ping net-tools socat dnsutils curl wget \
         gdb gdbserver openssh-server git docker.io vim \
         emacs perl-doc rxvt-unicode tmux nnn \
         && apt-get autoremove \

@@ -1,8 +1,7 @@
 version: "3"
 
 services:
-  emacs:
-    container_name: zzemacs
+  zzemacs:
     hostname: ubuntu-2004-zzemacs
     image: ubuntu-2004-zzemacs:latest
     network_mode: bridge

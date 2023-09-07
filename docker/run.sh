@@ -77,7 +77,10 @@ case $1 in
     host )
         ssh -l ${MYHOST_USER} ${MYHOST_NAME}
         ;;
+    build )
+        make -C dockerfiles
+        ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host}"
+        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|host|build}"
         ;;
 esac

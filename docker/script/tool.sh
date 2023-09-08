@@ -73,7 +73,7 @@ case $1 in
         docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} ${SHELL_PARAM[@]}
         ;;
     ssh )
-        ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
+        TERM=xterm ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
         ;;
     build )
         make -C dockerfiles

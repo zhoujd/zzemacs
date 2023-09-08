@@ -19,7 +19,10 @@ case $1 in
         export HELP_PRFIX="$(basename $0) dev"
         $TOOL_ROOT/tool.sh $@
         ;;
+    show )
+        docker ps | grep zzemacs
+        ;;
     * )
-        echo "Usage: $(basename $0) {base|dev}"
+        echo "Usage: $(basename $0) {base|dev|show}"
         ;;
 esac

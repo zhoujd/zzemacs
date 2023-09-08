@@ -13,10 +13,10 @@ BUILD_PAR += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 
 BUILD_DEV += --rm ## --no-cache
 
-Ubuntu2004_TAG := zz/ubuntu-2004-zzemacs:base
-Ubuntu2204_TAG := zz/ubuntu-2204-zzemacs:base
-Ubuntu2004_DEV := zz/ubuntu-2004-zzemacs:dev
-Ubuntu2204_DEV := zz/ubuntu-2204-zzemacs:dev
+Ubuntu2004_TAG := zz/ubuntu-20.04-zzemacs:base
+Ubuntu2204_TAG := zz/ubuntu-22.04-zzemacs:base
+Ubuntu2004_DEV := zz/ubuntu-20.04-zzemacs:dev
+Ubuntu2204_DEV := zz/ubuntu-22.04-zzemacs:dev
 
 ubuntu2004: ubuntu2004.dockerfile
 	docker build $(BUILD_PAR) -t $(Ubuntu2004_TAG) -f $< .

@@ -24,10 +24,10 @@ ubuntu2004: ubuntu2004.dockerfile
 ubuntu2204: ubuntu2204.dockerfile
 	docker build $(BUILD_PAR) -t $(Ubuntu2204_TAG) -f $< .
 
-ubuntu2004-dev: ubuntu2004-dev.dockerfile
+ubuntu2004-dev: ubuntu2004-dev.dockerfile ubuntu2004
 	docker build $(BUILD_DEV) -t $(Ubuntu2004_DEV) -f $< .
 
-ubuntu2204-dev: ubuntu2204-dev.dockerfile
+ubuntu2204-dev: ubuntu2204-dev.dockerfile ubuntu2204
 	docker build $(BUILD_DEV) -t $(Ubuntu2204_DEV) -f $< .
 
 .PHONY: clean

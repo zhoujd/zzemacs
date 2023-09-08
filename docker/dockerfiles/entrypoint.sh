@@ -1,9 +1,9 @@
 #!/bin/bash
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+ZZEMACS_ROOT=$HOME/zzemacs
 
 setup_emacs() {
-    local ZZEMACS_ROOT=$HOME/zzemacs
     if [ -d $ZZEMACS_ROOT ]; then
         echo "Setup emacs ..."
         ln -sfvT $ZZEMACS_ROOT/.emacs $HOME/.emacs
@@ -18,18 +18,18 @@ setup_emacs() {
 }
 
 setup_libvirtd() {
-    local LIBVIRTD_CMD=/usr/sbin/libvirtd
-    if [ -x $LIBVIRTD_CMD ]; then
+    local libvirtd_cmd=/usr/sbin/libvirtd
+    if [ -x $libvirtd_cmd ]; then
         echo "Setup libvirtd ..."
-        sudo $LIBVIRTD_CMD -d
+        sudo $libvirtd_cmd -d
     fi
 }
 
 setup_sshd() {
-    local SSHD_CMD=/usr/sbin/sshd
-    if [ -x $SSHD_CMD ]; then
+    local sshd_cmd=/usr/sbin/sshd
+    if [ -x $sshd_cmd ]; then
         echo "Setup sshd ..."
-        sudo $SSHD_CMD
+        sudo $sshd_cmd
     fi
 }
 

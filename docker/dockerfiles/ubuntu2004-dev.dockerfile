@@ -49,4 +49,4 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         qemu qemu-utils qemu-kvm virt-manager libvirt-daemon-system libvirt-clients bridge-utils \
         && sudo apt-get autoremove \
         && sudo apt-get clean
-RUN sudo sudo usermod -aG kvm,libvirt,libvirt-qemu $USER
+RUN sudo usermod -aG kvm,libvirt,libvirt-qemu $USER

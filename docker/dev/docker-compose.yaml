@@ -18,5 +18,5 @@ services:
       - /dev:/dev
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/security/limits.conf:/etc/security/limits.conf
-      - /home/${USER}/zzemacs:/home/${USER}/zzemacs
-      - /home/${USER}/lab:/home/${USER}/lab
+      - ${ZZEMACS_ROOT}:/home/${USER}/zzemacs
+      - ${ZZEMACS_TOP}/lab:/home/${USER}/lab

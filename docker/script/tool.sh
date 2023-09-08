@@ -5,7 +5,7 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/../.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
-IMG=${IMG:-ubuntu-2004-zzemacs}
+IMG=${IMG:-zz/ubuntu-2004-zzemacs}
 TAG=${TAG:-base}
 CTN_PREFIX=${CTN_PREFIX:-zzemacs}
 CTN_NAME=${CTN_NAME:-$CTN_PREFIX-$TAG}

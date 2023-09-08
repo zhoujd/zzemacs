@@ -21,10 +21,10 @@ case $1 in
         export PROMPT="$(basename $0) dev"
         $TOOL_ROOT/tool.sh $@
         ;;
-    show )
+    status )
         docker ps | grep zzemacs
         ;;
     * )
-        echo "Usage: $(basename $0) {base|dev|show}"
+        echo "Usage: $(basename $0) {base|dev|status}"
         ;;
 esac

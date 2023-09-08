@@ -7,6 +7,7 @@ setup_emacs() {
     echo "Setup emacs ..."
     ln -sfvT $ZZEMACS_ROOT/.emacs $HOME/.emacs
     ln -sfvT $ZZEMACS_ROOT/font $HOME/.fonts
+    ln -sfvT $ZZEMACS_ROOT/etc/terminfo $HOME/.terminfo
 }
 
 setup_bash() {

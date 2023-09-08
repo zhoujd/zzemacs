@@ -9,41 +9,41 @@ IMG=${IMG:-zz/ubuntu-2004-zzemacs}
 TAG=${TAG:-base}
 CTN_PREFIX=${CTN_PREFIX:-zzemacs}
 CTN_NAME=${CTN_NAME:-$CTN_PREFIX-$TAG}
-REMOTE_HOST=${REMOTE_HOST:-$IMG}
-REMOTE_USER=${REMOTE_USER:-$USER}
-REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}
+CTN_HOST=${CTN_HOST:-ubuntu-2004-zzemacs}
+CTN_USER=${CTN_USER:-$USER}
+CTN_HOME=${CTN_HOME:-/home/$CTN_USER}
 SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
-SSH_USER=${REMOTE_USER}
+SSH_USER=${CTN_USER}
 HOST_NAME=${HOST_NAME:-myhost}
 HOST_IP=${HOST_IP:-host-gateway}
-HELP_PRFIX=${HELP_PRFIX:-$(basename $0)}
+PROMPT=${PROMPT:-$(basename $0)}
 
 ## Use local X11 Server
 X11_PARAM=(
     -e DISPLAY=$DISPLAY
     -v /tmp/.X11-unix:/tmp/.X11-unix
-    -v $HOME/.Xauthority:$REMOTE_HOME/.Xauthority
+    -v $HOME/.Xauthority:$CTN_HOME/.Xauthority
 )
 
 RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
     --add-host=$HOST_NAME:$HOST_IP
-    -h $REMOTE_HOST
-    -u $REMOTE_USER
+    -h $CTN_HOST
+    -u $CTN_USER
     -p $SSH_PORT:22
     -v /dev:/dev
     -v /var/run/docker.sock:/var/run/docker.sock
     -v /etc/security/limits.conf:/etc/security/limits.conf
-    -v $ZZEMACS_TOP/lab:$REMOTE_HOME/lab
-    -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
+    -v $ZZEMACS_ROOT:$CTN_HOME/zzemacs
+    -v $ZZEMACS_TOP/lab:$CTN_HOME/lab
 )
 
 EXEC_PARAM=(
     -e DISPLAY=$DISPLAY
     -e SHELL=/bin/bash
-    -u $REMOTE_USER
+    -u $CTN_USER
 )
 
 EMACS_PARAM=(
@@ -79,6 +79,6 @@ case $1 in
         make -C dockerfiles
         ;;
     * )
-        echo "Usage: ${HELP_PRFIX} {start|stop|status|emacs|shell|ssh|build}"
+        echo "Usage: ${PROMPT} {start|stop|status|emacs|shell|ssh|build}"
         ;;
 esac

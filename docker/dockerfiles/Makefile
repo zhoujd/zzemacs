@@ -5,11 +5,11 @@ all: ubuntu2004 ubuntu2204 ubuntu2004-dev ubuntu2204-dev
 
 CTN_USER ?= ${USER}
 
-BUILD_PAR += --rm ## --no-cache
-BUILD_PAR += --build-arg USER_NAME=$(CTN_USER)
-BUILD_PAR += --build-arg USER_UID=$(shell id -u ${USER})
-BUILD_PAR += --build-arg USER_GID=$(shell id -g ${USER})
-BUILD_PAR += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
+BUILD_ARG += --rm ## --no-cache
+BUILD_ARG += --build-arg USER_NAME=$(CTN_USER)
+BUILD_ARG += --build-arg USER_UID=$(shell id -u ${USER})
+BUILD_ARG += --build-arg USER_GID=$(shell id -g ${USER})
+BUILD_ARG += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 
 BUILD_DEV += --rm ## --no-cache
 
@@ -19,10 +19,10 @@ Ubuntu2004_DEV := zz/ubuntu-20.04-zzemacs:dev
 Ubuntu2204_DEV := zz/ubuntu-22.04-zzemacs:dev
 
 ubuntu2004: ubuntu2004.dockerfile
-	docker build $(BUILD_PAR) -t $(Ubuntu2004_TAG) -f $< .
+	docker build $(BUILD_ARG) -t $(Ubuntu2004_TAG) -f $< .
 
 ubuntu2204: ubuntu2204.dockerfile
-	docker build $(BUILD_PAR) -t $(Ubuntu2204_TAG) -f $< .
+	docker build $(BUILD_ARG) -t $(Ubuntu2204_TAG) -f $< .
 
 ubuntu2004-dev: ubuntu2004-dev.dockerfile ubuntu2004
 	docker build $(BUILD_DEV) -t $(Ubuntu2004_DEV) -f $< .

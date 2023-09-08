@@ -12,9 +12,8 @@ REMOTE_HOST=${REMOTE_HOST:-$IMG}
 REMOTE_USER=${REMOTE_USER:-$USER}
 REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}
 SSH_HOST=${SSH_HOST:-localhost}
-SSH_PORT=${SSH_PORT:-10022}
+SSH_PORT=${SSH_PORT:-11022}
 SSH_USER=${REMOTE_USER}
-DID_SOCK=${DID_SOCK:-/var/run/docker.sock}
 MYHOST_NAME=myhost
 MYHOST_IP=host-gateway
 
@@ -34,9 +33,10 @@ RUN_PARAM=(
     -u $REMOTE_USER
     -p $SSH_PORT:22
     -v /dev:/dev
-    -v $DID_SOCK:$DID_SOCK
-    -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
+    -v /var/run/docker.sock:/var/run/docker.sock
+    -v /etc/security/limits.conf:/etc/security/limits.conf
     -v $ZZEMACS_TOP/lab:$REMOTE_HOME/lab
+    -v $ZZEMACS_ROOT:$REMOTE_HOME/zzemacs
 )
 
 EXEC_PARAM=(

@@ -9,12 +9,14 @@ case $1 in
         shift
         export TAG=base
         export SSH_PORT=10022
+        export HELP_PRFIX="$(basename $0) base"        
         $TOOL_ROOT/tool.sh $@
         ;;
     dev )
         shift
         export TAG=dev
         export SSH_PORT=11022
+        export HELP_PRFIX="$(basename $0) dev"
         $TOOL_ROOT/tool.sh $@
         ;;
     * )

@@ -17,6 +17,7 @@ SSH_PORT=${SSH_PORT:-10022}
 SSH_USER=${REMOTE_USER}
 HOST_NAME=${HOST_NAME:-myhost}
 HOST_IP=${HOST_IP:-host-gateway}
+HELP_PRFIX=${HELP_PRFIX:-$(basename $0)}
 
 ## Use local X11 Server
 X11_PARAM=(
@@ -78,6 +79,6 @@ case $1 in
         make -C dockerfiles
         ;;
     * )
-        echo "Usage: $(basename $0) {start|stop|status|emacs|shell|ssh|build}"
+        echo "Usage: ${HELP_PRFIX} {start|stop|status|emacs|shell|ssh|build}"
         ;;
 esac

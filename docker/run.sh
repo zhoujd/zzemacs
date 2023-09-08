@@ -6,16 +6,16 @@ ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
 IMG=${IMG:-ubuntu-2004-zzemacs}
-TAG=${TAG:-dev}
+TAG=${TAG:-base}
 CTN=${CTN:-zzemacs-$TAG}
 REMOTE_HOST=${REMOTE_HOST:-$IMG}
 REMOTE_USER=${REMOTE_USER:-$USER}
 REMOTE_HOME=${REMOTE_HOME:-/home/$REMOTE_USER}
 SSH_HOST=${SSH_HOST:-localhost}
-SSH_PORT=${SSH_PORT:-11022}
+SSH_PORT=${SSH_PORT:-10022}
 SSH_USER=${REMOTE_USER}
-MYHOST_NAME=myhost
-MYHOST_IP=host-gateway
+HOST_NAME=${HOST_NAME:-myhost}
+HOST_IP=${HOST_IP:-host-gateway}
 
 ## Use local X11 Server
 X11_PARAM=(
@@ -27,8 +27,7 @@ X11_PARAM=(
 RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
-    --add-host=$MYHOST_NAME:$MYHOST_IP
-    --ulimit nofile=655360:655360
+    --add-host=$HOST_NAME:$HOST_IP
     -h $REMOTE_HOST
     -u $REMOTE_USER
     -p $SSH_PORT:22

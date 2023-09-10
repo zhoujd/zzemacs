@@ -13,7 +13,6 @@ setup_emacs() {
 setup_bash() {
     echo "Setup bashrc ..."
     $ZZEMACS_ROOT/bin/bashrc-setup.sh
-
 }
 
 setup_git() {

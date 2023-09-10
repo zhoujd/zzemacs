@@ -5,13 +5,13 @@ all: ubuntu2004 ubuntu2204 ubuntu2004-dev ubuntu2204-dev
 
 CTN_USER ?= ${USER}
 
-BUILD_ARG += --rm ## --no-cache
+BUILD_ARG += ## --rm --no-cache
 BUILD_ARG += --build-arg USER_NAME=$(CTN_USER)
 BUILD_ARG += --build-arg USER_UID=$(shell id -u ${USER})
 BUILD_ARG += --build-arg USER_GID=$(shell id -g ${USER})
 BUILD_ARG += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 
-BUILD_DEV += --rm ## --no-cache
+BUILD_DEV += ## --rm --no-cache
 
 Ubuntu2004_TAG := zz/ubuntu-20.04-zzemacs:base
 Ubuntu2204_TAG := zz/ubuntu-22.04-zzemacs:base

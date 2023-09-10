@@ -19,19 +19,19 @@ setup_libvirtd() {
     fi
 }
 
-setup_ssh() {
-    local ssh_cmd=/etc/init.d/ssh
-    if [ -x $ssh_cmd ]; then
-        echo "Setup ssh ..."
-        sudo $ssh_cmd start
-    fi
-}
-
 setup_dbus() {
     local dbus_cmd=/etc/init.d/dbus
     if [ -x $dbus_cmd ]; then
         echo "Setup dbus ..."
         sudo $dbus_cmd start
+    fi
+}
+
+setup_ssh() {
+    local ssh_cmd=/etc/init.d/ssh
+    if [ -x $ssh_cmd ]; then
+        echo "Setup ssh ..."
+        sudo $ssh_cmd start
     fi
 }
 
@@ -45,8 +45,8 @@ case $CMD in
     init )
         setup_zzemacs
         setup_libvirtd
-        setup_ssh
         setup_dbus
+        setup_ssh
         setup_sleep
         ;;
     * )

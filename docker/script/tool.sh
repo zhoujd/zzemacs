@@ -35,8 +35,8 @@ RUN_PARAM=(
     -p $SSH_PORT:22
     -v /dev:/dev
     -v /var/run/docker.sock:/var/run/docker.sock
-    -v /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
     -v /etc/security/limits.conf:/etc/security/limits.conf
+    -v /etc/sysctl.conf:/etc/sysctl.conf
     -v $ZZEMACS_ROOT:$CTN_HOME/zzemacs
     -v $ZZEMACS_TOP/lab:$CTN_HOME/lab
 )

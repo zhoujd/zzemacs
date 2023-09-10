@@ -25,7 +25,9 @@
 ## git rev-parse --show-toplevel
 
 ### GitHub Token
+## GITHUB_TOKEN="xxxxxxxxxxxxxxx"
 ## git config --global url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
+## git config --file=~/.gitconfig-url url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
 ## cat ~/.gitconfig-url
 ## [url "https://${GITHUB_TOKEN}@github.com/zhoujd"]
 ##	insteadOf = https://github.com/zhoujd

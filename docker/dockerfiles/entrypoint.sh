@@ -40,17 +40,24 @@ setup_sleep() {
     sleep infinity
 }
 
+setup_help() {
+    echo "Usage $(basename $0) {init|help}"
+}
+
+
 CMD=${1:-""}
-case $CMD in
-    init )
+case "$CMD" in
+    "init" )
         setup_zzemacs
         setup_libvirtd
         setup_dbus
         setup_ssh
         setup_sleep
         ;;
+    "help" )
+        setup_help
+        ;;
     * )
-        setup_zzemacs
-        setup_sleep
+        exec "$@"
         ;;
 esac

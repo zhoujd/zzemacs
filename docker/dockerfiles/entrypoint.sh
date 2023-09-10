@@ -41,7 +41,7 @@ setup_sleep() {
 }
 
 setup_help() {
-    echo "Usage $(basename $0) {init|help}"
+    echo "Usage: $0 {init|help}"
 }
 
 

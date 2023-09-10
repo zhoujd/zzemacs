@@ -3,6 +3,11 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$HOME/zzemacs
 
+setup_common() {
+    echo "Setup common ..."
+    touch $HOME/.Xauthority
+}
+
 setup_zzemacs() {
     local install_cmd=$ZZEMACS_ROOT/docker/script/install.sh
     if [ -x $install_cmd ]; then
@@ -48,6 +53,7 @@ setup_help() {
 CMD=${1:-""}
 case "$CMD" in
     "init" )
+        setup_common
         setup_zzemacs
         setup_libvirtd
         setup_dbus

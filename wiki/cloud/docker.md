@@ -444,3 +444,12 @@ Docker
 ## Tell the terminal in the container its size
 
     $ docker exec -it -e COLUMNS="`tput cols`" -e LINES="`tput lines`" container bash
+
+## Running a window manager from inside a docker container
+
+    ## http://blog.csicar.de/docker/window-manger/2016/05/24/docker-wm.html
+    $ sudo pacman -S xorg-server-xephyr
+    or
+    $ sudo apt-get install xserver-xephyr
+    $ Xephyr :1 -ac -br -screen 1024x768 -resizeable -reset -terminate &
+    $ docker run -it -e DISPLAY=:1 --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix csicar/ubuntu-mate-desktop /usr/bin/mate-session

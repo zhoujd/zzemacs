@@ -15,7 +15,7 @@ CTN_HOME=${CTN_HOME:-/home/$CTN_USER}
 SSH_HOST=${SSH_HOST:-localhost}
 SSH_PORT=${SSH_PORT:-10022}
 SSH_USER=${CTN_USER}
-HOST_NAME=${HOST_NAME:-myhost}
+HOST_NAME=${HOST_NAME:-dockerhost}
 HOST_IP=${HOST_IP:-host-gateway}
 PROMPT=${PROMPT:-$(basename $0)}
 

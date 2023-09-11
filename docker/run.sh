@@ -24,7 +24,11 @@ case $1 in
     status )
         docker ps | grep zzemacs
         ;;
+    build )
+        shift
+        $TOOL_ROOT/tool.sh build $@
+        ;;
     * )
-        echo "Usage: $(basename $0) {base|dev|status}"
+        echo "Usage: $(basename $0) {base|dev|status|build}"
         ;;
 esac

@@ -77,7 +77,8 @@ case $1 in
         TERM=xterm ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
         ;;
     build )
-        make -C dockerfiles
+        shift
+        make -C dockerfiles $@
         ;;
     * )
         echo "Usage: ${PROMPT} {start|stop|status|emacs|shell|ssh|build}"

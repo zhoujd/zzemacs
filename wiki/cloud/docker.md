@@ -454,3 +454,7 @@ Docker
     $ sudo apt-get install xserver-xephyr
     $ Xephyr :1 -ac -br -screen 1024x768 -resizeable -reset -terminate &
     $ docker run -it -e DISPLAY=:1 --device /dev/snd -v /tmp/.X11-unix:/tmp/.X11-unix csicar/ubuntu-mate-desktop /usr/bin/mate-session
+
+    ## https://askubuntu.com/questions/175902/remote-x-server-with-ssh-x
+    $ Xephyr :1 -screen 1024x768 -query 192.168.1.107
+    $ ssh -X username@192.168.1.107 Xephyr :1 -query localhost -screen 1280x1024

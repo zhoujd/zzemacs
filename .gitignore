@@ -4,3 +4,5 @@
 *.pyc
 *.uuid
 99_proxy.sh
+font/font-cache.sexp
+

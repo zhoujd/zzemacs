@@ -1,5 +1,6 @@
 FROM zz/ubuntu-22.04-zzemacs:base
 
+## Setup develop package
 RUN sudo apt-get update \
         && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         libdrm-dev libx11-dev libgl1-mesa-glx libgl1-mesa-dev \
@@ -16,10 +17,12 @@ RUN sudo apt-get update \
         && sudo apt-get clean
 
 
+## Setup develop tool
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        gitk meld psmisc sbcl
+        gitk meld psmisc
 
 
+## Setup google-chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         ./google-chrome-stable_current_amd64.deb \
@@ -29,6 +32,7 @@ RUN rm -f google-chrome-stable_current_amd64.deb
 RUN echo -n "Chrome: " && google-chrome --version
 
 
+## Setup vscode
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/vscode.gpg
 RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vscode.gpg] https://packages.microsoft.com/repos/vscode stable main" \
@@ -38,3 +42,11 @@ RUN sudo apt-get update \
         code \
         && sudo apt-get autoremove \
         && sudo apt-get clean
+
+
+## Setup libvirt
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        qemu qemu-utils qemu-kvm virt-manager libvirt-daemon-system libvirt-clients bridge-utils \
+        && sudo apt-get autoremove \
+        && sudo apt-get clean
+RUN sudo usermod -aG kvm,libvirt,libvirt-qemu $USER

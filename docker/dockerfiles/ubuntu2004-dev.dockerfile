@@ -19,7 +19,7 @@ RUN sudo apt-get update \
 
 ## Setup develop tool
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        gitk meld psmisc sbcl
+        gitk meld psmisc
 
 
 ## Setup google-chrome

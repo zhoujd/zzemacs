@@ -62,7 +62,8 @@ case $1 in
         docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ${IMG}:${TAG}
         ;;
     stop )
-        docker stop ${CTN_NAME} && docker rm ${CTN_NAME}
+        docker stop ${CTN_NAME} 2>/dev/null
+        docker rm ${CTN_NAME} 2>/dev/null
         ;;
     status )
         docker ps | grep ${CTN_NAME}

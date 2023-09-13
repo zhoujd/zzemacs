@@ -6,7 +6,8 @@ ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/../.. && pwd)
 setup_emacs() {
     echo "Setup emacs ..."
     ln -sfvT $ZZEMACS_ROOT/.emacs $HOME/.emacs
-    ln -sfvT $ZZEMACS_ROOT/font $HOME/.fonts
+    mkdir -p $HOME/.fonts
+    ln -sfvT $ZZEMACS_ROOT/font $HOME/.fonts/zach
     ln -sfvT $ZZEMACS_ROOT/etc/terminfo $HOME/.terminfo
 }
 

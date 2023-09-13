@@ -34,7 +34,7 @@ install_fonts() {
         "user" )
             FONT_TARGET=~/.fonts
             if [ -d $FONT_TARGET ]; then
-                ln -sfvT ${ZZEMACS_ROOT}/font/* $FONT_TARGET
+                ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
                 fc-cache -f
             fi
             ;;

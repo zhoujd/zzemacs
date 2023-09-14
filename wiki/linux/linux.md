@@ -513,3 +513,11 @@ Linux something
     $ df -h up
     Filesystem      Size  Used Avail Use% Mounted on
     /dev/loop0      2.0G  6.0M  1.8G   1% /home/muru/up
+
+## Change UID and GID
+
+    ## To assign a new UID to user called foo, enter:
+    $ usermod -u 2005 foo
+
+    ## To assign a new GID to group called foo, enter:
+    $ groupmod -g 3000 foo

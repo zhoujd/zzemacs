@@ -50,3 +50,7 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         && sudo apt-get autoremove \
         && sudo apt-get clean
 RUN sudo usermod -aG kvm,libvirt,libvirt-qemu $USER
+
+# Clean up APT when done.
+RUN sudo apt-get clean \
+        && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

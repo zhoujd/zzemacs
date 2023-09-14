@@ -48,3 +48,21 @@ JSON
       true,
       true
     ]
+
+## Include another JSON file
+
+    ## Use cpp (C PreProcess)
+    $ cat test.json <<EOF
+    {"name":"NAME",
+    #include "another.json"
+    }
+    EOF
+
+    $ cat another.json <<EOF
+    "inner":"value"
+    EOF
+
+    $ cpp -P test.json
+    {"name":"NAME",
+    "inner":"value"
+    }

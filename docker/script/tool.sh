@@ -30,6 +30,8 @@ RUN_PARAM=(
     --privileged=true
     --cap-add=ALL
     --add-host=$HOST_NAME:$HOST_IP
+    -e GITHUB_TOKEN=$GITHUB_TOKEN
+    -e GITLAB_TOKEN=$GITLAB_TOKEN
     -h $CTN_HOST
     -u $CTN_USER
     -p $SSH_PORT:22

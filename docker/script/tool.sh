@@ -65,6 +65,9 @@ case $1 in
         docker stop ${CTN_NAME} 2>/dev/null
         docker rm ${CTN_NAME} 2>/dev/null
         ;;
+    log )
+        docker logs ${CTN_NAME} 2>/dev/null
+        ;;
     status )
         docker ps | grep ${CTN_NAME}
         ;;
@@ -82,6 +85,6 @@ case $1 in
         make -C dockerfiles $@
         ;;
     * )
-        echo "Usage: ${PROMPT} {start|stop|status|emacs|shell|ssh|build}"
+        echo "Usage: ${PROMPT} {start|stop|log|status|emacs|shell|ssh|build}"
         ;;
 esac

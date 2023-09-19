@@ -1,4 +1,5 @@
-FROM zz/ubuntu-20.04-zzemacs:base
+ARG VARIANT=20.04
+FROM zz/ubuntu-${VARIANT}-zzemacs:base
 
 ## Setup develop package
 RUN sudo apt-get update \

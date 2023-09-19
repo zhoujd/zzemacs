@@ -1,4 +1,5 @@
-FROM ubuntu:20.04
+ARG VARIANT=20.04
+FROM ubuntu:$VARIANT
 
 USER root
 

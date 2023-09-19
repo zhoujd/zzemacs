@@ -27,8 +27,8 @@ ubuntu-dev: ubuntu-dev.dockerfile ubuntu-base
 
 .PHONY: clean
 clean:
-	docker rmi $(Ubuntu_BASE_TAG)
-	docker rmi $(Ubuntu_DEV_TAG)
+	-docker rmi $(Ubuntu_BASE_TAG)
+	-docker rmi $(Ubuntu_DEV_TAG)
 
 .PHONY: help
 help:

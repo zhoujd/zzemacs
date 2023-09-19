@@ -1,6 +1,9 @@
 #!/bin/bash
 #set -x
 
+## https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker-compose
+## https://spin.atomicobject.com/2021/06/16/docker-development-container/
+
 Install_docker() {
     echo "Install Docker CE CLI"
     sudo apt-get update \

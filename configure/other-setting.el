@@ -140,14 +140,15 @@
                                             ("-o" "ForwardX11=yes")))
                (tramp-default-port         22)))
 (tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
-(setq tramp-default-method (if-ms-windows "plink" "sshz"))
-;;speed up tramp
-(setq remote-file-name-inhibit-cache nil)
-(setq vc-ignore-dir-regexp
-      (format "%s\\|%s"
-                    vc-ignore-dir-regexp
-                    tramp-file-name-regexp))
+;;full name: /ssh:news@news.my.domain:/opt/news/etc
+;;reduced name: /news@news.my.domain:/opt/news/etc
+(tramp-change-syntax 'simplified)
+(setq tramp-default-method "sshz")
 (setq tramp-verbose 1)
+(setq remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp (format "%s\\|%s"
+                                   vc-ignore-dir-regexp
+                                   tramp-file-name-regexp))
 
 ;;;setup PS1 on remote
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc

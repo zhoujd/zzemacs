@@ -148,9 +148,8 @@
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc
 (defun zz:tramp-ps1 ()
   (interactive)
-  (append-to-file "[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"\n"
-                  nil
-                  "~/.bashrc")
+  (comint-simple-send (get-buffer-process (current-buffer))
+                      "PS1=\"\\u@\\h \\W\\$ \"")
   (message "setup tramp PS1 done"))
 
 ;;ange-ftp

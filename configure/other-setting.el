@@ -123,8 +123,13 @@
 (add-to-list 'tramp-methods
              '("sshz"
                (tramp-login-program        "ssh")
-               (tramp-login-args           (("-l" "%u") ("-p" "%p") ("%c")
-                                            ("-e" "none") ("-X") ("%h")))
+               (tramp-login-args           (("-l" "%u")
+                                            ("-p" "%p")
+                                            ("%c")
+                                            ("-e" "none")
+                                            ("-X")
+                                            ("%h")
+                                            ))
                (tramp-async-args           (("-q")))
                (tramp-remote-shell         "/bin/sh")
                (tramp-remote-shell-login   ("-l"))

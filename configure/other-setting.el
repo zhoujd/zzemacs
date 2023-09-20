@@ -144,6 +144,15 @@
                     tramp-file-name-regexp))
 (setq tramp-verbose 1)
 
+;;;setup PS1 on remote
+;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc
+(defun zz:tramp-ps1 ()
+  (interactive)
+  (append-to-file "[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"\n"
+                  nil
+                  "~/.bashrc")
+  (message "setup tramp PS1 done"))
+
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")
 (setq ange-ftp-default-user t)

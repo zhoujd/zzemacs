@@ -160,10 +160,10 @@
 
 (defun zz:tramp-ps1-save ()
   (interactive)
-  (let ((content "[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"")
-        (file "~/.bashrc"))
-    (append-to-file (format "%s\n" content) nil file))
-    (message "save tramp PS1 done"))
+  (let ((cmd "echo '[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"' >> ~/.bashrc"))
+    (comint-simple-send (get-buffer-process (current-buffer))
+                        cmd)
+    (message "save tramp PS1 done")))
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")

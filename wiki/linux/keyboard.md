@@ -22,3 +22,7 @@ Keyboard
     XKBOPTIONS="ctrl:nocaps"		# Some people prefer "ctrl:swapcaps"
 
     $ sudo dpkg-reconfigure -phigh console-setup
+
+## Keyboard Control
+
+    $ xset -q

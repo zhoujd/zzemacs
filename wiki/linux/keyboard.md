@@ -26,3 +26,4 @@ Keyboard
 ## Keyboard Control
 
     $ xset -q
+    $ localectl status

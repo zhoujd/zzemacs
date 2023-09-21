@@ -27,6 +27,7 @@
 
 ;;helm-tramp
 (require 'helm-tramp)
+(setq helm-tramp-docker-user "jenkins")
 
 ;;https://writequit.org/eos/eos-helm.html
 (setq helm-display-header-line          nil

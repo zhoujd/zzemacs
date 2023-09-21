@@ -154,7 +154,8 @@ Kill all remote buffers."
 	      (push
 	       (concat "/" helm-tramp-default-method ":" hostuser "@" hostname "#" port "|sudo:root@" hostname ":/")
 	       hosts))))))
-    (when (require 'docker-tramp nil t)
+    (when (and (executable-find "docker")
+               (require 'docker-tramp nil t))
       (cl-loop for line in (cdr (ignore-errors (apply #'process-lines "docker" (list "ps"))))
 	       for info = (reverse (split-string line "[[:space:]]+" t))
 	       collect (progn (push
@@ -171,7 +172,8 @@ Kill all remote buffers."
 				  (push
 				   (concat "/docker:" helm-tramp-docker-user "@" (car info) ":/")
 				   hosts))))))
-    (when (require 'vagrant-tramp nil t)
+    (when (and (executable-find "vagrant")
+               (require 'vagrant-tramp nil t))
       (cl-loop for box-name in (cl-map 'list 'cadr (vagrant-tramp--completions))
 	       do (progn
 		    (push (concat "/vagrant:" box-name ":/") hosts)
@@ -209,7 +211,7 @@ Kill all remote buffers."
 (defun helm-tramp-open-shell (path)
   "Tramp open shell at PATH."
   (let ((default-directory path))
-    (shell (concat "* Helm tramp shell - " path))))
+    (shell (concat "*Helm tramp shell - " path))))
 
 (defvar helm-tramp--source
   (helm-build-sync-source "Tramp"
@@ -226,12 +228,6 @@ You can connect your server with tramp"
   (interactive)
   (unless (file-exists-p "~/.ssh/config")
     (error "There is no ~/.ssh/config"))
-  (when (require 'docker-tramp nil t)
-    (unless (executable-find "docker")
-      (error "'docker' is not installed")))
-  (when (require 'vagrant-tramp nil t)
-    (unless (executable-find "vagrant")
-      (error "'vagrant' is not installed")))
   (run-hooks 'helm-tramp-pre-command-hook)
   (helm :sources '(helm-tramp--source) :buffer "*helm tramp*")
   (run-hooks 'helm-tramp-post-command-hook))

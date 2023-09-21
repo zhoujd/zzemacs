@@ -142,7 +142,8 @@
 (tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
 ;;full name: /ssh:news@news.my.domain:/opt/news/etc
 ;;reduced name: /news@news.my.domain:/opt/news/etc
-(tramp-change-syntax 'simplified)
+;;`default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
+(tramp-change-syntax 'default)
 (setq tramp-default-method "sshz")
 (setq tramp-verbose 1)
 (setq remote-file-name-inhibit-cache nil)
@@ -150,7 +151,7 @@
                                    vc-ignore-dir-regexp
                                    tramp-file-name-regexp))
 
-;;;setup PS1 on remote
+;;setup PS1 on remote
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc
 (defun zz:tramp-ps1 ()
   (interactive)
@@ -158,11 +159,16 @@
                       "PS1=\"\\u@\\h \\W\\$ \"")
   (message "setup tramp PS1 done"))
 
+;;save PS1 to remote
 (defun zz:tramp-ps1-save ()
   (interactive)
-  (let ((cmd "echo '[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"' >> ~/.bashrc"))
+  (let ((content "
+## PS1 for remote tramp
+[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"
+")
+        (file "~/.bashrc"))
     (comint-simple-send (get-buffer-process (current-buffer))
-                        cmd)
+                        (format "echo '%s' >> %s" content file))
     (message "save tramp PS1 done")))
 
 ;;ange-ftp

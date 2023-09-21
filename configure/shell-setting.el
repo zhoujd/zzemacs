@@ -346,7 +346,9 @@ Dmitriy Igrishin's patched version of comint.el."
                      (ido-completing-read "Host: "
                                           (split-string
                                            (shell-command-to-string command)))))
-           (remote (concat "/" tramp-default-method ":" host ":")))
+           (remote (if (eq tramp-syntax 'simplified)
+                       (concat "/" host ":")
+                       (concat "/" tramp-default-method ":" host ":"))))
       (cd remote)
       (zz:get-shell)
       )))

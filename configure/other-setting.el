@@ -140,10 +140,11 @@
                                             ("-o" "ForwardX11=yes")))
                (tramp-default-port         22)))
 (tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
-;;full name: /ssh:news@news.my.domain:/opt/news/etc
-;;reduced name: /news@news.my.domain:/opt/news/etc
-;;`default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
-(tramp-change-syntax 'default)
+;;tramp syntax: default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
+;;default: /ssh:news@news.my.domain:/opt/news/etc
+;;simplified: /news@news.my.domain:/opt/news/etc
+;;separate: /[method/user@remotehost]/filename
+(tramp-change-syntax 'simplified)
 (setq tramp-default-method "sshz")
 (setq tramp-verbose 1)
 (setq remote-file-name-inhibit-cache nil)

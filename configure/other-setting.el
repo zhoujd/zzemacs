@@ -144,7 +144,7 @@
 ;;default: /ssh:news@news.my.domain:/opt/news/etc
 ;;simplified: /news@news.my.domain:/opt/news/etc
 ;;separate: /[method/user@remotehost]/filename
-(tramp-change-syntax 'simplified)
+(tramp-change-syntax 'default)
 (setq tramp-default-method "sshz")
 (setq tramp-verbose 1)
 (setq remote-file-name-inhibit-cache nil)

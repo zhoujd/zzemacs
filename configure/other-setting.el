@@ -162,15 +162,12 @@
 ;;save PS1 to remote
 (defun zz:tramp-ps1-save ()
   (interactive)
-  (let* ((file "~/.bashrc")
-         (cmd (format "cat >> %s <<'EOF'
-
+  (let ((content "
 # PS1 for remote tramp
-[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"
-EOF
-"
-                      file)))
-    (comint-simple-send (get-buffer-process (current-buffer)) cmd)
+[ $TERM == \"dumb\" ] && PS1=\"\\u@\\h \\W\\$ \"")
+        (file "~/.bashrc"))
+    (comint-simple-send (get-buffer-process (current-buffer))
+                        (format "echo '%s' >> %s" content file))
     (message "save tramp PS1 done")))
 
 ;;ange-ftp

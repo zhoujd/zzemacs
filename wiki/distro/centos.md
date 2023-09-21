@@ -54,3 +54,8 @@ CentOS
 
     $ sudo rm -f /var/run/yum.pid
     $ sudo yum clean all
+
+## Fix LC_ALL login error on CentOS
+
+    ## bash: warning: setlocale: LC_ALL: cannot change locale (en_US.utf8)
+    $ sudo localedef -i en_US -f UTF-8 en_US.UTF-8

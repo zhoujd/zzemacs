@@ -285,6 +285,13 @@
 ;;helm-gtags
 ;(require 'helm-gtags)
 
+;;helm-cmd-t
+(zz:load-path "site-lisp/helm-cmd-t")
+(require 'helm-for-files)
+(require 'helm-x-files)
+(require 'helm-cmd-t)
+(require 'helm-C-x-b)
+
 
 (provide 'helm-setting)
 

@@ -458,3 +458,8 @@ Docker
     ## https://askubuntu.com/questions/175902/remote-x-server-with-ssh-x
     $ Xephyr :1 -screen 1024x768 -query 192.168.1.107
     $ ssh -X username@192.168.1.107 Xephyr :1 -query localhost -screen 1280x1024
+
+## Running Xephyr inside a docker container-docker
+
+    $ docker run -e DISPLAY=$DISPLAY -v /tmp:/tmp --ipc=host --pid=host zz/ubuntu-20.04-zwm:dev xephyr :103
+    $ docker run -e DISPLAY=$DISPLAY -v /tmp:/tmp zz/ubuntu-20.04-zwm:dev Xephyr :103

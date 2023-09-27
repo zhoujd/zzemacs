@@ -521,3 +521,32 @@ Linux something
 
     ## To assign a new GID to group called foo, enter:
     $ groupmod -g 3000 foo
+
+## Cannot connect lftp to IIS FTP with SSL
+
+    ## using a bash script
+    $ cat lftp-script.sh
+    #!/bin/bash
+    USER='username'
+    PASS='password'
+    HOST='ftp.mydomain.com'
+    LOCAL_BACKUP_DIR='/backups'
+    REMOTE_DIR='/backupfiles'
+
+    lftp -u $USER,$PASS $HOST <<EOF
+    set ftp:ssl-protect-data true
+    set ftp:ssl-force true
+    set ssl:verify-certificate no
+    mirror -R -e "$LOCAL_BACKUP_DIR" "$REMOTE_DIR"
+    quit
+    EOF
+
+    ## Using a single command line
+    $ lftp -u $USER,$PASS -e "set ftp:ssl-protect-data true set ftp:ssl-force true set ssl:verify-certificate no" $HOST -p $PORT
+
+## Listing the contents of the local directory in ftp
+
+    ## ! means locally not the remote
+    ## lcd is working but !cd will not work and lpwd is not working but !pwd is working
+    ftp > !dir
+    ftp > !ls

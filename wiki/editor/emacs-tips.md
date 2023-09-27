@@ -39,3 +39,8 @@ Emacs Tips
 ## Regexp
 
     https://wikemacs.org/wiki/Regexp
+
+## Problems with FTP connection via Tramp
+
+    C-x C-f /ftp:foo@android.local#2221:/storage/0123-4567
+    C-x d /ftp:foo@android.local#2221:/storage/0123-4567

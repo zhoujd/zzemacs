@@ -550,3 +550,9 @@ Linux something
     ## lcd is working but !cd will not work and lpwd is not working but !pwd is working
     ftp > !dir
     ftp > !ls
+
+## Modify CPU frequence
+
+    $ echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+    $ cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+    $ lscpu

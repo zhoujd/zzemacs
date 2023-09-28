@@ -561,3 +561,4 @@ Linux something
 
     ## https://github.com/wolfcw/libfaketime/
     $ sudo apt install -y faketime
+    $ faketime '2008-12-24 08:15:42' python test.py

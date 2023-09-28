@@ -20,6 +20,7 @@ setup_git() {
     echo "Setup git ..."
     $ZZEMACS_ROOT/misc/gitconfig.d/install-bin.sh
     $ZZEMACS_ROOT/misc/gitconfig.d/install-cfg.sh
+    $ZZEMACS_ROOT/misc/gitconfig.d/install-token.sh
 }
 
 setup_emacs

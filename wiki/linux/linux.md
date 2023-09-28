@@ -556,3 +556,8 @@ Linux something
     $ echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
     $ cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
     $ lscpu
+
+## Faketime for time test
+
+    ## https://github.com/wolfcw/libfaketime/
+    $ sudo apt install -y faketime

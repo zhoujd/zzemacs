@@ -189,3 +189,7 @@ Python
     >>> Y = X.replace('and', 'but under no circumstances')
     >>> Y
     '3.14, 42 but under no circumstances [1, 2]'
+
+## Pip on Arm
+
+    ## https://pypi.org/search/?q=aarch64

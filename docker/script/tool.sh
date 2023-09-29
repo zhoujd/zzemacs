@@ -27,6 +27,9 @@ X11_PARAM=(
 )
 
 RUN_PARAM=(
+    --detach
+    --name=${CTN_NAME}
+    --restart=always
     --privileged=true
     --cap-add=ALL
     --add-host=$HOST_NAME:$HOST_IP
@@ -61,7 +64,7 @@ SHELL_PARAM=(
 
 case $1 in
     start )
-        docker run -d --name=${CTN_NAME} ${RUN_PARAM[@]} ${IMG}:${TAG}
+        docker run ${RUN_PARAM[@]} ${IMG}:${TAG}
         ;;
     stop )
         docker stop ${CTN_NAME} 2>/dev/null

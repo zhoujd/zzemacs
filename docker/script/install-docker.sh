@@ -10,4 +10,4 @@ apt-get update \
     && apt-get autoremove \
     && apt-get clean
 
-echo "Docker Install Done"
+echo "Install Docker Done"

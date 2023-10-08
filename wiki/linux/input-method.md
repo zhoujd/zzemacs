@@ -11,6 +11,10 @@ Input Method
 ## Installation
 
     $ sudo apt install ibus-rime
+    ## IBus Preferences -> Input Method -> Add
+    ## settings -> Region & Language -> Input Sources
+    $ ibus-setup
+    $ ibus restart
 
 ## Setup Chinese fonts
 

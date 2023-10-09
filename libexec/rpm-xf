@@ -1,6 +1,8 @@
 #!/bin/sh
 
 ## sudo apt install rpm2cpio cpio
+## sudo apt install rpm2archive
+## rpm2archive 1.rpm && tar -xvf 1.rpm.tgz
 
 if [ $# != 1 ]; then
     echo "Usage: `basename $0` <1.rpm>"

@@ -4,6 +4,10 @@
 (zz:load-path "site-lisp")
 (zz:load-path "elisp")
 
+;; ensure environment variables inside Emacs
+(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
+
 ;; session + desktop
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)

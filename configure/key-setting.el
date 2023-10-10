@@ -250,7 +250,7 @@
 
   (kbd "C-h")     'delete-backward-char
   [backspace]     'delete-backward-char
-  [delete]        'delete-char
+  [delete]        'delete-forward-char
 
   ;;orgmode
   (kbd "C-c l")   'org-store-link

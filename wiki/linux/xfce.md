@@ -217,3 +217,8 @@ Xfce
     $ xdotool getwindowfocus windowkill
     $ perl -MX11::Protocol -MX11::Protocol::WM -e '$X = X11::Protocol::new(); X11::Protocol::WM::set_wm_protocol($X, ($X->GetInputFocus())[0], "WM_DELETE_WINDOW")'
     $ wmctrl -c :ACTIVE:
+
+## Setup Evolution Email Client on Ubuntu
+
+    $ sudo apt install evolution
+    $ sudo apt install evolution-ews

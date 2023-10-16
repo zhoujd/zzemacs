@@ -14,11 +14,11 @@ RUN apt-get update \
         && apt-get autoremove \
         && apt-get clean
 
-RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
-        | sudo tee /etc/apt/sources.list.d/docker.list
-RUN apt-get update \
+RUN mkdir -p /etc/apt/keyrings \
+        && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+        | tee /etc/apt/sources.list.d/docker.list \
+        && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         docker-ce docker-ce-cli containerd.io docker-compose-plugin \
         && apt-get autoremove \
@@ -30,17 +30,17 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 ARG USER_PASSWD=123456
 ARG USER_SHELL=/bin/bash
-RUN groupadd -g $USER_GID $USER_NAME
-RUN useradd -d $USER_HOME -s $USER_SHELL -m $USER_NAME -u $USER_UID -g $USER_GID \
+RUN groupadd -g $USER_GID $USER_NAME \ 
+        && useradd -d $USER_HOME -s $USER_SHELL -m $USER_NAME -u $USER_UID -g $USER_GID \
         && echo $USER_NAME:$USER_PASSWD | chpasswd \
-        && adduser $USER_NAME sudo
-RUN echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
+        && adduser $USER_NAME sudo \
+        && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 
 ARG ROOT_PASSWD=$USER_PASSWD
 RUN echo root:$ROOT_PASSWD | chpasswd
 
-RUN mkdir -p /app
-RUN mkdir -p /var/run/sshd
+RUN mkdir -p /app \
+        && mkdir -p /var/run/sshd
 
 RUN sed -i \
         -e 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' \
@@ -52,17 +52,18 @@ RUN sed -i \
         /etc/ssh/sshd_config
 
 ARG DOCKER_GID=133
-RUN groupmod -g $DOCKER_GID docker
-RUN usermod -aG docker $USER_NAME
+RUN groupmod -g $DOCKER_GID docker \
+        && usermod -aG docker $USER_NAME
 
 WORKDIR $USER_HOME
 USER $USER_NAME
-ENV HOME $USER_HOME
-ENV USER $USER_NAME
-ENV SHELL $USER_SHELL
+ENV HOME=$USER_HOME \
+        USER=$USER_NAME \
+        SHELL=$USER_SHELL \
+        PATH=$PATH:$HOME/.local/bin
+
 RUN touch $HOME/.Xauthority
 
-ENV PATH $PATH:$HOME/.local/bin
 COPY requirements.txt /app
 RUN pip3 install --requirement /app/requirements.txt
 

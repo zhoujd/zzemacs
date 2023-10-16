@@ -2,9 +2,9 @@
 
 echo "Docker rm exit clean"
 
-ps_list=$(docker ps -a | grep Exit | cut -d ' ' -f 1)
+ps_list=$(docker ps -a | grep Exit )
 if [ -n "$ps_list" ]; then
-    echo $ps_list | xargs docker rm
+    docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm
 else
     echo "Docker ps is already clean"
 fi

@@ -6,4 +6,5 @@ if [ $# != 1 ]; then
 fi
 
 ar vx "$1"
-tar xf data.tar.xz
+tar xf data.tar.*
+rm -f data.tar.*

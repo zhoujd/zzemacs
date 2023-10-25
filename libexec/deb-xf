@@ -5,6 +5,17 @@ if [ $# != 1 ]; then
     exit 1
 fi
 
-ar vx "$1"
-tar xf data.tar.*
-rm -f data.tar.*
+
+## sudo apt install binutils
+use_ar() {
+    ar vx "$1"
+    tar xf data.tar.*
+    rm -f data.tar.* control.tar.*
+}
+
+
+use_dpkg() {
+    dpkg-deb -xv "$1" .
+}
+
+use_dpkg $@

@@ -7,13 +7,14 @@ fi
 
 
 ## sudo apt install binutils
+## ar x {file.deb}
 use_ar() {
     ar vx "$1"
     tar xf data.tar.*
     rm -f data.tar.* control.tar.*
 }
 
-
+## dpkg -c {file.deb}
 use_dpkg() {
     dpkg-deb -xv "$1" .
 }

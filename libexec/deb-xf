@@ -6,10 +6,11 @@ if [ $# != 1 ]; then
 fi
 
 
-## sudo apt install binutils
+## apt install binutils
 ## ar x {file.deb}
 use_ar() {
-    ar p "$1" $(ar t "$1" | grep data.tar) | tar xfvJ -
+    data=$(ar t "$1" | grep data.tar)
+    ar p "$1" $data | tar xfvJ -
 }
 
 ## dpkg -c {file.deb}

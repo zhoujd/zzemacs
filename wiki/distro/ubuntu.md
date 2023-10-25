@@ -419,3 +419,19 @@ Ubuntu setting
     $ git clone https://github.com/canonical/sec-cvescan
     $ pip3 install --user sec-cvescan/
     $ ~/.local/bin/cvescan
+
+## Extract a .deb file without opening it
+
+    ## https://www.cyberciti.biz/faq/how-to-extract-a-deb-file-without-opening-it-on-debian-or-ubuntu-linux/
+    ## ar command
+    $ sudo apt install binutils
+    $ ar vx nginx_1.18.0-0ubuntu1.3_all.deb
+    $ ls -l
+    $ tar xvf control.tar.gz
+    $ tar data.tar.gz
+    $ ls -l
+
+    ## dpkg-deb command
+    $ dpkg-deb -xv {file.deb} {/path/to/where/extract}
+    $ dpkg-deb -xv htop_2.0.1-1ubuntu1_amd64.deb /tmp/
+    $ dpkg-deb -xv htop_2.0.1-1ubuntu1_amd64.deb .

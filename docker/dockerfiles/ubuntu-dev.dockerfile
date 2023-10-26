@@ -1,5 +1,5 @@
 ARG VARIANT=20.04
-FROM zz/ubuntu-${VARIANT}-zzemacs:base
+FROM zhoujd/ubuntu-${VARIANT}-zzemacs:base
 
 ## Setup apt-get
 RUN sudo apt-get update

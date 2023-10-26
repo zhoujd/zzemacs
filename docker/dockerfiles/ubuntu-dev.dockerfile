@@ -17,6 +17,8 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         libgudev-1.0-dev \
         libgtest-dev
 
+## Setup python build tool
+RUN sudo pip3 install meson ninja
 
 ## Setup develop tool
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \

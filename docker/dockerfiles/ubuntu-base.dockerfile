@@ -60,7 +60,7 @@ USER $USER_NAME
 ENV HOME=$USER_HOME \
         USER=$USER_NAME \
         SHELL=$USER_SHELL \
-        PATH=$PATH:$HOME/.local/bin
+        PATH=$PATH:$USER_HOME/.local/bin
 
 RUN touch $HOME/.Xauthority
 

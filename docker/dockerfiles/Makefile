@@ -5,6 +5,7 @@ all: ubuntu-base ubuntu-dev
 
 CTN_USER ?= ${USER}
 VARIANT ?= 20.04
+IMG_NS ?= zhoujd
 
 BUILD_ARG += ## --rm --no-cache
 BUILD_ARG += --build-arg VARIANT=$(VARIANT)
@@ -16,8 +17,8 @@ BUILD_ARG += --build-arg DOCKER_GID=$(shell getent group docker | cut -d: -f3)
 BUILD_DEV += ## --rm --no-cache
 BUILD_DEV += --build-arg VARIANT=$(VARIANT)
 
-Ubuntu_BASE_TAG := zz/ubuntu-$(VARIANT)-zzemacs:base
-Ubuntu_DEV_TAG := zz/ubuntu-$(VARIANT)-zzemacs:dev
+Ubuntu_BASE_TAG := $(IMG_NS)/ubuntu-$(VARIANT)-zzemacs:base
+Ubuntu_DEV_TAG := $(IMG_NS)/ubuntu-$(VARIANT)-zzemacs:dev
 
 ubuntu-base: ubuntu-base.dockerfile
 	docker build $(BUILD_ARG) -t $(Ubuntu_BASE_TAG) -f $< .

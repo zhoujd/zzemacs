@@ -3,7 +3,7 @@ version: "3"
 services:
   zzemacs:
     hostname: ubuntu-2004-zzemacs
-    image: zz/ubuntu-20.04-zzemacs:base
+    image: zhoujd/ubuntu-20.04-zzemacs:base
     container_name: zzemacs-base
     network_mode: bridge
     extra_hosts:

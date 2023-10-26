@@ -17,13 +17,12 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
         libgudev-1.0-dev \
         libgtest-dev
 
-## Setup python build tool
-RUN sudo pip3 install meson ninja
-
 ## Setup develop tool
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         gitk meld psmisc
 
+## Setup python tool
+RUN sudo pip3 install meson ninja
 
 ## Setup google-chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

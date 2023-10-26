@@ -5,14 +5,12 @@ USER root
 
 RUN apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        apt-utils sudo xauth gnupg ca-certificates lsb-release curl wget \
+        apt-utils ca-certificates lsb-release software-properties-common gnupg xz-utils \
+        sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget \
+        gdb gdbserver openssh-server git patch bash-completion texinfo \
+        silversearcher-ag cscope markdown pandoc w3m perl-doc \
         python3-pip python3-venv python3-virtualenv \
-        silversearcher-ag cscope markdown pandoc w3m texinfo perl-doc \
-        iproute2 inetutils-ping net-tools socat dnsutils \
-        gdb gdbserver openssh-server git patch bash-completion \
-        emacs vim rxvt-unicode tmux nnn sbcl \
-        && apt-get autoremove \
-        && apt-get clean
+        emacs vim rxvt-unicode tmux nnn sbcl
 
 RUN mkdir -p /etc/apt/keyrings \
         && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
@@ -20,9 +18,7 @@ RUN mkdir -p /etc/apt/keyrings \
         | tee /etc/apt/sources.list.d/docker.list \
         && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        docker-ce docker-ce-cli containerd.io docker-compose-plugin \
-        && apt-get autoremove \
-        && apt-get clean
+        docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-buildx-plugin
 
 ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
@@ -54,6 +50,10 @@ RUN sed -i \
 ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker \
         && usermod -aG docker $USER_NAME
+
+# Clean up APT when done.
+RUN apt-get clean \
+        && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR $USER_HOME
 USER $USER_NAME

@@ -209,8 +209,8 @@
     (apply 'start-process "urxvt" nil cmd)))
 
 ;;https://github.com/alpha22jp/helm-cscope.el
+;;C-c s I     Create list and index
 (require 'helm-cscope)
-;(setq helm-cscope-search-dir-init (list (list zz:tag-root)))
 (add-hook 'c-mode-common-hook 'helm-cscope-mode)
 (add-hook 'helm-cscope-mode-hook
           (lambda ()

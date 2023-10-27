@@ -164,9 +164,9 @@
       (message "no etags, please install it")))
 
 ;;https://github.com/dkogan/xcscope.el
+;;C-c s I     Create list and index
 (require 'xcscope)
 (setq cscope-option-use-inverted-index t)
-;(cscope-set-initial-directory zz:tag-root)
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
@@ -236,6 +236,20 @@
     (unless (file-exists-p zz:tag-root)
       (make-directory zz:tag-root))
     (zz:create-proj-cscope)))
+
+;; set cscope tag root
+(defun zz:set-root-cscope ()
+  (interactive)
+  (cscope-set-initial-directory zz:tag-root)
+  (setq helm-cscope-search-dir-init (list (list zz:tag-root)))
+  (message "Set cscope init directory: %s" zz:tag-root))
+
+;; unset cscope tag root
+(defun zz:unset-root-cscope ()
+  (interactive)
+  (cscope-unset-initial-directory)
+  (setq helm-cscope-search-dir-init nil)
+  (message "Unset cscope init directory"))
 
 ;;add  mode support
 (setq auto-mode-alist

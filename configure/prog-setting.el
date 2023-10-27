@@ -167,6 +167,7 @@
 ;;C-c s I     Create list and index
 (require 'xcscope)
 (setq cscope-option-use-inverted-index t)
+(setq cscope-option-kernel-mode t)
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope

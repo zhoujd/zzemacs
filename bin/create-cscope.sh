@@ -1,17 +1,22 @@
 #!/bin/sh
 
-FIND=find
+echo "Clean cscope files"
+rm -f cscope*
 
-$FIND $@ -type f -not -path '*/\.git/*' \
-                 \( -name "*.[chCH]"    \
-                 -o -name "*.cc"        \
-                 -o -name "*.[ch]xx"    \
-                 -o -name "*.[ch]pp"    \
-                 -o -name "*.CC"        \
-                 -o -name "*.HH"        \
-                 -o -name "*.[ch]++"    \
-                 \) -print > cscope.files;
+echo "Generate cscope.files"
+find $@ \
+      \( -not -path '*/.git/*' \) \
+      \( -type f -a \
+         -not -type l \) \
+      \( -name "*.[chCH]" -o \
+         -name "*.cc" -o \
+         -name "*.[ch]xx" -o \
+         -name "*.[ch]pp" -o \
+         -name "*.CC" -o \
+         -name "*.HH" -o \
+         -name "*.[ch]++" \) \
+      -print | grep -v " " > cscope.files
 
-cscope -b -R -q -i cscope.files
-
-ls -l cscope.*
+echo "Build cscope files"
+cscope -b -R -q -k -i cscope.files
+ls -lh cscope.*

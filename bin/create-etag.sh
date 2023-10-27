@@ -1,15 +1,19 @@
 #!/bin/sh
 
-FIND=find
+echo "Clean TAGS"
+rm -f TAGS
 
-$FIND $@ -type f -not -path '*/\.git/*' \
-                 \( -name "*.[chCH]"    \
-                 -o -name "*.cc"        \
-                 -o -name "*.[ch]xx"    \
-                 -o -name "*.[ch]pp"    \
-                 -o -name "*.CC"        \
-                 -o -name "*.HH"        \
-                 -o -name "*.[ch]++"    \
-                 \) -print | etags -
-
-ls -l TAGS
+echo "Build TAGS"
+find $@ \
+     \( -not -path '*/.git/*' \) \
+     \( -type f \) \
+     \( -name "*.[chCH]"    \
+     -o -name "*.cc"        \
+     -o -name "*.[ch]xx"    \
+     -o -name "*.[ch]pp"    \
+     -o -name "*.CC"        \
+     -o -name "*.HH"        \
+     -o -name "*.[ch]++"    \
+     \) \
+     -print | etags -
+ls -lh TAGS

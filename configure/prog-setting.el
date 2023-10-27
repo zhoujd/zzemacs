@@ -166,19 +166,19 @@
 ;;https://github.com/dkogan/xcscope.el
 (require 'xcscope)
 (setq cscope-option-use-inverted-index t)
-(cscope-set-initial-directory zz:tag-root)
+;(cscope-set-initial-directory zz:tag-root)
 (cscope-setup)
 
 ;;https://github.com/rjarzmik/rscope
-;(require 'rscope)
-;(require 'rscope-nav)
-;(setq rscope-keymap-prefix (kbd "M-g s"))
-;(defun zz:rscope-autoinit-path (buffer)
-;  "Look the directory from zz:tag-root"
-;  (when (file-readable-p (concat zz:tag-root rscope-database-name))
-;    zz:tag-root))
-;(add-hook 'rscope-autoinit-cscope-dir-hooks
-;          (function zz:rscope-autoinit-path))
+(require 'rscope)
+(require 'rscope-nav)
+(setq rscope-keymap-prefix (kbd "M-g s"))
+(defun zz:rscope-autoinit-path (buffer)
+  "Look the directory from zz:tag-root"
+  (when (file-readable-p (concat zz:tag-root rscope-database-name))
+    zz:tag-root))
+(add-hook 'rscope-autoinit-cscope-dir-hooks
+          (function zz:rscope-autoinit-path))
 
 ;;make cscope
 ; #!/bin/bash

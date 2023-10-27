@@ -4,7 +4,12 @@ echo "Clean cscope files"
 rm -f cscope*
 
 echo "Generate cscope.files"
-find $@ \
+SCAN_LIST=(
+    $PWD
+    $@
+)
+
+find ${SCAN_LIST[*]} \
      \( -not -path '*/.git/*' \) \
      \( -type f -a -not -type l \) \
      \( -name "*.[chCH]"    \

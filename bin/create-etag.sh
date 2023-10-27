@@ -4,9 +4,14 @@ echo "Clean TAGS"
 rm -f TAGS
 
 echo "Build TAGS"
-find $@ \
-     /usr/include \
-     $PWD \
+SCAN_LIST=(
+    /usr/include
+    /usr/local/include
+    $PWD
+    $@
+)
+
+find ${SCAN_LIST[*]} \
      \( -not -path '*/.git/*' \) \
      \( -type f \) \
      \( -name "*.[chCH]"    \
@@ -18,4 +23,5 @@ find $@ \
      -o -name "*.[ch]++"    \
      \) \
      -print | etags -
+
 ls -lh TAGS

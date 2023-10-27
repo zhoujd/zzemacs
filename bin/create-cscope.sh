@@ -18,5 +18,5 @@ find $@ \
       -print | grep -v " " > cscope.files
 
 echo "Build cscope files"
-cscope -b -R -q -k -i cscope.files
+cscope -b -R -q -k -i cscope.files -f cscope.out
 ls -lh cscope.*

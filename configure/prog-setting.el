@@ -183,7 +183,8 @@
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./cscope.files
 (defun zz:gen-cscope-cmd (dir-name)
-  (let ((files-path (concat default-directory "cscope.files")))
+  (let ((files-path (concat default-directory "cscope.files"))
+        (out-path (concat default-directory "cscope.out")))
     (concat
      (format "rm -f %s;" (concat default-directory "cscope.*"))
      (format "%s %s \\( %s \\) \\( %s \\) \\( %s \\) -print | grep -v \" \" > %s;"
@@ -193,7 +194,9 @@
              "-type f -a -not -type l"
              (zz:gen-find-parts zz:find-regex)
              files-path)
-     (format "cscope -b -R -q -k -i %s" files-path)
+     (format "cscope -b -R -q -k -i %s -f %s"
+             files-path
+             out-path)
      )))
 
 (defun zz:create-cscope (dir-name)

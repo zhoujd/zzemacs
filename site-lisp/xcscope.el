@@ -2777,7 +2777,7 @@ indexer"
                    (mapconcat 'shell-quote-argument
                               (cscope-construct-custom-options-list)
                               " ")
-                   " -b -i "
+                   " -b -R -q -k -i "
                    (shell-quote-argument cscope-index-file)
                    " -f " (shell-quote-argument cscope-database-file) "\n"
 

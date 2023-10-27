@@ -191,12 +191,14 @@
   (let ((files-path (concat default-directory "cscope.files")))
     (concat
      (format "rm -f %s;" (concat default-directory "cscope.*"))
-     (format "%s %s -type f -not -path '*/\.git/*' \\( %s \\) -print > %s;"
+     (format "%s %s \\( %s \\) \\( %s \\) \\( %s \\) -print | grep -v \" \" > %s;"
              find-program
              dir-name
+             "-not -path '*/\.git/*'"
+             "-type f -a -not -type l"
              (zz:gen-find-parts zz:find-regex)
              files-path)
-     (format "cscope -b -R -q -i %s" files-path)
+     (format "cscope -b -R -q -k -i %s" files-path)
      )))
 
 (defun zz:create-cscope (dir-name)

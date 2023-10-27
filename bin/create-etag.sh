@@ -5,6 +5,8 @@ rm -f TAGS
 
 echo "Build TAGS"
 find $@ \
+     /usr/include \
+     $PWD \
      \( -not -path '*/.git/*' \) \
      \( -type f \) \
      \( -name "*.[chCH]"    \

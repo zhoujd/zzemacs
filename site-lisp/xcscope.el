@@ -2745,8 +2745,8 @@ indexer"
                     "-false"
                     ")"
 
-                    ;; accept files and symlinks
-                    "(" "-type" "f" "-o" "-type" "l" ")"
+                    ;; accept files and not symlinks
+                    "(" "-type" "f" "-a" "-not" "-type" "l" ")"
 
                     ;; if we made it here, take the result
                     "-print"))))

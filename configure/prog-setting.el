@@ -174,12 +174,6 @@
 (require 'rscope)
 (require 'rscope-nav)
 (setq rscope-keymap-prefix (kbd "M-g s"))
-(defun zz:rscope-autoinit-path (buffer)
-  "Look the directory from zz:tag-root"
-  (when (file-readable-p (concat zz:tag-root rscope-database-name))
-    zz:tag-root))
-(add-hook 'rscope-autoinit-cscope-dir-hooks
-          (function zz:rscope-autoinit-path))
 
 ;;make cscope
 ; #!/bin/bash
@@ -240,11 +234,18 @@
       (make-directory zz:tag-root))
     (zz:create-proj-cscope)))
 
+(defun zz:rscope-autoinit-path (buffer)
+  "Look the directory from zz:tag-root"
+  (when (file-readable-p (concat zz:tag-root rscope-database-name))
+    zz:tag-root))
+
 ;; set cscope tag root
 (defun zz:set-root-cscope ()
   (interactive)
   (cscope-set-initial-directory zz:tag-root)
   (setq helm-cscope-search-dir-init (list (list zz:tag-root)))
+  (add-hook 'rscope-autoinit-cscope-dir-hooks
+            (function zz:rscope-autoinit-path))
   (message "Set cscope init directory: %s" zz:tag-root))
 
 ;; unset cscope tag root
@@ -252,6 +253,8 @@
   (interactive)
   (cscope-unset-initial-directory)
   (setq helm-cscope-search-dir-init nil)
+  (remove-hook 'rscope-autoinit-cscope-dir-hooks
+               (function zz:rscope-autoinit-path))
   (message "Unset cscope init directory"))
 
 ;;add  mode support

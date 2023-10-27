@@ -225,7 +225,8 @@
             (local-set-key (kbd "M-s M-e") 'helm-cscope-find-egrep-pattern)
             (local-set-key (kbd "M-s M-i") 'helm-cscope-find-files-including-file)
             (local-set-key (kbd "M-s M-=") 'helm-cscope-find-assignments-to-this-symbol)
-            (local-set-key (kbd "M-s M-,") 'helm-cscope-pop-mark)))
+            (local-set-key (kbd "M-s M-,") 'helm-cscope-pop-mark)
+            (local-set-key (kbd "M-s M-p") 'helm-cscope-pop-mark)))
 
 (require 'helm-bm)
 

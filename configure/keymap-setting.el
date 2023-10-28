@@ -18,6 +18,7 @@
 ;;goto-map          --- M-g
 ;;search-map        --- M-s
 ;;facemenu-keymap   --- M-o
+;;isearch-mode-map  --- C-s or C-r
 ;;C-x @, C-x a i, C-x <ESC> and <ESC> <ESC> without name
 
 ;;function key setting on console

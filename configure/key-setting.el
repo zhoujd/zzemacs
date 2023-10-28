@@ -372,6 +372,13 @@
   (kbd "i")       'helm-swoop
   ))
 
+(apply-keys-to-map
+ isearch-mode-map
+ (list
+  (kbd "M-i")     'helm-swoop-from-isearch
+  (kbd "M-o")     'helm-occur-from-isearch
+ ))
+
 
 (provide 'key-setting)
 

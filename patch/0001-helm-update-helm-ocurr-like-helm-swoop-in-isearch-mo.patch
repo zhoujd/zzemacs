@@ -1,0 +1,36 @@
+From a627961e8d91e91acdc8bf10d894ea698bad07ec Mon Sep 17 00:00:00 2001
+From: Zachary Zhou <zchrzhou@gmail.com>
+Date: Sat, 28 Oct 2023 23:35:12 +0800
+Subject: [PATCH] helm: update helm ocurr like helm swoop in isearch mode
+
+---
+ site-lisp/helm/helm-occur.el | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/site-lisp/helm/helm-occur.el b/site-lisp/helm/helm-occur.el
+index c754f396..3efebc8a 100644
+--- a/site-lisp/helm/helm-occur.el
++++ b/site-lisp/helm/helm-occur.el
+@@ -848,7 +848,8 @@ To use this bind it to a key in `isearch-mode-map'."
+         ;; Use `helm-occur-always-search-in-current' as a flag for
+         ;; `helm-occur--select-closest-candidate'.
+         (helm-occur-always-search-in-current t))
+-    (isearch-exit)
++    (let (search-nonincremental-instead)
++      (isearch-exit))
+     (helm-multi-occur-1 bufs input)))
+ 
+ ;;;###autoload
+@@ -867,7 +868,8 @@ To use this bind it to a key in `isearch-mode-map'."
+         (input (if isearch-regexp
+                    isearch-string
+                  (regexp-quote isearch-string))))
+-    (isearch-exit)
++    (let (search-nonincremental-instead)
++      (isearch-exit))
+     (setq buf-list (mapcar 'get-buffer
+                            (helm-comp-read "Buffers: "
+                                            (helm-buffer-list)
+-- 
+2.16.6
+

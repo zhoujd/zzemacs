@@ -848,7 +848,8 @@ To use this bind it to a key in `isearch-mode-map'."
         ;; Use `helm-occur-always-search-in-current' as a flag for
         ;; `helm-occur--select-closest-candidate'.
         (helm-occur-always-search-in-current t))
-    (isearch-exit)
+    (let (search-nonincremental-instead)
+      (isearch-exit))
     (helm-multi-occur-1 bufs input)))
 
 ;;;###autoload
@@ -867,7 +868,8 @@ To use this bind it to a key in `isearch-mode-map'."
         (input (if isearch-regexp
                    isearch-string
                  (regexp-quote isearch-string))))
-    (isearch-exit)
+    (let (search-nonincremental-instead)
+      (isearch-exit))
     (setq buf-list (mapcar 'get-buffer
                            (helm-comp-read "Buffers: "
                                            (helm-buffer-list)

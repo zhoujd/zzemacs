@@ -369,6 +369,7 @@
  search-map
  (list
   (kbd "o")       'helm-occur
+  (kbd "i")       'helm-swoop
   ))
 
 

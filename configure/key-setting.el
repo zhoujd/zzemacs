@@ -365,6 +365,12 @@
   (kbd "2")       'typit-advanced-test
   ))
 
+(apply-keys-to-map
+ search-map
+ (list
+  (kbd "o")       'helm-occur
+  ))
+
 
 (provide 'key-setting)
 

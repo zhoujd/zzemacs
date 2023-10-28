@@ -120,7 +120,7 @@
 
 (define-fn-key (gethash "f10" fn-key-table)
   [f10]             'helm-occur
-  [S-f10]           'helm-multi-swoop
+  [S-f10]           'helm-swoop
   [C-f10]           'whitespace-cleanup
   [M-f10]           'whitespace-cleanup-region
   (kbd "C-x <f10>") 'menu-bar-open

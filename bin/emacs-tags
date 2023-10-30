@@ -5,7 +5,6 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 TAGS_ROOT=${TAGS_ROOT:-$HOME/.emacs.d/tags}
 PROJ_LIST=(
     /usr/include
-    /usr/local/include
     $*
 )
 

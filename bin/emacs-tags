@@ -4,19 +4,20 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 TAGS_ROOT=${TAGS_ROOT:-$HOME/.emacs.d/tags}
 PROJ_LIST=(
-    #/usr/include
+    /usr/include
+    /usr/local/include
     $*
 )
 
 create_init() {
-    echo "create init..."
+    echo "Create init..."
     mkdir -p $TAGS_ROOT
     rm -f $TAGS_ROOT/TAGS
     rm -f $TAGS_ROOT/cscope.*
 }
 
 create_etags() {
-    echo "create etags to $TAG_ROOT..."
+    echo "Create etags to $TAGS_ROOT..."
     pushd $TAGS_ROOT > /dev/null
     find ${PROJ_LIST[*]} -type f    \
          \( -iname "*.[chly]"    \
@@ -30,7 +31,7 @@ create_etags() {
 }
 
 create_cscope() {
-    echo "create cscope to $TAG_ROOT..."
+    echo "Create cscope to $TAGS_ROOT..."
     pushd $TAGS_ROOT > /dev/null
     find ${PROJ_LIST[*]} -type f    \
          \( -iname "*.[chly]"    \

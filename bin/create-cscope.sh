@@ -1,24 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Clean cscope files"
 rm -f cscope*
 
 echo "Generate cscope.files"
 SCAN_LIST=(
-    $PWD
     $@
 )
 
 find ${SCAN_LIST[*]} \
      \( -not -path '*/.git/*' \) \
      \( -type f -a -not -type l \) \
-     \( -name "*.[chCH]"    \
-     -o -name "*.cc"        \
-     -o -name "*.[ch]xx"    \
-     -o -name "*.[ch]pp"    \
-     -o -name "*.CC"        \
-     -o -name "*.HH"        \
-     -o -name "*.[ch]++"    \
+     \( -iname "*.[chly]"    \
+     -o -iname "*.[ch]xx"    \
+     -o -iname "*.[ch]pp"    \
+     -o -iname "*.cc"        \
+     -o -iname "*.hh"        \
      \) \
      -print | grep -v " " > cscope.files
 

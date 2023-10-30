@@ -2,7 +2,7 @@
 #set -x
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-TAGS_ROOT=$HOME/.emacs.d/tags
+TAGS_ROOT=${TAGS_ROOT:-$HOME/.emacs.d/tags}
 PROJ_LIST=(
     /usr/include
     /usr/local/include
@@ -19,38 +19,38 @@ create_init() {
 create_etags() {
     echo "create etags to $TAG_ROOT..."
     pushd $TAGS_ROOT > /dev/null
-    find ${PROJ_LIST[*]} $* -type f    \
-         \( -name "*.[chCH]"  \
-         -o -name "*.cc"      \
-         -o -name "*.[ch]xx"  \
-         -o -name "*.[ch]pp"  \
-         -o -name "*.CC"      \
-         -o -name "*.HH"      \
-         -o -name "*.[ch]++"  \
-         \) -print | etags -
+    find ${PROJ_LIST[*]} -type f    \
+         \( -iname "*.[chly]"    \
+         -o -iname "*.[ch]xx"    \
+         -o -iname "*.[ch]pp"    \
+         -o -iname "*.cc"        \
+         -o -iname "*.hh"        \
+         \) \
+         -print | etags -
     popd > /dev/null
 }
 
 create_cscope() {
     echo "create cscope to $TAG_ROOT..."
     pushd $TAGS_ROOT > /dev/null
-    find ${PROJ_LIST[*]} $* -type f    \
-         \( -name "*.[chCH]"  \
-         -o -name "*.cc"      \
-         -o -name "*.[ch]xx"  \
-         -o -name "*.[ch]pp"  \
-         -o -name "*.CC"      \
-         -o -name "*.HH"      \
-         -o -name "*.[ch]++"  \
-         \) -print > cscope.files;
-
+    find ${PROJ_LIST[*]} -type f    \
+         \( -iname "*.[chly]"    \
+         -o -iname "*.[ch]xx"    \
+         -o -iname "*.[ch]pp"    \
+         -o -iname "*.cc"        \
+         -o -iname "*.hh"        \
+         \) \
+         -print > cscope.files;
     cscope -b -R -q -i cscope.files
     popd > /dev/null
 }
 
 case $1 in
     -h|--help )
-        echo "Usage: $(basename $0) {dir1} {dir2} ... {dirN}"
+        cat <<EOF
+$(basename $0) {dir1} {dir2} ... {dirN}
+TAGS_ROOT=. $(basename $0) {dir1} {dir2} ... {dirN}
+EOF
         ;;
     * )
         create_init

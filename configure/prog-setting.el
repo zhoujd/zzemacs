@@ -116,9 +116,9 @@
 (require 'etags-select)
 (require 'etags-table)
 (require 'etags-stack)
-(setq tags-table-list
-      (list
-       (concat zz:tag-root "/TAGS")))
+(let ((tag-path (concat zz:tag-root "TAGS")))
+  (when (not (member tag-path  tags-table-list))
+    (push tag-path tags-table-list)))
 
 (defun zz:gen-ctags-cmd (dir-name)
   (format "ctags %s -f %s/TAGS -e -R %s"

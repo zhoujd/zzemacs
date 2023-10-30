@@ -5,7 +5,7 @@ rm -f TAGS
 
 echo "Build TAGS"
 SCAN_LIST=(
-    /usr/include
+    #/usr/include
     $PWD
     $@
 )

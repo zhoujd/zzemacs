@@ -41,7 +41,6 @@
     ";; set project direcitory list"
     "(setq zz:proj-list '("
     "                     \"/usr/include\""
-    "                     \"/usr/local/include\""
     "                     \"~/work/project-1\""
     "                     \"~/work/project-2\""
     "                     ))"

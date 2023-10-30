@@ -130,21 +130,12 @@
   (interactive "DDirectory: ")
   (zz:run-command (zz:gen-ctags-cmd dir-name)))
 
-;;make etags
-(defvar zz:find-regex "*.[chCH] *.cc *.[ch]xx *.[ch]pp *.CC *.HH *.[ch]++")
-
-(defun zz:gen-find-parts (file-name)
-  (setq zz:find-parts "")
-  (dolist (cell (split-string file-name))
-    (setq zz:find-parts (concat zz:find-parts "-name \"" cell "\" -o ")))
-  (setq zz:find-parts (substring zz:find-parts 0 -4)))
-
-;(setq zz:c/c++-file-regex
-;      (concat "-type f -name \"*.[hcHC]\" -print -or "
-;              "-type f -name \"*.[hc]pp\" -print -or "
-;              "-type f -name \"*.[hc]++\" -print -or "
-;              "-type f -name \"*.[hc]xx\" -print "
-;              ))
+(defvar zz:find-regex "*.[chly] *.[ch]xx *.[ch]pp *.cc *.hh ")
+(defun zz:gen-find-parts (file-regex)
+  (let ((zz:find-parts ""))
+    (dolist (cell (split-string file-regex))
+      (setq zz:find-parts (concat zz:find-parts "-iname \"" cell "\" -o ")))
+    (setq zz:find-parts (substring zz:find-parts 0 -4))))
 
 (defun zz:gen-etags-cmd (dir-name)
   (concat
@@ -155,6 +146,7 @@
            dir-name
            (zz:gen-find-parts zz:find-regex))))
 
+;;make etags
 (defun zz:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")

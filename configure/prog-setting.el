@@ -120,7 +120,6 @@
       (list
        (concat zz:tag-root "/TAGS")))
 
-;;make ctags
 (defun zz:gen-ctags-cmd (dir-name)
   (format "ctags %s -f %s/TAGS -e -R %s"
           dir-name (directory-file-name dir-name)))
@@ -146,7 +145,7 @@
            dir-name
            (zz:gen-find-parts zz:find-regex))))
 
-;;make etags
+;;https://www.emacswiki.org/emacs/TagsFile
 (defun zz:create-etags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")

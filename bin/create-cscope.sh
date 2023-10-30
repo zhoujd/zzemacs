@@ -5,7 +5,6 @@ rm -f cscope*
 
 echo "Generate cscope.files"
 SCAN_LIST=(
-    #/usr/include
     $PWD
     $@
 )

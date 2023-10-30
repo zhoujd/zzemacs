@@ -48,8 +48,9 @@ create_cscope() {
 case $1 in
     -h|--help )
         cat <<EOF
-$(basename $0) {dir1} {dir2} ... {dirN}
-TAGS_ROOT=. $(basename $0) {dir1} {dir2} ... {dirN}
+Usage:
+$ $(basename $0) {dir1} {dir2} ... {dirN}
+$ TAGS_ROOT=. $(basename $0) {dir1} {dir2} ... {dirN}
 EOF
         ;;
     * )

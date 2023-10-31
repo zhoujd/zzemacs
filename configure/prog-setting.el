@@ -377,12 +377,15 @@
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/
+;;https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
 (zz:load-path "site-lisp/lsp-mode")
 (require 'lsp-mode)
 (require 'lsp-lens)
 (require 'lsp-modeline)
 (require 'lsp-headerline)
 (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+(setq lsp-headerline-breadcrumb-enable nil)
+(setq lsp-lens-enable nil)
 
 ;;load temp setting
 (when (file-exists-p zz:dev-set-file)

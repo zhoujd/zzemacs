@@ -135,16 +135,22 @@
 
 ;;https://clangd.llvm.org/installation.html
 ;;https://github.com/joaotavora/eglot
+(require 'mood-line)
 (require 'eglot)
+(when (executable-find "clangd")
+  (add-to-list 'eglot-server-programs
+               '((c++-mode c-mode) "clangd"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure))
 
 ;;lsp-mode
-(when (executable-find "clangd")
-  (require 'lsp-clangd)
-  (dolist (hook
-           (list
-            'c-mode-hook
-            'c++-mode-hook))
-    (add-hook hook 'lsp-deferred)))
+;(when (executable-find "clangd")
+;  (require 'lsp-clangd)
+;  (dolist (hook
+;           (list
+;            'c-mode-hook
+;            'c++-mode-hook))
+;    (add-hook hook 'lsp-deferred)))
 
 
 (provide 'c-setting)

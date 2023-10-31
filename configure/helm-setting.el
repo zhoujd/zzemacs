@@ -290,6 +290,11 @@
 (require 'helm-cmd-t)
 (require 'helm-C-x-b)
 
+;;helm-lsp
+(require 'helm-lsp)
+(defkeys-map lsp-mode-map
+  ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
+
 
 (provide 'helm-setting)
 

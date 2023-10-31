@@ -133,6 +133,14 @@
   ((kbd "C-b") 'eassist-backspace-pressed)
   ((kbd "C-q") 'eassist-escape))
 
+;;https://clangd.llvm.org/installation.html
+;;https://github.com/joaotavora/eglot
+(require 'eglot)
+(add-to-list 'eglot-server-programs
+             '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+
 
 (provide 'c-setting)
 

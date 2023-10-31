@@ -380,6 +380,13 @@
 (zz:load-path "site-lisp/lsp-mode")
 (require 'lsp-mode)
 (setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+;(dolist (hook
+;         (list
+;          'python-mode-hook
+;          'c-mode-hook
+;          'c++-mode-hook))
+;  (add-hook hook 'lsp-deferred))
+
 
 ;;load temp setting
 (when (file-exists-p zz:dev-set-file)

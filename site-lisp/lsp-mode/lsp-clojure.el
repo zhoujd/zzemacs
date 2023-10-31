@@ -236,6 +236,26 @@ If there are more arguments expected after the line and column numbers."
   (interactive)
   (lsp-clojure--refactoring-call "move-coll-entry-down"))
 
+(defun lsp-clojure-forward-slurp ()
+  "Apply forward slurp refactoring at point."
+  (interactive)
+  (lsp-clojure--refactoring-call "forward-slurp"))
+
+(defun lsp-clojure-forward-barf ()
+  "Apply forward barf refactoring at point."
+  (interactive)
+  (lsp-clojure--refactoring-call "forward-barf"))
+
+(defun lsp-clojure-backward-slurp ()
+  "Apply backward slurp refactoring at point."
+  (interactive)
+  (lsp-clojure--refactoring-call "backward-slurp"))
+
+(defun lsp-clojure-backward-barf ()
+  "Apply backward slurp refactoring at point."
+  (interactive)
+  (lsp-clojure--refactoring-call "backward-barf"))
+
 (defun lsp-clojure-move-form (dest-filename)
   "Apply move-form refactoring at point to DEST-FILENAME."
   (interactive
@@ -442,7 +462,7 @@ It updates the test tree view data."
   :new-connection (lsp-stdio-connection
                    #'lsp-clojure--build-command
                    #'lsp-clojure--build-command)
-  :major-modes '(clojure-mode clojurec-mode clojurescript-mode)
+  :major-modes '(clojure-mode clojurec-mode clojurescript-mode clojure-ts-mode)
   :library-folders-fn (lambda (_workspace) lsp-clojure-library-dirs)
   :uri-handlers (lsp-ht ("jar" #'lsp-clojure--file-in-jar))
   :action-handlers (lsp-ht ("code-lens-references" #'lsp-clojure--show-references))

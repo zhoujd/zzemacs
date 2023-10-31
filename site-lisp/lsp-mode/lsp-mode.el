@@ -4,7 +4,7 @@
 
 ;; Author: Vibhav Pant, Fangrui Song, Ivan Yonchovski
 ;; Keywords: languages
-;; Package-Requires: ((emacs "26.3") (dash "2.18.0") (f "0.20.0") (ht "2.3") (spinner "1.7.3") (markdown-mode "2.3") (lv "0") (eldoc "1.11"))
+;; Package-Requires: ((emacs "27.1") (dash "2.18.0") (f "0.20.0") (ht "2.3") (spinner "1.7.3") (markdown-mode "2.3") (lv "0") (eldoc "1.11"))
 ;; Version: 8.0.1
 
 ;; URL: https://github.com/emacs-lsp/lsp-mode
@@ -174,16 +174,20 @@ As defined by the Language Server Protocol 3.16."
   :package-version '(lsp-mode . "6.1"))
 
 (defcustom lsp-client-packages
-  '(ccls lsp-actionscript lsp-ada lsp-angular lsp-ansible lsp-astro lsp-bash lsp-beancount lsp-clangd lsp-clojure
-         lsp-cmake lsp-crystal lsp-csharp lsp-css lsp-d lsp-dart lsp-dhall lsp-docker lsp-dockerfile
-         lsp-elm lsp-elixir lsp-emmet lsp-erlang lsp-eslint lsp-fortran lsp-fsharp lsp-gdscript lsp-go
-         lsp-gleam lsp-graphql lsp-hack lsp-grammarly lsp-groovy lsp-haskell lsp-haxe lsp-idris lsp-java lsp-javascript
-         lsp-json lsp-kotlin lsp-latex lsp-ltex lsp-lua lsp-markdown lsp-marksman lsp-mint lsp-nginx lsp-nim lsp-nix lsp-magik
-         lsp-metals lsp-mssql lsp-ocaml lsp-openscad lsp-pascal lsp-perl lsp-perlnavigator lsp-pls lsp-php lsp-pwsh lsp-pyls lsp-pylsp
-         lsp-pyright lsp-python-ms lsp-purescript lsp-r lsp-racket lsp-remark lsp-rf lsp-rust lsp-solargraph
-         lsp-sorbet lsp-sourcekit lsp-sonarlint lsp-tailwindcss lsp-tex lsp-terraform lsp-toml
-         lsp-ttcn3 lsp-typeprof lsp-v lsp-vala lsp-verilog lsp-vetur lsp-volar lsp-vhdl lsp-vimscript
-         lsp-xml lsp-yaml lsp-ruby-syntax-tree lsp-sqls lsp-svelte lsp-steep lsp-zig)
+  '( ccls lsp-actionscript lsp-ada lsp-angular lsp-ansible lsp-awk lsp-astro lsp-bash
+     lsp-beancount lsp-clangd lsp-clojure lsp-cmake lsp-credo lsp-crystal lsp-csharp lsp-css
+     lsp-d lsp-dart lsp-dhall lsp-docker lsp-dockerfile lsp-elm lsp-elixir lsp-emmet
+     lsp-erlang lsp-eslint lsp-fortran lsp-fsharp lsp-gdscript lsp-go lsp-gleam
+     lsp-glsl lsp-graphql lsp-hack lsp-grammarly lsp-groovy lsp-haskell lsp-haxe
+     lsp-idris lsp-java lsp-javascript lsp-json lsp-kotlin lsp-latex lsp-ltex
+     lsp-lua lsp-markdown lsp-marksman lsp-mdx lsp-mint lsp-move lsp-nginx lsp-nim lsp-nix lsp-magik
+     lsp-metals lsp-mssql lsp-ocaml lsp-openscad lsp-pascal lsp-perl lsp-perlnavigator
+     lsp-pls lsp-php lsp-pwsh lsp-pyls lsp-pylsp lsp-pyright lsp-python-ms lsp-purescript
+     lsp-r lsp-racket lsp-remark lsp-ruff-lsp lsp-rf lsp-rubocop lsp-rust lsp-semgrep lsp-shader
+     lsp-solargraph lsp-sorbet lsp-sourcekit lsp-sonarlint lsp-tailwindcss lsp-tex lsp-terraform
+     lsp-toml lsp-ttcn3 lsp-typeprof lsp-v lsp-vala lsp-verilog lsp-vetur lsp-volar
+     lsp-vhdl lsp-vimscript lsp-xml lsp-yaml lsp-ruby-lsp lsp-ruby-syntax-tree
+     lsp-solidity lsp-sqls lsp-svelte lsp-steep lsp-tilt lsp-zig lsp-jq)
   "List of the clients to be automatically required."
   :group 'lsp-mode
   :type '(repeat symbol))
@@ -241,6 +245,15 @@ following `projectile'/`project.el' conventions."
   :group 'lsp-mode
   :type 'boolean)
 
+(defcustom lsp-guess-root-without-session nil
+  "Ignore the session file when calculating the project root.
+You almost always want to set lsp-auto-guess-root too.
+Do *not* use this setting unless you are familiar with `lsp-mode'
+internals and you are sure that all of your projects are
+following `projectile'/`project.el' conventions."
+  :group 'lsp-mode
+  :type 'boolean)
+
 (defcustom lsp-restart 'interactive
   "Defines how server-exited events must be handled."
   :group 'lsp-mode
@@ -265,7 +278,7 @@ For finer granularity you may use `lsp-enable-*' properties."
   :package-version '(lsp-mode . "6.1"))
 
 (defcustom lsp-disabled-clients nil
-  "A list of disabled/blacklisted clients.
+  "A list of disabled/blocklisted clients.
 Each entry in the list can be either:
 a symbol, the server-id for the LSP client, or
 a cons pair (MAJOR-MODE . CLIENTS), where MAJOR-MODE is the major-mode,
@@ -326,6 +339,7 @@ the server has requested that."
   '(; SCM tools
     "[/\\\\]\\.git\\'"
     "[/\\\\]\\.github\\'"
+    "[/\\\\]\\.gitlab\\'"
     "[/\\\\]\\.circleci\\'"
     "[/\\\\]\\.hg\\'"
     "[/\\\\]\\.bzr\\'"
@@ -340,6 +354,7 @@ the server has requested that."
     "[/\\\\]\\.yarn\\'"
     "[/\\\\]\\.fslckout\\'"
     "[/\\\\]\\.tox\\'"
+    "[/\\\\]\\.nox\\'"
     "[/\\\\]dist\\'"
     "[/\\\\]dist-newstyle\\'"
     "[/\\\\]\\.stack-work\\'"
@@ -350,13 +365,18 @@ the server has requested that."
     "[/\\\\]\\.vscode\\'"
     "[/\\\\]\\.venv\\'"
     "[/\\\\]\\.mypy_cache\\'"
+    "[/\\\\]\\.pytest_cache\\'"
+    ;; Swift Package Manager
+    "[/\\\\]\\.build\\'"
+    ;; Python
+    "[/\\\\]__pycache__\\'"
     ;; Autotools output
     "[/\\\\]\\.deps\\'"
     "[/\\\\]build-aux\\'"
     "[/\\\\]autom4te.cache\\'"
     "[/\\\\]\\.reference\\'"
     ;; Bazel
-    "bazel-[^/\\\\]+\\'"
+    "[/\\\\]bazel-[^/\\\\]+\\'"
     ;; CSharp
     "[/\\\\]\\.meta\\'"
     ;; Unity
@@ -380,6 +400,11 @@ the server has requested that."
     "[/\\\\]_build\\'"
     ;; Elixir
     "[/\\\\]\\.elixir_ls\\'"
+    ;; Elixir Credo
+    "[/\\\\]\\.elixir-tools\\'"
+    ;; terraform and terragrunt
+    "[/\\\\]\\.terraform\\'"
+    "[/\\\\]\\.terragrunt-cache\\'"
     ;; nix-direnv
     "[/\\\\]\\.direnv\\'")
   "List of regexps matching directory paths which won't be monitored when
@@ -655,7 +680,7 @@ are determined by the index of the element."
                          (const :tag "Method" Method)
                          (const :tag "Property" Property)
                          (const :tag "Field" Field)
-                         (const :tag "Constructor" Constuctor)
+                         (const :tag "Constructor" Constructor)
                          (const :tag "Enum" Enum)
                          (const :tag "Interface" Interface)
                          (const :tag "Function" Function)
@@ -730,161 +755,185 @@ Changes take effect only when a new session is started."
   :group 'lsp-mode
   :package-version '(lsp-mode . "8.0.1"))
 
-(defvar lsp-language-id-configuration '(("\\(^CMakeLists\\.txt\\|\\.cmake\\)\\'" . "cmake")
-                                        ("\\(^Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . "dockerfile")
-                                        ("\\.astro$" . "astro")
-                                        ("\\.cs\\'" . "csharp")
-                                        ("\\.css" . "css")
-                                        ("\\.ebuild$" . "shellscript")
-                                        ("\\.go\\'" . "go")
-                                        ("\\.html$" . "html")
-                                        ("\\.hx$" . "haxe")
-                                        ("\\.java\\'" . "java")
-                                        ("\\.js$" . "javascript")
-                                        ("\\.json$" . "json")
-                                        ("\\.jsonc$" . "jsonc")
-                                        ("\\.jsx$" . "javascriptreact")
-                                        ("\\.lua$" . "lua")
-                                        ("\\.php$" . "php")
-                                        ("\\.rs\\'" . "rust")
-                                        ("\\.sql$" . "sql")
-                                        ("\\.svelte$" . "svelte")
-                                        ("\\.toml\\'" . "toml")
-                                        ("\\.ts$" . "typescript")
-                                        ("\\.tsx$" . "typescriptreact")
-                                        ("\\.ttcn3$" . "ttcn3")
-                                        ("\\.vue$" . "vue")
-                                        ("\\.xml$" . "xml")
-                                        ("\\ya?ml$" . "yaml")
-                                        ("^PKGBUILD$" . "shellscript")
-                                        ("^go\\.mod\\'" . "go.mod")
-                                        ("^settings.json$" . "jsonc")
-                                        (ada-mode . "ada")
-                                        (nxml-mode . "xml")
-                                        (sql-mode . "sql")
-                                        (vimrc-mode . "vim")
-                                        (sh-mode . "shellscript")
-                                        (ebuild-mode . "shellscript")
-                                        (pkgbuild-mode . "shellscript")
-                                        (scala-mode . "scala")
-                                        (julia-mode . "julia")
-                                        (clojure-mode . "clojure")
-                                        (clojurec-mode . "clojure")
-                                        (clojurescript-mode . "clojurescript")
-                                        (java-mode . "java")
-                                        (java-ts-mode . "java")
-                                        (jdee-mode . "java")
-                                        (groovy-mode . "groovy")
-                                        (python-mode . "python")
-                                        (python-ts-mode . "python")
-                                        (cython-mode . "python")
-                                        (lsp--render-markdown . "markdown")
-                                        (rust-mode . "rust")
-                                        (rust-ts-mode . "rust")
-                                        (rustic-mode . "rust")
-                                        (kotlin-mode . "kotlin")
-                                        (kotlin-ts-mode . "kotlin")
-                                        (css-mode . "css")
-                                        (css-ts-mode . "css")
-                                        (less-mode . "less")
-                                        (less-css-mode . "less")
-                                        (lua-mode . "lua")
-                                        (sass-mode . "sass")
-                                        (ssass-mode . "sass")
-                                        (scss-mode . "scss")
-                                        (scad-mode . "openscad")
-                                        (xml-mode . "xml")
-                                        (c-mode . "c")
-                                        (c-ts-mode . "c")
-                                        (c++-mode . "cpp")
-                                        (c++-ts-mode . "cpp")
-                                        (cuda-mode . "cuda")
-                                        (objc-mode . "objective-c")
-                                        (html-mode . "html")
-                                        (sgml-mode . "html")
-                                        (mhtml-mode . "html")
-                                        (mint-mode . "mint")
-                                        (go-dot-mod-mode . "go.mod")
-                                        (go-mod-ts-mode . "go.mod")
-                                        (go-mode . "go")
-                                        (go-ts-mode . "go")
-                                        (graphql-mode . "graphql")
-                                        (haskell-mode . "haskell")
-                                        (hack-mode . "hack")
-                                        (php-mode . "php")
-                                        (powershell-mode . "powershell")
-                                        (powershell-mode . "PowerShell")
-                                        (json-mode . "json")
-                                        (json-ts-mode . "json")
-                                        (jsonc-mode . "jsonc")
-                                        (rjsx-mode . "javascript")
-                                        (js2-mode . "javascript")
-                                        (js-mode . "javascript")
-                                        (js-ts-mode . "javascript")
-                                        (typescript-mode . "typescript")
-                                        (typescript-ts-mode . "typescript")
-                                        (fsharp-mode . "fsharp")
-                                        (reason-mode . "reason")
-                                        (caml-mode . "ocaml")
-                                        (tuareg-mode . "ocaml")
-                                        (swift-mode . "swift")
-                                        (elixir-mode . "elixir")
-                                        (elixir-ts-mode . "elixir")
-                                        (heex-ts-mode . "elixir")
-                                        (conf-javaprop-mode . "spring-boot-properties")
-                                        (yaml-mode . "yaml")
-                                        (yaml-ts-mode . "yaml")
-                                        (ruby-mode . "ruby")
-                                        (enh-ruby-mode . "ruby")
-                                        (fortran-mode . "fortran")
-                                        (f90-mode . "fortran")
-                                        (elm-mode . "elm")
-                                        (dart-mode . "dart")
-                                        (erlang-mode . "erlang")
-                                        (dockerfile-mode . "dockerfile")
-                                        (dockerfile-ts-mode . "dockerfile")
-                                        (csharp-mode . "csharp")
-                                        (csharp-tree-sitter-mode . "csharp")
-                                        (csharp-ts-mode . "csharp")
-                                        (plain-tex-mode . "plaintex")
-                                        (latex-mode . "latex")
-                                        (v-mode . "v")
-                                        (vhdl-mode . "vhdl")
-                                        (verilog-mode . "verilog")
-                                        (terraform-mode . "terraform")
-                                        (ess-julia-mode . "julia")
-                                        (ess-r-mode . "r")
-                                        (crystal-mode . "crystal")
-                                        (nim-mode . "nim")
-                                        (dhall-mode . "dhall")
-                                        (cmake-mode . "cmake")
-                                        (cmake-ts-mode . "cmake")
-                                        (purescript-mode . "purescript")
-                                        (gdscript-mode . "gdscript")
-                                        (perl-mode . "perl")
-                                        (cperl-mode . "perl")
-                                        (robot-mode . "robot")
-                                        (racket-mode . "racket")
-                                        (nix-mode . "nix")
-                                        (prolog-mode . "prolog")
-                                        (vala-mode . "vala")
-                                        (actionscript-mode . "actionscript")
-                                        (d-mode . "d")
-                                        (zig-mode . "zig")
-                                        (text-mode . "plaintext")
-                                        (markdown-mode . "markdown")
-                                        (gfm-mode . "markdown")
-                                        (beancount-mode . "beancount")
-                                        (conf-toml-mode . "toml")
-                                        (toml-ts-mode . "toml")
-                                        (org-mode . "org")
-                                        (org-journal-mode . "org")
-                                        (nginx-mode . "nginx")
-                                        (magik-mode . "magik")
-                                        (idris-mode . "idris")
-                                        (idris2-mode . "idris2")
-                                        (gleam-mode . "gleam")
-                                        (graphviz-dot-mode . "dot"))
+(defvar lsp-language-id-configuration
+  '(("\\(^CMakeLists\\.txt\\|\\.cmake\\)\\'" . "cmake")
+    ("\\(^Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . "dockerfile")
+    ("\\.astro$" . "astro")
+    ("\\.cs\\'" . "csharp")
+    ("\\.css$" . "css")
+    ("\\.ebuild$" . "shellscript")
+    ("\\.go\\'" . "go")
+    ("\\.html$" . "html")
+    ("\\.hx$" . "haxe")
+    ("\\.java\\'" . "java")
+    ("\\.js$" . "javascript")
+    ("\\.json$" . "json")
+    ("\\.jsonc$" . "jsonc")
+    ("\\.jsx$" . "javascriptreact")
+    ("\\.jq$"  . "jq")
+    ("\\.lua$" . "lua")
+    ("\\.mdx\\'" . "mdx")
+    ("\\.php$" . "php")
+    ("\\.rs\\'" . "rust")
+    ("\\.sql$" . "sql")
+    ("\\.svelte$" . "svelte")
+    ("\\.toml\\'" . "toml")
+    ("\\.ts$" . "typescript")
+    ("\\.tsx$" . "typescriptreact")
+    ("\\.ttcn3$" . "ttcn3")
+    ("\\.vue$" . "vue")
+    ("\\.xml$" . "xml")
+    ("\\ya?ml$" . "yaml")
+    ("^PKGBUILD$" . "shellscript")
+    ("^go\\.mod\\'" . "go.mod")
+    ("^settings.json$" . "jsonc")
+    (ada-mode . "ada")
+    (awk-mode . "awk")
+    (awk-ts-mode . "awk")
+    (nxml-mode . "xml")
+    (sql-mode . "sql")
+    (vimrc-mode . "vim")
+    (vimscript-ts-mode . "vim")
+    (sh-mode . "shellscript")
+    (bash-ts-mode . "shellscript")
+    (ebuild-mode . "shellscript")
+    (pkgbuild-mode . "shellscript")
+    (scala-mode . "scala")
+    (scala-ts-mode . "scala")
+    (julia-mode . "julia")
+    (clojure-mode . "clojure")
+    (clojurec-mode . "clojure")
+    (clojurescript-mode . "clojurescript")
+    (clojure-ts-mode . "clojure")
+    (java-mode . "java")
+    (java-ts-mode . "java")
+    (jdee-mode . "java")
+    (groovy-mode . "groovy")
+    (python-mode . "python")
+    (python-ts-mode . "python")
+    (cython-mode . "python")
+    (lsp--render-markdown . "markdown")
+    (move-mode . "move")
+    (rust-mode . "rust")
+    (rust-ts-mode . "rust")
+    (rustic-mode . "rust")
+    (kotlin-mode . "kotlin")
+    (kotlin-ts-mode . "kotlin")
+    (css-mode . "css")
+    (css-ts-mode . "css")
+    (less-mode . "less")
+    (less-css-mode . "less")
+    (lua-mode . "lua")
+    (lua-ts-mode . "lua")
+    (sass-mode . "sass")
+    (ssass-mode . "sass")
+    (scss-mode . "scss")
+    (scad-mode . "openscad")
+    (xml-mode . "xml")
+    (c-mode . "c")
+    (c-ts-mode . "c")
+    (c++-mode . "cpp")
+    (c++-ts-mode . "cpp")
+    (cuda-mode . "cuda")
+    (objc-mode . "objective-c")
+    (html-mode . "html")
+    (sgml-mode . "html")
+    (mhtml-mode . "html")
+    (mint-mode . "mint")
+    (go-dot-mod-mode . "go.mod")
+    (go-mod-ts-mode . "go.mod")
+    (go-mode . "go")
+    (go-ts-mode . "go")
+    (graphql-mode . "graphql")
+    (haskell-mode . "haskell")
+    (hack-mode . "hack")
+    (php-mode . "php")
+    (powershell-mode . "powershell")
+    (powershell-mode . "PowerShell")
+    (json-mode . "json")
+    (json-ts-mode . "json")
+    (jsonc-mode . "jsonc")
+    (rjsx-mode . "javascript")
+    (js2-mode . "javascript")
+    (js-mode . "javascript")
+    (js-ts-mode . "javascript")
+    (typescript-mode . "typescript")
+    (typescript-ts-mode . "typescript")
+    (tsx-ts-mode . "typescriptreact")
+    (fsharp-mode . "fsharp")
+    (reason-mode . "reason")
+    (caml-mode . "ocaml")
+    (tuareg-mode . "ocaml")
+    (swift-mode . "swift")
+    (elixir-mode . "elixir")
+    (elixir-ts-mode . "elixir")
+    (heex-ts-mode . "elixir")
+    (conf-javaprop-mode . "spring-boot-properties")
+    (yaml-mode . "yaml")
+    (yaml-ts-mode . "yaml")
+    (ruby-mode . "ruby")
+    (enh-ruby-mode . "ruby")
+    (ruby-ts-mode . "ruby")
+    (fortran-mode . "fortran")
+    (f90-mode . "fortran")
+    (elm-mode . "elm")
+    (dart-mode . "dart")
+    (erlang-mode . "erlang")
+    (dockerfile-mode . "dockerfile")
+    (dockerfile-ts-mode . "dockerfile")
+    (csharp-mode . "csharp")
+    (csharp-tree-sitter-mode . "csharp")
+    (csharp-ts-mode . "csharp")
+    (plain-tex-mode . "plaintex")
+    (context-mode . "context")
+    (latex-mode . "latex")
+    (v-mode . "v")
+    (vhdl-mode . "vhdl")
+    (verilog-mode . "verilog")
+    (terraform-mode . "terraform")
+    (ess-julia-mode . "julia")
+    (ess-r-mode . "r")
+    (crystal-mode . "crystal")
+    (nim-mode . "nim")
+    (dhall-mode . "dhall")
+    (cmake-mode . "cmake")
+    (cmake-ts-mode . "cmake")
+    (purescript-mode . "purescript")
+    (gdscript-mode . "gdscript")
+    (gdscript-ts-mode . "gdscript")
+    (perl-mode . "perl")
+    (cperl-mode . "perl")
+    (robot-mode . "robot")
+    (racket-mode . "racket")
+    (nix-mode . "nix")
+    (prolog-mode . "prolog")
+    (vala-mode . "vala")
+    (actionscript-mode . "actionscript")
+    (d-mode . "d")
+    (zig-mode . "zig")
+    (text-mode . "plaintext")
+    (markdown-mode . "markdown")
+    (gfm-mode . "markdown")
+    (beancount-mode . "beancount")
+    (conf-toml-mode . "toml")
+    (toml-ts-mode . "toml")
+    (org-mode . "org")
+    (org-journal-mode . "org")
+    (nginx-mode . "nginx")
+    (magik-mode . "magik")
+    (magik-ts-mode . "magik")
+    (idris-mode . "idris")
+    (idris2-mode . "idris2")
+    (gleam-mode . "gleam")
+    (graphviz-dot-mode . "dot")
+    (tiltfile-mode . "tiltfile")
+    (solidity-mode . "solidity")
+    (bibtex-mode . "bibtex")
+    (rst-mode . "restructuredtext")
+    (glsl-mode . "glsl")
+    (shader-mode . "shaderlab")
+    (jq-mode . "jq")
+    (jq-ts-mode . "jq"))
   "Language id configuration.")
 
 (defvar lsp--last-active-workspaces nil
@@ -892,7 +941,7 @@ Changes take effect only when a new session is started."
 We want to try the last workspace first when jumping into a library
 directory")
 
-(defconst lsp-method-requirements
+(defvar lsp-method-requirements
   '(("textDocument/callHierarchy" :capability :callHierarchyProvider)
     ("textDocument/codeAction" :capability :codeActionProvider)
     ("codeAction/resolve"
@@ -911,6 +960,7 @@ directory")
     ("textDocument/definition" :capability :definitionProvider)
     ("textDocument/documentColor" :capability :colorProvider)
     ("textDocument/documentLink" :capability :documentLinkProvider)
+    ("textDocument/inlayHint" :capability :inlayHintProvider)
     ("textDocument/documentHighlight" :capability :documentHighlightProvider)
     ("textDocument/documentSymbol" :capability :documentSymbolProvider)
     ("textDocument/foldingRange" :capability :foldingRangeProvider)
@@ -1762,7 +1812,12 @@ On other systems, returns path without change."
          (file
           (concat (decode-coding-string (url-filename url)
                                         (or locale-coding-system 'utf-8))
-                  (when target
+                  (when (and target
+                             (not (s-match
+                                   (rx "#" (group (1+ num)) (or "," "#")
+                                       (group (1+ num))
+                                       string-end)
+                                   uri)))
                     (concat "#" target))))
          (file-name (if (and type (not (string= type "file")))
                         (if-let ((handler (lsp--get-uri-handler type)))
@@ -1867,7 +1922,7 @@ IGNORED-DIRECTORIES is a list of regexes to filter out directories we don't
 want to watch."
   (let
       ((full-path (f-join dir path)))
-    (and (f-dir-p full-path)
+    (and (file-accessible-directory-p full-path)
          (not (equal path "."))
          (not (equal path ".."))
          (not (lsp--string-match-any ignored-directories full-path)))))
@@ -1952,42 +2007,10 @@ regex in IGNORED-FILES."
 
 
 
-(defvar lsp-downstream-deps
-  '(;; external packages
-    ccls consult-lsp dap-mode helm-lsp lsp-dart lsp-docker lsp-focus lsp-grammarly
-    lsp-haskell lsp-ivy lsp-java lsp-javacomp lsp-jedi lsp-julia lsp-latex lsp-ltex
-    lsp-metals lsp-mssql lsp-origami lsp-p4 lsp-pascal lsp-pyre lsp-pyright
-    lsp-python-ms lsp-rescript lsp-sonarlint lsp-sourcekit lsp-tailwindcss lsp-treemacs
-    lsp-ui swift-helpful
-    ;; clients
-    lsp-actionscript lsp-ada lsp-angular lsp-astro lsp-bash lsp-beancount lsp-clangd
-    lsp-clojure lsp-cmake lsp-crystal lsp-csharp lsp-css lsp-d lsp-dhall
-    lsp-dockerfile lsp-elixir lsp-elm lsp-erlang lsp-eslint lsp-fortran lsp-fsharp lsp-gdscript
-    lsp-go lsp-gleam lsp-graphql lsp-groovy lsp-hack lsp-haxe lsp-html lsp-idris lsp-javascript lsp-json lsp-kotlin lsp-lua
-    lsp-markdown lsp-marksman lsp-nginx lsp-nim lsp-nix lsp-ocaml lsp-perl lsp-perlnavigator lsp-pls lsp-php lsp-prolog lsp-purescript lsp-pwsh
-    lsp-pyls lsp-pylsp lsp-racket lsp-r lsp-rf lsp-rust lsp-solargraph lsp-sorbet lsp-sqls
-    lsp-steep lsp-svelte lsp-terraform lsp-tex lsp-toml lsp-ttcn3 lsp-typeprof lsp-v lsp-vala lsp-verilog
-    lsp-vetur lsp-volar lsp-vhdl lsp-vimscript lsp-xml lsp-yaml lsp-zig)
-  "List of downstream deps.")
-
 (defmacro lsp-consistency-check (package)
   `(defconst ,(intern (concat (symbol-name package)
                               "-plist-value-when-compiled"))
      (eval-when-compile lsp-use-plists)))
-
-;; (mapc
-;;  (lambda (package)
-;;    (with-eval-after-load package
-;;      (let ((symbol-name (intern
-;;                          (concat (symbol-name package)
-;;                                  "-plist-value-when-compiled"))))
-;;        (cond
-;;         ((not (boundp symbol-name))
-;;          (warn "We have detected that you are using version of %s that is not compatible with current version of lsp-mode.el, please update it." (propertize (symbol-name package)
-;;                                                                                                                                                              'face 'bold)))
-;;         ((not (eq (symbol-value symbol-name) lsp-use-plists))
-;;          (warn "Package %s is inconsistent with lsp-mode.el. This is indication of race during installation. In order to solve that please delete all packages related to lsp-mode, restar Emacs and install them again." (propertize (symbol-name package) 'face 'bold)))))))
-;;  lsp-downstream-deps)
 
 
 ;; loading code-workspace files
@@ -2104,6 +2127,11 @@ PARAMS - the data sent from WORKSPACE."
           (const ignore :tag "Ignore")
           (function :tag "Other function"))
   :package-version '(lsp-mode . "8.0.0"))
+
+(defcustom lsp-request-while-no-input-may-block nil
+  "Have `lsp-request-while-no-input` block unless `non-essential` is t."
+  :group 'lsp-mode
+  :type 'boolean)
 
 (defun lsp--progress-status ()
   "Returns the status of the progress for the current workspaces."
@@ -2568,7 +2596,7 @@ BINDINGS is a list of (key def desc cond)."
 
       ;; folders
       "Fa" lsp-workspace-folders-add "add folder" t
-      "Fb" lsp-workspace-blacklist-remove "un-blacklist folder" t
+      "Fb" lsp-workspace-blocklist-remove "un-blocklist folder" t
       "Fr" lsp-workspace-folders-remove "remove folder" t
 
       ;; toggles
@@ -2986,7 +3014,7 @@ and end-of-string meta-characters."
   ;; `lsp-register-client-capabilities'. It's value is an alist of (PACKAGE-NAME
   ;; . CAPS), where PACKAGE-NAME is a symbol of the third-party package name,
   ;; and CAPS is either a plist of the client capabilities, or a function that
-  ;; takes no argument and returns a plist of the client capabilities or nil.")
+  ;; takes no argument and returns a plist of the client capabilities or nil.
   (extra-client-capabilities nil)
 
   ;; Workspace status
@@ -3026,7 +3054,7 @@ and end-of-string meta-characters."
   ;; contains the folders that are part of the current session
   folders
   ;; contains the folders that must not be imported in the current workspace.
-  folders-blacklist
+  folders-blocklist
   ;; contains the list of folders that must be imported in a project in case of
   ;; multi root LSP server.
   (server-id->folders (make-hash-table :test 'equal))
@@ -3120,6 +3148,22 @@ TYPE can either be `incoming' or `outgoing'"
    :type type
    :body body))
 
+(defun lsp--log-font-lock-json (body)
+  "Font lock JSON BODY."
+  (with-temp-buffer
+    (insert body)
+    ;; We set the temp buffer file-name extension to .json and call `set-auto-mode'
+    ;; so the users configured json mode is used which could be
+    ;; `json-mode', `json-ts-mode', `jsonian-mode', etc.
+    (let ((buffer-file-name "lsp-log.json"))
+      (delay-mode-hooks
+        (set-auto-mode)
+        (if (fboundp 'font-lock-ensure)
+            (font-lock-ensure)
+          (with-no-warnings
+            (font-lock-fontify-buffer)))))
+    (buffer-string)))
+
 (defun lsp--log-entry-pp (entry)
   (cl-assert (lsp--log-entry-p entry))
   (pcase-let (((cl-struct lsp--log-entry timestamp method id type process-time
@@ -3147,7 +3191,7 @@ TYPE can either be `incoming' or `outgoing'"
                   (if (memq type '(incoming-resp ougoing-resp))
                       "Result: "
                     "Params: ")
-                  (json-encode body)
+                  (lsp--log-font-lock-json (json-encode body))
                   "\n\n\n"))
     (setq str (propertize str 'mouse-face 'highlight 'read-only t))
     (insert str)))
@@ -3268,14 +3312,14 @@ If NO-WAIT is non-nil send the request as notification."
 (cl-defun lsp-request-while-no-input (method params)
   "Send request METHOD with PARAMS and waits until there is no input.
 Return same value as `lsp--while-no-input' and respecting `non-essential'."
-  (if non-essential
-    (let* ((send-time (float-time))
-           ;; max time by which we must get a response
-           (expected-time
-            (and
-             lsp-response-timeout
-             (+ send-time lsp-response-timeout)))
-           resp-result resp-error done?)
+  (if (or non-essential (not lsp-request-while-no-input-may-block))
+      (let* ((send-time (float-time))
+             ;; max time by which we must get a response
+             (expected-time
+              (and
+               lsp-response-timeout
+               (+ send-time lsp-response-timeout)))
+             resp-result resp-error done?)
         (unwind-protect
             (progn
               (lsp-request-async method params
@@ -3525,9 +3569,9 @@ and expand the capabilities section"
   "Shut down the language server process for ‘lsp--cur-workspace’."
   (with-demoted-errors "LSP error: %S"
     (let ((lsp-response-timeout 0.5))
-      (condition-case _err
-          (lsp-request "shutdown" lsp--empty-ht)
-        (error (lsp--error "Timeout while sending shutdown request"))))
+      (condition-case err
+          (lsp-request "shutdown" nil)
+        (error (lsp--error "%s" err))))
     (lsp-notify "exit" nil))
   (setf (lsp--workspace-shutdown-action lsp--cur-workspace) (or (and restart 'restart) 'shutdown))
   (lsp--uninitialize-workspace))
@@ -3548,7 +3592,8 @@ disappearing, unset all the variables related to it."
 (defun lsp--client-capabilities (&optional custom-capabilities)
   "Return the client capabilities appending CUSTOM-CAPABILITIES."
   (append
-   `((workspace . ((workspaceEdit . ((documentChanges . t)
+   `((general . ((positionEncodings . ["utf-32", "utf-16"])))
+     (workspace . ((workspaceEdit . ((documentChanges . t)
                                      (resourceOperations . ["create" "rename" "delete"])))
                    (applyEdit . t)
                    (symbol . ((symbolKind . ((valueSet . ,(apply 'vector (number-sequence 1 26)))))))
@@ -3561,6 +3606,7 @@ disappearing, unset all the variables related to it."
                                                                         lsp-semantic-tokens-honor-refresh-requests)
                                                                    :json-false))))))
                    ,@(when lsp-lens-enable '((codeLens . ((refreshSupport . t)))))
+                   ,@(when lsp-inlay-hint-enable '((inlayHint . ((refreshSupport . :json-false)))))
                    (fileOperations . ((didCreate . :json-false)
                                       (willCreate . :json-false)
                                       (didRename . t)
@@ -3924,14 +3970,14 @@ yet."
 
   (run-hook-with-args 'lsp-workspace-folders-changed-functions nil (list project-root)))
 
-(defun lsp-workspace-blacklist-remove (project-root)
-  "Remove PROJECT-ROOT from the workspace blacklist."
+(defun lsp-workspace-blocklist-remove (project-root)
+  "Remove PROJECT-ROOT from the workspace blocklist."
   (interactive (list (completing-read "Select folder to remove:"
-                                      (lsp-session-folders-blacklist (lsp-session))
+                                      (lsp-session-folders-blocklist (lsp-session))
                                       nil t)))
-  (setf (lsp-session-folders-blacklist (lsp-session))
+  (setf (lsp-session-folders-blocklist (lsp-session))
         (delete project-root
-                (lsp-session-folders-blacklist (lsp-session))))
+                (lsp-session-folders-blocklist (lsp-session))))
   (lsp--persist-session (lsp-session)))
 
 (define-obsolete-function-alias 'lsp-workspace-folders-switch
@@ -4099,6 +4145,10 @@ yet."
       (when (and lsp-enable-links
                  (lsp-feature? "textDocument/documentLink"))
         (add-hook 'lsp-on-idle-hook #'lsp--document-links nil t))
+
+      (when (and lsp-inlay-hint-enable
+                 (lsp-feature? "textDocument/inlayHint"))
+        (lsp-inlay-hints-mode))
 
       (when (and lsp-enable-dap-auto-configure
                  (functionp 'dap-mode))
@@ -4855,8 +4905,9 @@ Applies on type formatting."
          (type (url-type parsed-url)))
     (pcase type
       ("file"
+       (xref-push-marker-stack)
        (find-file (lsp--uri-to-path url))
-       (-when-let ((_ line column) (s-match (rx "#" (group (1+ num)) "," (group (1+ num))) url))
+       (-when-let ((_ line column) (s-match (rx "#" (group (1+ num)) (or "," "#") (group (1+ num))) url))
          (goto-char (lsp--position-to-point
                      (lsp-make-position :character (1- (string-to-number column))
                                         :line (1- (string-to-number line)))))))
@@ -5032,7 +5083,7 @@ identifier and the position respectively."
          (len (length line)))
     (add-face-text-property (max (min start-char len) 0)
                             (max (min end-char len) 0)
-                            'highlight t line)
+                            'xref-match t line)
     ;; LINE is nil when FILENAME is not being current visited by any buffer.
     (xref-make (or line filename)
                (xref-make-file-location
@@ -5851,7 +5902,9 @@ It will filter by KIND if non nil."
          (lsp-send-execute-command command arguments?))))))
 
 (lsp-defun lsp-execute-code-action ((action &as &CodeAction :command? :edit?))
-  "Execute code action ACTION.
+  "Execute code action ACTION. For example, when text under the
+caret has a suggestion to apply a fix from an lsp-server, calling
+this function will do so.
 If ACTION is not set it will be selected from `lsp-code-actions-at-point'.
 Request codeAction/resolve for more info if server supports."
   (interactive (list (lsp--select-action (lsp-code-actions-at-point))))
@@ -5899,6 +5952,7 @@ Request codeAction/resolve for more info if server supports."
     (json-mode                  . js-indent-level)                  ; JSON
     (json-ts-mode               . json-ts-mode-indent-offset)
     (lua-mode                   . lua-indent-level)                 ; Lua
+    (lua-ts-mode                . lua-ts-mode-indent-offset)
     (nxml-mode                  . nxml-child-indent)                ; XML
     (objc-mode                  . c-basic-offset)                   ; Objective C
     (pascal-mode                . pascal-indent-level)              ; Pascal
@@ -6315,15 +6369,25 @@ to check if server wants to apply any workspaceEdits after renamed."
 
 (advice-add 'rename-file :around #'lsp--on-rename-file)
 
+(defcustom lsp-xref-force-references nil
+  "If non-nil threat everything as references(e. g. jump if only one item.)"
+  :group 'lsp-mode
+  :type 'boolean)
+
 (defun lsp-show-xrefs (xrefs display-action references?)
   (unless (region-active-p) (push-mark nil t))
   (if (boundp 'xref-show-definitions-function)
       (with-no-warnings
         (xref-push-marker-stack)
-        (funcall (if references? xref-show-xrefs-function xref-show-definitions-function)
+        (funcall (if (and references? (not lsp-xref-force-references))
+                     xref-show-xrefs-function
+                   xref-show-definitions-function)
                  (-const xrefs)
                  `((window . ,(selected-window))
-                   (display-action . ,display-action))))
+                   (display-action . ,display-action)
+                   ,(if (and references? (not lsp-xref-force-references))
+                        `(auto-jump . ,xref-auto-jump-to-first-xref)
+                      `(auto-jump . ,xref-auto-jump-to-first-definition)))))
     (xref--show-xrefs xrefs display-action)))
 
 (cl-defmethod seq-empty-p ((ht hash-table))
@@ -6391,6 +6455,32 @@ REFERENCES? t when METHOD returns references."
   (evil-set-command-property 'lsp-find-references :jump t)
   (evil-set-command-property 'lsp-find-type-definition :jump t))
 
+(defun lsp--workspace-method-supported? (check-command method capability workspace)
+  (with-lsp-workspace workspace
+    (if check-command
+        (funcall check-command workspace)
+      (or
+       (when capability (lsp--capability capability))
+       (lsp--registered-capability method)
+       (and (not capability) (not check-command))))))
+
+(defun lsp-disable-method-for-server (method server-id)
+  "Disable METHOD for SERVER-ID."
+  (cl-callf
+      (lambda (reqs)
+        (-let (((&plist :check-command :capability) reqs))
+          (list :check-command
+                (lambda (workspace)
+                  (unless (-> workspace
+                              lsp--workspace-client
+                              lsp--client-server-id
+                              (eq server-id))
+                    (lsp--workspace-method-supported? check-command
+                                                      method
+                                                      capability
+                                                      workspace))))))
+      (alist-get method lsp-method-requirements nil nil 'string=)))
+
 (defun lsp--find-workspaces-for (msg-or-method)
   "Find all workspaces in the current project that can handle MSG."
   (let ((method (if (stringp msg-or-method)
@@ -6398,13 +6488,9 @@ REFERENCES? t when METHOD returns references."
                   (plist-get msg-or-method :method))))
     (-if-let (reqs (cdr (assoc method lsp-method-requirements)))
         (-let (((&plist :capability :check-command) reqs))
-          (--filter
-           (with-lsp-workspace it
-             (or
-              (when check-command (funcall check-command it))
-              (when capability (lsp--capability capability))
-              (lsp--registered-capability method)
-              (and (not capability) (not check-command))))
+          (-filter
+           (-partial #'lsp--workspace-method-supported?
+                     check-command method capability)
            (lsp-workspaces)))
       (lsp-workspaces))))
 
@@ -6846,7 +6932,7 @@ information, for example if it doesn't support DocumentSymbols."
   :type 'boolean)
 
 (defface lsp-details-face '((t :height 0.8 :inherit shadow))
-  "Used to display additional information troughout `lsp'.
+  "Used to display additional information throughout `lsp'.
 Things like line numbers, signatures, ... are considered
 additional information. Often, additional faces are defined that
 inherit from this face by default, like `lsp-signature-face', and
@@ -8113,7 +8199,7 @@ nil."
 SET-EXECUTABLE? when non-nil change the executable flags of
 STORE-PATH to make it executable. BINARY-PATH can be specified
 when the binary to start does not match the name of the
-archieve(e. g. when the archieve has multiple files)"
+archive (e.g. when the archive has multiple files)"
   (let ((store-path (or (lsp-resolve-value binary-path)
                         (lsp-resolve-value store-path))))
     (cond
@@ -8338,12 +8424,9 @@ session workspace folder configuration for the server."
         (funcall initialization-options-or-fn)
       initialization-options-or-fn)))
 
-(defvar lsp-client-settings nil
+(defvar lsp-client-settings (make-hash-table)
   "For internal use, any external users please use
   `lsp-register-custom-settings' function instead")
-
-(defun lsp--compare-setting-path (a b)
-  (equal (car a) (car b)))
 
 (defun lsp-register-custom-settings (props)
   "Register PROPS.
@@ -8355,8 +8438,10 @@ property will be ignored if the VALUE is nil.
 
 Example: `(lsp-register-custom-settings `((\"foo.bar.buzz.enabled\" t t)))'
 \(note the double parentheses)"
-  (let ((-compare-fn #'lsp--compare-setting-path))
-    (setq lsp-client-settings (-uniq (append props lsp-client-settings)))))
+  (mapc
+   (-lambda ((path . rest))
+     (puthash path rest lsp-client-settings))
+   props))
 
 (defun lsp-region-text (region)
   "Get the text for REGION in current buffer."
@@ -8376,8 +8461,12 @@ TBL - a hash table, PATHS is the path to the nested VALUE."
 
 ;; sections
 
-(defmacro defcustom-lsp (symbol standard doc &rest args)
+(defalias 'defcustom-lsp 'lsp-defcustom)
+
+(defmacro lsp-defcustom (symbol standard doc &rest args)
   "Defines `lsp-mode' server property."
+  (declare (doc-string 3) (debug (name body))
+           (indent defun))
   (let ((path (plist-get args :lsp-path)))
     (cl-remf args :lsp-path)
     `(progn
@@ -8402,17 +8491,17 @@ TBL - a hash table, PATHS is the path to the nested VALUE."
 (defun lsp-configuration-section (section)
   "Get settings for SECTION."
   (let ((ret (ht-create)))
-    (mapc (-lambda ((path variable boolean?))
-            (when (s-matches? (concat (regexp-quote section) "\\..*") path)
-              (let* ((symbol-value (-> variable
-                                       lsp-resolve-value
-                                       lsp-resolve-value))
-                     (value (if (and boolean? (not symbol-value))
-                                :json-false
-                              symbol-value)))
-                (when (or boolean? value)
-                  (lsp-ht-set ret (s-split "\\." path) value)))))
-          lsp-client-settings)
+    (maphash (-lambda (path (variable boolean?))
+               (when (s-matches? (concat (regexp-quote section) "\\..*") path)
+                 (let* ((symbol-value (-> variable
+                                          lsp-resolve-value
+                                          lsp-resolve-value))
+                        (value (if (and boolean? (not symbol-value))
+                                   :json-false
+                                 symbol-value)))
+                   (when (or boolean? value)
+                     (lsp-ht-set ret (s-split "\\." path) value)))))
+             lsp-client-settings)
     ret))
 
 
@@ -8577,7 +8666,7 @@ When ALL is t, erase all log buffers of the running session."
              (lambda ()
                (cond
                 (result (lsp--parser-on-message result workspace))
-                (err (warn "Json parsing failed with the following erorr: %s" err))
+                (err (warn "Json parsing failed with the following error: %s" err))
                 (done (lsp--handle-process-exit workspace ""))))))
           :object-type object-type
           :null-object nil
@@ -8774,7 +8863,7 @@ Returns nil if the project should not be added to the current SESSION."
 %s ==> Import project root %s
 %s ==> Import project by selecting root directory interactively
 %s ==> Import project at current directory %s
-%s ==> Do not ask again for the current project by adding %s to lsp-session-folders-blacklist
+%s ==> Do not ask again for the current project by adding %s to lsp-session-folders-blocklist
 %s ==> Do not ask again for the current project by selecting ignore path interactively
 %s ==> Do nothing: ask again when opening other files from the current project
 
@@ -8798,14 +8887,14 @@ Select action: "
                                    nil
                                    t))
           (?. default-directory)
-          (?d (push project-root-suggestion (lsp-session-folders-blacklist session))
+          (?d (push project-root-suggestion (lsp-session-folders-blocklist session))
               (lsp--persist-session session)
               nil)
-          (?D (push (read-directory-name "Select folder to blacklist: "
+          (?D (push (read-directory-name "Select folder to blocklist: "
                                          (or project-root-suggestion default-directory)
                                          nil
                                          t)
-                    (lsp-session-folders-blacklist session))
+                    (lsp-session-folders-blocklist session))
               (lsp--persist-session session)
               nil)
           (t nil)))
@@ -8849,16 +8938,17 @@ Select action: "
   "Calculate project root for FILE-NAME in SESSION."
   (and
    (->> session
-        (lsp-session-folders-blacklist)
+        (lsp-session-folders-blocklist)
         (--first (and (lsp--files-same-host it file-name)
                       (lsp-f-ancestor-of? it file-name)
                       (prog1 t
-                        (lsp--info "File %s is in blacklisted directory %s" file-name it))))
+                        (lsp--info "File %s is in blocklisted directory %s" file-name it))))
         not)
    (or
     (when lsp-auto-guess-root
       (lsp--suggest-project-root))
-    (lsp-find-session-folder session file-name)
+    (unless lsp-guess-root-without-session
+      (lsp-find-session-folder session file-name))
     (unless lsp-auto-guess-root
       (when-let ((root-folder (lsp--find-root-interactively session)))
         (if (or (not (f-equal? root-folder (expand-file-name "~/")))
@@ -8901,7 +8991,7 @@ The library folders are defined by each client for each of the active workspace.
   "Persist SESSION to `lsp-session-file'."
   (lsp--persist lsp-session-file (make-lsp-session
                                   :folders (lsp-session-folders session)
-                                  :folders-blacklist (lsp-session-folders-blacklist session)
+                                  :folders-blocklist (lsp-session-folders-blocklist session)
                                   :server-id->folders (lsp-session-server-id->folders session))))
 
 (defun lsp--try-project-root-workspaces (ask-for-client ignore-multi-folder)
@@ -8926,7 +9016,7 @@ such."
                 (cl-pushnew project-root (lsp-session-folders session))
                 (lsp--persist-session session))
               (lsp--ensure-lsp-servers session clients project-root ignore-multi-folder))
-          (lsp--warn "%s not in project or it is blacklisted." (buffer-name))
+          (lsp--warn "%s not in project or it is blocklisted." (buffer-name))
           nil)
       (lsp--warn "No LSP server for %s(check *lsp-log*)." major-mode)
       nil)))
@@ -9293,7 +9383,7 @@ This avoids overloading the server with many files when starting Emacs."
     (flycheck-add-mode 'lsp mode)))
 
 (defun lsp-progress-spinner-type ()
-  "Retrive the spinner type value, if value is not a symbol of `spinner-types
+  "Retrieve the spinner type value, if value is not a symbol of `spinner-types
 defaults to `progress-bar."
   (or (car (assoc lsp-progress-spinner-type spinner-types)) 'progress-bar))
 
@@ -9455,10 +9545,128 @@ defaults to `progress-bar."
     (lsp--error "Nothing to disconnect from?")))
 
 
+;; inlay hints
+
+(defface lsp-inlay-hint-face
+  '((t :inherit font-lock-comment-face))
+  "The face to use for the JavaScript inlays."
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defface lsp-inlay-hint-type-face
+  '((t :inherit lsp-inlay-hint-face))
+  "Face for inlay type hints (e.g. inferred variable types)."
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defcustom lsp-inlay-hint-type-format "%s"
+  "Format string for variable inlays (part of the inlay face)."
+  :type '(string :tag "String")
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defface lsp-inlay-hint-parameter-face
+  '((t :inherit lsp-inlay-hint-face))
+  "Face for inlay parameter hints (e.g. function parameter names at
+call-site)."
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defcustom lsp-inlay-hint-param-format "%s"
+  "Format string for parameter inlays (part of the inlay face)."
+  :type '(string :tag "String")
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defcustom lsp-update-inlay-hints-on-scroll t
+  "If non-nil update inlay hints immediately when scrolling or
+modifying window sizes."
+  :type 'boolean
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defcustom lsp-inlay-hint-enable nil
+  "If non-nil it will enable inlay hints."
+  :type 'boolean
+  :group 'lsp-mode
+  :package-version '(lsp-mode . "8.0.1"))
+
+(defun lsp--format-inlay (text kind)
+  (cond
+   ((eql kind lsp/inlay-hint-kind-type-hint) (format lsp-inlay-hint-type-format text))
+   ((eql kind lsp/inlay-hint-kind-parameter-hint) (format lsp-inlay-hint-param-format text))
+   (t text)))
+
+(defun lsp--face-for-inlay (kind)
+  (cond
+   ((eql kind lsp/inlay-hint-kind-type-hint) 'lsp-inlay-hint-type-face)
+   ((eql kind lsp/inlay-hint-kind-parameter-hint) 'lsp-inlay-hint-parameter-face)
+   (t 'lsp-inlay-hint-face)))
+
+(defun lsp--update-inlay-hints-scroll-function (window start)
+  (lsp-update-inlay-hints start (window-end window t)))
+
+(defun lsp--update-inlay-hints ()
+  (lsp-update-inlay-hints (window-start) (window-end nil t)))
+
+(defun lsp--label-from-inlay-hints-response (label)
+  "Returns a string label built from an array of
+InlayHintLabelParts or the argument itself if it's already a
+string."
+  (cl-typecase label
+    (string label)
+    (vector
+     (string-join (mapcar (lambda (part)
+                            (-let (((&InlayHintLabelPart :value) part))
+                              value))
+                          label)))))
+
+(defun lsp-update-inlay-hints (start end)
+  (lsp-request-async
+   "textDocument/inlayHint"
+   (lsp-make-inlay-hints-params
+    :text-document (lsp--text-document-identifier)
+    :range (lsp-make-range :start
+                           (lsp-point-to-position start)
+                           :end
+                           (lsp-point-to-position end)))
+   (lambda (res)
+     (lsp--remove-overlays 'lsp-inlay-hint)
+     (dolist (hint res)
+       (-let* (((&InlayHint :label :position :kind? :padding-left? :padding-right?) hint)
+               (kind (or kind? lsp/inlay-hint-kind-type-hint))
+               (label (lsp--label-from-inlay-hints-response label))
+               (pos (lsp--position-to-point position))
+               (overlay (make-overlay pos pos nil 'front-advance 'end-advance)))
+         (when (stringp label)
+           (overlay-put overlay 'lsp-inlay-hint t)
+           (overlay-put overlay 'before-string
+                        (format "%s%s%s"
+                                (if padding-left? " " "")
+                                (propertize (lsp--format-inlay label kind)
+                                            'font-lock-face (lsp--face-for-inlay kind))
+                                (if padding-right? " " "")))))))
+   :mode 'tick))
+
+(define-minor-mode lsp-inlay-hints-mode
+  "Mode for displaying inlay hints."
+  :lighter nil
+  (cond
+   ((and lsp-inlay-hints-mode lsp--buffer-workspaces)
+    (add-hook 'lsp-on-idle-hook #'lsp--update-inlay-hints nil t)
+    (when lsp-update-inlay-hints-on-scroll
+      (add-to-list (make-local-variable 'window-scroll-functions)
+                   #'lsp--update-inlay-hints-scroll-function)))
+   (t
+    (lsp--remove-overlays 'lsp-inlay-hint)
+    (remove-hook 'lsp-on-idle-hook #'lsp--update-inlay-hints t)
+    (setf window-scroll-functions
+          (delete #'lsp--update-inlay-hints-scroll-function window-scroll-functions)))))
+
+
 
 ;;;###autoload
 (defun lsp-start-plain ()
-  "Start `lsp-mode' using mininal configuration using the latest `melpa' version
+  "Start `lsp-mode' using minimal configuration using the latest `melpa' version
 of the packages.
 
 In case the major-mode that you are using for "

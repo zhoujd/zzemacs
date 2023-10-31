@@ -19,7 +19,7 @@ RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommen
 
 ## Setup develop tool
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        gitk meld psmisc
+        gitk meld psmisc clangd
 
 ## Setup python tool
 RUN sudo pip3 install meson ninja

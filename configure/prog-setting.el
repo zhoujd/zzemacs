@@ -384,9 +384,9 @@
 (require 'lsp-lens)
 (require 'lsp-modeline)
 (require 'lsp-headerline)
+(setq lsp-lens-enable nil
+      lsp-headerline-breadcrumb-enable nil)
 (defun zz:lsp-mode-hook ()
-  (setq lsp-lens-enable nil
-        lsp-headerline-breadcrumb-enable nil)
   (lsp-enable-which-key-integration))
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'zz:lsp-mode-hook))

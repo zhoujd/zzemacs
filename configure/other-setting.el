@@ -493,6 +493,10 @@
 ;;easy-kill
 (require 'easy-kill)
 
+;;which-key
+(require 'which-key)
+(which-key-mode t)
+
 
 (provide 'other-setting)
 

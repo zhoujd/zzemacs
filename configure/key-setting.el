@@ -252,7 +252,7 @@
   [backspace]     'delete-backward-char
   [delete]        'delete-forward-char
 
-  ;;orgmode
+  ;;org-mode
   (kbd "C-c a")   'org-agenda
   (kbd "C-c c")   'org-capture
 

@@ -26,6 +26,8 @@
         common-setting
         lib-setting
         env-setting
+        other-setting
+        sample-setting
         cedet-setting
         complete-setting
         company-setting
@@ -39,8 +41,6 @@
         term-setting
         vterm-setting
         eshell-setting
-        other-setting
-        sample-setting
         w3m-setting
         doc-setting
         evil-setting

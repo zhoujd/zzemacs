@@ -65,7 +65,7 @@ ENV HOME=$USER_HOME \
 RUN touch $HOME/.Xauthority
 
 COPY requirements.txt /app
-RUN pip3 install --requirement /app/requirements.txt
+RUN pip3 install --user --requirement /app/requirements.txt
 
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]

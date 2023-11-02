@@ -142,7 +142,9 @@
 ;  (add-hook 'c-mode-hook 'eglot-ensure)
 ;  (add-hook 'c++-mode-hook 'eglot-ensure))
 
-;;lsp-mode
+;;lsp-mode support
+;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
+;;https://clangd.llvm.org/installation.html
 (when (executable-find "clangd")
   (require 'lsp-clangd)
   (dolist (hook

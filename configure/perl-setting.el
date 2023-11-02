@@ -111,6 +111,9 @@
 ;;auto carton setup
 (add-hook 'cperl-mode-hook 'helm-perldoc:carton-setup)
 
+;;https://emacs-lsp.github.io/lsp-mode/page/lsp-perl/
+;;cpan Perl::LanguageServer
+
 
 (provide 'perl-setting)
 

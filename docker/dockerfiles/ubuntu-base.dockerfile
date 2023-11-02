@@ -8,7 +8,7 @@ RUN apt-get update \
         apt-utils ca-certificates lsb-release software-properties-common gnupg xz-utils \
         sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget \
         gdb gdbserver openssh-server git patch bash-completion texinfo \
-        silversearcher-ag cscope markdown pandoc w3m perl-doc \
+        silversearcher-ag cscope markdown pandoc w3m perl-doc ack-grep \
         python3-pip python3-venv python3-virtualenv \
         emacs vim rxvt-unicode tmux nnn sbcl
 

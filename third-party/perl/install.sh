@@ -3,19 +3,22 @@
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
 
-download_ack() {
+install_ack_single() {
     local ver=v3.5.0
+    local target=/usr/local/bin
     echo "Download ack"
     curl https://beyondgrep.com/ack-${ver} > $SCRIPT_ROOT/ack
     chmod +x $SCRIPT_ROOT/ack
-}
 
-install_ack() {
     echo "Install ack"
-    sudo cp $SCRIPT_ROOT/ack /usr/local/bin/
+    sudo mv $SCRIPT_ROOT/ack $target
 }
 
-#download_ack
-#install_ack
+install_ack_pkg() {
+    sudo apt install -y ack-grep
+}
+
+#install_ack_single
+#install_ack_pkg
 
 echo "For perl develop end ..."

@@ -270,7 +270,7 @@
 ;;show output on windows in buffer
 (setq sql-mysql-options '("-C" "-t" "-f" "-n"))
 
-;; truncate lines for long tables
+;;truncate lines for long tables
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (setq truncate-lines t)))
@@ -305,8 +305,9 @@
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
+;;set lsp-mode or eglot
 (when (executable-find "cmake-language-server")
-  (add-hook 'cmake-mode-hook 'eglot-ensure))
+  (add-hook 'cmake-mode-hook 'lsp-deferred))
 
 ;;meson mode
 (require 'meson-mode)

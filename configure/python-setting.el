@@ -25,13 +25,6 @@
 (zz:load-path "site-lisp/python-environment")
 (zz:load-path "site-lisp/epc")
 
-;;https://tkf.github.io/emacs-jedi/latest/
-;;install Jedi.el via M-x jedi:install-server
-(zz:load-path "site-lisp/jedi-core")
-(require 'company-jedi)
-(add-to-list 'company-backends 'company-jedi)
-(add-hook 'python-mode-hook 'jedi:setup)
-
 ;;remove warning
 (setq python-shell-completion-native-enable nil)
 ;;remove warning: "Can't guess python-indent-offset"
@@ -52,13 +45,6 @@
 ;;ipython or python3
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
-
-;;https://github.com/tkf/python-epc
-;;install python-epc via sudo pip3 install epc
-(setq jedi:server-command (list "python3" jedi:server-script))
-(setq jedi:environment-root "jedi"
-      jedi:environment-virtualenv (append python-environment-virtualenv
-                                          '("--python" "python3")))
 
 ;;flycheck
 (setq flycheck-python-pycompile-executable "python3"

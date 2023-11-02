@@ -112,6 +112,11 @@
 (zz:load-path "site-lisp/helm-pydoc")
 (require 'helm-pydoc)
 
+;;lsp-mode support
+;;pip3 install python-lsp-server
+;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
+(add-hook 'python-mode-hook 'lsp-deferred)
+
 
 (provide 'python-setting)
 

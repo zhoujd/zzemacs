@@ -25,6 +25,7 @@
 (load-library "hideif")
 
 ;;find source pair
+;;switch between header and source files
 (require 'cff)
 
 ;;add linux kernel style
@@ -87,8 +88,7 @@
   (setq tab-width 4
         indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
-    ((kbd "C-c o")   'cff-find-other-file)
-    ((kbd "M-o")     'eassist-switch-h-cpp)
+    ((kbd "M-o")     'cff-find-other-file)
     ((kbd "M-m")     'eassist-list-methods))
   ;;process settings
   (setq c-macro-shrink-window-flag t)

@@ -58,6 +58,27 @@
 (require 'yasnippet-snippets)
 (yas-global-mode t)
 
+;;;;https://clangd.llvm.org/installation.html
+;https://github.com/joaotavora/eglot
+(require 'eglot)
+
+;;lsp-mode
+;;https://emacs-lsp.github.io/lsp-mode/
+;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/
+;;https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+(zz:load-path "site-lisp/lsp-mode")
+(setq lsp-keymap-prefix "C-c l") ;; Or 'C-l', 's-l'
+(require 'lsp-mode)
+(require 'lsp-lens)
+(require 'lsp-modeline)
+(require 'lsp-headerline)
+(setq lsp-lens-enable nil
+      lsp-headerline-breadcrumb-enable nil)
+(defun zz:lsp-mode-hook ()
+  (lsp-enable-which-key-integration))
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'zz:lsp-mode-hook))
+
 
 (provide 'complete-setting)
 

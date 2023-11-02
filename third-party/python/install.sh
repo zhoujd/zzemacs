@@ -16,10 +16,6 @@ PIP_PAR="--timeout 60"
 
 echo "For python develop start ..."
 
-py2_deps() {
-    pip2 install --user $PIP_PAR -r $SCRIPT_ROOT/py2.txt
-}
-
 py3_deps() {
     pip3 install --user $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
@@ -37,12 +33,8 @@ case $1 in
     flake8 )
         setup_flake8
         ;;
-    py2 )
-        py2_deps
-        setup_flake8       
-        ;;
     * )
-        echo "Usage: $0 {py3|py2|flake8}"
+        echo "Usage: $0 {py3|flake8}"
         ;;
 esac
 

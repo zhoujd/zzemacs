@@ -374,6 +374,10 @@
           'yaml-mode-hook))
   (add-hook hook 'highlight-indent-guides-mode))
 
+;;;;https://clangd.llvm.org/installation.html
+;https://github.com/joaotavora/eglot
+(require 'eglot)
+
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/

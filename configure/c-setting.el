@@ -125,14 +125,6 @@
 (require 'company-c-headers)
 (add-to-list 'company-backends 'company-c-headers)
 
-;; list methold in current buffer
-;; switch buffer in h & cpp file
-(require 'eassist)
-(defkeys-map eassist-mode-map
-  ((kbd "TAB") 'eassist-jump-to-method)
-  ((kbd "C-b") 'eassist-backspace-pressed)
-  ((kbd "C-q") 'eassist-escape))
-
 ;;eglot-mode support
 ;(when (executable-find "clangd")
 ;  (add-to-list 'eglot-server-programs

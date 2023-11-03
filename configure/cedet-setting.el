@@ -26,6 +26,15 @@
    python-mode-hook
    ))
 
+;;list methold in current buffer
+;;c-mode and (or) python-mode and for lisp
+(require 'eassist)
+(defkeys-map eassist-mode-map
+  ((kbd "TAB") 'eassist-jump-to-method)
+  ((kbd "C-b") 'eassist-backspace-pressed)
+  ((kbd "C-q") 'eassist-escape))
+
+
 (provide 'cedet-setting)
 
 ;;; cedet-setting.el ends here

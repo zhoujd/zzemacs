@@ -46,6 +46,8 @@
   (setq python-indent 2))
 
 (defun zz:python-mode-hook ()
+  (defkeys-map python-mode-map
+    ((kbd "M-m") 'eassist-list-methods))
   (zz:py-indent-4))
 
 (add-hook 'python-mode-hook

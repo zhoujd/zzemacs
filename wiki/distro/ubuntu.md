@@ -435,3 +435,8 @@ Ubuntu setting
     $ dpkg-deb -xv {file.deb} {/path/to/where/extract}
     $ dpkg-deb -xv htop_2.0.1-1ubuntu1_amd64.deb /tmp/
     $ dpkg-deb -xv htop_2.0.1-1ubuntu1_amd64.deb .
+
+## How to change meld theme
+
+    $ sudo apt-get install dconf-editor -y
+    Then in dconf-editor : /org/gnome/meld/ style-schema/ Custom value = meld-dark

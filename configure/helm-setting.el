@@ -132,7 +132,7 @@
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-   '(helm-ag-command-option "--ignore=TAGS --ignore=cscope.*")
+   '(helm-ag-command-option "--silent --skip-vcs-ignores --ignore=TAGS --ignore=cscope.*")
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ag"))
 
@@ -141,7 +141,7 @@
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "ag --nocolor --nogroup --word-regexp --case-sensitive")
-   '(helm-ag-command-option "--ignore=TAGS --ignore=cscope.*")
+   '(helm-ag-command-option "--silent --skip-vcs-ignores --ignore=TAGS --ignore=cscope.*")
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ag exact"))
 

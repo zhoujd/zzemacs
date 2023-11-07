@@ -74,10 +74,10 @@
 (require 'lsp-headerline)
 (setq lsp-lens-enable nil
       lsp-headerline-breadcrumb-enable nil)
-(defun zz:lsp-mode-hook ()
-  (lsp-enable-which-key-integration))
-(with-eval-after-load 'lsp-mode
-  (add-hook 'lsp-mode-hook #'zz:lsp-mode-hook))
+;(defun zz:lsp-mode-hook ()
+;  (lsp-enable-which-key-integration))
+;(with-eval-after-load 'lsp-mode
+;  (add-hook 'lsp-mode-hook #'zz:lsp-mode-hook))
 
 
 (provide 'complete-setting)

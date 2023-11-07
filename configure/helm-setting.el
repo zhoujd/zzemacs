@@ -126,20 +126,23 @@
 ;;helm-ag-base-command "csearch -n"
 ;;helm-ag-base-command "pt --nocolor --nogroup"
 ;;helm-ag-base-command "rg --vimgrep --no-heading"
+;;ag -all-text (-t) search it'll override --ignore
 (defun zz:helm-ag-switch-to-ag-inexact()
   "case-insensitive and without word boundaries."
   (interactive)
-  (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"
-        helm-ag-command-option "--all-text"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+   '(helm-ag-command-option "--ignore=TAGS --ignore=cscope.*")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ag"))
 
 (defun zz:helm-ag-switch-to-ag-exact()
   "case-sensitive and with word boundaries."
   (interactive)
-  (setq helm-ag-base-command "ag --nocolor --nogroup --word-regexp --case-sensitive"
-        helm-ag-command-option "--all-text"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "ag --nocolor --nogroup --word-regexp --case-sensitive")
+   '(helm-ag-command-option "--ignore=TAGS --ignore=cscope.*")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ag exact"))
 
 ;;https://beyondgrep.com/install/
@@ -147,32 +150,36 @@
 ;;Ubuntu: sudo apt install ack-grep
 (defun zz:helm-ag-switch-to-ack()
   (interactive)
-  (setq helm-ag-command-option ""
-        helm-ag-base-command "ack --nocolor --nogroup"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "ack --nocolor --nogroup")
+   '(helm-ag-command-option "")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ack"))
 
 ;;https://github.com/eliben/pss/
 ;;pip install pss
 (defun zz:helm-ag-switch-to-pss()
   (interactive)
-  (setq helm-ag-command-option ""
-        helm-ag-base-command "pss --nocolor --noheading"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "pss --nocolor --noheading")
+   '(helm-ag-command-option "")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to pss"))
 
 (defun zz:helm-ag-switch-to-grep-inexact()
   (interactive)
-  (setq helm-ag-command-option ""
-        helm-ag-base-command "grep -rinI"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "grep -rinI")
+   '(helm-ag-command-option "")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to grep inexact"))
 
 (defun zz:helm-ag-switch-to-grep-exact()
   (interactive)
-  (setq helm-ag-command-option ""
-        helm-ag-base-command "grep -rnI"
-        helm-ag-insert-at-point 'symbol)
+  (custom-set-variables
+   '(helm-ag-base-command "grep -rnI")
+   '(helm-ag-command-option "")
+   '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to grep exact"))
 
 ;;helm default using ag

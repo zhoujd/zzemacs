@@ -108,6 +108,11 @@
                             (ido-read-directory-name "Directory: "))))
     (helm-find-1 default-directory)))
 
+;;helm-rg
+;;https://github.com/cosmicexplorer/helm-rg
+;;https://github.com/BurntSushi/ripgrep/releases
+(require 'helm-rg)
+
 ;;See file content temporarily by persistent action(C-j).
 ;;For ack: helm-ag-base-command "ack --nocolor --nogroup"
 ;;https://github.com/emacsorphanage/helm-ag
@@ -165,6 +170,14 @@
    '(helm-ag-command-option "")
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to pss"))
+
+(defun zz:helm-ag-switch-to-rg()
+  (interactive)
+  (custom-set-variables
+   '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
+   '(helm-ag-command-option "")
+   '(helm-ag-insert-at-point 'symbol))
+  (message "helm-ag switch to rg"))
 
 (defun zz:helm-ag-switch-to-grep-inexact()
   (interactive)
@@ -301,11 +314,6 @@
 (require 'helm-lsp)
 (defkeys-map lsp-mode-map
   ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
-
-;;helm-rg
-;;https://github.com/cosmicexplorer/helm-rg
-;;https://github.com/BurntSushi/ripgrep/releases
-(require 'helm-rg)
 
 
 (provide 'helm-setting)

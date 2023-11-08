@@ -153,3 +153,12 @@ Git
     ## https://gitea.io/en-us/
     ## https://docs.gitea.io/en-us/install-with-docker/
     ## https://docs.gitea.io/en-us/install-from-binary/
+
+## How to cherry-pick multiple commits
+
+    ## https://stackoverflow.com/questions/1670970/how-to-cherry-pick-multiple-commits
+    ## From commit A to commit B
+    $ git cherry-pick A^..B
+
+    ## Ignore A itself
+    $ git cherry-pick A..B

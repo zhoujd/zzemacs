@@ -12,10 +12,10 @@ force_down() {
 }
 
 disable_alarm() {
-    local file=/usr/libexec/evolution-data-server/evolution-alarm-notify
+    local file=/usr/lib/evolution/evolution-alarm-notify
     echo "evolution noalarm"
-    echo "kill evolution-alarm-notify"
-    sudo killall evolution-alarm
+    echo "kill $file"
+    sudo killall $file
     if [ -f $file ]; then
         echo "chmod -x $file"
         sudo chmod -x $file

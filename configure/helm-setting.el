@@ -108,7 +108,6 @@
                             (ido-read-directory-name "Directory: "))))
     (helm-find-1 default-directory)))
 
-;;helm-rg
 ;;https://github.com/cosmicexplorer/helm-rg
 ;;https://github.com/BurntSushi/ripgrep/releases
 (require 'helm-rg)

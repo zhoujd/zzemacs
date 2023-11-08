@@ -302,6 +302,11 @@
 (defkeys-map lsp-mode-map
   ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
+;;helm-rg
+;;https://github.com/cosmicexplorer/helm-rg
+;;https://github.com/BurntSushi/ripgrep/releases
+(require 'helm-rg)
+
 
 (provide 'helm-setting)
 

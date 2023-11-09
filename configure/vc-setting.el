@@ -49,7 +49,7 @@
   ((kbd "M-g M-s") 'magit-status)
   ((kbd "M-g M-c") 'magit-checkout)
   ((kbd "M-g M-b") 'git-blame-line))
-(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq magit-completing-read-function 'helm--completing-read-default)
 
 ;;git show
 (require 'git-show)

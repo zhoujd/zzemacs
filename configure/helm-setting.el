@@ -54,7 +54,9 @@
                                           helm-def-source--emacs-faces))
 
 ;;https://github.com/ptrv/helm-smex
-(require 'helm-smex)
+;;(require 'helm-smex)
+
+;;https://github.com/jixiuf/helm-etags-plus
 (require 'helm-etags-plus)
 
 ;;https://github.com/emacs-helm/helm-descbinds

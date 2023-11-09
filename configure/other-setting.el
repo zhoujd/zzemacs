@@ -180,8 +180,8 @@
 (setq ange-ftp-default-user t)
 
 ;;https://github.com/nonsequitur/smex/
-(require 'smex)
-(smex-initialize)
+;(require 'smex)
+;(smex-initialize)
 
 ;;bookmark setting
 (require 'bm)
@@ -496,6 +496,14 @@
 ;;which-key
 ;(require 'which-key)
 ;(which-key-mode t)
+
+;;https://github.com/DarwinAwardWinner/ido-completing-read-plus
+(require 'ido-completing-read+)
+(ido-ubiquitous-mode t)
+
+;;https://github.com/DarwinAwardWinner/amx/tree/master
+(require 'amx)
+(amx-mode t)
 
 
 (provide 'other-setting)

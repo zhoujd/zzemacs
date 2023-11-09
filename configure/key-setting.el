@@ -268,10 +268,9 @@
   [S-right]       'enlarge-window-horizontally
   [S-left]        'shrink-window-horizontally
 
-  ;;smex
-  (kbd "M-X")     'smex
-  (kbd "C-x M-x") 'execute-extended-command
-  (kbd "C-c M-x") 'smex-major-mode-commands
+  ;;M-x
+  (kbd "M-x")     'helm-M-x
+  (kbd "C-x M-x") 'amx
   ))
 
 ;;helm key setting

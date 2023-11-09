@@ -9,6 +9,18 @@ PROJ_LIST=(
     $*
 )
 
+EXCLUDE_LIST=(
+    -not -path "/*.git/*"
+)
+
+FILTER_LIST=(
+    -iname "*.[chly]"   
+    -o -iname "*.[ch]xx"
+    -o -iname "*.[ch]pp"
+    -o -iname "*.cc"    
+    -o -iname "*.hh"    
+)
+
 create_init() {
     echo "Create init..."
     mkdir -p $TAGS_ROOT
@@ -19,13 +31,10 @@ create_init() {
 create_etags() {
     echo "Create etags to $TAGS_ROOT..."
     pushd $TAGS_ROOT > /dev/null
-    find ${PROJ_LIST[*]} -type f    \
-         \( -iname "*.[chly]"    \
-         -o -iname "*.[ch]xx"    \
-         -o -iname "*.[ch]pp"    \
-         -o -iname "*.cc"        \
-         -o -iname "*.hh"        \
-         \) \
+    find ${PROJ_LIST[*]}          \
+         -type f                  \
+         \( ${EXCLUDE_LIST[@]} \) \
+         \( ${FILTER_LIST[@]} \)  \
          -print | etags -
     popd > /dev/null
 }
@@ -33,13 +42,10 @@ create_etags() {
 create_cscope() {
     echo "Create cscope to $TAGS_ROOT..."
     pushd $TAGS_ROOT > /dev/null
-    find ${PROJ_LIST[*]} -type f    \
-         \( -iname "*.[chly]"    \
-         -o -iname "*.[ch]xx"    \
-         -o -iname "*.[ch]pp"    \
-         -o -iname "*.cc"        \
-         -o -iname "*.hh"        \
-         \) \
+    find ${PROJ_LIST[*]}          \
+         -type f -a -not -type l  \
+         \( ${EXCLUDE_LIST[@]} \) \
+         \( ${FILTER_LIST[@]} \)  \
          -print > cscope.files;
     cscope -b -R -q -i cscope.files
     popd > /dev/null

@@ -229,8 +229,6 @@
   (kbd "M-8")     (lookup-key global-map (kbd "C-8"))
   (kbd "M-9")     (lookup-key global-map (kbd "C-9"))
   (kbd "M-0")     (lookup-key global-map (kbd "C-0"))
-  (kbd "M--")     (lookup-key global-map (kbd "C--"))
-  (kbd "M-=")     (lookup-key global-map (kbd "C-="))
   ))
 
 

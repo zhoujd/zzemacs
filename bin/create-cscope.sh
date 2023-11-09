@@ -1,4 +1,5 @@
 #!/bin/bash
+#set -x
 
 echo "Clean cscope files"
 rm -f cscope*

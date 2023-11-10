@@ -11,7 +11,7 @@ Install_docker() {
          curl -fsSL https://download.docker.com/linux/$(lsb_release -is | tr '[:upper:]' '[:lower:]')/gpg | sudo apt-key add - 2>/dev/null
     echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/$(lsb_release -is | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
     sudo apt-get update
-    sudo apt-get install -y docker-ce-cli
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-buildx-plugin
 }
 
 Install_compos() {
@@ -22,6 +22,5 @@ Install_compos() {
 }
 
 Install_docker
-Install_compose
 
 echo "Docker install done"

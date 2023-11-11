@@ -57,11 +57,14 @@
 (zz:load-path "site-lisp/helm-pydoc")
 (require 'helm-pydoc)
 
-;;lsp-mode support
-;;pip3 install python-lsp-server
+;;lsp-mode - pylsp or pyright
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
-(when (executable-find "pylsp")
+;;pip3 install python-lsp-server
+(when (executable-find "pyls")
   (add-hook 'python-mode-hook 'lsp-deferred))
+
+;;pip3 install pyright ptvsd
+;(require 'lsp-pyright)
 
 
 (provide 'python-setting)

@@ -28,23 +28,24 @@
 (defvar zz:env-path
   (if-ms-windows
    (progn
-    (list
-     (format "%s/bin" (getenv "EMACS_DIR"))
-     (format "%s/bin" zzemacs-path)
-     (format "%s/libexec" zzemacs-path)
-     "C:/Git/bin"
-     "C:/Git/usr/bin"
-     "C:/strawberry/perl/bin"
-     "C:/strawberry/c/bin"
-     "C:/lisp/ecl"
-     "C:/lisp/SBCL"
-     "C:/lisp/clisp"
-     ))
+     (list
+      (format "%s/bin" (getenv "EMACS_DIR"))
+      (format "%s/bin" zzemacs-path)
+      (format "%s/libexec" zzemacs-path)
+      "C:/Git/bin"
+      "C:/Git/usr/bin"
+      "C:/strawberry/perl/bin"
+      "C:/strawberry/c/bin"
+      "C:/lisp/ecl"
+      "C:/lisp/SBCL"
+      "C:/lisp/clisp"
+      ))
    (progn
-    (list
-     (format "%s/bin" zzemacs-path)
-     (format "%s/libexec" zzemacs-path)
-     )))
+     (list
+      (format "%s/bin" zzemacs-path)
+      (format "%s/libexec" zzemacs-path)
+      (format "%s/.local/bin" (getenv "HOME"))
+      )))
   "add to path and exec-path")
 
 (mapc #'zz:add-os-path zz:env-path)

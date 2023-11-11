@@ -50,8 +50,7 @@
     ((kbd "M-m") 'eassist-list-methods))
   (zz:py-indent-4))
 
-(add-hook 'python-mode-hook
-          'zz:python-mode-hook)
+(add-hook 'python-mode-hook 'zz:python-mode-hook)
 
 ;;helm-pydoc
 (zz:load-path "site-lisp/helm-pydoc")
@@ -60,11 +59,8 @@
 ;;lsp-mode - pylsp or pyright
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
-(when (executable-find "pyls")
+(when (executable-find "pylsp")
   (add-hook 'python-mode-hook 'lsp-deferred))
-
-;;pip3 install pyright ptvsd
-;(require 'lsp-pyright)
 
 
 (provide 'python-setting)

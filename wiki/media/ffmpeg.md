@@ -84,3 +84,17 @@ FFMPEG
 
     $ ffprobe video.mp4 -show_frames | grep -E 'pict_type|coded_picture_number'
     $ ffprobe video.mp4 -show_frames | grep -w -E 'coded_picture_number=8' -B 1
+
+## Finding frame sizes in an encoded bit stream
+
+    ## https://stackoverflow.com/questions/21848514/finding-frame-sizes-in-an-encoded-bit-stream
+    ## Display order
+    $ ffprobe -show_frames BQMall_832x480_60_QP22.hevc | grep pkt_size
+
+    ## Stored order
+    $ ffprobe -show_packets file.hevc | grep size
+
+## Hide banner
+
+    $ ffmpeg -hide_banner
+    $ ffprobe -hide_banner

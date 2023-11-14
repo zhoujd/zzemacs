@@ -562,3 +562,10 @@ Linux something
     ## https://github.com/wolfcw/libfaketime/
     $ sudo apt install -y faketime
     $ faketime '2008-12-24 08:15:42' python test.py
+
+## Find with cp combine
+
+    ## https://stackoverflow.com/questions/5241625/find-and-copy-files
+    $ find /mydir -type f -name 'log*.txt' | tail -n 10 | xargs -I % cp % /tmp/mydir/
+    $ find -mtime -1 -type f -exec cp '{}' inner/ \;
+    $ find -mtime -1 -type f | xargs cp -t inner/

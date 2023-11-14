@@ -98,3 +98,17 @@ FFMPEG
 
     $ ffmpeg -hide_banner
     $ ffprobe -hide_banner
+
+
+# Print the number of video frames in stream
+
+    ## Calulate frame number
+    $ ffprobe -count_frames -v error -select_streams v:0 -show_entries stream=nb_read_frames -of default=nokey=1:noprint_wrappers=1 ${1}
+    ## Calulate es bitrate
+    def calculate_bitrate(es_file, frame_num, fps):
+        size = os.path.getsize(es_file)
+        size_bits = float(size) * 8 * fps / frame_num
+        size_kbits = size_bits / 1000
+        return int(size_kbits)
+    print("{}M".format(calculate_bitrate("test.h264", 270, 30)))
+    print("{}M".format(calculate_bitrate("test.h265", 270, 30)))

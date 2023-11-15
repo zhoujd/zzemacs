@@ -137,6 +137,11 @@
 ;;https://clangd.llvm.org/installation.html
 (when (executable-find "clangd")
   (require 'lsp-clangd)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote))
   (dolist (hook
            (list
             'c-mode-hook

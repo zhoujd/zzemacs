@@ -46,10 +46,10 @@
   (kbd "C-2")     'delete-frame
   (kbd "C-3")     'zz:last-frame-go
   (kbd "C-4")     'zz:undo-kill-buffer
-  (kbd "C-5")     'gud-until
+  (kbd "C-5")     'gud-jump
   (kbd "C-6")     'gud-remove
-  (kbd "C-7")     'gud-finish
-  (kbd "C-8")     'gud-jump
+  (kbd "C-7")     'gud-until
+  (kbd "C-8")     'gud-finish
   (kbd "C-9")     'gud-pstar
   (kbd "C-0")     'gud-refresh
 

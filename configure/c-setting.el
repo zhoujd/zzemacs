@@ -126,12 +126,12 @@
 (add-to-list 'company-backends 'company-c-headers)
 
 ;;lsp-mode support
-;;https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/CPP-guide.md
+;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
+;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
+;;https://clangd.llvm.org/installation.html
 ;;sudo apt install bear
 ;;bear cmake
 ;;bear make
-;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
-;;https://clangd.llvm.org/installation.html
 (when (executable-find "clangd")
   (require 'lsp-clangd)
   (lsp-register-client

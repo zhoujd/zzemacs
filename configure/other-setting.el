@@ -274,7 +274,10 @@
 (put 'scroll-left 'disabled nil)
 
 ;;http://nschum.de/src/emacs/highlight-symbol/
-(require 'highlight-symbol)
+;(require 'highlight-symbol)
+
+;;https://github.com/wolray/symbol-overlay
+(require 'symbol-overlay)
 
 ;;bookmark plus
 ;;https://www.emacswiki.org/emacs/BookmarkPlus

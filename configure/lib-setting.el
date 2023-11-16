@@ -3,10 +3,6 @@
 
 (zz:load-path "site-lisp")
 
-;;hydra
-(zz:load-path "site-lisp/hydra")
-(require 'hydra)
-
 ;;dash
 (require 'dash)
 
@@ -22,6 +18,10 @@
 ;;compat
 (zz:load-path "site-lisp/compat")
 (require 'compat)
+
+;;hydra (already part of emacs)
+(zz:load-path "site-lisp/emacs-legcy/hydra")
+(require 'hydra)
 
 
 (provide 'lib-setting)

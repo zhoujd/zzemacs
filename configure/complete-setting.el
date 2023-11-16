@@ -59,7 +59,8 @@
 (yas-global-mode t)
 
 ;;;;https://clangd.llvm.org/installation.html
-;https://github.com/joaotavora/eglot
+;;https://github.com/joaotavora/eglot
+(zz:load-path "site-lisp/emacs-legcy")
 (require 'eglot)
 
 ;;lsp-mode

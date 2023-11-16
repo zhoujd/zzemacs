@@ -3,9 +3,6 @@
 if [ $# != 2 ]; then
     echo "Usage: 
 $ $(basename $0) {n} {text}
-or
-$ export TAG_FILE=<path/of/cscope.out>  ## default: ~/.emacs.d/tags/cscope.out
-$ $(basename $0) {n} {text}
 
 ## The list of possible values for {n}
 0: Find this C symbol
@@ -21,5 +18,24 @@ $ $(basename $0) {n} {text}
     exit 1
 fi
 
-TAG_FILE=${TAG_FILE:-"~/.emacs.d/tags/cscope.out"}
+search_up() {
+    local look=${PWD%/}
+    while [[ -n $look ]]; do
+        [[ -e $look/$1 ]] && {
+            printf '%s\n' "$look"
+            return
+        }
+        look=${look%/*}
+    done
+    [[ -e /$1 ]] && echo /
+}
+
+SEARCH=$(search_up "cscope.out")
+if [ -n "$SEARCH" ]; then
+    TAG_FILE="$SEARCH/cscope.out"
+else
+    TAG_FILE="~/.emacs.d/tags/cscope.out"
+fi
+    
+echo "Use: $TAG_FILE"
 cscope -d -f $TAG_FILE -R -L${1} ${2}

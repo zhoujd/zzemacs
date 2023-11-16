@@ -41,6 +41,7 @@
         term-setting
         vterm-setting
         eshell-setting
+        im-setting
         w3m-setting
         doc-setting
         evil-setting

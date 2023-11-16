@@ -4,7 +4,7 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
 ## https://divansantana.com/teams-on-linux/index.html
 
-setup_teams() {
+install() {
     echo "Setup teams binary to ~/.local/bin"
     ln -sfvT $SCRIPT_ROOT/teams ~/.local/bin/teams
 
@@ -28,4 +28,20 @@ x-scheme-handler/msteams; teams %s
 EOF
 }
 
-setup_teams
+uninstall() {
+    rm -fv ~/.local/bin/teams
+    rm -fv ~/.local/share/applications/teams.desktop
+    rm -fv ~/.mailcap
+}
+
+case $1 in
+    install )
+        install
+        ;;
+    uninstall )
+        uninstall
+        ;;
+    * )
+        echo "$0 {install|uninstall}"
+        ;;
+esac

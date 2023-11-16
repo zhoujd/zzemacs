@@ -58,11 +58,6 @@
 (require 'yasnippet-snippets)
 (yas-global-mode t)
 
-;;;;https://clangd.llvm.org/installation.html
-;;https://github.com/joaotavora/eglot
-(zz:load-path "site-lisp/emacs-legcy")
-(require 'eglot)
-
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/
@@ -79,6 +74,11 @@
 ;  (lsp-enable-which-key-integration))
 ;(with-eval-after-load 'lsp-mode
 ;  (add-hook 'lsp-mode-hook #'zz:lsp-mode-hook))
+
+;;;;https://clangd.llvm.org/installation.html
+;;https://github.com/joaotavora/eglot
+(zz:load-path "site-lisp/emacs-legcy")
+(require 'eglot)
 
 
 (provide 'complete-setting)

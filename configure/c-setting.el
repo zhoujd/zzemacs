@@ -125,14 +125,11 @@
 (require 'company-c-headers)
 (add-to-list 'company-backends 'company-c-headers)
 
-;;eglot-mode support
-;(when (executable-find "clangd")
-;  (add-to-list 'eglot-server-programs
-;               '((c++-mode c-mode) "clangd"))
-;  (add-hook 'c-mode-hook 'eglot-ensure)
-;  (add-hook 'c++-mode-hook 'eglot-ensure))
-
 ;;lsp-mode support
+;;https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/CPP-guide.md
+;;sudo apt install bear
+;;bear cmake
+;;bear make
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
 ;;https://clangd.llvm.org/installation.html
 (when (executable-find "clangd")
@@ -147,6 +144,14 @@
             'c-mode-hook
             'c++-mode-hook))
     (add-hook hook 'lsp-deferred)))
+
+;;eglot-mode support
+;;https://ddavis.io/blog/eglot-cpp-ide/
+;(when (executable-find "clangd")
+;  (add-to-list 'eglot-server-programs
+;               '((c++-mode c-mode) "clangd"))
+;  (add-hook 'c-mode-hook 'eglot-ensure)
+;  (add-hook 'c++-mode-hook 'eglot-ensure))
 
 
 (provide 'c-setting)

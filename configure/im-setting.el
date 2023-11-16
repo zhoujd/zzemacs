@@ -22,6 +22,11 @@
                           (append key nil))
                   unread-command-events))))
 
+;;Search with Chinese
+;;M-x: pyim-forward-word
+;;M-x: pyim-backward-word
+(require 'pyim-cstring-utils)
+
 
 (provide 'im-setting)
 

@@ -273,6 +273,11 @@
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 
+;;disable C-x C-z
+(put 'suspend-frame 'disabled t)
+(global-unset-key "\C-x\C-z")
+(global-unset-key (kbd "C-x C-z"))
+
 ;;http://nschum.de/src/emacs/highlight-symbol/
 ;(require 'highlight-symbol)
 

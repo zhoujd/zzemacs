@@ -1,10 +1,11 @@
 #!/bin/bash
 
 if [ $# != 2 ]; then
-    echo "Usage: 
+    cat <<EOF 
+Usage: 
 $ $(basename $0) {n} {text}
 
-## The list of possible values for {n}
+The list of possible values for {n}
 0: Find this C symbol
 1: Find this definition
 2: Find functions called by this function
@@ -14,7 +15,7 @@ $ $(basename $0) {n} {text}
 7: Find this file
 8: Find files #including this file
 9: Find places where this symbol is assigned a value
-"
+EOF
     exit 1
 fi
 

@@ -246,3 +246,18 @@ ffffffff81946000 <>:     "root=/dev/sda1 quiet"
 </schedule+20></schedule+17></schedule+8></schedule+1></schedule>
 
 #+END_SRC
+
+** GDB UI
+
+#+BEGIN_SRC sh
+$ gdb -tui
+or
+$ gdbtui
+$ gdb  ## Press ctrl + x + a
+#+END_SRC
+
+
+** Conditional breakpoint in GDB
+
+break x:20 if strcmp(y, "hello") == 0
+20 is line number, x can be any filename and y can be any variable.

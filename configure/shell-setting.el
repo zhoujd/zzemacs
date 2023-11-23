@@ -105,13 +105,15 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:get-shell ()
   (interactive)
   (cond
-    ;;((string-match "j[ap].*" (getenv "LANG"))
-    ;; (with-chinese-env (multi-shell-new)))
-    ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
-    ;; (with-chinese-env (multi-shell-new)))
-    (t
-     (multi-shell-new))
-    ))
+   ;;((string-match "j[ap].*" (getenv "LANG"))
+   ;; (with-chinese-env (multi-shell-new)))
+   ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
+   ;; (with-chinese-env (multi-shell-new)))
+   (t
+    (let ((default-directory (file-name-as-directory
+                              (ido-read-directory-name "Directory: "))))
+      (multi-shell-new)))
+   ))
 
 (defun zz:get-current-shell ()
   (interactive)

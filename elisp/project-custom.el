@@ -132,6 +132,22 @@
                (function zz:rscope-autoinit-path))
   (message "Unset cscope init directory"))
 
+;;https://emacs.stackexchange.com/questions/53/ctags-over-tramp
+(defun etags-file-of-tag (&optional relative)
+  (save-excursion
+    (re-search-backward "\f\n\\([^\n]+\\),[0-9]*\n")
+    (let ((str (convert-standard-filename
+                (buffer-substring (match-beginning 1) (match-end 1)))))
+      (if relative
+      str
+        (let ((basedir (file-truename default-directory)))
+          (if (file-remote-p basedir)
+              (with-parsed-tramp-file-name basedir nil
+                (expand-file-name (apply 'tramp-make-tramp-file-name
+                                         (list method user host str hop))))
+              (expand-file-name str basedir)))))))
+
+
 ;;load temp setting
 (when (file-exists-p zz:dev-set-file)
   (load-file zz:dev-set-file))

@@ -6,6 +6,7 @@ TAGS_ROOT=${TAGS_ROOT:-$HOME/.emacs.d/tags}
 PROJ_LIST=(
     /usr/include
     /usr/local/include
+    .
     $*
 )
 

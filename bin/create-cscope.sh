@@ -3,7 +3,7 @@
 
 ## Find Option
 SCAN_LIST=(
-    $PWD
+    .
     $@
 )
 

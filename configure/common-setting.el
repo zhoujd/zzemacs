@@ -138,8 +138,6 @@
 ;;active region sets primary X11 selection
 (setq select-active-regions t)
 
-;;watch and reload the file changed on the disk.
-(setq auto-revert-remote-files t)
 (global-auto-revert-mode t)
 (global-font-lock-mode t)
 ;;for large file show quickly
@@ -446,6 +444,10 @@
 ;;configure saved from menu "Save Options"
 ;;normal location: ~/.emacs.d/custom.el
 (setq custom-file (concat user-emacs-directory "custom.el"))
+
+;;auto refresh remote files
+(custom-set-variables
+ '(auto-revert-remote-files t))
 
 ;;remove cl warning on emacs27
 (unless (< emacs-major-version 27)

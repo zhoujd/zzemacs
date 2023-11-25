@@ -89,6 +89,8 @@
 (require 'eldoc-extension)
 (add-hook 'emacs-lisp-mode-hook 'zz:turn-on-eldoc-mode)
 (add-hook 'lisp-inteeraction-mode-hook 'zz:turn-on-eldoc-mode)
+;;allow long ElDoc messages to resize echo area display
+(setq eldoc-echo-area-use-multiline-p nil)
 (setq eldoc-idle-delay 0.2)
 (setq eldoc-minor-mode-string "")
 

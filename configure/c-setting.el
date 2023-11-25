@@ -125,15 +125,15 @@
 (require 'company-c-headers)
 (add-to-list 'company-backends 'company-c-headers)
 
-;;lsp-mode support
+;;lsp-mode and eglot-mode support
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
 ;;https://clangd.llvm.org/installation.html
+;;https://ddavis.io/blog/eglot-cpp-ide/
+;;https://joaotavora.github.io/eglot/
 ;;sudo apt install bear
 ;;bear cmake
 ;;bear make
-;;eglot-mode support
-;;https://ddavis.io/blog/eglot-cpp-ide/
 (defvar zz:c-lsp-eglot-p nil "t for eglot, nil for lsp-mode")
 (when (executable-find "clangd")
   (if zz:c-lsp-eglot-p

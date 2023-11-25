@@ -132,26 +132,25 @@
 ;;sudo apt install bear
 ;;bear cmake
 ;;bear make
-(when (executable-find "clangd")
-  (require 'lsp-clangd)
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                    :major-modes '(c-mode c++-mode)
-                    :remote? t
-                    :server-id 'clangd-remote))
-  (dolist (hook
-           (list
-            'c-mode-hook
-            'c++-mode-hook))
-    (add-hook hook 'lsp-deferred)))
-
 ;;eglot-mode support
 ;;https://ddavis.io/blog/eglot-cpp-ide/
-;(when (executable-find "clangd")
-;  (add-to-list 'eglot-server-programs
-;               '((c++-mode c-mode) "clangd"))
-;  (add-hook 'c-mode-hook 'eglot-ensure)
-;  (add-hook 'c++-mode-hook 'eglot-ensure))
+(defvar zz:c-lsp-eglog-p  t)
+(when (executable-find "clangd")
+  (if zz:c-lsp-eglog-p
+      (progn
+        (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+        (add-hook 'c-mode-hook 'eglot-ensure)
+        (add-hook 'c++-mode-hook 'eglot-ensure))
+      (progn
+        (require 'lsp-clangd)
+        (lsp-register-client
+         (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                          :major-modes '(c-mode c++-mode)
+                          :remote? t
+                          :server-id 'clangd-remote))
+        (add-hook 'c-mode-hook 'lsp-deferred)
+        (add-hook 'c++-mode-hook 'lsp-deferred)
+        )))
 
 
 (provide 'c-setting)

@@ -134,9 +134,9 @@
 ;;bear make
 ;;eglot-mode support
 ;;https://ddavis.io/blog/eglot-cpp-ide/
-(defvar zz:c-lsp-eglog-p  t)
+(defvar zz:c-lsp-eglot-p nil "t for eglot, nil for lsp-mode")
 (when (executable-find "clangd")
-  (if zz:c-lsp-eglog-p
+  (if zz:c-lsp-eglot-p
       (progn
         (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
         (add-hook 'c-mode-hook 'eglot-ensure)

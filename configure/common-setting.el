@@ -368,8 +368,9 @@
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
 
-(unless-ms-windows
- (setq recentf-exclude '("~$" "/tmp/" "/ssh:" "/sshz:" "/sudo:")))
+;;ignore some files
+;(unless-ms-windows
+; (setq recentf-exclude '("~$" "/tmp/" "/ssh:" "/sshz:" "/sudo:")))
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."

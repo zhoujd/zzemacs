@@ -321,7 +321,7 @@ Dmitriy Igrishin's patched version of comint.el."
               (ido-read-directory-name "Directory: "))))
     (with-temp-buffer
       (cd dir)
-      (zz:get-shell)
+      (multi-shell-new)
       )))
 
 (defun zz:local-shell ()
@@ -331,7 +331,7 @@ Dmitriy Igrishin's patched version of comint.el."
     (let* ((prefix "~"))
       (when (tramp-tramp-file-p default-directory)
         (setq default-directory prefix))
-      (call-interactively 'zz:cd-shell)
+      (zz:get-shell)
       )))
 
 (defun zz:remote-shell (&optional host)

@@ -4,7 +4,8 @@ zzemacs - emacs for Zachary Zhou
 ## Install emacs configure with script
 
     - Run script install.sh on Linux
-    - Run bat script setup.bat on Windows
+    - Run script docker/run.sh on Docker
+    - Run script misc/windows/setup.bat on Windows
 
 ## Libraries for build emacs
 

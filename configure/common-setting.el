@@ -52,6 +52,7 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;more fonts: https://github.com/ryanoasis/nerd-fonts
+;;JetBrains Mono: https://www.jetbrains.com/lp/mono/
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))

@@ -132,7 +132,7 @@
   [S-f11]           'blank-mode
   [C-f11]           'hl-line-mode
   [M-f11]           'fci-mode
-  (kbd "C-x <f11>") 'tool-bar-mode
+  (kbd "C-x <f11>") 'which-key-mode
   (kbd "C-c <f11>") 'scroll-bar-mode
   "f11 key binding")
 

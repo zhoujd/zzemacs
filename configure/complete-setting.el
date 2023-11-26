@@ -71,6 +71,8 @@
 (setq lsp-lens-enable nil
       lsp-enable-symbol-highlighting nil
       lsp-headerline-breadcrumb-enable nil)
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
 ;;;;https://clangd.llvm.org/installation.html
 ;;https://github.com/joaotavora/eglot

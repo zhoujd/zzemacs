@@ -502,8 +502,12 @@
 (require 'easy-kill)
 
 ;;which-key
-;(require 'which-key)
-;(which-key-mode t)
+(require 'which-key)
+;;allow C-h to trigger which-key
+(setq which-key-show-early-on-C-h t)
+(setq which-key-idle-delay 10000)
+(setq which-key-idle-secondary-delay 0.05)
+(which-key-mode t)
 
 ;;https://github.com/DarwinAwardWinner/ido-completing-read-plus
 (require 'ido-completing-read+)

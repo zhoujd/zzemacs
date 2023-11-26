@@ -133,7 +133,7 @@
   [C-f11]           'hl-line-mode
   [M-f11]           'fci-mode
   (kbd "C-x <f11>") 'which-key-mode
-  (kbd "C-c <f11>") 'scroll-bar-mode
+  (kbd "C-c <f11>") 'neotree-toggle
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)

@@ -1,0 +1,12 @@
+[Unit]
+Description=Start tmux in detached session
+Documentation=man:tmux(1)
+
+[Service]
+Type=forking
+User=%I
+ExecStart=/usr/bin/tmux new-session -s %u -d
+ExecStop=/usr/bin/tmux kill-session -t %u
+
+[Install]
+WantedBy=multi-user.target

@@ -10,7 +10,7 @@ SERV_ROOT=~/.config/systemd/user
 install() {
     echo "Install tmux daemon"
     mkdir -p $SERV_ROOT
-    ln -sf $SCRIPT_ROOT/tmux/tmux.service $SERV_ROOT/tmux.service
+    cp -v $SCRIPT_ROOT/tmux/tmux.service $SERV_ROOT/tmux.service
     systemctl daemon-reload --user
     systemctl --user enable --now tmux
 }

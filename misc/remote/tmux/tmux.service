@@ -4,8 +4,8 @@ Documentation=man:tmux(1)
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/tmux new-session -s %u -d
-ExecStop=/usr/bin/tmux kill-session -t %u
+ExecStart=/usr/bin/tmux new-session -s zach -d
+ExecStop=/usr/bin/tmux kill-session -t zach
 
 [Install]
 WantedBy=multi-user.target

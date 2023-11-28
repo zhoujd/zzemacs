@@ -192,3 +192,13 @@ EOF
 
 sed -z -i 's#'"${AA}"'#'"${BB}"'#g' *.txt   # apply to all *.txt files
 #+end_src
+
+* Loop 1 hour in bash script
+
+#+begin_src sh
+#!/bin/bash
+START=`date +%s`
+while [ $(( $(date +%s) - 3600 )) -lt $START ]; do
+    ....
+done
+#+end_src

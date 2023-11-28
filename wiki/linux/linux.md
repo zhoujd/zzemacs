@@ -569,3 +569,9 @@ Linux something
     $ find /mydir -type f -name 'log*.txt' | tail -n 10 | xargs -I % cp % /tmp/mydir/
     $ find -mtime -1 -type f -exec cp '{}' inner/ \;
     $ find -mtime -1 -type f | xargs cp -t inner/
+
+## Oneshot systemd type
+
+    ## service will exit after app exit
+    [Service]
+    Type=oneshot

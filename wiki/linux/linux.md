@@ -575,3 +575,22 @@ Linux something
     ## service will exit after app exit
     [Service]
     Type=oneshot
+
+## Run a Script at a Certain Time
+
+    ## https://www.baeldung.com/linux/schedule-script-execution
+    # Cron (Period)
+    $ sudo apt install cron -y
+    $ crontab -l
+    $ export EDITOR=vi
+    $ crontab -e
+    # [minute] [hours] [day of month] [month] [day of the week] command-to-execute
+    0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+
+    ## at (only once)
+    $ sudo apt install at -y
+    $ at 09:00 -f /home/baeldung/one-time-env-setup.sh
+
+    ## batch (only once, based on CPU load)
+    ## When the system’s average CPU load is less than 1.5, then the system will execute the scheduled commands
+    $ batch

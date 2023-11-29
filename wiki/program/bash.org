@@ -204,4 +204,11 @@ done
 
 ## Run the command for 30s and kill it after 10s if still running
 timeout -k 10s 30s command
+
+## Here are two ways but the timeout
+command &
+sleep 30 && kill $!
+
+firefox &
+sleep 30 && pkill firefox
 #+end_src

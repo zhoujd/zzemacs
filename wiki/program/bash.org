@@ -201,4 +201,7 @@ START=`date +%s`
 while [ $(( $(date +%s) - 3600 )) -lt $START ]; do
     ....
 done
+
+## Run the command for 30s and kill it after 10s if still running
+timeout -k 10s 30s command
 #+end_src

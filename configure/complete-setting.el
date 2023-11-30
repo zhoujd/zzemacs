@@ -72,9 +72,7 @@
       lsp-enable-symbol-highlighting nil
       lsp-warn-no-matched-clients nil
       lsp-headerline-breadcrumb-enable nil)
-(defun lsp--info (format &rest args)
-  "Display lsp info message with FORMAT with ARGS."
-  t)
+(setq lsp--show-message nil)
 
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode

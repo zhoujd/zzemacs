@@ -594,3 +594,28 @@ Linux something
     ## batch (only once, based on CPU load)
     ## When the system’s average CPU load is less than 1.5, then the system will execute the scheduled commands
     $ batch
+
+## Analyze binary files
+
+    ## https://opensource.com/article/20/4/linux-binary-analysis
+    $ file /bin/ls
+    $ ldd /bin/ls
+    $ ltrace ls
+    $ hexdump -C /bin/ls | head
+    $ readelf -h /bin/ls
+    $ objdump -d /bin/ls | head
+    $ strace -f /bin/ls
+    $ nm hello | tail
+    $ gdb -q ./hello
+
+## How to get only the first ten bytes of a binary file
+
+    ## https://stackoverflow.com/questions/4411014/how-to-get-only-the-first-ten-bytes-of-a-binary-file
+    ## To get the first 10 bytes
+    $ head -c 10
+    ## To get all but the first 10 bytes
+    $ tail -c+11
+
+    ## Using head or dd but in a single pass
+    $ { head -c 10 >head_part; cat >tail_part;} <file
+    $ { dd count=1 bs=10 of=head_part; cat;} <file >tail_part

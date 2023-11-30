@@ -170,8 +170,8 @@
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
 ;;set lsp-mode or eglot
-(when (executable-find "cmake-language-server")
-  (add-hook 'cmake-mode-hook 'lsp-deferred))
+;;pip install cmake-language-server
+;(add-hook 'cmake-mode-hook 'lsp-deferred))
 
 ;;meson mode
 (require 'meson-mode)

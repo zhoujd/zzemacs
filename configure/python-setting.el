@@ -60,8 +60,8 @@
 ;;lsp-deferred or eglot-ensure
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
-(when (executable-find "pylsp")
-  (add-hook 'python-mode-hook 'eglot-ensure))
+;;~/.local/bin/pylsp
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 
 (provide 'python-setting)

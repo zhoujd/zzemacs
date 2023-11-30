@@ -135,22 +135,21 @@
 ;;bear cmake
 ;;bear make
 (defvar zz:c-lsp-eglot-p nil "t for eglot, nil for lsp-mode")
-(when (executable-find "clangd")
-  (if zz:c-lsp-eglot-p
-      (progn
-        (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-        (add-hook 'c-mode-hook 'eglot-ensure)
-        (add-hook 'c++-mode-hook 'eglot-ensure))
-      (progn
-        (require 'lsp-clangd)
-        (lsp-register-client
-         (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                          :major-modes '(c-mode c++-mode)
-                          :remote? t
-                          :server-id 'clangd-remote))
-        (add-hook 'c-mode-hook 'lsp-deferred t)
-        (add-hook 'c++-mode-hook 'lsp-deferred t)
-        )))
+(if zz:c-lsp-eglot-p
+    (progn
+      (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+      (add-hook 'c-mode-hook 'eglot-ensure)
+      (add-hook 'c++-mode-hook 'eglot-ensure))
+    (progn
+      (require 'lsp-clangd)
+      (lsp-register-client
+       (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                        :major-modes '(c-mode c++-mode)
+                        :remote? t
+                        :server-id 'clangd-remote))
+      (add-hook 'c-mode-hook 'lsp-deferred t)
+      (add-hook 'c++-mode-hook 'lsp-deferred t)
+      ))
 
 
 (provide 'c-setting)

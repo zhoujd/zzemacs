@@ -72,7 +72,9 @@
       lsp-enable-symbol-highlighting nil
       lsp-warn-no-matched-clients nil
       lsp-headerline-breadcrumb-enable nil)
-(setq lsp--show-message nil)
+(defun lsp--info (format &rest args)
+  "Display lsp info message with FORMAT with ARGS."
+  t)
 
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode
@@ -82,6 +84,9 @@
 ;;https://github.com/joaotavora/eglot
 (zz:load-path "site-lisp/emacs-legcy")
 (require 'eglot)
+(defun eglot--message (format &rest args)
+  "Message out with FORMAT with ARGS."
+  t)
 
 
 (provide 'complete-setting)

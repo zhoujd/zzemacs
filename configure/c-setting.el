@@ -148,8 +148,8 @@
                           :major-modes '(c-mode c++-mode)
                           :remote? t
                           :server-id 'clangd-remote))
-        (add-hook 'c-mode-hook 'lsp-deferred)
-        (add-hook 'c++-mode-hook 'lsp-deferred)
+        (add-hook 'c-mode-hook 'lsp-deferred t)
+        (add-hook 'c++-mode-hook 'lsp-deferred t)
         )))
 
 

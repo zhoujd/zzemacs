@@ -72,6 +72,8 @@
       lsp-enable-symbol-highlighting nil
       lsp-warn-no-matched-clients nil
       lsp-headerline-breadcrumb-enable nil)
+(setq lsp--show-message nil)
+
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))

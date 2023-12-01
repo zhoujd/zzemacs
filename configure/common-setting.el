@@ -40,7 +40,6 @@
   (interactive)
   (set-language-environment 'utf-8)
   (set-buffer-file-coding-system 'utf-8)
-  (setq default-input-method "chinese-py")
   (message "This is for utf-8"))
 
 ;;Language switch

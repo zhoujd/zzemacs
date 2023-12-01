@@ -7,7 +7,10 @@
 ;;;$find . -iregex .*\.el$ | xargs etags
 (setq grep-find-use-xargs t)
 
-;; holding
+;;auto reread tag file
+(setq tags-revert-without-query 1)
+
+;;holding
 (require 'hideshow)
 
 (defun zz:newline-indents ()
@@ -15,7 +18,7 @@
   (local-set-key "\C-m" 'newline-and-indent)
   (local-set-key [ret] 'newline-and-indent))
 
-;; Tell Emacs to use the function above in certain editing modes.
+;;tell Emacs to use the function above in certain editing modes.
 (dolist (hook
          (list
           'lisp-mode-hook

@@ -21,8 +21,7 @@
          company-keywords       ; keywords
          company-capf
          company-yasnippet
-         company-abbrev)
-        ))
+         )))
 
 (setq company--disabled-backends
       '(company-etags))

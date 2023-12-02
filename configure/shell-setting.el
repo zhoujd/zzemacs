@@ -112,8 +112,9 @@ Dmitriy Igrishin's patched version of comint.el."
    (t
     (let ((default-directory (file-name-as-directory
                               (ido-read-directory-name "Directory: "))))
-      (multi-shell-new)))
-   ))
+      (when (file-exists-p default-directory)
+        (multi-shell-new)))
+    )))
 
 (defun zz:get-current-shell ()
   (interactive)
@@ -312,17 +313,18 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (let ((dir (file-name-as-directory
               (ido-read-directory-name "Directory: "))))
-    (cd dir)))
+    (when (file-exists-p dir)
+      (cd dir))))
 
 (defun zz:cd-shell ()
   "Open a cd shell"
   (interactive)
-  (let ((dir (file-name-as-directory
-              (ido-read-directory-name "Directory: "))))
+  (let* ((default-directory (file-name-as-directory
+                             (ido-read-directory-name "Directory: "))))
     (with-temp-buffer
-      (cd dir)
-      (multi-shell-new)
-      )))
+      (when (file-exists-p default-directory)
+        (multi-shell-new)
+        ))))
 
 (defun zz:local-shell ()
   "Open a local shell"

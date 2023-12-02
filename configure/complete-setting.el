@@ -98,7 +98,9 @@
 (defun eglot--message (format &rest args)
   "Message out with FORMAT with ARGS."
   t)
-(remove-hook 'flymake-diagnostic-functions 'eglot--managed-mode-hook)
+(defun zz:eglot-hook ()
+  (flymake-mode -1))
+(add-hook 'eglot--managed-mode-hook #'zz:eglot-hook t)
 
 
 (provide 'complete-setting)

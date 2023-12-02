@@ -336,23 +336,26 @@ Dmitriy Igrishin's patched version of comint.el."
       (call-interactively 'zz:get-shell)
       )))
 
-(defun zz:remote-shell (&optional host)
-  "Open a remote shell to a host"
-  (interactive)
+(defun zz:get-remote ()
   (with-temp-buffer
     (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
                      | grep -i -e '^host ' \
                      | grep -v '[*?]' \
                      | grep -v 'git.*com' \
                      | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
-           (host (if host host
-                     (ido-completing-read "Host: "
-                                          (split-string
-                                           (shell-command-to-string command)))))
-           (remote (if (eq tramp-syntax 'simplified)
-                       (concat "/" host ":")
-                       (concat "/" tramp-default-method ":" host ":")))
-           (default-directory remote))
+           (host (ido-completing-read "Host: "
+                                      (split-string
+                                       (shell-command-to-string command)))))
+      (if (eq tramp-syntax 'simplified)
+          (concat "/" host ":")
+          (concat "/" tramp-default-method ":" host ":")))
+    ))
+
+(defun zz:remote-shell ()
+  "Open a remote shell to a host"
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory (zz:get-remote)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz:get-shell))
       )))
@@ -383,18 +386,7 @@ Dmitriy Igrishin's patched version of comint.el."
   "remote shell with helm"
   (interactive)
   (with-temp-buffer
-    (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
-                     | grep -i -e '^host ' \
-                     | grep -v '[*?]' \
-                     | grep -v 'git.*com' \
-                     | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
-           (host (ido-completing-read "Host: "
-                                      (split-string
-                                       (shell-command-to-string command))))
-           (remote (if (eq tramp-syntax 'simplified)
-                       (concat "/" host ":")
-                       (concat "/" tramp-default-method ":" host ":")))
-           (default-directory remote))
+    (let* ((default-directory (zz:get-remote)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz:helm-cd-shell))
       )))

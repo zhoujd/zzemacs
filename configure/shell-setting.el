@@ -333,15 +333,14 @@ Dmitriy Igrishin's patched version of comint.el."
     (let* ((prefix "~"))
       (when (tramp-tramp-file-p default-directory)
         (setq default-directory prefix))
-      (zz:get-shell)
+      (call-interactively 'zz:get-shell)
       )))
 
 (defun zz:remote-shell (&optional host)
   "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
-    (let* ((default-directory "~/.ssh")
-           (command "cat config config.d/* \
+    (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
                      | grep -i -e '^host ' \
                      | grep -v '[*?]' \
                      | grep -v 'git.*com' \
@@ -352,21 +351,23 @@ Dmitriy Igrishin's patched version of comint.el."
                                            (shell-command-to-string command)))))
            (remote (if (eq tramp-syntax 'simplified)
                        (concat "/" host ":")
-                       (concat "/" tramp-default-method ":" host ":"))))
-      (cd remote)
-      (zz:get-shell)
+                       (concat "/" tramp-default-method ":" host ":")))
+           (default-directory remote))
+      (when (file-exists-p default-directory)
+        (call-interactively 'zz:get-shell))
       )))
 
 (defun zz:helm-cd (dir)
   (interactive "DDirectory: ")
-  (cd dir))
+  (when (file-exists-pexists-p dir)
+    (cd dir)))
 
 (defun zz:helm-cd-shell (dir)
   (interactive "DDirectory: ")
   (with-temp-buffer
-    (cd dir)
-    (zz:get-shell)
-    ))
+    (let ((default-directory dir))
+      (when (file-exists-p default-directory)
+        (multi-shell-new)))))
 
 (defun zz:helm-local-shell ()
   "local shell with helm"
@@ -382,10 +383,20 @@ Dmitriy Igrishin's patched version of comint.el."
   "remote shell with helm"
   (interactive)
   (with-temp-buffer
-    (let* ((prefix (concat "/" tramp-default-method ":")))
-      (unless (tramp-tramp-file-p default-directory)
-        (setq default-directory prefix))
-      (call-interactively 'zz:helm-cd-shell)
+    (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
+                     | grep -i -e '^host ' \
+                     | grep -v '[*?]' \
+                     | grep -v 'git.*com' \
+                     | awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+           (host (ido-completing-read "Host: "
+                                      (split-string
+                                       (shell-command-to-string command))))
+           (remote (if (eq tramp-syntax 'simplified)
+                       (concat "/" host ":")
+                       (concat "/" tramp-default-method ":" host ":")))
+           (default-directory remote))
+      (when (file-exists-p default-directory)
+        (call-interactively 'zz:helm-cd-shell))
       )))
 
 (defun zz:shell-directory (name dir)

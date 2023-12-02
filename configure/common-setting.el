@@ -63,8 +63,8 @@
                             "Droid Sans Mono Slashed 11"
                             ))
 (defconst zz:cn-font-list '(
-                            "Microsoft YaHei Mono"
                             "Droid Sans Fallback"
+                            "Microsoft YaHei Mono"
                             ))
 (defconst zz:console-font-list '(
                                  "WenQuanYi Zen Hei Mono 13"

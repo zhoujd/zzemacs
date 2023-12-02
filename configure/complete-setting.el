@@ -68,17 +68,30 @@
 (require 'lsp-lens)
 (require 'lsp-modeline)
 (require 'lsp-headerline)
-(setq lsp-lens-enable nil
-      lsp-enable-symbol-highlighting nil
-      lsp-warn-no-matched-clients nil
-      lsp-headerline-breadcrumb-enable nil)
-(setq lsp--show-message nil)
+(setq lsp-auto-guess-root t)
+(setq lsp-prefer-capf t)
+(setq lsp-diagnostic-package :none)
+(setq lsp-modeline-code-actions-enable nil)
+(setq lsp-modeline-diagnostics-enable nil)
+(setq lsp-lens-enable nil)
+(setq lsp-warn-no-matched-clients nil)
+(setq lsp-headerline-breadcrumb-enable nil)
+(setq lsp-signature-auto-activate nil)
+(setq lsp-enable-folding nil)
+(setq lsp-enable-snippet nil)
+(setq lsp-enable-completion-at-point nil
+(setq lsp-enable-symbol-highlighting nil)
+(setq lsp-enable-on-type-formatting nil)
 
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
+;;disable lsp info
+(defun lsp--info (format &rest args)
+  "Display lsp info message with FORMAT with ARGS."
+  t)
 
-;;;;https://clangd.llvm.org/installation.html
+;;https://clangd.llvm.org/installation.html
 ;;https://github.com/joaotavora/eglot
 (zz:load-path "site-lisp/emacs-legcy")
 (require 'eglot)

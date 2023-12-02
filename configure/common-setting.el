@@ -60,7 +60,7 @@
                             "Consolas 13"
                             "JetBrains Mono NL 11"
                             "WenQuanYi Zen Hei Mono 13"
-                            "Droid Sans Mono Slashed 13"
+                            "Droid Sans Mono Slashed 11"
                             ))
 (defconst zz:cn-font-list '(
                             "Microsoft YaHei Mono"

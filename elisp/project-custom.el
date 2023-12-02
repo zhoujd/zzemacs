@@ -86,22 +86,29 @@
                             (getenv "HOME"))
   "tag directory root")
 
-(unless (file-exists-p zz:tag-root)
-  (make-directory zz:tag-root))
+;;update root tag path
+(defun zz:update-root-tag-path ()
+  (let ((tag-path (concat zz:tag-root "TAGS")))
+    (when (and
+           (file-exists-p tag-path)
+           (not (member tag-path tags-table-list)))
+      (push tag-path tags-table-list))))
 
-(let ((tag-path (concat zz:tag-root "TAGS")))
-  (when (not (member tag-path  tags-table-list))
-    (push tag-path tags-table-list)))
+;;init root tag
+(if (file-exists-p zz:tag-root)
+    (zz:update-root-tag-path)
+    (make-directory zz:tag-root))
 
-;; create etags to zz:tag-root
+;;create etags to zz:tag-root
 (defun zz:create-root-etags ()
   (interactive)
   (let ((default-directory zz:tag-root))
     (unless (file-exists-p zz:tag-root)
       (make-directory zz:tag-root))
-    (zz:create-proj-etags)))
+    (zz:create-proj-etags)
+    (zz:update-root-tag-path)))
 
-;; create cscope to zz:tag-root
+;;create cscope to zz:tag-root
 (defun zz:create-root-cscope ()
   (interactive)
   (let ((default-directory zz:tag-root))
@@ -114,7 +121,7 @@
   (when (file-readable-p (concat zz:tag-root rscope-database-name))
     zz:tag-root))
 
-;; set cscope tag root
+;;set cscope tag root
 (defun zz:set-root-cscope ()
   (interactive)
   (cscope-set-initial-directory zz:tag-root)
@@ -123,7 +130,7 @@
             (function zz:rscope-autoinit-path))
   (message "Set cscope init directory: %s" zz:tag-root))
 
-;; unset cscope tag root
+;;unset cscope tag root
 (defun zz:unset-root-cscope ()
   (interactive)
   (cscope-unset-initial-directory)

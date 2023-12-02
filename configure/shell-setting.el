@@ -319,9 +319,9 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:cd-shell ()
   "Open a cd shell"
   (interactive)
-  (let* ((default-directory (file-name-as-directory
-                             (ido-read-directory-name "Directory: "))))
-    (with-temp-buffer
+  (with-temp-buffer
+    (let* ((default-directory (file-name-as-directory
+                               (ido-read-directory-name "Directory: "))))
       (when (file-exists-p default-directory)
         (multi-shell-new)
         ))))

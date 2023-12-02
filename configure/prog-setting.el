@@ -8,6 +8,8 @@
 (setq grep-find-use-xargs t)
 
 ;;auto reread tag file
+(require 'etags-select)
+(require 'etags-table)
 (setq tags-revert-without-query 1)
 
 ;;holding

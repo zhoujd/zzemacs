@@ -43,14 +43,14 @@
       sr-speedbar-max-width 60
       sr-speedbar-right-side nil)
 
-(defun zz:gen-ctags-cmd (dir-name)
+(defun zz:gen-ctags-cmd (dir)
   (format "ctags %s -f %s/TAGS -e -R %s"
-          dir-name (directory-file-name dir-name)))
+          dir (directory-file-name dir)))
 
-(defun zz:create-ctags (dir-name)
+(defun zz:create-ctags (dir)
   "Create tags file."
   (interactive "DDirectory: ")
-  (zz:run-command (zz:gen-ctags-cmd dir-name)))
+  (zz:run-command (zz:gen-ctags-cmd dir)))
 
 (defvar zz:find-regex "*.[chly] *.[ch]xx *.[ch]pp *.cc *.hh ")
 (defun zz:gen-find-parts (file-regex)
@@ -80,8 +80,8 @@
 (defun zz:remote-etags (dir)
   "Create tags file."
   (interactive "DDirectory: ")
-  (let ((default-directory dir))
-    (when (file-exists-p default-directory)
+  (when (file-exists-p dir)
+    (let ((default-directory dir))
       (zz:run-command
        (concat
         (format "rm -f TAGS;")
@@ -109,14 +109,14 @@
 ; find -type f -not -path '*/\.*'
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./cscope.files
-(defun zz:gen-cscope-cmd (dir-name)
+(defun zz:gen-cscope-cmd (dir)
   (let ((files-path (concat default-directory "cscope.files"))
         (out-path (concat default-directory "cscope.out")))
     (concat
      (format "rm -f %s;" (concat default-directory "cscope.*"))
      (format "%s %s \\( %s \\) \\( %s \\) \\( %s \\) -print | grep -v \" \" > %s;"
              find-program
-             dir-name
+             dir
              "-not -path '*/\.git/*'"
              "-type f -a -not -type l"
              (zz:gen-find-parts zz:find-regex)
@@ -126,11 +126,11 @@
              out-path)
      )))
 
-(defun zz:create-cscope (dir-name)
+(defun zz:create-cscope (dir)
   "Create cscope file."
   (interactive "DDirectory: ")
   (if (executable-find "cscope")
-      (zz:run-command (zz:gen-cscope-cmd dir-name))
+      (zz:run-command (zz:gen-cscope-cmd dir))
       (message "no cscope, please install it")))
 
 ;;add  mode support

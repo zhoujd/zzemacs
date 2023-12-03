@@ -77,18 +77,16 @@
       (zz:run-command (zz:gen-etags-cmd dir))
       (message "no etags, please install it")))
 
-(defun zz:remote-etags (dir)
+(defun zz:remote-etags ()
   "Create tags file."
-  (interactive "DDirectory: ")
-  (when (file-exists-p dir)
-    (let ((default-directory dir))
-      (zz:run-command
-       (concat
-        (format "rm -f TAGS;")
-        (format "%s -type f \\( %s \\) -print | etags -"
-                find-program
-                (zz:gen-find-parts zz:find-regex))
-        )))))
+  (interactive)
+  (zz:run-command
+   (concat
+    (format "rm -f TAGS;")
+    (format "%s -type f \\( %s \\) -print | etags -"
+            find-program
+            (zz:gen-find-parts zz:find-regex))
+    )))
 
 ;;https://github.com/dkogan/xcscope.el
 ;;C-c s I     Create list and index
@@ -132,6 +130,24 @@
   (if (executable-find "cscope")
       (zz:run-command (zz:gen-cscope-cmd dir))
       (message "no cscope, please install it")))
+
+(defun zz:remote-cscope ()
+  (interactive)
+  (let ((files-path "cscope.files")
+        (out-path "cscope.out"))
+    (zz:run-command
+     (concat
+      (format "rm -f %s;" "cscope.*")
+      (format "%s \\( %s \\) \\( %s \\) \\( %s \\) -print | grep -v \" \" > %s;"
+              find-program
+              "-not -path '*/\.git/*'"
+              "-type f -a -not -type l"
+              (zz:gen-find-parts zz:find-regex)
+              files-path)
+      (format "cscope -b -R -q -k -i %s -f %s"
+              files-path
+              out-path)
+      ))))
 
 ;;add  mode support
 (setq auto-mode-alist

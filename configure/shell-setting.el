@@ -338,7 +338,8 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz:get-remote ()
   (with-temp-buffer
-    (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
+    (let* ((default-directory "~/.ssh") ;;read local .ssh, not from remote
+           (command "cat ~/.ssh/config ~/.ssh/config.d/* \
                      | grep -i -e '^host ' \
                      | grep -v '[*?]' \
                      | grep -v 'git.*com' \

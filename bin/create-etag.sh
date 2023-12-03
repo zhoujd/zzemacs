@@ -1,7 +1,9 @@
 #!/bin/bash
 #set -x
 
-## Find Option
+# apt install emacs-bin-common
+
+# Find Option
 SCAN_LIST=(
     .
     $@

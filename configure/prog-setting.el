@@ -59,22 +59,35 @@
       (setq zz:find-parts (concat zz:find-parts "-iname \"" cell "\" -o ")))
     (setq zz:find-parts (substring zz:find-parts 0 -4))))
 
-(defun zz:gen-etags-cmd (dir-name)
+(defun zz:gen-etags-cmd (dir)
   (concat
    (format "rm -f %s;"
            (concat default-directory "TAGS"))
    (format "%s %s -type f \\( %s \\) -print | etags -"
            find-program
-           dir-name
+           dir
            (zz:gen-find-parts zz:find-regex))))
 
 ;;https://www.emacswiki.org/emacs/TagsFile
-(defun zz:create-etags (dir-name)
+;;sudo apt install emacs-bin-common
+(defun zz:create-etags (dir)
   "Create tags file."
   (interactive "DDirectory: ")
   (if (executable-find "etags")
-      (zz:run-command (zz:gen-etags-cmd dir-name))
+      (zz:run-command (zz:gen-etags-cmd dir))
       (message "no etags, please install it")))
+
+(defun zz:remote-etags (dir)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (let ((default-directory dir))
+    (zz:run-command
+     (concat
+      (format "rm -f TAGS;")
+      (format "%s -type f \\( %s \\) -print | etags -"
+              find-program
+              (zz:gen-find-parts zz:find-regex))
+      ))))
 
 ;;https://github.com/dkogan/xcscope.el
 ;;C-c s I     Create list and index

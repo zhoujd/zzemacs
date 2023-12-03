@@ -4,10 +4,7 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 TAGS_ROOT=${TAGS_ROOT:-$HOME/.emacs.d/tags}
 PROJ_LIST=(
-    /usr/include
-    /usr/local/include
     .
-    $*
 )
 
 EXCLUDE_LIST=(
@@ -59,6 +56,9 @@ Usage:
 $ $(basename $0) {dir1} {dir2} ... {dirN}
 $ TAGS_ROOT=. $(basename $0) {dir1} {dir2} ... {dirN}
 EOF
+        ;;
+    dep )
+        apt install emacs-bin-common cscope
         ;;
     * )
         create_init

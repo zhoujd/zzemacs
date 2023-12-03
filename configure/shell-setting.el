@@ -338,8 +338,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz:get-remote ()
   (with-temp-buffer
-    (let* ((default-directory "~/.ssh") ;;read local .ssh, not from remote
-           (command "cat ~/.ssh/config ~/.ssh/config.d/* \
+    (let* ((command "cat ~/.ssh/config ~/.ssh/config.d/* \
                      | grep -i -e '^host ' \
                      | grep -v '[*?]' \
                      | grep -v 'git.*com' \
@@ -352,11 +351,15 @@ Dmitriy Igrishin's patched version of comint.el."
           (concat "/" tramp-default-method ":" host ":")))
     ))
 
+(defun zz:get-host ()
+  (let ((default-directory "~/.ssh"))
+    (zz:get-remote)))
+
 (defun zz:remote-shell ()
   "Open a remote shell to a host"
   (interactive)
   (with-temp-buffer
-    (let* ((default-directory (zz:get-remote)))
+    (let* ((default-directory (zz:get-host)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz:get-shell))
       )))
@@ -387,7 +390,7 @@ Dmitriy Igrishin's patched version of comint.el."
   "remote shell with helm"
   (interactive)
   (with-temp-buffer
-    (let* ((default-directory (zz:get-remote)))
+    (let* ((default-directory (zz:get-host)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz:helm-cd-shell))
       )))

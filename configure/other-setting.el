@@ -512,6 +512,9 @@
 (require 'amx)
 (amx-mode t)
 
+;;nhexl-mode
+(require 'nhexl-mode)
+
 
 (provide 'other-setting)
 

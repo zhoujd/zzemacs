@@ -81,13 +81,14 @@
   "Create tags file."
   (interactive "DDirectory: ")
   (let ((default-directory dir))
-    (zz:run-command
-     (concat
-      (format "rm -f TAGS;")
-      (format "%s -type f \\( %s \\) -print | etags -"
-              find-program
-              (zz:gen-find-parts zz:find-regex))
-      ))))
+    (when (file-exists-p default-directory)
+      (zz:run-command
+       (concat
+        (format "rm -f TAGS;")
+        (format "%s -type f \\( %s \\) -print | etags -"
+                find-program
+                (zz:gen-find-parts zz:find-regex))
+        )))))
 
 ;;https://github.com/dkogan/xcscope.el
 ;;C-c s I     Create list and index

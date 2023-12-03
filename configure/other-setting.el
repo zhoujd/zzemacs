@@ -296,7 +296,7 @@
 (defun zz:bmkp-default-name ()
   (let* ((ff    (thing-at-point 'symbol))
          (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
-    (if ff (concat ff ":" line) line)))
+    (if ff (concat (string-trim ff) ":" line) line)))
 
 (setq bookmark-save-flag t              ;;toggle this option using 'M-~’
       bookmark-bmenu-file-column 50

@@ -150,6 +150,13 @@
       (add-hook 'c-mode-hook 'lsp-deferred t)
       (add-hook 'c++-mode-hook 'lsp-deferred t)
       ))
+;;shell-mode use company-mode
+(defun zz:c-company-hook ()
+  (company-mode t)
+  (add-to-list (make-local-variable 'company-backends)
+               '(company-lsp)))
+(add-hook 'c-mode-hook 'zz:c-company-hook)
+(add-hook 'c++-mode-hook 'zz:c-company-hook)
 
 
 (provide 'c-setting)

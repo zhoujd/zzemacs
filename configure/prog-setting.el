@@ -287,17 +287,18 @@
 \\([-a-zA-Z0-9_+*$?:]+\\)[^-a-zA-Z0-9_+*$?:\177]*\\)\177\
 \\(\\([^\n\001]+\\)\001\\)?\\([0-9]+\\)?,\\([0-9]+\\)?\n"
                   nil t)
-            (intern        (prog1 (if (match-beginning 5)
-                               ;; There is an explicit tag name.
-                               (buffer-substring (match-beginning 5) (match-end 5))
-                             ;; No explicit tag name.  Best guess.
-                             (buffer-substring (match-beginning 3) (match-end 3)))
+            (intern (prog1
+                        (if (match-beginning 5)
+                            ;; There is an explicit tag name.
+                            (buffer-substring (match-beginning 5) (match-end 5))
+                            ;; No explicit tag name.  Best guess.
+                            (buffer-substring (match-beginning 3) (match-end 3)))
                       (progress-reporter-update progress-reporter (point)))
                     table))
-          (error
-           (message "error happened near %d" (point))
-           (error (error-message-string err)))))
-      table))
+        (error
+         (message "error happened near %d" (point))
+         (error (error-message-string err)))))
+    table))
 
 
 (provide 'prog-setting)

@@ -122,8 +122,8 @@
          (c-mode))))
 
 ;;c headers
-(require 'company-c-headers)
-(add-to-list 'company-backends 'company-c-headers)
+;(require 'company-c-headers)
+;(add-to-list 'company-backends 'company-c-headers)
 
 ;;lsp-mode and eglot-mode support
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
@@ -154,7 +154,7 @@
 (defun zz:c-company-hook ()
   (company-mode t)
   (add-to-list (make-local-variable 'company-backends)
-               '(company-lsp)))
+               '(company-lsp company-capf)))
 (add-hook 'c-mode-hook 'zz:c-company-hook)
 (add-hook 'c++-mode-hook 'zz:c-company-hook)
 

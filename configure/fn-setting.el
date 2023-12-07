@@ -137,8 +137,8 @@
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)
-  [f12]             'find-name-dired
-  [S-f12]           'helm-locate
+  [f12]             'company-mode
+  [S-f12]           'flymake-mode
   [C-f12]           'rgrep
   [M-f12]           'lgrep
   (kbd "C-x <f12>") 'zz:untabify-buffer

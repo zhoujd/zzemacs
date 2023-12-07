@@ -13,7 +13,7 @@
       company-dabbrev-other-buffers t
       company-dabbrev-code-other-buffers t
       company-selection-wrap-around t
-      company-minimum-prefix-length 2)
+      company-minimum-prefix-length 3)
 
 ;;set default `company-backends'
 (setq company-backends

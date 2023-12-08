@@ -158,6 +158,15 @@
 (add-hook 'c-mode-hook 'zz:c-company-hook t)
 (add-hook 'c++-mode-hook 'zz:c-company-hook t)
 
+;;"Making tag completion table" Freezes/Blocks
+;;How to disable
+(require 'helm-company)
+(defun helm-company-setup ()
+   (local-set-key (kbd "C-i") 'helm-company)
+   (local-set-key (kbd "<tab>") 'helm-company))
+(add-hook 'c-mode-hook 'helm-company-setup)
+(add-hook 'c++-mode-hook 'helm-company-setup)
+
 
 (provide 'c-setting)
 

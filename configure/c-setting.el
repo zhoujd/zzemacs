@@ -1,6 +1,7 @@
 ;;;; c-setting.el --- c/c++ config file
 ;;
 
+;;https://www.gnu.org/software/emacs/manual/html_mono/ccmode.html
 ;;http://cc-mode.sourceforge.net/
 (require 'cc-mode)
 (c-set-offset 'inline-open 0)

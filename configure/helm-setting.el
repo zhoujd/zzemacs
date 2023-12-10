@@ -255,6 +255,7 @@
               ((kbd "M-s f")   'helm-comint-prompts-all)
               ((kbd "M-s M-f") 'helm-comint-prompts)
               )))
+
 ;;helm proc
 (require 'helm-proc)
 

@@ -445,7 +445,8 @@
 ;;git-annex
 (require 'git-annex)
 
-;;mood-line
+;;mode-line
+(zz:load-path "site-lisp/mood-line")
 (require 'mood-line)
 (mood-line-mode t)
 

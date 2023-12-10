@@ -317,6 +317,19 @@
   ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
 
+;;https://github.com/Sodel-the-Vociferous/helm-company
+;;"Making tag completion table" Freezes/Blocks
+;;How to disable
+(require 'helm-company)
+(defun helm-company-setup ()
+   (local-set-key (kbd "C-i") 'helm-company)
+   (local-set-key (kbd "<tab>") 'helm-company))
+(mapc (lambda (hook)
+        (add-hook hook 'helm-company-setup))
+      '(c-mode-hook
+        c++-mode-hook))
+
+
 (provide 'helm-setting)
 
 ;;; helm-setting.el ends here

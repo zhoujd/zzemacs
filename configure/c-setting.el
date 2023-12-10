@@ -150,22 +150,13 @@
       (add-hook 'c-mode-hook 'lsp-deferred t)
       (add-hook 'c++-mode-hook 'lsp-deferred t)
       ))
+
 ;;shell-mode use company-mode
 (defun zz:c-company-hook ()
-  (company-mode t)
   (set (make-local-variable 'company-backends)
        '(company-lsp)))
 (add-hook 'c-mode-hook 'zz:c-company-hook t)
 (add-hook 'c++-mode-hook 'zz:c-company-hook t)
-
-;;"Making tag completion table" Freezes/Blocks
-;;How to disable
-(require 'helm-company)
-(defun helm-company-setup ()
-   (local-set-key (kbd "C-i") 'helm-company)
-   (local-set-key (kbd "<tab>") 'helm-company))
-(add-hook 'c-mode-hook 'helm-company-setup)
-(add-hook 'c++-mode-hook 'helm-company-setup)
 
 
 (provide 'c-setting)

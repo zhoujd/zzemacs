@@ -327,6 +327,7 @@
         (add-hook hook 'helm-company-setup))
       '(emacs-lisp-mode-hook
         python-mode-hook
+        shell-mode-hook
         c-mode-hook
         c++-mode-hook))
 

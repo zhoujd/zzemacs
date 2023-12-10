@@ -83,7 +83,7 @@
                 (statement-cont . (c-lineup-assignments +)))
                ))
 
-;; my c setting hook
+;;c common setting hook
 (defun zz:c-mode-common-hook()
   (setq tab-width 4
         indent-tabs-mode nil)
@@ -100,12 +100,12 @@
   (hide-ifdef-mode t))
 (add-hook 'c-mode-common-hook 'zz:c-mode-common-hook)
 
-;;my c setting
+;;c setting hook
 (defun zz:c-mode-hook()
   (c-set-style "ffmpeg"))
 (add-hook 'c-mode-hook 'zz:c-mode-hook)
 
-;;my c++ setting
+;;c++ setting hook
 (defun zz:c++-mode-hook()
   (c-set-style "stroustrup"))
 (add-hook 'c++-mode-hook 'zz:c++-mode-hook)
@@ -147,7 +147,7 @@
       (add-hook 'c++-mode-hook 'lsp-deferred t)
       ))
 
-;;Use company-mode with local 'company-backends
+;;use company-mode with local 'company-backends
 ;(defun zz:c-company-hook ()
 ;  (set (make-local-variable 'company-backends)
 ;       '(company-lsp)))

@@ -325,7 +325,9 @@
    (local-set-key (kbd "C-<tab>") 'helm-company))
 (mapc (lambda (hook)
         (add-hook hook 'helm-company-setup))
-      '(c-mode-hook
+      '(emacs-lisp-mode-hook
+        python-mode-hook
+        c-mode-hook
         c++-mode-hook))
 
 

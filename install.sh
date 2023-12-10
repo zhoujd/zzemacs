@@ -50,8 +50,6 @@ install_others() {
     mkdir -p ~/.emacs.d
     ## link zzemacs/etc/terminfo
     ln -sfvT ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
-    ## link zzemacs/etc/gdbinit
-    ln -sfvT ${ZZEMACS_ROOT}/etc/gdbinit ~/.gdbinit
 }
 
 ## install thirdparty

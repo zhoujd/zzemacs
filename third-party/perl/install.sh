@@ -18,7 +18,13 @@ install_ack_pkg() {
     sudo apt install -y ack-grep
 }
 
-#install_ack_single
-#install_ack_pkg
+case $1 in
+    sys )
+        install_ack_pkg
+        ;;
+    * )
+        install_ack_single
+        ;;
+esac
 
 echo "For perl develop end ..."

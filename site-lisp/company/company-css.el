@@ -1,6 +1,6 @@
 ;;; company-css.el --- company-mode completion backend for css-mode  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011, 2014, 2018  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2013-2015, 2018  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;;
@@ -414,7 +414,7 @@ Returns \"\" if no property found, but feasible at this position."
   "A regular expression matching CSS tags.")
 
 ;;;###autoload
-(defun company-css (command &optional arg &rest ignored)
+(defun company-css (command &optional arg &rest _ignored)
   "`company-mode' completion backend for `css-mode'."
   (interactive (list 'interactive))
   (cl-case command

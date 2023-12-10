@@ -1,6 +1,6 @@
 ;;; company-elisp.el --- company-mode completion backend for Emacs Lisp -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011-2013, 2017  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2015, 2017, 2020  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -37,7 +37,7 @@
 
 (defcustom company-elisp-detect-function-context t
   "If enabled, offer Lisp functions only in appropriate contexts.
-Functions are offered for completion only after ' and \(."
+Functions are offered for completion only after \\=' and \(."
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
 
@@ -193,12 +193,13 @@ first in the candidates list."
          (match-string 0 doc))))
 
 ;;;###autoload
-(defun company-elisp (command &optional arg &rest ignored)
+(defun company-elisp (command &optional arg &rest _ignored)
   "`company-mode' completion backend for Emacs Lisp."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-elisp))
-    (prefix (and (derived-mode-p 'emacs-lisp-mode 'inferior-emacs-lisp-mode)
+    (prefix (and (or (derived-mode-p 'emacs-lisp-mode)
+                     (derived-mode-p 'inferior-emacs-lisp-mode))
                  (company-elisp--prefix)))
     (candidates (company-elisp-candidates arg))
     (sorted company-elisp-show-locals-first)

@@ -42,7 +42,7 @@ Don't set it to any value, it will have no effect.")
 (defvar helm-occur--buffer-list nil)
 (defvar helm-occur--buffer-tick nil)
 (defvar helm-occur-history nil)
-(defvar helm-occur--search-buffer-regexp "\\`\\([0-9]*\\)\\s-\\{1\\}\\(.*\\)\\'"
+(defvar helm-occur--search-buffer-regexp "\\`\\([0-9]*\\)\\s-\\(.*\\)\\'"
   "The regexp matching candidates in helm-occur candidate buffer.")
 (defvar helm-occur-mode--last-pattern nil)
 (defvar helm-occur--initial-pos 0)
@@ -348,7 +348,7 @@ When GSHORTHANDS is nil use PATTERN unmodified."
                 :diacritics helm-occur-ignore-diacritics
                 :search (lambda (pattern)
                           (when (string-match "\\`\\^\\([^ ]*\\)" pattern)
-                            (setq pattern (concat "^[0-9]* \\{1\\}" (match-string 1 pattern))))
+                            (setq pattern (concat "^[0-9]*\\s-" (match-string 1 pattern))))
                           (condition-case _err
                               (re-search-forward pattern nil t)
                             (invalid-regexp nil)))
@@ -388,9 +388,17 @@ When GSHORTHANDS is nil use PATTERN unmodified."
               sources)))
     (nreverse sources)))
 
-(defun helm-multi-occur-1 (buffers &optional input)
+(defun helm-multi-occur-1 (buffers &optional input default)
   "Run `helm-occur' on a list of buffers.
-Each buffer's result is displayed in a separated source."
+Each buffer's result is displayed in a separated source.
+Arg INPUT if specified will be inserted as initial input in minibuffer.
+Arg DEFAULT if specified will be inserted in minibuffer with M-n.
+Arg INPUT takes precedence on DEFAULT if both are specified.
+If `helm-source-moccur' is member of `helm-sources-using-default-as-input'
+helm-occur will start immediately with DEFAULT as INPUT.
+Always prefer using DEFAULT instead of INPUT, they have the same effect but
+DEFAULT keep the minibuffer empty, allowing the user to write immediately
+without having to delete its contents before."
   (let* ((curbuf (current-buffer))
          (bufs (if helm-occur-always-search-in-current
                    (cons curbuf (remove curbuf buffers))
@@ -425,8 +433,9 @@ Each buffer's result is displayed in a separated source."
         (helm :sources sources
               :buffer "*helm moccur*"
               :history 'helm-occur-history
-              :default (helm-aif (thing-at-point 'symbol)
-                           (regexp-quote it))
+              :default (or default
+                           (helm-aif (thing-at-point 'symbol)
+                               (regexp-quote it)))
               :input input
               :truncate-lines helm-occur-truncate-lines)
       (remove-hook 'helm-after-update-hook 'helm-occur--select-closest-candidate))))
@@ -848,8 +857,7 @@ To use this bind it to a key in `isearch-mode-map'."
         ;; Use `helm-occur-always-search-in-current' as a flag for
         ;; `helm-occur--select-closest-candidate'.
         (helm-occur-always-search-in-current t))
-    (let (search-nonincremental-instead)
-      (isearch-exit))
+    (isearch-exit)
     (helm-multi-occur-1 bufs input)))
 
 ;;;###autoload
@@ -868,8 +876,7 @@ To use this bind it to a key in `isearch-mode-map'."
         (input (if isearch-regexp
                    isearch-string
                  (regexp-quote isearch-string))))
-    (let (search-nonincremental-instead)
-      (isearch-exit))
+    (isearch-exit)
     (setq buf-list (mapcar 'get-buffer
                            (helm-comp-read "Buffers: "
                                            (helm-buffer-list)

@@ -152,25 +152,28 @@ algorithm."
              unless (and (null ignore-props) (or (get sym 'helm-only) (get sym 'no-helm-mx)))
              collect
              (cons (cond ((and (string-match "^M-x" key) local-key)
-                          (format "%s%s%s %s"
-                                  disp
-                                  (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                  (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
-                                  (propertize
-                                   " " 'display
-                                   (propertize local-key 'face 'helm-M-x-key))))
-                         ((string-match "^M-x" key)
-                          (format "%s%s%s"
-                                  disp
-                                  (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                  (if doc (propertize doc 'face 'helm-M-x-short-doc) "")))
-                         (t (format "%s%s%s %s"
-                                    disp
-                                    (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                    (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
-                                    (propertize
-                                     " " 'display
-                                     (propertize key 'face 'helm-M-x-key)))))
+                          (propertize (format "%s%s%s %s"
+                                              disp
+                                              (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
+                                              (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
+                                              (propertize
+                                               " " 'display
+                                               (propertize local-key 'face 'helm-M-x-key)))
+                                      'match-part disp))
+                         ((and (string-match "^M-x" key) (not (string= key "M-x")))
+                          (propertize (format "%s%s%s"
+                                              disp
+                                              (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
+                                              (if doc (propertize doc 'face 'helm-M-x-short-doc) ""))
+                                      'match-part disp))
+                         (t (propertize (format "%s%s%s %s"
+                                                disp
+                                                (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
+                                                (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
+                                                (propertize
+                                                 " " 'display
+                                                 (propertize key 'face 'helm-M-x-key)))
+                                        'match-part disp)))
                    cand)
              into ls
              finally return
@@ -262,17 +265,11 @@ algorithm."
 (defun helm-M-x-read-extended-command (collection &optional predicate history)
   "Read or execute action on command name in COLLECTION or HISTORY.
 
-When `helm-M-x-use-completion-styles' is used, Emacs
-`completion-styles' mechanism is used, otherwise standard helm
-completion and helm fuzzy matching are used together.
+Helm completion is not provided when executing or defining kbd macros.
 
-Helm completion is not provided when executing or defining kbd
-macros.
-
-Arg COLLECTION should be an `obarray' but can be any object
-suitable for `try-completion'.  Arg PREDICATE is a function that
-default to `commandp' see also `try-completion'.  Arg HISTORY
-default to `extended-command-history'."
+Arg COLLECTION should be an `obarray'.
+Arg PREDICATE is a function that default to `commandp'.
+Arg HISTORY default to `extended-command-history'."
   (setq helm--mode-line-display-prefarg t)
   (let* ((pred (or predicate #'commandp))
          (helm-fuzzy-sort-fn (lambda (candidates _source)

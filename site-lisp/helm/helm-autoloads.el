@@ -3,6 +3,73 @@
 ;;; Code:
 
 
+;;;### (autoloads nil "async" "async.el" (0 0 0 0))
+;;; Generated autoloads from async.el
+
+(autoload 'async-start-process "async" "\
+Start the executable PROGRAM asynchronously.  See `async-start'.
+PROGRAM is passed PROGRAM-ARGS, calling FINISH-FUNC with the
+process object when done.  If FINISH-FUNC is nil, the future
+object will return the process object when the program is
+finished.  Set DEFAULT-DIRECTORY to change PROGRAM's current
+working directory.
+
+\(fn NAME PROGRAM FINISH-FUNC &rest PROGRAM-ARGS)" nil nil)
+
+(autoload 'async-start "async" "\
+Execute START-FUNC (often a lambda) in a subordinate Emacs process.
+When done, the return value is passed to FINISH-FUNC.  Example:
+
+    (async-start
+       ;; What to do in the child process
+       (lambda ()
+         (message \"This is a test\")
+         (sleep-for 3)
+         222)
+
+       ;; What to do when it finishes
+       (lambda (result)
+         (message \"Async process done, result should be 222: %s\"
+                  result)))
+
+If FINISH-FUNC is nil or missing, a future is returned that can
+be inspected using `async-get', blocking until the value is
+ready.  Example:
+
+    (let ((proc (async-start
+                   ;; What to do in the child process
+                   (lambda ()
+                     (message \"This is a test\")
+                     (sleep-for 3)
+                     222))))
+
+        (message \"I'm going to do some work here\") ;; ....
+
+        (message \"Waiting on async process, result should be 222: %s\"
+                 (async-get proc)))
+
+If you don't want to use a callback, and you don't care about any
+return value from the child process, pass the `ignore' symbol as
+the second argument (if you don't, and never call `async-get', it
+will leave *emacs* process buffers hanging around):
+
+    (async-start
+     (lambda ()
+       (delete-file \"a remote file on a slow link\" nil))
+     'ignore)
+
+Note: Even when FINISH-FUNC is present, a future is still
+returned except that it yields no value (since the value is
+passed to FINISH-FUNC).  Call `async-get' on such a future always
+returns nil.  It can still be useful, however, as an argument to
+`async-ready' or `async-wait'.
+
+\(fn START-FUNC &optional FINISH-FUNC)" nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "async" '(#("async-" 0 6 (fontified nil)))))
+
+;;;***
+
 ;;;### (autoloads nil "helm-adaptive" "helm-adaptive.el" (0 0 0 0))
 ;;; Generated autoloads from helm-adaptive.el
 
@@ -54,6 +121,11 @@ if external addressbook-bookmark package is installed.
 ;;;### (autoloads nil "helm-buffers" "helm-buffers.el" (0 0 0 0))
 ;;; Generated autoloads from helm-buffers.el
 
+(autoload 'helm-buffers-quit-and-find-file-fn "helm-buffers" "\
+
+
+\(fn SOURCE)" nil nil)
+
 (autoload 'helm-buffers-list "helm-buffers" "\
 Preconfigured `helm' to list buffers.
 
@@ -77,28 +149,6 @@ Preconfigured `helm' for color.
 \(fn)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-color" '(#("helm-" 0 5 (fontified nil)))))
-
-;;;***
-
-;;;### (autoloads nil "helm-comint" "helm-comint.el" (0 0 0 0))
-;;; Generated autoloads from helm-comint.el
-
-(autoload 'helm-comint-prompts "helm-comint" "\
-Pre-configured `helm' to browse the prompts of the current comint buffer.
-
-\(fn)" t nil)
-
-(autoload 'helm-comint-prompts-all "helm-comint" "\
-Pre-configured `helm' to browse the prompts of all comint sessions.
-
-\(fn)" t nil)
-
-(autoload 'helm-comint-input-ring "helm-comint" "\
-Preconfigured `helm' that provide completion of `comint' history.
-
-\(fn)" t nil)
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-comint" '(#("helm-" 0 5 (fontified nil)))))
 
 ;;;***
 
@@ -160,6 +210,8 @@ See `helm-define-multi-key'.
 \(fn NAME DOCSTRING FUNS &optional DELAY)" nil t)
 
 (function-put 'helm-multi-key-defun 'lisp-indent-function '2)
+
+(function-put 'helm-multi-key-defun 'doc-string-elt '2)
 
 (autoload 'helm-define-key-with-subkeys "helm-core" "\
 Define in MAP a KEY and SUBKEY to COMMAND.
@@ -391,13 +443,6 @@ Preconfigured Helm to complete file name at point.
 
 \(fn)" t nil)
 
-(autoload 'helm-lisp-completion-or-file-name-at-point "helm-elisp" "\
-Preconfigured Helm to complete Lisp symbol or filename at point.
-Filename completion happens if string start after or between a
-double quote.
-
-\(fn)" t nil)
-
 (autoload 'helm-apropos "helm-elisp" "\
 Preconfigured Helm to describe commands, functions, variables and faces.
 In non interactives calls DEFAULT argument should be provided as
@@ -413,7 +458,21 @@ Preconfigured `helm' to disable/enable function advices.
 (autoload 'helm-locate-library "helm-elisp" "\
 Preconfigured helm to locate elisp libraries.
 
-\(fn)" t nil)
+When `completions-detailed' or `helm-completions-detailed' is non
+nil, a description of libraries is provided. The libraries are
+partially cached in the variables
+`helm--locate-library-doc-cache' and
+`helm--locate-library-cache'.  TIP: You can make these vars
+persistent for faster start with the psession package, using M-x
+psession-make-persistent-variable.  NOTE: The caches affect as
+well `find-libray' and `locate-library' when `helm-mode' is
+enabled and `completions-detailed' is non nil.  There is no need
+to refresh the caches, they will be updated automatically if some
+new libraries are found, however when a library update its
+headers and the description change you can reset the caches with
+a prefix arg.
+
+\(fn &optional ARG)" t nil)
 
 (autoload 'helm-timers "helm-elisp" "\
 Preconfigured `helm' for timers.
@@ -562,9 +621,9 @@ image file in `helm-ff-image-dired-thumbnails-cache'.
 \(fn)" t nil)
 
 (autoload 'helm-projects-history "helm-files" "\
+Jump to project already visisted with `helm-browse-project'.
 
-
-\(fn ARG)" t nil)
+\(fn &optional ARG)" t nil)
 
 (autoload 'helm-browse-project "helm-files" "\
 Preconfigured helm to browse projects.
@@ -1248,8 +1307,8 @@ Helm interface to manage packages.
 
 With a prefix arg ARG refresh package list.
 
-When installing ensure to refresh the package list to avoid errors with outdated
-packages no more availables.
+When installing or upgrading ensure to refresh the package list
+to avoid errors with outdated packages no more availables.
 
 \(fn &optional ARG)" t nil)
 
@@ -1335,15 +1394,6 @@ Fill in the symbol at point by default.
 \(fn ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-semantic" '(#("helm-s" 0 6 (fontified nil)))))
-
-;;;***
-
-;;;### (autoloads nil "helm-shell" "helm-shell.el" (0 0 0 0))
-;;; Generated autoloads from helm-shell.el
-
-(defalias 'helm-shell-prompts 'helm-comint-prompts)
-
-(defalias 'helm-shell-prompts-all 'helm-comint-prompts-all)
 
 ;;;***
 
@@ -1448,8 +1498,7 @@ Show help-echo informations in a popup tip at end of line.
 
 ;;;***
 
-;;;### (autoloads nil nil ("helm-config.el" "helm-easymenu.el" "helm.el")
-;;;;;;  (0 0 0 0))
+;;;### (autoloads nil nil ("helm-easymenu.el" "helm.el") (0 0 0 0))
 
 ;;;***
 

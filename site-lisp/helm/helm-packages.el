@@ -21,7 +21,20 @@
 (require 'cl-lib)
 (require 'helm)
 (require 'package)
+(require 'helm-utils) ; For with-helm-display-marked-candidates.
 
+
+(defclass helm-packages-class (helm-source-in-buffer)
+  ((coerce :initform #'helm-symbolify)
+   (find-file-target :initform #'helm-packages-quit-an-find-file)
+   (filtered-candidate-transformer
+    :initform
+    '(helm-packages-transformer
+      (lambda (candidates _source)
+        (sort candidates #'helm-generic-sort-fn))))
+   (update :initform #'helm-packages--refresh-contents))
+  "A class to define `helm-packages' sources.")
+
 ;;; Actions
 ;;
 ;;
@@ -108,7 +121,47 @@ as dependencies."
             (mapc #'package-install mkd)
           (error "%S:\n Please refresh package list before installing" err))))))
 
-;;; Transformer
+(defun helm-packages-isolate-1 (packages)
+    "Start an Emacs with only PACKAGES loaded.
+Arg PACKAGES is a list of strings."
+    (let* ((name (concat "package-isolate-" (mapconcat #'identity packages "_")))
+           (deps (cl-loop for p in packages
+                          for sym = (intern p)
+                          nconc (package--dependencies sym))))
+      (apply #'start-process name nil
+             (list (expand-file-name invocation-name invocation-directory)
+                   "-Q" "--debug-init"
+                   (format "--eval=%S"
+                           `(progn
+                              (require 'package)
+                              (setq package-load-list
+                                    ',(append (mapcar (lambda (p) (list (intern p) t))
+                                                      packages)
+                                              (mapcar (lambda (p) (list p t)) deps)))
+                              (package-initialize)))))))
+
+(defun helm-packages-isolate (_candidate)
+  "Start a new Emacs with only marked packages loaded."
+  (let* ((mkd (helm-marked-candidates))
+         (pkg-names (mapcar #'symbol-name mkd))
+         (isolate (if (fboundp 'package-isolate)
+                      #'package-isolate
+                    #'helm-packages-isolate-1)))
+    (with-helm-display-marked-candidates
+      helm-marked-buffer-name
+      pkg-names
+      (when (y-or-n-p "Start a new Emacs with only package(s)? ")
+        (funcall isolate pkg-names)))))
+
+(defun helm-packages-quit-an-find-file (source)
+  "`find-file-target' function for `helm-packages'."
+  (let* ((sel (helm-get-selection nil nil source))
+         (pkg (package-get-descriptor (intern sel))))
+    (if (and pkg (package-installed-p pkg))
+        (expand-file-name (package-desc-dir pkg))
+      package-user-dir)))
+
+;;; Transformers
 ;;
 ;;
 (defun helm-packages-transformer (candidates _source)
@@ -122,80 +175,87 @@ as dependencies."
            for version = (and id (mapconcat #'number-to-string (package-desc-version id) "."))
            for description = (and id (package-desc-summary id))
            for disp = (format "%s%s%s%s%s%s%s%s%s"
+                              ;; Package name.
                               (propertize
                                c
                                'face (if (equal status "dependency")
                                          font-lock-type-face
                                        'font-lock-keyword-face)
                                'match-part c)
+                              ;; Separator.
                               (make-string (1+ (- (helm-in-buffer-get-longest-candidate)
                                                   (length c)))
                                            ? )
+                              ;; Package status.
                               (propertize
                                (or status "")
                                'face (if (equal status "dependency")
                                          'bold-italic
                                        'default))
+                              ;; Separator.
                               (make-string (1+ (- 10 (length status))) ? )
+                              ;; Package provider.
                               (or provider "")
+                              ;; Separator.
                               (make-string (1+ (- 10 (length provider))) ? )
+                              ;; Package version.
                               (or version "")
+                              ;; Separator.
                               (make-string (1+ (- 20 (length version))) ? )
+                              ;; Package description.
                               (if description
                                   (propertize description 'face 'font-lock-warning-face)
                                 ""))
            collect (cons disp c)))
 
+(defun helm-packages-transformer-1 (candidates _source)
+  "Transformer function for `helm-packages' upgrade and delete sources."
+  (cl-loop for c in candidates
+           collect (cons (propertize c 'face 'font-lock-keyword-face) c)))
+
+(defvar helm-packages--updated nil)
+(defun helm-packages--refresh-contents ()
+  (unless helm-packages--updated (package-refresh-contents))
+  (helm-set-local-variable 'helm-packages--updated t))
+
+
 ;;;###autoload
 (defun helm-packages (&optional arg)
   "Helm interface to manage packages.
 
 With a prefix arg ARG refresh package list.
 
-When installing ensure to refresh the package list to avoid errors with outdated
-packages no more availables."
+When installing or upgrading ensure to refresh the package list
+to avoid errors with outdated packages no more availables."
   (interactive "P")
   (package-initialize)
-  (when arg
-    (package-refresh-contents))
+  (when arg (helm-packages--refresh-contents))
   (let ((upgrades (package--upgradeable-packages))
         (removables (package--removable-packages)))
     (helm :sources (list
-                    (helm-build-sync-source "Availables for upgrade"
-                      :candidates upgrades
-                      :filtered-candidate-transformer
-                      (lambda (candidates _source)
-                        (cl-loop for c in candidates
-                                 collect (cons (propertize
-                                                (symbol-name c)
-                                                'face 'font-lock-keyword-face)
-                                               c)))
-                      :coerce #'helm-symbolify
-                      :action '(("Upgrade package(s)" . helm-packages-upgrade)))
-                    (helm-build-sync-source "Packages to delete"
-                      :candidates removables
-                      :coerce #'helm-symbolify
-                      :filtered-candidate-transformer
-                      (lambda (candidates _source)
-                        (cl-loop for c in candidates
-                                 collect (cons (propertize
-                                                (symbol-name c)
-                                                'face 'font-lock-keyword-face)
-                                               c)))
+                    (helm-make-source "Availables for upgrade" 'helm-packages-class
+                      :init (lambda ()
+                              (helm-init-candidates-in-buffer 'global upgrades))
+                      :filtered-candidate-transformer #'helm-packages-transformer-1
+                      :action '(("Upgrade package(s)"
+                                 . helm-packages-upgrade)))
+                    (helm-make-source "Packages to delete" 'helm-packages-class
+                      :init (lambda ()
+                              (helm-init-candidates-in-buffer 'global removables))
+                      :filtered-candidate-transformer #'helm-packages-transformer-1
                       :action '(("Delete package(s)" . helm-packages-delete)))
-                    (helm-build-in-buffer-source "Installed packages"
-                      :data (mapcar #'car package-alist)
-                      :coerce #'helm-symbolify
-                      :filtered-candidate-transformer
-                      '(helm-packages-transformer
-                        (lambda (candidates _source)
-                          (sort candidates #'helm-generic-sort-fn)))
+                    (helm-make-source "Installed packages" 'helm-packages-class
+                      :init (lambda ()
+                              (helm-init-candidates-in-buffer 'global
+                                (mapcar #'car package-alist)))
                       :action '(("Describe package" . helm-packages-describe)
                                 ("Visit homepage" . helm-packages-visit-homepage)
-                                ("Reinstall package(s)" . helm-packages-package-reinstall)
+                                ("Reinstall package(s)"
+                                 . helm-packages-package-reinstall)
                                 ("Recompile package(s)" . helm-packages-recompile)
-                                ("Uninstall package(s)" . helm-packages-uninstall)))
-                    (helm-build-in-buffer-source "Available external packages"
+                                ("Uninstall package(s)" . helm-packages-uninstall)
+                                ("Isolate package(s)" . helm-packages-isolate)))
+                    (helm-make-source "Available external packages" 'helm-packages-class
                       :data (cl-loop for p in package-archive-contents
                                      for sym = (car p)
                                      for id = (package-get-descriptor sym)
@@ -205,15 +265,11 @@ packages no more availables."
                                                          '("installed" "dependency" "source")))
                                                 (and id (assoc sym package--builtins)))
                                      nconc (list (car p)))
-                      :coerce #'helm-symbolify
-                      :filtered-candidate-transformer
-                      '(helm-packages-transformer
-                        (lambda (candidates _source)
-                          (sort candidates #'helm-generic-sort-fn)))
                       :action '(("Describe package" . helm-packages-describe)
                                 ("Visit homepage" . helm-packages-visit-homepage)
-                                ("Install packages(s)" . helm-packages-install)))
-                    (helm-build-in-buffer-source "Available built-in packages"
+                                ("Install packages(s)"
+                                 . helm-packages-install)))
+                    (helm-make-source "Available built-in packages" 'helm-packages-class
                       :data (cl-loop for p in package--builtins
                                      ;; Show only builtins that are available as
                                      ;; well on (m)elpa. Other builtins don't
@@ -221,14 +277,10 @@ packages no more availables."
                                      ;; (sym . [version reqs summary]).
                                      when (package-desc-p (package-get-descriptor (car p)))
                                      collect (car p))
-                      :coerce #'helm-symbolify
-                      :filtered-candidate-transformer
-                      '(helm-packages-transformer
-                        (lambda (candidates _source)
-                          (sort candidates #'helm-generic-sort-fn)))
                       :action '(("Describe package" . helm-packages-describe)
                                 ("Visit homepage" . helm-packages-visit-homepage)
-                                ("Install packages(s)" . helm-packages-install))))
+                                ("Install packages(s)"
+                                 . helm-packages-install))))
           :buffer "*helm packages*")))
 
 (provide 'helm-packages)

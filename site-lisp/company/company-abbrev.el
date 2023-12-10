@@ -1,6 +1,6 @@
-;;; company-abbrev.el --- company-mode completion backend for abbrev
+;;; company-abbrev.el --- company-mode completion backend for abbrev  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009-2011, 2015  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2013-2015, 2021, 2023  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -29,12 +29,12 @@
 (require 'cl-lib)
 (require 'abbrev)
 
-(defun company-abbrev-insert (match)
+(defun company-abbrev-insert (_match)
   "Replace MATCH with the expanded abbrev."
   (expand-abbrev))
 
 ;;;###autoload
-(defun company-abbrev (command &optional arg &rest ignored)
+(defun company-abbrev (command &optional arg &rest _ignored)
   "`company-mode' completion backend for abbrev."
   (interactive (list 'interactive))
   (cl-case command
@@ -44,7 +44,9 @@
     (candidates (nconc
                  (delete "" (all-completions arg global-abbrev-table))
                  (delete "" (all-completions arg local-abbrev-table))))
-    (meta (abbrev-expansion arg))))
+    (kind 'snippet)
+    (meta (abbrev-expansion arg))
+    (post-completion (expand-abbrev))))
 
 (provide 'company-abbrev)
 ;;; company-abbrev.el ends here

@@ -1,6 +1,6 @@
-;;; company-cmake.el --- company-mode completion backend for CMake
+;;; company-cmake.el --- company-mode completion backend for CMake  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2013-2014, 2017-2018  Free Software Foundation, Inc.
+;; Copyright (C) 2013-2015, 2017-2018, 2020, 2023  Free Software Foundation, Inc.
 
 ;; Author: Chen Bin <chenbin DOT sh AT gmail>
 ;; Version: 0.2
@@ -16,7 +16,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 ;;
@@ -40,6 +40,7 @@
 (defvar company-cmake-executable-arguments
   '("--help-command-list"
     "--help-module-list"
+    "--help-property-list"
     "--help-variable-list")
   "The arguments we pass to cmake, separately.
 They affect which types of symbols we get completion candidates for.")
@@ -48,7 +49,7 @@ They affect which types of symbols we get completion candidates for.")
   "^\\(%s[a-zA-Z0-9_<>]%s\\)$"
   "Regexp to match the candidates.")
 
-(defvar company-cmake-modes '(cmake-mode)
+(defvar company-cmake-modes '(cmake-mode cmake-ts-mode)
   "Major modes in which cmake may complete.")
 
 (defvar company-cmake--candidates-cache nil
@@ -93,12 +94,10 @@ They affect which types of symbols we get completion candidates for.")
     ))
 
 (defun company-cmake--parse (prefix content cmd)
-  (let ((start 0)
-        (pattern (format company-cmake--completion-pattern
+  (let ((pattern (format company-cmake--completion-pattern
                          (regexp-quote prefix)
                          (if (zerop (length prefix)) "+" "*")))
         (lines (split-string content "\n"))
-        match
         rlt)
     (dolist (line lines)
       (when (string-match pattern line)
@@ -184,7 +183,7 @@ They affect which types of symbols we get completion candidates for.")
     (and (eq (char-before (point)) ?\{)
          (eq (char-before (1- (point))) ?$))))
 
-(defun company-cmake (command &optional arg &rest ignored)
+(defun company-cmake (command &optional arg &rest _ignored)
   "`company-mode' completion backend for CMake.
 CMake is a cross-platform, open-source make system."
   (interactive (list 'interactive))

@@ -71,7 +71,7 @@
 (defvar ffap-machine-p-unknown)
 (defvar ffap-machine-p-local)
 (defvar ffap-machine-p-known)
-
+(defvar helm-debug-output-buffer)
 
 ;;; User vars.
 ;;
@@ -295,6 +295,121 @@ the leading `-' char."
   (defalias 'pos-bol 'line-beginning-position)
   (defalias 'pos-eol 'line-end-position))
 
+;;; Compatibility with < Emacs-29
+;;  Needed by helm-packages.el and affixations functions for helm-mode (27)
+;;  waiting package.el moves on Elpa.  Slightly modified to fit with
+;;  Emacs-27/28.
+(when (eval-when-compile (< emacs-major-version 29)) ; Avoid warnings.
+  (progn
+    (require 'package)
+    (eval-and-compile
+      (defun package--archives-initialize ()
+        "Make sure the list of installed and remote packages are initialized."
+        (unless package--initialized
+          (package-initialize t))
+        (unless package-archive-contents
+          (package-refresh-contents)))
+
+      (defun package-get-descriptor (pkg-name)
+        "Return the `package-desc' of PKG-NAME."
+        (unless package--initialized (package-initialize 'no-activate))
+        (or (cadr (assq pkg-name package-alist))
+            (cadr (assq pkg-name package-archive-contents))))
+  
+      (defun package--upgradeable-packages ()
+        ;; Initialize the package system to get the list of package
+        ;; symbols for completion.
+        (package--archives-initialize)
+        (mapcar
+         #'car
+         (seq-filter
+          (lambda (elt)
+            (or (let ((available
+                       (assq (car elt) package-archive-contents)))
+                  (and available
+                       (version-list-<
+                        (package-desc-version (cadr elt))
+                        (package-desc-version (cadr available)))))))
+          package-alist)))
+
+      (defun package-upgrade (name)
+        "Upgrade package NAME if a newer version exists."
+        (let* ((package (if (symbolp name)
+                            name
+                          (intern name)))
+               (pkg-desc (cadr (assq package package-alist))))
+          ;; `pkg-desc' will be nil when the package is an "active built-in".
+          (when pkg-desc
+            (package-delete pkg-desc 'force 'dont-unselect))
+          (package-install package
+                           ;; An active built-in has never been "selected"
+                           ;; before.  Mark it as installed explicitly.
+                           (and pkg-desc 'dont-select))))
+
+      (defun package-recompile (pkg)
+        "Byte-compile package PKG again.
+PKG should be either a symbol, the package name, or a `package-desc'
+object."
+        (let ((pkg-desc (if (package-desc-p pkg)
+                            pkg
+                          (cadr (assq pkg package-alist)))))
+          ;; Delete the old .elc files to ensure that we don't inadvertently
+          ;; load them (in case they contain byte code/macros that are now
+          ;; invalid).
+          (dolist (elc (directory-files-recursively
+                        (package-desc-dir pkg-desc) "\\.elc\\'"))
+            (delete-file elc))
+          (package--compile pkg-desc)))
+
+      (defun package--dependencies (pkg)
+        "Return a list of all dependencies PKG has.
+This is done recursively."
+        ;; Can we have circular dependencies?  Assume "nope".
+        (when-let* ((desc (cadr (assq pkg package-archive-contents)))
+                    (deps (mapcar #'car (package-desc-reqs desc))))
+          (delete-dups (apply #'nconc deps (mapcar #'package--dependencies deps))))))))
+
+;;; Provide `help--symbol-class' not available in emacs-27
+;;
+(unless (fboundp 'help--symbol-class)
+  (defun help--symbol-class (s)
+    "Return symbol class characters for symbol S."
+    (when (stringp s)
+      (setq s (intern-soft s)))
+    (concat
+     (when (fboundp s)
+       (concat
+        (cond
+          ((commandp s) "c")
+          ((eq (car-safe (symbol-function s)) 'macro) "m")
+          (t "f"))
+        (and (let ((flist (indirect-function s)))
+               (advice--p (if (eq 'macro (car-safe flist)) (cdr flist) flist)))
+             "!")
+        (and (get s 'byte-obsolete-info) "-")))
+     (when (boundp s)
+       (concat
+        (if (custom-variable-p s) "u" "v")
+        (and (local-variable-if-set-p s) "'")
+        (and (ignore-errors (not (equal (symbol-value s) (default-value s)))) "*")
+        (and (get s 'byte-obsolete-variable) "-")))
+     (and (facep s) "a")
+     (and (fboundp 'cl-find-class) (cl-find-class s) "t"))))
+
+;; Inline `kmacro--to-vector' from E29 to fix compatibility of
+;; `helm-kbd-macro-concat-macros' with E29 and E28.
+(unless (fboundp #'kmacro--to-vector)
+  (defun kmacro--to-vector (object)
+  "Normalize an old-style key sequence to the vector form."
+  (if (not (stringp object))
+      object
+    (let ((vec (string-to-vector object)))
+      (unless (multibyte-string-p object)
+	(dotimes (i (length vec))
+	  (let ((k (aref vec i)))
+	    (when (> k 127)
+	      (setf (aref vec i) (+ k ?\M-\C-@ -128))))))
+      vec))))
 
 ;;; Macros helper.
 ;;
@@ -633,7 +748,8 @@ displayed in BUFNAME."
 
 (defun helm-help-quit ()
   "Quit `helm-help'."
-  (if (get-buffer-window helm-help-buffer-name 'visible)
+  (if (or (get-buffer-window helm-help-buffer-name 'visible)
+          (get-buffer-window helm-debug-output-buffer 'visible))
       (throw 'helm-help-quit nil)
     (quit-window)))
 
@@ -759,10 +875,11 @@ This is a bug in `puthash' which store the printable
 representation of object instead of storing the object itself,
 this to provide at the end a printable representation of
 hashtable itself."
-  (cl-loop with cont = (make-hash-table :test test)
-           for elm in seq
-           unless (gethash elm cont)
-           collect (puthash elm elm cont)))
+  (let ((table (make-hash-table :test test)))
+    (mapcan (lambda (x)
+              (unless (gethash x table)
+                (list (puthash x x table))))
+            seq)))
 
 (defsubst helm--string-join (strings &optional separator)
   "Join all STRINGS using SEPARATOR."
@@ -1189,11 +1306,16 @@ differently depending of answer:
 
 (defun helm-describe-class (class)
   "Display documentation of Eieio CLASS, a symbol or a string."
-  (advice-add 'cl--print-table :override #'helm-source--cl--print-table '((depth . 100)))
-  (unwind-protect
-       (let ((helm-describe-function-function 'describe-function))
-         (helm-describe-function class))
-    (advice-remove 'cl--print-table #'helm-source--cl--print-table)))
+  (let ((advicep (advice-member-p #'helm-source--cl--print-table 'cl--print-table)))
+    (unless advicep
+      (advice-add 'cl--print-table :override #'helm-source--cl--print-table '((depth . 100))))
+    (unwind-protect
+         (if (fboundp 'cl-describe-type)
+             (cl-describe-type (helm-symbolify class))
+           (let ((helm-describe-function-function 'describe-function))
+             (helm-describe-function (helm-symbolify class))))
+      (unless advicep
+        (advice-remove 'cl--print-table #'helm-source--cl--print-table)))))
 
 (defun helm-describe-function (func)
   "Display documentation of FUNC, a symbol or string."
@@ -1429,23 +1551,48 @@ candidate as arg."
 (defun helm-basename (fname &optional ext)
   "Print FNAME with any leading directory components removed.
 If specified, also remove filename extension EXT.
-Arg EXT can be specified as a string with or without dot, in this
-case it should match `file-name-extension'.
-It can also be non-nil (t) in this case no checking of
-`file-name-extension' is done and the extension is removed
-unconditionally."
-  (let ((non-essential t))
-    (if (and ext (or (string= (file-name-extension fname) ext)
-                     (string= (file-name-extension fname t) ext)
-                     (eq ext t))
-             (not (file-directory-p fname)))
-        (file-name-sans-extension (file-name-nondirectory fname))
-      (file-name-nondirectory (directory-file-name fname)))))
+If FNAME is a directory EXT arg is ignored.
+
+Arg EXT can be specified as a string, a number or `t' .
+When specified as a string, this string is stripped from end of FNAME.
+e.g. (helm-basename \"tutorial.el.gz\" \".el.gz\") => tutorial.
+When `t' no checking of `file-name-extension' is done and the first
+extension is removed unconditionally with `file-name-sans-extension'.
+e.g. (helm-basename \"tutorial.el.gz\" t) => tutorial.el.
+When a number, remove that many times extensions from FNAME until FNAME ends
+with its real extension which is by default \".el\".
+e.g. (helm-basename \"tutorial.el.gz\" 2) => tutorial
+To specify the extension where to stop use a cons cell where the cdr is a regexp
+matching extension e.g. (2 . \\\\.py$).
+e.g. (helm-basename \"~/ucs-utils-6.0-delta.py.gz\" \\='(2 . \"\\\\.py\\\\\\='\"))
+=>ucs-utils-6.0-delta."
+  (let ((non-essential t)
+        (ext-regexp (cond ((consp ext) (cdr ext))
+                          ((numberp ext) "\\.el\\'")
+                          (t ext)))
+        result)
+    (cond ((or (null ext) (file-directory-p fname))
+           (file-name-nondirectory (directory-file-name fname)))
+          ((or (numberp ext) (consp ext))
+           (cl-dotimes (_ (if (consp ext) (car ext) ext))
+             (let ((bn (file-name-nondirectory (or result fname))))
+               (helm-aif (file-name-sans-extension bn)
+                   (if (string-match-p ext-regexp bn)
+                       (cl-return (setq result (file-name-sans-extension bn)))
+                     (setq result (file-name-sans-extension bn))))))
+           result)
+          ((eq t ext)
+           (file-name-sans-extension (file-name-nondirectory fname)))
+          ((stringp ext)
+           (replace-regexp-in-string (concat (regexp-quote ext) "\\'") ""
+                                     (file-name-nondirectory fname))))))
 
 (defun helm-basedir (fname &optional parent)
-  "Return the base directory of filename ending by a slash.
+  "Return the base directory of FNAME ending by a slash.
 If PARENT is specified and FNAME is a directory return the parent
-directory of FNAME."
+directory of FNAME.
+If PARENT is not specified but FNAME doesn't end by a slash, the returned value
+is same as with PARENT."
   (helm-aif (and fname
                  (or (and (string= fname "~") "~")
                      (file-name-directory
@@ -1601,6 +1748,23 @@ Directories expansion is not supported."
     (format ".*\\.\\(%s\\)$"
             (replace-regexp-in-string
              "," "\\\\|" (match-string 2 wc)))))
+
+(defun helm-locate-lib-get-summary (file)
+  "Extract library description from FILE."
+  (let* ((shell-file-name "sh")
+         (shell-command-switch "-c")
+         (cmd "%s %s | head -n1 | awk 'match($0,\"%s\",a) {print a[2]}'\
+ | awk -F ' -*-' '{print $1}'")
+         (regexp "^;;;(.*) ---? (.*)$")
+         (desc (shell-command-to-string
+                (format cmd
+                        (if (string-match-p "\\.gz\\'" file)
+                            "gzip -c -q -d" "cat")
+                        (shell-quote-argument file)
+                        regexp))))
+    (if (string= desc "")
+        "Not documented"
+      (replace-regexp-in-string "\n" "" desc))))
 
 ;;; helm internals
 ;;

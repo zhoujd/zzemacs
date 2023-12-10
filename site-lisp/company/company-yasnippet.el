@@ -1,6 +1,6 @@
-;;; company-yasnippet.el --- company-mode completion backend for Yasnippet
+;;; company-yasnippet.el --- company-mode completion backend for Yasnippet  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2014, 2015  Free Software Foundation, Inc.
+;; Copyright (C) 2014-2015, 2020-2023  Free Software Foundation, Inc.
 
 ;; Author: Dmitry Gutov
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -34,6 +34,18 @@
 (declare-function yas--template-content "yasnippet")
 (declare-function yas--template-expand-env "yasnippet")
 (declare-function yas--warning "yasnippet")
+(declare-function yas-minor-mode "yasnippet")
+(declare-function yas--require-template-specific-condition-p "yasnippet")
+(declare-function yas--template-can-expand-p "yasnippet")
+(declare-function yas--template-condition "yasnippet")
+
+(defvar company-yasnippet-annotation-fn
+  (lambda (name)
+    (concat
+     (unless company-tooltip-align-annotations " -> ")
+     name))
+  "Function to format completion annotation.
+It has to accept one argument: the snippet's name.")
 
 (defun company-yasnippet--key-prefixes ()
   ;; Mostly copied from `yas--templates-for-key-at-point'.
@@ -60,7 +72,7 @@
         (let ((prefix (buffer-substring-no-properties (point) original)))
           (unless (equal prefix (car prefixes))
             (push prefix prefixes))))
-      prefixes)))
+      (nreverse prefixes))))
 
 (defun company-yasnippet--candidates (prefix)
   ;; Process the prefixes in reverse: unlike Yasnippet, we look for prefix
@@ -77,6 +89,7 @@
   (cl-mapcan
    (lambda (table)
      (let ((keyhash (yas--table-hash table))
+           (requirement (yas--require-template-specific-condition-p))
            res)
        (when keyhash
          (maphash
@@ -85,20 +98,61 @@
                        (string-prefix-p key-prefix key))
               (maphash
                (lambda (name template)
-                 (push
-                  (propertize key
-                              'yas-annotation name
-                              'yas-template template
-                              'yas-prefix-offset (- (length key-prefix)
-                                                    (length prefix)))
-                  res))
+                 (when (yas--template-can-expand-p
+                        (yas--template-condition template) requirement)
+                   (push
+                    (propertize key
+                                'yas-annotation name
+                                'yas-template template
+                                'yas-prefix-offset (- (length key-prefix)
+                                                      (length prefix)))
+                    res)))
                value)))
           keyhash))
        res))
    tables))
 
+(defun company-yasnippet--doc (arg)
+  (let ((template (get-text-property 0 'yas-template arg))
+        (mode major-mode)
+        (file-name (buffer-file-name)))
+    (defvar yas-prompt-functions)
+    (with-current-buffer (company-doc-buffer)
+      (let ((buffer-file-name file-name))
+        (yas-minor-mode 1)
+        (setq-local yas-prompt-functions '(yas-no-prompt))
+        (condition-case error
+            (yas-expand-snippet (yas--template-content template))
+          (error
+           (message "%s"  (error-message-string error))))
+        (delay-mode-hooks
+          (let ((inhibit-message t))
+            (if (eq mode 'web-mode)
+                (progn
+                  (setq mode 'html-mode)
+                  (funcall mode))
+              (funcall mode)))
+          (ignore-errors (font-lock-ensure))))
+      (current-buffer))))
+
+(defun company-yasnippet--prefix ()
+  ;; We can avoid the prefix length manipulations after GH#426 is fixed.
+  (let* ((prefix (company-grab-symbol))
+         (tables (yas--get-snippet-tables))
+         (key-prefixes (company-yasnippet--key-prefixes))
+         key-prefix)
+    (while (and key-prefixes
+                (setq key-prefix (pop key-prefixes)))
+      (when (company-yasnippet--completions-for-prefix
+             prefix key-prefix tables)
+        ;; Stop iteration.
+        (setq key-prefixes nil)))
+    (if (equal key-prefix prefix)
+        prefix
+      (cons prefix (length key-prefix)))))
+
 ;;;###autoload
-(defun company-yasnippet (command &optional arg &rest ignore)
+(defun company-yasnippet (command &optional arg &rest _ignore)
   "`company-mode' backend for `yasnippet'.
 
 This backend should be used with care, because as long as there are
@@ -108,33 +162,32 @@ shadow backends that come after it.  Recommended usages:
 * In a buffer-local value of `company-backends', grouped with a backend or
   several that provide actual text completions.
 
-  (add-hook 'js-mode-hook
+  (add-hook \\='js-mode-hook
             (lambda ()
-              (set (make-local-variable 'company-backends)
-                   '((company-dabbrev-code company-yasnippet)))))
+              (set (make-local-variable \\='company-backends)
+                   \\='((company-dabbrev-code company-yasnippet)))))
 
 * After keyword `:with', grouped with other backends.
 
-  (push '(company-semantic :with company-yasnippet) company-backends)
+  (push \\='(company-semantic :with company-yasnippet) company-backends)
 
 * Not in `company-backends', just bound to a key.
 
-  (global-set-key (kbd \"C-c y\") 'company-yasnippet)
+  (global-set-key (kbd \"C-c y\") \\='company-yasnippet)
 "
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-yasnippet))
     (prefix
-     ;; Should probably use `yas--current-key', but that's bound to be slower.
-     ;; How many trigger keys start with non-symbol characters anyway?
      (and (bound-and-true-p yas-minor-mode)
-          (company-grab-symbol)))
+          (company-yasnippet--prefix)))
     (annotation
-     (concat
-      (unless company-tooltip-align-annotations " -> ")
-      (get-text-property 0 'yas-annotation arg)))
+     (funcall company-yasnippet-annotation-fn
+              (get-text-property 0 'yas-annotation arg)))
     (candidates (company-yasnippet--candidates arg))
+    (doc-buffer (company-yasnippet--doc arg))
     (no-cache t)
+    (kind 'snippet)
     (post-completion
      (let ((template (get-text-property 0 'yas-template arg))
            (prefix-offset (get-text-property 0 'yas-prefix-offset arg)))

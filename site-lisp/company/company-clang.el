@@ -1,6 +1,6 @@
 ;;; company-clang.el --- company-mode completion backend for Clang  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011, 2013-2019  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2013-2023  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -39,9 +39,10 @@
   :type 'file)
 
 (defcustom company-clang-begin-after-member-access t
-  "When non-nil, automatic completion will start whenever the current
-symbol is preceded by \".\", \"->\" or \"::\", ignoring
-`company-minimum-prefix-length'.
+  "When non-nil, start automatic completion after member access operators.
+
+Automatic completion starts whenever the current symbol is preceded by
+\".\", \"->\" or \"::\", ignoring `company-minimum-prefix-length'.
 
 If `company-begin-commands' is a list, it should include `c-electric-lt-gt'
 and `c-electric-colon', for automatic completion right after \">\" and
@@ -59,7 +60,7 @@ it.  That allows the flags use relative file names within the project."
   :safe 'booleanp)
 
 (defcustom company-clang-arguments nil
-  "Additional arguments to pass to clang when completing.
+  "A list of additional arguments to pass to clang when completing.
 Prefix files (-include ...) can be selected with `company-clang-set-prefix'
 or automatically through a custom `company-clang-prefix-guesser'."
   :type '(repeat (string :tag "Argument")))
@@ -118,10 +119,9 @@ or automatically through a custom `company-clang-prefix-guesser'."
 
 ;; parsing ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; TODO: Handle Pattern (syntactic hints would be neat).
 ;; Do we ever see OVERLOAD (or OVERRIDE)?
 (defconst company-clang--completion-pattern
-  "^COMPLETION: \\_<\\(%s[a-zA-Z0-9_:]*\\)\\(?:\\(?: (InBase)\\)? : \\(.*\\)$\\)?$")
+  "^COMPLETION: \\_<\\(%s[a-zA-Z0-9_:]*\\|Pattern\\)\\(?:\\(?: (InBase)\\)? : \\(.*\\)$\\)?$")
 
 (defconst company-clang--error-buffer-name "*clang-error*")
 
@@ -136,20 +136,40 @@ or automatically through a custom `company-clang-prefix-guesser'."
   (let ((pattern (format company-clang--completion-pattern
                          (regexp-quote prefix)))
         (case-fold-search nil)
-        lines match)
+        (results (make-hash-table :test 'equal :size (/ (point-max) 100)))
+        lines)
     (while (re-search-forward pattern nil t)
-      (setq match (match-string-no-properties 1))
-      (unless (equal match "Pattern")
-        (save-match-data
+      (let ((match (match-string-no-properties 1))
+            (meta (match-string-no-properties 2)))
+        (when (equal match "Pattern")
+          (setq match (company-clang--pattern-to-match meta)))
           (when (string-match ":" match)
-            (setq match (substring match 0 (match-beginning 0)))))
-        (let ((meta (match-string-no-properties 2)))
-          (when (and meta (not (string= match meta)))
-            (put-text-property 0 1 'meta
-                               (company-clang--strip-formatting meta)
-                               match)))
-        (push match lines)))
+            (setq match (substring match 0 (match-beginning 0))))
+          ;; Avoiding duplicates:
+          ;; https://github.com/company-mode/company-mode/issues/841
+          (cond
+           ;; Either meta != completion (not a macro)
+           ((not (equal match meta))
+            (puthash match meta results))
+           ;; Or it's the first time we see this completion
+           ((eq (gethash match results 'none) 'none)
+            (puthash match nil results)))))
+    (maphash
+     (lambda (match meta)
+       (when meta
+         (put-text-property 0 1 'meta (company-clang--strip-formatting meta) match))
+       (push match lines))
+     results)
     lines))
+
+(defun company-clang--pattern-to-match (pat)
+  (let ((start 0)
+        (end nil))
+    (when (string-match "#]" pat)
+      (setq start (match-end 0)))
+    (when (string-match "[ \(]<#" pat start)
+      (setq end (match-beginning 0)))
+    (substring pat start end)))
 
 (defun company-clang--meta (candidate)
   (get-text-property 0 'meta candidate))
@@ -166,6 +186,8 @@ or automatically through a custom `company-clang-prefix-guesser'."
           (delete-region pt (point)))
         (buffer-string)))))
 
+;; TODO: Parse the original formatting here, rather than guess.
+;; Strip it every time in the `meta' handler instead.
 (defun company-clang--annotation-1 (candidate)
   (let ((meta (company-clang--meta candidate)))
     (cond
@@ -194,7 +216,11 @@ or automatically through a custom `company-clang-prefix-guesser'."
          (cmd (concat company-clang-executable " " (mapconcat 'identity args " ")))
          (pattern (format company-clang--completion-pattern ""))
          (message-truncate-lines t)
-         (err (if (re-search-forward pattern nil t)
+         (err (if (and (re-search-forward pattern nil t)
+                       ;; Something in the Windows build?
+                       ;; Looks like Clang doesn't always include the error text
+                       ;; before completions (even if exited with error).
+                       (> (match-beginning 0) (point-min)))
                   (buffer-substring-no-properties (point-min)
                                                   (1- (match-beginning 0)))
                 ;; Warn the user more aggressively if no match was found.
@@ -215,6 +241,8 @@ or automatically through a custom `company-clang-prefix-guesser'."
   (let* ((objc (derived-mode-p 'objc-mode))
          (buf (get-buffer-create "*clang-output*"))
          ;; Looks unnecessary in Emacs 25.1 and later.
+         ;; (Inconclusive, needs more testing):
+         ;; https://github.com/company-mode/company-mode/pull/288#issuecomment-72491808
          (process-adaptive-read-buffering nil)
          (existing-process (get-buffer-process buf)))
     (when existing-process
@@ -321,10 +349,9 @@ or automatically through a custom `company-clang-prefix-guesser'."
    (company-clang--check-version 2.9 3.1)))
 
 (defun company-clang--check-version (min apple-min)
-  (pcase company-clang--version
+  (pcase-exhaustive company-clang--version
     (`(apple . ,ver) (>= ver apple-min))
-    (`(normal . ,ver) (>= ver min))
-    (_ (error "pcase-exhaustive is not in Emacs 24.3!"))))
+    (`(normal . ,ver) (>= ver min))))
 
 (defsubst company-clang-version ()
   "Return the version of `company-clang-executable'."
@@ -340,7 +367,7 @@ or automatically through a custom `company-clang-prefix-guesser'."
          (string-to-number (match-string-no-properties 2)))
       0)))
 
-(defun company-clang (command &optional arg &rest ignored)
+(defun company-clang (command &optional arg &rest _ignored)
   "`company-mode' completion backend for Clang.
 Clang is a parser for C and ObjC.  Clang version 1.1 or newer is required.
 
@@ -372,6 +399,7 @@ passed via standard input."
     (candidates (cons :async
                       (lambda (cb) (company-clang--candidates arg cb))))
     (meta       (company-clang--meta arg))
+    (kind (company-clang--kind arg))
     (annotation (company-clang--annotation arg))
     (post-completion (let ((anno (company-clang--annotation arg)))
                        (when (and company-clang-insert-arguments anno)
@@ -380,6 +408,23 @@ passed via standard input."
                              (company-template-objc-templatify anno)
                            (company-template-c-like-templatify
                             (concat arg anno))))))))
+
+(defun company-clang--kind (arg)
+  ;; XXX: Not very precise.
+  ;; E.g. it will say that an arg-less ObjC method is a variable (perhaps we
+  ;; could look around for brackets, etc, if there any actual users who's
+  ;; bothered by it).
+  ;; And we can't distinguish between local vars and struct fields.
+  ;; Or between keywords and macros.
+  (let ((meta (company-clang--meta arg)))
+    (cond
+     ((null meta) 'keyword)
+     ((string-match "(" meta)
+      (if (string-match-p (format "\\`%s *\\'" (regexp-quote arg))
+                          (substring meta 0 (match-beginning 0)))
+          'keyword ; Also macro, actually (no return type).
+        'function))
+     (t 'variable))))
 
 (provide 'company-clang)
 ;;; company-clang.el ends here

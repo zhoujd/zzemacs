@@ -1,6 +1,6 @@
-;;; company-etags.el --- company-mode completion backend for etags
+;;; company-etags.el --- company-mode completion backend for etags  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009-2011, 2014  Free Software Foundation, Inc.
+;; Copyright (C) 2009-2011, 2013-2015, 2018-2019, 2023  Free Software Foundation, Inc.
 
 ;; Author: Nikolaj Schumacher
 
@@ -17,7 +17,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 
 ;;; Commentary:
@@ -85,14 +85,14 @@ Set it to t or to a list of major modes."
            (all-completions prefix (tags-completion-table))))))
 
 ;;;###autoload
-(defun company-etags (command &optional arg &rest ignored)
+(defun company-etags (command &optional arg &rest _ignored)
   "`company-mode' completion backend for etags."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-etags))
-    (prefix (and (apply #'derived-mode-p company-etags-modes)
+    (prefix (and (cl-some #'derived-mode-p company-etags-modes)
                  (or (eq t company-etags-everywhere)
-                     (apply #'derived-mode-p company-etags-everywhere)
+                     (cl-some #'derived-mode-p company-etags-everywhere)
                      (not (company-in-string-or-comment)))
                  (company-etags-buffer-table)
                  (or (company-grab-symbol) 'stop)))

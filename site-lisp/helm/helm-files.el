@@ -137,7 +137,6 @@ Don't set it directly, use instead `helm-ff-auto-update-initial-value'.")
 ;; watch out!
 (defvar helm-tramp-file-name-regexp "\\`/\\([^/:|]+\\):")
 (defvar helm-ff-tramp-method-regexp "[/|]:\\([^:]*\\)")
-(defvar helm-marked-buffer-name "*helm marked*")
 (defvar helm-ff--auto-update-state nil)
 (defvar helm-ff--deleting-char-backward nil)
 (defvar helm-multi-files--toggle-locate nil)
@@ -166,7 +165,10 @@ than `helm-candidate-number-limit'.")
 This is used only as a let binding.")
 (defvar helm-ff--show-thumbnails nil)
 (defvar helm-ff--thumbnailed-directories nil)
-
+(defvar helm-source-find-files nil
+  "The main source to browse files.
+Should not be used among other sources.")
+(defvar helm-ff-icon-mode nil)
 
 ;;; Helm-find-files - The helm file browser.
 ;;
@@ -632,7 +634,7 @@ This affects `\\<helm-find-files-map>\\[helm-ff-run-switch-to-shell]' keybinding
   :type '(choice
           (const :tag "Use Eshell" eshell-mode)
           (const :tag "Use Shell" shell-mode)
-          (const :tag "Use Shell" term-mode)))
+          (const :tag "Use Term" term-mode)))
 
 (defcustom helm-rsync-no-mode-line-update nil
   "When non nil don't update mode-line when rsync is running.
@@ -876,10 +878,11 @@ present in this list."
 (defcustom helm-ff-edit-marked-files-fn #'helm-ff-wfnames
   "A function to edit filenames in a special buffer.
 
-By default `wfnames' package is used to avoid wdired which doesn't
-always work with all emacs versions and also is quite clumsy about
-default-directory among other things.
-If you still want to use it, helm is still providing `helm-marked-files-in-dired'."
+By default `wfnames' package is used to avoid wdired which
+doesn't always work with all emacs versions and also is quite
+clumsy about default-directory among other things.  If you still
+want to use it, helm is still providing
+`helm-marked-files-in-dired'."
   :type '(choice (function :tag "Use Wfnames package to edit filenames."
                   helm-ff-wfnames)
                  (function :tag "Use Wdired package to edit filenames."
@@ -1047,10 +1050,6 @@ If you still want to use it, helm is still providing `helm-marked-files-in-dired
 ;;; Helm-find-files
 ;;
 ;;
-(defvar helm-source-find-files nil
-  "The main source to browse files.
-Should not be used among other sources.")
-
 (defclass helm-source-ffiles (helm-source-sync)
   ((header-name
     :initform (lambda (name)
@@ -1320,15 +1319,15 @@ ACTION can be `rsync' or any action supported by `helm-dired-action'."
       (setq info
             (mapconcat (lambda (x)
                          (pcase x
-                           (`size    (nth 0 infos))
-                           (`percent (nth 1 infos))
-                           (`speed   (nth 2 infos))
-                           (`remain  (nth 3 infos))))
+                           ('size    (nth 0 infos))
+                           ('percent (nth 1 infos))
+                           ('speed   (nth 2 infos))
+                           ('remain  (nth 3 infos))))
                        (helm-mklist helm-ff-rsync-progress-bar-info)
                        ", "))
-      (setq percent (and (string-match "\\([0-9]+\\)%" progbar)
-                         (setq percent (string-to-number
-                                        (match-string 1 progbar)))))
+      (when (string-match "\\([0-9]+\\)%" progbar)
+        (setq percent (string-to-number
+                       (match-string 1 progbar))))
       (if percent
           (format "%s%s%s%s"
                   (propertize (capitalize (replace-regexp-in-string
@@ -4342,7 +4341,7 @@ Arg FILE is the real part of candidate, a filename with no props."
                                                  helm-ff-dotted-symlink-directory))
                                       (file-directory-p file))
                                  (all-the-icons-octicon "file-symlink-directory")
-                               (all-the-icons-icon-for-file file))))))
+                               (all-the-icons-icon-for-file (helm-basename file)))))))
       (when icon (concat icon " ")))))
 
 (defun helm-ff--is-dir-from-disp (disp)
@@ -5455,8 +5454,7 @@ Use it for non-interactive calls of `helm-find-files'."
                            (expand-file-name tap))))
          ;; Ensure not being prompted for password each time we
          ;; navigate to a directory.
-         (password-cache t)
-         (minibuffer-completing-file-name t))
+         (password-cache t))
     (helm-set-local-variable 'helm-follow-mode-persistent nil
                              'helm-drag-mouse-1-fn 'helm-ff-drag-mouse-1-fn)
     (unless helm-source-find-files
@@ -6460,7 +6458,9 @@ be directories."
                                  (propertize c 'face 'helm-history-deleted))))
            when disp
            collect (cons (if helm-ff-icon-mode
-                             (concat (all-the-icons-icon-for-file c) " " disp)
+                             (concat (all-the-icons-icon-for-file
+                                      (helm-basename elm))
+                                     " " disp)
                            disp)
                          c)))
 
@@ -6654,7 +6654,8 @@ VC handled directories.")
 (defvar helm-browse-project-history nil)
 
 ;;;###autoload
-(defun helm-projects-history (arg)
+(defun helm-projects-history (&optional arg)
+  "Jump to project already visisted with `helm-browse-project'."
   (interactive "P")
   (helm :sources
         (helm-build-sync-source "Project history"

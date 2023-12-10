@@ -1,6 +1,6 @@
-;;; company-bbdb.el --- company-mode completion backend for BBDB in message-mode
+;;; company-bbdb.el --- company-mode completion backend for BBDB in message-mode  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2013-2014, 2016  Free Software Foundation, Inc.
+;; Copyright (C) 2013-2016, 2020, 2023  Free Software Foundation, Inc.
 
 ;; Author: Jan Tatarik <jan.tatarik@gmail.com>
 
@@ -17,15 +17,13 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
 
 (require 'company)
 (require 'cl-lib)
 
 (declare-function bbdb-record-get-field "bbdb")
-(declare-function bbdb-records "bbdb")
 (declare-function bbdb-dwim-mail "bbdb-com")
-(declare-function bbdb-search "bbdb-com")
 
 (defgroup company-bbdb nil
   "Completion backend for BBDB."
@@ -40,19 +38,23 @@
   (cl-mapcan (lambda (record)
                (mapcar (lambda (mail) (bbdb-dwim-mail record mail))
                        (bbdb-record-get-field record 'mail)))
-             (eval '(bbdb-search (bbdb-records) arg nil arg))))
+             (eval `(let ((arg ,arg))
+                      (bbdb-search (bbdb-records) :all-names arg :mail arg))
+                   t)))
 
 ;;;###autoload
-(defun company-bbdb (command &optional arg &rest ignore)
+(defun company-bbdb (command &optional arg &rest _ignore)
   "`company-mode' completion backend for BBDB."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-bbdb))
     (prefix (and (memq major-mode company-bbdb-modes)
                  (featurep 'bbdb-com)
-                 (looking-back "^\\(To\\|Cc\\|Bcc\\): *.*? *\\([^,;]*\\)"
-                               (line-beginning-position))
-                 (match-string-no-properties 2)))
+                 (let ((case-fold-search t))
+                   (looking-back
+                    "^\\([^ :]*-\\)?\\(To\\|B?Cc\\|From\\):.*? *\\([^,;]*\\)"
+                    (line-beginning-position)))
+                 (match-string-no-properties 3)))
     (candidates (company-bbdb--candidates arg))
     (sorted t)
     (no-cache t)))

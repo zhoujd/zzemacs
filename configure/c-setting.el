@@ -88,6 +88,7 @@
   (setq tab-width 4
         indent-tabs-mode nil)
   (defkeys-map c-mode-base-map
+    ((kbd "TAB")     'company-indent-or-complete-common)
     ((kbd "M-o")     'cff-find-other-file)
     ((kbd "M-m")     'eassist-list-methods))
   ;;process settings
@@ -97,22 +98,19 @@
   (setq c-macro-prompt-flag t)
   (abbrev-mode t)
   (hide-ifdef-mode t))
-
 (add-hook 'c-mode-common-hook 'zz:c-mode-common-hook)
 
-;; my c setting
+;;my c setting
 (defun zz:c-mode-hook()
   (c-set-style "ffmpeg"))
-
 (add-hook 'c-mode-hook 'zz:c-mode-hook)
 
-;; my c++ setting
+;;my c++ setting
 (defun zz:c++-mode-hook()
   (c-set-style "stroustrup"))
-
 (add-hook 'c++-mode-hook 'zz:c++-mode-hook)
 
-;; switch c and c++ mode
+;;switch c and c++ mode
 (defun zz:c-c++-toggle ()
   "toggles between c-mode and c++-mode"
   (interactive)
@@ -122,8 +120,8 @@
          (c-mode))))
 
 ;;c headers
-;(require 'company-c-headers)
-;(add-to-list 'company-backends 'company-c-headers)
+(require 'company-c-headers)
+(add-to-list 'company-backends 'company-c-headers)
 
 ;;lsp-mode and eglot-mode support
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
@@ -131,9 +129,7 @@
 ;;https://clangd.llvm.org/installation.html
 ;;https://ddavis.io/blog/eglot-cpp-ide/
 ;;https://joaotavora.github.io/eglot/
-;;sudo apt install bear
-;;bear cmake
-;;bear make
+;;sudo apt install bear && bear cmake && bear make
 (defvar zz:c-lsp-eglot-p nil "t for eglot, nil for lsp-mode")
 (if zz:c-lsp-eglot-p
     (progn
@@ -151,12 +147,12 @@
       (add-hook 'c++-mode-hook 'lsp-deferred t)
       ))
 
-;;shell-mode use company-mode
-(defun zz:c-company-hook ()
-  (set (make-local-variable 'company-backends)
-       '(company-lsp)))
-(add-hook 'c-mode-hook 'zz:c-company-hook t)
-(add-hook 'c++-mode-hook 'zz:c-company-hook t)
+;;Use company-mode with local 'company-backends
+;(defun zz:c-company-hook ()
+;  (set (make-local-variable 'company-backends)
+;       '(company-lsp)))
+;(add-hook 'c-mode-hook 'zz:c-company-hook t)
+;(add-hook 'c++-mode-hook 'zz:c-company-hook t)
 
 
 (provide 'c-setting)

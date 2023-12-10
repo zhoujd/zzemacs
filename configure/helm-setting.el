@@ -317,7 +317,6 @@
 (defkeys-map lsp-mode-map
   ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
-
 ;;https://github.com/Sodel-the-Vociferous/helm-company
 ;;"Making tag completion table" Freezes/Blocks
 ;;How to disable

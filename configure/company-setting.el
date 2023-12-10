@@ -41,7 +41,7 @@
 
 ;;global keys
 (defkeys-map global-map
-  ((kbd "TAB") #'company-indent-or-complete-common))
+  ((kbd "TAB") 'company-indent-or-complete-common))
 
 (defun zz:company-hook ()
   (require 'color)

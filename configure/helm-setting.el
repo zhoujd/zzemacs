@@ -322,8 +322,9 @@
 ;;"Making tag completion table" Freezes/Blocks
 ;;How to disable
 (require 'helm-company)
+(setq helm-company-show-icons nil)
 (defun helm-company-setup ()
-   (local-set-key (kbd "C-<tab>") 'helm-company))
+  (local-set-key (kbd "C-<tab>") 'helm-company))
 (mapc (lambda (hook)
         (add-hook hook 'helm-company-setup))
       '(emacs-lisp-mode-hook

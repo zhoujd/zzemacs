@@ -12,6 +12,7 @@
       company-dabbrev-downcase nil
       company-dabbrev-other-buffers t
       company-dabbrev-code-other-buffers t
+      company-text-icons-mapping nil ; don't show icon
       company-selection-wrap-around t
       company-minimum-prefix-length 2)
 

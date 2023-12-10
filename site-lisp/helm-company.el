@@ -4,9 +4,10 @@
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Maintainer: Daniel Ralston <Sodel-the-Vociferous@users.noreply.github.com>
-;; Version: 0.2.8
+;; Version: 0.2.5
+;; Package-Version: 20190812.1429
 ;; URL: https://github.com/Sodel-the-Vociferous/helm-company
-;; Package-Requires: ((helm "1.5.9") (company "0.10.0"))
+;; Package-Requires: ((helm "1.5.9") (company "0.6.13"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,13 +62,6 @@ face."
   :group 'helm-company
   :type 'boolean )
 
-(defcustom helm-company-show-icons t
-  "Show icons provided by company-backend when completing.
-
-Set it to `nil' if you want to hide the icons."
-  :group 'helm-company
-  :type 'boolean )
-
 (defcustom helm-company-initialize-pattern-with-prefix nil
   "Use the thing-at-point as the initial helm completion pattern.
 
@@ -79,11 +73,6 @@ you're trying to complete."
 (defcustom helm-company-after-completion-hooks nil
   "Hook run after helm-company has inserted the selected completion candidate."
   :type 'hook
-  :group 'helm-company)
-
-(defcustom helm-company-fuzzy-match t
-  "Enable fuzzy matching for Helm Company."
-  :type 'boolean
   :group 'helm-company)
 
 (defvar helm-company-help-window nil)
@@ -125,7 +114,12 @@ annotations.")
           helm-company-candidates              company-candidates
           helm-company-display-candidates-hash (helm-company--make-display-candidate-hash company-candidates))))
 
-(defun helm-company-cleanup-post-command ()
+(defun helm-company-cleanup ()
+  (setq helm-company-backend             nil
+        helm-company-candidates          nil)
+  (company-abort))
+
+(defun helm-company-cleanup-post-action ()
   (helm-attrset 'company-candidates nil)
   (setq helm-company-backend             nil
         helm-company-candidates          nil
@@ -133,11 +127,15 @@ annotations.")
 
 (defun helm-company-action-insert (candidate)
   "Insert CANDIDATE."
-  ;; `company-manual-begin' keeps company from throwing an error in
-  ;; `company-post-command', its post-command hook.
-  (when (company-manual-begin)
-    (company-finish candidate)
-    (run-hooks 'helm-company-after-completion-hooks)))
+  (let* ((company-candidates (helm-attr 'company-candidates))
+         (company-backend (helm-attr 'company-backend))
+         (company-common (helm-attr 'company-common))
+         (company-prefix (helm-attr 'company-prefix)))
+    ;; `company-manual-begin' keeps company from throwing an error in
+    ;; `company-post-command', its post-command hook.
+    (when (company-manual-begin)
+      (company-finish candidate)
+      (run-hooks 'helm-company-after-completion-hooks))))
 
 (defun helm-company-action-show-document (candidate)
   "Show the documentation of the CANDIDATE."
@@ -181,9 +179,9 @@ annotations.")
   "Temporarily show the documentation BUFFER."
   (with-current-buffer buffer
     (goto-char (point-min)))
-  (let ((display-buffer-alist '((".*" display-buffer-in-side-window)
-                                (".*" display-buffer-reuse-window))))
-    (display-buffer buffer t)))
+  (display-buffer buffer
+                  '((display-buffer-same-window . t)
+                    (display-buffer-reuse-window . t))))
 
 (defmacro helm-company-run-action (&rest body)
   `(with-helm-window
@@ -217,14 +215,10 @@ annotations.")
     str))
 
 (defun helm-company--make-display-string (candidate annotation)
-  (let ((candidate (substring-no-properties candidate))
-        (icon (if helm-company-show-icons
-                  (funcall company-format-margin-function candidate nil)
-                "")))
+  (let ((candidate (substring-no-properties candidate)))
     (if (null annotation)
-        (concat icon candidate)
-      (concat icon candidate " "
-              (helm-company--propertize-annotation annotation)))))
+        candidate
+      (concat candidate " " (helm-company--propertize-annotation annotation)))))
 
 (defun helm-company--get-annotations (candidate)
   "Return the annotation (if any) supplied for a candidate by
@@ -296,6 +290,10 @@ company-backend."
     ("Find location (If available)" . helm-company-find-location))
   "Actions for `helm-company'.")
 
+(defcustom helm-company-fuzzy-match t
+  "Enable fuzzy matching for Helm Company."
+  :type 'boolean)
+
 (defvar helm-source-company
   (helm-build-in-buffer-source "Company"
     :data (lambda ()
@@ -304,9 +302,7 @@ company-backend."
             ;(list "position -> int"))
     :filtered-candidate-transformer 'helm-company-get-formatted-display-strings
     :display-to-real 'helm-company-get-real-candidate
-    ;; No :cleanup. It is executed before the action, and we still need the
-    ;; vars. Cleanup can be added later in a one-shot post-command-hook function
-    ;; to cleanup helm-company vars and remove itself from the hook.
+    :cleanup 'helm-company-cleanup
     :fuzzy-match helm-company-fuzzy-match
     :keymap helm-company-map
     :persistent-action 'helm-company-show-doc-buffer
@@ -320,37 +316,25 @@ company-backend."
   "Select `company-complete' candidates by `helm'.
 It is useful to narrow candidates."
   (interactive)
+  (unless company-candidates
+    (company-complete)
+    ;; Work around a quirk with company. `company-complete' inserts the common
+    ;; part of all candidates into the buffer. But, it doesn't update
+    ;; `company-prefix' -- and `company-prefix' is all `company-finish' replaces
+    ;; in the buffer. (issue #9)
+    (when company-common
+      (setq company-prefix company-common)))
+  (let ((initial-pattern (and helm-company-initialize-pattern-with-prefix
+                              company-prefix))
 
-  (cond ((and company-candidates
-              (= 1 (length company-candidates)))
-         ;; If there is exactly one company candidate, insert it without running
-         ;; helm. (FIXES #20).
-         (company-complete))
-        (t
-         (unless company-candidates
-           ;; If there are no candidates yet, have company generate them for us.
-           ;; Otherwise, running this function a second time would not work as
-           ;; desired.
-           (company-complete))
-         (when company-common
-           ;; Work around a quirk with company. `company-complete' inserts the common
-           ;; part of all candidates into the buffer. But, it doesn't update
-           ;; `company-prefix' -- and `company-prefix' is all `company-finish' replaces
-           ;; in the buffer. (issue #9)
-           (setq company-prefix company-common))
-         (let ((initial-pattern (and helm-company-initialize-pattern-with-prefix
-                                     company-prefix))
-               ;; Hook to abort company completion & hide company frontend if we
-               ;; keyboard-quit (C-g) out of `helm-company'.
-               (helm-quit-hook (cons 'company-abort helm-quit-hook)))
-           (when company-point
-             ;; There SHOULD be a company-point if company-complete was run. This
-             ;; is from some old code and I'm not bold enough to delete this
-             ;; conditional.
-             (helm :sources 'helm-source-company
-                   :buffer  "*helm company*"
-                   :input initial-pattern
-                   :candidate-number-limit helm-company-candidate-number-limit))))))
+        ;; Abort company completion & hide company frontend if we keyboard-quit
+        ;; (C-g) out of `helm-company'.
+        (helm-quit-hook (cons 'company-abort helm-quit-hook)))
+    (when company-point
+      (helm :sources 'helm-source-company
+            :buffer  "*helm company*"
+            :input initial-pattern
+            :candidate-number-limit helm-company-candidate-number-limit))))
 
 (provide 'helm-company)
 

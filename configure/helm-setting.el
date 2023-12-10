@@ -322,8 +322,7 @@
 ;;How to disable
 (require 'helm-company)
 (defun helm-company-setup ()
-   (local-set-key (kbd "C-i") 'helm-company)
-   (local-set-key (kbd "<tab>") 'helm-company))
+   (local-set-key (kbd "C-<tab>") 'helm-company))
 (mapc (lambda (hook)
         (add-hook hook 'helm-company-setup))
       '(c-mode-hook

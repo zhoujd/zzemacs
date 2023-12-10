@@ -1,5 +1,5 @@
 ;;;; company-setting.el --- company mode file
-;;https://www.emacswiki.org/emacs/CompanyMode#toc1
+;;https://www.emacswiki.org/emacs/CompanyMode
 ;;https://melpa.org/#/company
 
 (zz:load-path "site-lisp/company")
@@ -29,7 +29,7 @@
 (setq company-global-modes
       '(not org-mode))
 
-;;keys
+;;company keys
 (defkeys-map company-active-map
   ([return]    nil)
   ((kbd "RET") nil)
@@ -37,9 +37,9 @@
   ([tab]       'company-complete-selection)
   ((kbd "TAB") 'company-complete-selection))
 
-;;company-mode <ctrl+tab> to open complete menu
+;;global keys
 (defkeys-map global-map
-  ([(control tab)] 'company-complete))
+  ((kbd "TAB") #'company-indent-or-complete-common))
 
 (defun zz:company-hook ()
   (require 'color)

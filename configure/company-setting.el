@@ -5,7 +5,7 @@
 (zz:load-path "site-lisp/company")
 (require 'company)
 (global-company-mode t)
-(setq company-idle-delay 0.2
+(setq company-idle-delay nil  ; never (nil)
       company-show-numbers t
       company-complete-number t
       company-dabbrev-ignore-case t

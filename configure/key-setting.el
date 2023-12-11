@@ -250,6 +250,7 @@
 
   (kbd "C-h")     'delete-backward-char
   [backspace]     'delete-backward-char
+  (kbd "C-d")     'delete-forward-char
   [delete]        'delete-forward-char
 
   ;;org-mode

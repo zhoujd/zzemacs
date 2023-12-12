@@ -110,7 +110,7 @@ testmicrophone() {
     arecord -vvv -d 3 -f dat /dev/null
 }
 
-pathmunge () {
+pathmunge() {
     case ":${PATH}:" in
         *:"$1":*)
             ;;
@@ -120,5 +120,15 @@ pathmunge () {
             else
                 PATH=$1:$PATH
             fi
+    esac
+}
+
+cls() {
+    case $TERM in
+        rxvt-256color | xterm )
+            echo -ne '\033c'
+            ;;
+        * )
+            ;;
     esac
 }

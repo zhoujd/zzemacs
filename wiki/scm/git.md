@@ -162,3 +162,9 @@ Git
 
     ## Ignore A itself
     $ git cherry-pick A..B
+
+## Deleting Git Branches with Magit
+
+    ## Open the Magit status buffer (C-x g)
+    ## Press y to get a listing of all branches and tags in the git repo
+    ## Navigate to the branch you want to delete and press k

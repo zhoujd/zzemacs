@@ -29,6 +29,7 @@
 ;;switch between header and source files
 (require 'cff)
 
+;;https://en.wikipedia.org/wiki/Indentation_style
 ;;add linux kernel style
 (c-add-style "kernel"
              '( "linux"
@@ -103,12 +104,12 @@
 
 ;;c setting hook
 (defun zz:c-mode-hook()
-  (c-set-style "ffmpeg"))
+  (c-set-style "zach"))
 (add-hook 'c-mode-hook 'zz:c-mode-hook)
 
 ;;c++ setting hook
 (defun zz:c++-mode-hook()
-  (c-set-style "stroustrup"))
+  (c-set-style "zach"))
 (add-hook 'c++-mode-hook 'zz:c++-mode-hook)
 
 ;;switch c and c++ mode

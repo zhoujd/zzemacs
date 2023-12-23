@@ -32,6 +32,7 @@
       '(not org-mode))
 
 ;;code completion and snippets
+;;https://robert.kra.hn/posts/rust-emacs-setup/
 (defun company-yasnippet-or-completion ()
   (interactive)
   (or (do-yas-expand)

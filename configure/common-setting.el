@@ -90,6 +90,11 @@
         (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
         (zz:frame-font (nth 0 zz:console-font-list))))
 
+;;improve theme loading
+(defadvice load-theme (before clear-previous-themes activate)
+  "Clear existing theme settings instead of layering them"
+  (mapc #'disable-theme custom-enabled-themes))
+
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)

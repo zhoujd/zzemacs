@@ -418,14 +418,14 @@
     (find-file tramp-file-name)))
 
 
-;; Source: https://www.emacswiki.org/emacs/misc-cmds.el
-;; M-x: revert-buffer-with-coding-system <C-x RET r>
+;;https://www.emacswiki.org/emacs/misc-cmds.el
+;;M-x: revert-buffer-with-coding-system <C-x RET r>
 (defun zz:revert-buffer ()
   "Revert buffer without confirmation."
   (interactive)
   (revert-buffer :ignore-auto :noconfirm))
 
-;;Add code review note
+;;add code review note
 (defun zz:add-code-review-note ()
   "Add note for current file and line number"
   (interactive)
@@ -441,6 +441,11 @@
     (if (/= (current-column) 0)
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
+
+;;current file name
+(defun zz:path ()
+  (interactive)
+  (message (buffer-file-name)))
 
 
 (provide 'sample-setting)

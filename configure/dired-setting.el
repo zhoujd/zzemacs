@@ -21,6 +21,9 @@
 ;;Same for R (rename; move).
 (setq dired-dwim-target t)
 
+;;Disable ls by default in dired
+(setq dired-use-ls-dired nil)
+
 ;;The same buffer for viewing directory, instead of spawning many
 ;;In dired, you can press 'a' instead of 'Enter' to open the dir
 ;;Disabled commands
@@ -121,7 +124,6 @@
 ;;K (dired-launch-with-prompt-command) prompts for the application and then launches the file
 (require 'dired-launch)
 (dired-launch-enable)
-
 
 ;;dirvish
 ;(zz:load-path "site-lisp/dirvish")

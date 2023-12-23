@@ -432,8 +432,9 @@
 ;;neotree
 (zz:load-path "site-lisp/neotree")
 (require 'neotree)
-(setq neo-window-width 30)
-(setq neo-window-fixed-size nil)
+(setq neo-window-width 30
+      neo-window-fixed-size nil
+      neo-theme 'ascii)
 
 ;;trash
 (require 'trashed)

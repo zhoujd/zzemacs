@@ -33,12 +33,7 @@
 
 ;;code completion and snippets
 ;;https://robert.kra.hn/posts/rust-emacs-setup/
-(defun company-yasnippet-or-completion ()
-  (interactive)
-  (or (do-yas-expand)
-      (company-complete-common)))
-
-(defun check-expansion ()
+(defun zz:check-expansion ()
   (save-excursion
     (if (looking-at "\\_>") t
       (backward-char 1)
@@ -46,19 +41,24 @@
         (backward-char 1)
         (if (looking-at "::") t nil)))))
 
-(defun do-yas-expand ()
+(defun zz:do-yas-expand ()
   (let ((yas/fallback-behavior 'return-nil))
     (yas/expand)))
 
-(defun tab-indent-or-complete ()
+(defun zz:tab-indent-or-complete ()
   (interactive)
   (if (minibufferp)
       (minibuffer-complete)
     (if (or (not yas/minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
+            (null (zz:do-yas-expand)))
+        (if (zz:check-expansion)
             (company-complete-common)
           (indent-for-tab-command)))))
+
+(defun zz:company-yasnippet-or-completion ()
+  (interactive)
+  (or (zz:do-yas-expand)
+      (company-complete-common)))
 
 ;;company keys
 (defkeys-map company-active-map
@@ -70,7 +70,7 @@
 
 ;;global keys
 (defkeys-map global-map
-  ((kbd "TAB") 'tab-indent-or-complete))
+  ((kbd "TAB") 'zz:tab-indent-or-complete))
 
 (defun zz:company-hook ()
   (require 'color)

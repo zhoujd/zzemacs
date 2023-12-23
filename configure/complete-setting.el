@@ -74,6 +74,7 @@
       lsp-modeline-diagnostics-enable nil
       lsp-enable-symbol-highlighting nil
       lsp-warn-no-matched-clients nil
+      lsp-eldoc-render-all t
       lsp-headerline-breadcrumb-enable nil)
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode

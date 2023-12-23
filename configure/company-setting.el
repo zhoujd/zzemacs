@@ -31,6 +31,34 @@
 (setq company-global-modes
       '(not org-mode))
 
+;;code completion and snippets
+(defun company-yasnippet-or-completion ()
+  (interactive)
+  (or (do-yas-expand)
+      (company-complete-common)))
+
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "::") t nil)))))
+
+(defun do-yas-expand ()
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas/minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
+
 ;;company keys
 (defkeys-map company-active-map
   ([return]    nil)
@@ -41,7 +69,7 @@
 
 ;;global keys
 (defkeys-map global-map
-  ((kbd "TAB") 'company-indent-or-complete-common))
+  ((kbd "TAB") 'tab-indent-or-complete))
 
 (defun zz:company-hook ()
   (require 'color)

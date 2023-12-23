@@ -372,10 +372,10 @@
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
-
 ;;ignore some files
-;(unless-ms-windows
-; (setq recentf-exclude '("~$" "/tmp/" "/ssh:" "/sshz:" "/sudo:")))
+(setq recentf-exclude '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$"
+                        "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
+                        ".*png$" ".*cache$"))
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."

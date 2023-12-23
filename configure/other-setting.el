@@ -517,6 +517,9 @@
 ;;nhexl-mode
 (require 'nhexl-mode)
 
+;;csv-mode
+(require 'csv-mode)
+
 
 (provide 'other-setting)
 

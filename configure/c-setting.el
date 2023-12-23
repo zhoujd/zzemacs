@@ -30,6 +30,7 @@
 (require 'cff)
 
 ;;https://en.wikipedia.org/wiki/Indentation_style
+;;https://pages.cs.wisc.edu/~driscoll/software/emacs/indent-styles.html
 ;;add linux kernel style
 (c-add-style "kernel"
              '( "linux"

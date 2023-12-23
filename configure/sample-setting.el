@@ -447,6 +447,17 @@
   (interactive)
   (message (buffer-file-name)))
 
+(defun zz:close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
+
+(defun zz:revert-all-buffers ()
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (buffer-file-name)
+        (revert-buffer t t t)))))
+
 
 (provide 'sample-setting)
 

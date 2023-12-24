@@ -115,7 +115,7 @@
   [C-f9]            'zz:switch-to-scratch
   [M-f9]            'zz:popup-term
   (kbd "C-x <f9>")  'zz:switch-to-shell
-  (kbd "C-c <f9>")  (if-ms-windows 'eshell 'zz:remote-shell)
+  (kbd "C-c <f9>")  'zz:remote-shell
   "f9 key binding")
 
 (define-fn-key (gethash "f10" fn-key-table)
@@ -133,12 +133,12 @@
   [C-f11]           'hl-line-mode
   [M-f11]           'fci-mode
   (kbd "C-x <f11>") 'which-key-mode
-  (kbd "C-c <f11>") 'neotree-toggle
+  (kbd "C-c <f11>") 'flymake-mode
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)
-  [f12]             'company-mode
-  [S-f12]           'flymake-mode
+  [f12]             'neotree-toggle
+  [S-f12]           'neotree-dir
   [C-f12]           'rgrep
   [M-f12]           'lgrep
   (kbd "C-x <f12>") 'zz:untabify-buffer

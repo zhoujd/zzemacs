@@ -1,4 +1,4 @@
-Linux Tool
+linux Tool
 ==========
 
 ## Linuxkit
@@ -76,3 +76,17 @@ Linux Tool
 
     ## Once you’re done playing with it, you can type in halt to exit the image
     $ halt
+
+## Xpra remote X like 'ssh -X'
+
+    $ sudo apt install xpra
+    ## On DISPLAY=:9
+    $ xpra start :9 --start=xterm
+    ## Local attach
+    $ xpra attach 9
+    ## Remote attach
+    $ xpra attach ssh/<user>@<host>/9
+
+    ## xpra without ssh
+    $ xpra start --bind-tcp=0.0.0.0:12345 --start=xterm
+    $ xpra attach tcp:localhost:12345

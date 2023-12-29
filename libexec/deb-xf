@@ -9,7 +9,19 @@ fi
 ## ar x {file.deb}
 use_ar() {
     data=$(ar t "$1" | grep data.tar)
-    ar p "$1" $data | tar xfvJ -
+    ext=${data##*.}
+    case $ext in
+        gz )
+            ar p "$1" $data | tar xfvz -
+            ;;
+        bz2 | xz )
+            ar p "$1" $data | tar xfvJ -
+            ;;
+        * )
+            echo "Unsupport format: $data"
+            ;;
+    esac
+
 }
 
 ## dpkg -c {file.deb}

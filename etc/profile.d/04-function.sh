@@ -132,3 +132,7 @@ cls() {
             ;;
     esac
 }
+
+gdbtool () {
+    emacs -nw --eval "(gdb \"gdb -i=mi $*\")"
+}

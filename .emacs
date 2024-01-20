@@ -20,7 +20,7 @@
 (zz:load-path "configure")
 (mapc (lambda (setting)
         (require setting)
-        (message "Load %s end ..." setting))
+        (message "Load %s...end" setting))
       '(
         macro-setting
         common-setting

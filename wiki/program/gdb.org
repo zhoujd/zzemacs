@@ -256,8 +256,14 @@ $ gdbtui
 $ gdb  ## Press ctrl + x + a
 #+END_SRC
 
-
 ** Conditional breakpoint in GDB
 
 break x:20 if strcmp(y, "hello") == 0
 20 is line number, x can be any filename and y can be any variable.
+** How do I set a breakpoint on operator< with GDB
+
+(gdb) p 'operator <'
+$1 = {bool (MyClass &, MyClass &)} 0x4009aa <operator<(MyClass&, MyClass&)>
+
+(gdb) b *0x4009aa
+Breakpoint 1 at 0x4009aa: file test.h, line 5.

@@ -60,9 +60,9 @@
         media-setting
         game-setting
         typing-setting
+        gnuplot-setting
         ;;matlab-setting
         ;;spell-setting
-        ;;gnuplot-setting
         ;;package-setting
         keymap-setting
         fn-setting

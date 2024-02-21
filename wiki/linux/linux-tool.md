@@ -90,3 +90,9 @@ linux Tool
     ## xpra without ssh
     $ xpra start --bind-tcp=0.0.0.0:12345 --start=xterm
     $ xpra attach tcp:localhost:12345
+
+
+## OBS Studio
+
+    https://www.obsapp.com/obsdownload/
+    https://github.com/obsproject/obs-studio/wiki/build-instructions-for-linux

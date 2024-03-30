@@ -1,0 +1,28 @@
+segment trees
+=============
+
+## URLs
+
+	https://leetcode.cn/search/?q=segment%20trees
+
+
+class Solution {
+public:
+    int countSegments(string s) {
+        int segmentCount = 0;
+
+        for (int i = 0; i < s.size(); i++) {
+            if ((i == 0 || s[i - 1] == ' ') && s[i] != ' ') {
+                segmentCount++;
+            }
+        }
+
+        return segmentCount;
+    }
+};
+
+
+
+
+
+

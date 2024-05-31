@@ -6,7 +6,7 @@ ZZEMACS_ROOT=`pwd`
 ## source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
 
-echo "install .emacs to HOME directory begin..."
+echo "Install .emacs to HOME directory begin..."
 
 ## setup .emacs
 install_dot_emacs() {
@@ -21,25 +21,23 @@ EOF
 
 ## setup font
 install_fonts() {
-    TARGET_TYPE="system"   ## system/user
-    echo "install font to $TARGET_TYPE"
+    TARGET_TYPE="user"   ## system/user
+    echo "Install font to $TARGET_TYPE"
     case "$TARGET_TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
-            if [ -d $FONT_TARGET ]; then
-                sudo ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
-                sudo fc-cache -f
-            fi
+            sudo mkdir -p $FONT_TARGET
+            sudo ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+            sudo fc-cache -f
             ;;
         "user" )
             FONT_TARGET=~/.fonts
-            if [ -d $FONT_TARGET ]; then
-                ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
-                fc-cache -f
-            fi
+            mkdir -p $FONT_TARGET
+            ln -sfvT ${ZZEMACS_ROOT}/font $FONT_TARGET/zach
+            fc-cache -f
             ;;
         * )
-            echo "unknown $TARGET_TYPE"
+            echo "Unknown $TARGET_TYPE"
             ;;
     esac
 }
@@ -54,7 +52,7 @@ install_others() {
 
 ## install thirdparty
 install_thirdparty() {
-    echo "install third party to $TARGET_TYPE"
+    echo "Install third party to $TARGET_TYPE"
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
     ${ZZEMACS_ROOT}/third-party/perl/install.sh
 }
@@ -76,4 +74,4 @@ main() {
 
 main
 
-echo "install .emacs to HOME directory end..."
+echo "Install .emacs to HOME directory end..."

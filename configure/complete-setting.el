@@ -76,6 +76,12 @@
       lsp-warn-no-matched-clients nil
       lsp-enable-on-type-formatting nil
       lsp-headerline-breadcrumb-enable nil)
+
+(setq lsp-auto-configure t
+      lsp-auto-guess-root t
+      lsp-idle-delay 0.500
+      lsp-session-file "~/.emacs.d/.cache/lsp-sessions")
+
 ;;lsp-mode with which-key
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))

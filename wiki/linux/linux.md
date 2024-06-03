@@ -619,3 +619,9 @@ Linux something
     ## Using head or dd but in a single pass
     $ { head -c 10 >head_part; cat >tail_part;} <file
     $ { dd count=1 bs=10 of=head_part; cat;} <file >tail_part
+
+## LD_PRELOAD to replace dynamic library
+
+    $ export LD_PRELOAD="./myhack.so"
+    $ unset LD_PREDLOAD
+    $ ldd

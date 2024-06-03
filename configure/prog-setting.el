@@ -157,6 +157,8 @@
     (list (cons "\\.[gG][dD][bB]$" 'gdb-script-mode))
     (list (cons "\\.gdbinit$"      'gdb-script-mode))
     (list (cons "\\.[mM][aA][kK]$" 'makefile-mode))
+    (list (cons "\\.[hH][iI][pP]$" 'c++-mode))
+    (list (cons "\\.[cC][uU]$"     'c++-mode))
     ;; For DOS init files
     ;(list (cons "CONFIG\\."   'bat-mode))
     ;(list (cons "AUTOEXEC\\." 'bat-mode))

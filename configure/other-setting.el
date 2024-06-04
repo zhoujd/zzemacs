@@ -520,6 +520,12 @@
 ;;csv-mode
 (require 'csv-mode)
 
+;;elf-mode
+(require 'elf-mode)
+
+;;dwarf-mode
+(require 'dwarf-mode)
+
 
 (provide 'other-setting)
 

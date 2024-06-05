@@ -44,3 +44,23 @@ PERL
     myref %hash
     myref &sub
     myref *glob
+
+## Perl LanguageServer
+
+    ## https://marketplace.visualstudio.com/items?itemName=richterger.perl
+    ## https://dev.to/perldean/vscode-as-a-perl-ide-3cco
+    ## on Debian/Ubuntu
+    $ sudo apt install libanyevent-perl libclass-refresh-perl \
+    libdata-dump-perl libio-aio-perl libjson-perl libmoose-perl libpadwalker-perl \
+    libscalar-list-utils-perl libcoro-perl
+    ## On Ubuntu 22.04
+    $ sudo apt install libcompiler-lexer-perl
+
+    $ sudo cpan Perl::LanguageServer
+
+    ## on Centos 7
+    $ sudo yum install perl-App-cpanminus perl-AnyEvent-AIO perl-Coro
+    $ sudo cpanm Class::Refresh
+    $ sudo cpanm Compiler::Lexer
+    $ sudo cpanm Hash::SafeKeys
+    $ sudo cpanm Perl::LanguageServer

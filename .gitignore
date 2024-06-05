@@ -4,3 +4,4 @@
 *.pyc
 *.uuid
 99_proxy.sh
+.vscode

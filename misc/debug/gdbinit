@@ -1,5 +1,5 @@
 #### gitinit
 
+## common
 source ~/.gdbconf/common.gdb
 source ~/.gdbconf/stl-views.gdb
-

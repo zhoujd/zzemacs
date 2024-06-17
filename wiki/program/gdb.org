@@ -267,3 +267,26 @@ $1 = {bool (MyClass &, MyClass &)} 0x4009aa <operator<(MyClass&, MyClass&)>
 
 (gdb) b *0x4009aa
 Breakpoint 1 at 0x4009aa: file test.h, line 5.
+** Get source code for libc for debugging in gdb
+
+#+begin_src sh
+$ printf "deb http://ddebs.ubuntu.com %s main restricted universe multiverse\n" \
+  $(lsb_release -cs){,-updates,-security,-proposed} | \
+  sudo tee -a /etc/apt/sources.list.d/ddebs.list
+$ sudo apt install ubuntu-dbgsym-keyring
+$ sudo apt update
+$ sudo apt install coreutils-dbgsym
+$ sudo apt install libc6-dbg
+
+## get source
+$ sudo cp /etc/apt/sources.list /etc/apt/sources.list~
+$ sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+$ sudo apt-get update
+$ apt source libc6
+
+## test
+gcc -ggdb3 -O0 -std=c99 -Wall -Wextra -pedantic -o main.out main.c
+gdb -ex 'set substitute-path . glibc-2.35'  main.out
+
+(gdb) set substitute-path /tmp/build138741687/ glibc-2.35
+#+end_src

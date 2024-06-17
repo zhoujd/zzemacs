@@ -1,6 +1,7 @@
+* Bash
 #+title: Bash Tips
 
-* Echo with colors
+** Echo with colors
 
 #+begin_src sh
 ## https://www.colorhexa.com/
@@ -44,7 +45,7 @@ say() {
 }
 #+end_src
 
-* How to use bash array in a shell script
+** How to use bash array in a shell script
 
 #+begin_src sh
 
@@ -113,7 +114,7 @@ $ unset my_array
 $ echo ${!my_array[@]}
 #+end_src
 
-* Joining bash arguments into single string with spaces
+** Joining bash arguments into single string with spaces
 
 #+begin_src sh
 ## https://unix.stackexchange.com/questions/197792/joining-bash-arguments-into-single-string-with-spaces
@@ -137,7 +138,7 @@ $ sh script.sh one two three four
 'one/two/three/four'
 #+end_src
 
-* Parameter
+** Parameter
 
 #+begin_src sh
 ## http://mywiki.wooledge.org/BashGuide/Parameters
@@ -149,7 +150,7 @@ $ echo  ${ARGUMENT+x}
 x
 #+end_src
 
-* Script argument
+** Script argument
 
 #+begin_src sh
 $1 is the first argument
@@ -160,7 +161,7 @@ $n is the nth argument
 "$@" is the most used one. "$*" is used rarely since it gives all arguments as a single string.
 #+end_src
 
-* String operations
+** String operations
 
 #+begin_src sh
 ${file//RELEASE/"$1"}
@@ -170,7 +171,7 @@ ${file#.*}
 ${file##.*}
 #+end_src
 
-* Sed to replace a multi-line string
+** Sed to replace a multi-line string
 
 #+begin_src sh
 #!/bin/bash
@@ -193,7 +194,7 @@ EOF
 sed -z -i 's#'"${AA}"'#'"${BB}"'#g' *.txt   # apply to all *.txt files
 #+end_src
 
-* Loop 1 hour in bash script
+** Loop 1 hour in bash script
 
 #+begin_src sh
 #!/bin/bash

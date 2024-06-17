@@ -287,6 +287,16 @@ $ apt source libc6
 ## test
 gcc -ggdb3 -O0 -std=c99 -Wall -Wextra -pedantic -o main.out main.c
 gdb -ex 'set substitute-path . glibc-2.35'  main.out
+#+end_src
 
-(gdb) set substitute-path /tmp/build138741687/ glibc-2.35
+** gdb source path
+
+#+begin_src sh
+## https://sourceware.org/gdb/current/onlinedocs/gdb.html/Source-Path.html
+## Use directory with no argument to reset the source path to its default value.
+## Use directory with suitable arguments to reinstall the directories you want in the source path.
+## You can add all the directories in one command.
+(gdb) set substitute-path from to
+(gdb) unset substitute-path [path]
+(gdb) show substitute-path [path]
 #+end_src

@@ -7,6 +7,7 @@ else
 fi
 
 Install_bin() {
+    local target=~/.local/bin
     if [ "$OS" = "Windows_NT" ] ; then
         echo "The script is support Git bash on Windows"
         ln -sfvT $SCRIPT_ROOT/bin/git-lmr /usr/bin/git-lmr
@@ -15,10 +16,10 @@ Install_bin() {
         ln -sfvT $SCRIPT_ROOT/bin/git-pr  /usr/bin/git-pr
     else
         echo "Install git tools on Linux"
-        sudo ln -sfvT $SCRIPT_ROOT/bin/git-lmr /usr/bin/git-lmr
-        sudo ln -sfvT $SCRIPT_ROOT/bin/git-lpr /usr/bin/git-lpr
-        sudo ln -sfvT $SCRIPT_ROOT/bin/git-mr  /usr/bin/git-mr
-        sudo ln -sfvT $SCRIPT_ROOT/bin/git-pr  /usr/bin/git-pr
+        ln -sfvT $SCRIPT_ROOT/bin/git-lmr $target/git-lmr
+        ln -sfvT $SCRIPT_ROOT/bin/git-lpr $target/git-lpr
+        ln -sfvT $SCRIPT_ROOT/bin/git-mr  $target/git-mr
+        ln -sfvT $SCRIPT_ROOT/bin/git-pr  $target/git-pr
     fi
 }
 

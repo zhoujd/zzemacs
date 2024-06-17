@@ -58,7 +58,7 @@ $ TAGS_ROOT=. $(basename $0) {dir1} {dir2} ... {dirN}
 EOF
         ;;
     dep )
-        apt install emacs-bin-common cscope
+        sudo apt install emacs-bin-common cscope
         ;;
     * )
         create_init

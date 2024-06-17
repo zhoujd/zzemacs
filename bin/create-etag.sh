@@ -48,8 +48,8 @@ build() {
 usage() {
     cat <<EOF 
 Usage:
-$(basename $0) {build|-b|clean|-c|dep}
-$(basename $0) -b <dir1> <dir2> .. <dirN> ## Use relative path
+$ $(basename $0) {build|-b|clean|-c|dep}
+$ $(basename $0) -b <dir1> <dir2> .. <dirN> ## Use relative path
 EOF
 }
 

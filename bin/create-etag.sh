@@ -1,12 +1,8 @@
 #!/bin/bash
 #set -x
 
-# apt install emacs-bin-common
-
 # Find Option
-SCAN_LIST=(
-    .
-    $@
+SCAN_DEF_LIST=(
 )
 
 EXCLUDE_LIST=(
@@ -25,14 +21,46 @@ TYPE_LIST=(
     -type f
 )
 
-echo "Clean TAGS"
-rm -f TAGS
+dep() {
+    sudo apt install emacs-bin-common
+}
 
-echo "Build TAGS"
-find ${SCAN_LIST[@]} \
-     \( ${EXCLUDE_LIST[@]} \) \
-     \( ${TYPE_LIST[@]} \) \
-     \( ${FILTER_LIST[@]} \) \
-     -print | etags -
+clean() {
+    echo "Clean TAGS"
+    rm -f TAGS
+}
 
-ls -lh TAGS
+build() {
+    SCAN_LIST=(
+        ${SCAN_DEF_LIST[@]}
+        $@
+    )
+    echo "Build TAGS"
+    find ${SCAN_LIST[@]} \
+         \( ${EXCLUDE_LIST[@]} \) \
+         \( ${TYPE_LIST[@]} \) \
+         \( ${FILTER_LIST[@]} \) \
+         -print | etags -
+
+    ls -lh TAGS
+}
+
+usage() {
+    echo "$(basename $0) {build|-b|clean|-c|dep}"
+}
+
+case $1 in
+    dep )
+        dep
+        ;;
+    -b | build )
+        shift
+        build $@
+        ;;
+    -c | clean )
+        clean
+        ;;
+    * )
+        usage
+        ;;
+esac

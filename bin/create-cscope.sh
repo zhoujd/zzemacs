@@ -2,9 +2,7 @@
 #set -x
 
 ## Find Option
-SCAN_LIST=(
-    .
-    $@
+SCAN_DEF_LIST=(
 )
 
 EXCLUDE_LIST=(
@@ -24,16 +22,48 @@ TYPE_LIST=(
     -a -not -type l
 )
 
-echo "Clean cscope files"
-rm -f cscope*
+dep() {
+    sudo apt install cscope
+}
 
-echo "Generate scan files"
-find ${SCAN_LIST[@]} \
-     \( ${EXCLUDE_LIST[@]} \) \
-     \( ${TYPE_LIST[@]} \) \
-     \( ${FILTER_LIST[@]} \) \
-     -print | grep -v " " > cscope.files
+clean() {
+    echo "Clean cscope files"
+    rm -f cscope*
+}
 
-echo "Build cscope files"
-cscope -b -R -q -k -i cscope.files -f cscope.out
-ls -lh cscope.*
+build() {
+    SCAN_LIST=(
+        ${SCAN_DEF_LIST[@]}
+        $@
+    )
+    echo "Generate scan files"
+    find ${SCAN_LIST[@]} \
+         \( ${EXCLUDE_LIST[@]} \) \
+         \( ${TYPE_LIST[@]} \) \
+         \( ${FILTER_LIST[@]} \) \
+         -print | grep -v " " > cscope.files
+
+    echo "Build cscope files"
+    cscope -b -R -q -k -i cscope.files -f cscope.out
+    ls -lh cscope.*
+}
+
+usage() {
+    echo "$(basename $0) {build|-b|clean|-c|dep}"
+}
+
+case $1 in
+    dep )
+        dep
+        ;;
+    -b | build )
+        shift
+        build $@
+        ;;
+    -c | clean )
+        clean
+        ;;
+    * )
+        usage
+        ;;
+esac

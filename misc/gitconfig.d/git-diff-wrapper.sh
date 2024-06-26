@@ -18,13 +18,13 @@ main() {
         DIFF_TOOL_1="meld $*"
         DIFF_TOOL_2="p4merge $*"
 
-        DIFF_SELECT=$DIFF_TOOL_0
+        DIFF_SELECT=$DIFF_TOOL_1
     else
         DIFF_TOOL_0="bcompare $*"
         DIFF_TOOL_1="meld $*"
         DIFF_TOOL_2="p4merge $*"
 
-        DIFF_SELECT=$DIFF_TOOL_0
+        DIFF_SELECT=$DIFF_TOOL_1
     fi
 
     $DIFF_SELECT

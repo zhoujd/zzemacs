@@ -18,7 +18,7 @@ main() {
         MERGE_TOOL_1="meld $2 $1 $3 -o $4 --diff $1 $2 --diff $1 $3 --auto-merge"
         MERGE_TOOL_2="p4merge $*"
 
-        MERGE_SELECT=$MERGE_TOOL_0
+        MERGE_SELECT=$MERGE_TOOL_1
     else
         MERGE_TOOL_0="bcompare $*"
         MERGE_TOOL_1="meld $2 $1 $3 -o $4 --diff $1 $2 --diff $1 $3 --auto-merge"

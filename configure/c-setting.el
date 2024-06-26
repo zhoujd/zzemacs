@@ -57,10 +57,10 @@
 ;;c/c++ code style
 (c-add-style "zach"
              '( "k&r"
-               (c-basic-offset . 4)
+               (c-basic-offset . 2)
                (indent-tabs-mode . nil)
                (show-trailing-whitespace . t)
-               (tab-width . 4)
+               (tab-width . 2)
                (c-hanging-braces-alist
                 (brace-list-open)
                 (brace-entry-open)
@@ -87,13 +87,13 @@
                ))
 
 ;;c common setting hook
+(defkeys-map c-mode-base-map
+  ((kbd "TAB")     'company-indent-or-complete-common)
+  ((kbd "M-o")     'cff-find-other-file)
+  ((kbd "M-m")     'eassist-list-methods))
 (defun zz:c-mode-common-hook()
-  (setq tab-width 4
-        indent-tabs-mode nil)
-  (defkeys-map c-mode-base-map
-    ((kbd "TAB")     'company-indent-or-complete-common)
-    ((kbd "M-o")     'cff-find-other-file)
-    ((kbd "M-m")     'eassist-list-methods))
+  (setq tab-width 2)
+  (setq indent-tabs-mode nil)
   ;;process settings
   (setq c-macro-shrink-window-flag t)
   (setq c-macro-preprocessor "cpp")

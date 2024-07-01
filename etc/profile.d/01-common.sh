@@ -59,6 +59,4 @@ prompt() {
 }
 
 ## PS1 setting
-if [ "$OS" != "Windows_NT" ]; then
-    prompt
-fi
+prompt

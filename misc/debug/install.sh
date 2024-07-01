@@ -2,16 +2,10 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-config() {
-    ln -sfTv $SCRIPT_ROOT/gdbconf ~/.gdbconf
-    echo "Install Config Done"
-}
-
-init() {
+install() {
+    ln -sfTv $SCRIPT_ROOT/gdbinit.d ~/.gdbinit.d
     cp -fv $SCRIPT_ROOT/gdbinit ~/.gdbinit
-    echo "Install Init Done"
+    echo "Install Done"
 }
 
-config
-init
-
+install

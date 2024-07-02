@@ -477,3 +477,21 @@ Docker
     $ export COMPOSE_DOCKER_CLI_BUILD=1
     $ echo 'export DOCKER_BUILDKIT=1' >> $HOME/.profile
     $ echo 'export COMPOSE_DOCKER_CLI_BUILD=1' >> $HOME/.profile
+
+## How to enable multi-platform Docker builds on Ubuntu 22.04
+
+    ## https://www.staldal.nu/tech/2023/02/10/how-to-enable-multi-platform-docker-builds-on-ubuntu-22-04/
+    ## Install QEMU’s static user mode emulation binaries:
+    $ sudo apt install qemu-user-static
+
+    ## Install Docker Engine with Buildx support according instructions from https://docs.docker.com/engine/install/ubuntu/
+    ## do not install docker-ce or docker.io from Ubuntu’s standard repository
+
+    ## Create a Docker Buildx builder:
+    $ docker buildx create --name multiplatform --bootstrap --us
+
+    ## Verify it:
+    $ docker buildx inspec
+
+    ## Then you can do multi-platform Docker builds like this:
+    $ docker buildx build --platform linux/amd64,linux/arm64

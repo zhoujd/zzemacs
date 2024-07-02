@@ -463,3 +463,17 @@ Docker
 
     $ docker run -e DISPLAY=$DISPLAY -v /tmp:/tmp --ipc=host --pid=host zz/ubuntu-20.04-zwm:dev xephyr :103
     $ docker run -e DISPLAY=$DISPLAY -v /tmp:/tmp zz/ubuntu-20.04-zwm:dev Xephyr :103
+
+## Install docker buildx
+
+    ## https://docs.docker.com/build/buildkit/
+    ## https://github.com/docker/buildx/releases/
+    ## https://github.com/docker/buildx
+    $ VERSION=v0.14.1
+    $ mkdir -p $HOME/.docker/cli-plugins
+    $ wget https://github.com/docker/buildx/releases/download/$VERSION/buildx-$VERSION.linux-amd64 -O $HOME/.docker/cli-plugins/docker-buildx
+    $ chmod +x $HOME/.docker/cli-plugins/docker-buildx
+    $ export DOCKER_BUILDKIT=1
+    $ export COMPOSE_DOCKER_CLI_BUILD=1
+    $ echo 'export DOCKER_BUILDKIT=1' >> $HOME/.profile
+    $ echo 'export COMPOSE_DOCKER_CLI_BUILD=1' >> $HOME/.profile

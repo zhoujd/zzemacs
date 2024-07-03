@@ -40,8 +40,8 @@
 (define-fn-key (gethash "f1" fn-key-table)
   [f1]              help-map
   [S-f1]            'magit-status
-  [C-f1]            'git-timemachine
-  [M-f1]            'git-gutter+-mode
+  [C-f1]            'git-gutter+-mode
+  [M-f1]            'git-timemachine-toggle
   (kbd "C-x <f1>")  nil
   (kbd "C-c <f1>")  nil
   "f1 key binding")

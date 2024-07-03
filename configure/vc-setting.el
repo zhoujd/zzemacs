@@ -72,7 +72,7 @@
 ;;https://github.com/emacsmirror/git-timemachine
 (require 'git-timemachine)
 (defkeys-map global-map
-  ((kbd "M-g M-t") 'git-timemachine))
+  ((kbd "M-g M-t") 'git-timemachine-toggle))
 
 
 (provide 'vc-setting)

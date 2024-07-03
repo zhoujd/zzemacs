@@ -39,8 +39,8 @@
 
 (define-fn-key (gethash "f1" fn-key-table)
   [f1]              help-map
-  [S-f1]            'zz:evil-toggle
-  [C-f1]            'magit-status
+  [S-f1]            'magit-status
+  [C-f1]            'git-timemachine
   [M-f1]            'git-gutter+-mode
   (kbd "C-x <f1>")  nil
   (kbd "C-c <f1>")  nil

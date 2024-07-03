@@ -47,8 +47,7 @@
 (require 'magit)
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)
-  ((kbd "M-g M-c") 'magit-checkout)
-  ((kbd "M-g M-b") 'git-blame-line))
+  ((kbd "M-g M-d") 'magit-dispatch))
 (setq magit-completing-read-function 'helm--completing-read-default)
 
 ;;git show
@@ -69,6 +68,11 @@
 ;;https://github.com/emacsorphanage/git-gutter
 ;;https://github.com/nonsequitur/git-gutter-plus
 (require 'git-gutter+)
+
+;;https://github.com/emacsmirror/git-timemachine
+(require 'git-timemachine)
+(defkeys-map global-map
+  ((kbd "M-g M-t") 'git-timemachine))
 
 
 (provide 'vc-setting)

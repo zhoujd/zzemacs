@@ -2,15 +2,15 @@ Git
 ===
 
 ## Pushing to Git returning Error Code 403 fatal: HTTP request failed
-   Edit .git/config file under your repo directory
-   Find url= entry under section [remote "origin"]
-   Change it from url=https://github.com/zhoujd/zzemacs.git to https://USERNAME@github.com/zhoujd/zzemacs.git
-   where USERNAME is your github user name
 
-   or
+    ## Option 1
+    # Edit .git/config file under your repo directory
+    # Find url= entry under section [remote "origin"]
+    # Change it from url=https://github.com/zhoujd/zzemacs.git to https://USERNAME@github.com/zhoujd/zzemacs.git
+    # where USERNAME is your github user name
 
+    ## Option 2
     $ git remote set-url origin https://yourusername@github.com/user/repo.git
-
 
 ## Failed connect to github.com:443; No error
 
@@ -58,8 +58,18 @@ Git
 
 ## Delete submodule
 
-    ## 1. remove projects from .gitmodules
-    ## 2. git rm --cached projects/<name>
+    $ git submodule deinit {MOD_NAME}
+    $ git rm --cached {MOD_NAME}
+    $ git commit -am "Remove a submodule"
+
+## Update submodule URL
+
+    ### Note: git version greater than 2.7.4, the lower version may need chang .git/config manually
+    ## Step 1: Modify URL in .gitmodules
+    ## Step 2: Update URL to .git/config
+    $ git submodule sync
+    ## Step 3: Save via commit
+    $ git commit -am "Update submodule url"
 
 ## Rename branch
 

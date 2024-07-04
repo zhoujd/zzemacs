@@ -365,22 +365,6 @@
             (equal (buffer-name (ad-get-arg 0)) "\\*Async Shell Command\\*.*"))
        ad-do-it))
 
-;;recentf
-(require 'recentf)
-(require 'recentf-ext)
-(recentf-mode t)
-(setq recentf-menu-open-all-flag  t
-      recentf-max-saved-items     30
-      recentf-max-menu-items      30)
-;;ignore some files
-(setq recentf-exclude '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$"
-                        "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
-                        ".*png$" ".*cache$"))
-
-(defadvice recentf-track-closed-file (after push-beginning activate)
-  "Move current buffer to the beginning of the recent list after killed."
-  (recentf-track-opened-file))
-
 (defun zz:undo-kill-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")

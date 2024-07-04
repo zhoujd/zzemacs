@@ -155,15 +155,6 @@
 (setq font-lock-verbose t)
 (setq font-lock-maximum-size '((t . 1048576) (vm-mode . 5250000)))
 
-;;let F7, as in vim do, to insert the current
-;;time-stamp, whose form is the same as vim do, into
-;;current cursor point.
-(defun zz:insert-time-stamp ()
-  "Insert date from the system time.
-      Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
-  (interactive)
-  (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
-
 ;;mouse avoidance
 ;;opt:animate,exile
 (mouse-avoidance-mode 'exile)
@@ -380,14 +371,6 @@
              (delete buf-file recently-killed-list)))
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
-
-(defun zz:recentf-open-files-compl ()
-  (interactive)
-   (let* ((all-files recentf-list)
-          (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))
-          (prompt (append '("File name: ") tocpl))
-          (fname (completing-read (car prompt) (cdr prompt) nil nil)))
-     (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
 ;;esc quits
 (define-key minibuffer-local-map            [escape] 'minibuffer-keyboard-quit)

@@ -175,7 +175,7 @@
                         (format "echo '%s' >> %s" content file))
     (message "save tramp PS1 done")))
 
-;;recentf ext (sshz is needed)
+;;recentf ext
 (require 'recentf-ext)
 (recentf-mode t)
 (setq recentf-menu-open-all-flag  t
@@ -185,9 +185,18 @@
 (setq recentf-exclude '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$"
                         "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
                         ".*png$" ".*cache$"))
+
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
+
+(defun zz:recentf-open-files-compl ()
+  (interactive)
+   (let* ((all-files recentf-list)
+          (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))
+          (prompt (append '("File name: ") tocpl))
+          (fname (completing-read (car prompt) (cdr prompt) nil nil)))
+     (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")
@@ -539,6 +548,10 @@
 
 ;;dwarf-mode
 (require 'dwarf-mode)
+
+;;modern-fringes
+(require 'modern-fringes)
+(modern-fringes-invert-arrows)
 
 
 (provide 'other-setting)

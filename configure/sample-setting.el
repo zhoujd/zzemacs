@@ -458,6 +458,15 @@
       (when (buffer-file-name)
         (revert-buffer t t t)))))
 
+;;let F7, as in vim do, to insert the current
+;;time-stamp, whose form is the same as vim do, into
+;;current cursor point.
+(defun zz:insert-time-stamp ()
+  "Insert date from the system time.
+      Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
+
 
 (provide 'sample-setting)
 

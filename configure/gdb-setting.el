@@ -36,6 +36,32 @@
  (lambda ()
    (define-key gud-mode-map [tab] 'company-complete-selection)))
 
+;; GDB-MI non-stop
+(defun gdb-non-stop-handler ()
+  (goto-char (point-min))
+  (print (buffer-substring-no-properties (point-min) (point-max)))
+  (if (re-search-forward "No symbol" nil t)
+      (progn
+        (message
+         "This version of GDB doesn't support non-stop mode.  Turning it off.")
+        (setq gdb-non-stop nil)
+        (setq gdb-supports-non-stop nil))
+      (progn
+        (setq gdb-supports-non-stop t)
+        (gdb-input "-gdb-set mi-async on" 'ignore)
+        (gdb-input "-list-target-features" 'gdb-check-mi-async))))
+
+;; Force gdb-mi to not dedicate any windows
+(advice-add 'gdb-display-buffer
+            :around (lambda (orig-fun &rest r)
+                      (let ((window (apply orig-fun r)))
+                        (set-window-dedicated-p window nil)
+                        window)))
+
+(advice-add 'gdb-set-window-buffer
+            :around (lambda (orig-fun name &optional ignore-dedicated window)
+                      (funcall orig-fun name ignore-dedicated window)
+                      (set-window-dedicated-p window nil)))
 
 (provide 'gdb-setting)
 

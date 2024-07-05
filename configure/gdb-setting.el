@@ -49,7 +49,7 @@
       (progn
         (setq gdb-supports-non-stop t)
         (gdb-input "-gdb-set mi-async on" 'ignore)
-        (gdb-input "-list-target-features" 'gdb-check-mi-async))))
+        (gdb-input "-list-target-features" 'gdb-check-target-async))))
 
 ;; Force gdb-mi to not dedicate any windows
 (advice-add 'gdb-display-buffer

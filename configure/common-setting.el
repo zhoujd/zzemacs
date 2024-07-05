@@ -439,6 +439,9 @@
 (when (version< emacs-version "28")
   (defvar completions-detailed nil))
 
+;;disable lock files
+(setq create-lockfiles nil)
+
 
 (provide 'common-setting)
 

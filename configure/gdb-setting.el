@@ -42,14 +42,14 @@
   (print (buffer-substring-no-properties (point-min) (point-max)))
   (if (re-search-forward "No symbol" nil t)
       (progn
-        (message
-         "This version of GDB doesn't support non-stop mode.  Turning it off.")
+        (message "This version of GDB doesn't support non-stop mode.  Turning it off.")
         (setq gdb-non-stop nil)
         (setq gdb-supports-non-stop nil))
       (progn
         (setq gdb-supports-non-stop t)
         (gdb-input "-gdb-set mi-async on" 'ignore)
-        (gdb-input "-list-target-features" 'gdb-check-target-async))))
+        (message "GDB on non-stop mode")
+        )))
 
 ;; Force gdb-mi to not dedicate any windows
 (advice-add 'gdb-display-buffer
@@ -62,6 +62,7 @@
             :around (lambda (orig-fun name &optional ignore-dedicated window)
                       (funcall orig-fun name ignore-dedicated window)
                       (set-window-dedicated-p window nil)))
+
 
 (provide 'gdb-setting)
 

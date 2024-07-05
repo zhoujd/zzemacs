@@ -24,7 +24,7 @@
   (gdb-restore-windows)
   (gud-refresh))
 
-;;realgud
+;;Enable realgud
 (when-emacs25
  (zz:load-path "site-lisp/realgud")
  (require 'realgud)
@@ -36,7 +36,7 @@
  (lambda ()
    (define-key gud-mode-map [tab] 'company-complete-selection)))
 
-;; GDB-MI non-stop
+;;GDB-MI non-stop
 (defun gdb-non-stop-handler ()
   (goto-char (point-min))
   (print (buffer-substring-no-properties (point-min) (point-max)))
@@ -51,7 +51,7 @@
         (message "GDB on non-stop mode")
         )))
 
-;; Force gdb-mi to not dedicate any windows
+;;Force gdb-mi to not dedicate any windows
 (advice-add 'gdb-display-buffer
             :around (lambda (orig-fun &rest r)
                       (let ((window (apply orig-fun r)))

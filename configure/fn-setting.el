@@ -102,7 +102,7 @@
 
 (define-fn-key (gethash "f8" fn-key-table)
   [f8]              'gud-gdb
-  [S-f8]            'gud-stop-subjob
+  [S-f8]            'gdb
   [C-f8]            'gdb-restore-windows
   [M-f8]            'gud-refresh
   (kbd "C-x <f8>")  'gdb-many-windows

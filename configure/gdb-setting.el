@@ -5,6 +5,11 @@
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 (require 'gdb-mi)
 
+;;gud-gdb
+(setq gud-gud-gdb-command-name "gdb -q --fullname")
+;;gdb-mi
+(setq gud-gdb-command-name "gdb -q -i=mi")
+
 (defun zz:gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)

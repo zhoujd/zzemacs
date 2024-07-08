@@ -13,17 +13,24 @@
        (gud-remove nil)
        (gud-break nil))))
 
-(defun zz:gud-kill ()
-  "Kill gdb process."
-  (interactive)
-  (with-current-buffer gud-comint-buffer (comint-skip-input))
-  (kill-process (get-buffer-process gud-comint-buffer)))
-
 (defun zz:gud-restore ()
   "Retore and refresh"
   (interactive)
   (gdb-restore-windows)
   (gud-refresh))
+
+;;GUD quit
+(defun zz:gud-quit ()
+  (interactive)
+  (gud-basic-call "quit"))
+
+(add-hook 'gud-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-q") 'zz:gud-quit)))
+
+(add-hook 'gdb-mode-hook
+          (lambda ()
+            (define-key gud-mode-map [tab] 'company-complete-selection)))
 
 ;;Enable realgud
 (when-emacs25
@@ -31,11 +38,6 @@
  (require 'realgud)
  (zz:load-path "site-lisp/realgud-lldb")
  (require 'realgud-lldb))
-
-(add-hook
- 'gdb-mode-hook
- (lambda ()
-   (define-key gud-mode-map [tab] 'company-complete-selection)))
 
 ;;GDB-MI non-stop
 (defun gdb-non-stop-handler ()
@@ -52,28 +54,6 @@
         (message "GDB on non-stop mode")
         )))
 
-;;Force gdb-mi to not dedicate any windows
-(advice-add 'gdb-display-buffer
-            :around (lambda (orig-fun &rest r)
-                      (let ((window (apply orig-fun r)))
-                        (set-window-dedicated-p window nil)
-                        window)))
-
-(advice-add 'gdb-set-window-buffer
-            :around (lambda (orig-fun name &optional ignore-dedicated window)
-                      (funcall orig-fun name ignore-dedicated window)
-                      (set-window-dedicated-p window nil)))
-
-;;GUD quit
-(defun zz:gud-quit ()
-  (interactive)
-  (gud-basic-call "quit"))
-
-(add-hook 'gud-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-q") 'zz:gud-quit)))
-
-
 ;;Ensure that all source files are opened in the same window when gdb is running
 (add-to-list 'display-buffer-alist
          (cons 'gdb-source-code-buffer-p
@@ -83,7 +63,9 @@
   "Return whether BUFNAME is a source code buffer and gdb is running."
   (let ((buf (get-buffer bufName)))
     (and buf
-         (eq gud-minor-mode 'gdbmi)
+         (or
+          (eq gud-minor-mode 'gdbmi)
+          (eq gud-minor-mode 'gdb))
          (with-current-buffer buf
            (derived-mode-p buf 'c++-mode 'c-mode)))))
 

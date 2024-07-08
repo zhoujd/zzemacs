@@ -1,8 +1,9 @@
 ;;;; gdb-setting.el --- gdb common file
+;;GDB: emacs --eval '(gdb "gdb -q -i=mi a.out")'
+;;GUD-GDB: emacs --eval '(gud-gdb "gdb -q --fullname a.out")'
 
 ;;GDB-MI: https://www.emacswiki.org/emacs/GDB-MI
 (require 'gdb-mi)
-(setq gud-gdb-command-name "gdb -q --fullname")
 
 (defun zz:gud-break-remove ()
   "Set/clear breakpoin."
@@ -62,6 +63,15 @@
             :around (lambda (orig-fun name &optional ignore-dedicated window)
                       (funcall orig-fun name ignore-dedicated window)
                       (set-window-dedicated-p window nil)))
+
+;;GUD quit
+(defun zz:gud-quit ()
+  (interactive)
+  (gud-basic-call "quit"))
+
+(add-hook 'gud-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-q") 'zz:gud-quit)))
 
 
 (provide 'gdb-setting)

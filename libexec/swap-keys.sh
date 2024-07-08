@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Add the following lines in .bash_profile, .bash_login or .profile
 # Swap Caps_Lock and Control_L if necessary
 #
 # When the runlevel is 3 (full multiuser mode), loadkeys works

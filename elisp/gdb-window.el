@@ -1,5 +1,5 @@
 ;;; gdb select window
-;;For the consistency of gdb-select-window's calling convention...
+;;for the consistency of gdb-select-window's calling convention
 
 (defun gdb-set-header (header)
   (cond ((eq header 'locals) gdb-locals-header)
@@ -56,8 +56,8 @@ Recognized window header names are: 'comint, 'locals, 'registers,
           (lexical-let ((key    (car setting))
                         (header (cdr setting)))
             (global-set-key (concat "\C-cg" key) #'(lambda ()
-                                                        (interactive)
-                                                        (gdb-select-window header)))))
+                                                     (interactive)
+                                                     (gdb-select-window header)))))
         '(("c" . comint)
           ("l" . locals)
           ("r" . registers)

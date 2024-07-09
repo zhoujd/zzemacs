@@ -49,6 +49,13 @@
   ((kbd "M-g M-s") 'magit-status)
   ((kbd "M-g M-d") 'magit-dispatch))
 (setq magit-completing-read-function 'helm--completing-read-default)
+(setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+
+(defun zz:magit-status ()
+  "Don't split window."
+  (interactive)
+  (let ((pop-up-windows nil))
+    (call-interactively 'magit-status)))
 
 ;;git show
 (require 'git-show)

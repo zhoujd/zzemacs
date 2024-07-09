@@ -59,7 +59,7 @@
   [f3]              'zz:last-buffer-go
   [S-f3]            'bookmark-bmenu-list
   [C-f3]            'helm-projectile-find-file
-  [M-f3]            'helm-projectile-grep
+  [M-f3]            'helm-projectile-ag
   (kbd "C-x <f3>")  'register-list
   (kbd "C-c <f3>")  'repeat-complex-command
   "f3 key binding")

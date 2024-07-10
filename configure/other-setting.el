@@ -358,9 +358,6 @@
 (require 'escreen)
 (escreen-install)
 
-;;grep+
-(require 'grep+)
-
 ;;iedit
 (zz:load-path "site-lisp/iedit")
 (require 'iedit)

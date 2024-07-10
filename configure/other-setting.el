@@ -354,6 +354,9 @@
 ;;igrep
 (require 'igrep)
 
+;;deadgrep
+(require 'deadgrep)
+
 ;;escreen
 (require 'escreen)
 (escreen-install)

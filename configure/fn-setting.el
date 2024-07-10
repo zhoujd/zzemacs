@@ -140,7 +140,7 @@
   [f12]             'neotree-toggle
   [S-f12]           'neotree-dir
   [C-f12]           'rgrep
-  [M-f12]           'lgrep
+  [M-f12]           'helm-ag
   (kbd "C-x <f12>") 'zz:untabify-buffer
   (kbd "C-c <f12>") 'zz:tabify-buffer
   "f12 key binding")

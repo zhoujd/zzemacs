@@ -283,6 +283,7 @@
  '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
  '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063")))))
 
+;;mode-line time
 (setq display-time-string-forms
       '((propertize (format-time-string "%a %b %d %l:%M %p"))))
 (display-time-mode t)
@@ -293,6 +294,24 @@
                         `((space :align-to (- (- right right-fringe)
                                               ,(string-width display-time-string)))))
             'display-time-string))
+
+;;mode-line format
+(setq-default mode-line-format
+              `("%e" mode-line-front-space
+                (:propertize
+                 ("" mode-line-mule-info mode-line-client mode-line-modified
+                  mode-line-remote)
+                 display (min-width (5.0)))
+                mode-line-frame-identification mode-line-buffer-identification "   "
+                mode-line-position (vc-mode vc-mode) "  "
+                (:propertize ("" mode-name)
+                             help-echo "Major mode\n\
+mouse-1: Display major mode menu\n\
+mouse-2: Show help for major mode\n\
+mouse-3: Toggle minor modes"
+                             mouse-face mode-line-highlight
+                             local-map ,mode-line-major-mode-keymap)
+                mode-line-misc-info mode-line-end-spaces))
 
 ;;M-x display-time-world
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html

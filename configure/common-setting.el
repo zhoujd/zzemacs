@@ -298,10 +298,9 @@
 ;;mode-line format
 (setq-default mode-line-format
               `("%e" mode-line-front-space
-                (:propertize
-                 ("" mode-line-mule-info mode-line-client mode-line-modified
-                  mode-line-remote)
-                 display (min-width (5.0)))
+                (:propertize ("" mode-line-mule-info mode-line-client
+                              mode-line-modified mode-line-remote)
+                             display (min-width (5.0)))
                 mode-line-frame-identification mode-line-buffer-identification "   "
                 mode-line-position (vc-mode vc-mode) "  "
                 (:propertize ("" mode-name)
@@ -311,7 +310,8 @@ mouse-2: Show help for major mode\n\
 mouse-3: Toggle minor modes"
                              mouse-face mode-line-highlight
                              local-map ,mode-line-major-mode-keymap)
-                mode-line-misc-info mode-line-end-spaces))
+                mode-line-misc-info
+                mode-line-end-spaces))
 
 ;;M-x display-time-world
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html

@@ -5,19 +5,19 @@
 (require 'simple-modeline)
 (simple-modeline-mode t)
 
-(defun simple-modeline-segment-percent-prefix ()
+(defun zz:segment-percent-prefix ()
   "Return the percent prefix."
   (concat " "))
 
-(defun simple-modeline-segment-percent-suffix ()
+(defun zz:segment-percent-suffix ()
   "Return the percent suffix."
-  (concat "%% "))
+  (concat "%%" " "))
 
-(defun simple-modeline-segment-percent-position ()
+(defun zz:segment-percent-position ()
   "Return the percent position of the cursor in the current buffer."
   (setq mode-line-percent-position '(-3 "%p")))
 
-(defun simple-modeline-segment-end ()
+(defun zz:segment-end ()
   "Return the end of mode line."
   (concat " "))
 
@@ -37,9 +37,9 @@
 (setq simple-modeline-segments
       '((simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
-         simple-modeline-segment-percent-prefix
-         simple-modeline-segment-percent-position
-         simple-modeline-segment-percent-suffix
+         zz:segment-percent-prefix
+         zz:segment-percent-position
+         zz:segment-percent-suffix
          simple-modeline-segment-position)
         (simple-modeline-segment-input-method
          simple-modeline-segment-eol
@@ -48,7 +48,7 @@
          simple-modeline-segment-misc-info
          simple-modeline-segment-process
          simple-modeline-segment-major-mode
-         simple-modeline-segment-end)))
+         zz:segment-end)))
 
 ;;modern-fringes
 (require 'modern-fringes)

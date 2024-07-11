@@ -1,14 +1,14 @@
 ;;;; ui-setting.el --- ui config file
 
+;;mode-line
+(zz:load-path "site-lisp/mood-line")
+(require 'mood-line)
+(setq mood-line-glyph-alist mood-line-glyphs-fira-code)
+(mood-line-mode t)
 
 ;;modern-fringes
 (require 'modern-fringes)
 (modern-fringes-invert-arrows)
-
-;;mode-line
-(zz:load-path "site-lisp/mood-line")
-(require 'mood-line)
-(mood-line-mode t)
 
 
 (provide 'ui-setting)

@@ -518,6 +518,7 @@
 (defun winum-assign-0-to-neotree ()
   (when (string-match-p (buffer-name) ".*\\*NeoTree\\*.*") 10))
 (add-to-list 'winum-assign-functions #'winum-assign-0-to-neotree)
+(setq winum--mode-line-segment "")
 (winum-mode)
 
 ;;with-editor

@@ -29,9 +29,9 @@
 (setq simple-modeline-segments
       '((simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
+         simple-modeline-segment-percent-position
          simple-modeline-segment-position)
-        (simple-modeline-segment-percent-position
-         simple-modeline-segment-input-method
+        (simple-modeline-segment-input-method
          simple-modeline-segment-eol
          simple-modeline-segment-encoding
          simple-modeline-segment-vc

@@ -7,7 +7,7 @@
 
 (defun simple-modeline-segment-percent-position ()
   "Return the percent position of the cursor in the current buffer."
-  (format-mode-line "%p"))
+  (format-mode-line (concat " " "%p")))
 
 (defun simple-modeline-segment-end ()
   "Return the end of mode line."
@@ -29,9 +29,9 @@
 (setq simple-modeline-segments
       '((simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
-         simple-modeline-segment-position
-         simple-modeline-segment-percent-position)
-        (simple-modeline-segment-input-method
+         simple-modeline-segment-position)
+        (simple-modeline-segment-percent-position
+         simple-modeline-segment-input-method
          simple-modeline-segment-eol
          simple-modeline-segment-encoding
          simple-modeline-segment-vc

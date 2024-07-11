@@ -297,7 +297,8 @@
 
 ;;mode-line format
 (setq-default mode-line-format
-              `("%e" mode-line-front-space
+              `("%e"
+                mode-line-front-space
                 (:propertize ("" mode-line-mule-info mode-line-client
                               mode-line-modified mode-line-remote)
                              display (min-width (5.0)))

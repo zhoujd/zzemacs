@@ -23,6 +23,7 @@
         (message "Load %s end ..." setting))
       '(
         macro-setting
+        lib-setting
         common-setting
         vc-setting
         ))

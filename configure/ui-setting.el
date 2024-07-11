@@ -6,11 +6,11 @@
 (simple-modeline-mode t)
 
 (defun simple-modeline-segment-percent-prefix ()
-  "Return the end of mode line."
+  "Return the percent prefix."
   (concat " "))
 
 (defun simple-modeline-segment-percent-suffix ()
-  "Return the end of mode line."
+  "Return the percent suffix."
   (concat "%% "))
 
 (defun simple-modeline-segment-percent-position ()

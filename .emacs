@@ -64,6 +64,7 @@
         ;;matlab-setting
         ;;spell-setting
         ;;package-setting
+        ui-setting
         keymap-setting
         fn-setting
         key-setting

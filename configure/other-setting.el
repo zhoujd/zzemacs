@@ -469,11 +469,6 @@
 ;;git-annex
 (require 'git-annex)
 
-;;mode-line
-(zz:load-path "site-lisp/mood-line")
-(require 'mood-line)
-(mood-line-mode t)
-
 ;;ssh-config-mode
 (zz:load-path "site-lisp/ssh-config")
 (require 'ssh-config-mode)
@@ -534,7 +529,7 @@
 (require 'ido-completing-read+)
 (ido-ubiquitous-mode t)
 
-;;https://github.com/DarwinAwardWinner/amx/tree/master
+;;https://github.com/DarwinAwardWinner/amx
 (require 'amx)
 (amx-mode t)
 
@@ -549,10 +544,6 @@
 
 ;;dwarf-mode
 (require 'dwarf-mode)
-
-;;modern-fringes
-(require 'modern-fringes)
-(modern-fringes-invert-arrows)
 
 
 (provide 'other-setting)

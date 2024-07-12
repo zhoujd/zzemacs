@@ -286,3 +286,69 @@ QEMU
     $ sudo apt install spice-client-gtk
     $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}
     $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}
+
+
+## Compiling upstream libvirt and qemu from scratch
+
+    ## https://developer.ibm.com/tutorials/compiling-libvirt-and-qemu/
+    ## Prerequisites
+    $ sudo dnf install -y automake gcc  make glibc glibc-utils glib2-devel zlib-devel pixman-devel flex bison
+    $ sudo dnf install -y  numad numactl-devel numactl-libs numactl
+    $ sudo dnf install -y libtool gnutls-utils  gnutls-devel  libnl3-devel libxml2-devel
+    $ sudo dnf install -y libtirpc-devel python3-docutils device-mapper-devel libpciaccess-devel
+    $ sudo dnf install -y rpcbind  readline-devel rpcgen yajl-devel libxslt-devel bzip2
+
+    ## Steps
+    ## 1. Install Git and clone both upstream libvirt and qemu repos.
+    $ sudo dnf install -y git
+    $ git clone https://github.com/qemu/qemu.git
+    $ git clone https://github.com/libvirt/libvirt.git
+
+    ## 2. Configure and build the qemu
+    $ cd qemu
+    $ mkdir -p build
+    $ cd build
+    ## if you want the x86 target too you can add "x86-softmmu" in the target list
+    $ ../configure --enable-trace-backend=simple --enable-debug --target-list=ppc64-softmmu --prefix=/usr/local
+    $ make -j
+    $ sudo make install
+
+    ## 3. Configure and build libvirt
+    $ cd $HOME
+    $ mkdir -p libvirt_build
+    $ cd libvirt
+
+    ## for libvirt 6.6.0 and older
+    $ mkdir build
+    $ cd build
+    $ ../autogen.sh --prefix=$HOME/libvirt_build
+    $ make -j
+    ## make install is required only once to generate the config and log file structure
+    $ make install
+
+    ## for libvirt 6.7.0 and later
+    $ meson build --prefix=$HOME/libvirt_build
+    $ ninja -C build
+    ## ninja -C build install is required only once to generate the config and log file structure
+    $ sudo ninja -C build install
+
+    ## 4. Qemu in the /usr/local/bin directory, the libvirt binary files are in $HOME/libvirt/build
+    $ ls  /usr/local/bin
+    ivshmem-client  ivshmem-server  \
+    qemu-edid  qemu-ga  qemu-img  qemu-io  qemu-nbd  \
+    qemu-pr-helper  qemu-storage-daemon  qemu-system-ppc64
+
+    ## 5. Start the libvirt daemon (libvirtd) from the $HOME/libvirt_build
+    ## The configuration files $HOME/libvirt_build/etc/libvirt
+    $ sudo ./run src/virtlockd & (must be running in the background)
+    $ sudo ./run src/virtlogd & (must be running in the background)
+    $ sudo ./run src/libvirtd (the libvirtd daemon I run in the foreground to see logs)
+
+    ## 6. Use the virsh commands
+    $ cd ~/libvirt_build
+    $ sudo ./run tools/virsh destroy  apic_test
+    Domain apic_test destroyed
+    $ sudo ./run tools/virsh list --all
+    Id   Name        State
+    ----------------------------
+    -    apic_test   shut off

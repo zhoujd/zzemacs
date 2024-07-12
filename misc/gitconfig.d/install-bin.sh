@@ -16,6 +16,7 @@ Install_bin() {
         ln -sfvT $SCRIPT_ROOT/bin/git-pr  /usr/bin/git-pr
     else
         echo "Install git tools on Linux"
+        mkdir -p $target
         ln -sfvT $SCRIPT_ROOT/bin/git-lmr $target/git-lmr
         ln -sfvT $SCRIPT_ROOT/bin/git-lpr $target/git-lpr
         ln -sfvT $SCRIPT_ROOT/bin/git-mr  $target/git-mr

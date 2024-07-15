@@ -17,6 +17,29 @@
   "Return the percent position of the cursor in the current buffer."
   (setq mode-line-percent-position '(-3 "%p")))
 
+(defun zz:segment-position ()
+ "Displays the current cursor position in the mode-line."
+ `((line-number-mode
+    ((column-number-mode
+      (column-number-indicator-zero-based
+       (8 " %l:%c")
+       (8 " %l:%C"))
+      (5 " L%l")))
+    ((column-number-mode
+      (column-number-indicator-zero-based
+       (5 " C%c")
+       (5 " C%C")))))))
+
+(defun zz:segment-region ()
+   (if (region-active-p)
+        (propertize (format " +%s"
+                            (apply #'+ (mapcar
+                                       (lambda (pos)
+                                         (- (cdr pos)
+                                            (car pos)))
+                                       (region-bounds))))
+                    'font-lock-face 'font-lock-variable-name-face)))
+
 (defun zz:segment-end ()
   "Return the end of mode line."
   (concat " "))
@@ -40,7 +63,8 @@
          zz:segment-percent-prefix
          zz:segment-percent-position
          zz:segment-percent-suffix
-         simple-modeline-segment-position)
+         zz:segment-position
+         zz:segment-region)
         (simple-modeline-segment-input-method
          simple-modeline-segment-eol
          simple-modeline-segment-encoding

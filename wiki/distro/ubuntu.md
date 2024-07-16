@@ -440,3 +440,14 @@ Ubuntu setting
 
     $ sudo apt-get install dconf-editor -y
     Then in dconf-editor : /org/gnome/meld/ style-schema/ Custom value = meld-dark
+
+## Ubuntu 22.04 Change limits configure
+
+    $ ulimit -n
+    1024
+
+    ## root -> login name
+    ## ssh relogin, no need reboot
+    $ sudo vim /etc/security/limits.conf
+    root soft nofile 65535
+    root hard nofile 65535

@@ -333,6 +333,15 @@
         c++-mode-hook))
 
 
+;;helm-flx
+(require 'helm-flx)
+(helm-flx-mode +1)
+
+;;wgrep-helm
+(zz:load-path "site-lisp/wgrep")
+(require 'wgrep-helm)
+
+
 (provide 'helm-setting)
 
 ;;; helm-setting.el ends here

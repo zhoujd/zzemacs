@@ -545,6 +545,9 @@
 ;;dwarf-mode
 (require 'dwarf-mode)
 
+;;ag-mode
+(require 'ag)
+
 
 (provide 'other-setting)
 

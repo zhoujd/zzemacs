@@ -668,7 +668,7 @@ This function is called from `compilation-filter-hook'."
          (lines (-map #'s-trim (s-lines ag-output)))
          (types (--keep (when (s-starts-with? "--" it) (s-chop-prefix "--" it )) lines))
          (extensions (--map (s-split "  " it) (--filter (s-starts-with? "." it) lines))))
-    (-zip types extensions)))
+    (-zip-pair types extensions)))
 
 (defun ag/read-file-type ()
   "Prompt the user for a known file type, or let them specify a PCRE regex."

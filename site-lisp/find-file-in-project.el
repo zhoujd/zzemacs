@@ -1,14 +1,13 @@
-;;; find-file-in-project.el --- Find file/directory and review Diff/Patch/Commit efficiently everywhere
+;;; find-file-in-project.el --- Find file/directory and review Diff/Patch/Commit efficiently -*- coding: utf-8 -*-
 
 ;; Copyright (C) 2006-2009, 2011-2012, 2015-2018
 ;;   Phil Hagelberg, Doug Alcorn, Will Farrington, Chen Bin
 ;;
-;; Version: 5.7.1
-;; Package-Version: 20181203.433
+;; Version: 6.2.1
 ;; Author: Phil Hagelberg, Doug Alcorn, and Will Farrington
 ;; Maintainer: Chen Bin <chenbin.sh@gmail.com>
-;; URL: https://github.com/technomancy/find-file-in-project
-;; Package-Requires: ((ivy "0.10.0") (emacs "24.3"))
+;; URL: https://github.com/redguardtoo/find-file-in-project
+;; Package-Requires: ((emacs "25.1"))
 ;; Created: 2008-03-18
 ;; Keywords: project, convenience
 ;; EmacsWiki: FindFileInProject
@@ -33,10 +32,22 @@
 ;;; Commentary:
 
 ;; This program provides methods to find file in project.
+;;
+;; Features,
 ;; - Only dependency is BSD/GNU find
 ;; - Works on Windows with minimum setup
 ;; - Works on Tramp Mode (https://www.emacswiki.org/emacs/TrampMode)
 ;; - fd (faster alternative of find, see https://github.com/sharkdp/fd) is supported
+;; - Uses native API `completing-read' and supports helm/ivy/consult/selectrum out of box.
+;;
+;;   Helm setup,
+;;     (helm-mode 1)
+;;
+;;   Ivy setup,
+;;     (ivy-mode 1)
+;;
+;;   Ido setup,
+;;     (setq ffip-prefer-ido-mode t)
 ;;
 ;; Usage,
 ;;   - You can insert "(setq ffip-use-rust-fd t)" into ".emacs" to use fd (alternative of find)
@@ -48,8 +59,12 @@
 ;;   - `find-directory-in-project-by-selected' uses the select region
 ;;      to find directory.  You can provide the keyword if no region
 ;;      is selected.
-;;   - `find-file-in-project' will start search file immediately
+;;   - `find-file-in-project' starts search file immediately
 ;;   - `ffip-create-project-file' creates ".dir-locals.el"
+;;   - `ffip-lisp-find-file-in-project' finds file in project.
+;;     If its parameter is not nil, it find directory.
+;;     This command is written in pure Lisp and does not use any third party
+;;     command line program.  So it works in all environments.
 ;;
 ;; A project is found by searching up the directory tree until a file
 ;; is found that matches `ffip-project-file'.
@@ -94,22 +109,33 @@
 ;; To find in current directory, use `find-file-in-current-directory'
 ;; and `find-file-in-current-directory-by-selected'.
 ;;
-;; `ffip-split-window-horizontally' and `ffip-split-window-vertically' find&open file
-;; in split window.
-
+;; `ffip-fix-file-path-at-point' replaces path at point with correct relative/absolute path.
+;;
+;; File/directory searching actions are automatically stored into `ffip-find-files-history'.
+;; Use `ffip-find-files-resume' to replay any previous action.
+;; The maximum number of items of the history is set in `ffip-find-files-history-max-items'.
+;;
 ;; `ffip-show-diff' execute the backend from `ffip-diff-backends'.
 ;; The output is in Unified Diff Format and inserted into *ffip-diff* buffer.
 ;; Press "o" or "C-c C-c" or "ENTER" or `M-x ffip-diff-find-file' in the
-;; buffer to open corresponding file.
+;; buffer to open corresponding file.  Please note some backends assume that the git cli program
+;; is added into environment variable PATH.
 ;;
-;; `ffip-diff-find-file-before-hook' is called before `ffip-diff-find-file'.
+;; `ffip-diff-find-file-before-hook' is called in `ffip-diff-find-file'.
+;; Two file names are passed to it as parameters.  One name is returned by the hook
+;; as the file searching keyword.
 ;;
 ;; `ffip-diff-apply-hunk' applies current hunk in `diff-mode' (please note
 ;; `ffip-diff-mode' inherits from `diff-mode') to the target.
 ;; file. The target file could be located by searching `recentf-list'.
 ;; Except this extra feature, `ffip-diff-apply-hunk' is same as `diff-apply-hunk'.
 ;; So `diff-apply-hunk' can be replaced by `ffip-diff-apply-hunk'.
-
+;;
+;; `ffip-diff-filter-hunks-by-file-name' can filter hunks by their file names.
+;; User input pattern "regex !exclude1 exclude1" means the hunk's file name does match "regex".
+;; But does not match "exclude1" or "exclude2".;
+;; Please note in "regex", space represents any string.
+;;
 ;; If you use `evil-mode', insert below code into ~/.emacs,
 ;;   (defun ffip-diff-mode-hook-setup ()
 ;;       (evil-local-set-key 'normal "K" 'diff-hunk-prev)
@@ -125,19 +151,7 @@
 ;; to format the relative path,
 ;;   (setq ffip-find-relative-path-callback 'ffip-copy-reactjs-import)
 ;;   (setq ffip-find-relative-path-callback 'ffip-copy-org-file-link)
-
-;; `ivy-mode' is used for filter/search UI
-;; In `ivy-mode', SPACE is translated to regex ".*".
-;; For example, the search string "dec fun pro" is transformed into
-;; regular expression "\\(dec\\).*\\(fun\\).*\\(pro\\)"
-;; `C-h i g (ivy)' for more key-binding tips.
 ;;
-;; `ffip-save-ivy-last' saves the most recent search result.
-;; `ffip-ivy-resume' re-use the save result. Both requires `ivy-mode'
-;; installed.
-;;
-;; You can switch to `ido-mode' by `(setq ffip-prefer-ido-mode t)'
-
 ;; BSD/GNU Find can be installed through Cygwin or MYSYS2 on Windows.
 ;; Executable is automatically detected. But you can manually specify
 ;; the executable location by insert below code into ".emacs",
@@ -147,34 +161,77 @@
 ;;
 ;; This program works on Windows/Cygwin/Linux/macOS
 ;;
-;; See https://github.com/technomancy/find-file-in-project for advanced tips.
+;; See https://github.com/redguardtoo/find-file-in-project for advanced tips.
 
 ;;; Code:
 
+(require 'find-file)
+(require 'find-lisp)
 (require 'diff-mode)
 (require 'windmove)
+(require 'subr-x)
+(require 'ido)
 
-(defvar ffip-use-rust-fd nil "Use use fd instead of find.")
+(defgroup ffip nil
+  "Find File in Project."
+  :group 'convenience)
 
-(defvar ffip-rust-fd-respect-ignore-files t
-  "Don 't show search results from '.*ignore' files")
+(defcustom ffip-use-rust-fd nil
+  "Use rust fd instead of find."
+  :link '(url-link :tag "fd @ GitHub"
+                   "https://github.com/sharkdp/fd")
+  :group 'ffip
+  :type 'boolean
+  :safe #'booleanp)
 
-(defvar ffip-rust-fd-extra-opts ""
-  "rust fd extra options passed to cli.")
 
-(defvar ffip-window-ratio-alist
-  '((1 . 1.61803398875)
-    (2 . 2)
-    (3 . 3)
-    (4 . 4)
-    (5 . 0.61803398875))
-  "Dictionary to look up windows split ratio.
-Used by `ffip-split-window-horizontally' and `ffip-split-window-vertically'.")
+(defcustom ffip-rust-fd-respect-ignore-files t
+  "Don't show search results from '.*ignore' files."
+  :group 'ffip
+  :type 'boolean
+  :safe #'booleanp)
 
-(defvar ffip-strip-file-name-regex
+(defcustom ffip-project-search-function 'ffip-project-search-default-function
+  "Function to execute find program in shell."
+  :group 'ffip
+  :type 'function
+  :safe #'functionp)
+
+(defcustom ffip-prefer-ido-mode nil
+  "Prefer `ido-completing-read' to filter file candidates."
+  :group 'ffip
+  :type 'boolean
+  :safe #'booleanp)
+
+(defcustom ffip-rust-fd-extra-opts ""
+  "Rust fd extra options passed to cli."
+  :group 'ffip
+  :type 'string)
+
+(defcustom ffip-diff-find-file-by-file-name-p nil
+  "When find file in diff hunk, only search by file name."
+  :group 'ffip
+  :type 'boolean
+  :safe #'booleanp)
+
+(defcustom ffip-strip-file-name-regex
   "\\(\\.mock\\|\\.test\\|\\.mockup\\)"
   "Strip file name to get minimum keyword with this regex.
-It's used by `find-file-with-similar-name'.")
+It's used by `find-file-with-similar-name'."
+  :group 'ffip
+  :type 'regexp)
+
+(defcustom ffip-find-files-history-max-items 4
+  "Maximum number of items stored in `ffip-find-files-history'.
+If this number is zero, no item is saved into `ffip-find-files-history'."
+  :group 'ffip
+  :type 'integer)
+
+(defvar ffip-filename-history nil
+  "History of file names provided by users.")
+
+(defvar ffip-find-files-history nil
+  "History generated by `ffip-find-files'.")
 
 (defvar ffip-diff-find-file-before-hook nil
   "Hook before `ffip-diff-find-file' move focus out of *ffip-diff* buffer.")
@@ -189,42 +246,77 @@ The file path is passed to the hook as the first argument.")
 (defvar ffip-relative-path-pattern "^\\(\\.\\.*/\\)+"
   "Pattern of relative path.")
 
-(defun ffip-shell-command-to-string (command)
-  "Execute shell COMMAND and return its output as a string."
-  (with-output-to-string
-    (with-current-buffer
-        standard-output
-      (shell-command command t))))
+(defun ffip-nonempty-lines (str)
+  "Return non empty lines from STR."
+  (split-string str "[\r\n]+" t))
+
+(defun ffip-diff-git-versions ()
+  "List all versions of code under Git."
+  (let* ((cmd1 "git branch --no-color --all")
+         (cmd2 (concat "git --no-pager log --date=short --pretty=format:'%h|%ad|%s|%an'" buffer-file-name)))
+    (nconc (ffip-nonempty-lines (shell-command-to-string cmd1))
+           (ffip-nonempty-lines (shell-command-to-string cmd2)))))
+
+(defun ffip-diff-select-version ()
+  "Select a version from git history."
+  (let* ((line (completing-read "Select from git history: " (ffip-diff-git-versions)))
+         (version (replace-regexp-in-string "^ *\\*? *"
+                                            ""
+                                            (car (split-string line "|" t)))))
+    version))
 
 ;;;###autoload
 (defun ffip-git-diff-current-file ()
-  "Run 'git diff version:current-file current-file'."
-  (let* ((default-directory (locate-dominating-file default-directory ".git"))
-         (line (ivy-read "diff current file:" (my-git-versions))))
-    (ffip-shell-command-to-string (format "git --no-pager diff %s:%s %s"
-                                     (replace-regexp-in-string "^ *\\*? *" "" (car (split-string line "|" t)))
+  "Compare another version of current file."
+  (let* ((default-directory (locate-dominating-file default-directory ".git")))
+    (shell-command-to-string (format "git --no-pager diff %s:%s %s"
+                                     (ffip-diff-select-version)
                                      (file-relative-name buffer-file-name default-directory)
                                      buffer-file-name))))
 
 (defun ffip-git-diff-project()
-  "Run 'git diff version' in project."
-  (let* ((default-directory (locate-dominating-file default-directory ".git"))
-         (line (ivy-read "diff current file:" (my-git-versions)))
-         (version (replace-regexp-in-string "^ *\\*? *" "" (car (split-string line "|" t)))))
-    (ffip-shell-command-to-string (format "git --no-pager diff %s" version))))
+  "Compare another version of project."
+  (let* ((default-directory (locate-dominating-file default-directory ".git")))
+    (shell-command-to-string (format "git --no-pager diff %s"
+                                     (ffip-diff-select-version)))))
+
+(defun ffip-git-diff-directory()
+  "Compare another version of current directory."
+  (when buffer-file-name
+    (let* ((dir (read-directory-name "Directory: " (file-name-directory buffer-file-name)))
+           (default-directory (locate-dominating-file default-directory ".git")))
+      (shell-command-to-string (format "git --no-pager diff %s -- \"%s\""
+                                       (ffip-diff-select-version)
+                                       dir)))))
+
+(defun ffip-git-diff-file-extension()
+  "Compare another version of files matching file extensions from user input.
+File extensions are separated by space character."
+  (let* ((patterns (read-string "File extensions (e.g., \"cpp py\" matches C++ and Python code files): "
+                                (and buffer-file-name (file-name-extension buffer-file-name)))))
+    (when patterns
+      (let* ((default-directory (locate-dominating-file default-directory ".git")))
+        (setq patterns
+              (mapconcat (lambda (s) (format "\"*.%s\"" s)) (split-string patterns " +") " "))
+        (shell-command-to-string (format "git --no-pager diff %s -- %s"
+                                         (ffip-diff-select-version)
+                                         patterns))))))
 
 (defvar ffip-diff-backends
   '(ffip-git-diff-current-file
     ffip-git-diff-project
+    ffip-git-diff-directory
+    ffip-git-diff-file-extension
     ("`git diff HEAD^` in project" . "cd $(git rev-parse --show-toplevel) && git diff HEAD^")
     ("`git diff --cached` in project" . "cd $(git rev-parse --show-toplevel) && git diff --cached")
     ("`git diff` in project" . "cd $(git rev-parse --show-toplevel) && git diff")
-    ("`git diff` current file" . (ffip-shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git diff '%s'"
+    ("`git diff` current file" . (shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git diff \"%s\""
                                                                     (buffer-file-name))))
-    ("`git log -p` current file" . (ffip-shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git --no-pager log --date=short -p '%s'"
+    ;; git option "--cc" shows changes in merge commits
+    ("`git log -p` current file" . (shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git --no-pager log --date=short -p --cc \"%s\""
                                                      (buffer-file-name))))
-    ("`git log -S keyword -p` in project" . (ffip-shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git --no-pager log --date=short -S'%s' -p"
-                                                              (read-string "Git search string:"))))
+    ("`git log -S keyword -p` in project" . (shell-command-to-string (format "cd $(git rev-parse --show-toplevel) && git --no-pager log --date=short -S\"%s\" -p --cc"
+                                                              (read-string "Git search string: "))))
     ("Diff from `kill-ring'" . (car kill-ring)))
   "The list of back-ends.
 If back-end is string, it's run in `shell-command-to-string'.
@@ -232,27 +324,31 @@ If it's a function or expression, it'll be executed and return a string.
 
 The output is inserted into *ffip-diff* buffer.")
 
-(defvar ffip-find-executable nil "Path of GNU find.  If nil we will guess.")
+(defcustom ffip-find-executable nil
+  "Path of GNU find.  If nil we will guess."
+  :group 'ffip
+  :type 'string)
 
-(defvar ffip-project-file '(".svn" ".hg" ".git")
+(defcustom ffip-project-file '(".svn" ".hg" ".git")
   "The file/directory used to locate project root.
-May be set using .dir-locals.el.  Checks each entry if set to a list.")
+May be set using .dir-locals.el.  Checks each entry if set to a list."
+  :group 'ffip
+  :type '(repeat string))
 
-(defvar ffip-prefer-ido-mode (not (require 'ivy nil t))
-  "Use ido instead of ivy to display candidates.")
-
-(defvar ffip-patterns nil
-  "List of glob patterns to look for with `find-file-in-project'.")
+(defcustom ffip-patterns nil
+  "List of glob patterns to look for with `find-file-in-project'."
+  :group 'ffip
+  :type '(repeat string))
 
 (defvar ffip-match-path-instead-of-filename nil
-  "Match full path instead of file name when calling `find-file-in-project-by-selected'.")
+  "Match full path instead of file name.")
 
 ;; For "GNU/BSD Find", "*/test/*" matches "./test/" and "./dir/test/"
 ;;
 ;; But for "rust fd", only "test/*" matches "./test/" and "./dir/test/";
 ;; "*/test/*" won't match "./test/" but matches "./dir/test/"
-;; Maybe it's bug of fd.
-(defvar ffip-prune-patterns
+;; Maybe it's a fd bug.
+(defcustom ffip-prune-patterns
   '(;; VCS
     "*/.git"
     "*/.svn"
@@ -260,9 +356,10 @@ May be set using .dir-locals.el.  Checks each entry if set to a list.")
     "*/.tox"
     "*/.bzr"
     "*/.hg"
-    "*/bin"
     "*/.DS_Store"
     "*/.sass-cache"
+    "*/elpy"
+    "*/dcache"
     "*/.npm"
     "*/.tmp"
     "*/.idea"
@@ -270,9 +367,11 @@ May be set using .dir-locals.el.  Checks each entry if set to a list.")
     "*/bower_components"
     "*/.gradle"
     "*/.cask")
-  "Ignored directories(prune patterns).")
+  "Ignored directories(prune patterns)."
+  :group 'ffip
+  :type '(repeat string))
 
-(defvar ffip-ignore-filenames
+(defcustom ffip-ignore-filenames
   '(;; VCS
     ;; project misc
     "*.log"
@@ -308,7 +407,6 @@ May be set using .dir-locals.el.  Checks each entry if set to a list.")
     "*.docx"
     "*.xls"
     "*.ppt"
-    "*.pdf"
     "*.odt"
     ;; C/C++
     "*.obj"
@@ -336,29 +434,35 @@ May be set using .dir-locals.el.  Checks each entry if set to a list.")
     "*.elc"
     ;; Python
     "*.pyc")
-  "Ignore file names.  Wildcast is supported.")
+  "Ignored file names.  Wildcast is supported."
+  :group 'ffip
+  :type '(repeat string))
 
-(defvar ffip-find-options ""
+(defcustom ffip-find-options ""
   "Extra options to pass to `find' when using `find-file-in-project'.
 
-Use this to exclude portions of your project: \"-not -regex \\\".*svn.*\\\"\".")
+Use this to exclude portions of your project: \"-not -regex \\\".*svn.*\\\"\"."
+  :group 'ffip
+  :type 'string)
 
-(defvar ffip-find-pre-path-options ""
-  "Extra options to pass to `find' before path name options when using `find-file-in-project'.
+(defcustom ffip-find-pre-path-options ""
+  "Options for find program.
 
-As required by `find', `-H', `-L', `-P', `-D' and `-O' must appear before the first path name, `.'.
-For example, use this to follow symbolic links inside your project: \"-L\".")
+GNU Find requires '-H', '-L', '-P', '-D' and `-O' appear before first path '.'.
+For example, use '-L' to follow symbolic links."
+  :group 'ffip
+  :type 'string)
 
-(defvar ffip-project-root nil
-  "If non-nil, overrides the project root directory location.")
+(defcustom ffip-project-root nil
+  "If non-nil, overrides the project root directory location."
+  :group 'ffip
+  :type 'string)
 
-(defvar ffip-project-root-function nil
+(defcustom ffip-project-root-function nil
   "If non-nil, this function is called to determine the project root.
-
-This overrides variable `ffip-project-root' when set.")
-
-(defvar ffip-ivy-last-saved nil
-  "Backup of `ivy-last'.  Requires ivy.")
+This overrides variable `ffip-project-root' when set."
+  :group 'ffip
+  :type 'function)
 
 (defvar ffip-debug nil "Print debug information.")
 
@@ -383,25 +487,36 @@ This overrides variable `ffip-project-root' when set.")
   (message "%s => kill-ring" p))
 
 ;;;###autoload
-(defvar ffip-find-relative-path-callback 'ffip-copy-without-change
-  "The callback after calling `find-relative-path'.")
+(defcustom ffip-find-relative-path-callback 'ffip-copy-without-change
+  "The callback after calling `find-relative-path'."
+  :group 'ffip
+  :type 'function)
+
+(defun ffip--some (predicate seq)
+  "Return if PREDICATE is t for any element of SEQ."
+  (let* (elem rlt)
+    (while (and (setq elem (car seq))
+                (not rlt))
+      (setq seq (cdr seq))
+      (setq rlt (funcall predicate elem)))
+    rlt))
 
 ;;;###autoload
 (defun ffip-project-root ()
-  "Return the root of the project."
-  (let ((project-root (or ffip-project-root
-                          (if (functionp ffip-project-root-function)
-                              (funcall ffip-project-root-function)
-                            (if (listp ffip-project-file)
-                                (cl-some (apply-partially 'locate-dominating-file
-                                                       default-directory)
-                                      ffip-project-file)
-                              (locate-dominating-file default-directory
-                                                      ffip-project-file))))))
+  "Return project root or `default-directory'."
+  (let* ((project-root (or ffip-project-root
+                           (cond
+                            ((functionp ffip-project-root-function)
+                             (funcall ffip-project-root-function))
+                            ((listp ffip-project-file)
+                             (ffip--some (apply-partially 'locate-dominating-file
+                                                          default-directory)
+                                         ffip-project-file))
+                            (t
+                             (locate-dominating-file default-directory
+                                                     ffip-project-file))))))
     (or (and project-root (file-name-as-directory project-root))
-        (progn
-          (message "Since NO project was found, use `default-directory' instead.")
-          default-directory))))
+        default-directory)))
 
 (defun ffip--read-file-text (file)
   "Read text from FILE."
@@ -413,28 +528,10 @@ This overrides variable `ffip-project-root' when set.")
            (buffer-substring-no-properties (point-min) (point-max))) 'utf-8)))
 
 ;;;###autoload
-(defun ffip-save-ivy-last ()
-  "Save `ivy-last' into `ffip-ivy-last-saved'.  Requires ivy."
-  (interactive)
-  (if (boundp 'ivy-last)
-      (setq ffip-ivy-last-saved ivy-last)
-    (message "Sorry. You need install `ivy-mode' first.")))
-
-;;;###autoload
 (defun ffip-get-project-root-directory ()
   "Get the full path of project root directory."
   (if ffip-project-root (file-name-as-directory ffip-project-root)
     (ffip-project-root)))
-
-;;;###autoload
-(defun ffip-ivy-resume ()
-  "Wrapper of `ivy-resume'.  Resume the search saved at `ffip-ivy-last-saved'."
-  (interactive)
-  (let* ((ivy-last (if ffip-ivy-last-saved ffip-ivy-last-saved ivy-last))
-         (default-directory (ffip-get-project-root-directory)))
-    (if (fboundp 'ivy-resume)
-        (ivy-resume)
-      (message "Sorry. You need install `ivy-mode' first."))))
 
 ;;;###autoload
 (defun ffip-filename-identity (keyword)
@@ -494,21 +591,24 @@ If CHECK-ONLY is true, only do the check."
 (defun ffip--win-executable-find (exe)
   "Find EXE on windows."
   (let* ((drivers '("c" "d" "e" "g" "h" "i" "j" "k"))
-          (i 0)
-          j
-          (dirs '(":\\\\cygwin64\\\\bin\\\\"
+         (i 0)
+         j
+         (dirs '(":\\\\cygwin64\\\\bin\\\\"
+                 ":\\\\cygwin-portable\\\\cygwin\\\\bin\\\\"
                  ":\\\\msys64\\\\usr\\\\bin\\\\"))
-          rlt)
-     (while (and (not rlt)
-                 (< i (length dirs)))
-       (setq j 0)
-       (while (and (not rlt)
-                   (< j (length drivers)))
-         (setq rlt (executable-find (concat (nth j drivers) (nth i dirs) exe)))))
-     (unless rlt
-       ;; nothing found, fall back to exe
-       (setq rlt exe))
-     rlt))
+         rlt)
+    (while (and (not rlt)
+                (< i (length dirs)))
+      (setq j 0)
+      (while (and (not rlt)
+                  (< j (length drivers)))
+        (setq rlt (executable-find (concat (nth j drivers) (nth i dirs) exe)))
+        (setq j (1+ j)))
+      (setq i (1+ i)))
+    (unless rlt
+      ;; nothing found, fall back to exe
+      (setq rlt exe))
+    rlt))
 
 (defun ffip--executable-find ()
   "Find EXE on all environments."
@@ -583,55 +683,49 @@ If CHECK-ONLY is true, only do the check."
 (defun ffip-completing-read (prompt collection &optional action)
   "Read a string in minibuffer, with completion.
 
-PROMPT is a string with same format parameters in `ido-completing-read'.
+PROMPT is a string with same format parameters in `completing-read'.
 COLLECTION is a list of strings.
 
 ACTION is a lambda function to call after selecting a result.
 
 This function returns the selected candidate or nil."
-  (cond
-   ((and action (= 1 (length collection)))
-    ;; open file directly
-    (funcall action (car collection))
-    (car collection))
-   ;; If user prefer `ido-mode' or there is no ivy,
-   ;; use `ido-completing-read'.
-   ((or ffip-prefer-ido-mode (not (fboundp 'ivy-read)))
-    ;; friendly UI for ido
-    (let* ((list-of-pair (consp (car collection)))
-           (ido-collection (if list-of-pair
-                               (mapcar 'car collection)
-                             collection))
-           (ido-selected (ido-completing-read prompt ido-collection)))
-      (if (and ido-selected action)
-          (funcall action
-                   (if list-of-pair
-                       (cdar (delq nil
-                                   (mapcar (lambda (x)
-                                             (and (string= (car x)
-                                                           ido-selected)
-                                                  x))
-                                           collection)))
-                     ido-selected)))
-      ido-selected))
-   (t
-    (ivy-read prompt collection
-              :action action))))
+  (let* (selected)
+    (cond
+     ((= 1 (length collection))
+      ;; select the only candidate immediately
+      (setq selected (car collection)))
 
-(defun ffip-create-shell-command (keyword is-finding-directory)
+     (ffip-prefer-ido-mode
+      ;; ido can only handle list of strings
+      (setq selected (ido-completing-read prompt (mapcar 'car collection))))
+
+     (t
+      (setq selected (completing-read prompt collection))
+      (setq selected (or (assoc selected collection) selected))))
+
+    (when selected
+      ;; make sure only the string/file is passed to action
+      (let* ((default-directory (ffip-get-project-root-directory))
+             (result (if (consp selected) (cdr selected) selected)))
+        (if action (funcall action result) result)))))
+
+(defun ffip-create-shell-command (keyword find-directory-p)
   "Produce command to search KEYWORD.
-If IS-FINDING-DIRECTORY is t, we look up directory instead of file.
+If FIND-DIRECTORY-P is t, we look up directory instead of file.
 Rust fd use regular expression.
 BSD/GNU Find use glob pattern."
   (let* (cmd fmt tgt)
     (cond
      (ffip-use-rust-fd
+      ;; `-H` => search hidden files
       ;; `-E` => exclude pattern
       ;; `-c` => color
       ;; `-i` => case insensitive
       ;; `-t` => directory (d) or file (f)
-      (setq fmt (concat "%s %s -c never -i -t %s %s %s %s"
+      ;; `-p` => match full path
+      (setq fmt (concat "%s %s -c never -H -i -t %s %s %s %s"
                         (if ffip-rust-fd-respect-ignore-files "" " -I")
+                        (if ffip-match-path-instead-of-filename " -p" "")
                         " "
                         ffip-rust-fd-extra-opts
                         " %s"))
@@ -639,7 +733,7 @@ BSD/GNU Find use glob pattern."
       (setq tgt (if keyword (format "\".*%s\"" keyword) "")))
      (t
       (setq tgt
-            (if is-finding-directory (format "-iwholename \"*%s\"" keyword)
+            (if find-directory-p (format "-iwholename \"*%s\"" keyword)
               (ffip--create-filename-pattern-for-gnufind keyword)))
       (setq fmt (concat "%s "
                         ffip-find-pre-path-options
@@ -648,7 +742,7 @@ BSD/GNU Find use glob pattern."
     (setq cmd (format fmt
                       (ffip--executable-find)
                       (ffip--prune-patterns)
-                      (if is-finding-directory "d" "f")
+                      (if find-directory-p "d" "f")
                       (ffip--ignore-file-names)
                       ffip-find-options
                       (ffip--join-patterns ffip-patterns)
@@ -661,8 +755,19 @@ BSD/GNU Find use glob pattern."
   (setq s (replace-regexp-in-string "\*" ".*" s))
   s)
 
+(defmacro ffip-push-one-candidate (file result)
+  "Push FILE into RESULT."
+  ;; @see https://www.murilopereira.com/how-to-open-a-file-in-emacs/
+  ;; also @see #15 improving handling of directories containing space
+  `(push (cons (replace-regexp-in-string "^\./" "" ,file) ,file) ,result))
+
+(defun ffip-project-search-default-function (find-command)
+  "Execute FIND-COMMAND in shell and split its output into lines."
+  (if ffip-debug "ffip-project-search-default-function => find-command=%s" find-command)
+  (split-string (shell-command-to-string find-command) "[\r\n]+" t))
+
 ;;;###autoload
-(defun ffip-project-search (keyword is-finding-directory &optional directory-to-search)
+(defun ffip-project-search (keyword &optional find-directory-p)
   "Return an alist of all filenames in the project and their path.
 
 Files with duplicate filenames are suffixed with the name of the
@@ -670,27 +775,30 @@ directory they are found in so that they are unique.
 
 If KEYWORD is string, it's the file name or file path to find file.
 If KEYWORD is list, it's the list of file names.
-IF IS-FINDING-DIRECTORY is t, we are searching directories, else files.
-DIRECTORY-TO-SEARCH specify the root directory to search."
-  (let* ((root (or directory-to-search
-                   (ffip-get-project-root-directory)))
-         (default-directory (file-name-as-directory root))
-         (cmd (ffip-create-shell-command keyword is-finding-directory))
-         (collection (split-string (ffip-shell-command-to-string cmd) "[\r\n]+" t)))
+IF FIND-DIRECTORY-P is t, we are searching directories, else files."
+  (let* ((default-directory (ffip-get-project-root-directory))
+         (cmd (ffip-create-shell-command keyword find-directory-p))
+         (fd-file-pattern (concat "^" (mapconcat 'ffip-glob-to-regex ffip-patterns "\\|") "$"))
+         (collection (funcall ffip-project-search-function cmd))
+         rlt)
 
     (if ffip-debug (message "run command at %s: %s" default-directory cmd))
 
-    (when (and ffip-use-rust-fd ffip-patterns)
-      ;; filter result with Lisp because fd does NOT support multiple patterns
-      (let* ((r (concat "^" (mapconcat 'ffip-glob-to-regex ffip-patterns "\\|") "$")))
-        (setq collection (delq nil (mapcar (lambda (s)
-                                             (if (string-match-p r s) s))
-                                           collection)))))
-    (mapcar (lambda (file)
-              (cons (replace-regexp-in-string "^\./" "" file)
-                    (expand-file-name file)))
-            ;; #15 improving handling of directories containing space
-            collection)))
+    ;; use simple loop statement for clean code
+    (cond
+     ((and ffip-use-rust-fd ffip-patterns)
+      (let* ((fd-file-pattern (concat "^"
+                                      (mapconcat 'ffip-glob-to-regex ffip-patterns "\\|")
+                                      "$")))
+        (dolist (file collection)
+          ;; filter result with Lisp because fd does NOT support multiple patterns
+          (if (string-match fd-file-pattern file) (ffip-push-one-candidate file rlt)))))
+
+     (t
+      (dolist (file collection)
+        (ffip-push-one-candidate file rlt))))
+
+    (nreverse rlt)))
 
 (defun ffip--forward-line (lnum)
   "Forward LNUM lines."
@@ -699,60 +807,116 @@ DIRECTORY-TO-SEARCH specify the root directory to search."
     (goto-char (point-min))
     (forward-line (1- lnum))))
 
+(defun ffip-hint ()
+  "Hint."
+  (let ((root (ffip-get-project-root-directory)))
+    (format "Find in %s/: "
+            (file-name-nondirectory (directory-file-name root)))))
+
+(defun ffip-select-and-open-file (files new-window-p directory-p fn lnum)
+  "Select and open file from FILES.
+If NEW-WINDOW-P is t, create a new window for opened file.
+If DIRECTORY-P is t, open directory instead of file.
+IF the function FN is not nil, call it after opening the selected file.
+After opening the file, forward LNUM lines."
+  (ffip-completing-read
+   (ffip-hint)
+   files
+   `(lambda (file)
+      ;; only one item in project files
+      (if ,directory-p
+          (if (quote ,new-window-p)
+              (dired-other-window file)
+            (switch-to-buffer (dired file)))
+        ;; open file
+        (if (quote ,new-window-p)
+            (find-file-other-window file)
+          (find-file file))
+        ;; goto line if needed
+        (ffip--forward-line ,lnum)
+        (if ,fn (funcall ,fn file))))))
+
 ;;;###autoload
-(defun ffip-find-files (keyword open-another-window &optional find-directory fn)
+(defun ffip-find-files (keyword open-another-window &optional find-directory-p fn)
   "Use KEYWORD to find files.
 If OPEN-ANOTHER-WINDOW is t, the results are displayed in a new window.
-If FIND-DIRECTORY is t, only search directories.  FN is callback.
+If FIND-DIRECTORY-P is t, only search directories.  FN is callback.
 This function is the API to find files."
-  (let* (cands
-         lnum
-         file
-         root)
-
+  (let* (cands lnum file)
     ;; extract line num if exists
     (when (and keyword (stringp keyword)
                (string-match "^\\(.*\\):\\([0-9]+\\):?$" keyword))
       (setq lnum (string-to-number (match-string 2 keyword)))
       (setq keyword (match-string 1 keyword)))
 
-    (setq cands (ffip-project-search keyword find-directory))
+    (setq cands (ffip-project-search keyword find-directory-p))
     (cond
      ((> (length cands) 0)
-      (setq root (file-name-nondirectory (directory-file-name (ffip-get-project-root-directory))))
-      (ffip-completing-read
-       (format "Find in %s/: " root)
-       cands
-       `(lambda (file)
-          ;; only one item in project files
-          (if (listp file) (setq file (cdr file)))
-          (if ,find-directory
-              (if (quote ,open-another-window)
-                  (dired-other-window file)
-                (switch-to-buffer (dired file)))
-            ;; open file
-            (if (quote ,open-another-window)
-                (find-file-other-window file)
-              (find-file file))
-            ;; goto line if needed
-            (ffip--forward-line ,lnum)
-            (if ,fn (funcall ,fn file))))))
+
+      (unless (eq ffip-find-files-history-max-items 0)
+        ;; save the history
+        (when (>= (length ffip-find-files-history)
+                  ffip-find-files-history-max-items)
+          ;; kick out the oldest item
+          (setq ffip-find-files-history (butlast ffip-find-files-history)))
+        ;; add the latest item
+        (push (list :files cands
+                    :keyword keyword
+                    :directory-p find-directory-p
+                    :function fn
+                    :forward-lines lnum
+                    :default-directory (ffip-get-project-root-directory))
+              ffip-find-files-history))
+
+      (ffip-select-and-open-file cands
+                                 open-another-window
+                                 find-directory-p
+                                 fn
+                                 lnum))
+
      (t
       (message "Nothing found!")))))
+
+;;;###autoload
+(defun ffip-find-files-resume (&optional n)
+  "Resume the last Nth `ffip-find-file' operation.
+Please note N is zero originated."
+  (interactive "P")
+  (unless n (setq n 0))
+  (cond
+   ((>= n ffip-find-files-history-max-items)
+    (message "There are only %d items in `ffip-find-files-history'."
+             ffip-find-files-history-max-items))
+   (t
+    (let* ((item (nth n ffip-find-files-history))
+           (default-directory (plist-get item :default-directory)))
+      (ffip-select-and-open-file (plist-get item :files)
+                                 nil
+                                 (plist-get item :directory-p)
+                                 (plist-get item :function)
+                                 (plist-get item :forward-lines))))))
 
 (defun ffip--prepare-root-data-for-project-file (root)
   "Prepare data for ROOT."
   (cons 'ffip-project-root root))
 
 (defun ffip--read-selected ()
+  "Read select string."
   (buffer-substring-no-properties (region-beginning) (region-end)))
 
 (defun ffip-read-keyword ()
   "Read keyword from selected text or user input."
-  (let* ((hint (if ffip-use-rust-fd "Enter regex (or press ENTER):"
-                 "Enter keyword (or press ENTER):")))
-    (if (region-active-p) (ffip--read-selected)
-      (read-string hint))))
+  (let* ((hint (if ffip-use-rust-fd "Enter regex (or press ENTER): "
+                 "Enter keyword (or press ENTER): "))
+         rlt)
+    (cond
+     ((region-active-p)
+      (setq ffip-filename-history (add-to-list 'ffip-filename-history
+                                               (ffip--read-selected)))
+      (setq rlt (ffip--read-selected)))
+     (t
+      (setq rlt (read-from-minibuffer hint nil nil nil 'ffip-filename-history))))
+    (if rlt (string-trim rlt) rlt)))
 
 ;;;###autoload
 (defun ffip-create-project-file ()
@@ -760,7 +924,7 @@ This function is the API to find files."
 You can move .dir-locals.el to root directory.
 See (info \"(Emacs) Directory Variables\") for details."
   (interactive)
-  (let* ((root (read-directory-name "Project root directory?" default-directory))
+  (let* ((root (read-directory-name "Project root directory: " default-directory))
          (file (if (and root (file-exists-p root))
                    (concat (file-name-as-directory root) ".dir-locals.el"))))
     (when file
@@ -820,51 +984,93 @@ You can override this by setting the variable `ffip-project-root'."
   "Is FILENAME relative?"
   (if (string-match-p ffip-relative-path-pattern filename) t))
 
+(defun ffip-guess-file-name-at-point ()
+  "Guess file name at point.  File name could contain environment variables."
+  (let* ((file (or (and (region-active-p) (ffip--read-selected))
+                   (thing-at-point 'filename)
+                   (thing-at-point 'symbol)
+                   (read-string "No file name at point. Please provide one: "))))
+    (when file
+      ;; replace environment variable in file name
+      (car (ff-list-replace-env-vars (list file))))))
+
+(defun ffip--guess-physical-path (file)
+  "Return physical full path of FILE which does exist."
+  (let* (rlt tmp)
+    ;; only deal with file path
+    (when (or (file-name-absolute-p file)
+              (ffip-file-name-relative-p file))
+      (cond
+       ;; file already exists
+       ((and (file-exists-p file)
+             ;; not directory
+             (not (car (file-attributes file))))
+        (setq rlt (file-truename file)))
+
+       ;; extra effort for javascript like language
+       ;; "./lib/A" could mean "./lib/A.js" or "./lib/A/index.js"
+       ((and (or (derived-mode-p 'js-mode)
+                 (memq major-mode '(typescript-mode)))
+             (string-match-p "^[^.]*$"(file-name-nondirectory file)))
+        (dolist (ext '(".ts" ".js"))
+          ;; guess physical path
+          (cond
+           ;; "./lib/A.js" or "./lib/A.ts"
+           ((file-exists-p (setq tmp (concat file ext)))
+            (setq rlt (file-truename tmp)))
+
+           ;; "./lib/A/index.js" or "./lib/A/index.ts"
+           ((file-exists-p (setq tmp (concat (file-name-as-directory file) "index" ext)))
+            (setq rlt (file-truename tmp))))))))
+
+    rlt))
+
 ;;;###autoload
 (defun find-file-in-project-at-point (&optional open-another-window)
-  "Find file whose name is guessed around point.
+  "Find file at point.  File path could contain environment variables.
 If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
   (interactive "P")
-  (let* ((fn (or (and (region-active-p) (ffip--read-selected))
-                       (thing-at-point 'filename)
-                       (thing-at-point 'symbol)
-                       (read-string "No file name at point. Please provide file name:")))
+  (let* ((fn (ffip-guess-file-name-at-point))
          ;; could be a path
          (ffip-match-path-instead-of-filename t)
-         tfn)
+         full-path)
     (cond
      (fn
       (cond
+       ;; is relative/full path and path is real
+       ((setq full-path (ffip--guess-physical-path fn))
+        (if open-another-window (find-file-other-window full-path)
+          (find-file full-path)))
+
+       ;; absolute path which does not exist
        ((file-name-absolute-p fn)
-        ;; absolute path
-        (cond
-         ((file-exists-p fn)
-          ;; if file has absolute path and file exists, open it directly
-          (if open-another-window (find-file-other-window fn)
-            (find-file fn)))
-         (t
-          ;; well, search by file name
-          (let* ((ffip-match-path-instead-of-filename nil))
-            (ffip-find-files (file-name-nondirectory fn) open-another-window)))))
-       ((and (ffip-file-name-relative-p fn)
-             (file-exists-p (setq tfn (file-truename fn))))
-        ;; file has relative path and file exist
-        (if open-another-window (find-file-other-window tfn)
-          (find-file tfn)))
+        ;; search file name only
+        (let* ((ffip-match-path-instead-of-filename nil))
+          (ffip-find-files (file-name-nondirectory fn) open-another-window)))
+
        (t
         ;; strip prefix "../../" or "././" from file name
-        (setq tfn (replace-regexp-in-string ffip-relative-path-pattern "" fn))
-        (ffip-find-files tfn open-another-window))))
+        (ffip-find-files (replace-regexp-in-string ffip-relative-path-pattern "" fn)
+                         open-another-window))))
      (t
       (message "No file name is provided.")))))
 
+(defun ffip-parent-directory (level directory)
+  "Return LEVEL up parent directory of DIRECTORY."
+  (let* ((rlt directory))
+    (while (and (> level 0) (not (string= "" rlt)))
+      (setq rlt (file-name-directory (directory-file-name rlt)))
+      (setq level (1- level)))
+    (if (string= "" rlt) (setq rlt nil))
+    rlt))
+
 ;;;###autoload
-(defun find-file-in-current-directory (&optional open-another-window)
-  "Like `find-file-in-project'.  But search only in current directory.
-IF OPEN-ANOTHER-WINDOW is t, results are displayed in new window."
+(defun find-file-in-current-directory (&optional level)
+  "Search file in current directory or LEVEL up parent directory."
   (interactive "P")
-  (let* ((ffip-project-root default-directory))
-    (find-file-in-project open-another-window)))
+  (unless level (setq level 0))
+  (let* ((ffip-project-root (ffip-parent-directory level default-directory)))
+    (find-file-in-project nil)))
 
 ;;;###autoload
 (defun find-file-in-project-by-selected (&optional open-another-window)
@@ -892,17 +1098,12 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
   "Insert contents of file in current buffer.
 The file name is selected interactively from candidates in project."
   (interactive)
-  (let* ((cands (ffip-project-search (ffip-read-keyword) nil))
+  (let* ((cands (ffip-project-search (ffip-read-keyword)))
          root)
     (when (> (length cands) 0)
-      (setq root (file-name-nondirectory (directory-file-name (ffip-get-project-root-directory))))
-      (ffip-completing-read
-       (format "Read file in %s/: " root)
-       cands
-       `(lambda (file)
-          ;; only one item in project files
-          (if (listp file) (setq file (cdr file)))
-          (insert-file file))))))
+      (ffip-completing-read (ffip-hint)
+                            cands
+                            'insert-file))))
 
 ;;;###autoload
 (defun find-file-with-similar-name (&optional open-another-window)
@@ -927,29 +1128,26 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
     (find-file-in-project-by-selected open-another-window)))
 
 ;;;###autoload
-(defun find-relative-path(&optional find-directory)
+(defun ffip-find-relative-path(&optional find-directory-p)
   "Find file/directory and copy its relative path into `kill-ring'.
-Optional prefix FIND-DIRECTORY copy the directory path; file path by default.
-
-You can set `ffip-find-relative-path-callback' to format the string before copying,
-  (setq ffip-find-relative-path-callback 'ffip-copy-reactjs-import)
-  (setq ffip-find-relative-path-callback 'ffip-copy-org-file-link)"
+If FIND-DIRECTORY-P is t, copy the directory path.
+Set `ffip-find-relative-path-callback' to format the result."
   (interactive "P")
-  (let* ((cands (ffip-project-search (ffip-read-keyword) find-directory))
-         root)
+  (let* ((cands (ffip-project-search (ffip-read-keyword) find-directory-p)))
     (cond
      ((> (length cands) 0)
-      (setq root (file-name-nondirectory (directory-file-name (ffip-get-project-root-directory))))
       (ffip-completing-read
-       (format "Find in %s/: " root)
+       (ffip-hint)
        cands
-       `(lambda (p)
+       `(lambda (file)
           ;; only one item in project files
-          (if (listp p) (setq p (cdr p)))
-          (if ,find-directory
-              (setq p (file-name-as-directory p)))
-          (setq p (file-relative-name p (file-name-directory buffer-file-name)))
-          (funcall ffip-find-relative-path-callback p))))
+          (if ,find-directory-p
+              (setq file (file-name-as-directory file)))
+              (setq file (file-relative-name file
+                                             (if buffer-file-name
+                                                 (file-name-directory buffer-file-name)
+                                               (expand-file-name default-directory))))
+              (funcall ffip-find-relative-path-callback file))))
      (t
       (message "Nothing found!")))))
 
@@ -969,52 +1167,57 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
   (interactive "P")
   (ffip-find-files (ffip-read-keyword) open-another-window t))
 
+(defun ffip--prune-patterns-regex ()
+  "Convert `ffip--prune-patterns-regex to regex."
+  (let* ((rlt (mapconcat 'identity ffip-prune-patterns "\\|")))
+    (setq rlt (replace-regexp-in-string "\\." "\\\\." rlt))
+    (setq rlt (replace-regexp-in-string "\\*" ".*" rlt))
+    ;; file name or directory name
+    (concat rlt "\\($\\|/\\)" )))
+
+;;;###autoload
+(defun ffip-lisp-find-file-in-project (&optional directory-p)
+  "If DIRECTORY-P is nil, find file in project, or else find directory.
+This command works in any environment (Windows, etc) out of box."
+  (interactive "P")
+  (let* ((root (ffip-get-project-root-directory))
+         (input-regex (read-string "Input regex (or press ENTER): "))
+         (find-lisp-regexp (if (string= input-regex "") ".*" input-regex))
+         cands
+         (ignored-regex (ffip--prune-patterns-regex)))
+    (cond
+     (directory-p
+      (setq cands (find-lisp-find-files-internal
+                  root
+                  'find-lisp-file-predicate-is-directory
+                  'find-lisp-default-directory-predicate)))
+     (t
+      (setq cands (find-lisp-find-files-internal
+                   root
+                   'find-lisp-default-file-predicate
+                   'find-lisp-default-directory-predicate))))
+    (setq cands
+          (delq nil
+                (mapcar `(lambda (c)
+                           (unless (string-match ,ignored-regex c) c))
+                        cands)))
+    (ffip-completing-read
+     (format "%s %s: " (if directory-p "directories" "files") root)
+     cands
+     `(lambda (file)
+        (if ,directory-p
+            (switch-to-buffer (dired file))
+          (find-file file))))))
+
 ;;;###autoload
 (defalias 'ffip 'find-file-in-project)
-
+;;;###autoload
+(defalias 'find-relative-path 'ffip-find-relative-path)
 
 (defun ffip-path (candidate)
-  "Get path from ivy CANDIDATE."
+  "Get path from CANDIDATE."
   (let* ((default-directory (ffip-project-root)))
-    (file-truename (if (consp candidate) (cdr candidate)
-                     candidate))))
-
-(defun ffip-split-window-api (split-fn mv-fn ratio)
-  "Use SPLIT-FN to split window and focus on new window by MV-FN.
-Window split in RATIO."
-  (let* (ratio-val
-         (cands (ffip-project-search (ffip-read-keyword) nil))
-         (file (if (= 1 (length cands)) (ffip-path (car cands))
-                 (ffip-path (ffip-completing-read "Find file: " cands))))
-         (buf (if (and file (file-exists-p file)) (find-file-noselect file)
-                (other-buffer))))
-    (cond
-     (ratio
-      (setq ratio-val (cdr (assoc ratio ffip-window-ratio-alist)))
-      (funcall split-fn (floor (/ (window-body-width)
-                                  (1+ ratio-val)))))
-     (t
-      (funcall split-fn)))
-    (set-window-buffer (next-window) buf)
-    (if (or (not ratio-val)
-            (>= ratio-val 1))
-        (funcall mv-fn))))
-
-;;;###autoload
-(defun ffip-split-window-horizontally (&optional ratio)
-  "Find&Open file in horizontal split window.
-New window size is looked up in `ffip-window-ratio-alist' by RATIO.
-Keyword to search new file is selected text or user input."
-  (interactive "P")
-  (ffip-split-window-api 'split-window-horizontally 'windmove-right ratio))
-
-;;;###autoload
-(defun ffip-split-window-vertically (&optional ratio)
-  "Find&Open file in vertical split window.
-New window size is looked up in `ffip-window-ratio-alist' by RATIO.
-Keyword to search new file is selected text or user input."
-  (interactive "P")
-  (ffip-split-window-api 'split-window-vertically 'windmove-down ratio))
+    (file-truename (if (consp candidate) (cdr candidate) candidate))))
 
 ;;;###autoload
 (defun ffip-diff-quit ()
@@ -1028,10 +1231,12 @@ Keyword to search new file is selected text or user input."
   "File file(s) in current hunk.
 If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
   (interactive "P")
-  (let* ((files (mapcar 'file-name-nondirectory (diff-hunk-file-names)))
+  (let* ((files (mapcar (lambda (f) (replace-regexp-in-string "^[^/]*/" "" f)) (diff-hunk-file-names)))
          (alnum 0)
          (blnum 0)
-         (regex "\\(?:\\*\\{15\\}.*\n\\)?[-@* ]*\\([0-9,]+\\)\\([ acd+]+\\([0-9,]+\\)\\)?"))
+         (regex "\\(?:\\*\\{15\\}.*\n\\)?[-@* ]*\\([0-9,]+\\)\\([ acd+]+\\([0-9,]+\\)\\)?")
+         (ffip-match-path-instead-of-filename (not ffip-diff-find-file-by-file-name-p))
+         keyword)
 
     (save-excursion
       (diff-beginning-of-hunk t)
@@ -1039,16 +1244,40 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
         (setq alnum (string-to-number (match-string 1)))
         (setq blnum (string-to-number (match-string 3)))))
 
-    (if (and (> (length files) 1)
-             (string= (nth 0 files) (nth 1 files)))
-        (ffip-find-files (nth 0 files)
-                         open-another-window
-                         nil
-                         (lambda (opened-file)
-                           ;; use line number in new file since there is only one file name candidate
-                           (ffip--forward-line blnum)))
-      (run-hook-with-args 'ffip-diff-find-file-before-hook)
-      (ffip-find-files files
+    (cond
+     ((or (null files) (eq (length files) 0))
+      (message "No file is found!"))
+
+     ;; file A and file B have the same name
+     ((or (and (> (length files) 1)
+               (string= (nth 0 files) (nth 1 files)))
+          (eq (length files) 1))
+      (setq keyword (nth 0 files))
+      (when ffip-diff-find-file-by-file-name-p
+        (setq keyword (file-name-nondirectory keyword)))
+
+      (ffip-find-files keyword
+                       open-another-window
+                       nil
+                       `(lambda (opened-file)
+                          ;; use line number in new file since there
+                          ;; is only one file name candidate
+                          (ffip--forward-line ,blnum))))
+
+     (t
+      (unless (setq keyword (run-hook-with-args 'ffip-diff-find-file-before-hook
+                                                (nth 0 files)
+                                                (nth 1 files)))
+        ;; pick a file name from A and B
+        (setq keyword (cond
+                       ((string= (nth 0 files) "null")
+                        (nth 1 files))
+                       (t
+                        (nth 0 files)))))
+      (when ffip-diff-find-file-by-file-name-p
+        (setq keyword (file-name-nondirectory keyword)))
+
+      (ffip-find-files keyword
                        open-another-window
                        nil
                        (lambda (opened-file)
@@ -1056,20 +1285,17 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
                           ((string= (file-name-nondirectory opened-file) (nth 0 files))
                            (ffip--forward-line alnum))
                           (t
-                           (ffip--forward-line blnum))))))))
+                           (ffip--forward-line blnum)))))))))
 
 (defvar ffip-diff-mode-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map diff-mode-map)
-    ;; EVIL friendly. ffip-diff-mode is read-only
-    (define-key map "K" 'diff-hunk-prev)
-    (define-key map "J" 'diff-hunk-next)
-    (define-key map "P" 'diff-file-prev)
-    (define-key map "N" 'diff-file-next)
+    (define-key map (kbd "C-c C-k") 'ffip-diff-filter-hunks-by-file-name)
     (define-key map [remap diff-goto-source] 'ffip-diff-find-file)
     map)
   "Mode map based on `diff-mode-map'.")
 
+;;;###autoload
 (define-derived-mode ffip-diff-mode diff-mode "ffip"
   "Show diff/patch."
   (setq buffer-read-only t)
@@ -1100,7 +1326,7 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
       (cond
        ;; shell command
        ((stringp backend)
-        (ffip-show-content-in-diff-mode (ffip-shell-command-to-string backend)))
+        (ffip-show-content-in-diff-mode (shell-command-to-string backend)))
        ;; command
        ((functionp backend)
         (ffip-show-content-in-diff-mode (funcall backend)))
@@ -1164,15 +1390,17 @@ If NUM is not nil, the corresponding backend is executed directly."
                              (ffip-backend-description b)) t)
         (setq i (+ 1 i)))
       (ffip-completing-read
-       "Run diff backend:"
+       "Run diff backend: "
        descriptions
-       `(lambda (d)
-          (if (string-match "^\\([0-9]+\\): " d)
-              (ffip-show-diff-internal (string-to-number (match-string 1 d))))))))))
+       (lambda (file)
+         (if (string-match "^\\([0-9]+\\): " file)
+             (ffip-show-diff-internal (string-to-number (match-string 1 file))))))))))
 
+;;;###autoload
 (defalias 'ffip-show-diff 'ffip-show-diff-by-description)
 
 (defadvice read-file-name (around ffip-read-file-name-hack activate)
+  "Advice `read-file-name'."
   (cond
    (ffip-read-file-name-hijacked-p
     ;; only hack read-file-name once
@@ -1180,7 +1408,7 @@ If NUM is not nil, the corresponding backend is executed directly."
     (let* ((args (ad-get-args 0))
            (file-name (file-name-nondirectory (nth 2 args)))
            (default-directory (ffip-project-root))
-           (cands (ffip-project-search file-name nil default-directory))
+           (cands (ffip-project-search file-name))
            (rlt (if cands (ffip-completing-read "Files: " cands))))
       (when rlt
         (setq rlt (file-truename rlt))
@@ -1203,6 +1431,106 @@ If REVERSE is t, applied patch is reverted."
     (setq ffip-read-file-name-hijacked-p nil))
    (t
     (message "This command only run in `diff-mode' and `ffip-diff-mode'."))))
+
+(defun ffip-diff-hunk-file-name-match-p (keyword neg-keywords)
+  "Current hunk's file name does match KEYWORD and doesn't NEG-KEYWORDS."
+  (let* ((filenames (diff-hunk-file-names))
+         (f0 (nth 0 filenames))
+         (f1 (nth 1 filenames))
+         rlt)
+    (when (and filenames (> (length filenames) 1))
+      (setq rlt (or (string-match keyword f0) (string-match keyword f1)))
+
+      (let ((i 0) nk)
+        (while (and rlt (< i (length neg-keywords)))
+          (setq nk (nth i neg-keywords))
+          (setq rlt (not (or (string-match nk f0) (string-match nk f1))))
+          (setq i (1+ i)))))
+    rlt))
+
+;;;###autoload
+(defun ffip-diff-filter-hunks-by-file-name ()
+  "Filter hunks by file names which are generated from user input patterns.
+E.g., \"regex !exclude1 exclude1\" means the hunk's file name should
+match \"regex\", but should not match \"exclude1\" or \"exclude2\".
+Please note in \"regex\", space represents any string."
+  (interactive)
+  (cond
+   ((derived-mode-p 'diff-mode)
+    (let* ((pattern (read-string "File pattern (e.g., \"regex !exclude1 exclude2\"): "))
+           arr
+           keyword
+           neg-keywords
+           (first-hunk-position (save-excursion
+                                  (goto-char (point-min))
+                                  (re-search-forward diff-hunk-header-re)
+                                  (line-end-position))))
+      (cond
+       ((and pattern (not (string= pattern "")))
+        (setq arr (split-string pattern "!"))
+        (setq keyword (string-trim (nth 0 arr)))
+        (when (> (length arr) 1)
+          (setq neg-keywords (split-string (string-trim (nth 1 arr)) " +")))
+
+        ;; kill from the bottom to the top
+        (goto-char (point-max))
+        (condition-case nil
+            (while (not (and (<= (point) first-hunk-position)
+                             (ffip-diff-hunk-file-name-match-p keyword neg-keywords)))
+              (cond
+               ((not (ffip-diff-hunk-file-name-match-p keyword neg-keywords))
+                (diff-file-kill))
+               (t
+                (diff-file-prev))))
+          (error nil)))
+       (t
+        (message "File kill pattern should not be empty")))))
+   (t
+    (message "This command only run in `diff-mode' and `ffip-diff-mode'."))))
+
+;;;###autoload
+(defun ffip-fix-file-path-at-point (&optional absolute-path-p)
+  "Fix file path at point.  File path could contain environment variables.
+If ABSOLUTE-PATH-P is t, old path is replaced by correct absolute path.
+Or else it's replaced by relative path."
+  (interactive "P")
+  (let* ((filename (ffip-guess-file-name-at-point))
+         full-path
+         cands)
+    (cond
+     ((not filename)
+      (message "There is no file path at point."))
+
+     ;; path at point is a path of physical file
+     ((setq full-path (ffip--guess-physical-path filename))
+      nil)
+
+     ;; find a file
+     ((setq cands
+            (ffip-project-search (replace-regexp-in-string ffip-relative-path-pattern
+                                                           ""
+                                                           filename)))
+      (cond
+       ((eq (length cands) 1)
+        (setq full-path (nth 0 cands)))
+       (t
+        (setq full-path (completing-read "Find file: " cands))))))
+
+    (when full-path
+      (if (consp full-path) (setq full-path (cdr full-path)))
+
+      ;; convert to actual full path
+      (let* ((default-directory (ffip-get-project-root-directory)))
+        (setq full-path (file-truename full-path)))
+
+      (let* ((bounds (bounds-of-thing-at-point 'filename))
+             (path (if absolute-path-p full-path
+                     (file-relative-name full-path
+                                         ;; compare with current file's directory if possible
+                                         (and buffer-file-name (file-name-directory buffer-file-name))))))
+        (goto-char (car bounds))
+        (delete-region (car bounds) (cdr bounds))
+        (insert (replace-regexp-in-string "/index\\.[jt]s" "" path))))))
 
 ;; safe locals
 (progn

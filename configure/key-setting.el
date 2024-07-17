@@ -289,7 +289,7 @@
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf
   (kbd "C-c M-f") 'helm-sudo-find-file
-  (kbd "C-x M-l") 'helm-ls-git
+  (kbd "C-c g")   'helm-ls-git
   (kbd "C-M-z")   'helm-resume
   (kbd "M-x")     'helm-M-x
 

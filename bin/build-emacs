@@ -1,7 +1,9 @@
 #!/bin/bash
 
-### $ build-emacs <version> <prefix>
-### wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
+### Build guide
+## wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
+## patch -p1 < ~/zzemacs/misc/patch/<build-emacs-patch>.patch
+## build-emacs <version> <prefix>
 
 ## Check run OS
 if [ "$OS" = "Windows_NT" ] ; then
@@ -19,15 +21,24 @@ EMACS_PREFIX=/usr/local/${EMACS_SRC}
 EMACS_OPT="--with-modules"
 
 ## Import vars and functions
-. $SCRIPT_ROOT/sample.sh
+source $SCRIPT_ROOT/sample.sh
 
 echo "Build emacs begin ..."
 
-build_source() {
-    if [ ! -f $EMACS_FILE ]; then
-        wget https://ftp.gnu.org/gnu/emacs/$EMACS_FILE
+fetch_source() {
+    if [ ! -d $EMACS_SRC ]; then
+        if [ ! -f $EMACS_FILE ]; then
+            wget https://ftp.gnu.org/gnu/emacs/$EMACS_FILE
+        fi
+        tar xf $EMACS_FILE
+    else
+        echo "$EMACS_SRC is aleady exist"
     fi
-    tar xf $EMACS_FILE
+
+    echo "//Fetch source finished"
+}
+
+build_source() {
     pushd $EMACS_SRC
     build_started=`date`
     echo "//Starting build: $build_started"
@@ -103,6 +114,7 @@ case "$answer" in
         ;;
 esac
 
+run_cmd fetch_source
 run_cmd build_source
 
 echo "Build emacs end ..."

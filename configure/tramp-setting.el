@@ -31,6 +31,7 @@
 ;;separate: /[method/user@remotehost]/filename
 (tramp-change-syntax 'default)
 (setq tramp-default-method "sshz")
+;;speed up tramp
 (setq tramp-verbose 1)
 (setq remote-file-name-inhibit-cache nil)
 (setq vc-ignore-dir-regexp (format "%s\\|%s"

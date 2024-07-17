@@ -75,6 +75,9 @@
 (defkeys-map global-map
   ((kbd "M-g M-t") 'git-timemachine-toggle))
 
+;;git elisp interface
+(require 'git)
+
 
 (provide 'vc-setting)
 

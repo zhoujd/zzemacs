@@ -266,6 +266,9 @@
 (zz:load-path "elisp")
 (require 'project-custom)
 
+;;elisp-refs
+(require 'elisp-refs)
+
 
 (provide 'prog-setting)
 

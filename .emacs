@@ -26,6 +26,7 @@
         common-setting
         lib-setting
         env-setting
+        tramp-setting
         other-setting
         sample-setting
         cedet-setting

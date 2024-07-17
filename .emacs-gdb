@@ -24,6 +24,7 @@
       '(
         macro-setting
         common-setting
+        tramp-setting
         company-setting
         sample-setting
         shell-setting

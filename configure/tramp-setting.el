@@ -37,6 +37,9 @@
 (setq vc-ignore-dir-regexp (format "%s\\|%s"
                                    vc-ignore-dir-regexp
                                    tramp-file-name-regexp))
+;; tramp backup path (if not set, save in local backup directory)
+(setq tramp-backup-directory-alist nil)
+(setq tramp-auto-save-directory nil)
 
 ;;setup PS1 on remote
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc

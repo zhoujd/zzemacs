@@ -46,7 +46,7 @@
         w3m-setting
         doc-setting
         evil-setting
-        ;c-setting
+        c-setting
         lisp-setting
         scheme-setting
         perl-setting

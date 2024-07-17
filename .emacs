@@ -27,18 +27,18 @@
         lib-setting
         env-setting
         tramp-setting
-        other-setting
+        company-setting
         sample-setting
+        shell-setting
+        gdb-setting
+        other-setting
         cedet-setting
         complete-setting
-        company-setting
         prog-setting
         helm-setting
-        gdb-setting
         vc-setting
         ediff-setting
         dired-setting
-        shell-setting
         term-setting
         vterm-setting
         eshell-setting
@@ -46,7 +46,7 @@
         w3m-setting
         doc-setting
         evil-setting
-        c-setting
+        ;c-setting
         lisp-setting
         scheme-setting
         perl-setting

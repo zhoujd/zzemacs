@@ -111,9 +111,9 @@ be available here: https://github.com/clangd/clangd/releases/"
   "Extract the parts of the LLVM clang-tidy documentation that are relevant.
 
 This function assumes that the current buffer contains the result
-of browsing 'clang.llvm.org', as returned by `url-retrieve'.
+of browsing `clang.llvm.org', as returned by `url-retrieve'.
 More concretely, this function returns the main <div> element
-with class 'section', and also removes 'headerlinks'."
+with class `section', and also removes `headerlinks'."
   (goto-char (point-min))
   (lsp-cpp-flycheck-clang-tidy--narrow-to-http-body)
   (lsp-cpp-flycheck-clang-tidy--decode-region-as-utf8 (point-min) (point-max))
@@ -226,7 +226,7 @@ This must be set only once after loading the clang client.")
   :risky t
   :type '(repeat string)
   :group 'lsp-clangd
-  :package-version '(lsp-mode . "8.0.1"))
+  :package-version '(lsp-mode . "9.0.0"))
 
 (defun lsp-clients--clangd-command ()
   "Generate the language server startup command."

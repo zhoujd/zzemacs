@@ -71,6 +71,12 @@ if [ "$OS" = "Windows_NT" ] ; then
     git config --global core.autocrlf false
     git config --global core.safecrlf true
     git config --global core.filemode false
+
+    ## Chinese characters support in filenames
+    git config --global core.unicode true
+    git config --global core.quotepath false
+    git config --global i18n.commitencoding utf-8
+    git config --global i18n.logoutputencoding utf-8
 fi
 
 ## alias

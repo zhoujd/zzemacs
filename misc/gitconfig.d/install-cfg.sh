@@ -127,7 +127,7 @@ git config --global alias.flog  "show --pretty=format: --name-only"
 git config --global alias.last  "log -1 HEAD"
 
 ## git log
-git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset ' --abbrev-commit"
+git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
 git config --global alias.hlog  '!git glog -10'
 
 ## git daemon

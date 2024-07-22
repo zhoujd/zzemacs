@@ -40,6 +40,17 @@
                                        (region-bounds))))
                     'font-lock-face 'font-lock-variable-name-face)))
 
+(defun zz:segment-major-mode ()
+  "Displays the current major mode in the mode-line."
+  `(" "
+    (:propertize ("" mode-name)
+               help-echo "Major mode\n\
+mouse-1: Display major mode menu\n\
+mouse-2: Show help for major mode\n\
+mouse-3: Toggle minor modes"
+               mouse-face mode-line-highlight
+               local-map ,mode-line-major-mode-keymap)))
+
 (defun zz:segment-end ()
   "Return the end of mode line."
   (concat " "))
@@ -71,7 +82,7 @@
          simple-modeline-segment-vc
          simple-modeline-segment-misc-info
          simple-modeline-segment-process
-         simple-modeline-segment-major-mode
+         zz:segment-major-mode
          zz:segment-end)))
 
 ;;modern-fringes

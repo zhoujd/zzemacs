@@ -301,6 +301,11 @@
 ;;deadgrep
 (require 'deadgrep)
 
+;;rg
+(zz:load-path "site-lisp/rg")
+(require 'rg)
+(rg-enable-menu)
+
 ;;escreen
 (require 'escreen)
 (escreen-install)

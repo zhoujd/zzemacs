@@ -12,7 +12,7 @@
 
 ;;auto check vc info
 (setq auto-revert-check-vc-info t)
-(setq auto-revert-interval 10)
+(setq auto-revert-interval 5)
 
 ;;svn support
 ;(require 'psvn)

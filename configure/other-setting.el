@@ -298,8 +298,13 @@
 ;;igrep
 (require 'igrep)
 
+;;wgrep
+(zz:load-path "site-lisp/wgrep")
+(require 'wgrep)
+
 ;;deadgrep
 (require 'deadgrep)
+(require 'wgrep-deadgrep)
 
 ;;rg
 (zz:load-path "site-lisp/rg")

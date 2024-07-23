@@ -51,6 +51,9 @@
 (setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
 
+;;magit-lfs
+(require 'magit-lfs)
+
 ;;git show
 (require 'git-show)
 

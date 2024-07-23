@@ -305,6 +305,11 @@
 ;;deadgrep
 (require 'deadgrep)
 (require 'wgrep-deadgrep)
+(defun deadgrep--mode-line ()
+  (let ((s (if deadgrep--result-count
+               (format "[%s] Deadgrep" deadgrep--result-count)
+             "Deadgrep")))
+    (concat s)))
 
 ;;rg
 (zz:load-path "site-lisp/rg")

@@ -82,7 +82,7 @@ mouse-3: Toggle minor modes"
          simple-modeline-segment-vc
          simple-modeline-segment-misc-info
          simple-modeline-segment-process
-         zz:segment-major-mode
+         simple-modeline-segment-major-mode
          zz:segment-end)))
 
 ;;modern-fringes

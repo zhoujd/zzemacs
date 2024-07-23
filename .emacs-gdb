@@ -36,4 +36,8 @@
         ))
 
 
+;; Local Variables:
+;; coding: utf-8
+;; mode: emacs-lisp
+;; End:
 ;;;; .emacs-gdb end here

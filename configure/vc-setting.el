@@ -10,6 +10,9 @@
     (list (cons "\\.gitconfig$"    'conf-mode))
     auto-mode-alist))
 
+;;auto check vc info
+(setq auto-revert-check-vc-info t)
+
 ;;svn support
 ;(require 'psvn)
 ;(require 'vc-svn)

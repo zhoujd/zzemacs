@@ -68,6 +68,12 @@ mouse-3: Toggle minor modes"
 (advice-add #'vc-git-mode-line-string :filter-return
             #'zz:replace-git-status)
 
+(defun zz:segment-process ()
+  "Return the current value of `mode-line-process'."
+  (let ((process-info (format-mode-line mode-line-process)))
+    (unless (string-blank-p process-info)
+      (concat " " (string-trim process-info)))))
+
 (setq simple-modeline-segments
       '((simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
@@ -81,8 +87,8 @@ mouse-3: Toggle minor modes"
          simple-modeline-segment-encoding
          simple-modeline-segment-vc
          simple-modeline-segment-misc-info
-         simple-modeline-segment-process
-         simple-modeline-segment-major-mode
+         zz:segment-process
+         zz:segment-major-mode
          zz:segment-end)))
 
 ;;modern-fringes

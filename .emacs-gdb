@@ -30,7 +30,6 @@
         shell-setting
         gdb-setting
         keymap-setting
-        fn-setting
         gkey-setting
         fkey-setting
         ))

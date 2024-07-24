@@ -5,6 +5,16 @@
 (zz:load-path "elisp")
 (require 'apply-keys)
 
+;;F8 for debug
+(define-fn-key (gethash "f8" fn-key-table)
+  [f8]              'gud-gdb
+  [S-f8]            'gdb
+  [C-f8]            'gdb-restore-windows
+  [M-f8]            'gud-refresh
+  (kbd "C-x <f8>")  'gdb-many-windows
+  (kbd "C-c <f8>")  'gud-tooltip-mode
+  "f8 key binding")
+
 (apply-keys-to-map
  f4-map
  (list

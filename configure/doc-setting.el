@@ -149,8 +149,8 @@
 (require 'd2-mode)
 (add-to-list 'auto-mode-alist '("\\.d2\\'" . d2-mode))
 
-;;easydraw
-(zz:load-path "site-lisp/esaydraw")
+;;https://github.com/misohena/el-easydraw
+(zz:load-path "site-lisp/edraw")
 (autoload 'edraw-mode "edraw-mode")
 (add-to-list 'auto-mode-alist '("\\.edraw\\.svg$" . edraw-mode))
 (with-eval-after-load 'org

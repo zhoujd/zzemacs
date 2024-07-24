@@ -70,7 +70,6 @@
   (kbd "C-9")     'gud-pstar
   (kbd "C-0")     'gud-refresh
 
-  ;;undo/redo
   (kbd "C--")     'redo
   (kbd "C-_")     'undo
 
@@ -93,7 +92,13 @@
   (kbd "M-0")     'gdb-restore-windows
 
   (kbd "M-#")     'query-replace-regexp
-  (kbd "M-+")     'smartparens-mode
+  ))
+
+(apply-keys-to-map
+ esc-map
+ (list
+  (kbd "M-,")     'gud-up
+  (kbd "M-.")     'gud-down
   ))
 
 

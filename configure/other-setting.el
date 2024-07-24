@@ -134,7 +134,7 @@
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun zz:recentf-open-files-compl ()
+(defun zz:recentf-files ()
   (interactive)
    (let* ((all-files recentf-list)
           (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))

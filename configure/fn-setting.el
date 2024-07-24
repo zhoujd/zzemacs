@@ -39,9 +39,9 @@
 
 (define-fn-key (gethash "f1" fn-key-table)
   [f1]              help-map
-  [S-f1]            'magit-status
-  [C-f1]            'git-gutter+-mode
-  [M-f1]            'git-timemachine-toggle
+  [S-f1]            'helm-describe-modes
+  [C-f1]            'helm-descbinds
+  [M-f1]            'zz:ctrl-z-help
   (kbd "C-x <f1>")  nil
   (kbd "C-c <f1>")  nil
   "f1 key binding")
@@ -70,7 +70,7 @@
   [C-f4]            'zz:helm-find
   [M-f4]            'zz:helm-grep-ag
   (kbd "C-x <f4>")  'helm-recentf
-  (kbd "C-c <f4>")  'zz:recentf-open-files-compl
+  (kbd "C-c <f4>")  'zz:recentf-files
   "f4 key binding")
 
 (define-fn-key (gethash "f5" fn-key-table)

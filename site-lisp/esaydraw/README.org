@@ -1,0 +1,290 @@
+#+TITLE: Emacs Easy Draw
+
+Emacs Easy Draw is a drawing tool that runs inside Emacs.
+
+[[file:./screenshot/edraw-screenshot.gif]]
+
+* Requirements
+- Emacs 27.2
+- Image support
+- SVG support
+- gzip and gunzip(or zlib support)
+- libxml support
+
+* Screenshots
+
+[[https://github.com/misohena/el-easydraw/wiki/Screenshots]]
+
+* Use In Org-Mode - edraw-org.el
+** Config
+
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (require 'edraw-org)
+  (edraw-org-setup-default))
+;; When using the org-export-in-background option (when using the
+;; asynchronous export function), the following settings are
+;; required. This is because Emacs started in a separate process does
+;; not load org.el but only ox.el.
+(with-eval-after-load "ox"
+  (require 'edraw-org)
+  (edraw-org-setup-exporter))
+#+end_src
+
+** Usage
+
+To start drawing, type ~[​[edraw:]]~ and type =C-c C-o= on the link.
+
+Draw something and type =C-c C-c= and the data will be saved in the buffer.
+
+** Link Notation
+
+#+begin_src org
+[​[edraw:file=./example.edraw.svg]​]
+
+[​[edraw:data=<base64data>​]]
+
+[​[*Example][edraw:file=./example.edraw.svg]​]
+
+[​[*Example][edraw:data=<base64data>]​]
+#+end_src
+
+** Inline Images
+
+To toggle the inline display mode, type =M-x edraw-org-link-image-mode=
+
+** Edit Image
+
+To edit the image, do one of the following on the link:
+
+- =M-x edraw-org-edit-link=
+- =C-c C-o=
+- Right click on image (The right-click menu also provides some other useful functions for links)
+
+** Export
+*** As HTML
+Customization Variables:
+
+- edraw-org-export-html-data-tag :: HTML tag used to export data links. (svg or img)
+- edraw-org-export-html-file-tag :: HTML tag used to export file links. (svg or img)
+- edraw-org-export-html-use-viewbox :: Add viewBox= attribute to svg root elements when SVG export.
+
+Link Properties:
+
+- html-tag ::
+  HTML tag used to export the link. (svg or img)
+
+  Example:
+  #+begin_src org
+  [[edraw:html-tag=img;data=<base64data>]]
+  #+end_src
+
+*** As LaTeX
+I have a minimal implementation, but I don't use LaTeX usually, so there may be some problems.
+
+=[[edraw:data=]]= format creates a temporary file when exporting as LaTeX. Please let me know if there is a better way in LaTeX.
+
+** Regular File Link Support
+
+You can also edit regular file links inline.
+
+For example, create a link like this:
+
+#+begin_src org
+[​[file:example.edraw.svg]​]
+#+end_src
+
+Then do =M-x edraw-org-edit-regular-file-link= on this link and the drawing editor will appear in its place.
+
+Inline display after editing is possible with org-toggle-inline-images. You can also use [[https://github.com/misohena/org-inline-image-fix#automatic-image-update][org-flyimage]] if you want to display images automatically.
+
+The normal file link has the following drawbacks compared to the edraw link format.
+
+- No detailed settings for HTML export.
+- SVG data cannot be embedded inside org files.
+
+Data URI links are technically [[https://github.com/misohena/org-inline-image-fix#data-uri-supportorg-datauri-imageel][possible]], but inline editing of Data URI links is not implemented.
+
+On the other hand, regular file links have the advantage that they can be exported in many formats.
+
+* Edit a Single Edraw File - edraw-mode.el
+
+The data that Emacs Easy Draw handles is a small subset of the SVG specification. The recommended file extension is .edraw.svg.
+
+Emacs Easy Draw cannot edit general SVG data, but the data it outputs can be viewed by web browsers and other software that can handle SVG.
+
+** Open .edraw.svg files using edraw-mode
+
+To open a file with the extension .edraw.svg using edraw-mode, add the following setting to init.el.
+
+#+begin_src emacs-lisp
+(autoload 'edraw-mode "edraw-mode")
+(add-to-list 'auto-mode-alist '("\\.edraw\\.svg$" . edraw-mode))
+#+end_src
+
+NOTE: Setup later than other modes for .svg such as image-mode.
+
+If you don't like the long .edraw.svg extension, you can put a comment specifying the mode at the top of the file.
+
+: <!-- -*- mode: edraw -*- -->
+: <svg ...
+
+Comments in files are preserved as much as possible during editing.
+
+Or you can use magic-mode-alist.
+
+#+begin_src emacs-lisp
+(push '("\\(<!--[^>]*-->[\n\t ]*\\)*<svg .* id=\"edraw-" . edraw-mode) magic-mode-alist)
+#+end_src
+
+** Quick sketch using edraw-mode
+
+#+begin_src emacs-lisp
+(autoload 'edraw "edraw-mode" nil t)
+#+end_src
+
+The `edraw' command simply creates a new buffer and sets its major mode to edraw-mode. Suitable for quickly creating new diagrams. You can save as with the save-buffer (C-x C-s) command.
+
+Typing M-x xml-mode in the edraw-mode buffer will edit it as XML. Typing M-x edraw-mode again graphically edits.
+
+* Key bindings
+
+Most of the key bindings are displayed in menus and help echoes.
+
+The key bindings that are not displayed are as follows.
+
+| left, up, right, down                                                      | Move selected objects (S-<dir>:10px, C-u <dir>:Numerical input)                   |
+| M-left, M-up, M-right, M-down                                              | Duplicate selected objects and move (M-S-<dir>:10px, C-u M-<dir>:Numerical input) |
+| mouse-3 on shapes, anchor points, background, shape picker, or edraw links | Show context menu                                                                 |
+| C-u mouse-3                                                                | Show context menu (Ignore invisible/unpickable states)                            |
+| (Select Tool) C-down-mouse-1                                               | Add/Remove clicked shape to selection list                                        |
+| (Select Tool) M-drag-mouse-1                                               | Duplicate dragged shape                                                           |
+| (Path Tool) C-u down-mouse-1                                               | Ignore existing points (Avoid connecting or moving existing points)               |
+| S-drag-mouse-1                                                             | 45 degree unit movement or square specification                                   |
+| Middle-drag                                                                | Scroll                                                                            |
+| C-wheel-up, C-wheel-down                                                   | Zoom                                                                              |
+| (In Property Editor) Middle-click                                          | Close window                                                                      |
+| (In Shape Picker) Middle-click                                             | Close window                                                                      |
+
+* Emacs Lisp
+
+The following code is an example of inserting an editor into a buffer from Emacs Lisp.
+
+#+begin_src emacs-lisp
+(require 'edraw)
+
+(progn
+  (insert " ")
+  (let ((editor (edraw-editor
+                 ;; Make an overlay that covers " "
+                 ;; 'evaporate means automatic deletion
+                 :overlay (let ((overlay (make-overlay (1- (point)) (point))))
+                            (overlay-put overlay 'evaporate t)
+                            overlay)
+                 ;; Initial SVG
+                 :svg (edraw-svg-create
+                       400 300
+                       (edraw-svg-group
+                        :id "edraw-body" ;; g#edraw-body is the edit target area
+                        (edraw-svg-rect 100 100 200 100 :fill "blue")))
+                 ;; Function called when saving
+                 :document-writer (lambda (svg &rest _)
+                                    (pop-to-buffer "*svg output*")
+                                    (erase-buffer)
+                                    (edraw-svg-print svg nil nil 0))
+                 ;; Add one item to the main menu
+                 :menu-filter (lambda (menu-type items &rest _)
+                                (pcase menu-type
+                                  ('main-menu
+                                   (append
+                                    items
+                                    `(((edraw-msg "Close") (lambda (editor) (edraw-close editor))))))
+                                  (_ items)))
+                 ;; Add key binding
+                 :keymap (let ((km (make-sparse-keymap)))
+                           (set-keymap-parent km edraw-editor-map)
+                           (define-key km (kbd "C-c C-c") (lambda () (interactive) (edraw-close (edraw-editor-at))))
+                           km)
+                 )))
+    ;; Manipulate the editor object if necessary
+    ;; Set user extra data
+    (edraw-set-extra-prop editor 'my-extra-data 12345)
+    editor
+    nil))
+#+end_src
+
+* Color Picker
+
+edraw-color-picker.el contains a color picker library and some commands.
+
+Commands to add/replace the selected color to the buffer:
+- edraw-color-picker-insert-color
+- edraw-color-picker-replace-color-at
+- edraw-color-picker-replace-or-insert-color-at-point
+
+Settings for using them while editing CSS or HTML:
+
+#+begin_src elisp
+(autoload 'edraw-color-picker-replace-color-at "edraw-color-picker" nil t)
+(autoload 'edraw-color-picker-replace-or-insert-color-at-point "edraw-color-picker" nil t)
+
+(defun my-edraw-color-picker-add-keys (map)
+  ;; Replaces the color of the clicked location
+  (define-key map [mouse-1] #'edraw-color-picker-replace-color-at)
+  ;; C-c C-o replaces the color in place or adds color
+  (define-key map (kbd "C-c C-o")
+              #'edraw-color-picker-replace-or-insert-color-at-point))
+
+(defun my-edraw-color-picker-enable ()
+  (my-edraw-color-picker-add-keys (or (current-local-map)
+                                      (let ((map (make-sparse-keymap)))
+                                        (use-local-map map)
+                                        map))))
+
+(add-hook 'css-mode-hook 'my-edraw-color-picker-enable)
+(add-hook 'mhtml-mode-hook 'my-edraw-color-picker-enable)
+#+end_src
+
+Settings for use with Customize:
+
+#+begin_src elisp
+(defun my-edraw-color-picker-enable-for-custom-mode ()
+  ;; Use emacs color name
+  (setq-local edraw-color-picker-insert-default-color-scheme 'emacs))
+
+(add-hook 'Custom-mode-hook 'my-edraw-color-picker-enable-for-custom-mode)
+
+(with-eval-after-load "cus-edit"
+  ;; Add keys to the field key map
+  (my-edraw-color-picker-add-keys custom-field-keymap))
+#+end_src
+
+#+CAPTION: Show color picker inline
+[[file:./screenshot/color-picker-inline.png]]
+
+Show color picker in minibuffer:
+- (edraw-color-picker-read-color)
+
+#+CAPTION: Show color picker in minibuffer
+[[file:./screenshot/color-picker-minibuffer.png]]
+
+A function that opens a color picker near the point:
+- edraw-color-picker-open-near-point
+
+A function that displays a color picker using an overlay:
+- edraw-color-picker-overlay
+
+The core class of the color picker:
+- edraw-color-picker
+
+
+
+* License
+
+This software is licensed under GPLv3. You are free to use, modify and distribute this software.
+
+If you wish to register this software in any package archive, please fork this repository, make the necessary modifications to fit the package archive's requirements, and submit the registration on your own. Also continue with the necessary maintenance. You don't need my permission.
+
+I also welcome you to publish your improved version. If that works better than mine, I might start using it too. I may suddenly be unable to develop, and I cannot guarantee any continued development. This software is the result of what I want, so please add what you want yourself.
+
+I am not proficient in English, so please do not expect continuous communication in English. I have spent a long time using translation software to write this text, but I am not confident that the intended meaning is accurately conveyed. I don't think it has ended up with the opposite meaning, but subtle nuances may be missing.

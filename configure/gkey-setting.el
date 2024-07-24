@@ -5,7 +5,6 @@
 (zz:load-path "elisp")
 (require 'apply-keys)
 
-;;F8 for debug
 (define-fn-key (gethash "f8" fn-key-table)
   [f8]              'gud-gdb
   [S-f8]            'gdb
@@ -14,6 +13,15 @@
   (kbd "C-x <f8>")  'gdb-many-windows
   (kbd "C-c <f8>")  'gud-tooltip-mode
   "f8 key binding")
+
+(define-fn-key (gethash "f11" fn-key-table)
+  [f11]             'linum-mode
+  [S-f11]           nil
+  [C-f11]           nil
+  [M-f11]           nil
+  (kbd "C-x <f11>") nil
+  (kbd "C-c <f11>") nil
+  "f11 key binding")
 
 (apply-keys-to-map
  f4-map

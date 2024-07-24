@@ -84,21 +84,22 @@
   :group 'd2
   :type 'string)
 
-(defcustom d2-flags ""
+(defcustom d2-flags nil
   "Additional flags to pass to the d2-cli."
   :group 'd2
-  :type 'string)
+  :type '(repeat string))
 
 (defconst d2-font-lock-keywords
   `((,(regexp-opt '("shape" "md" ) 'words) . font-lock-keyword-face)
     ("---\\|-?->*\\+?\\|==>\\|===|->" . font-lock-variable-name-face)
+    ("#.*" .  font-lock-comment-face )
     (":\\|{\\|}\\|\|\\|+" . font-lock-builtin-face)
     (,(regexp-opt '("go" "js") 'lang) .  font-lock-preprocessor-face)
     (,(regexp-opt '("class" "string" ) 'words2) .  font-lock-type-face)))
 
 (defvar d2-syntax-table
   (let ((syntax-table (make-syntax-table)))
-    ;; Comment style "%% ..."
+    ;; Comment style "# ..."
     (modify-syntax-entry ?% ". 124" syntax-table)
     (modify-syntax-entry ?\n ">" syntax-table)
     syntax-table)
@@ -113,22 +114,188 @@
   (let* ((out-file (or (cdr (assoc :file params))
                        (error "D2 requires a \":file\" header argument")))
          (temp-file (org-babel-temp-file "d2-"))
-         (cmd (concat (shell-quote-argument d2-location)
-                      " " temp-file
-                      " " (org-babel-process-file-name out-file)
-                      " " d2-flags)))
+         (cmd (mapconcat #'shell-quote-argument
+                         (append (list d2-location
+                                       temp-file
+                                       (org-babel-process-file-name out-file))
+                                 d2-flags)
+                         " ")))
     (with-temp-file temp-file (insert body))
     (org-babel-eval cmd "")
     nil))
 
-(defun d2--locate-declaration (str)
+(defun d2--locate-declaration (str tag)
   "Locate a certain declaration and return the line difference and indentation.
-STR is the declaration."
+STR is the declaration.
+TAG is a symbol, which is prepended to the declaration data."
   (let ((l (line-number-at-pos)))
     (save-excursion
       (if (re-search-backward str (point-min) t)
-          (cons (- l (line-number-at-pos)) (current-indentation))
-        (cons -1 -1)))))
+          (cons tag (cons (- l (line-number-at-pos)) (current-indentation)))
+        (cons tag (cons -1 -1))))))
+
+(defun d2--combine-tokens-by-level (tokens)
+  "Combine TOKENS that are at the same level.
+Collect the tags from both into a list.
+Use the newer token's line and column."
+  (reverse
+   (cl-reduce (lambda (acc el)
+                (if (and (not (null acc))
+                         (equal (d2--decl-line (car acc))
+                                (d2--decl-line el)))
+                    ;; when tokens are on the same line, combine them
+                    (progn
+                      (setf (car acc)
+                            ;; we don't care about duplicate tags
+                            (cons (cons (d2--decl-tag el) (d2--decl-tag (car acc)))
+                                  (cons (d2--decl-line el)
+                                        (d2--decl-column el))))
+                      acc)
+                  ;; otherwise add a new token; set its tag to be a list
+                  (cons (cons (list (d2--decl-tag el))
+                              (cons (d2--decl-line el)
+                                    (d2--decl-column el)))
+                        acc)))
+              tokens
+              :initial-value ())))
+
+(defun d2--sort-tokens-by-line (tokens)
+  "Sort TOKENS by line number."
+  (sort tokens
+        (lambda (token1 token2)
+          (< (d2--decl-line token1)
+                        (d2--decl-line token2)))))
+
+(defun d2--filter-not-found-tokens (tokens)
+  "Filter TOKENS that were not detected.
+They have a line number of -1"
+  (cl-remove-if
+   (lambda (token) (< (d2--decl-line token) 0))
+   tokens))
+
+(defun d2--parse-from-line ()
+  "Parse by starting at current line and searching backward."
+  (let ((node (d2--locate-declaration
+               (rx (group (one-or-more (any alnum "_")))
+                   (? (group ":"
+                             (one-or-more space)))
+                   (? (group
+                       (one-or-more (not (any ?{ ?}))))))
+               'node))
+        (subnode-start (d2--locate-declaration
+                        (rx (group (one-or-more (any alnum "_" "<->"
+                                                     "->" "--" "<-"))
+                                   (? (group ":" (one-or-more space)))
+                                   (? (group (one-or-more (not (any ?{ ?})))))
+                                   "{"))
+                        'subnode))
+        (end (d2--locate-declaration "^ *} *$"
+                                     'end))
+        (connection (d2--locate-declaration
+                     (rx (group (one-or-more (any alnum "_" "-"))
+                                (any "->"
+                                     "<->"
+                                     "--"
+                                     "<-")
+                                (? (seq
+                                    ":"
+                                    (one-or-more space)))
+                                (? (one-or-more graph))))
+                     'connection)))
+    (list node subnode-start end connection)))
+
+;;; declaration part handling
+(defun d2--decl-tag (decl)
+  "Get tag from the declaration DECL.  It is the list head."
+  (car decl))
+(defun d2--decl-line (decl)
+  "Get the text of the declaration DECL.  It is the second item in the list."
+  (cadr decl))
+(gv-define-setter d2--decl-line (val decl)
+  "Allow line VAL to be setf in declaration DECL."
+  `(setf (cadr ,decl) ,val))
+(defun d2--decl-column (decl)
+  "Get the column number from DECL.  It is the third item."
+  (cddr decl))
+(defun d2--decl-tags-contain (decl tag)
+  "Check if any of the tags in DECL matches TAG."
+  (seq-find (lambda (tag2)
+              (equal tag2 tag))
+            (d2--decl-tag decl)))
+
+(defun d2--calculate-desired-indentation ()
+  "Calculate indentation of the current line.
+Scan the tokens backwards and accumulate a list.
+Only one token from each type is in this list.
+To accommodate nested structures, we scan twice.
+This way two tokens of the same type can be detected in sequence.
+Once this information is collected, the indentation is chosen based
+on the types of the current and previous token,
+and the indentation of the previous line."
+  (save-excursion
+    (end-of-line)
+    ;; sort tokens by line number (distance from current line)
+    ;; and calculate the final indentation
+    (let* ((ordered-tokens (d2--combine-tokens-by-level
+                            (d2--sort-tokens-by-line
+                             (append (d2--filter-not-found-tokens (d2--parse-from-line))
+                                     ;; also collect tokens starting at previous line
+                                     ;; otherwise successive tokens of the same type
+                                     ;; may not be detected
+                                     (if (equal (line-number-at-pos) 1)
+                                         ()
+                                       (progn (forward-line -1)
+                                              (end-of-line)
+                                              (mapcar (lambda (token)
+                                                        ;; increment line number
+                                                        ;; to make it relative to starting line
+                                                        (cl-incf (d2--decl-line token))
+                                                        token)
+                                                      (d2--filter-not-found-tokens
+                                                       (d2--parse-from-line)))))))))
+           (current-token (car ordered-tokens))
+           (previous-token (cadr ordered-tokens)))
+      (message "tokens %s" (mapcar (lambda (token) (d2--decl-tag token)) ordered-tokens))
+      (cond ((and (d2--decl-tags-contain current-token 'node)
+                  (null previous-token))
+             0)
+
+            ((and (d2--decl-tags-contain current-token 'node)
+                  (d2--decl-tags-contain previous-token 'subnode))
+             (+ 4 (d2--decl-column previous-token)))
+
+            ((and (d2--decl-tags-contain current-token 'subnode)
+                  (d2--decl-tags-contain previous-token 'subnode))
+             (+ 4 (d2--decl-column previous-token)))
+
+
+            ((and (d2--decl-tags-contain current-token 'node)
+                  (d2--decl-tags-contain previous-token 'node))
+             (d2--decl-column previous-token))
+
+            ((and (d2--decl-tags-contain current-token 'node)
+                  (d2--decl-tags-contain previous-token 'end))
+             (d2--decl-column previous-token))
+
+            ((and (d2--decl-tags-contain current-token 'end)
+                  (d2--decl-tags-contain previous-token 'end))
+             (max (- (d2--decl-column previous-token) 4) 0))
+
+            ((and (d2--decl-tags-contain current-token 'end)
+                  (d2--decl-tags-contain previous-token 'subnode))
+             (d2--decl-column previous-token))
+
+            ((and (d2--decl-tags-contain current-token 'end)
+                  (d2--decl-tags-contain previous-token 'node))
+             (max (- (d2--decl-column previous-token) 4) 0))
+
+            (t (progn (message "uknown syntax %s" current-token)
+                      (d2--decl-column current-token)))))))
+
+(defun d2-indent-line ()
+  "This is the actual function called by Emacs to indent."
+  (interactive)
+  (indent-line-to (d2--calculate-desired-indentation)))
 
 (defun d2-compile ()
   "Compile the current d2 file using d2."
@@ -162,10 +329,10 @@ Argument FILE-NAME the input file."
   (interactive "fFilename: ")
   (let* ((input file-name)
          (output (concat (file-name-sans-extension input) d2-output-format)))
-    (apply #'call-process d2-location nil "*d2*" nil (list input output))
+    (apply #'call-process (shell-quote-argument d2-location) nil "*d2*" nil (append (list input output) d2-flags))
     (if (equal browse t)
-      (progn
-        (d2-browse-file output))
+        (progn
+          (d2-browse-file output))
       (progn
         (display-buffer (find-file-noselect output t))))))
 
@@ -217,9 +384,10 @@ Optional argument BROWSE whether to open the browser."
 (define-derived-mode d2-mode prog-mode "d2"
   :syntax-table d2-syntax-table
   (setq-local font-lock-defaults '(d2-font-lock-keywords))
-  (setq-local comment-start "%%")
+  (setq-local comment-start "#")
   (setq-local comment-end "")
-  (setq-local comment-start-skip "%%+ *"))
+  (setq-local comment-start-skip "#")
+  (setq-local indent-line-function 'd2-indent-line))
 
 (provide 'd2-mode)
 

@@ -1,7 +1,6 @@
 ;;;; gkey-setting.el --- gdb key function config file
 ;;;
 
-
 (zz:load-path "elisp")
 (require 'apply-keys)
 

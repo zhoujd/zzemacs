@@ -288,3 +288,30 @@ Busybox
     # build again to regenerate the rootfs
     make
     ls -l output/images/rootfs.cpio.gz
+
+## Rebuilding or modifying an initramfs
+
+    ## extract files from an existing gzipped cpio
+    # uncompress it (if compressed) and use {{{cpio -i}}} to extract it:
+    # -i extract
+    # -d create directories
+    # -m preserve mtime
+    # -v verbose
+    mkdir rootfs_mod
+    (cd rootfs_mod; gzip -cd ../cpio | sudo cpio -idmv)
+
+    ## modify it; for example overwrite or create your own /init
+    cat <<EOF >rootfs_mod/init
+    #!/bin/busybox sh
+    mount -t devtmpfs  devtmpfs  /dev
+    mount -t proc      proc      /proc
+    mount -t sysfs     sysfs     /sys
+    mount -t tmpfs     tmpfs     /tmp
+
+    echo "Hello world!"
+    sh
+    EOF
+    chmod +x rootfs_mod/init
+
+    ## re-create it
+    (cd rootfs_mod; find . | cpio -ov --format=newc) | gzip -9 > cpio

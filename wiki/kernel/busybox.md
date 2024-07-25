@@ -116,8 +116,9 @@ Busybox
         -initrd $BUILDROOT_BUILD/images/rootfs.cpio.gz -nographic \
         -append "console=ttyS0"
 
-## Buildroot
+## Build Root
 
+    ## Please use crosstool-NG, build and use your own toolchain
     $ export OPT=/opt
     $ export BUILDROOT=$OPT/buildroot
     $ export BUILDROOT_BUILD=$BUILDS/buildroot
@@ -194,3 +195,28 @@ Busybox
     $ qemu-system-x86_64 -s -kernel $LINUX_BUILD/arch/x86_64/boot/bzImage \
         -initrd $BUILDROOT_BUILD/images/rootfs.cpio.gz -nographic \
         -append "console=ttyS0"
+
+## Compile the Toolchain from Source
+
+    ## https://docs.espressif.com/projects/esp-idf/en/v4.1/get-started-legacy/linux-setup-scratch.html
+    ## Install dependencies
+    $ sudo apt install gawk gperf grep gettext python python-dev automake bison flex texinfo help2man libtool libtool-bin
+
+    ## Create the working directory and go into it
+    $ mkdir -p ~/esp
+    $ cd ~/esp
+
+    ## Download crosstool-NG and build it
+    $ git clone https://github.com/espressif/crosstool-NG.git
+    $ cd crosstool-NG
+    $ git checkout esp-2020r2
+    $ git submodule update --init
+    $ ./bootstrap && ./configure --enable-local && make
+
+    ## Build the toolchain
+    $ ./ct-ng xtensa-esp32-elf
+    $ ./ct-ng build
+    $ chmod -R u+w builds/xtensa-esp32-elf
+
+    ## Add the toolchain to your PATH
+    $ export PATH="$HOME/esp/xtensa-esp32-elf/bin:$PATH"

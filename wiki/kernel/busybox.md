@@ -272,3 +272,19 @@ Busybox
     make minimal_arm64_ramdisk_defconfig
     make
     ls -l output/images/rootfs.cpio.gz
+
+    # add a simple /init script
+    cat <<EOF >output/target/init
+    #!/bin/busybox sh
+    mount -t devtmpfs  devtmpfs  /dev
+    mount -t proc      proc      /proc
+    mount -t sysfs     sysfs     /sys
+    mount -t tmpfs     tmpfs     /tmp
+
+    echo "Hello buildroot!"
+    sh
+    EOF
+    chmod +x output/target/init
+    # build again to regenerate the rootfs
+    make
+    ls -l output/images/rootfs.cpio.gz

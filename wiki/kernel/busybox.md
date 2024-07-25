@@ -118,6 +118,7 @@ Busybox
 
 ## Buildroot
 
+    $ export OPT=/opt
     $ export BUILDROOT=$OPT/buildroot
     $ export BUILDROOT_BUILD=$BUILDS/buildroot
     $ mkdir -p $BUILDROOT_BUILD

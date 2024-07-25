@@ -188,6 +188,8 @@ Busybox
     $ cd $BUILDROOT_BUILD
     $ make
 
-    $ qemu-system-x86_64 -kernel $LINUX_BUILD/arch/x86_64/boot/bzImage \
+    ## The parameter -s is -gdb tcp::1234, it listens on 1234
+    ## GDB can use 'target remote localhost:1234' to connect
+    $ qemu-system-x86_64 -s -kernel $LINUX_BUILD/arch/x86_64/boot/bzImage \
         -initrd $BUILDROOT_BUILD/images/rootfs.cpio.gz -nographic \
         -append "console=ttyS0"

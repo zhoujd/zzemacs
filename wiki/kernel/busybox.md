@@ -222,3 +222,53 @@ Busybox
 
     ## Add the toolchain to your PATH
     $ export PATH="$HOME/esp/xtensa-esp32-elf/bin:$PATH"
+
+## Creating from scratch using a script and pre-built static busybox
+
+    ## https://trac.gateworks.com/wiki/linux/initramfs
+    # specify a location for our rootfs
+    ROOTFS=./rootfs
+    # create rootfs dir
+    mkdir -p $ROOTFS
+    for i in bin dev etc lib mnt proc sbin sys tmp var; do \
+      mkdir $ROOTFS/$i;
+    done
+    # download a prebuilt static aarch64 binary of busybox and make it executable
+    wget http://mirror.archlinuxarm.org/aarch64/extra/busybox-1.36.1-1-aarch64.pkg.tar.xz
+    tar xvf busybox*.tar.xz usr/bin/busybox
+    mv usr/bin/busybox $ROOTFS/bin
+    # busybox takes the role of a large list of standard linux tools so anything we want or need here that it provides can by symlinked; note we use 'mount' below
+    ln -sf busybox $ROOTFS/bin/mount
+    # create a /init that mounts basic pseudo filesystems then executes a shell
+    cat <<\EOF > $ROOTFS/init
+    #!/bin/busybox sh
+    mount -t devtmpfs  devtmpfs  /dev
+    mount -t proc      proc      /proc
+    mount -t sysfs     sysfs     /sys
+    mount -t tmpfs     tmpfs     /tmp
+
+    echo "Hello busybox!"
+    sh
+    EOF
+    chmod +x $ROOTFS/init
+    # create a compressed cpio archive
+    (cd $ROOTFS; find . | cpio -ov --format=newc) | gzip -9 > cpio
+
+## Build root filesystem
+
+    ## https://trac.gateworks.com/wiki/linux/initramfs
+    # clone buildroot
+    git clone  http://github.com/buildroot/buildroot.git
+    cd buildroot
+    # create the most basic ARM64 rootfs with a gzip cpio filesystem
+    cat << EOF > configs/minimal_arm64_ramdisk_defconfig
+    # arm64 arch
+    BR2_aarch64=y
+    # filesystem options
+    BR2_TARGET_ROOTFS_CPIO=y
+    BR2_TARGET_ROOTFS_CPIO_GZIP=y
+    EOF
+    # build it
+    make minimal_arm64_ramdisk_defconfig
+    make
+    ls -l output/images/rootfs.cpio.gz

@@ -118,6 +118,8 @@ Busybox
 
 ## Build Root
 
+    ## https://buildroot.org/download.html
+    ## https://toolchains.bootlin.com/
     ## Please use crosstool-NG, build and use your own toolchain
     $ export OPT=/opt
     $ export BUILDROOT=$OPT/buildroot

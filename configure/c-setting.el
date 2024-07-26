@@ -133,16 +133,25 @@
 ;;https://ddavis.io/blog/eglot-cpp-ide/
 ;;https://joaotavora.github.io/eglot/
 ;;sudo apt install bear && bear cmake && bear make
-(defvar zz:c-lsp-eglot-p nil "t for eglot, nil for lsp-mode")
+;;sudo apt install clangd
+;;sudo apt install ccls
+(defvar zz:c-lsp-eglot-p t "t for eglot, nil for lsp-mode")
+(defvar zz:c-lang-server "clangd" "ccls or clangd")
 (if zz:c-lsp-eglot-p
     (progn
-      (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+      (add-to-list 'eglot-server-programs
+                   '((c++-mode c-mode) zz:c-lang-server))
       (add-hook 'c-mode-hook 'eglot-ensure)
       (add-hook 'c++-mode-hook 'eglot-ensure))
     (progn
       (require 'lsp-clangd)
+      (setq lsp-clients-clangd-args '("-j=4"
+                                      "--background-index"
+                                      "--limit-references=0"
+                                      "--clang-tidy"
+                                      "-log=error"))
       (lsp-register-client
-       (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+       (make-lsp-client :new-connection (lsp-tramp-connection zz:c-lang-server)
                         :major-modes '(c-mode c++-mode)
                         :remote? t
                         :server-id 'clangd-remote))
@@ -150,12 +159,14 @@
       (add-hook 'c++-mode-hook 'lsp-deferred t)
       ))
 
-;;use company-mode with local 'company-backends
-;(defun zz:c-company-hook ()
-;  (set (make-local-variable 'company-backends)
-;       '(company-lsp)))
-;(add-hook 'c-mode-hook 'zz:c-company-hook t)
-;(add-hook 'c++-mode-hook 'zz:c-company-hook t)
+(defvar zz:company-lsp-p nil "t for enable, nil for disable")
+(when zz:company-lsp-p
+  ;;use company-mode with local 'company-backends
+  (defun zz:c-company-hook ()
+    (set (make-local-variable 'company-backends)
+         '(company-lsp)))
+  (add-hook 'c-mode-hook 'zz:c-company-hook t)
+  (add-hook 'c++-mode-hook 'zz:c-company-hook t))
 
 
 (provide 'c-setting)

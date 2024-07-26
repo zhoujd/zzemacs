@@ -1,4 +1,4 @@
-;;;; .emacs --- emacs config file
+;;;; .emacs-magit --- emacs magit config file
 ;;;
 
 (defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))

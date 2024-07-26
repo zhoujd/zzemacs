@@ -37,7 +37,6 @@
       helm-candidate-number-limit       100
       helm-input-idle-delay             0
       helm-tramp-verbose                0
-      helm-tramp-default-method         "sshz"
       helm-move-to-line-cycle-in-source t
       helm-lisp-fuzzy-completion        t
       helm-semantic-fuzzy-match         t

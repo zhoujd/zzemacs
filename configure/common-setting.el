@@ -422,10 +422,6 @@ mouse-3: Toggle minor modes"
 ;;normal location: ~/.emacs.d/custom.el
 (setq custom-file (concat user-emacs-directory "custom.el"))
 
-;;auto refresh remote files
-(custom-set-variables
- '(auto-revert-remote-files t))
-
 ;;remove cl warning on emacs27
 (unless (< emacs-major-version 27)
   (defun zz:check-cl-warning()

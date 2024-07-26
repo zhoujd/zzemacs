@@ -25,21 +25,13 @@
                                             ("-o" "ForwardX11=yes")))
                (tramp-default-port         22)))
 (tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
+(setq tramp-default-method "sshz")
+
 ;;tramp syntax: default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
 ;;default: /ssh:news@news.my.domain:/opt/news/etc
 ;;simplified: /news@news.my.domain:/opt/news/etc
 ;;separate: /[method/user@remotehost]/filename
 (tramp-change-syntax 'default)
-(setq tramp-default-method "sshz")
-;;speed up tramp
-(setq tramp-verbose 1)
-(setq remote-file-name-inhibit-cache nil)
-(setq vc-ignore-dir-regexp (format "%s\\|%s"
-                                   vc-ignore-dir-regexp
-                                   tramp-file-name-regexp))
-;; tramp backup path (if not set, save in local backup directory)
-(setq tramp-backup-directory-alist nil)
-(setq tramp-auto-save-directory nil)
 
 ;;setup PS1 on remote
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc

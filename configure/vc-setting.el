@@ -11,8 +11,8 @@
     auto-mode-alist))
 
 ;;auto check vc info
-(setq auto-revert-check-vc-info t)
-(setq auto-revert-interval 5)
+;(setq auto-revert-check-vc-info t)
+;(setq auto-revert-interval 5)
 
 ;;svn support
 ;(require 'psvn)

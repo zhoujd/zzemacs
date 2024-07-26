@@ -121,15 +121,19 @@
 
 ;;recentf ext
 (require 'recentf-ext)
-(setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
-(recentf-mode t)
+;;disable before we start recentf for TrampMode!
+(setq recentf-auto-cleanup 'never)
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
 ;;ignore some files
-(setq recentf-exclude '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$"
+(setq recentf-exclude '("COMMIT_MSG"
+                        "COMMIT_EDITMSG"
+                        "github.*txt$"
                         "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
-                        ".*png$" ".*cache$"))
+                        ".*png$"
+                        ".*cache$"))
+(recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."
@@ -143,7 +147,7 @@
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
-(defun zz:undo-kill-buffer (arg)
+(defun zz:find-last-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -159,6 +163,7 @@
      buffer-files-list)
     (find-file (nth (- arg 1) recently-killed-list))))
 
+;;helm-recentb
 (require 'recentb)
 (recentb-mode t)
 

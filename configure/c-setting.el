@@ -142,14 +142,11 @@
       (add-to-list 'eglot-server-programs
                    '((c++-mode c-mode) zz:c-lang-server))
       (add-hook 'c-mode-hook 'eglot-ensure)
-      (add-hook 'c++-mode-hook 'eglot-ensure))
+      (add-hook 'c++-mode-hook 'eglot-ensure)
+      (message "Use eglot with %s for c/c++ mode"
+               zz:c-lang-server))
     (progn
       (require 'lsp-clangd)
-      (setq lsp-clients-clangd-args '("-j=4"
-                                      "--background-index"
-                                      "--limit-references=0"
-                                      "--clang-tidy"
-                                      "-log=error"))
       (lsp-register-client
        (make-lsp-client :new-connection (lsp-tramp-connection zz:c-lang-server)
                         :major-modes '(c-mode c++-mode)
@@ -157,6 +154,8 @@
                         :server-id 'clangd-remote))
       (add-hook 'c-mode-hook 'lsp-deferred t)
       (add-hook 'c++-mode-hook 'lsp-deferred t)
+      (message "Use lsp-mode with %s for c/c++ mode"
+               zz:c-lang-server)
       ))
 
 (defvar zz:company-lsp-p nil "t for enable, nil for disable")

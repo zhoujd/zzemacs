@@ -376,22 +376,6 @@ mouse-3: Toggle minor modes"
             (equal (buffer-name (ad-get-arg 0)) "\\*Async Shell Command\\*.*"))
        ad-do-it))
 
-(defun zz:undo-kill-buffer (arg)
-  "Re-open the last buffer killed. With ARG, re-open the nth buffer."
-  (interactive "p")
-  (let ((recently-killed-list (copy-sequence recentf-list))
-        (buffer-files-list
-         (delq nil (mapcar (lambda (buf)
-                             (when (buffer-file-name buf)
-                               (expand-file-name (buffer-file-name buf))))
-                           (buffer-list)))))
-    (mapc
-     (lambda (buf-file)
-       (setq recently-killed-list
-             (delete buf-file recently-killed-list)))
-     buffer-files-list)
-    (find-file (nth (- arg 1) recently-killed-list))))
-
 ;;esc quits
 (define-key minibuffer-local-map            [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-ns-map         [escape] 'minibuffer-keyboard-quit)

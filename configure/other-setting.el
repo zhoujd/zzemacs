@@ -121,6 +121,7 @@
 
 ;;recentf ext
 (require 'recentf-ext)
+(setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
 (recentf-mode t)
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
@@ -141,6 +142,25 @@
           (prompt (append '("File name: ") tocpl))
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
+
+(defun zz:undo-kill-buffer (arg)
+  "Re-open the last buffer killed. With ARG, re-open the nth buffer."
+  (interactive "p")
+  (let ((recently-killed-list (copy-sequence recentf-list))
+        (buffer-files-list
+         (delq nil (mapcar (lambda (buf)
+                             (when (buffer-file-name buf)
+                               (expand-file-name (buffer-file-name buf))))
+                           (buffer-list)))))
+    (mapc
+     (lambda (buf-file)
+       (setq recently-killed-list
+             (delete buf-file recently-killed-list)))
+     buffer-files-list)
+    (find-file (nth (- arg 1) recently-killed-list))))
+
+(require 'recentb)
+(recentb-mode t)
 
 ;;ange-ftp
 (setq ange-ftp-generate-anonymous-password "zchrzhou@gmail.com")

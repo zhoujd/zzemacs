@@ -33,7 +33,7 @@
 
 (define-fn-key (gethash "f4" fn-key-table)
   [f4]              f4-map
-  [S-f4]            'zz:undo-kill-buffer
+  [S-f4]            'helm-recentb
   [C-f4]            'zz:helm-find
   [M-f4]            'zz:helm-grep-ag
   (kbd "C-x <f4>")  'helm-recentf

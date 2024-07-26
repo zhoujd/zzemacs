@@ -116,6 +116,15 @@ Dmitriy Igrishin's patched version of comint.el."
         (multi-shell-new)))
     )))
 
+(defun zz:home-shell ()
+  (interactive)
+  (cond
+   (t
+    (let ((default-directory "~"))
+      (when (file-exists-p default-directory)
+        (multi-shell-new)))
+    )))
+
 (defun zz:get-current-shell ()
   (interactive)
   (cond

@@ -80,7 +80,7 @@
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
-  (kbd "`")       'zz:switch-to-fn-shell
+  (kbd "`")       'zz:home-shell
 
   (kbd "C-1")     (zz:quick-shell zz:shell-1  "*shell<1>*")
   (kbd "C-2")     (zz:quick-shell zz:shell-2  "*shell<2>*")
@@ -96,7 +96,7 @@
   (kbd "C-=")     'zz:helm-remote-shell
   (kbd "C-\\")    'zz:get-shell
   [C-backspace]   'zz:get-shell
-  (kbd "C-`")     'zz:switch-to-c-shell
+  (kbd "C-`")     'zz:home-shell
 
   (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
   (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
@@ -112,7 +112,7 @@
   (kbd "M-=")     'zz:helm-remote-term
   (kbd "M-\\")    'multi-term
   (kbd "M-DEL")   'multi-term
-  (kbd "M-`")     'zz:switch-to-term
+  (kbd "M-`")     'zz:home-term
   ))
 
 ;;switch to shells

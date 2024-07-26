@@ -179,6 +179,13 @@
            (multi-term-default-dir default-directory))
       (multi-term))))
 
+(defun zz:home-term ()
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory "~")
+           (multi-term-default-dir default-directory))
+      (multi-term))))
+
 (defun zz:local-term ()
   (interactive)
   (with-temp-buffer

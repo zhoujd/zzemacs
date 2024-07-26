@@ -5,26 +5,29 @@
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)
-(add-to-list 'tramp-methods
-             '("sshz"
-               (tramp-login-program        "ssh")
-               (tramp-login-args           (("-l" "%u")
-                                            ("-p" "%p")
-                                            ("%c")
-                                            ("-e" "none")
-                                            ("-X")
-                                            ("%h")
-                                            ))
-               (tramp-async-args           (("-q")))
-               (tramp-remote-shell         "/bin/sh")
-               (tramp-remote-shell-login   ("-l"))
-               (tramp-remote-shell-args    ("-c"))
-               (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
-                                            ("-o" "UserKnownHostsFile=/dev/null")
-                                            ("-o" "StrictHostKeyChecking=no")
-                                            ("-o" "ForwardX11=yes")))
-               (tramp-default-port         22)))
-(tramp-set-completion-function "sshz" tramp-completion-function-alist-ssh)
+(tramp--with-startup
+ (add-to-list 'tramp-methods
+              '("sshz"
+                (tramp-login-program        "ssh")
+                (tramp-login-args           (("-l" "%u")
+                                             ("-p" "%p")
+                                             ("%c")
+                                             ("-e" "none")
+                                             ("-X")
+                                             ("%h")
+                                             ))
+                (tramp-async-args           (("-q")))
+                (tramp-remote-shell         "/bin/sh")
+                (tramp-remote-shell-login   ("-l"))
+                (tramp-remote-shell-args    ("-c"))
+                (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
+                                             ("-o" "UserKnownHostsFile=/dev/null")
+                                             ("-o" "StrictHostKeyChecking=no")
+                                             ("-o" "ForwardX11=yes")))
+                (tramp-default-port         22)))
+ (tramp-set-completion-function
+  "sshz" tramp-completion-function-alist-ssh))
+
 (setq tramp-default-method "sshz")
 
 ;;tramp syntax: default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)

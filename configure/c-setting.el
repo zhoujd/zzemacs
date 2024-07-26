@@ -136,7 +136,7 @@
 ;;sudo apt install clangd
 ;;sudo apt install ccls
 (defvar zz:c-lsp-eglot-p t "t for eglot, nil for lsp-mode")
-(defvar zz:c-lang-server "clangd" "ccls or clangd")
+(defvar zz:c-lang-server "ccls" "ccls or clangd")
 (if zz:c-lsp-eglot-p
     (progn
       (add-to-list 'eglot-server-programs

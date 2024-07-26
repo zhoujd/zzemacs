@@ -39,6 +39,7 @@
   (kbd "=")       'zz:remote-shell
   (kbd "\\")      'zz:get-shell
   (kbd "DEL")     'zz:get-shell
+  (kbd "`")       'zz:home-shell
 
   (kbd "C-1")     (zz:quick-shell zz:shell-1  "*shell<1>*")
   (kbd "C-2")     (zz:quick-shell zz:shell-2  "*shell<2>*")
@@ -54,6 +55,23 @@
   (kbd "C-=")     'zz:helm-remote-shell
   (kbd "C-\\")    'zz:get-shell
   [C-backspace]   'zz:get-shell
+  (kbd "C-`")     'zz:home-shell
+
+  (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
+  (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
+  (kbd "M-3")     (zz:quick-buffer zz:term-3  "*terminal<3>*")
+  (kbd "M-4")     (zz:quick-buffer zz:term-4  "*terminal<4>*")
+  (kbd "M-5")     (zz:quick-buffer zz:term-5  "*terminal<5>*")
+  (kbd "M-6")     (zz:quick-buffer zz:term-6  "*terminal<6>*")
+  (kbd "M-7")     (zz:quick-buffer zz:term-7  "*terminal<7>*")
+  (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
+  (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
+  (kbd "M-0")     'zz:helm-cd-term
+  (kbd "M--")     'zz:helm-local-term
+  (kbd "M-=")     'zz:helm-remote-term
+  (kbd "M-\\")    'multi-term
+  (kbd "M-DEL")   'multi-term
+  (kbd "M-`")     'zz:home-term
   ))
 
 (apply-keys-to-map

@@ -28,6 +28,7 @@
         company-setting
         sample-setting
         shell-setting
+        term-setting        
         gdb-setting
         keymap-setting
         gkey-setting

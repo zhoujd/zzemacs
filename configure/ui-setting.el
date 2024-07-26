@@ -55,19 +55,6 @@ mouse-3: Toggle minor modes"
   "Return the end of mode line."
   (concat " "))
 
-(defun zz:replace-git-status (tstr)
-  (let* ((tstr (replace-regexp-in-string "Git" "" tstr))
-         (first-char (substring tstr 0 1))
-         (rest-chars (substring tstr 1)))
-    (cond
-     ((string= ":" first-char) ;;; Modified
-      (replace-regexp-in-string "^:" "⚡️" tstr))
-     ((string= "-" first-char) ;; No change
-      (replace-regexp-in-string "^-" "✔️" tstr))
-     (t tstr))))
-(advice-add #'vc-git-mode-line-string :filter-return
-            #'zz:replace-git-status)
-
 (defun zz:segment-process ()
   "Return the current value of `mode-line-process'."
   (let ((process-info (format-mode-line mode-line-process)))

@@ -10,28 +10,6 @@
     (list (cons "\\.gitconfig$"    'conf-mode))
     auto-mode-alist))
 
-;;auto check vc info
-;(setq auto-revert-check-vc-info t)
-;(setq auto-revert-interval 5)
-
-;;svn support
-;(require 'psvn)
-;(require 'vc-svn)
-
-;;git support
-;;=>github ssh-keygen
-;;$ssh-keygen -t rsa -C "your_email@example.com"
-;;;=>gitisos ssh-keygen
-;;$ssh-keygen -t dsa
-;;$ssh -T git@github.com
-;;;=>SSH authorized each other
-;;$ssh-keygen -t rsa
-;;$ssh-keygen -p -f ~/.ssh/id_rsa
-;;$touch ~/.ssh/authorized_keys
-;;$chmod 644 ~/.ssh/authorized_keys
-;;cat id_rsa_zachary.pub >> ~/.ssh/authorized_keys
-;;ssh-copy-id user1@123.123.123.123
-
 ;;mercurial support
 (require 'mercurial)
 (require 'mq)

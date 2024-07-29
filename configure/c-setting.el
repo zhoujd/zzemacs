@@ -129,9 +129,9 @@
 ;;lsp-mode and eglot-mode support
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
-;;https://clangd.llvm.org/installation.html
 ;;https://ddavis.io/blog/eglot-cpp-ide/
 ;;https://joaotavora.github.io/eglot/
+;;https://clangd.llvm.org/installation.html
 ;;sudo apt install bear && bear cmake && bear make
 ;;sudo apt install clangd
 ;;sudo apt install ccls

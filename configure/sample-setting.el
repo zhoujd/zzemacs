@@ -325,8 +325,15 @@
           (goto-char position)))))
 
 (defun zz:file-name ()
+  "Show the full path to the current file
+     in the minibuffer and copy to clipboard."
   (interactive)
-  (message (buffer-file-name)))
+  (let ((file-name (buffer-file-name)))
+    (if file-name
+        (progn
+          (message file-name)
+          (kill-new file-name))
+        (error "Buffer not visiting a file"))))
 
 (defun zz:kill-this-buffer ()
   (interactive)
@@ -352,7 +359,8 @@
          '(90 . 90) '(100 . 100)))))
 
 (defun zz:transparency (value)
-  "Sets the transparency of the frame window. 0=transparent/100=opaque"
+  "Sets the transparency of the frame window.
+     0=transparent/100=opaque"
   (interactive "nTransparency Value 0 - 100 opaque:")
   (set-frame-parameter (selected-frame) 'alpha value))
 

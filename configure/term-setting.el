@@ -204,9 +204,8 @@
            (multi-term-default-dir default-directory))
       (multi-term))))
 
-(defun zz:remote-term (host)
+(defun zz:get-remote-term (host)
   "Connect to a remote host by multi-term."
-  (interactive "sHost: ")
   (with-temp-buffer
     (let* ((multi-term-program "ssh")
            (multi-term-program-switches (format "%s" host))
@@ -216,12 +215,19 @@
       (message "Remote %s ready" host)
       )))
 
+(defun zz:remote-term (host)
+  "Connect to a remote host by multi-term."
+  (interactive "sHost: ")
+  (zz:get-remote-term host))
+
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")
   (with-temp-buffer
     (let* ((default-directory dir)
            (multi-term-default-dir default-directory))
       (multi-term)
+      ;(when (tramp-tramp-file-p default-directory)
+      ;  (tramp-term--initialize host))
       )))
 
 (defun zz:helm-local-term ()
@@ -238,7 +244,7 @@
   "remote term with helm"
   (interactive)
   (let ((host (car (tramp-term--select-host))))
-    (zz:remote-term host)))
+    (zz:get-remote-term host)))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

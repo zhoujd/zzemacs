@@ -1,6 +1,14 @@
 ;;;; term-setting.el --- sample config file
 ;;;https://www.emacswiki.org/emacs/AnsiTermHints
 
+;;tramp-term
+(require 'tramp-term)
+
+;;open localhost ansi-term
+(defun zz:get-local-term ()
+  (interactive)
+  (ansi-term "bash" "localhost"))
+
 ;;popup term
 (if-ms-windows
  (setq popup-terminal-command '("cmd" "/c" "start"))
@@ -204,7 +212,8 @@
            (multi-term-program-switches (format "%s" host))
            (default-directory "~"))
       (multi-term)
-      (setq default-directory (format "/%s:%s:" tramp-default-method  host))
+      (tramp-term--initialize host)
+      (message "Remote %s ready" host)
       )))
 
 (defun zz:helm-cd-term (dir)
@@ -212,7 +221,8 @@
   (with-temp-buffer
     (let* ((default-directory dir)
            (multi-term-default-dir default-directory))
-      (multi-term))))
+      (multi-term)
+      )))
 
 (defun zz:helm-local-term ()
   "remote term with helm"
@@ -227,12 +237,8 @@
 (defun zz:helm-remote-term ()
   "remote term with helm"
   (interactive)
-  (with-temp-buffer
-    (let* ((prefix (concat "/" tramp-default-method ":")))
-      (unless (tramp-tramp-file-p default-directory)
-        (setq default-directory prefix))
-      (call-interactively 'zz:helm-cd-term)
-    )))
+  (let ((host (car (tramp-term--select-host))))
+    (zz:remote-term host)))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()
@@ -242,14 +248,6 @@
                (set-process-sentinel proc (lambda (process event)
                             (if (string= event "finished\n")
                                        (kill-buffer buff))))))))
-
-;;tramp-term
-(require 'tramp-term)
-
-;;open localhost ansi-term
-(defun zz:get-local-term ()
-  (interactive)
-  (ansi-term "bash" "localhost"))
 
 
 (provide 'term-setting)

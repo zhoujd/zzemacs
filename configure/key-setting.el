@@ -110,8 +110,8 @@
   (kbd "M-0")     'zz:helm-cd-term
   (kbd "M--")     'zz:helm-local-term
   (kbd "M-=")     'zz:helm-remote-term
-  (kbd "M-\\")    'multi-term
-  (kbd "M-DEL")   'multi-term
+  (kbd "M-\\")    'zz:get-term
+  (kbd "M-DEL")   'zz:get-term
   (kbd "M-`")     'zz:home-term
   ))
 

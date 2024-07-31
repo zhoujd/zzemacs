@@ -7,12 +7,12 @@ HOST=s78
 set-eterm-dir() {
     echo -e "\033AnSiTu" "$USER"
     echo -e "\033AnSiTc" "$PWD"
-    echo -e "\033AnSiTh" "$EHOST"
+    echo -e "\033AnSiTh" "$HOST"
     history -a
 }
 
 # Track directory, username, and cwd for remote logons.
 if [ "$TERM" = "eterm-256color" ]; then
-    PROMPT_COMMAND=set-eterm-dir
+    PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} set-eterm-dir"
     clear
 fi

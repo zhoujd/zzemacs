@@ -625,3 +625,9 @@ Linux something
     $ export LD_PRELOAD="./myhack.so"
     $ unset LD_PREDLOAD
     $ ldd
+
+## SSH keys and autologin
+
+    $ cd ~/.ssh
+    $ chmod 600 id_rsa id_rsa.pub
+    $ chmod 644 authorized_keys

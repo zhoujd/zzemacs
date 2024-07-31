@@ -246,6 +246,11 @@
 ;;tramp-term
 (require 'tramp-term)
 
+;;open localhost ansi-term
+(defun zz:get-local-term ()
+  (interactive)
+  (ansi-term "bash" "localhost"))
+
 
 (provide 'term-setting)
 

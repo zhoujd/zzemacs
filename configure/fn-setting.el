@@ -55,7 +55,7 @@
   [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
   [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
   (kbd "C-x <f6>")  (if-ms-windows 'zz:switch-to-shell 'zz:switch-to-term)
-  (kbd "C-c <f6>")  (if-ms-windows 'zz:get-shell 'ansi-term)
+  (kbd "C-c <f6>")  (if-ms-windows 'zz:get-shell 'zz:get-local-term)
   "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)

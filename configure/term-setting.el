@@ -129,6 +129,14 @@
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (zz:open-term-dir default-directory)))
+
+(defun zz:switch-term ()
+  "Switch to the term buffer last used, or create a new one if
+    none exists, or if the current buffer is already a term."
+  (interactive)
   (let ((b (zz:last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'term-mode major-mode))
         (zz:open-term-dir default-directory)

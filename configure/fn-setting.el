@@ -51,11 +51,11 @@
 
 (define-fn-key (gethash "f6" fn-key-table)
   [f6]              (if-ms-windows 'zz:get-shell 'zz:get-term)
-  [S-f6]            (if-ms-windows 'zz:cd-shell 'multi-term-dedicated-toggle)
+  [S-f6]            (if-ms-windows 'zz:cd-shell 'zz:cd-term)
   [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
   [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
   (kbd "C-x <f6>")  (if-ms-windows 'zz:switch-to-shell 'zz:switch-to-term)
-  (kbd "C-c <f6>")  (if-ms-windows 'zz:get-shell 'zz:get-local-term)
+  (kbd "C-c <f6>")  (if-ms-windows 'zz:get-shell 'zz:get-term)
   "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)

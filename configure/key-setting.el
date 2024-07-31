@@ -109,7 +109,7 @@
   (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
   (kbd "M-0")     'zz:helm-cd-term
   (kbd "M--")     'zz:helm-local-term
-  (kbd "M-=")     'zz:helm-remote-term
+  (kbd "M-=")     'tramp-term
   (kbd "M-\\")    'multi-term
   (kbd "M-DEL")   'multi-term
   (kbd "M-`")     'zz:home-term

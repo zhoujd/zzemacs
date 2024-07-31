@@ -1,0 +1,18 @@
+# -*- mode: shell-script -*-
+# copy emacs to remote ~/.emacs_term
+
+HOST=s78
+
+# Set eterm directory
+set-eterm-dir() {
+    echo -e "\033AnSiTu" "$USER"
+    echo -e "\033AnSiTc" "$PWD"
+    echo -e "\033AnSiTh" "$EHOST"
+    history -a
+}
+
+# Track directory, username, and cwd for remote logons.
+if [ "$TERM" = "eterm-256color" ]; then
+    PROMPT_COMMAND=set-eterm-dir
+    clear
+fi

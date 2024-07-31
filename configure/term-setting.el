@@ -4,6 +4,9 @@
 ;;tramp-term
 (require 'tramp-term)
 
+(zz:load-path "site-lisp/prf-tramp")
+(require 'prf-tramp-friendly-parsing)
+
 ;;open localhost ansi-term
 (defun zz:get-local-term ()
   (interactive)
@@ -112,13 +115,23 @@
     (if (eq 'term-mode (with-current-buffer (car l) major-mode))
         (car l) (zz:last-term-buffer (cdr l)))))
 
+(defun zz:open-term-dir (dir)
+  (let ((multi-term-default-dir dir))
+    (multi-term)
+    (when (tramp-tramp-file-p dir)
+      (tramp-term--initialize (prf/tramp/get-host-from-path dir)))))
+
+(defun zz:open-term-host (host)
+    (multi-term)
+    (tramp-term--initialize host))
+
 (defun zz:get-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
   (let ((b (zz:last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'term-mode major-mode))
-        (multi-term)
+        (zz:open-term-dir default-directory)
         (switch-to-buffer b))))
 
 (defun zz:multi-term-dedicated-toggle ()
@@ -176,6 +189,7 @@
     (set-buffer (apply 'make-term buf "ssh" nil switches))
     (term-mode)
     (term-char-mode)
+    (tramp-term--initialize host)
     (switch-to-buffer (format "*%s*" buf))
     ))
 
@@ -183,16 +197,14 @@
   (interactive)
   (with-temp-buffer
     (let* ((default-directory (file-name-as-directory
-                               (ido-read-directory-name "Directory: ")))
-           (multi-term-default-dir default-directory))
-      (multi-term))))
+                               (ido-read-directory-name "Directory: "))))
+      (zz:open-term-dir default-directory))))
 
 (defun zz:home-term ()
   (interactive)
   (with-temp-buffer
-    (let* ((default-directory "~")
-           (multi-term-default-dir default-directory))
-      (multi-term))))
+    (let* ((default-directory "~"))
+      (zz:open-term-dir default-directory))))
 
 (defun zz:local-term ()
   (interactive)
@@ -200,9 +212,8 @@
     (when (tramp-tramp-file-p default-directory)
       (setq default-directory "~"))
     (let* ((default-directory (file-name-as-directory
-                               (ido-read-directory-name "Directory: ")))
-           (multi-term-default-dir default-directory))
-      (multi-term))))
+                               (ido-read-directory-name "Directory: "))))
+      (zz:open-term-dir default-directory))))
 
 (defun zz:get-remote-term (host)
   "Connect to a remote host by multi-term."
@@ -210,8 +221,7 @@
     (let* ((multi-term-program "ssh")
            (multi-term-program-switches (format "%s" host))
            (default-directory "~"))
-      (multi-term)
-      (tramp-term--initialize host)
+      (zz:open-term-host host)
       (message "Remote %s ready" host)
       )))
 
@@ -220,17 +230,11 @@
   (interactive "sHost: ")
   (zz:get-remote-term host))
 
-(zz:load-path "site-lisp/prf-tramp")
-(require 'prf-tramp-friendly-parsing)
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")
   (with-temp-buffer
-    (let* ((default-directory dir)
-           (multi-term-default-dir default-directory))
-      (multi-term)
-      (when (tramp-tramp-file-p dir)
-        (tramp-term--initialize (prf/tramp/get-host-from-path dir)))
-      )))
+    (let* ((default-directory dir))
+      (zz:open-term-dir default-directory))))
 
 (defun zz:helm-local-term ()
   "remote term with helm"

@@ -4,6 +4,7 @@
 export PS1='[\u@\h \W]$ '
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 export PAGER=less
+export EHOST=s78
 
 # alias
 alias ls='ls --color=auto'         # ls output with color
@@ -19,3 +20,17 @@ alias lt='ls -ltr'                 # sort by date
 alias lh='ls -lh'                  # ls for -h
 alias lm='ls -al | more'           # pipeline to more
 alias sudo='sudo -E'
+
+# Set eterm directory
+set-eterm-dir() {
+    echo -e "\033AnSiTu" "$USER"
+    echo -e "\033AnSiTc" "$PWD"
+    echo -e "\033AnSiTh" "$EHOST"
+    history -a
+}
+
+# Track directory, username, and cwd for remote logons.
+if [ "$TERM" = "eterm-256color" ]; then
+    PROMPT_COMMAND=set-eterm-dir
+    clear
+fi

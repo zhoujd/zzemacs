@@ -46,8 +46,12 @@ install_fonts() {
 install_others() {
     ## create ~/.emacs.d
     mkdir -p ~/.emacs.d
-    ## link zzemacs/etc/terminfo
-    ln -sfvT ${ZZEMACS_ROOT}/etc/terminfo ~/.terminfo
+    ## term config
+    ${ZZEMACS_ROOT}/misc/term/install.sh
+    ## debug config
+    ${ZZEMACS_ROOT}/misc/debug/install.sh
+    ## git config
+    ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
 }
 
 ## install thirdparty

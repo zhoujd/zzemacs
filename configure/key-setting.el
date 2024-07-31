@@ -128,7 +128,6 @@
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
-  (kbd "i")       'zz:file-name
   (kbd "v")       'multi-vterm
   (kbd "w")       'langtool-check
   (kbd "W")       'langtool-check-done
@@ -141,13 +140,11 @@
   (kbd "q")       'vr/query-replace
 
   (kbd "C-b")     'browse-url
-  (kbd "C-d")     (if-ms-windows
-                   (zz:exec-key zz:explorer '("explorer" "."))
-                   (zz:exec-key zz:thunar '("thunar")))
+  (kbd "C-d")     (zz:exec-key zz:thunar '("thunar"))
   (kbd "C-e")     'eshell
-  (kbd "C-h")     'sourcepair-jump-to-headerfile
   (kbd "C-l")     'command-history
   (kbd "C-k")     'vkill
+  (kbd "C-i")     'zz:copy-filename
   (kbd "C-r")     'zz:add-code-review-note
   (kbd "C-s")     'zz:slime-connect-stumpwm
   (kbd "C-t")     'zz:open-with-terminal

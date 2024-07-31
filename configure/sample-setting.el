@@ -324,7 +324,7 @@
           (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name))
           (goto-char position)))))
 
-(defun zz:file-name ()
+(defun zz:copy-filename ()
   "Show the full path to the current file
      in the minibuffer and copy to clipboard."
   (interactive)
@@ -333,7 +333,7 @@
         (progn
           (message file-name)
           (kill-new file-name))
-        (error "Buffer not visiting a file"))))
+        (message "Buffer not visiting a file"))))
 
 (defun zz:kill-this-buffer ()
   (interactive)

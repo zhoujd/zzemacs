@@ -4,6 +4,7 @@
 ;;tramp-term
 (require 'tramp-term)
 
+;;tramp utils
 (zz:load-path "site-lisp/prf-tramp")
 (require 'prf-tramp-friendly-parsing)
 
@@ -125,14 +126,6 @@
     (multi-term)
     (tramp-term--initialize host))
 
-(defun zz:get-term ()
-  "Switch to the term buffer last used, or create a new one if
-    none exists, or if the current buffer is already a term."
-  (interactive)
-  (let ((default-directory (file-name-as-directory
-                            (ido-read-directory-name "Directory: "))))
-    (zz:open-term-dir default-directory)))
-
 (defun zz:switch-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
@@ -153,7 +146,7 @@
         (setq old-buf (current-buffer))
         (multi-term-dedicated-toggle))))
 
-;; switch to named term
+;;switch to named term
 (defun zz:term-list ()
   (setq zz:terms ())
   (dolist (b (buffer-list))
@@ -222,6 +215,12 @@
     (let* ((default-directory (file-name-as-directory
                                (ido-read-directory-name "Directory: "))))
       (zz:open-term-dir default-directory))))
+
+(defun zz:get-term ()
+  "Switch to the term buffer last used, or create a new one if
+    none exists, or if the current buffer is already a term."
+  (interactive)
+  (zz:cd-term))
 
 (defun zz:get-remote-term (host)
   "Connect to a remote host by multi-term."

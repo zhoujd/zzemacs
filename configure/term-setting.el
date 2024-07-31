@@ -233,10 +233,25 @@
       (message "Remote %s ready" host)
       )))
 
-(defun zz:remote-term (host)
+(defun zz:remote-term ()
   "Connect to a remote host by multi-term."
-  (interactive "sHost: ")
-  (zz:get-remote-term host))
+  (interactive)
+  (with-temp-buffer
+    (let* ((path (mapconcat
+                  (lambda (x)
+                    (when (file-exists-p x)
+                      (concatenate 'string x)))
+                  '("~/.ssh/config"
+                    "~/.ssh/config.d/*")
+                  " "))
+           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
+           (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+           (command (format "cat %s | %s | %s" path grep awk))
+           (host (ido-completing-read "Host: "
+                                      (split-string
+                                       (shell-command-to-string command)))))
+
+      (zz:get-remote-term host))))
 
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")

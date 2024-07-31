@@ -128,6 +128,7 @@
   (kbd "d")       'helm-switchb-dired-list
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
+  (kbd "i")       'zz:file-name
   (kbd "v")       'multi-vterm
   (kbd "w")       'langtool-check
   (kbd "W")       'langtool-check-done

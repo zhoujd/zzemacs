@@ -324,7 +324,7 @@
           (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name))
           (goto-char position)))))
 
-(defun zz:path ()
+(defun zz:file-name ()
   (interactive)
   (message (buffer-file-name)))
 
@@ -441,11 +441,6 @@
     (if (/= (current-column) 0)
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
-
-;;current file name
-(defun zz:path ()
-  (interactive)
-  (message (buffer-file-name)))
 
 (defun zz:close-all-buffers ()
   (interactive)

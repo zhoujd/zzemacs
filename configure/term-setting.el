@@ -123,8 +123,9 @@
       (tramp-term--initialize (prf/tramp/get-host-from-path dir)))))
 
 (defun zz:open-term-host (host)
-    (multi-term)
-    (tramp-term--initialize host))
+  (multi-term)
+  (sleep-for 0.1)
+  (tramp-term--initialize host))
 
 (defun zz:switch-term ()
   "Switch to the term buffer last used, or create a new one if

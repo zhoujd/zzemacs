@@ -243,6 +243,9 @@
                             (if (string= event "finished\n")
                                        (kill-buffer buff))))))))
 
+;;tramp-term
+(require 'tramp-term)
+
 
 (provide 'term-setting)
 

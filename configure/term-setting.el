@@ -1,5 +1,5 @@
 ;;;; term-setting.el --- sample config file
-;;;
+;;;https://www.emacswiki.org/emacs/AnsiTermHints
 
 ;;popup term
 (if-ms-windows

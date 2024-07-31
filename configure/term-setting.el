@@ -220,14 +220,16 @@
   (interactive "sHost: ")
   (zz:get-remote-term host))
 
+(zz:load-path "site-lisp/prf-tramp")
+(require 'prf-tramp-friendly-parsing)
 (defun zz:helm-cd-term (dir)
   (interactive "DDirectory: ")
   (with-temp-buffer
     (let* ((default-directory dir)
            (multi-term-default-dir default-directory))
       (multi-term)
-      ;(when (tramp-tramp-file-p default-directory)
-      ;  (tramp-term--initialize host))
+      (when (tramp-tramp-file-p dir)
+        (tramp-term--initialize (prf/tramp/get-host-from-path dir)))
       )))
 
 (defun zz:helm-local-term ()

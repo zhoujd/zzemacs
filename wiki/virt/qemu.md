@@ -1,6 +1,13 @@
 QEMU
 ====
 
+## URLs
+
+    https://wiki.qemu.org/Documentation/Networking
+    https://wiki.qemu.org/Documentation/Networking/NAT
+    https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
+    https://wiki.archlinux.org/title/QEMU#QEMU_monitor
+
 ## Install QEMU on Ubuntu
 
     $ sudo apt install qemu qemu-utils qemu-kvm virt-manager libvirt-daemon-system libvirt-clients bridge-utils
@@ -27,12 +34,6 @@ QEMU
     $ qemu-system-x86_64 -hda ubuntu.img -boot d -cdrom ubuntu-20.04-server-amd64.iso -m 640
     $ qemu-system-i386 -hda ubuntu.img -boot d -cdrom ubuntu-20.04-server-i386.iso -m 640
     $ qemu -hda ubuntu.img -m 640
-
-## URLs
-
-    https://wiki.qemu.org/Documentation/Networking
-    https://wiki.qemu.org/Documentation/Networking/NAT
-    https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
 
 ## The fun of routing to Wifi
 
@@ -186,3 +187,12 @@ QEMU
     $ sudo apt install spice-client-gtk
     $ spicy --title Windows 127.0.0.1 -p ${SPICE_PORT}
     $ remote-viewer --title Windows spice://127.0.0.1:${SPICE_PORT}
+
+## QEMU monitor
+
+    ## https://wiki.archlinux.org/title/QEMU#QEMU_monitor
+    ## UNIX socket
+    $ qemu-system-x86_64 -monitor unix:/tmp/monitor.sock,server,nowait [...]
+    $ socat - UNIX-CONNECT:/tmp/monitor.sock
+    $ nc -U /tmp/monitor.sock
+    $ ncat -U /tmp/monitor.sock

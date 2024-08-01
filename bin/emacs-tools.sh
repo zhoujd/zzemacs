@@ -21,6 +21,7 @@ install_package() {
             sudo apt install -y silversearcher-ag ripgrep
             sudo apt install -y socat
             sudo apt install -y perl-doc
+            sudo apt install -y ccls
             ;;
         "CentOS" )
             sudo yum install -y cscope

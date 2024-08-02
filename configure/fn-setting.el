@@ -63,8 +63,8 @@
   [S-f7]            'zz:switch-to-compilation
   [C-f7]            'next-error
   [M-f7]            'previous-error
-  (kbd "C-x <f7>")  'toggle-case-fold-search
-  (kbd "C-c <f7>")  'toggle-text-mode-auto-fill
+  (kbd "C-x <f7>")  'magit-status
+  (kbd "C-c <f7>")  'magit-blame
   "f7 key binding")
 
 (define-fn-key (gethash "f8" fn-key-table)

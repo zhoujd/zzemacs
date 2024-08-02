@@ -18,9 +18,6 @@
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
-;;git blame line
-(require 'git-blame-line)
-
 ;;magit
 ;;M-x magit-log-buffer-file
 ;;M-x magit-find-file
@@ -29,6 +26,7 @@
 (require 'magit)
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)
+  ((kbd "M-g M-b") 'magit-blame)
   ((kbd "M-g M-d") 'magit-dispatch))
 (setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)

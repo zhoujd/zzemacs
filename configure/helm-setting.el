@@ -34,14 +34,14 @@
       helm-echo-input-in-header-line    nil
       helm-always-two-windows           nil
       helm-split-window-in-side-p       t
-      helm-candidate-number-limit       100
+      helm-candidate-number-limit       9999
       helm-input-idle-delay             0
       helm-tramp-verbose                0
       helm-move-to-line-cycle-in-source t
       helm-lisp-fuzzy-completion        t
       helm-semantic-fuzzy-match         t
       helm-imenu-fuzzy-match            t
-      helm-buffer-max-length            nil
+      helm-buffer-max-length            20
       helm-ff-preferred-shell-mode      'shell-mode
       helm-mini-default-sources         '(helm-source-buffers-list
                                           helm-source-recentf

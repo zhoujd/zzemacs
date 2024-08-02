@@ -108,7 +108,14 @@
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun zz:switch-to-compilation ()
+(defun zz:compile ()
+  "Run ido directory compile"
+  (interactive)
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (call-interactively 'compile)))
+
+(defun zz:switch-to-compile ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")

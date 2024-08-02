@@ -59,8 +59,8 @@
   "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)
-  [f7]              'compile
-  [S-f7]            'zz:switch-to-compilation
+  [f7]              'zz:compile
+  [S-f7]            'zz:switch-to-compile
   [C-f7]            'next-error
   [M-f7]            'previous-error
   (kbd "C-x <f7>")  'magit-dispatch

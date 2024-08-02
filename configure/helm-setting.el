@@ -226,6 +226,11 @@
          (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
+(defun zz:helm-compile (dir)
+  (interactive "DDirectory: ")
+  (let* ((default-directory dir))
+    (call-interactively 'compile)))
+
 ;;https://github.com/alpha22jp/helm-cscope.el
 ;;C-c s I     Create list and index
 (require 'helm-cscope)

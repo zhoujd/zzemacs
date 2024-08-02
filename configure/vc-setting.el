@@ -31,6 +31,14 @@
 (setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
 
+;;make `magit-blame' always with sidebar style.
+(setq magit-blame--style
+      '(margin
+        (margin-format " %s%f" " %C %a" " %H")
+        (margin-width . 42)
+        (margin-face . magit-blame-margin)
+        (margin-body-face magit-blame-dimmed)))
+
 ;;magit-lfs
 (require 'magit-lfs)
 

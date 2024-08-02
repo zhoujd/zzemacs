@@ -439,15 +439,16 @@ Dmitriy Igrishin's patched version of comint.el."
 ;(add-to-list 'company-backends 'company-shell)
 
 ;;shell-mode use company-mode
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (company-mode t)
-            (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)))
+(defun zz:shell-company-hook ()
+  (company-mode t)
+  (define-key shell-mode-map (kbd "TAB") #'company-manual-begin))
+(add-hook 'shell-mode-hook 'zz:shell-company-hook)
 
-;;readonly prompt
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (setq-local comint-prompt-read-only t)))
+;;shell-mode common
+(defun zz:shell-common-hook ()
+  (setq-local comint-prompt-read-only t)   ;;readonly prompt
+  (setq-local comint-process-echoes t))    ;;filter echoes
+(add-hook 'shell-mode-hook 'zz:shell-common-hook)
 
 
 (provide 'shell-setting)

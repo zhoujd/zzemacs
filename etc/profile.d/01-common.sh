@@ -32,7 +32,7 @@ prompt() {
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
     case $TERM in
-        rxvt* )
+        rxvt* | putty* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;

@@ -21,7 +21,7 @@
 ;;; Commentary:
 
 ;; Interface to create helm sources easily.
-;; Actually the eieo objects are transformed in alist for compatibility.
+;; Currently the eieo objects are transformed in alist for compatibility.
 ;; In the future this package should allow creating source as eieo objects
 ;; without conversion to alist, teaching helm to read such a structure.
 ;; The compatibility with alists would be kept.
@@ -290,7 +290,7 @@
   when the completion list from the source is built. The argument
   is the list of candidates retrieved from the source. The
   function should return a transformed list of candidates which
-  will be used for the actual completion.  If it is a list of
+  will be used for the current completion.  If it is a list of
   functions, it calls each function sequentially.
 
   This can be used to transform or remove items from the list of
@@ -322,7 +322,7 @@
   even if this transformation is done every time the pattern is
   changed.  For example, if a candidate set is very large then
   `candidate-transformer' transforms every candidate while only
-  some of them will actually be displayed due to the limit
+  some of them will currently be displayed due to the limit
   imposed by `helm-candidate-number-limit'.
 
   Note that `candidates' and `candidate-transformer' is run
@@ -614,7 +614,8 @@
     :custom integer
     :documentation
     "  Enable `helm-follow-mode' for this source only.
-  With a value of 1 enable, a value of -1 or nil disable the mode.
+  With a value of 1 enable, a value of -1 or nil disable the mode, value set to
+  \\='never prevent using `helm-follow-mode' in this source. 
   See `helm-follow-mode' for more infos.")
 
    (follow-delay

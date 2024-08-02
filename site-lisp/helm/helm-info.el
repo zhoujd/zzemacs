@@ -141,6 +141,21 @@ If line have a node use the node, otherwise use directly first name found."
               :initform nil
               :custom 'string)
    (init :initform #'helm-info-init)
+   (filtered-candidate-transformer
+    :initform
+    (lambda (candidates _source)
+      (cl-loop for line in candidates
+               when (string-match helm-info--node-regexp line)
+               do (progn
+                    (helm-add-face-text-properties
+                     (match-beginning 1) (match-end 1)
+                     'font-lock-keyword-face
+                     nil line)
+                    (helm-add-face-text-properties
+                     (match-beginning 2) (match-end 2)
+                     'font-lock-warning-face
+                     nil line))
+               collect line)))
    (display-to-real :initform #'helm-info-display-to-real)
    (get-line :initform #'buffer-substring)
    (action :initform '(("Goto node" . helm-info-goto)))))
@@ -301,14 +316,22 @@ Info files are made available."
   ;; Symbol at point is used as default as long as one of the sources
   ;; in `helm-info-default-sources' is member of
   ;; `helm-sources-using-default-as-input'.
-  (cl-loop for src in helm-info-default-sources
-           for name = (if (symbolp src)
-                          (assoc 'name (symbol-value src))
-                        (assoc 'name src))
-           unless name
-           do (warn "Couldn't build source `%S' without its info file" src))
-  (helm :sources helm-info-default-sources
-        :buffer "*helm info*"))
+  (let* ((current (and Info-current-file
+                       (intern-soft
+                        (concat "helm-source-info-"
+                                (helm-basename Info-current-file)))))
+         (helm-info-default-sources
+          (if (and current (not (memq current helm-info-default-sources)))
+              (cons current helm-info-default-sources)
+            helm-info-default-sources)))
+    (cl-loop for src in helm-info-default-sources
+             for name = (if (symbolp src)
+                            (assoc 'name (symbol-value src))
+                          (assoc 'name src))
+             unless name
+             do (warn "Couldn't build source `%S' without its info file" src))
+    (helm :sources helm-info-default-sources
+          :buffer "*helm info*")))
 
 (provide 'helm-info)
 

@@ -55,6 +55,10 @@ This value can be toggled with
 \\<helm-M-x-map>\\[helm-M-x-toggle-short-doc] while in helm-M-x session."
   :type 'boolean)
 
+(defcustom helm-M-x-history-transformer-sort t
+  "When nil, do not sort helm-M-x's commands history."
+  :type 'boolean)
+
 
 ;;; Faces
 ;;
@@ -134,45 +138,59 @@ Note that SORT should not be used when fuzzy matching because
 fuzzy matching is running its own sort function with a different
 algorithm."
   (with-helm-current-buffer
-    (cl-loop with max-len = (when helm-M-x-show-short-doc
-                              (helm-in-buffer-get-longest-candidate))
-             with local-map = (helm-M-x-current-mode-map-alist)
+    (cl-loop with local-map = (helm-M-x-current-mode-map-alist)
              for cand in candidates
-             for local-key  = (car (rassq cand local-map))
-             for key        = (substitute-command-keys (format "\\[%s]" cand))
-             for sym        = (intern (if (consp cand) (car cand) cand))
-             for doc = (when max-len
-                         (helm-get-first-line-documentation (intern-soft cand)))   
-             for disp       = (if (or (eq sym major-mode)
-                                      (and (memq sym minor-mode-list)
-                                           (boundp sym)
-                                           (buffer-local-value sym helm-current-buffer)))
-                                  (propertize cand 'face 'helm-command-active-mode)
-                                cand)
-             unless (and (null ignore-props) (or (get sym 'helm-only) (get sym 'no-helm-mx)))
+             for local-key = (car (rassq cand local-map))
+             for key = (substitute-command-keys (format "\\[%s]" cand))
+             for sym = (intern (if (consp cand) (car cand) cand))
+             for doc = (when helm-M-x-show-short-doc
+                         (helm-get-first-line-documentation (intern-soft cand)))
+             for disp = (if (or (eq sym major-mode)
+                                (and (memq sym minor-mode-list)
+                                     (boundp sym)
+                                     (buffer-local-value
+                                      sym helm-current-buffer)))
+                            (propertize cand 'face 'helm-command-active-mode)
+                          cand)
+             unless (and (null ignore-props)
+                         (or (get sym 'helm-only) (get sym 'no-helm-mx)
+                             (eq sym 'helm-M-x)))
              collect
              (cons (cond ((and (string-match "^M-x" key) local-key)
-                          (propertize (format "%s%s%s %s"
-                                              disp
-                                              (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                              (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
-                                              (propertize
-                                               " " 'display
-                                               (propertize local-key 'face 'helm-M-x-key)))
-                                      'match-part disp))
-                         ((and (string-match "^M-x" key) (not (string= key "M-x")))
-                          (propertize (format "%s%s%s"
-                                              disp
-                                              (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                              (if doc (propertize doc 'face 'helm-M-x-short-doc) ""))
-                                      'match-part disp))
-                         (t (propertize (format "%s%s%s %s"
-                                                disp
-                                                (if doc (make-string (+ 1 (- max-len (length cand))) ? ) "")
-                                                (if doc (propertize doc 'face 'helm-M-x-short-doc) "")
-                                                (propertize
-                                                 " " 'display
-                                                 (propertize key 'face 'helm-M-x-key)))
+                          (propertize
+                           (format "%s%s%s %s"
+                                   disp
+                                   (if doc (helm-make-separator cand) "")
+                                   (if doc
+                                       (propertize
+                                        doc 'face 'helm-M-x-short-doc)
+                                     "")
+                                   (propertize
+                                    " " 'display
+                                    (propertize local-key 'face 'helm-M-x-key)))
+                           'match-part disp))
+                         ((and (string-match "^M-x" key)
+                               (not (string= key "M-x")))
+                          (propertize
+                           (format "%s%s%s"
+                                   disp
+                                   (if doc (helm-make-separator cand) "")
+                                   (if doc
+                                       (propertize
+                                        doc 'face 'helm-M-x-short-doc)
+                                     ""))
+                           'match-part disp))
+                         (t (propertize
+                             (format "%s%s%s %s"
+                                     disp
+                                     (if doc (helm-make-separator cand) "")
+                                     (if doc
+                                         (propertize
+                                          doc 'face 'helm-M-x-short-doc)
+                                       "")
+                                     (propertize
+                                      " " 'display
+                                      (propertize key 'face 'helm-M-x-key)))
                                         'match-part disp)))
                    cand)
              into ls
@@ -244,7 +262,7 @@ algorithm."
 (defclass helm-M-x-class (helm-source-in-buffer helm-type-command)
   ((requires-pattern :initform 0)
    (must-match :initform t)
-   (filtered-candidate-transformer :initform 'helm-M-x-transformer-no-sort)
+   (filtered-candidate-transformer :initform #'helm-M-x-transformer)
    (persistent-help :initform "Describe this command")
    (help-message :initform 'helm-M-x-help-message)
    (nomark :initform t)
@@ -273,9 +291,11 @@ Arg HISTORY default to `extended-command-history'."
   (setq helm--mode-line-display-prefarg t)
   (let* ((pred (or predicate #'commandp))
          (helm-fuzzy-sort-fn (lambda (candidates _source)
-                               ;; Sort on real candidate otherwise
-                               ;; "symbol (<binding>)" is used when sorting.
-                               (helm-fuzzy-matching-default-sort-fn-1 candidates t)))
+                               (if helm-M-x-history-transformer-sort
+                                   ;; Sort on real candidate otherwise
+                                   ;; "symbol (<binding>)" is used when sorting.
+                                   (helm-fuzzy-matching-default-sort-fn-1 candidates t)
+                                 candidates)))
          (sources `(,(helm-make-source "Emacs Commands history" 'helm-M-x-class
                        :data (lambda ()
                                (helm-comp-read-get-candidates
@@ -287,6 +307,10 @@ Arg HISTORY default to `extended-command-history'."
                                 ;; Ensure using empty string to
                                 ;; not defeat helm matching fns [1]
                                 pred nil nil ""))
+                       :filtered-candidate-transformer
+                       (if helm-M-x-history-transformer-sort
+                           #'helm-M-x-transformer
+                         #'helm-M-x-transformer-no-sort)
                        :fuzzy-match helm-M-x-fuzzy-match)
                     ,(helm-make-source "Emacs Commands" 'helm-M-x-class
                        :data (lambda ()
@@ -294,16 +318,11 @@ Arg HISTORY default to `extended-command-history'."
                                 ;; [1] Same comment as above.
                                 collection pred nil nil ""))
                        :fuzzy-match helm-M-x-fuzzy-match)))
-         (prompt (concat (cond
-                          ((eq helm-M-x-prefix-argument '-) "- ")
-                          ((and (consp helm-M-x-prefix-argument)
-                                (eq (car helm-M-x-prefix-argument) 4))
-                           "C-u ")
-                          ((and (consp helm-M-x-prefix-argument)
-                                (integerp (car helm-M-x-prefix-argument)))
-                           (format "%d " (car helm-M-x-prefix-argument)))
-                          ((integerp helm-M-x-prefix-argument)
-                           (format "%d " helm-M-x-prefix-argument)))
+         (prompt (concat (helm-acase helm-M-x-prefix-argument
+                           (- "-")
+                           ((guard (and (consp it) (car it)))
+                            (if (eq guard 4) "C-u " (format "%d " guard)))
+                           ((guard (integerp it)) (format "%d " it)))
                          "M-x ")))
     (setq helm-M-x--timer (run-at-time 1 0.1 #'helm-M-x--notify-prefix-arg))
     ;; Fix Bug#2250, add `helm-move-selection-after-hook' which

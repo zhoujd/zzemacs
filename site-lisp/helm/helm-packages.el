@@ -21,9 +21,17 @@
 (require 'cl-lib)
 (require 'helm)
 (require 'package)
+(require 'finder)
 (require 'helm-utils) ; For with-helm-display-marked-candidates.
+(require 'async-package)
+
+(declare-function dired-async-mode-line-message "ext:dired-async.el")
 
 
+(defgroup helm-packages nil
+  "Helm interface for package.el."
+  :group 'helm)
+
 (defclass helm-packages-class (helm-source-in-buffer)
   ((coerce :initform #'helm-symbolify)
    (find-file-target :initform #'helm-packages-quit-an-find-file)
@@ -34,18 +42,28 @@
         (sort candidates #'helm-generic-sort-fn))))
    (update :initform #'helm-packages--refresh-contents))
   "A class to define `helm-packages' sources.")
+
+(defcustom helm-packages-async t
+  "Install packages async when non nil."
+  :type 'boolean)
+
 
 ;;; Actions
 ;;
 ;;
 (defun helm-packages-upgrade (_candidate)
   "Helm action for upgrading marked packages."
-  (let ((mkd (helm-marked-candidates)))
+  (let ((mkd (helm-marked-candidates))
+        (error-file (expand-file-name
+                     "helm-packages-upgrade-error.txt"
+                     temporary-file-directory)))
     (with-helm-display-marked-candidates
       helm-marked-buffer-name
       (mapcar #'symbol-name mkd)
       (when (y-or-n-p (format "Upgrade %s packages? " (length mkd)))
-        (mapc #'package-upgrade mkd)))))
+        (if helm-packages-async
+            (async-package-do-action 'upgrade mkd error-file)
+          (mapc #'package-upgrade mkd))))))
 
 (defun helm-packages-describe (candidate)
   "Helm action for describing package CANDIDATE."
@@ -65,12 +83,17 @@
 
 (defun helm-packages-package-reinstall (_candidate)
   "Helm action for reinstalling marked packages."
-  (let ((mkd (helm-marked-candidates)))
+  (let ((mkd (helm-marked-candidates))
+        (error-file (expand-file-name
+                     "helm-packages-reinstall-error.txt"
+                     temporary-file-directory)))
     (with-helm-display-marked-candidates
       helm-marked-buffer-name
       (mapcar #'symbol-name mkd)
       (when (y-or-n-p (format "Reinstall %s packages? " (length mkd)))
-        (mapc #'package-reinstall mkd)))))
+        (if helm-packages-async
+            (async-package-do-action 'reinstall mkd error-file)
+          (mapc #'package-reinstall mkd))))))
 
 (defun helm-packages-delete-1 (packages &optional force)
   "Run `package-delete' on PACKAGES.
@@ -110,16 +133,24 @@ as dependencies."
       (when (y-or-n-p (format "Recompile %s packages? " (length mkd)))
         (mapc #'package-recompile mkd)))))
 
+(defun helm-packages-install--sync (packages)
+  (condition-case err
+      (mapc #'package-install packages)
+    (error "%S:\n Please refresh package list before installing" err)))
+
 (defun helm-packages-install (_candidate)
   "Helm action for installing marked packages."
-  (let ((mkd (helm-marked-candidates)))
+  (let ((mkd (helm-marked-candidates))
+        (error-file (expand-file-name
+                     "helm-packages-install-error.txt"
+                     temporary-file-directory)))
     (with-helm-display-marked-candidates
       helm-marked-buffer-name
       (mapcar #'symbol-name mkd)
       (when (y-or-n-p (format "Install %s packages? " (length mkd)))
-        (condition-case err
-            (mapc #'package-install mkd)
-          (error "%S:\n Please refresh package list before installing" err))))))
+        (if helm-packages-async
+            (async-package-do-action 'install mkd error-file)
+          (helm-packages-install--sync mkd))))))
 
 (defun helm-packages-isolate-1 (packages)
     "Start an Emacs with only PACKAGES loaded.
@@ -178,9 +209,11 @@ Arg PACKAGES is a list of strings."
                               ;; Package name.
                               (propertize
                                c
-                               'face (if (equal status "dependency")
-                                         font-lock-type-face
-                                       'font-lock-keyword-face)
+                               'face
+                               (helm-acase status
+                                 ("dependency" 'font-lock-type-face)
+                                 ("disabled" 'default)
+                                 (t 'font-lock-keyword-face))
                                'match-part c)
                               ;; Separator.
                               (make-string (1+ (- (helm-in-buffer-get-longest-candidate)
@@ -189,9 +222,10 @@ Arg PACKAGES is a list of strings."
                               ;; Package status.
                               (propertize
                                (or status "")
-                               'face (if (equal status "dependency")
-                                         'bold-italic
-                                       'default))
+                               'face (helm-acase status
+                                       ("dependency" 'bold-italic)
+                                       ("disabled" 'font-lock-property-name-face)
+                                       (t 'default)))
                               ;; Separator.
                               (make-string (1+ (- 10 (length status))) ? )
                               ;; Package provider.
@@ -218,6 +252,13 @@ Arg PACKAGES is a list of strings."
   (unless helm-packages--updated (package-refresh-contents))
   (helm-set-local-variable 'helm-packages--updated t))
 
+(defun helm-finder--list-matches (key)
+  (let* ((id (intern key))
+	 (packages (gethash id finder-keywords-hash)))
+    (unless packages
+      (error "No packages matching key `%s'" key))
+    packages))
+
 
 ;;;###autoload
 (defun helm-packages (&optional arg)
@@ -230,7 +271,10 @@ to avoid errors with outdated packages no more availables."
   (interactive "P")
   (package-initialize)
   (when arg (helm-packages--refresh-contents))
-  (let ((upgrades (package--upgradeable-packages))
+  (let ((upgrades (cl-loop for p in (package--upgradeable-packages)
+                           unless (helm-aand (assq p package-load-list)
+                                             (or (null (cadr it)) (stringp (cadr it))))
+                           collect p))
         (removables (package--removable-packages)))
     (helm :sources (list
                     (helm-make-source "Availables for upgrade" 'helm-packages-class
@@ -282,6 +326,35 @@ to avoid errors with outdated packages no more availables."
                                 ("Install packages(s)"
                                  . helm-packages-install))))
           :buffer "*helm packages*")))
+
+;;;###autoload
+(defun helm-finder ()
+  "Helm interface to find packages by keywords with `finder'."
+  (interactive)
+  (helm :sources
+        (helm-build-in-buffer-source "helm finder"
+          :data (mapcar #'car finder-known-keywords)
+          :filtered-candidate-transformer
+          (lambda (candidates _source)
+            (cl-loop for cand in candidates
+                     for desc = (assoc-default (intern-soft cand) finder-known-keywords)
+                     for sep = (helm-make-separator cand)
+                     for disp = (helm-aand (propertize desc 'face 'font-lock-warning-face)
+                                           (propertize " " 'display (concat sep it))
+                                           (concat cand it))
+                     collect (cons disp cand)))
+          :action (lambda (c)
+                    (if (string-match "\\.el$" c)
+                        (finder-commentary c)
+                      (helm :sources
+                            (helm-make-source "packages" 'helm-packages-class
+                              :init (lambda ()
+                                      (helm-init-candidates-in-buffer
+                                          'global (helm-finder--list-matches c)))
+                              :filtered-candidate-transformer #'helm-packages-transformer-1
+                              :action '(("Describe package" . helm-packages-describe)))
+                            :buffer "*helm finder results*"))))
+        :buffer "*helm finder*"))
 
 (provide 'helm-packages)
 

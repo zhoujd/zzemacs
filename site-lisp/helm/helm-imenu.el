@@ -117,11 +117,11 @@ Don't use `setq' to set this."
 
 (defcustom helm-imenu-icon-type-alist
   '(("Array"           . (all-the-icons-material "crop" :face font-lock-builtin-face))
-    ("Array"           . (all-the-icons-material "crop" :face font-lock-builtin-face))
+    ("Arrays"          . (all-the-icons-material "crop" :face font-lock-builtin-face))
     ("Boolean"         . (all-the-icons-material "crop" :face font-lock-builtin-face))
-    ("Boolean"         . (all-the-icons-material "crop" :face font-lock-builtin-face))
+    ("Booleans"        . (all-the-icons-material "crop" :face font-lock-builtin-face))
     ("Class"           . (all-the-icons-octicon "package" :face font-lock-type-face))
-    ("Class"           . (all-the-icons-octicon "package" :face font-lock-type-face))
+    ("Classes"         . (all-the-icons-octicon "package" :face font-lock-type-face))
     ("Color"           . (all-the-icons-material "color_lens" :face font-lock-builtin-face))
     ("Colors"          . (all-the-icons-material "color_lens" :face font-lock-builtin-face))
     ("Constant"        . (all-the-icons-material "crop" :face font-lock-builtin-face))
@@ -157,7 +157,7 @@ Don't use `setq' to set this."
     ("Module"          . (all-the-icons-faicon "angle-double-right" :face font-lock-builtin-face))
     ("Modules"         . (all-the-icons-faicon "angle-double-right" :face font-lock-builtin-face))
     ("Numeric"         . (all-the-icons-material "crop" :face font-lock-builtin-face))
-    ("Numeric"         . (all-the-icons-material "crop" :face font-lock-builtin-face))
+    ("Numerics"        . (all-the-icons-material "crop" :face font-lock-builtin-face))
     ("Object"          . (all-the-icons-faicon "angle-double-right" :face font-lock-builtin-face))
     ("Objects"         . (all-the-icons-faicon "angle-double-right" :face font-lock-builtin-face))
     ("Operator"        . (all-the-icons-faicon "calculator" :face font-lock-builtin-face))
@@ -167,7 +167,7 @@ Don't use `setq' to set this."
     ("Reference"       . (all-the-icons-octicon "book" :face font-lock-variable-name-face))
     ("References"      . (all-the-icons-octicon "book" :face font-lock-variable-name-face))
     ("Snippet"         . (all-the-icons-material "border_style" :face font-lock-variable-name-face))
-    ("Snippet"         . (all-the-icons-material "border_style" :face font-lock-variable-name-face))
+    ("Snippets"        . (all-the-icons-material "border_style" :face font-lock-variable-name-face))
     ("String"          . (all-the-icons-material "text_fields" :face font-lock-variable-name-face))
     ("Strings"         . (all-the-icons-material "text_fields" :face font-lock-variable-name-face))
     ("Struct"          . (all-the-icons-faicon "cog" :face font-lock-type-face))
@@ -320,7 +320,8 @@ The sexp should be an `all-the-icons' function with its args."
     (if (equal (cdr cur) mb)
         (prog1 nil
           (helm-set-pattern "")
-          (helm-force-update (concat "\\_<" (car cur) "\\_>")))
+          (helm-force-update
+           (concat "\\_<" (regexp-quote (car cur)) "\\_>")))
         t)))
 
 (defun helm-imenu-quit-and-find-file-fn (source)
@@ -406,12 +407,11 @@ The sexp should be an `all-the-icons' function with its args."
                    (and (cdr elm)
                         ;; Semantic uses overlays whereas imenu uses
                         ;; markers (Bug#1706).
-                        (setcdr elm (pcase (cdr elm) ; Same as [1].
-                                      ((and ov (pred overlayp))
-                                       (copy-overlay ov))
-                                      ((and mk (or (pred markerp)
-                                                   (pred integerp)))
-                                       (copy-marker mk))))
+                        (setcdr elm (helm-acase (cdr elm) ; Same as [1].
+                                      ((guard (overlayp it))
+                                       (copy-overlay it))
+                                      ((guard (or (markerp it) (integerp it)))
+                                       (copy-marker it))))
                         (list elm))))))
 
 (defun helm-imenu--get-prop (item)
@@ -443,10 +443,9 @@ The icon is found in `helm-imenu-icon-type-alist', if not
   (cl-loop for (k . v) in candidates
            ;; (k . v) == (symbol-name . marker)
            for bufname = (buffer-name
-                          (pcase v
-                            ((pred overlayp) (overlay-buffer v))
-                            ((or (pred markerp) (pred integerp))
-                             (marker-buffer v))))
+                          (helm-acase v
+                            ((guard (overlayp it)) (overlay-buffer it))
+                            ((guard (markerp it)) (marker-buffer it))))
            for types = (or (helm-imenu--get-prop k)
                            (list (if (with-current-buffer bufname
                                        (derived-mode-p 'prog-mode))

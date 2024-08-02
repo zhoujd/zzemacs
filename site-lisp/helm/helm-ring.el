@@ -292,12 +292,14 @@ yanked string."
     (helm-aif (marker-buffer candidate)
         (progn
           (switch-to-buffer it)
-          (helm-log-run-hook "helm-mark-ring-default-action" 'helm-goto-line-before-hook)
-          (helm-match-line-cleanup)
-          (with-helm-current-buffer
-            (unless helm-yank-point (setq helm-yank-point (point))))
-          (helm-goto-char target)
-          (helm-highlight-current-line))
+          (with-selected-window (get-buffer-window it)
+            (unless helm-in-persistent-action
+              (helm-log-run-hook
+               "helm-mark-ring-default-action" 'helm-goto-line-before-hook))
+            (helm-match-line-cleanup)
+            (unless helm-yank-point (setq helm-yank-point (point)))
+            (helm-goto-char target)
+            (helm-highlight-current-line)))
       ;; marker points to no buffer, no need to dereference it, just
       ;; delete it.
       (setq mark-ring (delete target mark-ring))
@@ -322,11 +324,11 @@ yanked string."
   (with-current-buffer (marker-buffer marker)
     (goto-char marker)
     (forward-line 0)
-    (let ((line (pcase (thing-at-point 'line)
-                  ((and line (pred stringp)
-                        (guard (not (string-match-p "\\`\n?\\'" line))))
-                   (car (split-string line "[\n\r]")))
-                  (_ "<EMPTY LINE>"))))
+    (let ((line (helm-acase (thing-at-point 'line)
+                  ((guard (and (stringp it)
+                               (not (string-match-p "\\`\n?\\'" it))))
+                   (car (split-string it "[\n\r]")))
+                  (t "<EMPTY LINE>"))))
       (remove-text-properties 0 (length line) '(read-only) line)
       (format "%7d:%s:    %s"
               (line-number-at-pos) (marker-buffer marker) line))))
@@ -617,10 +619,10 @@ See (info \"(emacs) Keyboard Macros\") for detailed infos."
             (cl-loop for km in mkd
                      for keys = (if (functionp km)
                                     (kmacro--keys km)
-                                  (pcase (car km)
-                                    ((and vec (pred vectorp)) vec)
-                                    ((and str (pred stringp))
-                                     (kmacro--to-vector str))))
+                                  (helm-acase (car km)
+                                    ((guard (vectorp it)) it)
+                                    ((guard (stringp it))
+                                     (kmacro--to-vector it))))
                      vconcat keys)))))
 
 (defun helm-kbd-macro-delete-macro (_candidate)

@@ -1,6 +1,6 @@
-;;; w3mhack.el --- a hack to setup the environment for building w3m
+;;; w3mhack.el --- a hack to setup the environment for building w3m -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2010, 2012, 2013, 2015, 2017, 2019-2021
+;; Copyright (C) 2001-2010, 2012, 2013, 2015, 2017, 2019-2023
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
@@ -135,7 +135,7 @@ There seems to be no shell command which is equivalent to /bin/sh.
 (push (expand-file-name shimbun-module-directory default-directory) load-path)
 
 (defun w3mhack-module-list ()
-  "Returna a list of w3m modules should be byte-compile'd."
+  "Return a list of w3m modules that should be byte-compile'd."
   (let* ((modules (directory-files default-directory nil "\\`[^#]+\\.el\\'"))
 	 ;; Modules not to be byte-compiled.
 	 (ignores '(".dir-locals.el" "w3mhack.el"))
@@ -423,7 +423,7 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
 	      (setq start (match-beginning 0)
 		    texinfo-command-end (point)
 		    filename (texinfo-parse-line-arg))
-	      (delete-region start (point-at-bol 2))
+	      (delete-region start (line-beginning-position 2))
 	      (message "Reading included file: %s" filename)
 	      (save-excursion
 		(save-restriction
@@ -434,8 +434,9 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
 		  ;; Remove `@setfilename' line from included file, if any,
 		  ;; so @setfilename command not duplicated.
 		  (if (re-search-forward "^@setfilename"
-					 (point-at-eol 100) t)
-		      (delete-region (point-at-bol 1) (point-at-bol 2)))))))
+					 (line-end-position 100) t)
+		      (delete-region (line-beginning-position 1)
+				     (line-beginning-position 2)))))))
 	  ;; Remove ignored areas.
 	  (goto-char (point-min))
 	  (while (re-search-forward "^@ignore[\t\r ]*$" nil t)
@@ -494,41 +495,73 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
 
 (defun w3mhack-insert-git-revision ()
   (let ((revision
-	 (with-temp-buffer
-	   (when (and (file-directory-p ".git")
-		      (executable-find "git")
-		      (zerop (call-process "git"
-					   nil
-					   t
-					   nil
-					   "log" "--oneline" "-n" "1" ".")))
-	     (goto-char (point-min))
-	     (skip-chars-forward "^ ")
-	     (concat "\"" (buffer-substring (point-min) (point)) "\"")))))
-    (goto-char (point-max))
+	 (condition-case nil
+	     (with-temp-buffer
+	       (when (and (file-directory-p ".git")
+			  (executable-find "git")
+			  (zerop (call-process "git" nil t nil
+					       "log" "--oneline" "-n" "1" ".")))
+		 (goto-char (point-min))
+		 (skip-chars-forward "^ ")
+		 (concat "\"" (buffer-substring (point-min) (point)) "\"")))
+	   (error))))
+    (goto-char (point-min))
+    (and (re-search-forward "^[\t ]*(provide[\t\n ]+'" nil 'move)
+	 (goto-char (match-beginning 0)))
+    (unless (bolp) (insert "\n"))
     (insert (format "\C-l
-(defconst emacs-w3m-git-revision %s
-  \"Git revision string of this package.\")
-" revision))))
+(defconst emacs-w3m-git-revision %s" revision) "
+  \"Git revision string of this emacs-w3m."
+		    (if revision "" "
+If nil, you may have failed to run git when building emacs-w3m.")
+		    "\")\n\n")))
 
 (defun w3mhack-generate-load-file ()
   "Generate a file including all autoload stubs."
-  (require 'autoload)
-  (let ((files (w3mhack-module-list))
-	(generated-autoload-file (expand-file-name w3mhack-load-file))
-	autoload-modified-buffers generated-autoload-load-name)
-    (if (and (file-exists-p w3mhack-load-file)
-	     (not (catch 'modified
-		    (dolist (file (cons "w3mhack.el" files))
-		      (when (file-newer-than-file-p file w3mhack-load-file)
-			(throw 'modified t))))))
-	(message " `%s' is up to date" w3mhack-load-file)
-      (with-temp-buffer
-	(dolist (file files)
-	  (setq generated-autoload-load-name
-		(file-name-sans-extension (file-name-nondirectory file)))
-	  (autoload-generate-file-autoloads file (current-buffer)))
-	(when (boundp 'byte-compile-docstring-max-column) ;; Emacs >= 28
+  (if (require 'loaddefs-gen nil t) ;; Emacs >= 29
+      ;; Note: w3m-load.el will not be byte compiled in this case
+      ;; because `loaddefs-generate' is designed not to do it.
+      (let ((modules (w3mhack-module-list))
+	    (load-file (expand-file-name w3mhack-load-file))
+	    (shimbun-dir (expand-file-name shimbun-module-directory))
+	    excludes)
+	(dolist (file (nconc
+		       (directory-files default-directory nil
+					"\\`[^#]+\\.el\\'")
+		       (mapcar (lambda (module)
+				 (concat shimbun-module-directory "/"
+					 module))
+			       (directory-files shimbun-dir nil
+						"\\`[^#]+\\.el\\'"))))
+	  (unless (member file modules)
+	    (push (if (string-match "\\`shimbun/" file)
+		      (substring file (match-end 0))
+		    file)
+		  excludes)))
+	(loaddefs-generate (list default-directory shimbun-dir)
+			   load-file excludes)
+	(with-temp-file load-file
+	  (insert-file-contents load-file)
+	  (goto-char (point-min))
+	  (while (search-forward "shimbun/" nil t)
+	    (delete-region (match-beginning 0) (match-end 0)))
+	  (w3mhack-insert-git-revision)))
+    ;; Emacs <= 28
+    (require 'autoload)
+    (let ((files (w3mhack-module-list))
+	  (generated-autoload-file (expand-file-name w3mhack-load-file))
+	  autoload-modified-buffers generated-autoload-load-name)
+      (if (and (file-exists-p w3mhack-load-file)
+	       (not (catch 'modified
+		      (dolist (file (cons "w3mhack.el" files))
+			(when (file-newer-than-file-p file w3mhack-load-file)
+			  (throw 'modified t))))))
+	  (message " `%s' is up to date" w3mhack-load-file)
+	(with-temp-buffer
+	  (dolist (file files)
+	    (setq generated-autoload-load-name
+		  (file-name-sans-extension (file-name-nondirectory file)))
+	    (autoload-generate-file-autoloads file (current-buffer)))
 	  ;; Fold long `\(fn ARGS...)' lines.
 	  (let* ((col (max byte-compile-docstring-max-column fill-column))
 		 (regexp (concat "^\\\\?(fn [^\"]\\{" (int-to-string (- col 4))
@@ -537,21 +570,21 @@ otherwise, insert URL-TITLE followed by URL in parentheses."
 		 (fill-prefix " "))
 	    (goto-char (point-min))
 	    (while (re-search-forward regexp nil t)
-	      (fill-region (match-beginning 0) (1- (match-end 0))))))
-	(goto-char (point-min))
-	(insert ";;; " w3mhack-load-file
-		" --- automatically extracted autoload\n;;
+	      (fill-region (match-beginning 0) (1- (match-end 0)))))
+	  (goto-char (point-min))
+	  (insert ";;; " w3mhack-load-file
+		  " --- automatically extracted autoload\n;;
 ;; This file should have been generated by make in emacs-w3m source directory.
 ;;\n;;; Code:\n\n")
-	(w3mhack-insert-git-revision)
-	(insert "\n(provide '"
-		(file-name-sans-extension w3mhack-load-file) ")\n\n\
+	  (w3mhack-insert-git-revision)
+	  (insert "(provide '"
+		  (file-name-sans-extension w3mhack-load-file) ")\n\n\
 ;; Local\040Variables:
 ;; version-control: never
 ;; no-update-autoloads: t
 ;; End:\n\n;;; " w3mhack-load-file " ends here\n")
-	(write-region (point-min) (point-max)
-		      w3mhack-load-file nil 'silent)))))
+	  (write-region (point-min) (point-max)
+			w3mhack-load-file nil 'silent))))))
 
 (defun w3mhack-locate-library ()
   "Print the precise file name of Emacs library remaining on the commane line."

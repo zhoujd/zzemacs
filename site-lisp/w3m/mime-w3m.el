@@ -1,6 +1,6 @@
-;;; mime-w3m.el --- mime-view content filter for text
+;;; mime-w3m.el --- mime-view content filter for text -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2005, 2009, 2010, 2012, 2013, 2017, 2019, 2021
+;; Copyright (C) 2001-2005, 2009, 2010, 2012, 2013, 2017, 2019, 2021-2023
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -34,35 +34,23 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib)) ;; cl-labels
-(eval-when-compile
-  ;; Conceal the warnings that will be issued unless the SEMI package
-  ;; and its requirements have been installed.
-  (unless (require 'mime-view nil t)
-    (provide 'mime-view)
+(require 'mime-view nil t)
+(eval-and-compile
+  (unless (featurep 'mime-view)
+    ;; Conceal the warnings that will be issued unless the SEMI package
+    ;; and its requirements have been installed.
     (defvar mime-view-text/html-previewer nil)
-    (if (<= emacs-major-version 27)
-	(progn
-	  (autoload 'ctree-set-calist-strictly "calist")
-	  (autoload 'mime-content-type-parameter "mime-def")
-	  (dolist (fn '(mime-entity-content
-			mime-entity-content-type mime-entity-fetch-field
-			mime-entity-type/subtype
-			mime-find-entity-from-content-id mime-find-root-entity
-			mime-insert-text-content mime-uri-parse-cid))
-	    (autoload fn "mime"))
-	  (autoload 'set-alist "alist"))
-      (declare-function ctree-set-calist-strictly "calist")
-      (declare-function mime-content-type-parameter "mime-def")
-      (declare-function mime-entity-content "mime")
-      (declare-function mime-entity-content-type "mime")
-      (declare-function mime-entity-fetch-field "mime")
-      (declare-function mime-entity-type/subtype "mime")
-      (declare-function mime-find-entity-from-content-id "mime")
-      (declare-function mime-find-root-entity "mime")
-      (declare-function mime-insert-text-content "mime")
-      (declare-function mime-uri-parse-cid "mime")
-      (declare-function set-alist "alist"))))
-(require 'mime-view)
+    (declare-function ctree-set-calist-strictly "calist")
+    (declare-function mime-content-type-parameter "mime-def")
+    (declare-function mime-entity-content "mime")
+    (declare-function mime-entity-content-type "mime")
+    (declare-function mime-entity-fetch-field "mime")
+    (declare-function mime-entity-type/subtype "mime")
+    (declare-function mime-find-entity-from-content-id "mime")
+    (declare-function mime-find-root-entity "mime")
+    (declare-function mime-insert-text-content "mime")
+    (declare-function mime-uri-parse-cid "mime")
+    (declare-function set-alist "alist")))
 (require 'w3m)
 
 (defcustom mime-w3m-display-inline-images 'default
@@ -183,14 +171,14 @@ by way of `post-command-hook'."
 				       'text-rendered-by-mime-w3m t)))
 	(error (message "%s" err))))))
 
-(let (current-load-list)
-  (defadvice mime-display-message
-      (after add-emacs-w3m-functions-to-pre/post-command-hook activate compile)
-    "Advised by emacs-w3m.
-Add some emacs-w3m utility functions to pre/post-command-hook."
-    (when (featurep 'w3m)
-      (add-hook 'pre-command-hook 'w3m-store-current-position nil t)
-      (add-hook 'post-command-hook 'mime-w3m-check-current-position nil t))))
+(advice-add
+ 'mime-display-message :after
+ ;; Add some emacs-w3m utility functions to pre/post-command-hook.
+ (lambda (&rest _)
+   (when (featurep 'w3m)
+     (add-hook 'pre-command-hook 'w3m-store-current-position nil t)
+     (add-hook 'post-command-hook 'mime-w3m-check-current-position nil t)))
+ '((name . add-emacs-w3m-functions-to-pre/post-command-hook)))
 
 (defun mime-w3m-check-current-position ()
   "Run `mime-w3m-after-cursor-move-hook' if the cursor has been moved."
@@ -212,16 +200,18 @@ Add some emacs-w3m utility functions to pre/post-command-hook."
       (w3m-insert-string (mime-entity-content entity))
       (mime-entity-type/subtype entity))))
 
-(eval
- (quote
-  (defadvice kill-new (before strip-keymap-properties-from-kill activate)
-    "Advised by emacs-w3m.
-Strip `keymap' or `local-map' properties from a killed string."
-    (if (text-property-any 0 (length (ad-get-arg 0))
-			   'text-rendered-by-mime-w3m t (ad-get-arg 0))
-	(remove-text-properties 0 (length (ad-get-arg 0))
-				'(keymap nil local-map nil)
-				(ad-get-arg 0))))))
+(advice-add
+ 'kill-new :filter-args
+ ;; Strip `keymap' or `local-map' properties from a killed string.
+ (lambda (args)
+   (let ((str (car args)))
+     (if (text-property-any 0 (length str) 'text-rendered-by-mime-w3m t str)
+	 (progn
+	   (remove-text-properties 0 (length str) '(keymap nil local-map nil)
+				   str)
+	   (cons str (cdr args)))
+       args)))
+ '((name . strip-keymap-properties-from-kill)))
 
 (mime-w3m-insinuate)
 

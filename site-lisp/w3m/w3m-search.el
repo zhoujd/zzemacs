@@ -1,6 +1,7 @@
-;;; w3m-search.el --- functions convenient to access web search engines
+;;; w3m-search.el --- functions convenient to access web search engines -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001--2012, 2017-2020 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001--2012, 2017-2020, 2022
+;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Keisuke Nishida    <kxn30@po.cwru.edu>,
 ;;          Shun-ichi GOTO     <gotoh@taiyo.co.jp>,
@@ -158,10 +159,13 @@ __mk_ja_JP=%%83J%%83%%5E%%83J%%83i&url=search-alias%%3Daps&field-keywords=%s"
 __mk_ja_JP=%%83J%%83%%5E%%83J%%83i&url=search-alias%%3Daps&field-keywords=%s"
 	     shift_jis)))
       ("emacswiki" "https://www.emacswiki.org/cgi-bin/wiki?search=%s")
-      ("en.wikipedia" "https://en.wikipedia.org/wiki/Special:Search?search=%s&sourceid=Mozilla-search&ns0=1")
-      ("de.wikipedia" "https://de.wikipedia.org/wiki/Spezial:Search?search=%s&sourceid=Mozilla-search&ns0=1"
+      ("en.wikipedia"
+       "https://en.wikipedia.org/w/index.php?title=Special:Search&search=%s")
+      ("de.wikipedia"
+       "https://de.wikipedia.org/w/index.php?title=Spezial:Suche&search=%s"
        utf-8)
-      ("ja.wikipedia" "https://ja.wikipedia.org/wiki/Special:Search?search=%s&sourceid=Mozilla-search&ns0=1"
+      ("ja.wikipedia"
+       "https://ja.wikipedia.org/w/index.php?title=Special:Search&search=%s"
        utf-8)
       ("msdn" "https://search.msdn.microsoft.com/search/default.aspx?query=%s")
       ("duckduckgo" "https://lite.duckduckgo.com/lite" utf-8 "q=%s")))
@@ -218,9 +222,11 @@ PROMPT-WITH-DEFAULT instead of string PROMPT."
 	  (if (region-active-p)
 	      (buffer-substring (region-beginning) (region-end))
 	    (unless (and (eq major-mode 'w3m-mode)
-			 (listp (get-text-property (point-at-bol) 'face))
+			 (listp (get-text-property (line-beginning-position)
+						   'face))
 			 (memq 'w3m-header-line-title
-			       (get-text-property (point-at-bol) 'face)))
+			       (get-text-property (line-beginning-position)
+						  'face)))
 	      (thing-at-point w3m-search-thing-at-point-arg))))
 	initial)
     (when default

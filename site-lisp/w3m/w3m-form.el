@@ -1,6 +1,7 @@
-;;; w3m-form.el --- Stuffs to handle <form> tag
+;;; w3m-form.el --- Stuffs to handle <form> tag -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2014, 2017, 2019 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2014, 2017, 2019, 2022
+;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          Yuuichi Teranishi  <teranisi@gohome.org>,
@@ -209,8 +210,8 @@ It is useful to bind this variable with `let', but do not set it globally.")
 (defun w3m-form-p (obj)
   "Return t if OBJ is a form object."
   (and (vectorp obj)
-       (symbolp (aref 0 obj))
-       (eq (aref 0 obj) 'w3m-form-object)))
+       (symbolp (aref obj 0))
+       (eq (aref obj 0) 'w3m-form-object)))
 
 (defun w3m-form-set-method (form method)
   (aset form 1 (if (stringp method)
@@ -323,7 +324,8 @@ If no field in forward, return nil without moving."
     (when bufs
       (setq bufs (sort bufs #'car-less-than-car))
       (if (eq (w3m-form-enctype form) 'multipart/form-data)
-	  (let ((boundary (apply 'format "--_%d_%d_%d" (current-time)))
+	  (let ((boundary (apply 'format "--_%d_%d_%d"
+				 (time-convert nil 'list)))
 		file type)
 	    ;; (setq buf (nreverse buf))
 	    (cons
@@ -2023,10 +2025,12 @@ textarea")))))
 `w3m-show-form-hint' uses this function."
   (unless (or (get-text-property (point) 'w3m-form-expanded)
 	      (< (next-single-property-change
-		  (point-at-bol) 'w3m-form-expanded nil (point-at-eol))
-		 (point-at-eol))
-	      (and (eq (char-after (point-at-bol)) ?\])
-		   (get-text-property (max (1- (point-at-bol)) (point-min))
+		  (line-beginning-position) 'w3m-form-expanded nil
+		  (line-end-position))
+		 (line-end-position))
+	      (and (eq (char-after (line-beginning-position)) ?\])
+		   (get-text-property (max (1- (line-beginning-position))
+					   (point-min))
 				      'w3m-form-expanded)))
     (let ((pt (text-property-not-all (point-min) (point-max)
 				     'w3m-form-expanded nil)))

@@ -1,6 +1,6 @@
-;;; w3m-dtree.el --- The add-on program to display local directory tree.
+;;; w3m-dtree.el --- The add-on program to display local directory tree -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2003, 2005-2007, 2009, 2017, 2019
+;; Copyright (C) 2001-2003, 2005-2007, 2009, 2017, 2019, 2022, 2023
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Hideyuki SHIRAI    <shirai@meadowy.org>,
@@ -35,7 +35,7 @@
 (require 'w3m)
 
 (defcustom w3m-dtree-default-allfiles nil
-  "If non-nil, set 'allfiles' to default."
+  "If non-nil, set \"allfiles\" to default."
   :group 'w3m
   :type 'boolean)
 
@@ -49,7 +49,7 @@
 (defcustom w3m-dtree-indent-strings ["|-" "+-" "|  " "   "]
   "Vector of strings to be used for indentation with w3m-dtree.
 
-If use default value or choice 'ASCII', display like this,
+If use default value or choice `ASCII', display like this,
 /home/shirai/work/emacs-w3m/
  |-CVS/
  |-icons/
@@ -84,7 +84,7 @@ If you care for another style, set manually and try it :-).
 
 (defcustom w3m-dtree-stop-strings ["|=" "+="]
   "Vector of strings to be used for indentation when a depth of directory
-over the 'w3m-dtree-directory-depth'."
+over the `w3m-dtree-directory-depth'."
   :group 'w3m
   :type '(radio
 	  (const :format "ASCII: [\"|=\" \"+=\"]\n" ["|=" "+="])
@@ -220,7 +220,7 @@ over the 'w3m-dtree-directory-depth'."
 ;;;###autoload
 (defun w3m-dtree (allfiles path)
   "Display directory tree on local file system.
-If called with 'prefix argument', display all directorys and files."
+If called with prefix argument, display all directories and files."
   (interactive "P\nDDtree directory: ")
   (if w3m-dtree-default-allfiles
       (setq allfiles (not allfiles)))

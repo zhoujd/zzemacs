@@ -3,10 +3,10 @@
 ;;;https://github.com/emacs-w3m/emacs-w3m
 ;;;https://melpa.org/#/helm-w3m
 
-(zz:load-path "site-lisp/emacs-w3m")
+(zz:load-path "site-lisp/w3m")
 (require 'w3m-load)
 
-(defvar zz:w3m-path (concat zzemacs-path "/site-lisp/emacs-w3m")
+(defvar zz:w3m-path (concat zzemacs-path "/site-lisp/w3m")
   "emacs-w3m path")
 
 ;;build w3m

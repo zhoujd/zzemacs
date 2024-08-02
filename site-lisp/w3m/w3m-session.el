@@ -1,6 +1,6 @@
-;;; w3m-session.el --- Functions to operate session of w3m
+;;; w3m-session.el --- Functions to operate session of w3m -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2003, 2005-2013, 2017-2021
+;; Copyright (C) 2001-2003, 2005-2013, 2017-2023
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Hideyuki SHIRAI <shirai@meadowy.org>
@@ -118,8 +118,8 @@ to the session (session-group) number.
 
 There is a legacy terminology problem that needs to be addressed
 here.  The documentation and symbol names currently confuse
-'sessions', 'buffers`, and 'session-groups'.  A 'session-group'
-is identical to a 'session' that has more than one 'buffer'.")
+`sessions', `buffers', and `session-groups'.  A `session-group'
+is identical to a `session' that has more than one `buffer'.")
 
 (defcustom w3m-session-file
   (expand-file-name ".sessions" w3m-profile-directory)
@@ -317,7 +317,8 @@ buffer's url history."
        (setq urls (nreverse urls))
        (when (assoc title sessions)
 	 (setq sessions (delq (assoc title sessions) sessions)))
-       (setq sessions (cons (list title (current-time) urls cnum) sessions))
+       (setq sessions (cons (list title (time-convert nil 'list) urls cnum)
+			    sessions))
        (w3m-save-list w3m-session-file sessions)
        (message "%s: %d buffer%s saved...done" title len (if (= len 1) "" "s"))
        (when (and (setq buf (get-buffer " *w3m-session select*"))
@@ -368,7 +369,7 @@ buffer's url history."
 	       (setq tmp (cons session tmp))))
 	   (setq sessions (nreverse tmp))
 	   (setq urls (nreverse urls))
-	   (setq sessions (cons (list title (current-time) urls cnum)
+	   (setq sessions (cons (list title (time-convert nil 'list) urls cnum)
 				sessions))
 	   (w3m-save-list w3m-session-file sessions)))))))
 
@@ -411,7 +412,8 @@ buffer's url history."
 	       (setq tmp (cons session tmp))))
 	   (setq sessions (nreverse tmp))
 	   (setq urls (nreverse urls))
-	   (setq sessions (cons (list title (current-time) urls nil) sessions))
+	   (setq sessions (cons (list title (time-convert nil 'list) urls nil)
+				sessions))
 	   (w3m-save-list w3m-session-file sessions)))))))
 
 (defun w3m-session-crash-recovery-save ()
@@ -437,7 +439,8 @@ buffer's url history."
 	   (setq urls (nreverse urls))
 	   (setq tmp (assoc title sessions))
 	   (when tmp (setq sessions (delq tmp sessions)))
-	   (setq sessions (cons (list title (current-time) urls nil) sessions))
+	   (setq sessions (cons (list title (time-convert nil 'list) urls nil)
+				sessions))
 	   (w3m-save-list w3m-session-file sessions)))))))
 
 ;;;###autoload
@@ -754,7 +757,7 @@ buffer in the current session."
 		  title nil)
 	  (setq sessions (delq (assoc title sessions) sessions))))))
     (setq sessions (cons (list title
-			       (current-time)
+			       (time-convert nil 'list)
 			       (nth 2 source-session)
 			       (nth 3 source-session))
 			 sessions))
@@ -999,7 +1002,6 @@ that session.  In that case delete the buffer entry."
   "Setup w3m session items in menubar."
   (unless (lookup-key w3m-mode-map [menu-bar Session])
     (easy-menu-define w3m-session-menu w3m-mode-map "" '("Session"))
-    (w3m-easy-menu-add w3m-session-menu)
     (add-hook 'menu-bar-update-hook 'w3m-session-menubar-update)))
 
 (defvar w3m-session-menu-items-pre nil)

@@ -1,6 +1,6 @@
-;;; w3m-util.el --- Utility macros and functions for emacs-w3m
+;;; w3m-util.el --- Utility macros and functions for emacs-w3m -*- lexical-binding: nil -*-
 
-;; Copyright (C) 2001-2014, 2016-2021 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001-2014, 2016-20231 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          Shun-ichi GOTO     <gotoh@taiyo.co.jp>,
@@ -617,8 +617,7 @@ This function will be added to `after-make-frame-functions' to run."
 (defun w3m-delete-w3m-initial-frames (frame)
   "Delete FRAME from `w3m-initial-frames', the buffer-local variable.
 It is done when the FRAME in which emacs-w3m is running is deleted.
-This function is added to `delete-frame-functions' or merged into
-the `delete-frame' function using `defadvice'."
+Use this function with the `delete-frame-functions' hook."
   (save-current-buffer
     (dolist (buffer (w3m-list-buffers t))
       (set-buffer buffer)
@@ -1095,24 +1094,16 @@ But this function should work even if STRING is considerably long."
     (error ;; Stack overflow in regexp matcher
      (w3m-string-match-url-components-1 string))))
 
-;; Faster than (> (time-to-seconds (time-subtract a b)) 0).
 (defun w3m-time-newer-p (a b)
   "Return t, if A is newer than B.  Otherwise return nil.
-A and B are lists which represent time in Emacs-style.  If value is
-nil, it is regarded as the oldest time."
+If value is nil, it is regarded as the oldest time."
   (and a
        (or (not b)
-	   (or (> (car a) (car b))
-	       (and (= (car a) (car b))
-		    (> (nth 1 a) (nth 1 b)))))))
+	   (> (time-to-seconds (time-subtract a b)) 0))))
 
-;; Generally faster than (time-subtract end start).
 (defun w3m-time-lapse-seconds (start end)
-  "Return lapse seconds from START to END.
-START and END are lists which represent time in Emacs-style."
-  (+ (* (- (car end) (car start)) 65536)
-     (cadr end)
-     (- (cadr start))))
+  "Return lapse seconds from START to END."
+  (time-to-seconds (time-subtract end start)))
 
 (defun w3m-url-local-p (url)
   "If URL points a file on the local system, return non-nil value.
@@ -1400,11 +1391,6 @@ the function cell of FUNCs rather than their value cell.
     (apply 'widget-convert (widget-type widget)
 	   (eval (car (widget-get widget :args))))))
 
-(defmacro w3m-easy-menu-add (menu &optional map)
-  "Run `easy-menu-add' (obsolete since 28.1) on Emacs 27 and earlier."
-  (if (<= emacs-major-version 27)
-      `(easy-menu-add ,menu ,map)))
-
 ;;; Punycode RFC 3492:
 
 (defconst w3m-puny-code-regex "xn--\\([-0-9a-zA-z]+\\)")
@@ -1528,14 +1514,16 @@ the function cell of FUNCs rather than their value cell.
 	 (bias w3m-puny-initial-bias)
 	 (delta 0) (out 0)
 	 (output (make-string (* len 4) ?a))
-	 h b m q k thr uni)
-    (dotimes (j len)
+	 j h b m q k thr uni)
+    (setq j 0)
+    (while (< j len)
       (setq uni (aref input j))
       (setq j (1+ j))
       (setq uni (+ (* uni 256) (aref input j)))
       (when (< uni 128) ;; basic
 	(aset output out uni)
-	(setq out (1+ out))))
+	(setq out (1+ out)))
+      (setq j (1+ j)))
     (setq h out)
     (setq b out)
     (when (> b 0)
@@ -1543,14 +1531,17 @@ the function cell of FUNCs rather than their value cell.
       (setq out (1+ out)))
     (while (< h h-len)
       (setq m 65536) ;; 17bits
-      (dotimes (j len)
+      (setq j 0)
+      (while (< j len)
 	(setq uni (aref input j))
 	(setq j (1+ j))
 	(setq uni (+ (* uni 256) (aref input j)))
-	(if (and (>= uni n) (< uni m)) (setq m uni)))
+	(if (and (>= uni n) (< uni m)) (setq m uni))
+	(setq j (1+ j)))
       (setq delta (+ delta (* (- m n) (1+ h))))
       (setq n m)
-      (dotimes (j len)
+      (setq j 0)
+      (while (< j len)
 	(setq uni (aref input j))
 	(setq j (1+ j))
 	(setq uni (+ (* uni 256) (aref input j)))
@@ -1576,7 +1567,8 @@ the function cell of FUNCs rather than their value cell.
 	  (setq out (1+ out))
 	  (setq bias (w3m-puny-adapt delta (1+ h) (= h b)))
 	  (setq delta 0)
-	  (setq h (1+ h))))
+	  (setq h (1+ h)))
+	(setq j (1+ j)))
       (setq delta (1+ delta))
       (setq n (1+ n)))
     (substring output 0 out)))

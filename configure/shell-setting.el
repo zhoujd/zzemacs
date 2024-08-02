@@ -446,8 +446,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 ;;shell-mode common
 (defun zz:shell-common-hook ()
-  (setq-local comint-prompt-read-only t)   ;;readonly prompt
-  (setq-local comint-process-echoes t))    ;;filter echoes
+  (setq-local comint-prompt-read-only t))   ;;readonly prompt
 (add-hook 'shell-mode-hook 'zz:shell-common-hook)
 
 

@@ -257,8 +257,8 @@
 (add-hook 'comint-mode-hook
           (lambda ()
             (defkeys-map comint-mode-map
-              ((kbd "M-s f")   'helm-comint-prompts-all)
-              ((kbd "M-s M-f") 'helm-comint-prompts)
+              ((kbd "M-s f")   'helm-comint-prompts)
+              ((kbd "M-s M-f") 'helm-comint-prompts-all)
               )))
 
 ;;helm proc

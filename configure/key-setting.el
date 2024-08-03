@@ -381,6 +381,7 @@
  goto-map
  (list
   (kbd "f")       'avy-goto-line
+  (kbd ":")       'avy-goto-char
   ))
 
 

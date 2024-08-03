@@ -4,11 +4,11 @@
 ;; Description: Documentation for package Bookmark+
 ;; Author: Drew Adams
 ;; Maintainer: Drew Adams (concat "drew.adams" "@" "oracle" ".com")
-;; Copyright (C) 2000-2021, Drew Adams, all rights reserved.
+;; Copyright (C) 2000-2024, Drew Adams, all rights reserved.
 ;; Created: Fri Sep 15 07:58:41 2000
-;; Last-Updated: Tue Mar  9 18:51:56 2021 (-0800)
+;; Last-Updated: Sat Feb 10 16:04:00 2024 (-0800)
 ;;           By: dradams
-;;     Update #: 15355
+;;     Update #: 15414
 ;; URL: https://www.emacswiki.org/emacs/download/bookmark%2b-doc.el
 ;; Doc URL: https://www.emacswiki.org/emacs/BookmarkPlus
 ;; Keywords: bookmarks, bookmark+, placeholders, annotations, search,
@@ -146,6 +146,7 @@
 ;;      (@> "A Type-Aware `find-file'")
 ;;    (@> "Tagging Files")
 ;;    (@> "Using Multiple Bookmark Files")
+;;      (@> "Bookmark Files For Bookmarks with Specific Tags")
 ;;      (@> "Bookmark-File Bookmarks")
 ;;    (@> "The Bookmark List Display")
 ;;      (@> "Jumping To Bookmarks from the Bookmark List Display")
@@ -168,8 +169,9 @@
 ;;      (@> "Temporary Bookmarking Mode")
 ;;      (@> "Making Bookmarks Temporary")
 ;;    (@> "Automatic Bookmarking")
-;;      (@> "Automatic Info Bookmarking")
+;;      (@> "Automatic Bookmarking Using a Hook")
 ;;      (@> "Automatic Idle-Period Bookmarking")
+;;      (@> "Automatic Info Bookmarking")
 ;;    (@> "Highlighting Bookmark Locations")
 ;;      (@> "Defining How to Highlight")
 ;;      (@> "Highlighting On Demand")
@@ -1025,19 +1027,28 @@
 ;;  your choosing.  An annotation is thus metadata that is associated
 ;;  with a bookmark.  You can use it for any purpose you like.
 ;;
+;;  "Annotation" is arguably not the best name for what this is or
+;;  does.  But that's the name vanilla Emacs uses for it, so Bookmark+
+;;  does too.
+;;
 ;;  Command `bookmark-show-annotation' shows an annotation in
 ;;  read-only mode.  You can use `C-x C-q' in the annotation buffer to
 ;;  switch to edit mode (and back again).
 ;;
-;;  You can use command `bookmark-edit-annotation' or `bmkp-annotate'
-;;  anywhere to edit the annotation for a bookmark.  For
-;;  `bookmark-edit-annotation', you can choose among the bookmarks
-;;  that already have annotations.  With a prefix arg, you can choose
-;;  any bookmark (and so create an annotation).  Using `bmkp-annotate'
-;;  is the same as using `bookmark-edit-annotation' with a prefix arg.
+;;  You can use command `bookmark-edit-annotation' or
+;;  `bmkp-annotate-bookmark' anywhere to edit the annotation for a
+;;  bookmark.  For `bookmark-edit-annotation', you can choose among
+;;  the bookmarks that already have annotations.  With a prefix arg,
+;;  you can choose any bookmark (and so create an annotation).  Using
+;;  `bmkp-annotate-bookmark' is the same as using
+;;  `bookmark-edit-annotation' with a prefix arg.
+;;
+;;  The annotation edit buffer starts with some text that isn't saved
+;;  as part of the annotation.  It shows some editing instructions,
+;;  the user name, system name, and date+time of the current edit.
 ;;
 ;;  In the annotation edit buffer, make your changes and then use `C-c
-;;  C-c' to save the result.  Use `C-x C-k' if you do not want to save
+;;  C-c' to save the result.  Use `C-x C-k' if you don't want to save
 ;;  the changes.  You can also use `C-x C-q' and then `y' to confirm
 ;;  reverting the changes.
 ;;
@@ -1048,12 +1059,13 @@
 ;;  value then the buffer is in show (read-only) mode.
 ;;
 ;;  In the `*Bookmark List*' display, bookmarks with annotations are
-;;  marked by an `a' to the left of the bookmark name.  You can use `a
-;;  a' to show the annotation for the bookmark on the current line.
-;;  You can use `a e' to create an annotation or edit an existing
-;;  annotation for it.  You can use `a >' to edit annotations for all
-;;  of the marked bookmarks.  You can use `a A' to show a list of the
-;;  names and annotations of all annotated bookmarks.
+;;  marked by an `a' character to the left of the bookmark name.  You
+;;  can use `a a' to show the annotation for the bookmark on the
+;;  current line.  You can use `a e' to create an annotation or edit
+;;  an existing annotation for it.  You can use `a >' to edit
+;;  annotations for all of the marked bookmarks.  You can use `a A' to
+;;  show a list of the names and annotations of all annotated
+;;  bookmarks.
 ;;
 ;;  A bookmark annotation is stored as part of the bookmark itself.
 ;;  For this reason, you typically want to keep the text fairly short.
@@ -1061,42 +1073,49 @@
 ;;  annotation is Org mode, by default.  (To change the mode used,
 ;;  customize option `bmkp-annotation-modes-inherit-from'.)
 ;;
-;;  You can obtain the effect of using longer annotations, and some
-;;  other advantages as well, by using "external annotations".  These
-;;  are annotations that are short and serve only as pointers to
-;;  external files, URLs, or other bookmarks.
+;;  You can obtain the effect of using a longer annotation, and some
+;;  other advantages as well, by using an "annotation forward" in the
+;;  annotation text.  This is short text that serves only as a pointer
+;;  to an external file, URL, or another bookmark.
 ;;
-;;  Whenever you show the annotation of a bookmark (via `a' in the
+;;  Whenever you show the annotation of a bookmark (via `a a' in the
 ;;  `*Bookmark List*' display, `bookmark-show-annotation', or
-;;  `bookmark-automatically-show-annotations') and the annotation is
-;;  such a pointer, the effect is to visit the destination.
+;;  `bookmark-automatically-show-annotations') and the annotation
+;;  contains such a pointer (only one such is used), the effect is to
+;;  visit the pointer's destination.  That is, showing the annotation
+;;  goes to the forward destination, instead of showing the annotation
+;;  text stored with the bookmark.  (You can still see the latter, by
+;;  editing the annotation.)
 ;;
 ;;  So for example, you can use bookmarks to one or more Org files to
-;;  annotate (provide metadata for) one or more other bookmarks.
+;;  annotate (provide notes about, or metadata for) one or more other
+;;  bookmarks.  For example, set a bookmark at some place in an Info
+;;  manual, then write your own notes about that Info content in an
+;;  Org file, bookmark that Org-file destination, and use that as a
+;;  forward destination in your bookmark to that Info location.
 ;;
-;;  You create an external annotation for a bookmark by using one of
+;;  You create an annotation forward for a bookmark by using one of
 ;;  these forms as the annotation text.
 ;;
 ;;     bmkp-annot-url: "FILE"
 ;;     bmkp-annot-url: "URL"
 ;;     bmkp-annot-url: "BOOKMARK"
 ;;
-;;  * FILE is an absolute file name.  It is handled by
+;;  * FILE is an absolute file name.  Forwarding to it uses
 ;;    `find-file-other-window'.
-;;  * URL is a URL.  It is handled by `browse-url'.
+;;  * URL is a URL.  Forwarding to it uses `browse-url'.
 ;;  * BOOKMARK is the name of a bookmark in the current bookmark
-;;    alist.
+;;    alist.  Forwarding just jumps to it.
 ;;
 ;;  The double-quote characters are necessary here, so that you can
 ;;  include characters such as `SPC' in the name.  The text must be on
 ;;  the first line of the annotation (not counting the commented
 ;;  instruction lines).  It can be preceded only by whitespace.
 ;;
-;;  You can include other text in the annotation, after the
+;;  You can include other text in the annotation, after the external
 ;;  destination specification, and you can see or edit it when you
-;;  edit the annotation (e.g., using `C-u a' in buffer `*Bookmark
-;;  List*'), but it is ignored when the annotation is "shown" (e.g.,
-;;  using `a').
+;;  edit the annotation (e.g., `a e' in buffer `*Bookmark List*').
+;;  But it is ignored when the annotation is only shown (e.g., `a a').
 ;;
 ;;  In the `*Bookmark List*' display, `M-down' and `M-up' move the
 ;;  cursor down and up a line, respectively, but they also show the
@@ -2453,6 +2472,68 @@
 ;;  See Also: (@> "Bookmark+ Load Order and Option `bookmark-default-file'").
 ;;
 ;;
+;;(@* "Bookmark Files For Bookmarks with Specific Tags")
+;;  *** Bookmark Files For Bookmarks with Specific Tags ***
+;;
+;;  Bookmark+ provides various features for creating, manipulating,
+;;  and making use of bookmarks, but it generally doesn't provide
+;;  predefined ways to use such features together to accomplish a
+;;  particular goal.
+;;
+;;  This includes uses of features to organize bookmarks and their
+;;  destinations or results/effects.  But here's an example of using a
+;;  couple features out of the box to do that: create a bookmark file
+;;  for bookmarks with a given set of tags.
+;;
+;;  You can have multiple bookmark files, which you can use separately
+;;  or in combination.  If you use tags as a way of "categorizing"
+;;  bookmarks then you might create one or more bookmark files for
+;;  bookmarks tagged in particular ways.  For example, have a bookmark
+;;  file that contains only bookmarks tagged both `travel' and `2024'.
+;;
+;;  Loading that file alone gives you access to just those bookmarks,
+;;  simplifying bookmark commands (jump, tag, filter, edit,...).
+;;  Loading it together with another bookmark file, for example one
+;;  for bookmarks with another set of tags, gives you access to both
+;;  sets.
+;;
+;;  Here's one way to create a bookmark file for bookmarks tagged in a
+;;  particular way, using the bookmark-list display for a set of
+;;  bookmarks that includes those bookmarks but also others: mark the
+;;  bookmarks you want, then create a bookmark file from the marked
+;;  bookmarks.
+;;
+;;  1. Unmark all bookmarks, using `U'.
+;;
+;;  2. Mark the bookmarks that have the tags you're interested in.
+;;
+;;     You can do this using tags-command keys that mark according to
+;;     their tags.  These keys all begin with prefix key `T m'.  For
+;;     example, to mark bookmarks that are tagged with both `travel'
+;;     and `2024' you can use `T m *' and enter `travel' and `2024'
+;;     when prompted (end with an empty `RET').
+;;
+;;     Or if you want bookmarks with either `travel' or `2024' (or
+;;     both), use `T m +'.  Another way to do this is to use `T m %'
+;;     and enter the regexp `\(travel\|2024\)'.
+;;
+;;     (Marking and unmarking commands are also in menu `Bookmark+' >
+;;     `Mark'.)
+;;
+;;  3. Copy the marked bookmarks to a new bookmark file.
+;;
+;;     Use `Y > 0' to do this, entering the file name at the prompt.
+;;
+;;     Or if you want to move the bookmarks instead of copying them
+;;     (i.e., remove them from the current bookmark file), use `Y >
+;;     -'.
+;;
+;;     (Bookmark-file commands are also in menu `Bookmark+' >
+;;     `Bookmark File'.)
+;;
+;;  See Also: (@> "Tag Commands and Keys").
+;;
+;;
 ;;(@* "Bookmark-File Bookmarks")
 ;;  *** Bookmark-File Bookmarks ***
 ;;
@@ -2528,9 +2609,11 @@
 ;;    ----------------------------
 ;;
 ;;  (Bookmark+ does not use the sliding header line of vanilla Emacs
-;;  24+, which means that option `bookmark-bmenu-use-header-line' has
-;;  no effect.  You do not need to see `Bookmark' and `File' column
-;;  headers as you scroll.)
+;;  24-27, which means that option `bookmark-bmenu-use-header-line'
+;;  has no effect.  You do not need to see `Bookmark' and `File'
+;;  column headers as you scroll.  Bookmark+ also does not use
+;;  tabulated-list-mode, as vanilla Emacs 28+ does.  That mode is too
+;;  limited.)
 ;;
 ;;  Bookmarks are highlighted to indicate their type. You can mark and
 ;;  unmark bookmarks, show or hide bookmarks of particular types, and
@@ -2666,7 +2749,7 @@
 ;;  constitute an unnamed set.  Likewise, the marked bookmarks and the
 ;;  unmarked bookmarks are unnamed sets.  Bookmark+ is all about
 ;;  helping you act on sets of Emacs objects.  Bookmarks are named,
-;;  persistent pointers to objects such as files and file sets.
+;;  persistent pointers to objects such as files and filesets.
 ;;  Bookmark tags are named, persistent sets of bookmarks (and hence
 ;;  of their target objects).
 ;;
@@ -3586,32 +3669,130 @@
 ;;
 ;;  Bookmark+ can do this either when you perform some action (besides
 ;;  explicitly bookmarking) or whenever you are idle for a given
-;;  period of time (option `bmkp-auto-idle-bookmark-mode-delay').
-;;  
+;;  period of time (option `bmkp-automatic-bookmark-mode-delay').
+;;
+;;
+;;(@* "Automatic Bookmarking Using a Hook")
+;;  *** Automatic Bookmarking Using a Hook ***
+;;
+;;  To automatically set a bookmark whenever some hook is run, put
+;;  function `bmkp-set-automatic-bookmark' on the hook.  For example,
+;;  to set a bookmark at a definition jumped to whenever you use
+;;  Imenu, you can do this:
+;;
+;;  (add-hook 'imenu-after-jump-hook #'bmkp-set-automatic-bookmark)
+;;
+;;  The bookmark is an autonamed bookmark (see
+;;  (@> "Autonamed Bookmarks - Easy Come Easy Go")).
+;;
+;;
+;;(@* "Automatic Idle-Period Bookmarking")
+;;  *** Automatic Idle-Period Bookmarking ***
+;;
+;;  Automatic idle-period bookmarking creates bookmarks at spots where
+;;  you spend some time (idly).  It uses
+;;  `bmkp-set-automatic-bookmark', so the bookmarks created are
+;;  autonamed (see (@> "Autonamed Bookmarks - Easy Come Easy Go")).
+;;
+;;  How many such bookmarks would you want?  And how close together?
+;;  Bookmark+ tries to provide some user options that let you get the
+;;  behavior you want.  Except for
+;;  `bmkp-automatic-bookmark-mode-delay' they apply to
+;;  `bmkp-set-automatic-bookmark', so they affect both idle-period
+;;  bookmarking and automatic bookmarking on a hook.
+;;
+;;  In general, you probably don't want such bookmarks to be created
+;;  too often or too close together.  You probably don't care about
+;;  the names of the bookmarks created, and you don't want to be
+;;  interrupted to have to name them.  You probably want automatic
+;;  idle-period bookmarking to be per-buffer, but you might sometimes
+;;  want to turn it on or off for all buffers.  You might want more
+;;  than one automatic bookmark on a given line, but probably not.
+;;  Finally, you might or might not want such bookmarks to be
+;;  temporary (current session only) or highlighted.
+;;
+;;  Mode `bmkp-automatic-bookmark-mode' is a local minor mode, which
+;;  means that it is buffer-specific.  The command of the same name
+;;  turns the mode on and off.  When the mode is on, the minor-mode
+;;  indicator ("lighter") `Auto-Bmk' is shown in the mode line for the
+;;  buffer.  You can customize this indicator (removing it, if you
+;;  like), using option `bmkp-automatic-bookmark-mode-lighter'.
+;;
+;;  Command `bmkp-global-automatic-bookmark-mode' turns on the mode in
+;;  all buffers, that is, it is global, not local.  Regardless of
+;;  whether you use the mode locally or globally, a bookmark is
+;;  created automatically only in the current buffer.  That is, a
+;;  buffer must be current (selected) for an automatic bookmark to be
+;;  created there - it's not enough that the mode be enabled in the
+;;  buffer.
+;;
+;;  Option `bmkp-automatic-bookmark-set-function' defines the
+;;  bookmark-setting function.  By default, its value is
+;;  `bmkp-set-autonamed-bookmark-at-line', which sets an autonamed
+;;  bookmark at (the beginning of) the current line.  If you want
+;;  bookmarks to be created automatically then you typically want them
+;;  to be autonamed, both because the name is unimportant and because
+;;  setting an autonamed bookmark requires no interaction on your
+;;  part.  But you can use any setting function you like as the option
+;;  value.  (You can always rename an autonamed bookmark later, if you
+;;  want to keep it and give it a meaningful name.)
+;;
+;;  Option `bmkp-automatic-bookmark-min-distance' is the minimum
+;;  number of characters between automatic bookmark positions.  If the
+;;  cursor is currently closer to some existing automatically created
+;;  bookmark, then no automatic bookmark is set at point.  If you set
+;;  this to `nil' then there is no limit on how close the bookmarks
+;;  can be.  (But there is only one autonamed bookmark at any given
+;;  position.)
+;;
+;;  If you want automatically created bookmarks to be temporary (not
+;;  saved to your bookmark file), then customize option
+;;  `bmkp-autotemp-bookmark-predicates' so that it includes the kind
+;;  of bookmarks that are set by
+;;  `bmkp-automatic-bookmark-set-function'.  For example, if automatic
+;;  bookmarking sets autonamed bookmarks, then
+;;  `bmkp-autotemp-bookmark-predicates' should include
+;;  `bmkp-autonamed-bookmark-p' or
+;;  `bmkp-autonamed-this-buffer-bookmark-p' (it includes both of these
+;;  by default).  Remember that you can toggle whether a given
+;;  bookmark is temporary or savable, using `M-X' in the bookmark-list
+;;  display (buffer `*Bookmark List*').
+;;
+;;  If you want the bookmarks to be automatically highlighted, then
+;;  customize option `bmkp-auto-light-when-set' to highlight bookmarks
+;;  of the appropriate kind.  For example, to highlight autonamed
+;;  bookmarks set it to `autonamed-bookmark'.
+;;
+;;  NOTE: If you use Emacs 20, then by default
+;;  `bmkp-automatic-bookmark-mode' is global rather than local.  The
+;;  doc string tells you how to make it local instead.  If you use
+;;  Emacs 21, then `bmkp-automatic-bookmark-mode' is local but there
+;;  is no global mode, `bmkp-global-automatic-bookmark-mode'.  This is
+;;  because Emacs 21 does not support `define-globalized-minor-mode'.
+;;
 ;;
 ;;(@* "Automatic Info Bookmarking")
 ;;  *** Automatic Info Bookmarking ***
 ;;
-;;  The former feature is currently limited to Info bookmarks.  When
-;;  global minor mode `bmkp-info-auto-bookmark-mode' is enabled, each
-;;  Info node you visit can be bookmarked automatically, using the
+;;  If you enable global minor mode `bmkp-info-auto-bookmark-mode',
+;;  each Info node you visit is bookmarked automatically, using the
 ;;  default bookmark name, which is the Info manual name plus the node
 ;;  name.  For example, node `Lisp Data Types' in the Elisp manual
 ;;  gives you a bookmark named `(elisp) Lisp Data Types'.
 ;;
-;;  When the mode is enabled and an Info node is visited, an existing
-;;  such bookmark is always updated.  If no such bookmark exists then
-;;  a new one is created if option `bmkp-info-auto-type' has value
-;;  `create-or-replace'.  If it has value `update-only' then no new
-;;  bookmark is created.  The default option value is `update-only'.
-;;  You can toggle the value using command
-;;  `bmkp-toggle-info-auto-type'.
+;;  With the mode enabled, when you visit an Info node an existing
+;;  bookmark with the same name is always updated.  If no such
+;;  bookmark exists then a new one is created, provided option
+;;  `bmkp-info-auto-type' has value `create-or-replace'.  If it has
+;;  value `update-only' then no new bookmark is created.  The default
+;;  option value is `update-only'.  You can toggle the value using
+;;  command `bmkp-toggle-info-auto-type'.
 ;;
-;;  With mode `bmkp-info-auto-bookmark-mode' enabled, even if you
-;;  create Info bookmarks with the given names (i.e., the default
-;;  names) only manually, they are updated automatically.  In
-;;  particular, updating a bookmark increments the recorded number of
-;;  visits to the Info node and the time of the last visit.
+;;  With `bmkp-info-auto-bookmark-mode' enabled, even if you have
+;;  created Info bookmarks with the default names manually, they are
+;;  updated automatically.  In particular, updating a bookmark
+;;  increments the recorded number of visits to the Info node and the
+;;  time of the last visit.
 ;;
 ;;  You can sort bookmarks in the bookmark-list display by the time of
 ;;  last visit, using `s d', or by the number of visits, using `s v'.
@@ -3632,88 +3813,6 @@
 ;;  If you use library `info+.el' then you have this complementary
 ;;  ability save your Info history list persistently.  Just enable
 ;;  minor mode `Info-persist-history-mode'.
-;;
-;;
-;;(@* "Automatic Idle-Period Bookmarking")
-;;  *** Automatic Idle-Period Bookmarking ***
-;;
-;;  Automatic idle-period bookmarking uses autonamed bookmarks (see
-;;  (@> "Autonamed Bookmarks - Easy Come Easy Go")).  It lets you
-;;  navigate among them to visit spots where you spent some time
-;;  (idly).
-;;
-;;  How many such automatic bookmarks would you want?  And where?
-;;  Bookmark+ tries to provide some user options that let you get the
-;;  behavior you want.
-;;
-;;  In general, you probably do not want such bookmarks to be created
-;;  too often or too close together.  You probably do not care about
-;;  the names of the bookmarks created, and you do not want to be
-;;  interrupted to name them.  You probably want automatic bookmarking
-;;  to be per-buffer, but you might sometimes want to turn it on or
-;;  off for all buffers.  You might want more than one automatic
-;;  bookmark on a given line, but probably not.  Finally, you might or
-;;  might not want automatic bookmarks to be temporary (current
-;;  session only) or highlighted.
-;;
-;;  Mode `bmkp-auto-idle-bookmark-mode' is a local minor mode, which
-;;  means that it is buffer-specific.  The command of the same name
-;;  turns the mode on and off.  When the mode is on, the minor-mode
-;;  indicator ("lighter") `Auto-Bmk' is shown in the mode line for the
-;;  buffer.  You can customize this indicator (removing it, if you
-;;  like), using option `bmkp-auto-idle-bookmark-mode-lighter'.
-;;
-;;  Command `bmkp-global-auto-idle-bookmark-mode' turns on the mode in
-;;  all buffers, that is, it is global, not local.  Regardless of
-;;  whether you use the mode locally or globally, a bookmark is
-;;  created automatically only in the current buffer.  That is, a
-;;  buffer must be current (selected) for an automatic bookmark to be
-;;  created there - it is not enough that the mode be enabled in the
-;;  buffer.
-;;
-;;  Option `bmkp-auto-idle-bookmark-mode-set-function' defines the
-;;  bookmark-setting function.  By default, its value is
-;;  `bmkp-set-autonamed-bookmark-at-line', which sets an autonamed
-;;  bookmark at (the beginning of) the current line.  If you want
-;;  bookmarks to be created automatically then you typically want them
-;;  to be autonamed, both because the name is unimportant and because
-;;  setting an autonamed bookmark requires no interaction on your
-;;  part.  But you can use any setting function you like as the option
-;;  value.  (You can always rename an autonamed bookmark later, if you
-;;  want to keep it and give it a meaningful name.)
-;;
-;;  Option `bmkp-auto-idle-bookmark-min-distance' is the minimum
-;;  number of characters between automatic bookmark positions.  If the
-;;  cursor is currently closer to some existing automatically created
-;;  bookmark, then no automatic bookmark is set at point.  If you set
-;;  this to `nil' then there is no limit on how close the bookmarks
-;;  can be.  (But there is only one autonamed bookmark at any given
-;;  position.)
-;;
-;;  If you want the automatically created bookmarks to be temporary
-;;  (not saved to your bookmark file), then customize option
-;;  `bmkp-autotemp-bookmark-predicates' so that it includes the kind
-;;  of bookmarks that are set by
-;;  `bmkp-auto-idle-bookmark-mode-set-function'.  For example, if
-;;  automatic bookmarking sets autonamed bookmarks, then
-;;  `bmkp-autotemp-bookmark-predicates' should include
-;;  `bmkp-autonamed-bookmark-p' or
-;;  `bmkp-autonamed-this-buffer-bookmark-p' (it includes both of these
-;;  by default).  Remember that you can toggle whether a given
-;;  bookmark is temporary or savable, using `M-X' in the bookmark-list
-;;  display (buffer `*Bookmark List*').
-;;
-;;  If you want the bookmarks to be automatically highlighted, then
-;;  customize option `bmkp-auto-light-when-set' to highlight bookmarks
-;;  of the appropriate kind.  For example, to highlight autonamed
-;;  bookmarks set it to `autonamed-bookmark'.
-;;
-;;  NOTE: If you use Emacs 20, then by default
-;;  `bmkp-auto-idle-bookmark-mode' is global rather than local.  The
-;;  doc string tells you how to make it local instead.  If you use
-;;  Emacs 21, then `bmkp-auto-idle-bookmark-mode' is local but there
-;;  is no global mode, `bmkp-global-auto-idle-bookmark-mode'.  This is
-;;  because Emacs 21 does not support `define-globalized-minor-mode'.
  
 ;;(@* "Highlighting Bookmark Locations")
 ;;  ** Highlighting Bookmark Locations **
@@ -3764,7 +3863,7 @@
 ;;  the text in the buffer, the highlighted location can thus become
 ;;  out of sync with the recorded position.  This is normal.  When you
 ;;  jump to the bookmark, its highlight is automatically repositioned
-;;  to the recorded location, possibly adjusted according to the the
+;;  to the recorded location, possibly adjusted according to the
 ;;  surrounding context.
 ;;
 ;;  In addition to the default highlighting, which you can customize,

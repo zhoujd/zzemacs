@@ -229,7 +229,8 @@
 
 ;;bookmark plus
 ;;https://www.emacswiki.org/emacs/BookmarkPlus
-(zz:load-path "site-lisp/bookmarkplus")
+;;https://github.com/emacsmirror/bookmark-plus
+(zz:load-path "site-lisp/bookmark-plus")
 (require 'bookmark+)
 
 (custom-set-faces

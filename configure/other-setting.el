@@ -483,6 +483,9 @@
 ;;ag-mode
 (require 'ag)
 
+;;avy
+(require 'avy)
+
 
 (provide 'other-setting)
 

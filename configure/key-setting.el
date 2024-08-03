@@ -375,7 +375,13 @@
  (list
   (kbd "M-i")     'helm-swoop-from-isearch
   (kbd "M-o")     'helm-occur-from-isearch
- ))
+  ))
+
+(apply-keys-to-map
+ goto-map
+ (list
+  (kbd "f")       'avy-goto-line
+  ))
 
 
 (provide 'key-setting)

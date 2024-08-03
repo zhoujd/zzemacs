@@ -242,7 +242,7 @@
          (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
     (if ff (concat (string-trim ff) ":" line) line)))
 
-(setq bookmark-save-flag t              ;;toggle this option using 'M-~’
+(setq bookmark-save-flag t  ;;toggle this option using 'M-~’
       bookmark-bmenu-file-column 50
       bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
       bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el"

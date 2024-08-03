@@ -1,6 +1,6 @@
 ;;; bm.el --- Visible bookmarks in buffer. -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2000-2019  Jo Odland
+;; Copyright (C) 2000-2023  Jo Odland
 
 ;; Author: Jo Odland <jo.odland(at)gmail.com>
 ;; Keywords: bookmark, highlight, faces, persistent
@@ -475,7 +475,7 @@ nil, the repository will not be persistent."
 
 
 (defcustom bm-repository-size 100
-  "*Size of persistent repository. If nil then there if no limit."
+  "*Size of persistent repository. If nil then there is no limit."
   :type 'integer
   :group 'bm)
 
@@ -711,12 +711,12 @@ current buffer. Format depends on `bm-modeline-display-total' and
 
 (defun bm-start-position nil
   "Return the bookmark start position."
-  (point-at-bol))
+  (line-beginning-position))
 
 
 (defun bm-end-position nil
   "Return the bookmark end position."
-  (min (point-max) (+ 1 (point-at-eol))))
+  (min (point-max) (+ 1 (line-end-position))))
 
 
 (defun bm-freeze-in-front (overlay after begin end &optional len)
@@ -808,14 +808,27 @@ selection criteria for filtering the lists."
   (if (null predicate)
     (setq predicate 'bm-bookmarkp))
 
-  (overlay-recenter (point))
-  (cond ((equal 'forward direction)
-         (cons nil (remq nil (mapcar predicate (cdr (overlay-lists))))))
-        ((equal 'backward direction)
-         (cons (remq nil (mapcar predicate (car (overlay-lists)))) nil))
-        (t
-         (cons (remq nil (mapcar predicate (car (overlay-lists))))
-               (remq nil (mapcar predicate (cdr (overlay-lists))))))))
+  (if (< emacs-major-version 29)
+      (progn
+        ;; new behaviour from version 29.0, bug #60058
+        (overlay-recenter (point))
+        (cond ((equal 'forward direction)
+               (cons nil (remq nil (mapcar predicate (cdr (overlay-lists))))))
+              ((equal 'backward direction)
+               (cons (remq nil (mapcar predicate (car (overlay-lists)))) nil))
+              (t
+               (cons (remq nil (mapcar predicate (car (overlay-lists))))
+                     (remq nil (mapcar predicate (cdr (overlay-lists))))))))
+
+    (cond ((equal 'forward direction)
+           (cons nil (remq nil (mapcar predicate (overlays-in (point) (point-max))))))
+          ((equal 'backward direction)
+           (cons (reverse (remq nil (mapcar predicate (overlays-in (point-min) (point))))) nil))
+          (t
+           (cons (reverse (remq nil (mapcar predicate (overlays-in (point-min) (point)))))
+                 (remq nil (mapcar predicate (overlays-in (point) (point-max)))))))))
+
+
 
 (defun bm-overlay-in-buffer()
   "overlays in current buffer"
@@ -1315,7 +1328,8 @@ users by the likes of `bm-show' and `bm-show-all'."
 
 
 (defun bm-show-click-mouse (event &optional close)
-  "Goto the bookmark under the mouse, close the `bm-show' buffer if optional parameter is present."
+  "Goto the bookmark under the mouse, close the `bm-show' buffer if
+optional parameter is present."
   (let ((window (posn-window (event-end event)))
         (pos (posn-point (event-end event))))
 
@@ -1509,8 +1523,8 @@ BUFFER-DATA is the content of `bm-repository-file'."
         (let ((pos (if buffer-size-match
                        (cdr (assoc 'position (car bookmarks)))
                      (bm-get-position-from-context (car bookmarks))))
-              (time (assoc 'time buffer-data))
-              (temporary-bookmark (assoc 'temporary-bookmark buffer-data))
+              (time (cdr (assoc 'time (car bookmarks))))
+              (temporary-bookmark (cdr (assoc 'temporary-bookmark (car bookmarks))))
               (annotation (cdr (assoc 'annotation (car bookmarks)))))
 
           ;; create bookmark if is inside buffer
@@ -1544,7 +1558,11 @@ BUFFER-DATA is the content of `bm-repository-file'."
                           (let ((bookmarks (bm-lists)))
                             (mapcar
                              #'(lambda (bm)
-                                 (let ((position (marker-position (overlay-get bm 'position))))
+                                 (let ((position (max
+                                                  ;; sometimes marker-position is before start of overlay
+                                                  ;; marker is not updated when overlay hooks are called.
+                                                  (overlay-start bm)
+                                                  (marker-position (overlay-get bm 'position)))))
                                    (list
                                     (cons 'position position)
                                     (cons 'time (overlay-get bm 'time))
@@ -1631,6 +1649,7 @@ BUFFER-DATA is the content of `bm-repository-file'."
 
 (defun bm-repository-save (&optional file)
   "Save the repository to the FILE specified or to `bm-repository-file'."
+  (interactive)
   (unless file
     (setq file bm-repository-file))
   (when (> bm-verbosity-level 1)
@@ -1642,6 +1661,7 @@ BUFFER-DATA is the content of `bm-repository-file'."
           (insert ";; bm.el -- persistent bookmarks. ")
           (insert "Do not edit this file.\n")
           (prin1 bm-repository (current-buffer))
+          (pp-buffer)
           (insert "\n"))
       (error "Cannot save repository to %s" file))))
 

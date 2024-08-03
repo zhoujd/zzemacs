@@ -1,12 +1,16 @@
-;;; helm-bm.el --- helm sources for bm.el
+;;; helm-bm.el --- helm sources for bm.el -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013-2016 Yasuyuki Oka <yasuyk@gmail.com>
+;; Copyright (C) 2024 Thierry Volpiatto <thievol@posteo.net
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
-;; URL: https://github.com/yasuyk/helm-bm
-;; Package-Version: 20160321.1331
-;; Package-Requires: ((bm "1.0") (cl-lib "0.5") (helm "1.9.3") (s "1.11.0"))
-;; Version: 0.3
+;;         Thierry Volpiatto <thievol@posteo.net
+;;
+;; Maintainer: Thierry Volpiatto <thievol@posteo.net
+
+;; URL: https://github.com/emacs-helm/helm-bm
+;; Package-Requires: ((bm "1.0") (cl-lib "0.5") (helm "1.9.3"))
+;; Version: 1.0
 ;; Keywords: helm, bookmark
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -24,107 +28,74 @@
 
 ;;; Commentary:
 
+;; Helm UI for bm.el (https://github.com/joodland/bm).
+
+;; Basically bm.el allow bookmarking positions in buffers, helm-bm
+;; list these positions and allow jumping to them easily.  This is
+;; particularly useful when working on a set of functions distributed
+;; in various places of a large buffer or in several different buffers.
+
 ;; Installation:
 
-;; Add the following to your Emacs init file:
+;; Add this file in your `load-path' and the following to your Emacs init file:
 ;;
-;; (require 'helm-bm) ;; Not necessary if using ELPA package
-;; (global-set-key (kbd "C-c b") 'helm-bm)
+;; (autoload 'helm-bm "helm-bm" nil t) ;; Not necessary if using ELPA package.
 
-;; That's all.
+;; Settings:
+
+;; Bind helm-bm to a key of your choice, e.g.
+;; (global-set-key (kbd "C-c b") 'helm-bm)
+;;
+;; Show bookmarks from all buffers or only from current buffer according
+;; to `bm-cycle-all-buffers' value.
 
 ;;; Code:
 
 (require 'bm)
 (require 'cl-lib)
 (require 'helm)
-(require 's)
-(require 'compile) ;; compilation-info-face, compilation-line-face
+
+(declare-function helm-goto-char "ext:helm-utils")
+(declare-function helm-highlight-current-line "ext:helm-utils")
 
 (defgroup helm-bm nil
   "Bookmarks of bm.el related Applications and libraries for Helm."
   :prefix "helm-bm-" :group 'helm)
 
-(defface helm-bm-annotation-face nil
-  "Face used for annotation."
-  :group 'helm-bm)
-
-(defconst helm-bm-action-name-edit-annotation "Edit annotation")
-
-(defmacro helm-bm-with-candidate (candidate &rest body)
-  "Execute the forms with CANDIDATE in BODY."
-  (declare (indent 1))
-  `(when (string-match "^\\(.+?\\):\\([0-9]+\\):\\(.*\\)$" candidate)
-     (let ((bufname (match-string 1 candidate))
-           (lineno (string-to-number (match-string 2 candidate))))
-       ,@body)))
-
-(defun helm-bm-bookmark-at-line (bufname lineno)
-  "Return bookmark in BUFNAME at LINENO."
-  (with-current-buffer bufname
-    (let ((p (save-restriction
-               (goto-char (point-min))
-               (forward-line (1- lineno))
-               (point))))
-      (bm-bookmark-at p))))
+(defcustom helm-bm-sort-from-pos nil
+  "Sort bookmarks according to current position when non nil."
+  :type 'boolean)
 
 (defun helm-bm-action-bookmark-edit-annotation (candidate)
   "Edit bookmark annotation of CANDIDATE."
-  (helm-bm-with-candidate candidates
-    (let* ((bm (helm-bm-bookmark-at-line bufname lineno))
-           (annotation (read-string
-                       (format "%s: " helm-bm-action-name-edit-annotation)
-                       (overlay-get bm 'annotation))))
-      (bm-bookmark-annotate bm annotation))))
+  (let ((annotation (read-string "Edit annotation: "
+                                 (overlay-get candidate 'annotation))))
+    (bm-bookmark-annotate candidate annotation)))
 
 (defun helm-bm-action-switch-to-buffer (candidate)
   "Switch to buffer of CANDIDATE."
-  (helm-bm-with-candidate candidates
-    (switch-to-buffer bufname)
-    (goto-char (point-min))
-    (forward-line (1- lineno))))
+  (require 'helm-utils)
+  (let ((pos (overlay-get candidate 'position))
+        (buf (overlay-buffer candidate)))
+    (when (and pos buf)
+      (switch-to-buffer buf)
+      (helm-goto-char pos)
+      (helm-highlight-current-line))))
 
-(defun helm-bm-action-remove-markd-bookmarks (candidate)
-  "Remove bookmarks of not CANDIDATE but `helm-marked-candidates'."
-  (mapc 'helm-bm-action-remove-bookmark (helm-marked-candidates)))
+(defun helm-bm-action-remove-marked-bookmarks (_candidate)
+  "Remove marked bookmarks."
+  (mapc 'bm-bookmark-remove (helm-marked-candidates)))
 
-(defun helm-bm-action-remove-bookmark (candidate)
-  "Remove bookmarks of CANDIDATE."
-  (helm-bm-with-candidate candidates
-    (bm-bookmark-remove (helm-bm-bookmark-at-line bufname lineno))))
-
-(defun helm-bm-all-bookmarks ()
-  "Collect all bookmarks."
-  (let (bms)
-    (mapc #'(lambda (buf)
-              (mapcar #'(lambda (bm) (push bm bms))
-                      (helm-bm-bookmarks-in-buffer buf)))
-          (buffer-list)) bms))
+(defun helm-bm-bookmarks-in-all-buffers ()
+  (cl-loop for buf in (buffer-list)
+           nconc (helm-bm-bookmarks-in-buffer buf)))
 
 (defun helm-bm-bookmarks-in-buffer (buf)
   "Gets a list of bookmarks in BUF, which can be a string or a buffer."
-  (let ((mklist (lambda (x) (if (listp x) x (list x)))))
-    (funcall mklist
-             (with-current-buffer buf
-               (apply 'append
-                      (mapcar mklist (remove nil (bm-lists))))))))
-
-(defun helm-bm-buffer-name (bm)
-  "Return the name of BUFFER with BM."
-  (buffer-name (overlay-buffer bm)))
-
-(defun helm-bm< (bm1 bm2)
-  "Return t if BM1 is less than BM2 in lexicographic order.
-Case is significant.
-Symbols are also allowed; their print names are used instead."
-  (let ((current-buf (buffer-name (current-buffer)))
-        (bm1-name (helm-bm-buffer-name bm1))
-        (bm2-name (helm-bm-buffer-name bm2)))
-    (if (string-equal bm1-name bm2-name)
-        (< (overlay-start bm1) (overlay-start bm2))
-      (cond ((string-equal current-buf bm1-name) t)
-            ((string-equal current-buf bm1-name) nil)
-            (:else (string< bm1-name bm2-name))))))
+  (with-current-buffer buf
+    (if helm-bm-sort-from-pos
+        (helm-fast-remove-dups (helm-flatten-list (bm-lists)) :test 'eql)
+      (delq nil (mapcar #'bm-bookmarkp (overlays-in (point-min) (point-max)))))))
 
 (defun helm-bm-candidate-transformer-display
     (bufname lineno content annotation)
@@ -132,13 +103,14 @@ Symbols are also allowed; their print names are used instead."
 
 BUFNAME, LINENO, CONTENT and ANNOTATION are concatenated to the string."
   (format "%s:%s:%s%s"
-          (propertize bufname 'face compilation-info-face)
-          (propertize lineno 'face compilation-line-face)
+          (propertize bufname 'face 'font-lock-type-face)
+          (propertize lineno 'face 'font-lock-keyword-face)
           content
-          (if (s-blank? annotation) ""
+          (if (or (null annotation) (string= annotation ""))
+              ""
             (concat "\n  "
-                    (propertize annotation 'face
-                                'helm-bm-annotation-face)))))
+                    (propertize
+                     annotation 'face 'font-lock-keyword-face)))))
 
 (defun helm-bm-transform-to-candicate (bm)
   "Convert a BM to a CANDICATE."
@@ -154,41 +126,82 @@ BUFNAME, LINENO, CONTENT and ANNOTATION are concatenated to the string."
            bufname (int-to-string lineno)
            (buffer-substring-no-properties start (1- end)) annotation))))))
 
-(defvar helm-bm-list-cache nil)
+(defun helm-bm-goto-next-buffer ()
+  (interactive)
+  (let* ((sel (helm-get-selection))
+         (buf (overlay-buffer sel)))
+    (while (eql buf (overlay-buffer (helm-get-selection)))
+      (helm-next-line 1))))
 
-(defun helm-bm-init ()
-  "Initialize `helm-source-bm'."
-  (setq helm-bm-list-cache
-        (let ((bms (cl-sort (helm-bm-all-bookmarks) 'helm-bm<))
-              (bufname (buffer-name (current-buffer))))
-          (delq nil (mapcar 'helm-bm-transform-to-candicate bms)))))
+(defun helm-bm-goto-precedent-buffer ()
+  (interactive)
+  (let* ((sel (helm-get-selection))
+         (buf (overlay-buffer sel)))
+    (while (eql buf (overlay-buffer (helm-get-selection)))
+      (helm-previous-line 1))))
+
+(defvar helm-bm-map
+  (let ((map (make-sparse-keymap)))
+    (set-keymap-parent map helm-map)
+    (define-key map (kbd "M-<up>")   'helm-bm-goto-precedent-buffer)
+    (define-key map (kbd "M-<down>") 'helm-bm-goto-next-buffer)
+    map))
 
 (defvar helm-source-bm
-  `((name . "Visible bookmarks")
-    (init . helm-bm-init)
-    (multiline)
-    (volatile)
-    (candidates . helm-bm-list-cache)
-    (action . (("Switch to buffer" . helm-bm-action-switch-to-buffer)
-               ("Remove(s)" . helm-bm-action-remove-markd-bookmarks)
-               (,helm-bm-action-name-edit-annotation
-                . helm-bm-action-bookmark-edit-annotation)
-               ("Remove all bookmarks in current buffer" .
-                (lambda (_c) (bm-remove-all-current-buffer)))
-               ("Remove all bookmarks in all buffers" .
-                (lambda (_c) (bm-remove-all-all-buffers)))))))
+  (helm-build-sync-source "Visible bookmarks"
+    :multiline t
+    :candidates (lambda () (if bm-cycle-all-buffers
+                               (helm-bm-bookmarks-in-all-buffers)
+                             (helm-bm-bookmarks-in-buffer helm-current-buffer)))
+    :keymap 'helm-bm-map
+    :candidate-transformer
+    (lambda (candidates)
+      (cl-loop for ov in candidates
+               collect (cons (helm-bm-transform-to-candicate ov) ov)))
+    :action '(("Jump to BM" . helm-bm-action-switch-to-buffer)
+              ("Remove BM bookmark(s)" . helm-bm-action-remove-marked-bookmarks)
+              ("Edit annotation"
+               . helm-bm-action-bookmark-edit-annotation))))
+
+(defun helm-bm-nearest-bm-from-pos ()
+  "Return position of bm at point or nearest bm from point."
+  (with-helm-current-buffer
+    (let ((cpos (point)))
+      (or (helm-aand (overlays-at cpos)
+                     (bm-bookmarkp (car it))
+                     (overlay-get it 'position))
+          (helm-closest-number-in-list
+           cpos
+           (cl-loop for ov in (overlays-in (point-min) (point-max))
+                    when (and ov (bm-bookmarkp ov))
+                    collect (overlay-get ov 'position)))))))
 
 ;;;###autoload
 (defun helm-bm ()
-  "Show bookmarks of bm.el with `helm'."
+  "Show bookmarks of bm.el with `helm'.
+
+Show bookmarks from all buffers or only `current-buffer' according to
+`bm-cycle-all-buffers' value."
   (interactive)
   (helm :sources '(helm-source-bm)
+        :quit-if-no-candidate
+        (lambda ()
+          (if bm-cycle-all-buffers
+              (message "No BM candidates found in buffers")
+            (message "No BM candidates in this buffer")))
+        :preselect (lambda ()
+                     (unless helm-bm-sort-from-pos
+                       (let ((nearest (helm-bm-nearest-bm-from-pos)))
+                         (when nearest
+                           (goto-char (point-min))
+                           (helm-skip-header-and-separator-line 'next)
+                           (while (not (eql nearest
+                                            (overlay-get
+                                             (helm-get-selection) 'position)))
+                             (helm-next-line 1))))))
         :buffer "*helm bm*"))
 
 (provide 'helm-bm)
 
-;; Local Variables:
-;; coding: utf-8
-;; End:
 
 ;;; helm-bm.el ends here

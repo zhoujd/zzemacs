@@ -381,7 +381,8 @@
  goto-map
  (list
   (kbd "f")       'avy-goto-line
-  (kbd ":")       'avy-goto-char
+  (kbd "j")       'avy-goto-char
+  (kbd "z")       'avy-resume
   ))
 
 

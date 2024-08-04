@@ -347,13 +347,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz:get-remote ()
   (with-temp-buffer
-    (let* ((path (mapconcat
-                  (lambda (x)
-                    (when (file-exists-p x)
-                      (concatenate 'string x)))
-                  '("~/.ssh/config"
-                    "~/.ssh/config.d/*")
-                  " "))
+    (let* ((path "~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
            (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
            (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
            (command (format "cat %s | %s | %s" path grep awk))

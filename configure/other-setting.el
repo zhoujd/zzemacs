@@ -357,6 +357,7 @@
 (custom-set-variables
  '(anzu-mode-lighter "")
  '(anzu-deactivate-region t)
+ '(anzu-cons-mode-line-p nil)
  '(anzu-search-threshold 1000)
  '(anzu-replace-threshold 50)
  '(anzu-replace-to-string-separator " => "))

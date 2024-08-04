@@ -153,6 +153,7 @@
 (defvar anzu--history nil)
 (defvar anzu--query-defaults nil)
 (defvar anzu--region-noncontiguous nil)
+(defvar anzu--update-timer nil)
 
 (defun anzu--validate-regexp (regexp)
   (condition-case nil
@@ -266,7 +267,7 @@
 
 (defun anzu--cons-mode-line (state)
   (setq anzu--state state)
-  (when (and anzu-cons-mode-line-p (not (anzu--mode-line-not-set-p)))
+  (when (and anzu-cons-mode-line-p (listp mode-line-format) (not (anzu--mode-line-not-set-p)))
     (setq mode-line-format (cons anzu--mode-line-format mode-line-format))))
 
 (defsubst anzu--reset-status ()
@@ -387,12 +388,24 @@
                thereis (and (>= beg b overlay-beg) (<= end e overlay-end)))
     (and (>= beg overlay-beg) (<= end overlay-end))))
 
+(defun anzu--convert-for-lax-whitespace (str use-regexp)
+  (if use-regexp
+      (if replace-regexp-lax-whitespace
+          (replace-regexp-in-string "\\s-+" search-whitespace-regexp str
+                                    nil t)
+        str)
+    (if replace-lax-whitespace
+        (replace-regexp-in-string "\\s-+"
+                                  search-whitespace-regexp
+                                  (regexp-quote str)
+                                  nil t)
+      (regexp-quote str))))
+
 ;; Return highlighted count
 (defun anzu--count-and-highlight-matched (buf str replace-beg replace-end
                                               use-regexp overlay-limit case-sensitive)
   (anzu--cleanup-markers)
-  (when (not use-regexp)
-    (setq str (regexp-quote str)))
+  (setq str (anzu--convert-for-lax-whitespace str use-regexp))
   (if (not (anzu--validate-regexp str))
       anzu--cached-count
     (with-current-buffer buf
@@ -496,25 +509,26 @@
   (let ((curbuf (current-buffer))
         (blink-matching-paren nil)
         (anzu--history (anzu--transform-from-to-history))
-        timer is-input)
+        is-input)
     (unwind-protect
         (minibuffer-with-setup-hook
             #'(lambda ()
-                (setq timer (run-with-idle-timer
-                             (max anzu-input-idle-delay 0.01)
-                             'repeat
-                             (lambda ()
-                               (anzu--clear-overlays curbuf nil nil)
-                               (with-selected-window (or (active-minibuffer-window)
-                                                         (minibuffer-window))
-                                 (anzu--check-minibuffer-input
-                                  curbuf beg end use-regexp overlay-limit))))))
+                (setq anzu--update-timer
+                      (run-with-idle-timer
+                       (max anzu-input-idle-delay 0.01)
+                       'repeat
+                       (lambda ()
+                         (anzu--clear-overlays curbuf nil nil)
+                         (with-selected-window (or (active-minibuffer-window)
+                                                   (minibuffer-window))
+                           (anzu--check-minibuffer-input
+                            curbuf beg end use-regexp overlay-limit))))))
           (prog1 (read-from-minibuffer (format "%s: " prompt)
                                        nil nil nil 'anzu--history nil t)
             (setq is-input t)))
-      (when timer
-        (cancel-timer timer)
-        (setq timer nil)
+      (when anzu--update-timer
+        (cancel-timer anzu--update-timer)
+        (setq anzu--update-timer nil)
         (unless is-input
           (goto-char beg))))))
 
@@ -592,7 +606,9 @@
 (defsubst anzu--replaced-literal-string (ov replaced from)
   (let ((str (buffer-substring-no-properties
               (overlay-start ov) (overlay-end ov))))
-    (when (string-match (regexp-quote str) from)
+    ;; Needed to do `(string-match from str)' instead of `(string-match str from)',
+    ;; because lax whitespace means `from' can be a regexp.
+    (when (string-match from str)
       (replace-match replaced (not case-fold-search) t str))))
 
 (defun anzu--append-replaced-string (content buf beg end use-regexp overlay-limit from)
@@ -600,13 +616,14 @@
     (unless (string= content anzu--last-replace-input)
       (setq anzu--last-replace-input content)
       (with-current-buffer buf
-        (let ((case-fold-search (anzu--case-fold-search)))
+        (let ((case-fold-search (anzu--case-fold-search))
+              (pattern (anzu--convert-for-lax-whitespace from use-regexp)))
           (dolist (ov (anzu--overlays-in-range beg (min end overlay-limit)))
             (let ((replace-evaled
                    (if (not use-regexp)
-                       (anzu--replaced-literal-string ov content from)
+                       (anzu--replaced-literal-string ov content pattern)
                      (prog1 (anzu--evaluate-occurrence ov content replacements
-                                                       (not case-fold-search) from)
+                                                       (not case-fold-search) pattern)
                        (cl-incf replacements)))))
               (overlay-put ov 'after-string (anzu--propertize-to-string replace-evaled)))))))))
 
@@ -621,7 +638,7 @@
         (to-prompt (format "%s %s with: " prompt (query-replace-descr from)))
         (history-add-new-input nil)
         (blink-matching-paren nil)
-        timer is-input)
+        is-input)
     (setq anzu--last-replace-input "")
     (when anzu--outside-point
       (setq beg anzu--outside-point
@@ -630,22 +647,23 @@
     (unwind-protect
         (minibuffer-with-setup-hook
             #'(lambda ()
-                (setq timer (run-with-idle-timer
-                             (max anzu-input-idle-delay 0.01)
-                             'repeat
-                             (lambda ()
-                               (with-selected-window (or (active-minibuffer-window)
-                                                         (minibuffer-window))
-                                 (anzu--append-replaced-string
-                                  (minibuffer-contents)
-                                  curbuf beg end use-regexp overlay-limit from))))))
+                (setq anzu--update-timer
+                      (run-with-idle-timer
+                       (max anzu-input-idle-delay 0.01)
+                       'repeat
+                       (lambda ()
+                         (with-selected-window (or (active-minibuffer-window)
+                                                   (minibuffer-window))
+                           (anzu--append-replaced-string
+                            (minibuffer-contents)
+                            curbuf beg end use-regexp overlay-limit from))))))
           (prog1 (read-from-minibuffer to-prompt
                                        nil nil nil
                                        query-replace-from-history-variable nil t)
             (setq is-input t)))
-      (when timer
-        (cancel-timer timer)
-        (setq timer nil)
+      (when anzu--update-timer
+        (cancel-timer anzu--update-timer)
+        (setq anzu--update-timer nil)
         (unless is-input
           (goto-char orig-beg))))))
 

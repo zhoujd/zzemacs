@@ -61,28 +61,10 @@ mouse-3: Toggle minor modes"
     (unless (string-blank-p process-info)
       (concat " " (string-trim process-info)))))
 
-(defface zz:status-info
-  '((t (:inherit font-lock-keyword-face :weight normal)))
-  "Face used for generic status indicators.")
-
-(defface zz:status-error
-  '((t (:inherit error :weight normal)))
-  "Face for error status indicators.")
-
 (defun zz:segment-anzu ()
   "Return color-coded anzu status information."
   (when (bound-and-true-p anzu--state)
-    (cond
-     ((eq anzu--state 'replace-query)
-      (format "Replace%s%d"
-              "/"
-              anzu--cached-count))
-     (anzu--overflow-p
-      (format "%d/%d+"
-              anzu--current-position anzu--total-matched))
-     (t
-      (format "%d/%d"
-              anzu--current-position anzu--total-matched)))))
+    anzu--mode-line-format))
 
 (setq simple-modeline-segments
       '((simple-modeline-segment-modified

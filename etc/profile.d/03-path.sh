@@ -1,4 +1,4 @@
-### PATH
+### PATH setting
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_HOME=$(cd $SCRIPT_ROOT/../.. && pwd)
@@ -31,6 +31,19 @@ addpkgpath() {
         fi
     done
     export PKG_CONFIG_PATH
+}
+
+pathmunge() {
+    case ":${PATH}:" in
+        *:"$1":*)
+            ;;
+        *)
+            if [ "$2" = "after" ] ; then
+                PATH=$PATH:$1
+            else
+                PATH=$1:$PATH
+            fi
+    esac
 }
 
 addpath \

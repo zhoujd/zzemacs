@@ -1,4 +1,4 @@
-### self common setting
+### common setting
 # http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
 # http://souptonuts.sourceforge.net/chirico/index.php
 # http://vanmontfort.be/pub/linux/.bashrc

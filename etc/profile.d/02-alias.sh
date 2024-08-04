@@ -1,4 +1,4 @@
-### self alias setting
+### alias setting
 
 ## reload .bashrc
 alias rl='. ~/.bashrc'

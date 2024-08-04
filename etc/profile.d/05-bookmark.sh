@@ -1,4 +1,4 @@
-### self shell bookmark setting
+### shell bookmark setting
 
 ## get rid of command not found ##
 alias cd..='cd ..'

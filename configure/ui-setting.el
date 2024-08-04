@@ -67,12 +67,12 @@ mouse-3: Toggle minor modes"
     anzu--mode-line-format))
 
 (setq simple-modeline-segments
-      '((simple-modeline-segment-modified
+      '((zz:segment-anzu
+         simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
          zz:segment-percent-prefix
          zz:segment-percent-position
          zz:segment-percent-suffix
-         zz:segment-anzu
          zz:segment-position
          zz:segment-region)
         (simple-modeline-segment-input-method

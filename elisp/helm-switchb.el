@@ -16,7 +16,7 @@
   "helm switchb ignores buffers")
 
 (defface helm-switchb-info
-  '((t (:inherit font-lock-keyword-face :weight normal)))
+  '((t (:inherit info :weight normal)))
   "Face used for generic status indicators.")
 
 (defface helm-switchb-error

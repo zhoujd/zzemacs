@@ -1,32 +1,7 @@
 ;;; zz-theme.el --- TextMate Blackboard Theme
 
-;; MIT License Copyright (c) 2008 JD Huntington <jdhuntington at gmail dot com>
-;; Credits due to the excellent TextMate Blackboard theme
-;;
-;; All patches welcome
-
-;; --------------
-
-;; Author: Dong Zheng
-;; Version: 1.0
-;; Package-Requires: ((emacs "24"))
-;; URL: https://github.com/don9z/blackboard-theme
-
-;;; Commentary:
-
-;; This porting makes blackboard-theme no longer rely on color-theme package
-
-;; How to use:
-;; First, add a local directory to custome-theme-load-path,
-;; (add-to-list 'custom-theme-load-path "~/home/$USER/drop/the/theme/to")
-;; Then drop this theme into it,
-;; M-x load-theme, then choose blackboard, it should work
-;; Or, simple use (load-theme 'blackboard t) to enable the theme from start.
-
-;;; Code:
-
 (deftheme zz
-  "Based on Color theme by JD Huntington, which based off the TextMate Blackboard theme, created 2008-11-27")
+  "Based on Color theme by JD Huntington, which based off the TextMate Blackboard theme")
 
 (custom-theme-set-faces
  `zz

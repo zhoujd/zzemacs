@@ -15,12 +15,22 @@
 (defvar helm-switchb-ignores '("*Async Shell Command*")
   "helm switchb ignores buffers")
 
+(defface helm-switchb-info
+  '((t (:inherit font-lock-keyword-face :weight normal)))
+  "Face used for generic status indicators.")
+
+(defface helm-switchb-error
+  '((t (:inherit error :weight normal)))
+  "Face for error status indicators.")
+
 (defmacro helm-switchb-candidate (mode)
   "Collect and format candidates base on Major mode"
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format "%-42s%s%s"
+        (format #("%-42s%s%s"
+                  0 4 (face helm-switchb-info)
+                  7 8 (face helm-switchb-error))
                 (buffer-name buf)
                 helm-switchb-separator
                 (with-current-buffer (buffer-name buf)

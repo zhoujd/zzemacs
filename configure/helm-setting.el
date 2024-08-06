@@ -23,7 +23,7 @@
         (add-to-list 'helm-mode-no-completion-in-region-in-modes mode))
       '(shell-mode))
 
-(setq helm-autoresize-min-height 20)
+(setq helm-autoresize-min-height 30)
 (helm-autoresize-mode t)
 
 ;;helm-tramp

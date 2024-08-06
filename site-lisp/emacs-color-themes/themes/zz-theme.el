@@ -46,7 +46,15 @@
  ;; helm
  `(helm-buffer-directory ((t (:foreground "#c350ff"))))
  `(helm-ff-directory ((t (:foreground "#c350ff"))))
+ `(helm-ff-symlink ((t (:foreground "#f6df92"))))
+ `(helm-ff-prefix ((t (:foreground "#ff5f87" :weight bold))))
  `(helm-source-header ((t (:foreground "#ff5f87" :underline t :weight bold))))
+
+ `(helm-selection ((t (:background "#333" :underline t))))
+ `(helm-selection-line ((t (:background "#ccc" :foreground "#ff5f87" :underline nil))))
+
+ `(helm-candidate-number ((t (:foreground "#ff5f87" :bold t))))
+ `(helm-match ((t (:foreground "#ff5f87"))))
 
  ;; misc
  `(font-lock-string-face ((t (:foreground "#61CE3C"))))

@@ -163,8 +163,8 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
-              ("New vterm" . helm-switchb-vterm-new)
-              ("New terminal" . helm-switchb-term-new))
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))
     :keymap helm-switchb-map
     ))
 
@@ -206,8 +206,8 @@
                            recentf-list)))
     :action '(("Open dired" . helm-switchb-dired-open-dir)
               ("New shell" . helm-switchb-shell-new-dir)
-              ("New vterm" . helm-switchb-vterm-new-dir)
-              ("New terminal" . helm-switchb-term-new-dir))
+              ("New term" . helm-switchb-term-new-dir
+              ("New vterm" . helm-switchb-vterm-new-dir)))
     ))
 
 (defun helm-switchb-recent-dired ()

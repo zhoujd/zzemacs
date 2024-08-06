@@ -283,6 +283,7 @@
   (kbd "C-c b")   'helm-switchb-shell-list
   (kbd "C-c M-b") 'helm-mt
   (kbd "C-c d")   'helm-switchb-dired-list
+  (kbd "C-c M-d") 'helm-switchb-recent-dired
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf

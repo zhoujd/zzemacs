@@ -161,6 +161,7 @@
                ("Emacs" (or
                           (name . "^\\*.*\\*$")
                           (name . "^\\*.*\\*<[0-9]+>$")
+                          (name . "^\\*.*\\*")
                           (name . "^ ")))))))
 
 (add-hook 'ibuffer-mode-hook

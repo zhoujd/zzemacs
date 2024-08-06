@@ -130,7 +130,7 @@
 ;;dired-rsync
 (require 'dired-rsync)
 (require 'dired-rsync-transient)
-(defkeys-map dired-mode-mapq
+(defkeys-map dired-mode-map
   ((kbd "C-c C-r") 'dired-rsync)
   ((kbd "C-c C-x") 'dired-rsync-transient))
 

@@ -36,6 +36,7 @@
         complete-setting
         prog-setting
         helm-setting
+        ivy-setting
         vc-setting
         ediff-setting
         dired-setting

@@ -112,8 +112,6 @@
 ;;dired play with vlc/mpv
 (zz:load-path "elisp")
 (require 'dired-play)
-
-;;dired-mode-map
 (defkeys-map dired-mode-map
   ((kbd "/") dired-filter-map)
   ((kbd "r") 'dired-play-start)
@@ -128,6 +126,13 @@
 ;;dirvish
 ;(zz:load-path "site-lisp/dirvish")
 ;(require 'dirvish)
+
+;;dired-rsync
+(require 'dired-rsync)
+(require 'dired-rsync-transient)
+(defkeys-map dired-mode-mapq
+  ((kbd "C-c C-r") 'dired-rsync)
+  ((kbd "C-c C-x") 'dired-rsync-transient))
 
 
 (provide 'dired-setting)

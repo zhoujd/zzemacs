@@ -488,6 +488,10 @@
 ;;avy
 (require 'avy)
 
+;;dired recent
+(require 'dired-recent)
+(dired-recent-mode 1)
+
 
 (provide 'other-setting)
 

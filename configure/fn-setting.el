@@ -37,7 +37,7 @@
   [C-f4]            'zz:helm-find
   [M-f4]            'zz:helm-grep-ag
   (kbd "C-x <f4>")  'helm-recentf
-  (kbd "C-c <f4>")  'zz:recentf-files
+  (kbd "C-c <f4>")  'dired-recent-open
   "f4 key binding")
 
 (define-fn-key (gethash "f5" fn-key-table)

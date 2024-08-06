@@ -47,7 +47,7 @@
 
 (require 'what-char)
 
-;; Support for marking a rectangle of text with highlighting.
+;;support for marking a rectangle of text with highlighting.
 (require 'rect-mark)
 (defkeys-map ctl-x-map
   ("r\C-@"     'rm-set-mark)
@@ -70,10 +70,8 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
-;;recentf ext
-(require 'recentf-ext)
-;;disable before we start recentf for TrampMode!
-(setq recentf-auto-cleanup 'never)
+(require 'recentf)
+(setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
@@ -85,6 +83,10 @@
                         ".*png$"
                         ".*cache$"))
 (recentf-mode t)
+
+;;https://www.emacswiki.org/emacs/RecentFiles
+;;recentf ext for add dired
+;(require 'recentf-ext)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."

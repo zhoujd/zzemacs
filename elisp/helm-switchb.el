@@ -136,7 +136,7 @@
     ))
 
 (defvar helm-switchb-term-source
-  (helm-build-sync-source "Multi-term buffers"
+  (helm-build-sync-source "Term buffers"
     :candidates (helm-switchb-candidate 'term-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
               ("Open dired" . helm-switchb-dired-open)
@@ -148,7 +148,7 @@
     ))
 
 (defvar helm-switchb-vterm-source
-  (helm-build-sync-source "Multi-vterm buffers"
+  (helm-build-sync-source "VTerm buffers"
     :candidates (helm-switchb-candidate 'vterm-mode)
     :action '(("Switch to buffer" . helm-switchb-select)
               ("Open dired" . helm-switchb-dired-open)

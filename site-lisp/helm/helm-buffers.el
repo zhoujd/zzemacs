@@ -208,7 +208,7 @@ Don't use `setq' to set this."
 
 (defface helm-buffer-directory
   `((t ,@(and (>= emacs-major-version 27) '(:extend t))
-       :foreground "DarkRed" :background "LightGray"))
+       :foreground "DarkRed" :background "black"))
   "Face used for directories in `helm-buffers-list'."
   :group 'helm-buffers-faces)
 

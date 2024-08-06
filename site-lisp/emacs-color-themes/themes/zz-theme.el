@@ -43,6 +43,12 @@
  `(org-agenda-date-weekend ((t (:weight normal :foreground "dodger blue"))))
  `(org-agenda-date-today ((t (:weight bold :foreground "#edd400"))))
 
+ ;; helm
+ `(helm-buffer-directory ((t (:foreground "#c350ff"))))
+ `(helm-ff-directory ((t (:foreground "#c350ff"))))
+ `(helm-source-header ((t (:foreground "#ff5f87" :underline t :weight bold))))
+
+ ;; misc
  `(font-lock-string-face ((t (:foreground "#61CE3C"))))
  `(font-lock-type-face ((t (:foreground "#8DA6CE"))))
  `(font-lock-variable-name-face ((t (:foreground "#FF6400"))))

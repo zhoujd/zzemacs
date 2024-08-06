@@ -139,8 +139,8 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
-              ("New vterm" . helm-switchb-vterm-new)
-              ("New terminal" . helm-switchb-term-new))
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))
     :keymap helm-switchb-map
     ))
 
@@ -151,8 +151,8 @@
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
-              ("New vterm" . helm-switchb-vterm-new)
-              ("New terminal" . helm-switchb-term-new))
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))
     :keymap helm-switchb-map
     ))
 
@@ -195,20 +195,21 @@
         :keymap helm-buffer-map
         :truncate-lines helm-buffers-truncate-lines))
 
+(defun helm-switchb-recent-dired-list ()
+  (delete-dups
+   (mapcar (lambda (file)
+             (if (file-directory-p file)
+                 file
+               (file-name-directory file)))
+           recentf-list)))
+
 (defvar helm-switchb-recent-dired-source
   (helm-build-sync-source "Recent Dired"
-    :candidates (lambda ()
-                  (delete-dups
-                   (mapcar (lambda (file)
-                             (if (file-directory-p file)
-                                 file
-                                 (file-name-directory file)))
-                           recentf-list)))
+    :candidates 'helm-switchb-recent-dired-list
     :action '(("Open dired" . helm-switchb-dired-open-dir)
               ("New shell" . helm-switchb-shell-new-dir)
-              ("New term" . helm-switchb-term-new-dir
-              ("New vterm" . helm-switchb-vterm-new-dir)))
-    ))
+              ("New term" . helm-switchb-term-new-dir)
+              ("New vterm" . helm-switchb-vterm-new-dir))))
 
 (defun helm-switchb-recent-dired ()
   (interactive)

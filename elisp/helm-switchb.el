@@ -134,6 +134,7 @@
     map)
   "Keymap for `helm-switchb'.")
 
+;; switch shell/term/vterm
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
@@ -179,6 +180,7 @@
         :truncate-lines helm-buffers-truncate-lines
         ))
 
+;; switch recentf dired
 (defvar helm-switchb-dired-source
   (helm-make-source "Dired Buffers" 'helm-source-buffers
     :buffer-list

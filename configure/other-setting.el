@@ -74,6 +74,7 @@
 ;;recentf ext for add dired
 ;(require 'recentf-ext)
 
+(require 'recentf)
 (setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
@@ -81,7 +82,7 @@
 ;;ignore some files
 (setq recentf-exclude '("COMMIT_MSG"
                         "COMMIT_EDITMSG"
-                        "recentf"
+                        "*/.emacs.d/*"
                         "github.*txt$"
                         "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
                         ".*png$"

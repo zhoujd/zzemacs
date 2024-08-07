@@ -70,7 +70,10 @@
         ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
         (t (self-insert-command (or arg 1)))))
 
+;;https://www.emacswiki.org/emacs/RecentFiles
+;;recentf ext for add dired
 (require 'recentf)
+(require 'recentf-ext)
 (setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
@@ -78,15 +81,12 @@
 ;;ignore some files
 (setq recentf-exclude '("COMMIT_MSG"
                         "COMMIT_EDITMSG"
+                        "recentf"
                         "github.*txt$"
                         "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
                         ".*png$"
                         ".*cache$"))
 (recentf-mode t)
-
-;;https://www.emacswiki.org/emacs/RecentFiles
-;;recentf ext for add dired
-;(require 'recentf-ext)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."
@@ -490,10 +490,6 @@
 
 ;;avy
 (require 'avy)
-
-;;dired recent
-;(require 'dired-recent)
-;(dired-recent-mode 1)
 
 
 (provide 'other-setting)

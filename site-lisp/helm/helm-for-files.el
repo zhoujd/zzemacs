@@ -115,6 +115,9 @@ Be aware that a nil value will make tramp display very slow."
   :group 'helm-files
   :type 'boolean)
 
+
+
+
 (defclass helm-recentf-source (helm-source-sync helm-type-file)
   ((init :initform (lambda ()
                      (require 'recentf)

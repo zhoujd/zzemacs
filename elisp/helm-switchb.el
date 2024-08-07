@@ -52,7 +52,7 @@
        (helm-exit-and-execute-action
         (lambda (_candidate) ,@body)))))
 
-(defun helm-switchb-select (candidate)
+(defun helm-switchb-buffer-open (candidate)
   (switch-to-buffer
    (string-trim
     (car (split-string
@@ -63,6 +63,11 @@
                (split-string
                 candidate helm-switchb-separator t)))))
 
+(defun helm-switchb-file-open (candidate)
+  (find-file (car (reverse
+               (split-string
+                candidate helm-switchb-separator t)))))
+
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
@@ -70,21 +75,27 @@
                            cand helm-switchb-separator t)))))
 
 (defun helm-switchb-shell-new (candidate)
-  (let ((default-directory
-          (car (reverse (split-string
-                         candidate helm-switchb-separator t)))))
+  (let* ((file (car (reverse (split-string
+                              candidate helm-switchb-separator t))))
+         (default-directory (if (file-directory-p file)
+                                file
+                                (file-name-directory file))))
     (multi-shell-new)))
 
 (defun helm-switchb-term-new (candidate)
-  (let ((default-directory
-          (car (reverse (split-string
-                         candidate helm-switchb-separator t)))))
+  (let* ((file (car (reverse (split-string
+                              candidate helm-switchb-separator t))))
+         (default-directory (if (file-directory-p file)
+                                file
+                                (file-name-directory file))))
     (multi-term)))
 
 (defun helm-switchb-vterm-new (candidate)
-  (let ((default-directory
-          (car (reverse (split-string
-                         candidate helm-switchb-separator t)))))
+  (let* ((file (car (reverse (split-string
+                              candidate helm-switchb-separator t))))
+         (default-directory (if (file-directory-p file)
+                                file
+                                (file-name-directory file))))
     (multi-vterm)))
 
 (defun helm-switchb-kill-shell ()
@@ -126,7 +137,7 @@
 (defvar helm-switchb-shell-source
   (helm-build-sync-source "Shell buffers"
     :candidates (helm-switchb-candidate 'shell-mode)
-    :action '(("Switch to buffer" . helm-switchb-select)
+    :action '(("Switch to buffer" . helm-switchb-buffer-open)
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
@@ -138,7 +149,7 @@
 (defvar helm-switchb-term-source
   (helm-build-sync-source "Term buffers"
     :candidates (helm-switchb-candidate 'term-mode)
-    :action '(("Switch to buffer" . helm-switchb-select)
+    :action '(("Switch to buffer" . helm-switchb-buffer-open)
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
@@ -150,7 +161,7 @@
 (defvar helm-switchb-vterm-source
   (helm-build-sync-source "VTerm buffers"
     :candidates (helm-switchb-candidate 'vterm-mode)
-    :action '(("Switch to buffer" . helm-switchb-select)
+    :action '(("Switch to buffer" . helm-switchb-buffer-open)
               ("Open dired" . helm-switchb-dired-open)
               ("Kill buffer" . helm-switchb-kill)
               ("New shell" . helm-switchb-shell-new)
@@ -206,6 +217,30 @@
   (interactive)
   (helm :sources '(helm-switchb-recent-dired-source)
         :buffer "*helm recent dired*"
+        :truncate-lines helm-buffers-truncate-lines
+        ))
+
+;; recent file
+(defun helm-switchb-recent-file-list ()
+  (delete-dups
+   (mapcar (lambda (file)
+             (unless (file-directory-p file)
+                 file))
+           recentf-list)))
+
+(defvar helm-switchb-recent-file-source
+  (helm-build-sync-source "Recent File"
+    :candidates 'helm-switchb-recent-file-list
+    :action '(("Visit file" . helm-switchb-file-open)
+              ("Open dired" . helm-switchb-dired-open)
+              ("New shell" . helm-switchb-shell-new)
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))))
+
+(defun helm-switchb-recent-file ()
+  (interactive)
+  (helm :sources '(helm-switchb-recent-file-source)
+        :buffer "*helm recent file*"
         :truncate-lines helm-buffers-truncate-lines
         ))
 

@@ -63,9 +63,6 @@
                (split-string
                 candidate helm-switchb-separator t)))))
 
-(defun helm-switchb-dired-open-dir (candidate)
-  (dired candidate))
-
 (defun helm-switchb-kill (candidate)
   (loop for cand in (helm-marked-candidates)
         do
@@ -78,22 +75,16 @@
                          candidate helm-switchb-separator t)))))
     (multi-shell-new)))
 
-(defun helm-switchb-shell-new-dir (candidate)
-  (let ((default-directory candidate))
-    (multi-shell-new)))
-
-(defun helm-switchb-term-new-dir (candidate)
-  (let ((default-directory candidate))
+(defun helm-switchb-term-new (candidate)
+  (let ((default-directory
+          (car (reverse (split-string
+                         candidate helm-switchb-separator t)))))
     (multi-term)))
 
 (defun helm-switchb-vterm-new (candidate)
   (let ((default-directory
           (car (reverse (split-string
                          candidate helm-switchb-separator t)))))
-    (multi-vterm)))
-
-(defun helm-switchb-vterm-new-dir (candidate)
-  (let ((default-directory candidate))
     (multi-vterm)))
 
 (defun helm-switchb-kill-shell ()
@@ -206,10 +197,10 @@
 (defvar helm-switchb-recent-dired-source
   (helm-build-sync-source "Recent Dired"
     :candidates 'helm-switchb-recent-dired-list
-    :action '(("Open dired" . helm-switchb-dired-open-dir)
-              ("New shell" . helm-switchb-shell-new-dir)
-              ("New term" . helm-switchb-term-new-dir)
-              ("New vterm" . helm-switchb-vterm-new-dir))))
+    :action '(("Open dired" . helm-switchb-dired-open)
+              ("New shell" . helm-switchb-shell-new)
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))))
 
 (defun helm-switchb-recent-dired ()
   (interactive)

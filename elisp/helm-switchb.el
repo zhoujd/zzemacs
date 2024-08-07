@@ -220,30 +220,6 @@
         :truncate-lines helm-buffers-truncate-lines
         ))
 
-;; recent file
-(defun helm-switchb-recent-file-list ()
-  (delete-dups
-   (mapcar (lambda (file)
-             (unless (file-directory-p file)
-                 file))
-           recentf-list)))
-
-(defvar helm-switchb-recent-file-source
-  (helm-build-sync-source "Recent File"
-    :candidates 'helm-switchb-recent-file-list
-    :action '(("Visit file" . helm-switchb-file-open)
-              ("Open dired" . helm-switchb-dired-open)
-              ("New shell" . helm-switchb-shell-new)
-              ("New term" . helm-switchb-term-new)
-              ("New vterm" . helm-switchb-vterm-new))))
-
-(defun helm-switchb-recent-file ()
-  (interactive)
-  (helm :sources '(helm-switchb-recent-file-source)
-        :buffer "*helm recent file*"
-        :truncate-lines helm-buffers-truncate-lines
-        ))
-
 
 (provide 'helm-switchb)
 

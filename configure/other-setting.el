@@ -72,8 +72,8 @@
 
 ;;https://www.emacswiki.org/emacs/RecentFiles
 ;;recentf ext for add dired
-(require 'recentf)
-(require 'recentf-ext)
+;(require 'recentf-ext)
+
 (setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
@@ -490,6 +490,10 @@
 
 ;;avy
 (require 'avy)
+
+;;dired recent
+(require 'dired-recent)
+(dired-recent-mode 1)
 
 
 (provide 'other-setting)

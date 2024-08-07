@@ -381,7 +381,7 @@ mouse-3: Toggle minor modes"
 
 ;;only auto spit windows
 (setq split-height-threshold 0)
-(setq split-width-threshold nil)
+(setq split-width-threshold 9999)
 
 ;;hide buffer *Async Shell Command*
 (defadvice display-buffer (around async-shell-command activate)

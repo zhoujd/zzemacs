@@ -240,6 +240,7 @@
   (kbd "C-x d")   'zz:dired
   (kbd "C-x g")   'magit-status
   (kbd "C-x M-g") 'magit-dispatch
+  (kbd "C-c M-g") 'magit-file-dispatch
   (kbd "C-c w")   'compare-windows
   (kbd "C-c ;")   'iedit-mode
   (kbd "C-c M-;") 'iedit-dwim

@@ -178,3 +178,40 @@ Git
     ## Open the Magit status buffer (C-x g)
     ## Press y to get a listing of all branches and tags in the git repo
     ## Navigate to the branch you want to delete and press k
+
+## Git Submodule ans misc commands
+
+    ## http://gitbook.liuhui998.com/index.html
+    $ git submodule add url path/to/name
+    $ git submodule init
+    $ git submodule foreach git pull
+    $ git submodule update
+    $ git cherry-pick xxx-commit-id
+    $ git pull --squash another
+    $ git update-index --assume-unchanged /path/to/file
+    $ git update-index --no-assume-unchanged /path/to/file
+    $ find -type d -empty -exec touch {}/.gitignore \;
+
+## Build from source
+
+    $ sudo apt install libssl-dev libcurl4-openssl-dev libexpat1-dev
+    $ sudo yum install openssl-devel libcurl-devel expat-devel perl-devel
+    $ wget https://github.com/git/git/archive/v2.16.6.zip
+    $ unzip v2.16.6.zip
+    $ cd git-2.16.6
+    $ make prefix=/opt/git all
+    $ make prefix=/opt/git install
+    $ echo /opt/git/bin >> /etc/environment # or others
+
+## Get work root
+
+    $ git rev-parse --show-toplevel
+
+## GitHub Token
+
+    $ GITHUB_TOKEN="xxxxxxxxxxxxxxx"
+    $ git config --global url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
+    $ git config --file=~/.gitconfig-url url."https://${GITHUB_TOKEN}@github.com/zhoujd".insteadOf "https://github.com/zhoujd"
+    $ cat ~/.gitconfig-url
+      [url "https://${GITHUB_TOKEN}@github.com/zhoujd"]
+        insteadOf = https://github.com/zhoujd

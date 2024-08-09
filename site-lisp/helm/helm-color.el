@@ -36,7 +36,7 @@
         'global
       (with-current-buffer (get-buffer "*Faces*")
         (buffer-substring
-         (next-single-char-property-change (point-min) 'category)
+         (next-single-char-property-change (point-min) 'face)
          (point-max))))
     (kill-buffer "*Faces*")))
 

@@ -36,7 +36,6 @@
 (defvar dired-buffers)
 (defvar org-directory)
 (defvar helm-ff-default-directory)
-(defvar major-mode-remap-alist)
 
 
 (defgroup helm-buffers nil
@@ -101,10 +100,7 @@ When adding a source here it is up to you to ensure the library
 of this source is accessible and properly loaded."
   :type '(repeat (choice symbol)))
 
-(defcustom helm-buffers-end-truncated-string
-  ;; `truncate-string-ellipsis', the function is not available in 27.1
-  ;; See issue#2673. 
-  (if (char-displayable-p ?…) "…" "...")
+(defcustom helm-buffers-end-truncated-string "..."
   "The string to display at end of truncated buffer names."
   :type 'string)
 
@@ -208,7 +204,7 @@ Don't use `setq' to set this."
 
 (defface helm-buffer-directory
   `((t ,@(and (>= emacs-major-version 27) '(:extend t))
-       :foreground "DarkRed" :background "black"))
+       :foreground "DarkRed" :background "LightGray"))
   "Face used for directories in `helm-buffers-list'."
   :group 'helm-buffers-faces)
 
@@ -339,9 +335,6 @@ Note that this variable is buffer-local.")
                           when (string-match r candidate)
                           return m)))
         (buffer (get-buffer-create candidate)))
-    (helm-aif (and (boundp 'major-mode-remap-alist)
-                   (cdr (assq mjm major-mode-remap-alist)))
-      (setq mjm it))
     (if mjm
         (with-current-buffer buffer (funcall mjm))
       (set-buffer-major-mode buffer))
@@ -386,7 +379,7 @@ Note that this variable is buffer-local.")
 
 
 (defun helm-buffers-get-visible-buffers ()
-  "Returns buffers visible on visible frames."
+  "Returns buffers visibles on current frame."
   (let (result)
     (walk-windows
      (lambda (x)
@@ -395,7 +388,6 @@ Note that this variable is buffer-local.")
     result))
 
 (defun helm-buffer-list-1 (&optional visibles)
-  "Return list of all buffers except VISIBLES buffers."
   (cl-loop for b in (buffer-list)
            for bn = (buffer-name b)
            unless (member bn visibles)
@@ -460,7 +452,7 @@ The list is reordered with `helm-buffer-list-reorder-fn'."
                    (format "(%s %s in `%s')"
                            (process-name proc)
                            (process-status proc) dir)
-                 (format "`%s'" dir))
+                 (format "(in `%s')" dir))
                'face face2)))))
 
 (defun helm-buffer--format-mode-name (buf)
@@ -1010,14 +1002,12 @@ vertically."
 
 (defun helm-buffers-persistent-kill (_buffer)
   (let ((marked (helm-marked-candidates))
-        (sel (helm-get-selection))
-        (msg "Buffer `%s' modified, please save it before kill"))
+        (sel    (helm-get-selection)))
     (unwind-protect
          (cl-loop for b in marked
-                  do (if (and (buffer-file-name b) (buffer-modified-p b))
-                         (message msg (buffer-name b))
+                  do (progn
                        ;; We need to preselect each marked because
-                       ;; helm-buffers-persistent-kill-1 is deleting
+                       ;; helm-buffers-persistent-kill is deleting
                        ;; current selection.
                        (helm-preselect
                         (format "^%s"
@@ -1035,7 +1025,7 @@ vertically."
     (if (or (helm-follow-mode-p)
             (eql current (get-buffer helm-current-buffer))
             (not (eql current (get-buffer candidate))))
-        (display-buffer candidate)
+        (switch-to-buffer candidate)
       (if (and helm-persistent-action-display-window
                (window-dedicated-p
                 (next-window helm-persistent-action-display-window 1)))

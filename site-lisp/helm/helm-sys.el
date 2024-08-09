@@ -117,8 +117,7 @@ This affects also sorting functions in the same way."
     (cancel-timer helm-top--poll-timer))
   (condition-case nil
       (progn
-        (when (and (helm--alive-p) (null no-update)
-                   (null helm-suspend-update-flag))
+        (when (and (helm--alive-p) (null no-update))
           ;; Fix quitting while process is running
           ;; by binding `with-local-quit' in init function
           ;; Bug#1521.
@@ -209,12 +208,13 @@ Return empty string for non--valid candidates."
                            (cons helm-top--line lst))))
 
 (defun helm-top--skip-top-line ()
-  (let ((src (helm-get-current-source)))
-    (when (helm-aand (assoc-default 'name src)
-                     (string= it "Top")
-                     (helm-get-selection nil t src)
-                     (string-match-p "^ *PID" it))
-      (helm-next-line))))
+  (let* ((src (helm-get-current-source))
+         (src-name (assoc-default 'name src)))
+    (helm-aif (and (stringp src-name)
+                   (string= src-name "Top")
+                   (helm-get-selection nil t src))
+        (when (string-match-p "^ *PID" it)
+          (helm-next-line)))))
 
 (defun helm-top-action-transformer (actions _candidate)
   "Action transformer for `top'.
@@ -440,11 +440,9 @@ Show actions only on line starting by a PID."
 
 
 ;;;###autoload
-(defun helm-top (&optional arg)
-  "Preconfigured `helm' for top command.
-When prefix arg ARG is non nil toggle auto updating mode `helm-top-poll-mode'."
-  (interactive "P")
-  (when arg (helm-top-poll-mode 'toggle))
+(defun helm-top ()
+  "Preconfigured `helm' for top command."
+  (interactive)
   (add-hook 'helm-after-update-hook 'helm-top--skip-top-line)
   (unwind-protect
        (helm :sources 'helm-source-top

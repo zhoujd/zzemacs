@@ -533,16 +533,16 @@ Have no effect when grep backend use \"--color=\"."
                           (and rec-com rec-com-ack-p)))))))
 
 (defun helm-grep--pipe-command-for-grep-command (smartcase pipe-switches &optional grep-cmd)
-  (helm-acase (or grep-cmd (helm-grep-command))
+  (pcase (or grep-cmd (helm-grep-command))
     ;; Use grep for GNU regexp based tools.
-    (("grep" "zgrep" "git-grep")
+    ((or "grep" "zgrep" "git-grep")
      (format "grep --color=always%s %s"
              (if smartcase " -i" "")
              pipe-switches))
     ;; Use ack-grep for PCRE based tools.
-    ;; Sometimes ack-grep cmd is ack only so compare by matching ack.
-    ((guard (string-match-p "ack" it))
-     (format "%s --smart-case --color %s" it pipe-switches))))
+    ;; Sometimes ack-grep cmd is ack only.
+    ((and (pred (string-match-p "ack")) ack)
+     (format "%s --smart-case --color %s" ack pipe-switches))))
 
 (defun helm-grep--prepare-cmd-line (only-files &optional include zgrep)
   (let* ((default-directory (or helm-ff-default-directory
@@ -1196,7 +1196,7 @@ of grep."
             :initform nil
             :documentation
             "  The grep backend that will be used.
-  It is currently used only as an internal flag
+  It is actually used only as an internal flag
   and doesn't set the backend by itself.
   You probably don't want to modify this.")
    (candidate-number-limit :initform 9999)
@@ -1243,7 +1243,7 @@ Argument DEFAULT-INPUT is use as `default' arg of `helm' and
 INPUT is used as `input' arg of `helm'.  See `helm' docstring.
 
 Arg BACKEND when non-nil specifies which backend to use.
-It is used currently to specify \\='zgrep' or \\='git'.
+It is used actually to specify \\='zgrep' or \\='git'.
 When BACKEND \\='zgrep' is used don't prompt for a choice in
 recurse, and ignore EXTS, search being made recursively on files
 matching `helm-zgrep-file-extension-regexp' only."
@@ -1584,9 +1584,8 @@ non-file buffers."
 ;;  https://github.com/BurntSushi/ripgrep
 
 (defun helm-grep--ag-command ()
-  (and helm-grep-ag-command
-       (car (helm-remove-if-match
-             "\\`[A-Z]*=" (split-string helm-grep-ag-command)))))
+  (car (helm-remove-if-match
+        "\\`[A-Z]*=" (split-string helm-grep-ag-command))))
 
 (defun helm-grep-ag-get-types ()
   "Returns a list of AG types if available with AG version.
@@ -1636,12 +1635,8 @@ returns if available with current AG version."
                                (helm-default-directory)
                                default-directory))
         (cmd-line (helm-grep-ag-prepare-cmd-line
-                   ;; NOTE Encode directory name and pattern,
-                   ;; or it may not work with Chinese and maybe other non-utf8
-                   ;; characters on MSWindows systems issue#2677 and issue#2678. 
-                   (encode-coding-string helm-pattern locale-coding-system)
-                   (or (file-remote-p directory 'localname)
-                       (encode-coding-string directory locale-coding-system))
+                   helm-pattern (or (file-remote-p directory 'localname)
+                                    directory)
                    type))
         (start-time (float-time))
         (proc-name (helm-grep--ag-command)))
@@ -1698,27 +1693,18 @@ returns if available with current AG version."
                      proc-name
                      (replace-regexp-in-string "\n" "" event))))))))))
 
-(defvar helm-grep-ag-map
-  (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map helm-grep-map)
-    (define-key map (kbd "C-s") 'helm-grep-run-ag-grep-parent-directory)
-    map))
-
 (defclass helm-grep-ag-class (helm-source-async)
   ((nohighlight :initform t)
    (pcre :initarg :pcre :initform t
          :documentation
          "  Backend is using pcre regexp engine when non--nil.")
-   (keymap :initform 'helm-grep-ag-map)
+   (keymap :initform 'helm-grep-map)
    (history :initform 'helm-grep-ag-history)
    (help-message :initform 'helm-grep-help-message)
    (filtered-candidate-transformer :initform #'helm-grep-fc-transformer)
    (persistent-action :initform 'helm-grep-persistent-action)
    (persistent-help :initform "Jump to line (`C-u' Record in mark ring)")
    (candidate-number-limit :initform 99999)
-   (directory :initarg :directory :initform nil
-              :documentation
-              "  Directory currently searched.")
    (requires-pattern :initform 2)
    (nomark :initform t)
    (action :initform 'helm-grep-actions)
@@ -1742,29 +1728,15 @@ If INPUT is provided, use it as the search string."
           :header-name (lambda (name)
                          (format "%s [%s]"
                                  name (abbreviate-file-name directory)))
-          :directory directory
-          :action (append helm-grep-actions
-                          `((,(format "%s grep parent directory"
-                                      (upcase (helm-grep--ag-command)))
-                              . helm-grep-ag-grep-parent-directory)))
           :candidates-process
           (lambda () (helm-grep-ag-init directory type))))
   (helm-set-local-variable 'helm-input-idle-delay helm-grep-input-idle-delay)
   (helm :sources 'helm-source-grep-ag
+        :keymap helm-grep-map
         :history 'helm-grep-ag-history
         :input input
         :truncate-lines helm-grep-truncate-lines
         :buffer (format "*helm %s*" (helm-grep--ag-command))))
-
-(defun helm-grep-ag-grep-parent-directory (_candidate)
-  "Restart helm-grep-ag in the parent of the currently searched directory."
-  (let* ((src (with-helm-buffer (car helm-sources)))
-         (directory (helm-basedir (helm-get-attr 'directory src) t))
-         (input helm-pattern))
-    (helm-grep-ag-1 directory nil input)))
-
-(helm-make-command-from-action helm-grep-run-ag-grep-parent-directory
-    "Ag grep parent directory." 'helm-grep-ag-grep-parent-directory)
 
 (defun helm-grep-ag (directory with-types)
   "Start grep AG in DIRECTORY.

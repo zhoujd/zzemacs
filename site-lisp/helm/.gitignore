@@ -1,0 +1,10 @@
+*.elc
+patch*
+*.patch
+*.diff
+TAGS
+/helm-autoloads.el
+/helm-core-autoloads.el
+/helm-pkg.el
+/helm-core-pkg.el
+ID

@@ -4,7 +4,6 @@
 
 (zz:load-path "site-lisp/emacs-async")
 (zz:load-path "site-lisp/helm")
-(zz:load-path "site-lisp/helm-core")
 (require 'helm)
 (require 'helm-config)
 

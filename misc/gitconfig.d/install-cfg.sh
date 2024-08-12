@@ -76,8 +76,11 @@ git config --global alias.fname "show --pretty=format: --name-only"
 git config --global alias.dname "diff --pretty=format: --name-only"
 
 ## log
-git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit -10"
-git config --global alias.hlog  'log --oneline -10'
+git config --global alias.last  "log -1"
+git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
+git config --global alias.hlog  'log --oneline'
+git config --global alias.lg    '!git glog -10'
+git config --global alias.hg    '!git hlog -10'
 
 ## daemon
 git config --global alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'

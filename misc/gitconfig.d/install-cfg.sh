@@ -83,6 +83,9 @@ git config --global alias.hlog  'log --oneline -10'
 git config --global alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
 git config --global alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
 
+## list aliases
+git config --global alias.la    "!git config -l | grep alias | cut -c 7-"
+
 ## set http/https proxy
 git config --global http.proxy $http_proxy
 

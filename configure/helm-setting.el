@@ -52,6 +52,12 @@
                                           helm-def-source--emacs-variables
                                           helm-def-source--emacs-faces))
 
+;;dide some buffers in helm-buffers-list
+(setq helm-boring-buffer-regexp-list
+      (append
+       (list (rx "*tramp"))
+       helm-boring-buffer-regexp-list))
+
 ;;https://github.com/ptrv/helm-smex
 ;;(require 'helm-smex)
 

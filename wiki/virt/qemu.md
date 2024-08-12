@@ -196,3 +196,22 @@ QEMU
     $ socat - UNIX-CONNECT:/tmp/monitor.sock
     $ nc -U /tmp/monitor.sock
     $ ncat -U /tmp/monitor.sock
+
+## Enabling QEMU CLI Monitoring and Logging
+
+    ## https://cpolizzi.github.io/podman/enabling-qemu-cli-monitoring-and-logging.html
+    ## Command line parameters
+    -serial chardev:s0
+    -chardev stdio,id=s0,mux=on,logfile=qemu-s0.log,signal=off
+    -D qemu-debug.log
+    -d cpu_reset,int,guest_errors,mmu,unimp,plugin,strace,page
+    -monitor unix:qemu-monitor.sock,server,nowait
+    -S
+
+    ## Explaining
+    Redirects the serial port to the character device s0
+    Connects to the standard I/O character device s0 and directs it to the log file qemu-s0.log
+    Directs all QEMU debug output to qemu-debug.log
+    QEMU debug output to enable
+    Redirects the QEMU monitor to the Unix socket qemu-monitor.sock enabling console interaction and inspection of the VM
+    Immediately suspends the VM upon start

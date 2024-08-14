@@ -215,3 +215,9 @@ Git
     $ cat ~/.gitconfig-url
       [url "https://${GITHUB_TOKEN}@github.com/zhoujd"]
         insteadOf = https://github.com/zhoujd
+
+
+## Git reset author
+
+    $ git commit --amend --author="Author Name <email@address.com>"
+    $ git commit --amend --reset-author --no-edit

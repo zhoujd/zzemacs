@@ -272,9 +272,6 @@
 ;;helm proc
 (require 'helm-proc)
 
-;;helm-mt
-(require 'helm-mt)
-
 ;;helm-ispell
 (require 'helm-ispell)
 

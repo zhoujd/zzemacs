@@ -1,6 +1,6 @@
 ;;;; helm-setting.el --- helm setting file
-;; https://github.com/emacs-helm/helm
-;; https://github.com/emacs-helm/helm/wiki
+;;https://github.com/emacs-helm/helm
+;;https://github.com/emacs-helm/helm/wiki
 
 (zz:load-path "site-lisp/emacs-async")
 (zz:load-path "site-lisp/helm")
@@ -22,6 +22,7 @@
         (add-to-list 'helm-mode-no-completion-in-region-in-modes mode))
       '(shell-mode))
 
+;;use C-t to switch helm window position
 (setq helm-autoresize-min-height 30)
 (helm-autoresize-mode t)
 

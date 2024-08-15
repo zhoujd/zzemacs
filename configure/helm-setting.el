@@ -7,14 +7,16 @@
 (require 'helm)
 (require 'helm-config)
 
-;;https://github.com/emacs-helm/helm/blob/master/helm.el#L1432
+;;https://github.com/emacs-helm/helm/blob/master/helm-core.el#L392
+;;helm/helm-core.el:L392
 ;;| M-o     | left   | Previous source                                     |
 ;;| C-o     | right  | Next source                                         |
 ;;| C-j     |        | Persistent action (Execute and keep Helm session)   |
 ;;| C-c ?   |        | helm help                                           |
 ;;| C-c r   |        | sudo open                                           |
-;;| C-]     |        | toggle between showing filenames or full pathnames  |
-;;| C-u     | C-M-Z  | choose between different Helm sessions (helm-resume)|
+;;| C-]     |        | Toggle between showing filenames or full pathnames  |
+;;| C-u     | C-M-Z  | Choose between different Helm sessions (helm-resume)|
+;;| C-t     |        | Toggle resplit and swap helm windows                |
 (helm-mode t)
 
 ;;no completion
@@ -22,7 +24,7 @@
         (add-to-list 'helm-mode-no-completion-in-region-in-modes mode))
       '(shell-mode))
 
-;;use C-t to switch helm window position
+;;auto resize
 (setq helm-autoresize-min-height 30)
 (helm-autoresize-mode t)
 

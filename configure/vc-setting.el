@@ -43,9 +43,6 @@
 ;;magit-lfs
 (require 'magit-lfs)
 
-;;git show
-(require 'git-show)
-
 ;;diffstat
 (require 'diffstat)
 (add-hook 'diff-mode-hook (lambda ()

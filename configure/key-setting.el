@@ -241,6 +241,7 @@
   (kbd "C-x d")   'zz:dired
   (kbd "C-x g")   'magit-status
   (kbd "C-x M-g") 'magit-dispatch
+  (kbd "C-c g")   'magit-imerge
   (kbd "C-c M-g") 'magit-file-dispatch
   (kbd "C-c w")   'compare-windows
   (kbd "C-c ;")   'iedit-mode
@@ -290,7 +291,7 @@
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf
   (kbd "C-c M-f") 'helm-sudo-find-file
-  (kbd "C-c g")   'helm-ls-git
+  (kbd "C-c l")   'helm-ls-git
   (kbd "C-M-z")   'helm-resume
   (kbd "M-x")     'helm-M-x
 

@@ -43,6 +43,9 @@
 ;;magit-lfs
 (require 'magit-lfs)
 
+;;magit-imerge
+(require 'magit-imerge)
+
 ;;diffstat
 (require 'diffstat)
 (add-hook 'diff-mode-hook (lambda ()

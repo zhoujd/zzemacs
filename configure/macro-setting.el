@@ -42,6 +42,7 @@
 
 (defmacro with-ido-read (&rest body)
   `(let ((completing-read-function 'ido-completing-read))
+     (ido-mode t)
      ,@body))
 
 (defmacro with-helm-read (&rest body)

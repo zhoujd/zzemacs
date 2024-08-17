@@ -28,7 +28,7 @@
   [C-f3]            'helm-projectile-find-file
   [M-f3]            'helm-projectile-ag
   (kbd "C-x <f3>")  'register-list
-  (kbd "C-c <f3>")  'repeat-complex-command
+  (kbd "C-c <f3>")  'command-history
   "f3 key binding")
 
 (define-fn-key (gethash "f4" fn-key-table)

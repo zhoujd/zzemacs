@@ -490,6 +490,13 @@
 ;;avy
 (require 'avy)
 
+;;dired-recent
+(require 'dired-recent)
+(dired-recent-mode t)
+(defalias 'recent-find-dired 'dired-recent-open)
+(define-key dired-recent-mode-map
+  (kbd "C-x C-d") 'recent-find-dired)
+
 
 (provide 'other-setting)
 

@@ -4,7 +4,7 @@ ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
 . $ZZEMACS_ROOT/bin/sample.sh
 
-install_dot_emacs() {
+install_dotemacs() {
     cat <<EOF > ~/.emacs
 ;;; The .emacs for zzemacs
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
@@ -55,7 +55,7 @@ install_thirdparty() {
 
 install_all() {
     confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
-                    run_cmd install_dot_emacs
+                    run_cmd install_dotemacs
     confirm_execute "Do you want to install fonts ? [y/N]" \
                     run_cmd install_fonts user
     confirm_execute "Do you want to install others ? [y/N]" \
@@ -66,9 +66,9 @@ install_all() {
 }
 
 case $1 in
-    dot-emacs | -d )
+    dotemacs | -d )
         confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
-                        run_cmd install_dot_emacs
+                        run_cmd install_dotemacs
         ;;
     fonts | -f )
         shift
@@ -88,6 +88,6 @@ case $1 in
                         run_cmd install_all
         ;;
     * )
-        echo "$(basename $0) {dot-emacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
+        echo "$(basename $0) {dotemacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
         ;;
 esac

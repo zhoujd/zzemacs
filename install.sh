@@ -1,14 +1,9 @@
 #!/bin/bash
 
-## script path
-ZZEMACS_ROOT=`pwd`
+ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
-## source vars and functions
 . $ZZEMACS_ROOT/bin/sample.sh
 
-echo "Install .emacs to HOME directory begin..."
-
-## setup .emacs
 install_dot_emacs() {
     cat <<EOF > ~/.emacs
 ;;; The .emacs for zzemacs
@@ -17,13 +12,13 @@ install_dot_emacs() {
     (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
+    echo "Install .emacs done"
 }
 
-## setup font
 install_fonts() {
-    TARGET_TYPE="user"   ## system/user
-    echo "Install font to $TARGET_TYPE"
-    case "$TARGET_TYPE" in
+    TYPE="${1:-user}"
+    echo "Install font to $TYPE"
+    case "$TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
             sudo mkdir -p $FONT_TARGET
@@ -37,45 +32,62 @@ install_fonts() {
             fc-cache -f
             ;;
         * )
-            echo "Unknown $TARGET_TYPE"
+            echo "Unknown $TYPE"
             ;;
     esac
+    echo "Install fonts done"
 }
 
-## setup others
 install_others() {
-    ## create ~/.emacs.d
     mkdir -p ~/.emacs.d
-    ## term config
     ${ZZEMACS_ROOT}/misc/term/install.sh
-    ## debug config
     ${ZZEMACS_ROOT}/misc/debug/install.sh
-    ## git config
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
+    echo "Install others done"
 }
 
-## install thirdparty
 install_thirdparty() {
     echo "Install third party to $TARGET_TYPE"
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
     ${ZZEMACS_ROOT}/third-party/perl/install.sh
+    echo "Install thirdparty done"
 }
 
-main() {
-    ## install configure file
+install_all() {
     confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
                     run_cmd install_dot_emacs
-    ## install fonts
     confirm_execute "Do you want to install fonts ? [y/N]" \
-                    run_cmd install_fonts
-    ## install others
+                    run_cmd install_fonts user
     confirm_execute "Do you want to install others ? [y/N]" \
                     run_cmd install_others
-    ## install third-party
     confirm_execute "Do you want to install third-party packages ? (y/N): " \
                     run_cmd install_thirdparty
+    echo "Install all done"
 }
 
-main
-
-echo "Install .emacs to HOME directory end..."
+case $1 in
+    dot-emacs | -d )
+        confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
+                        run_cmd install_dot_emacs
+        ;;
+    fonts | -f )
+        shift
+        confirm_execute "Do you want to install fonts ? [y/N]" \
+                        run_cmd install_fonts user
+        ;;
+    others | -o )
+        confirm_execute "Do you want to install others ? [y/N]" \
+                        run_cmd install_others
+        ;;
+    thirdparty | -t )
+        confirm_execute "Do you want to install third-party packages ? (y/N): " \
+                        run_cmd install_thirdparty
+        ;;
+    all | -a )
+        confirm_execute "Do you want to install all configure ? (y/N): " \
+                        run_cmd install_all
+        ;;
+    * )
+        echo "$(basename $0) {dot-emacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
+        ;;
+esac

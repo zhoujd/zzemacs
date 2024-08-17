@@ -40,6 +40,14 @@
      ,@body
      (set-language-environment curr-lang)))
 
+(defmacro with-ido-read (&rest body)
+  `(let ((completing-read-function 'ido-completing-read))
+     ,@body))
+
+(defmacro with-helm-read (&rest body)
+  `(let ((completing-read-function 'helm-comp-read))
+     ,@body))
+
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")
 ;;  ((kbd "M-2") "zhoujd"))

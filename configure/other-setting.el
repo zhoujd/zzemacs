@@ -198,13 +198,13 @@
 ;;ido-find-file
 (defun zz:find-file ()
   (interactive)
-  (let ((completing-read-function 'ido-completing-read))
-    (ido-find-file)))
+  (with-ido-read
+   (ido-find-file)))
 
 (defun zz:dired ()
   (interactive)
-  (let ((completing-read-function 'ido-completing-read))
-    (ido-dired)))
+  (with-ido-read
+   (ido-dired)))
 
 ;;alias operate setting
 (fset 'rm 'delete-file)

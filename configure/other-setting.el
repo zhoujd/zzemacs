@@ -198,13 +198,13 @@
 ;;ido-find-file
 (defun zz:find-file ()
   (interactive)
-  (ido-mode t)
-  (ido-find-file))
+  (let ((completing-read-function 'ido-completing-read))
+    (ido-find-file)))
 
 (defun zz:dired ()
   (interactive)
-  (ido-mode t)
-  (ido-dired))
+  (let ((completing-read-function 'ido-completing-read))
+    (ido-dired)))
 
 ;;alias operate setting
 (fset 'rm 'delete-file)
@@ -489,13 +489,6 @@
 
 ;;avy
 (require 'avy)
-
-;;dired recent
-(require 'dired-recent)
-(defun zz:dired-recent ()
-  (interactive)
-  (let ((completing-read-function 'ido-completing-read))
-    (dired-recent-open)))
 
 
 (provide 'other-setting)

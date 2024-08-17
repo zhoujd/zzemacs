@@ -492,7 +492,6 @@
 
 ;;dired recent
 (require 'dired-recent)
-(dired-recent-mode 1)
 (defun zz:dired-recent ()
   (interactive)
   (let ((completing-read-function 'ido-completing-read))

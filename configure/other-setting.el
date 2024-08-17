@@ -497,7 +497,7 @@
 (dired-recent-mode t)
 (defalias 'recent-find-dired 'dired-recent-open)
 (defkeys-map dired-recent-mode-map
-  ((kbd "C-x C-d") nil))
+  ((kbd "C-x C-d") 'recent-find-dired))
 
 
 (provide 'other-setting)

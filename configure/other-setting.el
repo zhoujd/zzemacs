@@ -495,9 +495,9 @@
 ;;dired-recent
 (require 'dired-recent)
 (dired-recent-mode t)
-(defalias 'recent-find-dired 'dired-recent-open)
+(defalias 'find-dired-recent 'dired-recent-open)
 (defkeys-map dired-recent-mode-map
-  ((kbd "C-x C-d") 'recent-find-dired))
+  ((kbd "C-x C-d") 'find-dired-recent))
 
 
 (provide 'other-setting)

@@ -126,6 +126,7 @@
   (kbd "b")       'helm-switchb-shell-list
   (kbd "M-b")     'helm-bookmarks
   (kbd "d")       'helm-switchb-dired-list
+  (kbd "C-d")     'recent-find-dired
   (kbd "M-d")     'helm-switchb-recent-dired
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
@@ -286,6 +287,7 @@
   (kbd "C-c b")   'helm-switchb-shell-list
   (kbd "C-c M-b") 'helm-bookmarks
   (kbd "C-c d")   'helm-switchb-dired-list
+  (kbd "C-c C-d") 'recent-find-dired
   (kbd "C-c M-d") 'helm-switchb-recent-dired
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file

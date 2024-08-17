@@ -364,6 +364,8 @@
  '(anzu-replace-threshold 50)
  '(anzu-replace-to-string-separator " => "))
 
+;;C-x ESC ESC (translated from C-x <escape> <escape>)
+;;runs the command repeat-complex-command
 (global-set-key [remap query-replace] 'anzu-query-replace)
 (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
 
@@ -494,8 +496,8 @@
 (require 'dired-recent)
 (dired-recent-mode t)
 (defalias 'recent-find-dired 'dired-recent-open)
-(define-key dired-recent-mode-map
-  (kbd "C-x C-d") 'recent-find-dired)
+(defkeys-map dired-recent-mode-map
+  ((kbd "C-x C-d") nil))
 
 
 (provide 'other-setting)

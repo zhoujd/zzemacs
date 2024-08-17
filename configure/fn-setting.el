@@ -24,11 +24,11 @@
 
 (define-fn-key (gethash "f3" fn-key-table)
   [f3]              'zz:last-buffer-go
-  [S-f3]            'bookmark-bmenu-list
+  [S-f3]            'helm-bookmarks
   [C-f3]            'helm-projectile-find-file
   [M-f3]            'helm-projectile-ag
-  (kbd "C-x <f3>")  'register-list
-  (kbd "C-c <f3>")  'command-history
+  (kbd "C-x <f3>")  'helm-recentf
+  (kbd "C-c <f3>")  'recent-find-dired
   "f3 key binding")
 
 (define-fn-key (gethash "f4" fn-key-table)
@@ -36,8 +36,8 @@
   [S-f4]            'helm-recentb
   [C-f4]            'zz:helm-find
   [M-f4]            'zz:helm-grep-ag
-  (kbd "C-x <f4>")  'helm-recentf
-  (kbd "C-c <f4>")  'recent-find-dired
+  (kbd "C-x <f4>")  'vr/replace
+  (kbd "C-c <f4>")  'vr/query-replace
   "f4 key binding")
 
 (define-fn-key (gethash "f5" fn-key-table)

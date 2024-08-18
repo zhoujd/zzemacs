@@ -4,6 +4,7 @@
 ## Local Sync: # rsync {options} {Source} {Destination}
 ## Remote Sync pull: # rsync {options} <User_Name>@<Remote-Host>:<Source-Files-Dir> <Destination>
 ## Remote Sync Push: # rsync {options} <Source-Files-Dir> <User_Name>@<Remote-Host>:<Destination>
+## With / in path will not create the directory but it will copy the content only
 
 if [ $# != 2 ] ; then
 cat <<EOF
@@ -12,6 +13,7 @@ Usage:
 `basename $0` <source> ./"
 rsync -vaa --info=all4 --delete <source> <target>"
 rsync -vaa --info=all4 --delete <source> ./"
+Note: with / in path will not create the directory
 EOF
     exit 0
 fi

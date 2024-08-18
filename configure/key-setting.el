@@ -126,7 +126,7 @@
   (kbd "b")       'helm-switchb-shell-list
   (kbd "M-b")     'helm-bookmarks
   (kbd "d")       'helm-switchb-dired-list
-  (kbd "C-d")     'helm-switchb-recent-dired
+  (kbd "M-d")     'helm-switchb-recent-dired
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
   (kbd "v")       'multi-vterm
@@ -141,7 +141,6 @@
   (kbd "q")       'vr/query-replace
 
   (kbd "C-b")     'browse-url
-  (kbd "C-f")     (zz:exec-key zz:thunar '("thunar"))
   (kbd "C-e")     'eshell
   (kbd "C-l")     'command-history
   (kbd "C-k")     'vkill
@@ -152,11 +151,6 @@
   (kbd "M-t")     'zz:transparency-toggle
   (kbd "C-u")     'disk-usage
   (kbd "C-v")     'virt-manager
-
-  (kbd "M-d")     (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
-  (kbd "M-r")     (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))
-  (kbd "M-s")     (zz:exec-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
-  (kbd "M-w")     (zz:exec-key zz:rofi-win    '("rofi" "-show" "window"))
   ))
 
 ;;execute start-process key
@@ -250,9 +244,10 @@
   (kbd "%")       'zz:match-paren
   (kbd "M-<tab>") 'buffer-flip
 
+  ;;delete char
   (kbd "C-h")     'delete-backward-char
-  [backspace]     'delete-backward-char
   (kbd "C-d")     'delete-forward-char
+  [backspace]     'delete-backward-char
   [delete]        'delete-forward-char
 
   ;;org-mode
@@ -286,7 +281,7 @@
   (kbd "C-c b")   'helm-switchb-shell-list
   (kbd "C-c M-b") 'helm-bookmarks
   (kbd "C-c d")   'helm-switchb-dired-list
-  (kbd "C-c C-d") 'helm-switchb-recent-dired
+  (kbd "C-c M-d") 'helm-switchb-recent-dired
   (kbd "C-x f")   'helm-find-files
   (kbd "C-x M-f") 'helm-projectile-find-file
   (kbd "C-c f")   'helm-recentf

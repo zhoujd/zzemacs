@@ -120,6 +120,7 @@
 
 ;;helm-recentb
 (require 'recentb)
+(add-to-list 'recentb-exclude (rx "recentf"))
 (recentb-mode t)
 
 ;;ange-ftp

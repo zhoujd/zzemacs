@@ -18,6 +18,7 @@ EOF
     exit 0
 fi
 
+## The rsync options
 # -A=Archive. Use recursion and preserve almost everything.
 # -V=Verbose.
 # -H=Preserve hard links.

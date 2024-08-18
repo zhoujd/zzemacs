@@ -49,6 +49,13 @@
   `(let ((completing-read-function 'helm-comp-read))
      ,@body))
 
+(defmacro with-suppressed-message (&rest body)
+  "Suppress new messages temporarily in the echo area 
+and the `*Messages*' buffer while BODY is evaluated."
+  (declare (indent 0))
+  (let ((message-log-max nil))
+    `(with-temp-message (or (current-message) "") ,@body)))
+
 ;;(defkeys-map global-map
 ;;  ((kbd "M-1") "hello")
 ;;  ((kbd "M-2") "zhoujd"))

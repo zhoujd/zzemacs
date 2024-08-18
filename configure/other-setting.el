@@ -74,6 +74,7 @@
 ;;recentf ext for add dired
 (require 'recentf-ext)
 (setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
+(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)

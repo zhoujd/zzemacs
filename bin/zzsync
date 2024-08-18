@@ -1,12 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-### https://www.linuxtechi.com/rsync-command-examples-linux/
-## Local Sync: # rsync {options} {Source} {Destination}
-## Remote Sync pull: # rsync {options} <User_Name>@<Remote-Host>:<Source-Files-Dir> <Destination>
-## Remote Sync Push: # rsync {options} <Source-Files-Dir> <User_Name>@<Remote-Host>:<Destination>
-## With / in path will not create the directory but it will copy the content only
+## https://www.linuxtechi.com/rsync-command-examples-linux/
+# Local Sync: # rsync {options} {Source} {Destination}
+# Remote Sync pull: # rsync {options} <User_Name>@<Remote-Host>:<Source-Files-Dir> <Destination>
+# Remote Sync Push: # rsync {options} <Source-Files-Dir> <User_Name>@<Remote-Host>:<Destination>
+# With / in path will not create the directory but it will copy the content only
 
-if [ $# != 2 ] ; then
+if [ $# != 2 ]; then
 cat <<EOF
 Usage: 
 `basename $0` <source> <target>"
@@ -34,5 +34,5 @@ rsync               \
     --no-o          \
     --no-g          \
     $1 $2 &&        \
-    echo "rsync completed successfully" 1>&2 || \
-    echo "rsync ended with errors" 1>&2
+    date +"[%Y/%m/%d %H:%M:%S] rsync completed successfully" 1>&2 || \
+    date +"[%Y/%m/%d %H:%M:%S] rsync ended with errors" 1>&2

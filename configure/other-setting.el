@@ -73,8 +73,7 @@
 ;;https://www.emacswiki.org/emacs/RecentFiles
 ;;recentf ext for add dired
 (require 'recentf-ext)
-(setq recentf-auto-cleanup 'never) ;; disable for TrampMode!
-(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+(setq recentf-auto-cleanup 'never) ;;disable for Tramp Mode
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
@@ -86,6 +85,11 @@
                         "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
                         ".*png$"
                         ".*cache$"))
+(defun zz:recenf-auto-save ()
+  (let ((inhibit-message t))
+    (recentf-save-list)))
+(setq recentf-auto-save-timer
+      (run-with-idle-timer 30 t 'zz:recenf-auto-save))
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)

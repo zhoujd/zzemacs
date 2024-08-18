@@ -81,8 +81,8 @@
 (setq recentf-exclude '("COMMIT_MSG"
                         "COMMIT_EDITMSG"
                         ".emacs.d"
-                        ".*png$"
-                        ".*cache$"))
+                        ".git"
+                        ".cache"))
 (defun zz:recenf-auto-save ()
   (let ((save-silently t))
     (recentf-save-list)))

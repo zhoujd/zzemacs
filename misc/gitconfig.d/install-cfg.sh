@@ -1,11 +1,9 @@
 #!/bin/bash
 
-echo "git global setup start"
-
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 CFG_DEF=~/.gitconfig
 
-Init() {
+init() {
     CFG=${1:-$CFG_DEF}
     echo "remove $CFG and setting git configure ..."
     rm -f $CFG
@@ -20,132 +18,144 @@ EOF
 }
 
 case $1 in
-    -f )
+    --file | -f )
         FILE=${2:-"gitconfig"}
         OPT=(
             -f $FILE
         )
-        Init $FILE
+        init $FILE
+        ;;
+    --help | -h )
+        echo "$(basename $0) {--file|-f|--help|-h|--global|-g|*}"
+        exit 0
+        ;;
+    --local | -l )
+        OPT=(
+        )
         ;;
     * )
         OPT=(
             --global
         )
-        Init
+        init
         ;;
 esac
 
+echo "git global setup start"
+
+CMD="git config ${OPT[*]}"
+
 ## core
-git config ${OPT[*]} core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
-git config ${OPT[*]} core.editor    $SCRIPT_ROOT/git-editor.sh
+$CMD core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
+$CMD core.editor    $SCRIPT_ROOT/git-editor.sh
 
 ## user
-git config ${OPT[*]} user.name   "Zachary Zhou"
-git config ${OPT[*]} user.email  "zchrzhou@gmail.com"
+$CMD user.name   "Zachary Zhou"
+$CMD user.email  "zchrzhou@gmail.com"
 
 ## color
-git config ${OPT[*]} color.ui    "true"
+$CMD color.ui    "true"
 
 ## alias
-git config ${OPT[*]} alias.st    "status"
-git config ${OPT[*]} alias.ci    "commit"
-git config ${OPT[*]} alias.cae   "commit --amend"
-git config ${OPT[*]} alias.ca    "commit --amend --reset-author --no-edit"
-git config ${OPT[*]} alias.br    "branch"
-git config ${OPT[*]} alias.co    "checkout"
-git config ${OPT[*]} alias.fp    "format-patch"
-git config ${OPT[*]} alias.df    "diff"
-git config ${OPT[*]} alias.dfc   "diff --cached"
-git config ${OPT[*]} alias.dt    "difftool"
-git config ${OPT[*]} alias.dtc   "difftool --cached"
-git config ${OPT[*]} alias.de    "ediff"
-git config ${OPT[*]} alias.dex   "ediffx"
-git config ${OPT[*]} alias.ds    "diff --stat"
-git config ${OPT[*]} alias.mt    "mergetool"
-git config ${OPT[*]} alias.me    "mergetool --tool=emacs"
-git config ${OPT[*]} alias.mn    "merge --no-ff"
-git config ${OPT[*]} alias.ms    "merge --squash"
-git config ${OPT[*]} alias.cp    "cherry-pick"
-git config ${OPT[*]} alias.cpa   "cherry-pick --abort"
-git config ${OPT[*]} alias.cpc   "cherry-pick --continue"
-git config ${OPT[*]} alias.cpn   "cherry-pick -n"
-git config ${OPT[*]} alias.rb    "rebase"
-git config ${OPT[*]} alias.rba   "rebase --abort"
-git config ${OPT[*]} alias.rbc   "rebase --continue"
-git config ${OPT[*]} alias.rbi   "rebase -i"
-git config ${OPT[*]} alias.rs    "reset"
-git config ${OPT[*]} alias.rsh   "reset --hard"
-git config ${OPT[*]} alias.ps    "push"
-git config ${OPT[*]} alias.pl    "pull"
-git config ${OPT[*]} alias.plr   "pull --rebase"
-git config ${OPT[*]} alias.wc    "whatchanged"
-git config ${OPT[*]} alias.addp  "add -p"
-git config ${OPT[*]} alias.who   "blame -wMC"
-git config ${OPT[*]} alias.sta   "stash apply"
-git config ${OPT[*]} alias.stc   "stash clear"
-git config ${OPT[*]} alias.std   "stash drop"
-git config ${OPT[*]} alias.stl   "stash list --pretty=format:'%Cblue%gd%Cred: %C(yellow)%s'"
-git config ${OPT[*]} alias.stp   "stash pop"
-git config ${OPT[*]} alias.sts   "stash show --text"
-git config ${OPT[*]} alias.ls    "ls-files"
-git config ${OPT[*]} alias.ign   "ls-files -o -i --exclude-standard"
-git config ${OPT[*]} alias.fname "show --pretty=format: --name-only"
-git config ${OPT[*]} alias.dname "diff --pretty=format: --name-only"
+$CMD alias.st    "status"
+$CMD alias.ci    "commit"
+$CMD alias.cae   "commit --amend"
+$CMD alias.ca    "commit --amend --reset-author --no-edit"
+$CMD alias.br    "branch"
+$CMD alias.co    "checkout"
+$CMD alias.fp    "format-patch"
+$CMD alias.df    "diff"
+$CMD alias.dfc   "diff --cached"
+$CMD alias.dt    "difftool"
+$CMD alias.dtc   "difftool --cached"
+$CMD alias.de    "ediff"
+$CMD alias.dex   "ediffx"
+$CMD alias.ds    "diff --stat"
+$CMD alias.mt    "mergetool"
+$CMD alias.me    "mergetool --tool=emacs"
+$CMD alias.mn    "merge --no-ff"
+$CMD alias.ms    "merge --squash"
+$CMD alias.cp    "cherry-pick"
+$CMD alias.cpa   "cherry-pick --abort"
+$CMD alias.cpc   "cherry-pick --continue"
+$CMD alias.cpn   "cherry-pick -n"
+$CMD alias.rb    "rebase"
+$CMD alias.rba   "rebase --abort"
+$CMD alias.rbc   "rebase --continue"
+$CMD alias.rbi   "rebase -i"
+$CMD alias.rs    "reset"
+$CMD alias.rsh   "reset --hard"
+$CMD alias.ps    "push"
+$CMD alias.pl    "pull"
+$CMD alias.plr   "pull --rebase"
+$CMD alias.wc    "whatchanged"
+$CMD alias.addp  "add -p"
+$CMD alias.who   "blame -wMC"
+$CMD alias.sta   "stash apply"
+$CMD alias.stc   "stash clear"
+$CMD alias.std   "stash drop"
+$CMD alias.stl   "stash list --pretty=format:'%Cblue%gd%Cred: %C(yellow)%s'"
+$CMD alias.stp   "stash pop"
+$CMD alias.sts   "stash show --text"
+$CMD alias.ls    "ls-files"
+$CMD alias.ign   "ls-files -o -i --exclude-standard"
+$CMD alias.fname "show --pretty=format: --name-only"
+$CMD alias.dname "diff --pretty=format: --name-only"
 
 ## log
-git config ${OPT[*]} alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
-git config ${OPT[*]} alias.hlog  'log --oneline'
-git config ${OPT[*]} alias.lg    '!git glog -10'
-git config ${OPT[*]} alias.hg    '!git hlog -10'
+$CMD alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
+$CMD alias.hlog  'log --oneline'
+$CMD alias.lg    '!git glog -10'
+$CMD alias.hg    '!git hlog -10'
 
 ## daemon
-git config ${OPT[*]} alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
-git config ${OPT[*]} alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
+$CMD alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
+$CMD alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
 
 ## list aliases
-git config ${OPT[*]} alias.la    "!git config -l | grep alias | cut -c 7-"
+$CMD alias.la    "!git config -l | grep alias | cut -c 7-"
 
 ## set http/https proxy
-git config ${OPT[*]} http.proxy $http_proxy
+$CMD http.proxy $http_proxy
 
 ## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $SCRIPT_ROOT/cert/ca-bundle.crt
-## git config ${OPT[*]} http.sslcainfo $SCRIPT_ROOT/cert/ca-bundle.crt
+## $CMD http.sslcainfo $SCRIPT_ROOT/cert/ca-bundle.crt
 ## export GIT_SSL_NO_VERIFY=1
-## git config ${OPT[*]} http.sslverify false
+## $CMD http.sslverify false
 
 ## http://stackoverflow.com/questions/11693074/git-credential-cache-is-not-a-git-command
 ## sudo apt install ca-certificates
-git config ${OPT[*]} credential.helper "cache --timeout=3600"
+$CMD credential.helper "cache --timeout=3600"
 
 ### git diff is called by git with 7 parameters:
 ### path old-file old-hex old-mode new-file new-hex new-mode
 
 ## git default diff using external
-#git config ${OPT[*]} diff.external $SCRIPT_ROOT/git-diff-default.sh
+#$CMD diff.external $SCRIPT_ROOT/git-diff-default.sh
 
 ## git difftool setting
-git config ${OPT[*]} diff.tool extdiff
-git config ${OPT[*]} difftool.extdiff.cmd "$SCRIPT_ROOT/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
-git config ${OPT[*]} difftool.prompt false
+$CMD diff.tool extdiff
+$CMD difftool.extdiff.cmd "$SCRIPT_ROOT/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
+$CMD difftool.prompt false
 
 ## setup merge setting
-git config ${OPT[*]} merge.tool extmerge
+$CMD merge.tool extmerge
 
-git config ${OPT[*]} mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
-git config ${OPT[*]} mergetool.extmerge.trustExitCode false
+$CMD mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+$CMD mergetool.extmerge.trustExitCode false
 
-git config ${OPT[*]} mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
-git config ${OPT[*]} mergetool.emacs.trustExitCode false
+$CMD mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
+$CMD mergetool.emacs.trustExitCode false
 
-git config ${OPT[*]} mergetool.keepBackup false
+$CMD mergetool.keepBackup false
 
-git config ${OPT[*]} push.default simple
+$CMD push.default simple
 
 ## setup URLs
 ## requires git v1.7.10+
 GITCONFIG_URL=~/.gitconfig-url
 touch $GITCONFIG_URL
-git config ${OPT[*]} --add include.path $GITCONFIG_URL
+$CMD --add include.path $GITCONFIG_URL
 
 
 echo "git global setup end"

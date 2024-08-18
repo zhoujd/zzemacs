@@ -80,11 +80,10 @@
 ;;ignore some files
 (setq recentf-exclude '("COMMIT_MSG"
                         "COMMIT_EDITMSG"
-                        "*/.emacs.d/*"
-                        "github.*txt$"
-                        "[0-9a-f]\\{32\\}-[0-9a-f]\\{32\\}\\.org"
+                        ".emacs.d"
                         ".*png$"
                         ".*cache$"))
+(add-hook 'find-file-hook 'recentf-save-list)
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)

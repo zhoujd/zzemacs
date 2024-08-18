@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-OPT=${1:-"--global"}  ## -f <fname>
+OPT=${1:-"--global"}  ## or --local
 
 echo "git global setup start"
 

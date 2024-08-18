@@ -83,7 +83,11 @@
                         ".emacs.d"
                         ".*png$"
                         ".*cache$"))
-(add-hook 'find-file-hook 'recentf-save-list)
+(defun zz:recenf-auto-save ()
+  (let ((save-silently t))
+    (recentf-save-list)))
+(setq recentf-auto-save-timer
+      (run-with-idle-timer 30 t 'zz:recenf-auto-save))
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)

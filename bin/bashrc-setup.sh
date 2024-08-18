@@ -2,16 +2,9 @@
 
 echo "Setup self .bashrc start ..."
 
-##check os
-if [ "$OS" = "Windows_NT" ] ; then
-    SCRIPT_ROOT=$(cd $(dirname $0) && pwd -W)
-    ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd -W)
-    ZZEMACS_BASHRC=~/.bashrc.d/07-emacs.sh
-else
-    SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-    ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
-    ZZEMACS_BASHRC=~/.bashrc.d/zz-emacs.sh
-fi
+SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
+ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/.. && pwd)
+ZZEMACS_BASHRC=~/.bashrc.d/zz-emacs.sh
 
 ##setup .bashrc
 install_bashrc() {

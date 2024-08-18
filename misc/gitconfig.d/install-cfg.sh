@@ -2,6 +2,9 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 CFG_DEF=~/.gitconfig
+OPT=(
+    --global
+)
 
 init() {
     CFG=${1:-$CFG_DEF}
@@ -34,9 +37,6 @@ case $1 in
         )
         ;;
     * )
-        OPT=(
-            --global
-        )
         init
         ;;
 esac
@@ -45,7 +45,7 @@ echo "git global setup start"
 
 ## run git config
 git_cfg() {
-    git config "${OPT[*]}" "$@"
+    git config ${OPT[*]} "$@"
 }
 
 ## core

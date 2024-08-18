@@ -18,4 +18,21 @@ EOF
     exit 0
 fi
 
-rsync -vaa --info=all4 --delete $1 $2
+# -A=Archive. Use recursion and preserve almost everything.
+# -V=Verbose.
+# -H=Preserve hard links.
+# -Z=Compress.
+# --Delete=
+#     If node in directory 'from' gets deleted,
+#     delete it in directory 'to'.
+# --No-o=No Owner. 
+# --No-g=No Group.
+# The --No's are partially undoing the Archive option.
+rsync               \
+    -avhz           \
+    --delete        \
+    --no-o          \
+    --no-g          \
+    $1 $2 &&        \
+    echo "rsync completed successfully" 1>&2 || \
+    echo "rsync ended with errors" 1>&2

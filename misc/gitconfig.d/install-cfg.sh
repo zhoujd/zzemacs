@@ -35,15 +35,15 @@ case $1 in
         ;;
 esac
 
-## set git proxy
+## core
 git config ${OPT[*]} core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
 git config ${OPT[*]} core.editor    $SCRIPT_ROOT/git-editor.sh
 
-## setup git configure
+## user
 git config ${OPT[*]} user.name   "Zachary Zhou"
 git config ${OPT[*]} user.email  "zchrzhou@gmail.com"
 
-## output color
+## color
 git config ${OPT[*]} color.ui    "true"
 
 ## alias

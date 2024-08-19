@@ -9,7 +9,7 @@ $ $(basename $0) '-J host1,host2 root@host'"
 fi
 
 HOST=$1
-NR_USER=${NR_USER:-"smartedge-open"}
+NR_USER=${NR_USER:-"zach"}
 NR_PASSWD=${NR_PASSWD:-"$NR_USER"}
 
 echo "HOST: $HOST"

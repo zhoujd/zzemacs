@@ -17,6 +17,7 @@
 ;;| C-]     |        | Toggle between showing filenames or full pathnames  |
 ;;| C-u     | C-M-Z  | Choose between different Helm sessions (helm-resume)|
 ;;| C-t     |        | Toggle resplit and swap helm windows                |
+;;| C-z     | C-c _  | Toggle full frame on helm windows                   |
 (helm-mode t)
 
 ;;no completion

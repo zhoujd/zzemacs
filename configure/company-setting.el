@@ -2,7 +2,7 @@
 ;;https://www.emacswiki.org/emacs/CompanyMode
 ;;https://melpa.org/#/company
 
-(zz:load-path "site-lisp/company")
+(zz:load-path "site-lisp/company-mode")
 (require 'company)
 (global-company-mode t)
 (setq company-idle-delay 0.1 ; menu show delay (nil for never)

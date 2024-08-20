@@ -140,7 +140,7 @@
 (if zz:c-lsp-eglot-p
     (progn
       (add-to-list 'eglot-server-programs
-                   '((c++-mode c-mode) zz:c-lang-server))
+                   `((c++-mode c-mode) ,zz:c-lang-server))
       (add-hook 'c-mode-hook 'eglot-ensure)
       (add-hook 'c++-mode-hook 'eglot-ensure)
       (message "Use eglot with %s for c/c++ mode"

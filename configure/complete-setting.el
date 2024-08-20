@@ -98,6 +98,10 @@
 ;;https://github.com/joaotavora/eglot
 (zz:load-path "site-lisp/emacs-legcy")
 (require 'eglot)
+(setq eglot-events-buffer-size 0
+      eglot-sync-connect 0
+      eglot-ignored-server-capabilities '(:documentFormattingProvider
+                                          :documentOnTypeFormattingProvider))
 (defun eglot--message (format &rest args)
   "Message out with FORMAT with ARGS."
   t)

@@ -438,9 +438,14 @@ Dmitriy Igrishin's patched version of comint.el."
     (company-complete-common)))
 
 ;;shell-mode use company-mode
+(defun zz:comint-send-input()
+  (interactive)
+  (company-abort)
+  (comint-send-input))
 (defun zz:shell-company-hook ()
   (company-mode t)
-  (define-key shell-mode-map (kbd "TAB") #'company-manual-begin))
+  (define-key shell-mode-map (kbd "TAB") #'company-manual-begin)
+  (define-key shell-mode-map (kbd "RET") #'zz:comint-send-input))
 (add-hook 'shell-mode-hook 'zz:shell-company-hook)
 
 ;;shell-mode common

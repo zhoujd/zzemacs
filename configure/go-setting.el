@@ -40,7 +40,7 @@
 
 ;; company-lsp
 (require 'company-lsp)
-(push 'company-lsp company-backends)
+(add-to-list 'company-backends '(company-lsp))
 
 (defun zz:go-mode-hook ()
   (add-hook 'before-save-hook 'gofmt-before-save)

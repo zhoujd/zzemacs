@@ -17,12 +17,16 @@
       company-selection-wrap-around t
       company-minimum-prefix-length 2)
 
+;;company ctags
+(require 'company-ctags)
+
 ;;set default `company-backends'
 (setq company-backends
       '((company-files          ; files & directory
          company-keywords       ; keywords
          company-capf
          company-yasnippet
+         company-ctags
          )))
 
 (setq company--disabled-backends

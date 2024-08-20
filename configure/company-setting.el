@@ -19,6 +19,13 @@
 
 ;;company-ctags
 (require 'company-ctags)
+(defun zz:company-ctags ()
+  "Input code from company backend using fuzzy matching."
+  (interactive)
+  (company-abort)
+  (let* ((company-backends '(company-ctags))
+         (company-ctags-fuzzy-match-p t))
+    (company-complete-common)))
 
 ;;default `company-backends'
 (setq company-backends
@@ -26,7 +33,6 @@
          company-keywords       ; keywords
          company-capf
          company-yasnippet
-         company-ctags
          )))
 
 (setq company--disabled-backends

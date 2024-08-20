@@ -229,6 +229,9 @@
 (apply-keys-to-map
  global-map
  (list
+  (kbd "C-c TAB") 'zz:company-ctags
+  (kbd "C-M-/")   'zz:expand-file-name
+
   (kbd "C-x C-b") 'ibuffer
   (kbd "C-x C-f") 'zz:find-file
   (kbd "C-x C-r") 'zz:sudo-find-file

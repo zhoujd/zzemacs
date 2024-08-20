@@ -21,32 +21,12 @@
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 
-(defun zz:expand-file-name-at-point ()
+(defun zz:expand-file-name ()
   "Use hippie-expand to expand the filename"
   (interactive)
   (let ((hippie-expand-try-functions-list '(try-complete-file-name-partially
                                             try-complete-file-name)))
     (call-interactively 'hippie-expand)))
-
-;;; https://www.emacswiki.org/emacs/InsertFileName
-;;Key sequence	Inserted text
-;;C-c C-i ~/.emacs RET	~/.emacs
-;;C-u C-c C-i ~/.emacs RET	/home/user/.emacs
-;;C-- C-c C-i ~/.emacs RET	.emacs
-(defun zz:insert-file-name (filename &optional args)
-  "Insert name of file FILENAME into buffer after point."
-  (interactive "*fInsert file name: \nP")
-  (cond ((eq '- args)
-         (insert (expand-file-name filename)))
-        ((not (null args))
-         (insert filename))
-        (t
-         (insert (file-relative-name filename)))))
-
-;; bind it
-(defkeys-map global-map
-  ((kbd "C-c C-i") 'zz:insert-file-name)
-  ((kbd "C-M-/")   'zz:expand-file-name-at-point))
 
 (defun zz:indent-or-complete ()
    "complete if point is at end of a word, otherwise indent line"

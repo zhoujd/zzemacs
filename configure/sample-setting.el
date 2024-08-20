@@ -477,6 +477,17 @@
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
+;;; https://www.emacswiki.org/emacs/InsertFileName
+(defun zz:insert-file-name (filename &optional args)
+  "Insert name of file FILENAME into buffer after point."
+  (interactive "*fInsert file name: \nP")
+  (cond ((eq '- args)
+         (insert (expand-file-name filename)))
+        ((not (null args))
+         (insert filename))
+        (t
+         (insert (file-relative-name filename)))))
+
 
 (provide 'sample-setting)
 

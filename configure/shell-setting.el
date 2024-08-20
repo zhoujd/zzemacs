@@ -447,7 +447,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (defkeys-map shell-mode-map
     ((kbd "TAB")        'company-manual-begin)
     ((kbd "RET")        'zz:comint-send-input)
-    ((kbd "<C-RET>")    'zz:company-shell)))
+    ((kbd "C-c M-/")    'zz:company-shell)))
 (add-hook 'shell-mode-hook 'zz:shell-company-hook)
 
 ;;shell-mode common

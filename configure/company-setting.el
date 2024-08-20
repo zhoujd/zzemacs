@@ -17,10 +17,10 @@
       company-selection-wrap-around t
       company-minimum-prefix-length 2)
 
-;;company ctags
+;;company-ctags
 (require 'company-ctags)
 
-;;set default `company-backends'
+;;default `company-backends'
 (setq company-backends
       '((company-files          ; files & directory
          company-keywords       ; keywords

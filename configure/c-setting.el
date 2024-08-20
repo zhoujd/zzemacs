@@ -124,7 +124,7 @@
 
 ;;c headers
 (require 'company-c-headers)
-(add-to-list 'company-backends '(company-c-headers))
+(add-to-list 'company-backends 'company-c-headers)
 
 ;;lsp-mode and eglot-mode support
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/

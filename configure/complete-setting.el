@@ -105,6 +105,10 @@
   (flymake-mode -1))
 (add-hook 'eglot--managed-mode-hook #'zz:eglot-hook t)
 
+;; company-lsp
+(require 'company-lsp)
+(add-to-list 'company-backends 'company-lsp)
+
 
 (provide 'complete-setting)
 

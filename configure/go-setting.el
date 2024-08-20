@@ -38,10 +38,6 @@
 ;  (set (make-local-variable 'company-backends) '(company-go)))
 ;(add-hook 'go-mode-hook 'zz:company-go-hook)
 
-;; company-lsp
-(require 'company-lsp)
-(add-to-list 'company-backends '(company-lsp))
-
 (defun zz:go-mode-hook ()
   (add-hook 'before-save-hook 'gofmt-before-save)
   (local-set-key (kbd "C-c m") 'gofmt)

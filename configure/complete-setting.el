@@ -93,6 +93,9 @@
 (defun lsp--info (format &rest args)
   "Display lsp info message with FORMAT with ARGS."
   t)
+;;company-lsp
+;(require 'company-lsp)
+;(add-to-list 'company-backends 'company-lsp)
 
 ;;https://clangd.llvm.org/installation.html
 ;;https://github.com/joaotavora/eglot
@@ -102,16 +105,11 @@
       eglot-sync-connect 0
       eglot-ignored-server-capabilities '(:documentFormattingProvider
                                           :documentOnTypeFormattingProvider))
+(add-to-list 'eglot-stay-out-of 'flymake)
+(add-to-list 'eglot-stay-out-of 'imenu)
 (defun eglot--message (format &rest args)
   "Message out with FORMAT with ARGS."
   t)
-(defun zz:eglot-hook ()
-  (flymake-mode -1))
-(add-hook 'eglot--managed-mode-hook #'zz:eglot-hook t)
-
-;; company-lsp
-(require 'company-lsp)
-(add-to-list 'company-backends 'company-lsp)
 
 
 (provide 'complete-setting)

@@ -2136,8 +2136,11 @@ still unanswered LSP requests to the server\n")))
                                    (format "(%s) %s %s" (nth 1 pr)
                                            (nth 2 pr) (nth 3 pr))))))))))
 
-(add-to-list 'mode-line-misc-info
-             `(eglot--managed-mode (" [" eglot--mode-line-format "] ")))
+(defun eglot-enable-mode-line ()
+  "Enable mode-line, default not enabled"
+  (interactive)
+  (add-to-list 'mode-line-misc-info
+               `(eglot--managed-mode (" [" eglot--mode-line-format "] "))))
 
 
 ;;; Flymake customization

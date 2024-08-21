@@ -54,37 +54,37 @@ install_thirdparty() {
 }
 
 install_all() {
-    confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
+    confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                     run_cmd install_dotemacs
-    confirm_execute "Do you want to install fonts ? [y/N]" \
+    confirm_execute "Do you want to install fonts? [y/N]" \
                     run_cmd install_fonts user
-    confirm_execute "Do you want to install others ? [y/N]" \
+    confirm_execute "Do you want to install others? [y/N]" \
                     run_cmd install_others
-    confirm_execute "Do you want to install third-party packages ? (y/N): " \
+    confirm_execute "Do you want to install third-party packages? [y/N] " \
                     run_cmd install_thirdparty
     echo "Install all done"
 }
 
 case $1 in
     dotemacs | -d )
-        confirm_execute "Do you want to overwrite .emacs ? [y/N]" \
+        confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                         run_cmd install_dotemacs
         ;;
     fonts | -f )
         shift
-        confirm_execute "Do you want to install fonts ? [y/N]" \
+        confirm_execute "Do you want to install fonts? [y/N]" \
                         run_cmd install_fonts user
         ;;
     others | -o )
-        confirm_execute "Do you want to install others ? [y/N]" \
+        confirm_execute "Do you want to install others? [y/N]" \
                         run_cmd install_others
         ;;
     thirdparty | -t )
-        confirm_execute "Do you want to install third-party packages ? (y/N): " \
+        confirm_execute "Do you want to install third-party packages? [y/N] " \
                         run_cmd install_thirdparty
         ;;
     all | -a )
-        confirm_execute "Do you want to install all configure ? (y/N): " \
+        confirm_execute "Do you want to install all configure? [y/N] " \
                         run_cmd install_all
         ;;
     * )

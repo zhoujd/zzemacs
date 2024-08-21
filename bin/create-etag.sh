@@ -7,6 +7,7 @@ SCAN_DEF_LIST=(
 
 EXCLUDE_LIST=(
     -not -path "/*.git/*"
+    -not -path "/*.ccls/*"
 )
 
 FILTER_LIST=(

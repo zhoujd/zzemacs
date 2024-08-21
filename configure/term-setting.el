@@ -101,7 +101,6 @@
               ((kbd "C-c M-o") 'zz:term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
               ((kbd "M-w")     'zz:kill-ring-save-switch-to-char-mode))
-
             (defkeys-map term-mode-map
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)

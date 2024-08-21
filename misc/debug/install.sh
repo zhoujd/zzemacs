@@ -3,7 +3,9 @@
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
 install() {
-    ln -sfTv $SCRIPT_ROOT/gdbinit.d ~/.gdbinit.d
+    local target_dir=~/.gdbinit.d
+    mkdir -p $target_dir
+    cp -fv $SCRIPT_ROOT/gdbinit.d/* $target_dir
     cp -fv $SCRIPT_ROOT/gdbinit ~/.gdbinit
     echo "Install Done"
 }

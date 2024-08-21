@@ -437,9 +437,11 @@ Dmitriy Igrishin's patched version of comint.el."
   (let* ((company-backends '(company-shell)))
     (company-complete-common)))
 
-;;shell script mode
-(defkeys-map sh-mode-map
-  ((kbd "C-c M-/")    'zz:company-shell))
+;;shell-script-mode
+(defun zz:sh-mode-hook ()
+  (defkeys-map sh-mode-map
+    ((kbd "C-c M-/")    'zz:company-shell)))
+(add-hook 'sh-mode-hook 'zz:sh-mode-hook)
 
 ;;shell-mode use company-mode
 (defun zz:comint-send-input()

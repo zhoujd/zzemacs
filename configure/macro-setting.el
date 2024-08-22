@@ -118,7 +118,6 @@
          (message "Run gdb then %s" ,cmd))))
 
 
-
 (provide 'macro-setting)
 
 ;;; macro-setting.el ends here

@@ -81,12 +81,12 @@
   (kbd "C-2")     'delete-frame
   (kbd "C-3")     'zz:last-frame-go
   (kbd "C-4")     'zz:undo-kill-buffer
-  (kbd "C-5")     'gud-jump
-  (kbd "C-6")     'gud-remove
-  (kbd "C-7")     'gud-until
-  (kbd "C-8")     'gud-finish
-  (kbd "C-9")     'gud-pstar
-  (kbd "C-0")     'gud-refresh
+  (kbd "C-5")     (zz:gud-cmd zz:gud-jump    'gud-jump)
+  (kbd "C-6")     (zz:gud-cmd zz:gud-remove  'gud-remove)
+  (kbd "C-7")     (zz:gud-cmd zz:gud-until   'gud-until)
+  (kbd "C-8")     (zz:gud-cmd zz:gud-finish  'gud-finish)
+  (kbd "C-9")     (zz:gud-cmd zz:gud-pstar   'gud-pstar)
+  (kbd "C-0")     (zz:gud-cmd zz:gud-refresh 'gud-refresh)
 
   (kbd "C--")     'redo
   (kbd "C-_")     'undo
@@ -102,12 +102,12 @@
   (kbd "M-2")     'delete-other-frames
   (kbd "M-3")     'zz:last-buffer-go
   (kbd "M-4")     'zz:kill-this-buffer
-  (kbd "M-5")     'gud-go
-  (kbd "M-6")     'gud-break
-  (kbd "M-7")     'gud-next
-  (kbd "M-8")     'gud-step
-  (kbd "M-9")     'gud-print
-  (kbd "M-0")     'gdb-restore-windows
+  (kbd "M-5")     (zz:gud-cmd zz:gud-cont    'gud-cont)
+  (kbd "M-6")     (zz:gud-cmd zz:gud-break   'gud-break)
+  (kbd "M-7")     (zz:gud-cmd zz:gud-next    'gud-next)
+  (kbd "M-8")     (zz:gud-cmd zz:gud-step    'gud-step)
+  (kbd "M-9")     (zz:gud-cmd zz:gud-print   'gud-print)
+  (kbd "M-0")     (zz:gud-cmd zz:gud-restore 'gdb-restore-windows)
 
   (kbd "M-#")     'query-replace-regexp
   ))

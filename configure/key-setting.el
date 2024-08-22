@@ -326,8 +326,8 @@
 (apply-keys-to-map
  esc-map
  (list
-  (kbd "M-,")     'gud-up
-  (kbd "M-.")     'gud-down
+  (kbd "M-,")     (zz:gud-cmd zz:gud-up   'gud-up)
+  (kbd "M-.")     (zz:gud-cmd zz:gud-down 'gud-down)
   ))
 
 (apply-keys-to-map

@@ -107,6 +107,16 @@
      (interactive)
      (dired-sort-other (concat dired-listing-switches ,switch))))
 
+;;gud command
+(defmacro zz:gud-cmd (fn-name cmd)
+  `(defun ,fn-name ()
+     (interactive)
+     (if (or
+          (eq gud-minor-mode 'gdbmi)
+          (eq gud-minor-mode 'gdb))
+         (call-interactively ,cmd)
+         (message "Run gdb first, then %s." ,cmd))))
+
 
 (provide 'macro-setting)
 

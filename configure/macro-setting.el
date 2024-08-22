@@ -115,7 +115,8 @@
           (eq gud-minor-mode 'gdbmi)
           (eq gud-minor-mode 'gdb))
          (call-interactively ,cmd)
-         (message "Run gdb first, then %s." ,cmd))))
+         (message "Run gdb then %s" ,cmd))))
+
 
 
 (provide 'macro-setting)

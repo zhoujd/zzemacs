@@ -1,7 +1,7 @@
 ;;;; sample-setting.el --- sample config file
 ;;;
 
-;;my unicad enable/disable switch
+;;unicad enable/disable switch
 (defun zz:unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
@@ -350,7 +350,6 @@
   (interactive)
   (let ((pname (ido-completing-read "Process Name: "
                                     (mapcar 'process-name (process-list)))))
-
     (delete-process (get-process pname))))
 
 ;;also handle undocumented (<active> <inactive>) form

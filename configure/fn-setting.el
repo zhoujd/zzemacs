@@ -108,8 +108,8 @@
   [S-f12]           'neotree-dir
   [C-f12]           'deadgrep
   [M-f12]           'helm-ag
-  (kbd "C-x <f12>") 'zz:untabify-buffer
-  (kbd "C-c <f12>") 'zz:tabify-buffer
+  (kbd "C-x <f12>") 'zz:flyspell-toggle
+  (kbd "C-c <f12>") 'zz:transparency-toggle
   "f12 key binding")
 
 

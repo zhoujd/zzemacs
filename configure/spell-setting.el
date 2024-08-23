@@ -25,7 +25,7 @@
 (defun zz:flyspell-hook ()
   (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
   (define-key flyspell-mouse-map [mouse-3] #'undefined))
-(add-to-list 'flyspell-mode-hook 'zz:flyspell-hook)
+(add-hook 'flyspell-mode-hook 'zz:flyspell-hook)
 
 
 (provide 'spell-setting)

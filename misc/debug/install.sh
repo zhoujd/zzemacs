@@ -6,7 +6,8 @@ install() {
     local target_dir=~/.gdbinit.d
     rm -rf $target_dir
     mkdir -p $target_dir
-    cp -fv $SCRIPT_ROOT/gdbinit.d/* $target_dir
+    cp -fv $SCRIPT_ROOT/gdbinit.d/common.gdb $target_dir
+    cp -fv $SCRIPT_ROOT/gdbinit.d/stl-views.gdb $target_dir
     cp -fv $SCRIPT_ROOT/gdbinit ~/.gdbinit
     echo "Install Done"
 }

@@ -2,3 +2,4 @@
 
 source ~/.gdbinit.d/common.gdb
 source ~/.gdbinit.d/stl-views.gdb
+source ~/.gdbinit.d/dashboard.gdb

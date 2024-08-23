@@ -6,7 +6,6 @@
   (setq-default ispell-program-name "hunspell")
   (setq ispell-really-hunspell t))
 
-
 (when (executable-find "aspell")
   (setq-default ispell-program-name "aspell")
   (setq ispell-really-hunspell t))

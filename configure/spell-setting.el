@@ -20,7 +20,7 @@
       (progn
         (message "Flyspell off")
         (flyspell-mode -1))
-      (flyspell-on-for-buffer-type)))
+      (zz:flyspell-on-for-buffer-type)))
 
 (defun zz:flyspell-hook ()
   (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)

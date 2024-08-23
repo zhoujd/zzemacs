@@ -130,11 +130,6 @@
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
   (kbd "v")       'multi-vterm
-  (kbd "w")       'langtool-check
-  (kbd "W")       'langtool-check-done
-  (kbd "l")       'langtool-switch-default-language
-  (kbd "s")       'langtool-show-message-at-point
-  (kbd "c")       'langtool-correct-buffer
   (kbd "k")       'keep-lines
   (kbd "f")       'flush-lines
   (kbd "r")       'vr/replace

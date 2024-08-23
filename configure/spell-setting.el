@@ -1,50 +1,30 @@
 ;;;; spell-setting.el --- spell config file
-;;
+;; sudo apt install ispell
 
-;;https://joelkuiper.eu/spellcheck_emacs
-(when (executable-find "hunspell")
-  (setq-default ispell-program-name "hunspell")
-  (setq ispell-really-hunspell t))
-
-(when (executable-find "aspell")
-  (setq-default ispell-program-name "aspell")
-  (setq ispell-really-hunspell t))
-
-(defun flyspell-on-for-buffer-type ()
-  "Enable Flyspell appropriately for the major mode of the current buffer.
-Uses `flyspell-prog-mode' for modes derived from `prog-mode', so only strings and comments get checked.
-All other buffers get `flyspell-mode' to check all text.  If flyspell is already enabled, does nothing."
+(defun zz:flyspell-on-for-buffer-type ()
   (interactive)
-  (if (not (symbol-value flyspell-mode)) ; if not already on
+  (if (not (symbol-value flyspell-mode))
       (progn
         (if (derived-mode-p 'prog-mode)
             (progn
               (message "Flyspell on (code)")
               (flyspell-prog-mode))
-            ;; else
             (progn
               (message "Flyspell on (text)")
-              (flyspell-mode 1)))
-        ;; I tried putting (flyspell-buffer) here but it didn't seem to work
-        )))
+              (flyspell-mode 1))))))
 
-(defun flyspell-toggle ()
-  "Turn Flyspell on if it is off, or off if it is on.
-When turning on, it uses `flyspell-on-for-buffer-type' so code-vs-text is handled appropriately."
+(defun zz:flyspell-toggle ()
   (interactive)
   (if (symbol-value flyspell-mode)
-      (progn ;; flyspell is on, turn it off
+      (progn
         (message "Flyspell off")
         (flyspell-mode -1))
-      ;; else - flyspell is off, turn it on
       (flyspell-on-for-buffer-type)))
 
-;;https://0--key.github.io/emacs/grammar_checker.html
-;;https://languagetool.org/download/
-;;https://github.com/mhayashi1120/Emacs-langtool
-(setq langtool-language-tool-jar "/opt/languagetool/languagetool-commandline.jar")
-(require 'langtool)
-(setq langtool-default-language "en-US")
+(defun zz:flyspell-hook ()
+  (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+  (define-key flyspell-mouse-map [mouse-3] #'undefined))
+(add-to-list 'flyspell-mode-hook 'zz:flyspell-hook)
 
 
 (provide 'spell-setting)

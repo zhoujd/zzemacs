@@ -62,9 +62,8 @@
         game-setting
         typing-setting
         gnuplot-setting
-        ;;matlab-setting
-        ;;spell-setting
-        ;;package-setting
+        matlab-setting
+        spell-setting
         ui-setting
         keymap-setting
         fn-setting
@@ -73,7 +72,6 @@
         ))
 
 (message "Loading settings...done (%s)" (emacs-init-time))
-
 
 ;; Local Variables:
 ;; coding: utf-8

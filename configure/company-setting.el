@@ -27,6 +27,15 @@
          (company-ctags-fuzzy-match-p t))
     (company-complete-common)))
 
+;;company-shell
+(require 'company-shell)
+(defun zz:company-shell ()
+  "Input code from company backend using fuzzy matching."
+  (interactive)
+  (company-abort)
+  (let* ((company-backends '(company-shell)))
+    (company-complete-common)))
+
 ;;default `company-backends'
 (setq company-backends
       '((company-files          ; files & directory
@@ -36,7 +45,9 @@
          )))
 
 (setq company--disabled-backends
-      '(company-etags))
+      '(company-etags
+        company-ctags
+        company-shell))
 
 (setq company-global-modes
       '(not org-mode))

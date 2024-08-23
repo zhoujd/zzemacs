@@ -428,15 +428,6 @@ Dmitriy Igrishin's patched version of comint.el."
       (setq sh-basic-offset num)))
   (message "Select and press TAB to indent: %d" num))
 
-;;company-shell
-(require 'company-shell)
-(defun zz:company-shell ()
-  "Input code from company backend using fuzzy matching."
-  (interactive)
-  (company-abort)
-  (let* ((company-backends '(company-shell)))
-    (company-complete-common)))
-
 ;;shell-script-mode
 (defun zz:sh-mode-hook ()
   (defkeys-map sh-mode-map

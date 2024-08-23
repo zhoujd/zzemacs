@@ -1,4 +1,5 @@
 ;;;; spell-setting.el --- spell config file
+;; https://www.emacswiki.org/emacs/FlySpell
 ;; sudo apt install ispell
 
 (defun zz:flyspell-on-for-buffer-type ()

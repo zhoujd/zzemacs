@@ -37,12 +37,13 @@
           (lambda ()
             (define-key gud-mode-map [tab] 'company-complete-selection)))
 
-;;Enable realgud
-(when-emacs25
- (zz:load-path "site-lisp/realgud")
- (require 'realgud)
- (zz:load-path "site-lisp/realgud-lldb")
- (require 'realgud-lldb))
+;;RealGUD: https://github.com/realgud/realgud
+(defun zz:load-realgud ()
+  (interactive)
+  (zz:load-path "site-lisp/realgud")
+  (require 'realgud)
+  (zz:load-path "site-lisp/realgud-lldb")
+  (require 'realgud-lldb))
 
 ;;GDB-MI non-stop
 (defun gdb-non-stop-handler ()

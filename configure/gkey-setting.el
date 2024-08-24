@@ -4,6 +4,15 @@
 (zz:load-path "elisp")
 (require 'apply-keys)
 
+(define-fn-key (gethash "f6" fn-key-table)
+  [f6]              'zz:get-term
+  [S-f6]            'zz:cd-term
+  [C-f6]            'multi-term-next
+  [M-f6]            'multi-term-prev
+  (kbd "C-x <f6>")  'zz:switch-to-term
+  (kbd "C-c <f6>")  'zz:get-term
+  "f6 key binding")
+
 (define-fn-key (gethash "f8" fn-key-table)
   [f8]              'gud-gdb
   [S-f8]            'gdb
@@ -12,6 +21,15 @@
   (kbd "C-x <f8>")  'gdb-many-windows
   (kbd "C-c <f8>")  'gud-tooltip-mode
   "f8 key binding")
+
+(define-fn-key (gethash "f9" fn-key-table)
+  [f9]              (zz:quick-shell zz:shell "*shell*")
+  [S-f9]            'zz:get-shell
+  [C-f9]            'zz:switch-to-scratch
+  [M-f9]            'zz:popup-term
+  (kbd "C-x <f9>")  'zz:switch-to-shell
+  (kbd "C-c <f9>")  'zz:remote-shell
+  "f9 key binding")
 
 (define-fn-key (gethash "f11" fn-key-table)
   [f11]             'linum-mode

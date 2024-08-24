@@ -50,12 +50,12 @@
   "f5 key binding")
 
 (define-fn-key (gethash "f6" fn-key-table)
-  [f6]              (if-ms-windows 'zz:get-shell 'zz:get-term)
-  [S-f6]            (if-ms-windows 'zz:cd-shell 'zz:cd-term)
-  [C-f6]            (if-ms-windows 'multi-shell-next 'multi-term-next)
-  [M-f6]            (if-ms-windows 'multi-shell-prev 'multi-term-prev)
-  (kbd "C-x <f6>")  (if-ms-windows 'zz:switch-to-shell 'zz:switch-to-term)
-  (kbd "C-c <f6>")  (if-ms-windows 'zz:get-shell 'zz:get-term)
+  [f6]              'zz:get-term
+  [S-f6]            'zz:cd-term
+  [C-f6]            'multi-term-next
+  [M-f6]            'multi-term-prev
+  (kbd "C-x <f6>")  'zz:switch-to-term
+  (kbd "C-c <f6>")  'zz:get-term
   "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)
@@ -78,7 +78,7 @@
 
 (define-fn-key (gethash "f9" fn-key-table)
   [f9]              (zz:quick-shell zz:shell "*shell*")
-  [S-f9]            (if-ms-windows 'zz:get-linux-shell 'zz:get-shell)
+  [S-f9]            'zz:get-shell
   [C-f9]            'zz:switch-to-scratch
   [M-f9]            'zz:popup-term
   (kbd "C-x <f9>")  'zz:switch-to-shell

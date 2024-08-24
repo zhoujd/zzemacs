@@ -35,13 +35,6 @@
        (hippie-expand nil)
        (indent-for-tab-command)))
 
-;;YASNIPPET
-;;https://github.com/capitaomorte/yasnippet
-(zz:load-path "site-lisp/yasnippet")
-(zz:load-path "site-lisp/yasnippet-snippets")
-(require 'yasnippet-snippets)
-(yas-global-mode t)
-
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/

@@ -9,14 +9,6 @@
   (when (not (member path load-path))
     (add-to-list 'load-path (concat zzemacs-path "/" path))))
 
-(defun zz:load-file (file)
-  "load file"
-  (load-file (concat zzemacs-path "/" file)))
-
-(defun zz:load-configure (file)
-  "load configure file"
-  (load-file (concat zzemacs-path "/configure/" file)))
-
 (zz:load-path "configure")
 (mapc (lambda (setting)
         (require setting)

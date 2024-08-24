@@ -52,6 +52,13 @@
 (setq company-global-modes
       '(not org-mode))
 
+;;YASNIPPET
+;;https://github.com/capitaomorte/yasnippet
+(zz:load-path "site-lisp/yasnippet")
+(zz:load-path "site-lisp/yasnippet-snippets")
+(require 'yasnippet-snippets)
+(yas-global-mode t)
+
 ;;code completion and snippets
 ;;https://robert.kra.hn/posts/rust-emacs-setup/
 (defun zz:check-expansion ()

@@ -15,11 +15,11 @@
 
 (define-fn-key (gethash "f11" fn-key-table)
   [f11]             'linum-mode
-  [S-f11]           nil
-  [C-f11]           nil
-  [M-f11]           nil
-  (kbd "C-x <f11>") nil
-  (kbd "C-c <f11>") nil
+  [S-f11]           'hl-line-mode
+  [C-f11]           'blank-mode
+  [M-f11]           'fci-mode
+  (kbd "C-x <f11>") 'menu-bar-mode
+  (kbd "C-c <f11>") 'tool-bar-mode
   "f11 key binding")
 
 (apply-keys-to-map

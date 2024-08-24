@@ -90,17 +90,17 @@
   [S-f10]           'helm-swoop
   [C-f10]           'whitespace-cleanup
   [M-f10]           'whitespace-cleanup-region
-  (kbd "C-x <f10>") 'menu-bar-open
-  (kbd "C-c <f10>") 'hide-mode-line
+  (kbd "C-x <f10>") 'which-key-mode
+  (kbd "C-c <f10>") 'flymake-mode
   "f10 key binding")
 
 (define-fn-key (gethash "f11" fn-key-table)
   [f11]             'linum-mode
-  [S-f11]           'blank-mode
-  [C-f11]           'hl-line-mode
+  [S-f11]           'hl-line-mode
+  [C-f11]           'blank-mode
   [M-f11]           'fci-mode
-  (kbd "C-x <f11>") 'which-key-mode
-  (kbd "C-c <f11>") 'flymake-mode
+  (kbd "C-x <f11>") 'menu-bar-mode
+  (kbd "C-c <f11>") 'tool-bar-mode
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)

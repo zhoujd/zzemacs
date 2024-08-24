@@ -292,11 +292,6 @@
 (require 'helm-switch-to-repl)
 (helm-switch-to-repl-setup)
 
-;;helm-lsp
-;;https://github.com/emacs-lsp/helm-lsp
-(require 'helm-lsp)
-(define-key lsp-mode-map [remap xref-find-apropos] #'helm-lsp-workspace-symbol)
-
 ;;helm-mode-manager
 ;;M-x: helm-switch-major-mode
 ;;M-x: helm-enable-minor-mode
@@ -323,10 +318,8 @@
 (require 'helm-cmd-t)
 (require 'helm-C-x-b)
 
-;;helm-lsp
+;;https://github.com/emacs-lsp/helm-lsp
 (require 'helm-lsp)
-(defkeys-map lsp-mode-map
-  ([remap xref-find-apropos] #'helm-lsp-workspace-symbol))
 
 ;;https://github.com/Sodel-the-Vociferous/helm-company
 ;;"Making tag completion table" Freezes/Blocks

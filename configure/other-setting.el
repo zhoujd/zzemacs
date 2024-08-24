@@ -496,6 +496,9 @@
 ;;avy
 (require 'avy)
 
+;;https://github.com/hlissner/emacs-hide-mode-line
+(require 'hide-mode-line)
+
 
 (provide 'other-setting)
 

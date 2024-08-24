@@ -124,9 +124,6 @@
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
-;;https://webonastick.com/emacs-lisp/hide-mode-line.el
-(autoload 'hide-mode-line "hide-mode-line" nil t)
-
 ;;pandoc mode
 ;;apt install pandoc
 (zz:load-path "site-lisp/pandoc-mode")

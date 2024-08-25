@@ -45,6 +45,7 @@
  global-map
  (list
   (kbd "C-x C-b")   'ibuffer
+  (kbd "C-c b")     'zz:switch-to-shell
   ))
 
 (apply-keys-to-map

@@ -66,9 +66,6 @@
 (defun lsp--info (format &rest args)
   "Display lsp info message with FORMAT with ARGS."
   t)
-;;company-lsp
-;(require 'company-lsp)
-;(add-to-list 'company-backends 'company-lsp)
 
 ;;https://clangd.llvm.org/installation.html
 ;;https://github.com/joaotavora/eglot

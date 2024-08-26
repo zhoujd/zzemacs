@@ -3,4 +3,4 @@
 ## https://github.com/MaskRay/ccls/wiki/Customization#cachedirectory
 ## https://docs.doomemacs.org/v21.12/modules/lang/cc/
 
-ccls --init='{"cache": {"directory": "~/.cache/ccls-cache"}}' $@
+ccls --init='{"cache": {"directory": "/tmp/ccls-cache"}}' $@

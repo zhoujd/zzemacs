@@ -21,6 +21,7 @@ git config --file=$REMOTE_CFG credential.helper "cache --timeout=3600"
 git config --file=$REMOTE_CFG push.default simple
 
 ## alias
+
 git config --file=$REMOTE_CFG alias.st    "status"
 git config --file=$REMOTE_CFG alias.ci    "commit"
 git config --file=$REMOTE_CFG alias.cae   "commit --amend"
@@ -48,13 +49,22 @@ git config --file=$REMOTE_CFG alias.plr   "pull --rebase"
 git config --file=$REMOTE_CFG alias.wc    "whatchanged"
 git config --file=$REMOTE_CFG alias.ls    "ls-files"
 git config --file=$REMOTE_CFG alias.ign   "ls-files -o -i --exclude-standard"
-git config --file=$REMOTE_CFG alias.cat   "cat-file -p"
-git config --file=$REMOTE_CFG alias.flog  "show --pretty=format: --name-only"
-git config --file=$REMOTE_CFG alias.last  "log -1 HEAD"
-git config --file=$REMOTE_CFG alias.glog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
-git config --file=$REMOTE_CFG alias.hlog  "log --graph --pretty=format:'%Cred%h%Creset %C(cyan)%an%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -10"
-git config --file=$REMOTE_CFG alias.rb    "rebase"
-git config --file=$REMOTE_CFG alias.addp  "add -p"
+git config --file=$REMOTE_CFG alias.fname "show --pretty=format: --name-only"
+git config --file=$REMOTE_CFG alias.dname "diff --pretty=format: --name-only"
+
+## log
+git config --file=$REMOTE_CFG alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
+git config --file=$REMOTE_CFG alias.hlog  'log --oneline'
+git config --file=$REMOTE_CFG alias.lg    '!git glog -10'
+git config --file=$REMOTE_CFG alias.hg    '!git hlog -10'
+
+## daemon
+git config --file=$REMOTE_CFG alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
+git config --file=$REMOTE_CFG alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
+
+## list aliases
+git config --file=$REMOTE_CFG alias.la    "!git config -l | grep alias | cut -c 7-"
+
 
 ## includeif
 git config --global --unset-all includeif.gitdir:$REMOTE_DIR/.path

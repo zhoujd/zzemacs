@@ -98,13 +98,8 @@
 ;;color theme
 (zz:load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
-(if (display-graphic-p)
-    (progn
-      (load-theme 'zz t))
-    (progn
-      ;;color for console
-      (set-face-background 'default "black")
-      (set-face-foreground 'default "gray")))
+(when (display-graphic-p)
+  (load-theme 'zz t))
 
 ;;default-frame-alist or initial-frame-alist
 (setq default-frame-alist (append '((mouse-color . "white")
@@ -380,8 +375,8 @@ mouse-3: Toggle minor modes"
               ((kbd "M-p") 'ido-prev-match))))
 
 ;;only auto spit windows
-(setq split-height-threshold 0)
-(setq split-width-threshold 9999)
+(setq split-height-threshold 0
+      split-width-threshold  9999)
 
 ;;hide buffer *Async Shell Command*
 (defadvice display-buffer (around async-shell-command activate)

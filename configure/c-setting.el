@@ -128,35 +128,58 @@
 (add-to-list 'company-backends 'company-c-headers)
 
 ;;lsp-mode and eglot-mode support
-;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
-;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
 ;;https://clangd.llvm.org/installation.html
 ;;https://ddavis.io/blog/eglot-cpp-ide/
 ;;https://joaotavora.github.io/eglot/
 ;;sudo apt install bear && bear cmake && bear make
 ;;sudo apt install clangd ccls
-(defvar zz:c-eglot-p t "t for eglot, nil for lsp-mode")
 (defvar zz:c-lang-server "ccls-wrapper" "ccls-wrapper or clangd-wrapper")
+(defun zz:c-eglot-enable ()
+  "set variables and hook for eglot c/c++ IDE"
+  (interactive)
+  (setq company-backends
+        (cons 'company-capf
+              (remove 'company-capf company-backends)))
+  (add-to-list 'eglot-server-programs
+               `((c++-mode c-mode) ,zz:c-lang-server))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (message "Use eglot with %s for c/c++ mode"
+           zz:c-lang-server))
+(defun zz:c-eglot-disable ()
+  "remove hook for c/c++"
+  (interactive)
+  (remove-hook 'c-mode-hook 'eglot-ensure)
+  (remove-hook 'c++-mode-hook 'eglot-ensure))
+
+;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
+;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
+(defun zz:c-lsp-enable ()
+  "set variables and hook for lsp c/c++ IDE"
+  (interactive)
+  (setq company-backends
+        (cons 'company-capf
+              (remove 'company-capf company-backends)))
+  (require 'lsp-clangd)
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection zz:c-lang-server)
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote))
+  (add-hook 'c-mode-hook 'lsp-deferred)
+  (add-hook 'c++-mode-hook 'lsp-deferred)
+  (message "Use lsp-mode with %s for c/c++ mode"
+           zz:c-lang-server))
+(defun zz:c-lsp-disable ()
+  "remove hook for lsp c/c++"
+  (interactive)
+  (remove-hook 'c-mode-hook 'lsp-deferred)
+  (remove-hook 'c++-mode-hook 'lsp-deferred))
+
+(defvar zz:c-eglot-p t "t for eglot, nil for lsp-mode")
 (if zz:c-eglot-p
-    (progn
-      (add-to-list 'eglot-server-programs
-                   `((c++-mode c-mode) ,zz:c-lang-server))
-      (add-hook 'c-mode-hook 'eglot-ensure)
-      (add-hook 'c++-mode-hook 'eglot-ensure)
-      (message "Use eglot with %s for c/c++ mode"
-               zz:c-lang-server))
-    (progn
-      (require 'lsp-clangd)
-      (lsp-register-client
-       (make-lsp-client :new-connection (lsp-tramp-connection zz:c-lang-server)
-                        :major-modes '(c-mode c++-mode)
-                        :remote? t
-                        :server-id 'clangd-remote))
-      (add-hook 'c-mode-hook 'lsp-deferred)
-      (add-hook 'c++-mode-hook 'lsp-deferred)
-      (message "Use lsp-mode with %s for c/c++ mode"
-               zz:c-lang-server)
-      ))
+  (zz:c-eglot-enable)
+  (zz:c-lsp-enable))
 
 
 (provide 'c-setting)

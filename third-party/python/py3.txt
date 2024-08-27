@@ -1,3 +1,2 @@
-python-lsp-server
+python-lsp-server[all]
 git-imerge
-readline

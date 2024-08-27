@@ -28,8 +28,15 @@
                (tramp-default-port         22)))
 (tramp-set-completion-function
  zz:tramp-sshz-method tramp-completion-function-alist-ssh)
-
 (setq tramp-default-method "sshz")
+
+;;add remote path then remove ~/.emacs.d/tramp
+(setq tramp-persistency-file-name "~/.emacs.d/tramp")
+(dolist (path
+         (list
+          "~/.local/bin"
+          ))
+  (add-to-list 'tramp-remote-path path))
 
 ;;tramp syntax: default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
 ;;default: /ssh:news@news.my.domain:/opt/news/etc

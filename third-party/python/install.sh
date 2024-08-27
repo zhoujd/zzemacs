@@ -12,12 +12,13 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 #pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
-PIP_PAR="--timeout 60"
+PIP_PAR="--user --timeout 60"
 
 echo "For python develop start ..."
 
 py3_deps() {
-    pip3 install --user $PIP_PAR -r $SCRIPT_ROOT/py3.txt
+    pip3 install pip -U
+    pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
 }
 
 setup_flake8() {

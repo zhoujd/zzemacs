@@ -64,7 +64,21 @@
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
 ;;~/.local/bin/pylsp
-(add-hook 'python-mode-hook 'eglot-ensure)
+(defvar zz:default-pyls "pylsp"  "default pyls to be used")
+(defun zz:python-eglot-enable ()
+  "set variables and hook for eglot python IDE"
+  (interactive)
+  (setq company-backends
+        (cons 'company-capf
+              (remove 'company-capf company-backends)))
+  (add-to-list 'eglot-server-programs
+               `(python-mode ,zz:default-pyls))
+  (add-hook 'python-mode-hook 'eglot-ensure))
+(defun zz:python-eglot-disable ()
+  "remove hook for eglot python"
+  (interactive)
+  (remove-hook 'python-mode-hook 'eglot-ensure))
+(zz:python-eglot-enable)
 
 
 (provide 'python-setting)

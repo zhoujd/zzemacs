@@ -21,6 +21,9 @@
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
 
+;;Warning: Your ‘python-shell-interpreter’ doesn’t seem to support readline
+(setq python-shell-completion-native-enable nil)
+
 ;;custom indent
 (defun zz:python-indent (num)
   (interactive "nIndent: ")

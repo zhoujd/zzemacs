@@ -1,4 +1,3 @@
 python-lsp-server
 git-imerge
-
-
+readline

@@ -75,12 +75,6 @@
          (with-current-buffer buf
            (derived-mode-p buf 'c++-mode 'c-mode)))))
 
-;;gud-lldb: https://github.com/jojojames/gud-lldb
-;;ModuleNotFoundError: No module named 'lldb.embedded_interpreter'
-;;apt install python3-lldb-14
-;;ln -s /usr/lib/llvm-14/lib/python3.10/dist-packages/lldb/* /usr/lib/python3/dist-packages/lldb/
-(require 'gud-lldb)
-
 
 (provide 'gdb-setting)
 

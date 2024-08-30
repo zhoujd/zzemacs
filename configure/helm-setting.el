@@ -36,7 +36,7 @@
 ;;https://writequit.org/eos/eos-helm.html
 (setq helm-display-header-line          nil
       helm-echo-input-in-header-line    nil
-      helm-always-two-windows           nil
+      helm-always-two-windows           t
       helm-split-window-in-side-p       t
       helm-candidate-number-limit       9999
       helm-input-idle-delay             0

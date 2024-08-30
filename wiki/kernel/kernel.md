@@ -1,13 +1,14 @@
-Linux kernel
+Linux Kernel
 ============
 
 ## Kenerl debug
-   https://www.kernel.org/doc/html/v4.16/dev-tools/kgdb.html
-   https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html
+
+    ## https://www.kernel.org/doc/html/v4.16/dev-tools/kgdb.html
+    ## https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html
 
 ## Debug with kgdb
-   KGDB on target
 
+    ## KGDB on target
     # CONFIG_STRICT_KERNEL_RWX is not set
     CONFIG_FRAME_POINTER=y
     CONFIG_KGDB=y
@@ -23,8 +24,7 @@ Linux kernel
     echo g > /proc/sysrq-trigger
     SysRq : DEBUG
 
-   KGDB on host
-
+    ## KGDB on host
     # gdb vmlinux
     (gdb) set remotebaud 9600
     (gdb) target remote /dev/ttyS0
@@ -80,3 +80,15 @@ Linux kernel
 ## Linux kernel concurrency cheat sheet
 
    ## https://github.com/cirosantilli/linux-kernel-module-cheat
+
+## Make symbol file from vmlinux kernel image
+
+    ## vmlinux file is located in the kernel source directory (generated after compilation)
+    $ objcopy --only-keep-debug vmlinux kernel.sym
+
+    ## Run gdb, load symbol file, and attach to the execution
+    $ gdb
+    (gdb) file ./kernel.sym
+    (gdb) target remote :1234
+    (gdb) hbreak start_kernel
+    (gdb) c

@@ -438,6 +438,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz:comint-send-input()
   (interactive)
   (company-abort)
+  (yas-abort-snippet)
   (comint-send-input))
 (defun zz:shell-company-hook ()
   (company-mode t)

@@ -451,3 +451,14 @@ Ubuntu setting
     $ sudo vim /etc/security/limits.conf
     root soft nofile 65535
     root hard nofile 65535
+
+## Permanently booting to text mode (console mode)
+
+    ## Show the currently set target
+    $ systemctl get-default
+
+    ## Always boot to console (text / tty) mode
+    $ sudo systemctl set-default multi-user.target
+
+    ## Always boot to graphical mode
+    $ sudo systemctl set-default graphical.target

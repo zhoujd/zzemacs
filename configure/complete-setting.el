@@ -35,6 +35,42 @@
        (hippie-expand nil)
        (indent-for-tab-command)))
 
+;;YASNIPPET
+;;https://github.com/capitaomorte/yasnippet
+(zz:load-path "site-lisp/yasnippet")
+(zz:load-path "site-lisp/yasnippet-snippets")
+(require 'yasnippet-snippets)
+(yas-global-mode t)
+
+;;code completion and snippets
+;;https://robert.kra.hn/posts/rust-emacs-setup/
+(defun zz:check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "::") t nil)))))
+
+(defun zz:do-yas-expand ()
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun zz:tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+      (if (or (not yas/minor-mode)
+              (null (zz:do-yas-expand)))
+          (if (zz:check-expansion)
+              (company-complete-common)
+              (indent-for-tab-command)))))
+
+(defun zz:company-yasnippet-or-completion ()
+  (interactive)
+  (or (zz:do-yas-expand)
+      (company-complete-common)))
+
 ;;lsp-mode
 ;;https://emacs-lsp.github.io/lsp-mode/
 ;;https://systemcrafters.net/emacs-from-scratch/build-your-own-ide-with-lsp-mode/

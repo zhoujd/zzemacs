@@ -16,7 +16,7 @@ install_package_suse() {
 install_package_ubuntu() {
     sudo apt install -y curl wget w3m
     sudo apt install -y rofi
-    sudo apt install -y rxvt-unicode
+    sudo apt install -y rxvt-unicode stterm
     sudo apt install -y openssh-server
     sudo apt install -y tree
     sudo apt install -y tmux vim vim-gtk3
@@ -27,10 +27,8 @@ install_package_ubuntu() {
     sudo apt install -y meld
     sudo apt install -y evolution-ews
     sudo apt install -y dos2unix
-    sudo apt install -y xchm
-    sudo apt install -y djview4
+    sudo apt install -y xchm djview4
     sudo apt install -y baobab
-    sudo apt install -y pidgin-sipe
     sudo apt install -y xautolock
     sudo apt install -y synaptic
     sudo apt install -y xdotool     ## xdotool click 4

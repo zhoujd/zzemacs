@@ -15,6 +15,7 @@ script_path() {
 
 SCRIPT_HOME=$(script_path)
 ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
+EMACS_BIN=emacs
 
 ## reorganize parameters
 for arg in "$@" ; do

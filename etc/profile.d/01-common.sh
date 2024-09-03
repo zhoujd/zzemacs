@@ -32,17 +32,11 @@ prompt() {
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
     case $TERM in
-        rxvt* | putty* )
+        rxvt* | xterm* | st* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
-        xterm* | st* )
-            local orange='\[\033[0;33m\]'
-            export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
-            PS1="${lgreen}\u@\h ${orange}\W${green}\$ ${norm}"
-            PS1="${title}${PS1}"
-            ;;
-        eterm* )
+        eterm* | putty* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )

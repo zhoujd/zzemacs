@@ -36,7 +36,7 @@ prompt() {
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
-        xterm* )
+        xterm* | st* )
             local orange='\[\033[0;33m\]'
             export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
             PS1="${lgreen}\u@\h ${orange}\W${green}\$ ${norm}"

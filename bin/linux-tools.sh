@@ -16,7 +16,7 @@ install_package_suse() {
 install_package_ubuntu() {
     sudo apt install -y curl wget w3m
     sudo apt install -y rofi
-    sudo apt install -y rxvt-unicode stterm
+    sudo apt install -y rxvt-unicode xterm
     sudo apt install -y openssh-server
     sudo apt install -y tree
     sudo apt install -y tmux vim vim-gtk3

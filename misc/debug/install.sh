@@ -2,14 +2,32 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-install() {
+gdb() {
     local target_dir=~/.gdbinit.d
     rm -rf $target_dir
     mkdir -p $target_dir
     cp -fv $SCRIPT_ROOT/gdbinit.d/common.gdb $target_dir
     cp -fv $SCRIPT_ROOT/gdbinit.d/stl-views.gdb $target_dir
     cp -fv $SCRIPT_ROOT/gdbinit ~/.gdbinit
-    echo "Install Done"
+    echo "Install GDB Done"
 }
 
-install
+cgdb() {
+    local target_dir=~/.cgdb
+    rm -rf $target_dir
+    mkdir -p $target_dir
+    cp -fv $SCRIPT_ROOT/cgdb/cgdbrc $target_dir
+    echo "Install CGDB Done"
+}
+
+case $1 in
+    gdb )
+        gdb
+        ;;
+    cgdb )
+        cgdb
+        ;;
+    * )
+        echo "Usage: $(basename $0) {gdb|cgdb}"
+        ;;
+esac

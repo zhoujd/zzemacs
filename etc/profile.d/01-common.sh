@@ -32,7 +32,7 @@ prompt() {
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
     case $TERM in
-        rxvt* | xterm* | st* )
+        rxvt* | xterm* | st* | tmux* | screen* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             PS1="${title}${PS1}"
             ;;

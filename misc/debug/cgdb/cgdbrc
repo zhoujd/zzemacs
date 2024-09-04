@@ -1,10 +1,9 @@
-## cgdbrc
+### cgdbrc
 
-set arrowstyle=highlight
+set arrowstyle=long
 set autosourcereload
 set ignorecase
-set tabstop=4
-set winminheight=2
+set tabstop=2
 set wrapscan
 
 map <c>   :clear<CR>

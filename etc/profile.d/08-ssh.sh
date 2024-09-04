@@ -1,7 +1,6 @@
 ### emacs ssh
 
-_complete_ssh_hosts ()
-{
+_complete_ssh_hosts () {
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     comp_ssh_hosts=`cat ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | \

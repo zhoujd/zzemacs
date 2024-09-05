@@ -6,7 +6,6 @@ GDB Remote
     ## https://davis.lbl.gov/Manuals/GDB/gdb_17.html
     ## https://developer.apple.com/library/archive/documentation/DeveloperTools/gdb/gdb/gdb_18.html
 
-
 ## Debug Remote
 
     ## On the target machine run:

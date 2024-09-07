@@ -487,6 +487,18 @@
         (t
          (insert (file-relative-name filename)))))
 
+(defun zz:kill-all-buffer ()
+  "Kill all buffer."
+  (interactive)
+  (dolist (buffer (buffer-list))
+    (kill-buffer buffer)))
+
+(defun zz:kill-other-buffer ()
+  "Close all of other buffer."
+  (interactive)
+  (dolist (buffer (delq (current-buffer) (buffer-list)))
+    (kill-buffer buffer)))
+
 
 (provide 'sample-setting)
 

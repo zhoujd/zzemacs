@@ -11,18 +11,25 @@ Samba Server
 ## Setting up Samba
 
     $ sudo mkdir -p /zach
-    $ sudo chown jiandon:jiandon /zach
+    $ sudo chown zach:zach /zach
     $ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.origin
     $ sudo vim /etc/samba/smb.conf
     ## At the bottom of the file, add the following lines:
     [zach]
-        comment = Samba on Ubuntu
-        path = /zach
-        read only = no
-        browsable = yes
-        valid users = jiandon
+    comment = Data on Ubuntu
+    path = /zach
+    read only = no
+    browsable = yes
+    valid users = zach
 
-    $ sudo smbpasswd -a jiandon
+   [home]
+       comment = Home on Ubuntu
+       path = /home/zach
+       read only = no
+       browsable = yes
+       valid users = zach
+
+    $ sudo smbpasswd -a zach
     $ smbclient -L localhost
 
     $ sudo ufw allow 'Samba'

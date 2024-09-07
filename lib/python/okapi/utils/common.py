@@ -5,8 +5,7 @@
 
 import os
 import platform
-from ..framework import config
-
+from framework import config
 
 def path2unix(path):
     sysstr = platform.system()
@@ -14,15 +13,12 @@ def path2unix(path):
         path = path.replace("\\", "/")
     return path
 
-
 def getworkdir():
     return path2unix(os.getcwd())
-
-
+    
 def getfiledir(filepath):
     strfilepath = os.path.realpath(filepath)
     return path2unix(os.path.dirname(strfilepath))
-
 
 def setcoredir(dir):
     config.appdirname = dir

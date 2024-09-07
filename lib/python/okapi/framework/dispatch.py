@@ -5,8 +5,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from . import config
-
+from framework import config
 
 class Dispatch:
     def __init__(self, workdir, srcdir, argv, helpdoc=None):
@@ -30,13 +29,13 @@ class Dispatch:
             app = None
             match = False
             for num in range(config.maxmatch, 1, -1):
-                if len(self.params) >= num and match is False:
-                    cmd = "-".join(self.params[1:num])
-                    args = " ".join(self.params[num:])
+              if len(self.params) >= num and match is False:
+                cmd = "-".join(self.params[1:num])
+                args = " ".join(self.params[num:])
                 if config.verbose is True:
                     print("try cmd: %s to usaged\n" % cmd)
                     print("try args: %s to usaged\n" % args)
-                    app = self.findapp(cmd)
+                app = self.findapp(cmd)
                 if app is not None:
                     match = True
                     break
@@ -79,9 +78,8 @@ class Dispatch:
             elif appext == "" and config.supportnoext is True:
                 apptype = ""
             if apptype is not None:
-                apppath = self.srcdir + "/" + config.appdirname + "/" + app
                 appinfo.append(apptype)
-                appinfo.append(apppath)
+                appinfo.append(self.srcdir + "/" + config.appdirname + "/" + app)
                 self.appmap[appname] = appinfo
 
     def getappmap(self):

@@ -2,17 +2,13 @@
 
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
-pathmunge () {
-    case ":${PATH}:" in
-        *:"$1":*)
-            ;;
-        *)
-            if [ "$2" = "after" ] ; then
-                PATH=$PATH:$1
-            else
-                PATH=$1:$PATH
-            fi
-    esac
+add_path() {
+    ARG=$1
+    if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
+        PATH="$ARG${PATH:+":$PATH"}"
+    fi
+
+    export PATH
 }
 
-pathmunge $SCRIPT_ROOT
+add_path $SCRIPT_ROOT

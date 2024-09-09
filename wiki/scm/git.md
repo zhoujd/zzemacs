@@ -222,7 +222,7 @@ Git
     $ git commit --amend --author="Author Name <email@address.com>"
     $ git commit --amend --reset-author --no-edit
 
-## Git "Corrupt loose object"
+## Git Corrupt loose object
 
     ## https://stackoverflow.com/questions/4254389/git-corrupt-loose-object
     $ rm -fr .git
@@ -231,3 +231,7 @@ Git
     $ git fetch
     $ git reset --mixed origin/main
     $ git branch --set-upstream-to=origin/main main
+
+    ## https://accio.github.io/programming/2021/06/16/fix-loose-objects-in-git.html
+    $ find .git/objects/ -size 0 -exec rm -f {} \;
+    $ git fetch origin

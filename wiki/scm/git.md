@@ -221,3 +221,13 @@ Git
 
     $ git commit --amend --author="Author Name <email@address.com>"
     $ git commit --amend --reset-author --no-edit
+
+## Git "Corrupt loose object"
+
+    ## https://stackoverflow.com/questions/4254389/git-corrupt-loose-object
+    $ rm -fr .git
+    $ git init
+    $ git remote add origin [your-git-remote-url]
+    $ git fetch
+    $ git reset --mixed origin/main
+    $ git branch --set-upstream-to=origin/main main

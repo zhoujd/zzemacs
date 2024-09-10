@@ -5,7 +5,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from framework import config
+from okapi.framework import config
 
 class Dispatch:
     def __init__(self, workdir, srcdir, argv, helpdoc=None):

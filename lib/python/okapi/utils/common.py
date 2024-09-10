@@ -5,7 +5,7 @@
 
 import os
 import platform
-from framework import config
+import okapi.framework as framework
 
 def path2unix(path):
     sysstr = platform.system()
@@ -21,4 +21,4 @@ def getfiledir(filepath):
     return path2unix(os.path.dirname(strfilepath))
 
 def setcoredir(dir):
-    config.appdirname = dir
+    framework.config.appdirname = dir

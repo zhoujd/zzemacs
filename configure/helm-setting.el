@@ -56,7 +56,13 @@
                                           helm-def-source--emacs-variables
                                           helm-def-source--emacs-faces))
 
-;;dide some buffers in helm-buffers-list
+;;helm buffer for tramp
+(setq helm-ff-file-name-history-use-recentf t
+      helm-ff-tramp-not-fancy               t
+      helm-buffer-skip-remote-checking      t
+      helm-mode-reverse-history             nil)
+
+;;hide some buffers in helm-buffers-list
 (setq helm-boring-buffer-regexp-list
       (append
        (list (rx "*tramp"))

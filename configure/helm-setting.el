@@ -68,6 +68,12 @@
        (list (rx "*tramp"))
        helm-boring-buffer-regexp-list))
 
+;;Buffer ordering with Helm with LRU-style ordering
+(defun zz:helm-buffers-sort-transformer (candidates source)
+  candidates)
+(advice-add 'helm-buffers-sort-transformer
+            :override #'zz:helm-buffers-sort-transformer)
+
 ;;https://github.com/ptrv/helm-smex
 ;;(require 'helm-smex)
 

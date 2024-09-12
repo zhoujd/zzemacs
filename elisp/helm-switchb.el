@@ -28,7 +28,7 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format #("%-42s%s%s"
+        (format #("%-30s%s%s"
                   0 4 (face helm-switchb-face-head)
                   7 8 (face helm-switchb-face-tail))
                 (buffer-name buf)

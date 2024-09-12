@@ -171,11 +171,24 @@
     :keymap helm-switchb-map
     ))
 
+(defvar helm-switchb-gud-source
+  (helm-build-sync-source "Debugger buffers"
+    :candidates (helm-switchb-candidate 'gud-mode)
+    :action '(("Switch to buffer" . helm-switchb-buffer-open)
+              ("Open dired" . helm-switchb-dired-open)
+              ("Kill buffer" . helm-switchb-kill)
+              ("New shell" . helm-switchb-shell-new)
+              ("New term" . helm-switchb-term-new)
+              ("New vterm" . helm-switchb-vterm-new))
+    :keymap helm-switchb-map
+    ))
+
 (defun helm-switchb-shell-list ()
   (interactive)
   (helm :sources '(helm-switchb-shell-source
                    helm-switchb-term-source
-                   helm-switchb-vterm-source)
+                   helm-switchb-vterm-source
+                   helm-switchb-gud-source)
         :buffer "*helm shell*"
         :truncate-lines helm-buffers-truncate-lines
         ))

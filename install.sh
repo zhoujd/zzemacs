@@ -5,6 +5,7 @@ ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 . $ZZEMACS_ROOT/bin/sample.sh
 
 install_dotemacs() {
+    mkdir -p ~/.emacs.d
     cat <<EOF > ~/.emacs
 ;;; The .emacs for zzemacs
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
@@ -39,7 +40,6 @@ install_fonts() {
 }
 
 install_others() {
-    mkdir -p ~/.emacs.d
     ${ZZEMACS_ROOT}/misc/term/install.sh
     ${ZZEMACS_ROOT}/misc/debug/install.sh
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
@@ -47,7 +47,6 @@ install_others() {
 }
 
 install_thirdparty() {
-    echo "Install third party to $TARGET_TYPE"
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
     ${ZZEMACS_ROOT}/third-party/perl/install.sh
     echo "Install thirdparty done"

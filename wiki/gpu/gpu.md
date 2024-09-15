@@ -44,8 +44,4 @@ GPU
 
     ## https://elinux.org/Android_Architecture
     ## https://source.android.com/docs/core/graphics
-    
-    
-  
-  
   

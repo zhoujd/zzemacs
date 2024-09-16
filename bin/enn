@@ -3,4 +3,4 @@
 NNN_INS=nnn
 NNN_CMD="nnn -e"
 
-urxvt -name $NNN_INS -e $NNN_CMD "$@"
+st -n $NNN_INS -e $NNN_CMD "$@"

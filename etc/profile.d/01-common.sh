@@ -1,9 +1,18 @@
 ### common setting
 # http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html
+# https://man7.org/linux/man-pages/man5/dir_colors.5.html
 # http://souptonuts.sourceforge.net/chirico/index.php
 # http://vanmontfort.be/pub/linux/.bashrc
 
-# ls colors setting
+## ls colors setting
+# 30	Black
+# 31	Red
+# 32	Green
+# 33	Orange
+# 34	Blue
+# 35	Purple
+# 36	Cyan
+# 37	Grey
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 
 ## color prompt
@@ -40,12 +49,10 @@ prompt() {
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )
-            export LS_COLORS=$LS_COLORS:'di=01;35:ln=01;36'
             PS1="\u@\h \W\$ "
             ;;
         linux* )
             export TERM=xterm-256color
-            export LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
             PS1="${lgreen}\u@\h \W${green}\$ ${norm}"
             ;;
     esac

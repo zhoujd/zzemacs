@@ -30,8 +30,19 @@
  zz:tramp-sshz-method tramp-completion-function-alist-ssh)
 (setq tramp-default-method "sshz")
 
-;;add remote path then remove ~/.emacs.d/tramp
+;;Persistency for fast init, don't change ~/.emacs.d/tramp
+;;Run `M-x tramp-cleanup-all-connections' instead.
 (setq tramp-persistency-file-name "~/.emacs.d/tramp")
+
+;;Disable vc for remote files (speed increase)
+(setq vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
+                                   vc-ignore-dir-regexp
+                                   tramp-file-name-regexp))
+
+;;Prevent forbidden reentrant call of tramp
+(add-to-list 'debug-ignored-errors 'remote-file-error)
+
+;;add tramp remote path
 (dolist (path
          (list
           "~/.local/bin"

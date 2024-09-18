@@ -4,15 +4,14 @@
 # http://souptonuts.sourceforge.net/chirico/index.php
 # http://vanmontfort.be/pub/linux/.bashrc
 
-## ls colors setting
-# 30	Black
-# 31	Red
-# 32	Green
-# 33	Orange
-# 34	Blue
-# 35	Purple
-# 36	Cyan
-# 37	Grey
+## LS_COLORS in Bash
+## run `dircolors -p` for default
+# Attribute codes:
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# Text color codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+# Background color codes:
+# 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
 export LS_COLORS=$LS_COLORS:'di=01;34:ln=01;36'
 
 ## color prompt

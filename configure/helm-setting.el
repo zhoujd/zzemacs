@@ -2,8 +2,8 @@
 ;;https://github.com/emacs-helm/helm
 ;;https://github.com/emacs-helm/helm/wiki
 
-(zz:load-path "site-lisp/async")
-(zz:load-path "site-lisp/helm")
+(zz/load-path "site-lisp/async")
+(zz/load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)
 
@@ -69,10 +69,10 @@
        helm-boring-buffer-regexp-list))
 
 ;;Buffer ordering with Helm with LRU-style ordering
-(defun zz:helm-buffers-sort-transformer (candidates source)
+(defun zz/helm-buffers-sort-transformer (candidates source)
   candidates)
 (advice-add 'helm-buffers-sort-transformer
-            :override #'zz:helm-buffers-sort-transformer)
+            :override #'zz/helm-buffers-sort-transformer)
 
 ;;https://github.com/ptrv/helm-smex
 ;;(require 'helm-smex)
@@ -83,7 +83,7 @@
 ;;https://github.com/emacs-helm/helm-descbinds
 ;;C-h b
 (require 'helm-descbinds)
-(defun zz:ctrl-z-help ()
+(defun zz/ctrl-z-help ()
   (interactive)
   (helm-descbinds (kbd "C-z h")))
 
@@ -121,11 +121,11 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'helm-switchb)
 
 (require 'helm-find)
-(defun zz:helm-find ()
+(defun zz/helm-find ()
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
@@ -142,7 +142,7 @@
 ;;apt/yum/dnf install silversearcher-ag
 ;;pacman -S the_silver_searcher
 ;;yum install epel-release.noarch the_silver_searcher
-(zz:load-path "site-lisp/popup")
+(zz/load-path "site-lisp/popup")
 (require 'popup)
 (require 'helm-ag)
 
@@ -154,7 +154,7 @@
 ;;helm-ag-base-command "pt --nocolor --nogroup"
 ;;helm-ag-base-command "rg --vimgrep --no-heading"
 ;;ag -all-text (-t) search it'll override --ignore
-(defun zz:helm-ag-switch-to-ag-inexact()
+(defun zz/helm-ag-switch-to-ag-inexact()
   "case-insensitive and without word boundaries."
   (interactive)
   (custom-set-variables
@@ -163,7 +163,7 @@
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to ag"))
 
-(defun zz:helm-ag-switch-to-ag-exact()
+(defun zz/helm-ag-switch-to-ag-exact()
   "case-sensitive and with word boundaries."
   (interactive)
   (custom-set-variables
@@ -175,7 +175,7 @@
 ;;https://beyondgrep.com/install/
 ;;https://beyondgrep.com/more-tools/
 ;;Ubuntu: sudo apt install ack-grep
-(defun zz:helm-ag-switch-to-ack()
+(defun zz/helm-ag-switch-to-ack()
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "ack --nocolor --nogroup")
@@ -185,7 +185,7 @@
 
 ;;https://github.com/eliben/pss/
 ;;pip install pss
-(defun zz:helm-ag-switch-to-pss()
+(defun zz/helm-ag-switch-to-pss()
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "pss --nocolor --noheading")
@@ -193,7 +193,7 @@
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to pss"))
 
-(defun zz:helm-ag-switch-to-rg()
+(defun zz/helm-ag-switch-to-rg()
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "rg --vimgrep --no-heading --smart-case")
@@ -201,7 +201,7 @@
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to rg"))
 
-(defun zz:helm-ag-switch-to-grep-inexact()
+(defun zz/helm-ag-switch-to-grep-inexact()
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "grep -rinI")
@@ -209,7 +209,7 @@
    '(helm-ag-insert-at-point 'symbol))
   (message "helm-ag switch to grep inexact"))
 
-(defun zz:helm-ag-switch-to-grep-exact()
+(defun zz/helm-ag-switch-to-grep-exact()
   (interactive)
   (custom-set-variables
    '(helm-ag-base-command "grep -rnI")
@@ -218,36 +218,36 @@
   (message "helm-ag switch to grep exact"))
 
 ;;helm default using ag
-(defun zz:helm-search-select()
-  (cond ((executable-find "ag") (zz:helm-ag-switch-to-ag-inexact))
-        ((executable-find "ack") (zz:helm-ag-switch-to-ack))
-        (t (zz:helm-ag-switch-to-grep-inexact))))
-(zz:helm-search-select)
+(defun zz/helm-search-select()
+  (cond ((executable-find "ag") (zz/helm-ag-switch-to-ag-inexact))
+        ((executable-find "ack") (zz/helm-ag-switch-to-ack))
+        (t (zz/helm-ag-switch-to-grep-inexact))))
+(zz/helm-search-select)
 
 (require 'helm-grep)
 (custom-set-variables
  '(helm-grep-file-path-style 'relative))
 
-(defun zz:helm-grep-ag ()
+(defun zz/helm-grep-ag ()
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
     (helm-do-ag default-directory)))
 
-(defun zz:nnn ()
+(defun zz/nnn ()
   (interactive)
   (let* ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: ")))
          (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
-(defun zz:helm-nnn (dir)
+(defun zz/helm-nnn (dir)
   (interactive "DDirectory: ")
   (let* ((default-directory dir)
          (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
     (apply 'start-process "urxvt" nil cmd)))
 
-(defun zz:helm-compile (dir)
+(defun zz/helm-compile (dir)
   (interactive "DDirectory: ")
   (let* ((default-directory dir))
     (call-interactively 'compile)))
@@ -296,7 +296,7 @@
 (require 'helm-google)
 
 ;;helm-ssh-tunnel
-(zz:load-path "site-lisp/ssh-tunnels")
+(zz/load-path "site-lisp/ssh-tunnels")
 (require 'ssh-tunnels)
 (require 'helm-ssh-tunnels)
 
@@ -314,7 +314,7 @@
 (require 'helm-themes)
 
 ;;helm-gitignore
-(zz:load-path "site-lisp/git-modes")
+(zz/load-path "site-lisp/git-modes")
 (require 'helm-gitignore)
 
 ;;helm-systemd
@@ -324,7 +324,7 @@
 ;(require 'helm-gtags)
 
 ;;helm-cmd-t
-(zz:load-path "site-lisp/helm-cmd-t")
+(zz/load-path "site-lisp/helm-cmd-t")
 (require 'helm-for-files)
 (require 'helm-x-files)
 (require 'helm-cmd-t)
@@ -353,7 +353,7 @@
 (helm-flx-mode +1)
 
 ;;wgrep-helm
-(zz:load-path "site-lisp/wgrep")
+(zz/load-path "site-lisp/wgrep")
 (require 'wgrep-helm)
 
 ;;helm-describe-modes

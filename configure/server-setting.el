@@ -2,7 +2,7 @@
 ;;
 
 
-(defun zz:use-server-mode ()
+(defun zz/use-server-mode ()
   ;;server-mode
   ;;emacsclientw.exe -f "~\.emacs.d\server\server" -n -a "runemacs.exe" path\to\file
   ;;emacsclientw.exe --server-file ~\.emacs.d\server\server -n -a runemacs.exe path\to\file
@@ -27,7 +27,7 @@
   (message "start emacs server..."))
 
 (when-ms-windows
- (defun zz:use-gnusvr ()
+ (defun zz/use-gnusvr ()
    ;; start gnuserv on Windows
    (progn
      (require 'gnuserv)
@@ -40,9 +40,9 @@
 (if-ms-windows
  (let ((use-gnusvr-flag nil))
    (if use-gnusvr-flag
-       (zz:use-gnusvr)
-       (zz:use-server-mode)))
- (zz:use-server-mode))
+       (zz/use-gnusvr)
+       (zz/use-server-mode)))
+ (zz/use-server-mode))
 
 
 (provide 'server-setting)

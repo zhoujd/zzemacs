@@ -18,13 +18,13 @@
          (if (= (user-uid) 0) "# " "$ "))))
 
 ;clear the eshell buffer
-(defun zz:eshell-clear ()
+(defun zz/eshell-clear ()
   (interactive)
   (let ((eshell-buffer-maximum-lines 0)) (eshell-truncate-buffer)))
 
-(defun zz:eshell-hook ()
-  (local-set-key (kbd "C-c M-o") 'zz:eshell-clear))
-(add-hook 'eshell-mode-hook 'zz:eshell-hook)
+(defun zz/eshell-hook ()
+  (local-set-key (kbd "C-c M-o") 'zz/eshell-clear))
+(add-hook 'eshell-mode-hook 'zz/eshell-hook)
 
 
 (provide 'eshell-setting)

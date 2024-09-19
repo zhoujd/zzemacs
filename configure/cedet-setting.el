@@ -1,7 +1,7 @@
 ;;;; cedet-setting.el --- cedet common file
 
 
-(zz:load-path "site-lisp")
+(zz/load-path "site-lisp")
 
 (setq semantic-idle-work-update-headers-flag  t)
 (setq semantic-idle-scheduler-idle-time       10)
@@ -35,7 +35,7 @@
   ((kbd "C-q") 'eassist-escape))
 
 ;;Nothing to complete
-(defun zz:semantic-remove-hooks ()
+(defun zz/semantic-remove-hooks ()
   (remove-hook 'completion-at-point-functions
                'semantic-analyze-completion-at-point-function)
   (remove-hook 'completion-at-point-functions
@@ -43,7 +43,7 @@
   (remove-hook 'completion-at-point-functions
                'semantic-analyze-nolongprefix-completion-at-point-function))
 
-(add-hook 'semantic-mode-hook #'zz:semantic-remove-hooks)
+(add-hook 'semantic-mode-hook #'zz/semantic-remove-hooks)
 
 
 (provide 'cedet-setting)

@@ -1,24 +1,24 @@
 ;;Lisp programme setting
 
-(zz:load-path "site-lisp/slime")
+(zz/load-path "site-lisp/slime")
 
 ;;common lisp indentation
 (autoload 'common-lisp-indent-function "cl-indent")
 (add-hook 'lisp-mode-hook
           (lambda ()
             (setq lisp-indent-function 'common-lisp-indent-function)
-            (zz:indent if nil)
-            (zz:indent when 1)
-            (zz:indent unless 1)
-            (zz:indent do 2)
-            (zz:indent do* 2)
-            (zz:indent defcommand 3)
+            (zz/indent if nil)
+            (zz/indent when 1)
+            (zz/indent unless 1)
+            (zz/indent do 2)
+            (zz/indent do* 2)
+            (zz/indent defcommand 3)
             ))
 
 ;;emacs mode
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
-            (zz:indent if nil)
+            (zz/indent if nil)
             ))
 
 ;;add common lisp configure file mode alias
@@ -47,9 +47,9 @@
        ))
 
 ;;slime start entry
-(zz:slime-start sbcl  'sbcl)
-(zz:slime-start clisp 'clisp)
-(zz:slime-start ecl   'ecl)
+(zz/slime-start sbcl  'sbcl)
+(zz/slime-start clisp 'clisp)
+(zz/slime-start ecl   'ecl)
 
 ;;reset slime temp directory
 ;(setq temporary-file-directory (concat (getenv "HOME")  "/tmp"))
@@ -72,23 +72,23 @@
 (setq slime-startup-animation nil)
 
 ;;my slime-repl-mode setting
-(defun zz:slime-repl-mode-hook ()
+(defun zz/slime-repl-mode-hook ()
   (defkeys-map slime-repl-mode-map
     ((kbd "C-c ;") 'slime-insert-balanced-comments)
     ))
 
-(add-hook 'slime-repl-mode-hook 'zz:slime-repl-mode-hook)
+(add-hook 'slime-repl-mode-hook 'zz/slime-repl-mode-hook)
 
 ;;hpperspec.el
 (require 'hyperspec)
 (setq common-lisp-hyperspec-root (concat zzemacs-path "/doc/hyperspec/"))
 
 ;;eldoc
-(defun zz:turn-on-eldoc-mode ()
+(defun zz/turn-on-eldoc-mode ()
   (eldoc-mode t))
 (require 'eldoc-extension)
-(add-hook 'emacs-lisp-mode-hook 'zz:turn-on-eldoc-mode)
-(add-hook 'lisp-inteeraction-mode-hook 'zz:turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'zz/turn-on-eldoc-mode)
+(add-hook 'lisp-inteeraction-mode-hook 'zz/turn-on-eldoc-mode)
 ;;allow long ElDoc messages to resize echo area display
 (setq eldoc-echo-area-use-multiline-p nil)
 (setq eldoc-idle-delay 0.2)
@@ -108,12 +108,12 @@
 (add-to-list 'auto-mode-alist '(".*\\.jl\\'"     . sawfish-mode ))
 
 ;;connect stumpwm slime swank
-(defun zz:slime-connect-stumpwm ()
+(defun zz/slime-connect-stumpwm ()
   (interactive)
   (slime-connect "127.0.0.1" 4405))
 
 ;;require paredit
-(zz:load-path "site-lisp/paredit")
+(zz/load-path "site-lisp/paredit")
 (require 'paredit)
 (eval-after-load 'paredit
                  '(progn

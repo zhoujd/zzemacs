@@ -10,7 +10,7 @@
 ;;gdb-mi
 (setq gud-gdb-command-name "gdb -q -i=mi")
 
-(defun zz:gud-break-remove ()
+(defun zz/gud-break-remove ()
   "Set/clear breakpoin."
   (interactive)
   (save-excursion
@@ -18,31 +18,31 @@
        (gud-remove nil)
        (gud-break nil))))
 
-(defun zz:gud-restore ()
+(defun zz/gud-restore ()
   "Retore and refresh"
   (interactive)
   (gdb-restore-windows)
   (gud-refresh))
 
 ;;GUD quit
-(defun zz:gud-quit ()
+(defun zz/gud-quit ()
   (interactive)
   (gud-basic-call "quit"))
 
 (add-hook 'gud-mode-hook
           (lambda ()
-            (local-set-key (kbd "C-q") 'zz:gud-quit)))
+            (local-set-key (kbd "C-q") 'zz/gud-quit)))
 
 (add-hook 'gdb-mode-hook
           (lambda ()
             (define-key gud-mode-map [tab] 'company-complete-selection)))
 
 ;;RealGUD: https://github.com/realgud/realgud
-(defun zz:load-realgud ()
+(defun zz/load-realgud ()
   (interactive)
-  (zz:load-path "site-lisp/realgud")
+  (zz/load-path "site-lisp/realgud")
   (require 'realgud)
-  (zz:load-path "site-lisp/realgud-lldb")
+  (zz/load-path "site-lisp/realgud-lldb")
   (require 'realgud-lldb))
 
 ;;GDB-MI non-stop

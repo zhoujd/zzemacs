@@ -1,23 +1,23 @@
 ;;;; ui-setting.el --- ui config file
 
 ;;https://github.com/gexplorer/simple-modeline
-(zz:load-path "site-lisp/simple-modeline")
+(zz/load-path "site-lisp/simple-modeline")
 (require 'simple-modeline)
 (simple-modeline-mode t)
 
-(defun zz:segment-percent-prefix ()
+(defun zz/segment-percent-prefix ()
   "Return the percent prefix."
   (concat " "))
 
-(defun zz:segment-percent-suffix ()
+(defun zz/segment-percent-suffix ()
   "Return the percent suffix."
   (concat "%%" " "))
 
-(defun zz:segment-percent-position ()
+(defun zz/segment-percent-position ()
   "Return the percent position of the cursor in the current buffer."
   (setq mode-line-percent-position '(-3 "%p")))
 
-(defun zz:segment-position ()
+(defun zz/segment-position ()
  "Displays the current cursor position in the mode-line."
  `((line-number-mode
     ((column-number-mode
@@ -30,7 +30,7 @@
        (5 " C%c")
        (5 " C%C")))))))
 
-(defun zz:segment-region ()
+(defun zz/segment-region ()
    (if (region-active-p)
         (propertize (format " +%s"
                             (apply #'+ (mapcar
@@ -40,7 +40,7 @@
                                        (region-bounds))))
                     'font-lock-face 'font-lock-variable-name-face)))
 
-(defun zz:segment-major-mode ()
+(defun zz/segment-major-mode ()
   "Displays the current major mode in the mode-line."
   `(" "
     (:propertize ("" mode-name)
@@ -51,38 +51,38 @@ mouse-3: Toggle minor modes"
                mouse-face mode-line-highlight
                local-map ,mode-line-major-mode-keymap)))
 
-(defun zz:segment-end ()
+(defun zz/segment-end ()
   "Return the end of mode line."
   (concat " "))
 
-(defun zz:segment-process ()
+(defun zz/segment-process ()
   "Return the current value of `mode-line-process'."
   (let ((process-info (format-mode-line mode-line-process)))
     (unless (string-blank-p process-info)
       (concat " " (string-trim process-info)))))
 
-(defun zz:segment-anzu ()
+(defun zz/segment-anzu ()
   "Return color-coded anzu status information."
   (when (bound-and-true-p anzu--state)
     anzu--mode-line-format))
 
 (setq simple-modeline-segments
-      '((zz:segment-anzu
+      '((zz/segment-anzu
          simple-modeline-segment-modified
          simple-modeline-segment-buffer-name
-         zz:segment-percent-prefix
-         zz:segment-percent-position
-         zz:segment-percent-suffix
-         zz:segment-position
-         zz:segment-region)
+         zz/segment-percent-prefix
+         zz/segment-percent-position
+         zz/segment-percent-suffix
+         zz/segment-position
+         zz/segment-region)
         (simple-modeline-segment-input-method
          simple-modeline-segment-eol
          simple-modeline-segment-encoding
          simple-modeline-segment-vc
          simple-modeline-segment-misc-info
-         zz:segment-process
-         zz:segment-major-mode
-         zz:segment-end)))
+         zz/segment-process
+         zz/segment-major-mode
+         zz/segment-end)))
 
 ;;modern-fringes
 (require 'modern-fringes)

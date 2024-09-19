@@ -2,7 +2,7 @@
 ;;
 
 ;;https://github.com/magit/emacsql
-(zz:load-path "site-lisp/emacsql")
+(zz/load-path "site-lisp/emacsql")
 (require 'emacsql)
 
 

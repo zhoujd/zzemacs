@@ -28,11 +28,11 @@
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
 ;;https://github.com/Silex/docker.el
-(zz:load-path "site-lisp/docker")
+(zz/load-path "site-lisp/docker")
 (require 'docker)
 
 ;;https://github.com/Silex/docker-api.el
-(zz:load-path "site-lisp/docker-api")
+(zz/load-path "site-lisp/docker-api")
 (require 'docker-api)
 
 ;;https://github.com/meqif/docker-compose-mode

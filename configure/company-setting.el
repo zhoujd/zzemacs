@@ -3,7 +3,7 @@
 ;;https://www.emacswiki.org/emacs/CompanyMode
 ;;https://melpa.org/#/company
 
-(zz:load-path "site-lisp/company-mode")
+(zz/load-path "site-lisp/company-mode")
 (require 'company)
 (global-company-mode t)
 (setq company-idle-delay nil ; menu show delay (nil for never)
@@ -20,7 +20,7 @@
 
 ;;company-ctags
 (require 'company-ctags)
-(defun zz:company-ctags ()
+(defun zz/company-ctags ()
   "Input code from company backend using fuzzy matching."
   (interactive)
   (company-abort)
@@ -30,7 +30,7 @@
 
 ;;company-shell
 (require 'company-shell)
-(defun zz:company-shell ()
+(defun zz/company-shell ()
   "Input code from company backend using fuzzy matching."
   (interactive)
   (company-abort)
@@ -67,7 +67,7 @@
   ((kbd "C-c C-/") 'company-other-backend)
   ((kbd "TAB")     'company-indent-or-complete-common))
 
-(defun zz:company-hook ()
+(defun zz/company-hook ()
   (require 'color)
   (let ((darker-fg    "#e4e4ef")
         (darker-fg+1  "#f4f4ff")
@@ -91,7 +91,7 @@
      `(company-preview ((t (:background ,darker-green))))
      `(company-preview-common ((t (:foreground ,darker-green :background ,darker-bg-1))))
      )))
-(add-hook 'company-mode-hook 'zz:company-hook)
+(add-hook 'company-mode-hook 'zz/company-hook)
 
 
 (provide 'company-setting)

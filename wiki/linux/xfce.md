@@ -115,7 +115,7 @@ Xfce
 
     Name: Emacs Shell Here
     Description: Open Emacs Shell
-    Command: cd %f && emacsclient -c -e "(zz:get-shell)"
+    Command: cd %f && emacsclient -c -e "(zz/get-shell)"
 
     Name: Emacs Shell
     Description: Open Emacs

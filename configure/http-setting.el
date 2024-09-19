@@ -1,10 +1,8 @@
 ;;;; http-setting.el --- http setting file
 ;;
 
-(zz:load-path "site-lisp")
-
-(zz:load-path "site-lisp/restclient")
-(zz:load-path "site-lisp/know-your-http-well")
+(zz/load-path "site-lisp/restclient")
+(zz/load-path "site-lisp/know-your-http-well")
 (require 'company-restclient)
 
 ;;eg: (princ (url-http-get "http://httpbin.org/get" nil))

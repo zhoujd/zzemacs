@@ -14,7 +14,7 @@
 (setq markdown-coding-system 'utf-8)
 
 ;;github markdown preview
-(zz:load-path "site-lisp/github-markdown-preview")
+(zz/load-path "site-lisp/github-markdown-preview")
 (require 'github-markdown-preview)
 
 ;;markdown Table of Contents
@@ -52,7 +52,7 @@
                  href=\"../other/mystyle.css\"
                  type=\"text/css\"/>")))
 
-(defun zz:org-insert-src-block (src-code-type)
+(defun zz/org-insert-src-block (src-code-type)
   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
   (interactive
    (let ((src-code-types
@@ -79,12 +79,12 @@
 
 ;;https://github.com/rlister/org-present
 (require 'org-present)
-(defun zz:org-present-prepare-slide ()
+(defun zz/org-present-prepare-slide ()
   (org-overview)
   (org-show-entry)
   (org-show-children))
 
-(defun zz:org-present-hook ()
+(defun zz/org-present-hook ()
   (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
                                      (header-line (:height 4.5) variable-pitch)
                                      (org-code (:height 1.55) org-code)
@@ -94,27 +94,27 @@
   (setq header-line-format " ")
   (org-display-inline-images)
   (hide-mode-lines)
-  (zz:org-present-prepare-slide))
+  (zz/org-present-prepare-slide))
 
-(defun zz:org-present-quit-hook ()
+(defun zz/org-present-quit-hook ()
   (setq-local face-remapping-alist '((default variable-pitch default)))
   (setq header-line-format nil)
   (org-present-small)
   (show-mode-lines)
   (org-remove-inline-images))
 
-(defun zz:org-present-prev ()
+(defun zz/org-present-prev ()
   (interactive)
   (org-present-prev)
-  (zz:org-present-prepare-slide))
+  (zz/org-present-prepare-slide))
 
-(defun zz:org-present-next ()
+(defun zz/org-present-next ()
   (interactive)
   (org-present-next)
-  (zz:org-present-prepare-slide))
+  (zz/org-present-prepare-slide))
 
-(add-hook 'org-present-mode-hook 'zz:org-present-hook)
-(add-hook 'org-present-mode-quit-hook 'zz:org-present-quit-hook)
+(add-hook 'org-present-mode-hook 'zz/org-present-hook)
+(add-hook 'org-present-mode-quit-hook 'zz/org-present-quit-hook)
 
 ;;org plantuml
 ;;https://plantuml.com/emacs
@@ -126,8 +126,8 @@
 
 ;;pandoc mode
 ;;apt install pandoc
-(zz:load-path "site-lisp/pandoc-mode")
-(zz:load-path "site-lisp/hydra")
+(zz/load-path "site-lisp/pandoc-mode")
+(zz/load-path "site-lisp/hydra")
 (require 'pandoc-mode)
 
 ;;epub reading
@@ -147,7 +147,7 @@
 (add-to-list 'auto-mode-alist '("\\.d2\\'" . d2-mode))
 
 ;;https://github.com/misohena/el-easydraw
-(zz:load-path "site-lisp/edraw")
+(zz/load-path "site-lisp/edraw")
 (autoload 'edraw-mode "edraw-mode")
 (add-to-list 'auto-mode-alist '("\\.edraw\\.svg$" . edraw-mode))
 (with-eval-after-load 'org

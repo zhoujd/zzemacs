@@ -19,7 +19,7 @@
 ;$ cd /path/to/project/root
 ;$ cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 ;$ rc -J .
-;(zz:load-path "site-lisp/rtags")
+;(zz/load-path "site-lisp/rtags")
 ;(require 'rtags)
 
 ;;holding #if
@@ -89,10 +89,10 @@
 ;;c common setting hook
 (defkeys-map c-mode-base-map
   ((kbd "TAB")     'company-indent-or-complete-common)
-  ((kbd "C-c M-/") 'zz:company-ctags)
+  ((kbd "C-c M-/") 'zz/company-ctags)
   ((kbd "M-o")     'cff-find-other-file)
   ((kbd "M-m")     'eassist-list-methods))
-(defun zz:c-mode-common-hook()
+(defun zz/c-mode-common-hook()
   (setq tab-width 2)
   (setq indent-tabs-mode nil)
   ;;process settings
@@ -102,20 +102,20 @@
   (setq c-macro-prompt-flag t)
   (abbrev-mode t)
   (hide-ifdef-mode t))
-(add-hook 'c-mode-common-hook 'zz:c-mode-common-hook)
+(add-hook 'c-mode-common-hook 'zz/c-mode-common-hook)
 
 ;;c setting hook
-(defun zz:c-mode-hook()
+(defun zz/c-mode-hook()
   (c-set-style "zach"))
-(add-hook 'c-mode-hook 'zz:c-mode-hook)
+(add-hook 'c-mode-hook 'zz/c-mode-hook)
 
 ;;c++ setting hook
-(defun zz:c++-mode-hook()
+(defun zz/c++-mode-hook()
   (c-set-style "zach"))
-(add-hook 'c++-mode-hook 'zz:c++-mode-hook)
+(add-hook 'c++-mode-hook 'zz/c++-mode-hook)
 
 ;;switch c and c++ mode
-(defun zz:c-c++-toggle ()
+(defun zz/c-c++-toggle ()
   "toggles between c-mode and c++-mode"
   (interactive)
   (cond ((string= major-mode "c-mode")
@@ -133,20 +133,20 @@
 ;;https://joaotavora.github.io/eglot/
 ;;sudo apt install bear && bear cmake && bear make
 ;;sudo apt install clangd ccls
-(defvar zz:c-lang-server "ccls-wrapper" "ccls-wrapper or clangd-wrapper")
-(defun zz:c-eglot-enable ()
+(defvar zz/c-lang-server "ccls-wrapper" "ccls-wrapper or clangd-wrapper")
+(defun zz/c-eglot-enable ()
   "set variables and hook for eglot c/c++ IDE"
   (interactive)
   (setq company-backends
         (cons 'company-capf
               (remove 'company-capf company-backends)))
   (add-to-list 'eglot-server-programs
-               `((c++-mode c-mode) ,zz:c-lang-server))
+               `((c++-mode c-mode) ,zz/c-lang-server))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (message "Use eglot with %s for c/c++ mode"
-           zz:c-lang-server))
-(defun zz:c-eglot-disable ()
+           zz/c-lang-server))
+(defun zz/c-eglot-disable ()
   "remove hook for c/c++"
   (interactive)
   (remove-hook 'c-mode-hook 'eglot-ensure)
@@ -154,7 +154,7 @@
 
 ;;https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-clangd/
-(defun zz:c-lsp-enable ()
+(defun zz/c-lsp-enable ()
   "set variables and hook for lsp c/c++ IDE"
   (interactive)
   (setq company-backends
@@ -162,24 +162,24 @@
               (remove 'company-capf company-backends)))
   (require 'lsp-clangd)
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection zz:c-lang-server)
+   (make-lsp-client :new-connection (lsp-tramp-connection zz/c-lang-server)
                     :major-modes '(c-mode c++-mode)
                     :remote? t
                     :server-id 'clangd-remote))
   (add-hook 'c-mode-hook 'lsp-deferred)
   (add-hook 'c++-mode-hook 'lsp-deferred)
   (message "Use lsp-mode with %s for c/c++ mode"
-           zz:c-lang-server))
-(defun zz:c-lsp-disable ()
+           zz/c-lang-server))
+(defun zz/c-lsp-disable ()
   "remove hook for lsp c/c++"
   (interactive)
   (remove-hook 'c-mode-hook 'lsp-deferred)
   (remove-hook 'c++-mode-hook 'lsp-deferred))
 
-(defvar zz:c-eglot-p t "t for eglot, nil for lsp-mode")
-(if zz:c-eglot-p
-  (zz:c-eglot-enable)
-  (zz:c-lsp-enable))
+(defvar zz/c-eglot-p t "t for eglot, nil for lsp-mode")
+(if zz/c-eglot-p
+  (zz/c-eglot-enable)
+  (zz/c-lsp-enable))
 
 
 (provide 'c-setting)

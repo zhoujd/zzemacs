@@ -2,11 +2,11 @@
 ;;;
 
 ;;typit
-(zz:load-path "site-lisp/typit")
+(zz/load-path "site-lisp/typit")
 (require 'typit)
 
 ;;typing
-(zz:load-path "site-lisp/typing")
+(zz/load-path "site-lisp/typing")
 (require 'typing-practice)
 (require 'typing)
 

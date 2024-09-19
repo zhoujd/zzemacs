@@ -1,7 +1,7 @@
 ;;;; env-setting.el --- env config file
 ;;
 
-(defun zz:add-os-env (path name)
+(defun zz/add-os-env (path name)
   "add path to env name"
   (when (file-exists-p path)
     (let ((env (getenv name)))
@@ -9,23 +9,23 @@
                 (not (string-match path env)))
         (setenv name (concat path path-separator env))))))
 
-(defun zz:add-os-path (path)
+(defun zz/add-os-path (path)
   "add path to PATH"
   (interactive "DDirectory: ")
-  (zz:add-os-env path "PATH")
+  (zz/add-os-env path "PATH")
   (setq exec-path (cons path exec-path)))
 
-(defun zz:add-lib-path (path)
+(defun zz/add-lib-path (path)
   "add path to LD_LIBRARY_PATH"
   (interactive "DDirectory: ")
-  (zz:add-os-env path "LD_LIBRARY_PATH"))
+  (zz/add-os-env path "LD_LIBRARY_PATH"))
 
-(defun zz:add-pkg-path (path)
+(defun zz/add-pkg-path (path)
   "add path to PKG_CONFIG_PATH"
   (interactive "DDirectory: ")
-  (zz:add-os-env path "PKG_CONFIG_PATH"))
+  (zz/add-os-env path "PKG_CONFIG_PATH"))
 
-(defvar zz:env-path
+(defvar zz/env-path
   (if-ms-windows
    (progn
      (list
@@ -48,9 +48,9 @@
       )))
   "add to path and exec-path")
 
-(mapc #'zz:add-os-path zz:env-path)
+(mapc #'zz/add-os-path zz/env-path)
 
-(defun zz:add-os-proxy (proxy)
+(defun zz/add-os-proxy (proxy)
   "add url proxy"
   (interactive "sProxy: ")
   (setq url-proxy-services
@@ -58,17 +58,17 @@
           ("http" . ,proxy)
           ("https" . ,proxy))))
 
-(defun zz:trim-address (address)
+(defun zz/trim-address (address)
   "Trim proxy ADDRESS from '<scheme>://<host>:<port>' into '<host>:<port>'"
   (if (stringp address)
       (car (last (split-string address "//")))
       address))
 
-(defun zz:use-os-proxy ()
+(defun zz/use-os-proxy ()
   "Use system environment proxy"
   (interactive)
-  (let ((http_proxy (zz:trim-address (getenv "HTTP_PROXY")))
-        (https_proxy (zz:trim-address (getenv "HTTPS_PROXY")))
+  (let ((http_proxy (zz/trim-address (getenv "HTTP_PROXY")))
+        (https_proxy (zz/trim-address (getenv "HTTPS_PROXY")))
         (no_proxy (getenv "NO_PROXY")))
     (when (and (> (length http_proxy) 0)
                (> (length https_proxy) 0))
@@ -78,7 +78,7 @@
               ("https" . ,https_proxy)))
       (message "Use OS proxy: %s" http_proxy))))
 
-(zz:use-os-proxy)
+(zz/use-os-proxy)
 
 (setenv "EDITOR" "emacsclient -t")
 (setenv "VISUAL" "emacsclient -c -a emacs")

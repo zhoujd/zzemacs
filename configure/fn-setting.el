@@ -1,14 +1,14 @@
 ;;;; fn-setting.el --- key function config file
 ;;;
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'apply-keys)
 
 (define-fn-key (gethash "f1" fn-key-table)
   [f1]              help-map
   [S-f1]            'helm-describe-modes
   [C-f1]            'helm-descbinds
-  [M-f1]            'zz:ctrl-z-help
+  [M-f1]            'zz/ctrl-z-help
   (kbd "C-x <f1>")  nil
   (kbd "C-c <f1>")  nil
   "f1 key binding")
@@ -23,7 +23,7 @@
   "f2 key binding")
 
 (define-fn-key (gethash "f3" fn-key-table)
-  [f3]              'zz:last-buffer-go
+  [f3]              'zz/last-buffer-go
   [S-f3]            'helm-bookmarks
   [C-f3]            'helm-projectile-find-file
   [M-f3]            'helm-projectile-ag
@@ -34,8 +34,8 @@
 (define-fn-key (gethash "f4" fn-key-table)
   [f4]              f4-map
   [S-f4]            'helm-recentb
-  [C-f4]            'zz:helm-find
-  [M-f4]            'zz:helm-grep-ag
+  [C-f4]            'zz/helm-find
+  [M-f4]            'zz/helm-grep-ag
   (kbd "C-x <f4>")  'vr/replace
   (kbd "C-c <f4>")  'vr/query-replace
   "f4 key binding")
@@ -50,17 +50,17 @@
   "f5 key binding")
 
 (define-fn-key (gethash "f6" fn-key-table)
-  [f6]              'zz:get-term
-  [S-f6]            'zz:cd-term
+  [f6]              'zz/get-term
+  [S-f6]            'zz/cd-term
   [C-f6]            'multi-term-next
   [M-f6]            'multi-term-prev
-  (kbd "C-x <f6>")  'zz:switch-to-term
-  (kbd "C-c <f6>")  'zz:get-term
+  (kbd "C-x <f6>")  'zz/switch-to-term
+  (kbd "C-c <f6>")  'zz/get-term
   "f6 key binding")
 
 (define-fn-key (gethash "f7" fn-key-table)
-  [f7]              'zz:compile
-  [S-f7]            'zz:switch-to-compile
+  [f7]              'zz/compile
+  [S-f7]            'zz/switch-to-compile
   [C-f7]            'next-error
   [M-f7]            'previous-error
   (kbd "C-x <f7>")  'magit-dispatch
@@ -77,12 +77,12 @@
   "f8 key binding")
 
 (define-fn-key (gethash "f9" fn-key-table)
-  [f9]              (zz:quick-shell zz:shell "*shell*")
-  [S-f9]            'zz:get-shell
-  [C-f9]            'zz:switch-to-scratch
-  [M-f9]            'zz:popup-term
-  (kbd "C-x <f9>")  'zz:switch-to-shell
-  (kbd "C-c <f9>")  'zz:remote-shell
+  [f9]              (zz/quick-shell zz/shell "*shell*")
+  [S-f9]            'zz/get-shell
+  [C-f9]            'zz/switch-to-scratch
+  [M-f9]            'zz/popup-term
+  (kbd "C-x <f9>")  'zz/switch-to-shell
+  (kbd "C-c <f9>")  'zz/remote-shell
   "f9 key binding")
 
 (define-fn-key (gethash "f10" fn-key-table)
@@ -108,8 +108,8 @@
   [S-f12]           'neotree-dir
   [C-f12]           'deadgrep
   [M-f12]           'helm-ag
-  (kbd "C-x <f12>") 'zz:flyspell-toggle
-  (kbd "C-c <f12>") 'zz:transparency-toggle
+  (kbd "C-x <f12>") 'zz/flyspell-toggle
+  (kbd "C-c <f12>") 'zz/transparency-toggle
   "f12 key binding")
 
 

@@ -3,7 +3,7 @@
 ;;https://github.com/chrisbarrett/kubernetes-el
 ;;magit-style interface to the Kubernetes
 ;M-x kubernetes-overview
-(zz:load-path "site-lisp/kubernetes-el")
+(zz/load-path "site-lisp/kubernetes-el")
 (require 'kubernetes)
 
 ;;https://github.com/abrochard/kubel

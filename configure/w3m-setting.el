@@ -3,14 +3,14 @@
 ;;;https://github.com/emacs-w3m/emacs-w3m
 ;;;https://melpa.org/#/helm-w3m
 
-(zz:load-path "site-lisp/w3m")
+(zz/load-path "site-lisp/w3m")
 (require 'w3m-load)
 
-(defvar zz:w3m-path (concat zzemacs-path "/site-lisp/w3m")
+(defvar zz/w3m-path (concat zzemacs-path "/site-lisp/w3m")
   "emacs-w3m path")
 
 ;;build w3m
-(defun zz:w3m-build-in-emacs ()
+(defun zz/w3m-build-in-emacs ()
   "compile emacs-w3m"
   (interactive)
   (apply
@@ -28,7 +28,7 @@
             (cons "." 'browse-url-default-browser)))
 
 ;;allow browsing of local files /usr/lib/w3m/cgi-bin/dirlist.cgi
-(setq w3m-dirlist-cgi-program (concat zz:w3m-path "/cgi-bin/dirlist.cgi"))
+(setq w3m-dirlist-cgi-program (concat zz/w3m-path "/cgi-bin/dirlist.cgi"))
 
 ;;causes the return key to submit a form
 (setq w3m-use-form t)
@@ -44,10 +44,10 @@
 (setq w3m-view-this-url-new-session-in-background t)
 
 ;;icons path
-(setq w3m-icon-directory (concat zz:w3m-path "/icons"))
+(setq w3m-icon-directory (concat zz/w3m-path "/icons"))
 
 ;;http_proxy and no_proxy
-(defun zz:w3m-os-proxy ()
+(defun zz/w3m-os-proxy ()
   (interactive)  
   (let ((http_proxy (getenv "HTTP_PROXY"))
         (no_proxy (getenv "NO_PROXY")))

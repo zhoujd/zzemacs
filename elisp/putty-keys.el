@@ -2,7 +2,7 @@
 ;;putty keys decode
 ;;http://the.earth.li/~sgtatham/putty/0.62/htmldoc/Chapter4.html#config-keyboard
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 
 (apply-keys-to-map
  input-decode-map

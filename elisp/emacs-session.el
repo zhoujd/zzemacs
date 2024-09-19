@@ -21,22 +21,22 @@
         (desktop-remove)
         (setq desktop-dirname desktop-dirname-tmp)))
 
-(defun zz:session-saved-p ()
+(defun zz/session-saved-p ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
 
 ;; restore the desktop manually
-(defun zz:session-restore ()
+(defun zz/session-restore ()
   "Restore a saved emacs session."
   (interactive)
-  (if (zz:session-saved-p)
+  (if (zz/session-saved-p)
       (desktop-read)
     (message "No desktop found.")))
 
 ;; use session-save to save the desktop manually
-(defun zz:session-save ()
+(defun zz/session-save ()
   "Save an emacs session."
   (interactive)
-  (if (zz:session-saved-p)
+  (if (zz/session-saved-p)
       (if (y-or-n-p "Overwrite existing desktop? ")
       (desktop-save-in-desktop-dir)
     (message "Session not saved."))
@@ -45,14 +45,14 @@
 ;; ask user whether to restore desktop at start-up
 (add-hook 'after-init-hook
           (lambda ()
-            (if (zz:session-saved-p)
+            (if (zz/session-saved-p)
                 (if (y-or-n-p "Restore desktop? ")
-                    (zz:session-restore)))))
+                    (zz/session-restore)))))
 
 ;;save desktop when exit
-(defvar zz:session-exit-p nil "t for enable, nil for disable")
-(when zz:session-exit-p
-  (add-hook 'kill-emacs-hook (lambda () (zz:session-save))))
+(defvar zz/session-exit-p nil "t for enable, nil for disable")
+(when zz/session-exit-p
+  (add-hook 'kill-emacs-hook (lambda () (zz/session-save))))
 
 
 (provide 'emacs-session)

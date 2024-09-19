@@ -4,8 +4,8 @@
 ;;https://github.com/tumashu/pyim
 ;;https://github.com/tumashu/pyim-basedict
 ;;M-x toggle-input-method"  "C-\\"
-(zz:load-path "site-lisp/pyim")
-(zz:load-path "site-lisp/pyim-basedict")
+(zz/load-path "site-lisp/pyim")
+(zz/load-path "site-lisp/pyim-basedict")
 (require 'pyim)
 (require 'pyim-basedict)
 (pyim-basedict-enable)

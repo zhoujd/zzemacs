@@ -1,8 +1,8 @@
 ;;;; other-setting.el --- other setting file
 ;;;
 
-(zz:load-path "site-lisp")
-(zz:load-path "elisp")
+(zz/load-path "site-lisp")
+(zz/load-path "elisp")
 
 ;; ensure environment variables inside Emacs
 (require 'exec-path-from-shell)
@@ -63,7 +63,7 @@
 (setq fci-rule-color "gray30")
 
 ;;paren switch
-(defun zz:match-paren (arg)
+(defun zz/match-paren (arg)
   "Go to the matching paren if on a paren; otherwise insert %."
   (interactive "p")
   (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
@@ -83,18 +83,18 @@
                         ".emacs.d/"
                         ".git/"
                         ".cache/"))
-(defun zz:recenf-auto-save ()
+(defun zz/recenf-auto-save ()
   (let ((save-silently t))
     (recentf-save-list)))
 (setq recentf-auto-save-timer
-      (run-with-idle-timer 30 t 'zz:recenf-auto-save))
+      (run-with-idle-timer 30 t 'zz/recenf-auto-save))
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)
   "Move current buffer to the beginning of the recent list after killed."
   (recentf-track-opened-file))
 
-(defun zz:recentf-files ()
+(defun zz/recentf-files ()
   (interactive)
    (let* ((all-files recentf-list)
           (tocpl (mapcar (lambda (x) (cons (file-name-nondirectory x) x)) all-files))
@@ -102,7 +102,7 @@
           (fname (completing-read (car prompt) (cdr prompt) nil nil)))
      (find-file (cdr (assoc-ignore-representation fname tocpl)))))
 
-(defun zz:find-last-buffer (arg)
+(defun zz/find-last-buffer (arg)
   "Re-open the last buffer killed. With ARG, re-open the nth buffer."
   (interactive "p")
   (let ((recently-killed-list (copy-sequence recentf-list))
@@ -138,7 +138,7 @@
 (setq bm-highlight-style 'bm-highlight-only-fringe)
 
 ;show *bm-bookmarks* buffer
-(defun zz:bm-menu-show ()
+(defun zz/bm-menu-show ()
   (interactive)
   (bm-show-all)
   (delete-other-windows))
@@ -200,12 +200,12 @@
             ))
 
 ;;ido-find-file
-(defun zz:find-file ()
+(defun zz/find-file ()
   (interactive)
   (with-ido-read
    (ido-find-file)))
 
-(defun zz:dired ()
+(defun zz/dired ()
   (interactive)
   (with-ido-read
    (ido-dired)))
@@ -236,14 +236,14 @@
 ;;bookmark plus
 ;;https://www.emacswiki.org/emacs/BookmarkPlus
 ;;https://github.com/emacsmirror/bookmark-plus
-(zz:load-path "site-lisp/bookmark-plus")
+(zz/load-path "site-lisp/bookmark-plus")
 (require 'bookmark+)
 
 (custom-set-faces
  '(bmkp-heading ((t (:foreground "White"))))
  '(bmkp-local-file-without-region ((t nil))))
 
-(defun zz:bmkp-default-name ()
+(defun zz/bmkp-default-name ()
   (let* ((ff    (thing-at-point 'symbol))
          (line  (format "%s:%d" (bookmark-buffer-name) (line-number-at-pos))))
     (if ff (concat (string-trim ff) ":" line) line)))
@@ -252,14 +252,14 @@
       bookmark-bmenu-file-column 50
       bmkp-bmenu-state-file "~/.emacs.d/.emacs-bmk-bmenu-state.el"
       bmkp-bmenu-commands-file "~/.emacs.d/.emacs-bmk-bmenu-commands.el"
-      bmkp-new-bookmark-default-names (list 'zz:bmkp-default-name))
+      bmkp-new-bookmark-default-names (list 'zz/bmkp-default-name))
 
 ;;expand-region
-(zz:load-path "site-lisp/expand-region")
+(zz/load-path "site-lisp/expand-region")
 (require 'expand-region)
 
 ;;smartparens
-(zz:load-path "site-lisp/smartparens")
+(zz/load-path "site-lisp/smartparens")
 (require 'smartparens-config)
 ;; when you press RET, the curly braces automatically
 ;; add another newline
@@ -282,7 +282,7 @@
 (require 'igrep)
 
 ;;wgrep
-(zz:load-path "site-lisp/wgrep")
+(zz/load-path "site-lisp/wgrep")
 (require 'wgrep)
 
 ;;deadgrep
@@ -295,7 +295,7 @@
     (concat s)))
 
 ;;rg
-(zz:load-path "site-lisp/rg")
+(zz/load-path "site-lisp/rg")
 (require 'rg)
 (rg-enable-menu)
 
@@ -304,7 +304,7 @@
 (escreen-install)
 
 ;;iedit
-(zz:load-path "site-lisp/iedit")
+(zz/load-path "site-lisp/iedit")
 (require 'iedit)
 (defun iedit-dwim (arg)
   "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
@@ -324,14 +324,14 @@
 
 ;;emacs-calfw
 ;;https://en.wikipedia.org/wiki/Week#Week_numbering
-(zz:load-path "site-lisp/emacs-calfw")
+(zz/load-path "site-lisp/emacs-calfw")
 (require 'calfw)
 
 ;;ssh-tunnels
 (require 'ssh-tunnels)
 
 ;;backlight
-;(zz:load-path "site-lisp/backlight")
+;(zz/load-path "site-lisp/backlight")
 ;(require 'backlight)
 
 ;;whitespace cleanup mode
@@ -390,7 +390,7 @@
 (require 'projectile-ripgrep)
 
 ;;logview
-(zz:load-path "site-lisp/datetime")
+(zz/load-path "site-lisp/datetime")
 (require 'logview)
 
 ;;google this
@@ -398,7 +398,7 @@
 (google-this-mode t)
 
 ;;neotree
-(zz:load-path "site-lisp/neotree")
+(zz/load-path "site-lisp/neotree")
 (require 'neotree)
 (setq neo-window-width 30
       neo-window-fixed-size nil
@@ -415,7 +415,7 @@
 (require 'git-annex)
 
 ;;ssh-config-mode
-(zz:load-path "site-lisp/ssh-config")
+(zz/load-path "site-lisp/ssh-config")
 (require 'ssh-config-mode)
 (add-to-list 'auto-mode-alist
              '("/\\.ssh/config\\(\\.d/.*\\.conf\\)?\\'" . ssh-config-mode))

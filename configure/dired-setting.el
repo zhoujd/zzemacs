@@ -54,12 +54,12 @@
             (defkeys-map dired-mode-map
               ("s"   dired-sort-map))
             (defkeys-map dired-sort-map
-              ("s"   (zz:dired-sort zz:dired-sort-size     "S"))
-              ("x"   (zz:dired-sort zz:dired-sort-extend   "X"))
-              ("t"   (zz:dired-sort zz:dired-sort-time     "t"))
-              ("n"   (zz:dired-sort zz:dired-sort-name     ""))
-              ("g"   (zz:dired-sort zz:dired-sort-no-group "G"))
-              ("h"   (zz:dired-sort zz:dired-sort-human    "h"))
+              ("s"   (zz/dired-sort zz/dired-sort-size     "S"))
+              ("x"   (zz/dired-sort zz/dired-sort-extend   "X"))
+              ("t"   (zz/dired-sort zz/dired-sort-time     "t"))
+              ("n"   (zz/dired-sort zz/dired-sort-name     ""))
+              ("g"   (zz/dired-sort zz/dired-sort-no-group "G"))
+              ("h"   (zz/dired-sort zz/dired-sort-human    "h"))
               )))
 
 ;;https://github.com/muennich/sxiv
@@ -101,7 +101,7 @@
 (defkeys-map global-map
   ((kbd "C-x C-j") 'direx:jump-to-directory))
 
-(zz:load-path "site-lisp/dired-hacks")
+(zz/load-path "site-lisp/dired-hacks")
 (require 'dired-filter)
 
 ;;image dired
@@ -110,7 +110,7 @@
 (setq image-dired-thumb-size 130)
 
 ;;dired play with vlc/mpv
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'dired-play)
 (defkeys-map dired-mode-map
   ((kbd "/") dired-filter-map)
@@ -124,7 +124,7 @@
 (dired-launch-enable)
 
 ;;dirvish
-;(zz:load-path "site-lisp/dirvish")
+;(zz/load-path "site-lisp/dirvish")
 ;(require 'dirvish)
 
 ;;dired-rsync

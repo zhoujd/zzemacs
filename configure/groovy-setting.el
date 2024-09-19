@@ -6,7 +6,7 @@
 ;;https://groovy.apache.org/download.html
 
 ;;groovy mode
-(zz:load-path "site-lisp/groovy")
+(zz/load-path "site-lisp/groovy")
 (require 'groovy-mode)
 (require 'inf-groovy)
 (setq auto-mode-alist

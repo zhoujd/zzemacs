@@ -2,7 +2,7 @@
 ;;;
 
 ;;unicad enable/disable switch
-(defun zz:unicad-switch ()
+(defun zz/unicad-switch ()
   "unicad enable/disable switch"
   (interactive)
   (if (eq t unicad-global-enable)
@@ -12,75 +12,75 @@
            (message "unicad is enabled"))))
 
 ;;using spaces repalce tabs
-(defun zz:untabify-buffer ()
+(defun zz/untabify-buffer ()
   "untabify whole buffer"
   (interactive)
   (untabify (point-min) (point-max))
   (save-buffer))
 
 ;;using tabs repalce spaces
-(defun zz:tabify-buffer ()
+(defun zz/tabify-buffer ()
   "tabify whole buffer"
   (interactive)
   (tabify (point-min) (point-max))
   (save-buffer))
 
-(defun zz:cleanup-buffer ()
+(defun zz/cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer."
   (interactive)
   (indent-buffer)
-  (zz:untabify-buffer)
+  (zz/untabify-buffer)
   (delete-trailing-whitespace))
 
 ;;File coding for Unix Dos Mac switcher
-(defvar zz:os-flag 0)
-(defun zz:os-file-switch ()
+(defvar zz/os-flag 0)
+(defun zz/os-file-switch ()
     "for unix dos max"
     (interactive)
-    (if (> zz:os-flag 2)
-      (setq zz:os-flag 0))
-    (cond ((eq zz:os-flag 0)
+    (if (> zz/os-flag 2)
+      (setq zz/os-flag 0))
+    (cond ((eq zz/os-flag 0)
            (set-buffer-file-coding-system 'unix 't)
            (message "end line with LF"))
-          ((eq zz:os-flag 1)
+          ((eq zz/os-flag 1)
            (set-buffer-file-coding-system 'dos 't)
            (message "end line with CRLF"))
-          ((eq zz:os-flag 2)
+          ((eq zz/os-flag 2)
            (set-buffer-file-coding-system 'mac 't)
            (message "end line with CR")))
-    (setq zz:os-flag (+ zz:os-flag 1)))
+    (setq zz/os-flag (+ zz/os-flag 1)))
 
 ;;; Maximum Windows Frame
-(defvar zz:fullscreen-p t "Check if fullscreen is on or off")
-(defun zz:sub-fullscreen ()
+(defvar zz/fullscreen-p t "Check if fullscreen is on or off")
+(defun zz/sub-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen)
                            nil
                            'fullboth)))
 
-(defun zz:non-fullscreen ()
+(defun zz/non-fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
           ;; WM_SYSCOMMAND restore #xf120
           (w32-send-sys-command 61728)
-      (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz/sub-fullscreen)))
 
-(defun zz:fullscreen ()
+(defun zz/fullscreen ()
   (interactive)
   (if (fboundp 'w32-send-sys-command)
           ;; WM_SYSCOMMAND maximaze #xf030
           (w32-send-sys-command 61488)
-      (run-with-idle-timer 0.1 nil 'zz:sub-fullscreen)))
+      (run-with-idle-timer 0.1 nil 'zz/sub-fullscreen)))
 
-(defun zz:toggle-fullscreen ()
+(defun zz/toggle-fullscreen ()
   (interactive)
-  (setq zz:fullscreen-p (not zz:fullscreen-p))
-  (if zz:fullscreen-p
-          (zz:non-fullscreen)
-        (zz:fullscreen)))
+  (setq zz/fullscreen-p (not zz/fullscreen-p))
+  (if zz/fullscreen-p
+          (zz/non-fullscreen)
+        (zz/fullscreen)))
 
-(defun zz:toggle-maxframe ()
+(defun zz/toggle-maxframe ()
   (interactive)
   (if-ms-windows
    (progn
@@ -91,45 +91,45 @@
    ))
 
 ;;display current buffer name
-(defun zz:display-buffer-name ()
+(defun zz/display-buffer-name ()
   (interactive)
   (message (buffer-file-name (current-buffer))))
 
 ;;set file to utf-8
-(defun zz:utf-8 ()
+(defun zz/utf-8 ()
   (interactive)
   (set-buffer-file-coding-system 'utf-8)
   (save-buffer)
   (message "this file to utf-8 ok!"))
 
-(defun zz:switch-to-scratch ()
+(defun zz/switch-to-scratch ()
   "switch to *scratch* buffer"
   (interactive)
   (switch-to-buffer "*scratch*")
   (message "switch to *scratch*"))
 
-(defun zz:compile ()
+(defun zz/compile ()
   "Run ido directory compile"
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
     (call-interactively 'compile)))
 
-(defun zz:switch-to-compile ()
+(defun zz/switch-to-compile ()
   "switch to *compilation* buffer"
   (interactive)
   (switch-to-buffer "*compilation*")
   (message "switch to *compilation*"))
 
-(defun zz:open-with-gvim()
+(defun zz/open-with-gvim()
   "Edit current buffer file with gvim"
   (interactive)
   (start-process  "gvim"
                   nil
                   "gvim"
-                  (zz:display-buffer-name)))
+                  (zz/display-buffer-name)))
 
-(defun zz:open-with-terminal()
+(defun zz/open-with-terminal()
   "Open terminal to current dired"
   (interactive)
   (start-process "urxvt"
@@ -138,7 +138,7 @@
                  "-cd"
                  default-directory))
 
-(defun zz:open-with-nautilus()
+(defun zz/open-with-nautilus()
   "Open nautilus on current dired"
   (interactive)
   (start-process  "nautilus"
@@ -149,37 +149,37 @@
                   ))
 
 ;;go to last buffer
-(defun zz:last-buffer-go ()
+(defun zz/last-buffer-go ()
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) t)))
 
 ;;go to last frame
-(defvar zz:switch-frame-flag t)
-(defun zz:last-frame-go ()
+(defvar zz/switch-frame-flag t)
+(defun zz/last-frame-go ()
   (interactive)
-  (if zz:switch-frame-flag
+  (if zz/switch-frame-flag
       (other-frame +1)
       (other-frame -1))
-  (setq zz:switch-frame-flag (not zz:switch-frame-flag)))
+  (setq zz/switch-frame-flag (not zz/switch-frame-flag)))
 
-(defun zz:line-to-top-of-window ()
+(defun zz/line-to-top-of-window ()
     (interactive)
     (recenter 0))
 
 ;;run before shutting down X!
-(defun zz:delete-all-x-frames ()
+(defun zz/delete-all-x-frames ()
   (mapcar (lambda (frame)
             (if (eq 'x (frame-live-p frame))
                 (delete-frame frame)))
           (frame-list)))
 
-(defun zz:make-frames ()
+(defun zz/make-frames ()
   (interactive)
   (make-frame '((name . "emacs main")))
   (make-frame '((name . "emacs secondary"))))
 
 ;;file transform
-(defun zz:dos2unix-1 (buffer)
+(defun zz/dos2unix-1 (buffer)
   "Automate M-% C-q C-m RET RET !"
   (interactive "*b")
   (save-excursion
@@ -187,18 +187,18 @@
     (while (search-forward (string ?\C-m) nil t)
       (replace-match "" nil t))))
 
-(defun zz:dos2unix ()
+(defun zz/dos2unix ()
   "Automate M-% C-q C-m RET RET !"
   (interactive)
   (set-buffer-file-coding-system 'unix))
 
-(defun zz:unix2dos ()
+(defun zz/unix2dos ()
   "Automate M-% C-q C-j RET C-q C-m C-q C-j RET !"
   (interactive)
   (set-buffer-file-coding-system 'dos))
 
 ;;occur setting
-(defun zz:occur-at-point (&optional arg)
+(defun zz/occur-at-point (&optional arg)
   "Switch to *Occur* buffer, or run `occur'.
    Without a prefix argument, switch to the buffer.
    With a universal prefix argument, run occur again.
@@ -211,12 +211,12 @@
              (if (listp arg) 0 arg))))
 
 ;;open special info file
-(defun zz:open-info-file (dir-name)
+(defun zz/open-info-file (dir-name)
   "Create tags file."
   (interactive "FInfo file: ")
   (info dir-name))
 
-(defun zz:insert-numbers (arg)
+(defun zz/insert-numbers (arg)
   "insert number into a file, starting with 1   -mdf"
   (interactive "NHow many numbers to insert: ")
   (setq i 0)
@@ -228,14 +228,14 @@
     (beginning-of-line 0)
     ))
 
-(defun zz:trans-path-sep (path origin-sep target-sep)
+(defun zz/trans-path-sep (path origin-sep target-sep)
   (let ((tmp ""))
     (dolist (item (split-string path origin-sep))
       (setq tmp (concat tmp item target-sep)))
     (setq tmp (substring tmp 0 -2))
     tmp))
 
-(defun zz:google ()
+(defun zz/google ()
   "Google the selected region if any, display a query prompt otherwise."
   (interactive)
   (browse-url
@@ -245,7 +245,7 @@
          (buffer-substring (region-beginning) (region-end))
        (read-string "Google: "))))))
 
-(defun zz:baidu ()
+(defun zz/baidu ()
   "baidu the selected region if any, display a query prompt otherwise."
   (interactive)
   (browse-url
@@ -256,7 +256,7 @@
        (read-string "Baidu: "))))))
 
 ;;delete the current file
-(defun zz:delete-this-file ()
+(defun zz/delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
   (or (buffer-file-name) (error "No file is currently being edited"))
@@ -266,7 +266,7 @@
     (kill-this-buffer)))
 
 ;;rename the current file
-(defun zz:rename-this-file-and-buffer (new-name)
+(defun zz/rename-this-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "sNew name: ")
   (let ((name (buffer-name))
@@ -283,7 +283,7 @@
         (set-buffer-modified-p nil)))))
 
 ;;browse current HTML file
-(defun zz:browse-current-file ()
+(defun zz/browse-current-file ()
   "Open the current file as a URL using `browse-url'."
   (interactive)
   (let ((file-name (buffer-file-name)))
@@ -293,14 +293,14 @@
 
 ;;enabling iimage-mode automatically
 ;;http://shallowsky.com/blog/linux/editors/graphics-in-emacs.html
-(defun zz:enable-iimage()
+(defun zz/enable-iimage()
   "Enable iimage mode"
   (interactive)
   (turn-on-iimage-mode)
   (iimage-mode-buffer t))
 
 ;;refresh iimages
-(defun zz:refresh-iimages ()
+(defun zz/refresh-iimages ()
   "Only way I've found to refresh iimages (without also recentering)"
   (interactive)
   (clear-image-cache nil)
@@ -309,7 +309,7 @@
   (message "Refreshed images"))
 
 ;;edit current file with sudo
-(defun zz:prepare-tramp-sudo-string (tempfile)
+(defun zz/prepare-tramp-sudo-string (tempfile)
   (if (file-remote-p tempfile)
       (let* ((parts (s-split ":" tempfile))
              (hostname (nth 1 parts))
@@ -317,21 +317,21 @@
         (concat "/ssh" ":" hostname "|" "sudo" ":" hostname ":" filepath))
       (concat "/sudo:root@localhost:" tempfile)))
 
-(defun zz:sudo-edit-current-file ()
+(defun zz/sudo-edit-current-file ()
   (interactive)
   (let ((my-file-name) ; fill this with the file to open
         (position))    ; if the file is already open save position
     (if (equal major-mode 'dired-mode) ; test if we are in dired-mode
         (progn
           (setq my-file-name (dired-get-file-for-visit))
-          (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name)))
+          (find-alternate-file (zz/prepare-tramp-sudo-string my-file-name)))
         (progn
           (setq my-file-name (buffer-file-name)
                 position (point))
-          (find-alternate-file (zz:prepare-tramp-sudo-string my-file-name))
+          (find-alternate-file (zz/prepare-tramp-sudo-string my-file-name))
           (goto-char position)))))
 
-(defun zz:copy-filename ()
+(defun zz/copy-filename ()
   "Show the full path to the current file
      in the minibuffer and copy to clipboard."
   (interactive)
@@ -342,18 +342,18 @@
           (kill-new file-name))
         (message "Buffer not visiting a file"))))
 
-(defun zz:kill-this-buffer ()
+(defun zz/kill-this-buffer ()
   (interactive)
   (kill-buffer (current-buffer)))
 
-(defun zz:delete-process ()
+(defun zz/delete-process ()
   (interactive)
   (let ((pname (ido-completing-read "Process Name: "
                                     (mapcar 'process-name (process-list)))))
     (delete-process (get-process pname))))
 
 ;;also handle undocumented (<active> <inactive>) form
-(defun zz:transparency-toggle ()
+(defun zz/transparency-toggle ()
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (set-frame-parameter
@@ -364,13 +364,13 @@
               100)
          '(90 . 90) '(100 . 100)))))
 
-(defun zz:transparency (value)
+(defun zz/transparency (value)
   "Sets the transparency of the frame window.
      0=transparent/100=opaque"
   (interactive "nTransparency Value 0 - 100 opaque:")
   (set-frame-parameter (selected-frame) 'alpha value))
 
-(defun zz:python-scratch ()
+(defun zz/python-scratch ()
   (interactive)
     (let (
           ;; Creates a new buffer object.
@@ -385,7 +385,7 @@
        (pop-to-buffer buf)
        )))
 
-(defun zz:sh-scratch ()
+(defun zz/sh-scratch ()
   (interactive)
     (let (
           ;; Creates a new buffer object.
@@ -400,11 +400,11 @@
        (pop-to-buffer buf)
        )))
 
-(defun zz:reload-emacs-configuration ()
+(defun zz/reload-emacs-configuration ()
   (interactive)
   (load-file "~/.emacs"))
 
-(defun zz:reopen-remote-file-as-root ()
+(defun zz/reopen-remote-file-as-root ()
   "Reopen a remote file as root over tramp."
   (find-alternate-file
    (let* ((parts (s-split ":" buffer-file-name))
@@ -412,20 +412,20 @@
           (filepath (car (last parts))))
      (concat "/ssh" ":" hostname "|" "sudo" ":" hostname ":" filepath))))
 
-(defun zz:reopen-file-as-root ()
+(defun zz/reopen-file-as-root ()
   "Reopen a local or remote file as root."
   (interactive)
   (if (file-remote-p default-directory)
-      (zz:reopen-remote-file-as-root)
+      (zz/reopen-remote-file-as-root)
       (crux-reopen-as-root)))
 
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
-(defun zz:display-current-time ()
+(defun zz/display-current-time ()
   (interactive)
   (message (format-time-string "%a %b %e %Y WW%U %l:%M %p")))
 
 ;;https://emacsredux.com/blog/2013/04/21/edit-files-as-root/
-(defun zz:sudo-find-file (file-name)
+(defun zz/sudo-find-file (file-name)
   "Like find file, but opens the file as root."
   (interactive "FSudo Find File: ")
   (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
@@ -434,13 +434,13 @@
 
 ;;https://www.emacswiki.org/emacs/misc-cmds.el
 ;;M-x: revert-buffer-with-coding-system <C-x RET r>
-(defun zz:revert-buffer ()
+(defun zz/revert-buffer ()
   "Revert buffer without confirmation."
   (interactive)
   (revert-buffer :ignore-auto :noconfirm))
 
 ;;add code review note
-(defun zz:add-code-review-note ()
+(defun zz/add-code-review-note ()
   "Add note for current file and line number"
   (interactive)
   (let ((file-name (buffer-file-name))
@@ -456,11 +456,11 @@
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
 
-(defun zz:close-all-buffers ()
+(defun zz/close-all-buffers ()
   (interactive)
   (mapc 'kill-buffer (buffer-list)))
 
-(defun zz:revert-all-buffers ()
+(defun zz/revert-all-buffers ()
   (interactive)
   (dolist (buf (buffer-list))
     (with-current-buffer buf
@@ -470,14 +470,14 @@
 ;;let F7, as in vim do, to insert the current
 ;;time-stamp, whose form is the same as vim do, into
 ;;current cursor point.
-(defun zz:insert-time-stamp ()
+(defun zz/insert-time-stamp ()
   "Insert date from the system time.
       Which is in \"\%Y-\%m-\%d \%H:\%M:\%S\" mode, as in vim do. "
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
 ;;; https://www.emacswiki.org/emacs/InsertFileName
-(defun zz:insert-file-name (filename &optional args)
+(defun zz/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point."
   (interactive "*fInsert file name: \nP")
   (cond ((eq '- args)
@@ -487,13 +487,13 @@
         (t
          (insert (file-relative-name filename)))))
 
-(defun zz:kill-all-buffer ()
+(defun zz/kill-all-buffer ()
   "Kill all buffer."
   (interactive)
   (dolist (buffer (buffer-list))
     (kill-buffer buffer)))
 
-(defun zz:kill-other-buffer ()
+(defun zz/kill-other-buffer ()
   "Close all of other buffer."
   (interactive)
   (dolist (buffer (delq (current-buffer) (buffer-list)))

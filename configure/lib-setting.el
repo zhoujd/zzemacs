@@ -1,7 +1,7 @@
 ;;;; lib-setting.el --- lib setting file
 ;;;
 
-(zz:load-path "site-lisp")
+(zz/load-path "site-lisp")
 
 ;;dash
 (require 'dash)
@@ -16,11 +16,11 @@
 (require 'crux)
 
 ;;compat
-(zz:load-path "site-lisp/compat")
+(zz/load-path "site-lisp/compat")
 (require 'compat)
 
 ;;hydra (already part of emacs)
-(zz:load-path "site-lisp/emacs-legcy/hydra")
+(zz/load-path "site-lisp/emacs-legcy/hydra")
 (require 'hydra)
 
 

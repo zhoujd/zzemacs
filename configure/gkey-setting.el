@@ -1,7 +1,7 @@
 ;;;; gkey-setting.el --- gdb key function config file
 ;;;
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'apply-keys)
 
 (apply-keys-to-map
@@ -45,27 +45,27 @@
  global-map
  (list
   (kbd "C-x C-b")   'ibuffer
-  (kbd "C-c b")     'zz:switch-to-shell
+  (kbd "C-c b")     'zz/switch-to-shell
   ))
 
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "1")         (zz:quick-shell zz:shell-f1  "*shell<f1>*")
-  (kbd "2")         (zz:quick-shell zz:shell-f2  "*shell<f2>*")
-  (kbd "3")         (zz:quick-shell zz:shell-f3  "*shell<f3>*")
-  (kbd "4")         (zz:quick-shell zz:shell-f4  "*shell<f4>*")
-  (kbd "5")         (zz:quick-shell zz:shell-f5  "*shell<f5>*")
-  (kbd "6")         (zz:quick-shell zz:shell-f6  "*shell<f6>*")
-  (kbd "7")         (zz:quick-shell zz:shell-f7  "*shell<f7>*")
-  (kbd "8")         (zz:quick-shell zz:shell-f8  "*shell<f8>*")
-  (kbd "9")         (zz:quick-shell zz:shell-f9  "*shell<f9>*")
-  (kbd "0")         'zz:cd-shell
-  (kbd "-")         'zz:local-shell
-  (kbd "=")         'zz:remote-shell
-  (kbd "\\")        'zz:get-shell
-  (kbd "DEL")       'zz:get-shell
-  (kbd "`")         'zz:home-shell
+  (kbd "1")         (zz/quick-shell zz/shell-f1  "*shell<f1>*")
+  (kbd "2")         (zz/quick-shell zz/shell-f2  "*shell<f2>*")
+  (kbd "3")         (zz/quick-shell zz/shell-f3  "*shell<f3>*")
+  (kbd "4")         (zz/quick-shell zz/shell-f4  "*shell<f4>*")
+  (kbd "5")         (zz/quick-shell zz/shell-f5  "*shell<f5>*")
+  (kbd "6")         (zz/quick-shell zz/shell-f6  "*shell<f6>*")
+  (kbd "7")         (zz/quick-shell zz/shell-f7  "*shell<f7>*")
+  (kbd "8")         (zz/quick-shell zz/shell-f8  "*shell<f8>*")
+  (kbd "9")         (zz/quick-shell zz/shell-f9  "*shell<f9>*")
+  (kbd "0")         'zz/cd-shell
+  (kbd "-")         'zz/local-shell
+  (kbd "=")         'zz/remote-shell
+  (kbd "\\")        'zz/get-shell
+  (kbd "DEL")       'zz/get-shell
+  (kbd "`")         'zz/home-shell
   ))
 
 (apply-keys-to-map
@@ -73,8 +73,8 @@
  (list
   (kbd "C-1")       'delete-window
   (kbd "C-2")       'delete-frame
-  (kbd "C-3")       'zz:last-frame-go
-  (kbd "C-4")       'zz:undo-kill-buffer
+  (kbd "C-3")       'zz/last-frame-go
+  (kbd "C-4")       'zz/undo-kill-buffer
   (kbd "C-5")       'gud-jump
   (kbd "C-6")       'gud-remove
   (kbd "C-7")       'gud-until
@@ -94,8 +94,8 @@
  (list
   (kbd "M-1")       'delete-other-windows
   (kbd "M-2")       'delete-other-frames
-  (kbd "M-3")       'zz:last-buffer-go
-  (kbd "M-4")       'zz:kill-this-buffer
+  (kbd "M-3")       'zz/last-buffer-go
+  (kbd "M-4")       'zz/kill-this-buffer
   (kbd "M-5")       'gud-cont
   (kbd "M-6")       'gud-break
   (kbd "M-7")       'gud-next

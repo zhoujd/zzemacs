@@ -5,11 +5,11 @@
 (require 'tramp-term)
 
 ;;tramp utils
-(zz:load-path "site-lisp/prf-tramp")
+(zz/load-path "site-lisp/prf-tramp")
 (require 'prf-tramp-friendly-parsing)
 
 ;;open localhost ansi-term
-(defun zz:get-local-term ()
+(defun zz/get-local-term ()
   (interactive)
   (ansi-term "bash" "localhost"))
 
@@ -18,7 +18,7 @@
  (setq popup-terminal-command '("cmd" "/c" "start"))
  (setq popup-terminal-command '("urxvt")))
 
-(defun zz:popup-term ()
+(defun zz/popup-term ()
   (interactive)
   (apply 'start-process "terminal" nil popup-terminal-command))
 
@@ -41,28 +41,28 @@
              (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
 
 ;;tmux prefix
-(defun zz:term-send-tmux ()
+(defun zz/term-send-tmux ()
   "Use term-send-raw-string \"\C-b\" for tmux"
   (interactive)
   (term-send-raw-string "\C-b"))
-(add-to-list 'term-bind-key-alist '("C-c C-b" . zz:term-send-tmux))
+(add-to-list 'term-bind-key-alist '("C-c C-b" . zz/term-send-tmux))
 
 ;;screen prefix
-(defun zz:term-send-screen ()
+(defun zz/term-send-screen ()
   "Use term-send-raw-string \"\C-a\" for screen"
   (interactive)
   (term-send-raw-string "\C-a"))
-(add-to-list 'term-bind-key-alist '("C-c C-a" . zz:term-send-screen))
+(add-to-list 'term-bind-key-alist '("C-c C-a" . zz/term-send-screen))
 
 ;;terminator setting
 (require 'terminator)
 (terminator-global-mode t)
 (terminator-basic-setup)
 (defkeys-map terminator-mode-map
-  ((kbd "C-c t 1") (zz:quick-termintor zz:terminator-0 0))
-  ((kbd "C-c t 2") (zz:quick-termintor zz:terminator-1 1))
-  ((kbd "C-c t 3") (zz:quick-termintor zz:terminator-2 2))
-  ((kbd "C-c t 4") (zz:quick-termintor zz:terminator-3 3)))
+  ((kbd "C-c t 1") (zz/quick-termintor zz/terminator-0 0))
+  ((kbd "C-c t 2") (zz/quick-termintor zz/terminator-1 1))
+  ((kbd "C-c t 3") (zz/quick-termintor zz/terminator-2 2))
+  ((kbd "C-c t 4") (zz/quick-termintor zz/terminator-3 3)))
 
 ;;set term buffer size to unlimited
 (add-hook 'term-mode-hook
@@ -76,12 +76,12 @@
      ;; ensure that scrolling doesn't break on output
      (setq term-scroll-to-bottom-on-output t)))
 
-(defun zz:term-send-clear ()
+(defun zz/term-send-clear ()
   "Send ESC in term mode."
   (interactive)
   (term-send-raw-string "\C-l"))
 
-(defun zz:kill-ring-save-switch-to-char-mode (b e)
+(defun zz/kill-ring-save-switch-to-char-mode (b e)
   "In line-mode, M-w also switches back to char-mode and goes back to prompt."
   (interactive "r")
   (kill-ring-save b e t)
@@ -98,44 +98,44 @@
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
-              ((kbd "C-c M-o") 'zz:term-send-clear)
+              ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
-              ((kbd "M-w")     'zz:kill-ring-save-switch-to-char-mode))
+              ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode))
             (defkeys-map term-mode-map
               ((kbd "C-c [")   'term-line-mode)
               ((kbd "C-c ]")   'term-char-mode)
-              ((kbd "C-c M-o") 'zz:term-send-clear)
+              ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
-              ((kbd "M-w")     'zz:kill-ring-save-switch-to-char-mode)
+              ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode)
               )))
 
-(defun zz:last-term-buffer (l)
+(defun zz/last-term-buffer (l)
   "Return most recently used term buffer."
   (when l
     (if (eq 'term-mode (with-current-buffer (car l) major-mode))
-        (car l) (zz:last-term-buffer (cdr l)))))
+        (car l) (zz/last-term-buffer (cdr l)))))
 
-(defun zz:open-term-dir (dir)
+(defun zz/open-term-dir (dir)
   (let ((multi-term-default-dir dir))
     (multi-term)
     (when (tramp-tramp-file-p dir)
       (tramp-term--initialize (prf/tramp/get-host-from-path dir)))))
 
-(defun zz:open-term-host (host)
+(defun zz/open-term-host (host)
   (multi-term)
   (sleep-for 0.1)
   (tramp-term--initialize host))
 
-(defun zz:switch-term ()
+(defun zz/switch-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
-  (let ((b (zz:last-term-buffer (buffer-list))))
+  (let ((b (zz/last-term-buffer (buffer-list))))
     (if (or (not b) (eq 'term-mode major-mode))
-        (zz:open-term-dir default-directory)
+        (zz/open-term-dir default-directory)
         (switch-to-buffer b))))
 
-(defun zz:multi-term-dedicated-toggle ()
+(defun zz/multi-term-dedicated-toggle ()
   "jump back to previous location after toggling ded term off"
   (interactive)
   (if (multi-term-dedicated-exist-p)
@@ -147,20 +147,20 @@
         (multi-term-dedicated-toggle))))
 
 ;;switch to named term
-(defun zz:term-list ()
-  (setq zz:terms ())
+(defun zz/term-list ()
+  (setq zz/terms ())
   (dolist (b (buffer-list))
     (if (string-match
          (format "^\\\*%s<[0-9]+>\\\*$" multi-term-buffer-name)
          (buffer-name b))
       (progn
-        (setq zz:terms (cons  (buffer-name b) zz:terms)))))
+        (setq zz/terms (cons  (buffer-name b) zz/terms)))))
   (catch 'return
-    (throw 'return zz:terms)))
+    (throw 'return zz/terms)))
 
-(defun zz:switch-to-term (buf-name)
+(defun zz/switch-to-term (buf-name)
   "switch to named shell buffer it not exist creat it by name"
-  (interactive (list (ido-completing-read "Term name: " (zz:term-list))))
+  (interactive (list (ido-completing-read "Term name: " (zz/term-list))))
   (if (get-buffer buf-name)
       (progn
         (switch-to-buffer buf-name)
@@ -181,7 +181,7 @@
 (add-hook 'term-mode-hook #'eterm-256color-mode)
 
 ;;remote ssh
-(defun zz:ssh (host port)
+(defun zz/ssh (host port)
   "Connect to a remote host by SSH."
   (interactive "sHost: \nsPort (default 22): ")
   (let* ((port (if (equal port "") "22" port))
@@ -194,45 +194,45 @@
     (switch-to-buffer (format "*%s*" buf))
     ))
 
-(defun zz:cd-term ()
+(defun zz/cd-term ()
   (interactive)
   (with-temp-buffer
     (let* ((default-directory (file-name-as-directory
                                (ido-read-directory-name "Directory: "))))
-      (zz:open-term-dir default-directory))))
+      (zz/open-term-dir default-directory))))
 
-(defun zz:home-term ()
+(defun zz/home-term ()
   (interactive)
   (with-temp-buffer
     (let* ((default-directory "~"))
-      (zz:open-term-dir default-directory))))
+      (zz/open-term-dir default-directory))))
 
-(defun zz:local-term ()
+(defun zz/local-term ()
   (interactive)
   (with-temp-buffer
     (when (tramp-tramp-file-p default-directory)
       (setq default-directory "~"))
     (let* ((default-directory (file-name-as-directory
                                (ido-read-directory-name "Directory: "))))
-      (zz:open-term-dir default-directory))))
+      (zz/open-term-dir default-directory))))
 
-(defun zz:get-term ()
+(defun zz/get-term ()
   "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
   (interactive)
-  (zz:cd-term))
+  (zz/cd-term))
 
-(defun zz:get-remote-term (host)
+(defun zz/get-remote-term (host)
   "Connect to a remote host by multi-term."
   (with-temp-buffer
     (let* ((multi-term-program "ssh")
            (multi-term-program-switches (format "%s" host))
            (default-directory "~"))
-      (zz:open-term-host host)
+      (zz/open-term-host host)
       (message "Remote %s ready" host)
       )))
 
-(defun zz:remote-term ()
+(defun zz/remote-term ()
   "Connect to a remote host by multi-term."
   (interactive)
   (with-temp-buffer
@@ -250,29 +250,29 @@
                                       (split-string
                                        (shell-command-to-string command)))))
 
-      (zz:get-remote-term host))))
+      (zz/get-remote-term host))))
 
-(defun zz:helm-cd-term (dir)
+(defun zz/helm-cd-term (dir)
   (interactive "DDirectory: ")
   (with-temp-buffer
     (let* ((default-directory dir))
-      (zz:open-term-dir default-directory))))
+      (zz/open-term-dir default-directory))))
 
-(defun zz:helm-local-term ()
+(defun zz/helm-local-term ()
   "remote term with helm"
   (interactive)
   (with-temp-buffer
     (let* ((prefix "~"))
       (when (tramp-tramp-file-p default-directory)
         (setq default-directory prefix))
-      (call-interactively 'zz:helm-cd-term)
+      (call-interactively 'zz/helm-cd-term)
     )))
 
-(defun zz:helm-remote-term ()
+(defun zz/helm-remote-term ()
   "remote term with helm"
   (interactive)
   (let ((host (car (tramp-term--select-host))))
-    (zz:get-remote-term host)))
+    (zz/get-remote-term host)))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

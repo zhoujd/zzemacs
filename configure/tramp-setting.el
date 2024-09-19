@@ -6,10 +6,10 @@
 ;;C-x C-f /ssh:you@remotehost|sudo:remotehost:/path/to/file RET
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)
-(defvar zz:tramp-sshz-method "sshz"
+(defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 (add-to-list 'tramp-methods
-             `(,zz:tramp-sshz-method
+             `(,zz/tramp-sshz-method
                (tramp-login-program        "ssh")
                (tramp-login-args           (("-l" "%u")
                                             ("-p" "%p")
@@ -28,7 +28,7 @@
                                             ("-o" "ForwardX11=yes")))
                (tramp-default-port         22)))
 (tramp-set-completion-function
- zz:tramp-sshz-method tramp-completion-function-alist-ssh)
+ zz/tramp-sshz-method tramp-completion-function-alist-ssh)
 (setq tramp-default-method "sshz")
 
 ;;Persistency for fast init, don't change ~/.emacs.d/tramp
@@ -58,14 +58,14 @@
 
 ;;setup PS1 on remote
 ;;echo '[ $TERM == "dumb" ] && PS1="\u@\h \W\$ "' >> ~/.bashrc
-(defun zz:tramp-ps1 ()
+(defun zz/tramp-ps1 ()
   (interactive)
   (comint-simple-send (get-buffer-process (current-buffer))
                       "PS1=\"\\u@\\h \\W\\$ \"")
   (message "setup tramp PS1 done"))
 
 ;;save PS1 to remote
-(defun zz:tramp-ps1-save ()
+(defun zz/tramp-ps1-save ()
   (interactive)
   (let ((content "
 # PS1 for remote tramp

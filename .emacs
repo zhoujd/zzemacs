@@ -4,12 +4,12 @@
 (defvar zzemacs-path (format "%s/zzemacs" (getenv "HOME"))
   "zzemacs`s path")
 
-(defun zz:load-path (path)
+(defun zz/load-path (path)
   "add to list"
   (when (not (member path load-path))
     (add-to-list 'load-path (concat zzemacs-path "/" path))))
 
-(zz:load-path "configure")
+(zz/load-path "configure")
 (mapc (lambda (setting)
         (require setting)
         (message "Load %s...end" setting))

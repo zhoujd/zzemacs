@@ -1,7 +1,7 @@
 ;;;; media-setting.el --- media setting file
 ;;
 
-(zz:load-path "site-lisp")
+(zz/load-path "site-lisp")
 
 ;;mpv
 (require 'mpv)

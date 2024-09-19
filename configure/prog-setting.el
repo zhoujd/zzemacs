@@ -1,6 +1,6 @@
 ;;;; prog-setting.el --- program common file
 
-(zz:load-path "site-lisp")
+(zz/load-path "site-lisp")
 
 ;;;$find -type f -name Makefile | xargs grep DIRVER_NAME
 ;;;$find -type f -name Makefile -exec grep -n DIRVER_NAME {} NUL;
@@ -15,7 +15,7 @@
 ;;holding
 (require 'hideshow)
 
-(defun zz:newline-indents ()
+(defun zz/newline-indents ()
   "Bind Return to `newline-and-indent' in the local keymap."
   (local-set-key "\C-m" 'newline-and-indent)
   (local-set-key [ret] 'newline-and-indent))
@@ -32,7 +32,7 @@
           'perl-mode-hook
           'python-mode-hook
           'php-mode-hook))
-  (add-hook hook (function zz:newline-indents)))
+  (add-hook hook (function zz/newline-indents)))
 
 ;;sr-speedbar
 (require 'sr-speedbar)
@@ -43,49 +43,49 @@
       sr-speedbar-max-width 60
       sr-speedbar-right-side nil)
 
-(defun zz:gen-ctags-cmd (dir)
+(defun zz/gen-ctags-cmd (dir)
   (format "ctags %s -f %s/TAGS -e -R %s"
           dir (directory-file-name dir)))
 
-(defun zz:create-ctags (dir)
+(defun zz/create-ctags (dir)
   "Create tags file."
   (interactive "DDirectory: ")
-  (zz:run-command (zz:gen-ctags-cmd dir)))
+  (zz/run-command (zz/gen-ctags-cmd dir)))
 
-(defvar zz:find-regex "*.[chly] *.[ch]xx *.[ch]pp *.cc *.hh ")
-(defun zz:gen-find-parts (file-regex)
-  (let ((zz:find-parts ""))
+(defvar zz/find-regex "*.[chly] *.[ch]xx *.[ch]pp *.cc *.hh ")
+(defun zz/gen-find-parts (file-regex)
+  (let ((zz/find-parts ""))
     (dolist (cell (split-string file-regex))
-      (setq zz:find-parts (concat zz:find-parts "-iname \"" cell "\" -o ")))
-    (setq zz:find-parts (substring zz:find-parts 0 -4))))
+      (setq zz/find-parts (concat zz/find-parts "-iname \"" cell "\" -o ")))
+    (setq zz/find-parts (substring zz/find-parts 0 -4))))
 
-(defun zz:gen-etags-cmd (dir)
+(defun zz/gen-etags-cmd (dir)
   (concat
    (format "rm -f %s;"
            (concat default-directory "TAGS"))
    (format "%s %s -type f \\( %s \\) -print | etags -"
            find-program
            dir
-           (zz:gen-find-parts zz:find-regex))))
+           (zz/gen-find-parts zz/find-regex))))
 
 ;;https://www.emacswiki.org/emacs/TagsFile
 ;;sudo apt install emacs-bin-common
-(defun zz:create-etags (dir)
+(defun zz/create-etags (dir)
   "Create tags file."
   (interactive "DDirectory: ")
   (if (executable-find "etags")
-      (zz:run-command (zz:gen-etags-cmd dir))
+      (zz/run-command (zz/gen-etags-cmd dir))
       (message "no etags, please install it")))
 
-(defun zz:remote-etags ()
+(defun zz/remote-etags ()
   "Create tags file."
   (interactive)
-  (zz:run-command
+  (zz/run-command
    (concat
     (format "rm -f TAGS;")
     (format "%s -type f \\( %s \\) -print | etags -"
             find-program
-            (zz:gen-find-parts zz:find-regex))
+            (zz/gen-find-parts zz/find-regex))
     )))
 
 ;;https://github.com/dkogan/xcscope.el
@@ -107,7 +107,7 @@
 ; find -type f -not -path '*/\.*'
 ; find -type f | egrep "\.[hc]$|hh$|cc$|[hc]pp$|[hc]xx$|[hc]\+\+$">cscope.files
 ; cscope -bq -i ./cscope.files
-(defun zz:gen-cscope-cmd (dir)
+(defun zz/gen-cscope-cmd (dir)
   (let ((files-path (concat default-directory "cscope.files"))
         (out-path (concat default-directory "cscope.out")))
     (concat
@@ -117,32 +117,32 @@
              dir
              "-not -path '*/\.git/*'"
              "-type f -a -not -type l"
-             (zz:gen-find-parts zz:find-regex)
+             (zz/gen-find-parts zz/find-regex)
              files-path)
      (format "cscope -b -R -q -k -i %s -f %s"
              files-path
              out-path)
      )))
 
-(defun zz:create-cscope (dir)
+(defun zz/create-cscope (dir)
   "Create cscope file."
   (interactive "DDirectory: ")
   (if (executable-find "cscope")
-      (zz:run-command (zz:gen-cscope-cmd dir))
+      (zz/run-command (zz/gen-cscope-cmd dir))
       (message "no cscope, please install it")))
 
-(defun zz:remote-cscope ()
+(defun zz/remote-cscope ()
   (interactive)
   (let ((files-path "cscope.files")
         (out-path "cscope.out"))
-    (zz:run-command
+    (zz/run-command
      (concat
       (format "rm -f %s;" "cscope.*")
       (format "%s \\( %s \\) \\( %s \\) \\( %s \\) -print | grep -v \" \" > %s;"
               find-program
               "-not -path '*/\.git/*'"
               "-type f -a -not -type l"
-              (zz:gen-find-parts zz:find-regex)
+              (zz/gen-find-parts zz/find-regex)
               files-path)
       (format "cscope -b -R -q -k -i %s -f %s"
               files-path
@@ -186,12 +186,12 @@
 (add-hook 'sql-mode-hook 'font-lock-mode)
 
 ;;rgrep for c/c++
-(defvar zz:rgrep-c-file-regex "*.[hc]")
-(defun zz:rgrep-c (term &optional dir)
+(defvar zz/rgrep-c-file-regex "*.[hc]")
+(defun zz/rgrep-c (term &optional dir)
   (interactive (list (completing-read "Search Term: " nil nil nil (thing-at-point 'word))))
   (grep-compute-defaults)
   (let* ((dir (read-directory-name "Base directory: " nil default-directory t)))
-    (rgrep term zz:rgrep-c-file-regex dir)))
+    (rgrep term zz/rgrep-c-file-regex dir)))
 
 ;;javascript mode
 (require 'js2-mode)
@@ -228,16 +228,16 @@
 (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
 
 ;;ztree
-(zz:load-path "site-lisp/ztree")
+(zz/load-path "site-lisp/ztree")
 (require 'ztree)
 
 ;;ansible
-(zz:load-path "site-lisp/ansible")
+(zz/load-path "site-lisp/ansible")
 (require 'ansible)
 (add-hook 'yaml-mode-hook (lambda () (ansible 1)))
 
 ;;https://github.com/krzysztof-magosa/company-ansible
-(zz:load-path "site-lisp/company-ansible")
+(zz/load-path "site-lisp/company-ansible")
 (require 'company-ansible)
 (add-to-list 'company-backends 'company-ansible)
 
@@ -263,7 +263,7 @@
   (add-hook hook 'highlight-indent-guides-mode))
 
 ;;project-custom
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'project-custom)
 
 ;;elisp-refs

@@ -7,7 +7,7 @@
 ;;pip3 install rope jedi flake8 importmagic
 ;;git clone https://github.com/jorgenschaefer/elpy
 ;;M-x elpy-config
-(zz:load-path "site-lisp/python-mode")
+(zz/load-path "site-lisp/python-mode")
 
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python3 -i -m pdb <file-name.py>
@@ -25,7 +25,7 @@
 (setq python-shell-completion-native-enable nil)
 
 ;;custom indent
-(defun zz:python-indent (num)
+(defun zz/python-indent (num)
   (interactive "nIndent: ")
   (eval-expression
    '(progn
@@ -36,27 +36,27 @@
       ))
   (message "Select and press TAB to indent: %d" num))
 
-(defun zz:py-indent-4 ()
+(defun zz/py-indent-4 ()
   (setq tab-width 4)
   (setq python-shift-right 4)
   (setq python-shift-left 4)
   (setq python-indent 4))
 
-(defun zz:py-indent-2 ()
+(defun zz/py-indent-2 ()
   (setq tab-width 2)
   (setq python-shift-right 2)
   (setq python-shift-left 2)
   (setq python-indent 2))
 
-(defun zz:python-mode-hook ()
+(defun zz/python-mode-hook ()
   (defkeys-map python-mode-map
     ((kbd "M-m") 'eassist-list-methods))
-  (zz:py-indent-4))
+  (zz/py-indent-4))
 
-(add-hook 'python-mode-hook 'zz:python-mode-hook)
+(add-hook 'python-mode-hook 'zz/python-mode-hook)
 
 ;;helm-pydoc
-(zz:load-path "site-lisp/helm-pydoc")
+(zz/load-path "site-lisp/helm-pydoc")
 (require 'helm-pydoc)
 
 ;;lsp-mode or eglog
@@ -64,21 +64,21 @@
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
 ;;~/.local/bin/pylsp
-(defvar zz:default-pyls "pylsp"  "default pyls to be used")
-(defun zz:python-eglot-enable ()
+(defvar zz/default-pyls "pylsp"  "default pyls to be used")
+(defun zz/python-eglot-enable ()
   "set variables and hook for eglot python IDE"
   (interactive)
   (setq company-backends
         (cons 'company-capf
               (remove 'company-capf company-backends)))
   (add-to-list 'eglot-server-programs
-               `(python-mode ,zz:default-pyls))
+               `(python-mode ,zz/default-pyls))
   (add-hook 'python-mode-hook 'eglot-ensure))
-(defun zz:python-eglot-disable ()
+(defun zz/python-eglot-disable ()
   "remove hook for eglot python"
   (interactive)
   (remove-hook 'python-mode-hook 'eglot-ensure))
-(zz:python-eglot-enable)
+(zz/python-eglot-enable)
 
 
 (provide 'python-setting)

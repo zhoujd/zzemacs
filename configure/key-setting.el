@@ -9,7 +9,7 @@
 ;;C-x @ m         event-apply-meta-modifier
 ;;C-x @ s         event-apply-super-modifier
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 (require 'apply-keys)
 
 (apply-keys-to-map
@@ -35,28 +35,28 @@
  ctrl-z-map
  (list
   (kbd "SPC")     'er/expand-region
-  (kbd "RET")     'zz:sudo-edit-current-file
-  (kbd "TAB")     'zz:insert-file-name
+  (kbd "RET")     'zz/sudo-edit-current-file
+  (kbd "TAB")     'zz/insert-file-name
   (kbd "`")       'ztree-diff-1
   (kbd "M-`")     'ztree-dir-1
-  (kbd "/")       'zz:ctrl-z-help
-  (kbd "a")       'zz:display-current-time
+  (kbd "/")       'zz/ctrl-z-help
+  (kbd "a")       'zz/display-current-time
   (kbd "C-a")     'helm-world-time
   (kbd "M-a")     'world-time-list
   (kbd "b")       'helm-bm
-  (kbd "d")       'zz:nnn
-  (kbd "C-d")     'zz:helm-nnn
+  (kbd "d")       'zz/nnn
+  (kbd "C-d")     'zz/helm-nnn
   (kbd "M-d")     'docker
   (kbd "n")       'neotree-toggle
-  (kbd "o")       'zz:last-buffer-go
+  (kbd "o")       'zz/last-buffer-go
   (kbd "C-p")     'proced
-  (kbd "r")       'zz:revert-buffer
+  (kbd "r")       'zz/revert-buffer
   (kbd "C-r")     'recentf-open-files
   (kbd "C-s")     'slime-selector
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
-  (kbd "v")       'zz:evil-toggle
+  (kbd "v")       'zz/evil-toggle
   (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo
@@ -66,53 +66,53 @@
 (apply-keys-to-map
  f4-map
  (list
-  (kbd "1")       (zz:quick-shell zz:shell-f1  "*shell<f1>*")
-  (kbd "2")       (zz:quick-shell zz:shell-f2  "*shell<f2>*")
-  (kbd "3")       (zz:quick-shell zz:shell-f3  "*shell<f3>*")
-  (kbd "4")       (zz:quick-shell zz:shell-f4  "*shell<f4>*")
-  (kbd "5")       (zz:quick-shell zz:shell-f5  "*shell<f5>*")
-  (kbd "6")       (zz:quick-shell zz:shell-f6  "*shell<f6>*")
-  (kbd "7")       (zz:quick-shell zz:shell-f7  "*shell<f7>*")
-  (kbd "8")       (zz:quick-shell zz:shell-f8  "*shell<f8>*")
-  (kbd "9")       (zz:quick-shell zz:shell-f9  "*shell<f9>*")
-  (kbd "0")       'zz:cd-shell
-  (kbd "-")       'zz:local-shell
-  (kbd "=")       'zz:remote-shell
-  (kbd "\\")      'zz:get-shell
-  (kbd "DEL")     'zz:get-shell
-  (kbd "`")       'zz:home-shell
+  (kbd "1")       (zz/quick-shell zz/shell-f1  "*shell<f1>*")
+  (kbd "2")       (zz/quick-shell zz/shell-f2  "*shell<f2>*")
+  (kbd "3")       (zz/quick-shell zz/shell-f3  "*shell<f3>*")
+  (kbd "4")       (zz/quick-shell zz/shell-f4  "*shell<f4>*")
+  (kbd "5")       (zz/quick-shell zz/shell-f5  "*shell<f5>*")
+  (kbd "6")       (zz/quick-shell zz/shell-f6  "*shell<f6>*")
+  (kbd "7")       (zz/quick-shell zz/shell-f7  "*shell<f7>*")
+  (kbd "8")       (zz/quick-shell zz/shell-f8  "*shell<f8>*")
+  (kbd "9")       (zz/quick-shell zz/shell-f9  "*shell<f9>*")
+  (kbd "0")       'zz/cd-shell
+  (kbd "-")       'zz/local-shell
+  (kbd "=")       'zz/remote-shell
+  (kbd "\\")      'zz/get-shell
+  (kbd "DEL")     'zz/get-shell
+  (kbd "`")       'zz/home-shell
 
-  (kbd "C-1")     (zz:quick-shell zz:shell-1  "*shell<1>*")
-  (kbd "C-2")     (zz:quick-shell zz:shell-2  "*shell<2>*")
-  (kbd "C-3")     (zz:quick-shell zz:shell-3  "*shell<3>*")
-  (kbd "C-4")     (zz:quick-shell zz:shell-4  "*shell<4>*")
-  (kbd "C-5")     (zz:quick-shell zz:shell-5  "*shell<5>*")
-  (kbd "C-6")     (zz:quick-shell zz:shell-6  "*shell<6>*")
-  (kbd "C-7")     (zz:quick-shell zz:shell-7  "*shell<7>*")
-  (kbd "C-8")     (zz:quick-shell zz:shell-8  "*shell<8>*")
-  (kbd "C-9")     (zz:quick-shell zz:shell-9  "*shell<9>*")
-  (kbd "C-0")     'zz:helm-cd-shell
-  (kbd "C--")     'zz:helm-local-shell
-  (kbd "C-=")     'zz:helm-remote-shell
-  (kbd "C-\\")    'zz:get-shell
-  [C-backspace]   'zz:get-shell
-  (kbd "C-`")     'zz:home-shell
+  (kbd "C-1")     (zz/quick-shell zz/shell-1  "*shell<1>*")
+  (kbd "C-2")     (zz/quick-shell zz/shell-2  "*shell<2>*")
+  (kbd "C-3")     (zz/quick-shell zz/shell-3  "*shell<3>*")
+  (kbd "C-4")     (zz/quick-shell zz/shell-4  "*shell<4>*")
+  (kbd "C-5")     (zz/quick-shell zz/shell-5  "*shell<5>*")
+  (kbd "C-6")     (zz/quick-shell zz/shell-6  "*shell<6>*")
+  (kbd "C-7")     (zz/quick-shell zz/shell-7  "*shell<7>*")
+  (kbd "C-8")     (zz/quick-shell zz/shell-8  "*shell<8>*")
+  (kbd "C-9")     (zz/quick-shell zz/shell-9  "*shell<9>*")
+  (kbd "C-0")     'zz/helm-cd-shell
+  (kbd "C--")     'zz/helm-local-shell
+  (kbd "C-=")     'zz/helm-remote-shell
+  (kbd "C-\\")    'zz/get-shell
+  [C-backspace]   'zz/get-shell
+  (kbd "C-`")     'zz/home-shell
 
-  (kbd "M-1")     (zz:quick-buffer zz:term-1  "*terminal<1>*")
-  (kbd "M-2")     (zz:quick-buffer zz:term-2  "*terminal<2>*")
-  (kbd "M-3")     (zz:quick-buffer zz:term-3  "*terminal<3>*")
-  (kbd "M-4")     (zz:quick-buffer zz:term-4  "*terminal<4>*")
-  (kbd "M-5")     (zz:quick-buffer zz:term-5  "*terminal<5>*")
-  (kbd "M-6")     (zz:quick-buffer zz:term-6  "*terminal<6>*")
-  (kbd "M-7")     (zz:quick-buffer zz:term-7  "*terminal<7>*")
-  (kbd "M-8")     (zz:quick-buffer zz:term-8  "*terminal<8>*")
-  (kbd "M-9")     (zz:quick-buffer zz:term-9  "*terminal<9>*")
-  (kbd "M-0")     'zz:helm-cd-term
-  (kbd "M--")     'zz:helm-local-term
-  (kbd "M-=")     'zz:helm-remote-term
-  (kbd "M-\\")    'zz:get-term
-  (kbd "M-DEL")   'zz:get-term
-  (kbd "M-`")     'zz:home-term
+  (kbd "M-1")     (zz/quick-buffer zz/term-1  "*terminal<1>*")
+  (kbd "M-2")     (zz/quick-buffer zz/term-2  "*terminal<2>*")
+  (kbd "M-3")     (zz/quick-buffer zz/term-3  "*terminal<3>*")
+  (kbd "M-4")     (zz/quick-buffer zz/term-4  "*terminal<4>*")
+  (kbd "M-5")     (zz/quick-buffer zz/term-5  "*terminal<5>*")
+  (kbd "M-6")     (zz/quick-buffer zz/term-6  "*terminal<6>*")
+  (kbd "M-7")     (zz/quick-buffer zz/term-7  "*terminal<7>*")
+  (kbd "M-8")     (zz/quick-buffer zz/term-8  "*terminal<8>*")
+  (kbd "M-9")     (zz/quick-buffer zz/term-9  "*terminal<9>*")
+  (kbd "M-0")     'zz/helm-cd-term
+  (kbd "M--")     'zz/helm-local-term
+  (kbd "M-=")     'zz/helm-remote-term
+  (kbd "M-\\")    'zz/get-term
+  (kbd "M-DEL")   'zz/get-term
+  (kbd "M-`")     'zz/home-term
   ))
 
 ;;switch to shells
@@ -139,11 +139,11 @@
   (kbd "C-e")     'eshell
   (kbd "C-l")     'command-history
   (kbd "C-k")     'vkill
-  (kbd "C-i")     'zz:copy-filename
-  (kbd "C-r")     'zz:add-code-review-note
-  (kbd "C-s")     'zz:slime-connect-stumpwm
-  (kbd "C-t")     'zz:open-with-terminal
-  (kbd "M-t")     'zz:transparency-toggle
+  (kbd "C-i")     'zz/copy-filename
+  (kbd "C-r")     'zz/add-code-review-note
+  (kbd "C-s")     'zz/slime-connect-stumpwm
+  (kbd "C-t")     'zz/open-with-terminal
+  (kbd "M-t")     'zz/transparency-toggle
   (kbd "C-u")     'disk-usage
   (kbd "C-v")     'virt-manager
   ))
@@ -152,33 +152,33 @@
 (apply-keys-to-map
  f4-e-map
  (list
-  (kbd "\\")      'zz:baidu
-  (kbd "`")       'zz:google
+  (kbd "\\")      'zz/baidu
+  (kbd "`")       'zz/google
 
-  (kbd "c")       (zz:exec-key zz:urxvt       '("urxvt"))
-  (kbd "f")       (zz:exec-key zz:firefox     '("firefox"))
-  (kbd "g")       (zz:exec-key zz:chrome      '("google-chrome"))
-  (kbd "m")       (zz:exec-key zz:evolution   '("evolution"))
+  (kbd "c")       (zz/exec-key zz/urxvt       '("urxvt"))
+  (kbd "f")       (zz/exec-key zz/firefox     '("firefox"))
+  (kbd "g")       (zz/exec-key zz/chrome      '("google-chrome"))
+  (kbd "m")       (zz/exec-key zz/evolution   '("evolution"))
 
-  (kbd "h")       (zz:exec-key zz:thunar      '("thunar"))
-  (kbd "v")       (zz:exec-key zz:vim         '("urxvt" "-e" "vim"))
-  (kbd "t")       (zz:exec-key zz:tmux        '("urxvt" "-e" "tmux"))
+  (kbd "h")       (zz/exec-key zz/thunar      '("thunar"))
+  (kbd "v")       (zz/exec-key zz/vim         '("urxvt" "-e" "vim"))
+  (kbd "t")       (zz/exec-key zz/tmux        '("urxvt" "-e" "tmux"))
 
-  (kbd "d")       (zz:exec-key zz:rofi-drun   '("rofi" "-show" "drun"))
-  (kbd "r")       (zz:exec-key zz:rofi-run    '("rofi" "-show" "run"))
-  (kbd "s")       (zz:exec-key zz:rofi-ssh    '("rofi" "-show" "ssh"))
-  (kbd "w")       (zz:exec-key zz:rofi-win    '("rofi" "-show" "window"))
+  (kbd "d")       (zz/exec-key zz/rofi-drun   '("rofi" "-show" "drun"))
+  (kbd "r")       (zz/exec-key zz/rofi-run    '("rofi" "-show" "run"))
+  (kbd "s")       (zz/exec-key zz/rofi-ssh    '("rofi" "-show" "ssh"))
+  (kbd "w")       (zz/exec-key zz/rofi-win    '("rofi" "-show" "window"))
 
-  (kbd "M-g")     (zz:exec-key zz:gitg        '("gitg"))
-  (kbd "M-m")     (zz:exec-key zz:meld        '("meld"))
-  (kbd "M-t")     (zz:exec-key zz:trans       '("urxvt" "-e" "trans" "-I"))
+  (kbd "M-g")     (zz/exec-key zz/gitg        '("gitg"))
+  (kbd "M-m")     (zz/exec-key zz/meld        '("meld"))
+  (kbd "M-t")     (zz/exec-key zz/trans       '("urxvt" "-e" "trans" "-I"))
   ))
 
 (apply-keys-to-map
  f4-p-map
  (list
-  (kbd "1")       'zz:python-scratch
-  (kbd "2")       'zz:sh-scratch
+  (kbd "1")       'zz/python-scratch
+  (kbd "2")       'zz/sh-scratch
   ))
 
 (apply-keys-to-map
@@ -186,8 +186,8 @@
  (list
   (kbd "C-1")     'delete-window
   (kbd "C-2")     'delete-frame
-  (kbd "C-3")     'zz:last-frame-go
-  (kbd "C-4")     'zz:undo-kill-buffer
+  (kbd "C-3")     'zz/last-frame-go
+  (kbd "C-4")     'zz/undo-kill-buffer
   (kbd "C-5")     'gud-jump
   (kbd "C-6")     'gud-remove
   (kbd "C-7")     'gud-until
@@ -208,8 +208,8 @@
  (list
   (kbd "M-1")     'delete-other-windows
   (kbd "M-2")     'delete-other-frames
-  (kbd "M-3")     'zz:last-buffer-go
-  (kbd "M-4")     'zz:kill-this-buffer
+  (kbd "M-3")     'zz/last-buffer-go
+  (kbd "M-4")     'zz/kill-this-buffer
   (kbd "M-5")     'gud-cont
   (kbd "M-6")     'gud-break
   (kbd "M-7")     'gud-next
@@ -225,9 +225,9 @@
  global-map
  (list
   (kbd "C-x C-b") 'ibuffer
-  (kbd "C-x C-f") 'zz:find-file
-  (kbd "C-x C-r") 'zz:sudo-find-file
-  (kbd "C-x d")   'zz:dired
+  (kbd "C-x C-f") 'zz/find-file
+  (kbd "C-x C-r") 'zz/sudo-find-file
+  (kbd "C-x d")   'zz/dired
   (kbd "C-x g")   'magit-status
   (kbd "C-x M-g") 'magit-dispatch
   (kbd "C-c g")   'magit-imerge
@@ -236,9 +236,9 @@
   (kbd "C-c ;")   'iedit-mode
   (kbd "C-c M-;") 'iedit-dwim
   (kbd "C-c M-h") 'discover-my-major
-  (kbd "%")       'zz:match-paren
+  (kbd "%")       'zz/match-paren
   (kbd "M-<tab>") 'buffer-flip
-  (kbd "C-M-/")   'zz:expand-file-name
+  (kbd "C-M-/")   'zz/expand-file-name
 
   ;;delete char
   (kbd "C-h")     'delete-backward-char
@@ -304,18 +304,18 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-M-1")   'zz:urxvt
-  (kbd "C-M-2")   'zz:chrome
-  (kbd "C-M-3")   'zz:firefox
-  (kbd "C-M-4")   'zz:meld
-  (kbd "C-M-5")   'zz:rofi-drun
-  (kbd "C-M-6")   'zz:rofi-run
-  (kbd "C-M-7")   'zz:rofi-ssh
-  (kbd "C-M-8")   'zz:rofi-win
-  (kbd "C-M-9")   'zz:tmux
-  (kbd "C-M-0")   'zz:trans
-  (kbd "C-M--")   'zz:baidu
-  (kbd "C-M-=")   'zz:google
+  (kbd "C-M-1")   'zz/urxvt
+  (kbd "C-M-2")   'zz/chrome
+  (kbd "C-M-3")   'zz/firefox
+  (kbd "C-M-4")   'zz/meld
+  (kbd "C-M-5")   'zz/rofi-drun
+  (kbd "C-M-6")   'zz/rofi-run
+  (kbd "C-M-7")   'zz/rofi-ssh
+  (kbd "C-M-8")   'zz/rofi-win
+  (kbd "C-M-9")   'zz/tmux
+  (kbd "C-M-0")   'zz/trans
+  (kbd "C-M--")   'zz/baidu
+  (kbd "C-M-=")   'zz/google
   ))
 
 (apply-keys-to-map

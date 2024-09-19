@@ -1,7 +1,7 @@
 ;;;version control setting
 ;;
 
-(zz:load-path "elisp")
+(zz/load-path "elisp")
 
 ;;add mode support
 (setq auto-mode-alist
@@ -14,7 +14,7 @@
 (require 'mercurial)
 (require 'mq)
 
-(zz:load-path "site-lisp/monky")
+(zz/load-path "site-lisp/monky")
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
@@ -22,7 +22,7 @@
 ;;M-x magit-log-buffer-file
 ;;M-x magit-find-file
 ;;File log: C-x v l
-(zz:load-path "site-lisp/magit/lisp")
+(zz/load-path "site-lisp/magit/lisp")
 (require 'magit)
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)

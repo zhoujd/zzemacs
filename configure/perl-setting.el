@@ -10,7 +10,7 @@
 (add-to-list 'interpreter-mode-alist '("miniperl" . cperl-mode))
 
 ;;eval buffer by perl
-(defun zz:perl-eval-buffer ()
+(defun zz/perl-eval-buffer ()
   "run perl on buffer"
   (interactive)
   (let ((filename buffer-file-name)
@@ -29,28 +29,28 @@
     (message "%s  ..." cmd)
     (shell-command cmd)))
 
-(defun zz:cperl-mode-hook ()
+(defun zz/cperl-mode-hook ()
   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
   (defkeys-map cperl-mode-map
-    ((kbd "C-c C-c") 'zz:perl-eval-buffer)))
+    ((kbd "C-c C-c") 'zz/perl-eval-buffer)))
 
-(add-hook 'cperl-mode-hook 'zz:cperl-mode-hook t)
+(add-hook 'cperl-mode-hook 'zz/cperl-mode-hook t)
 
 ;;perl sepia settings
 ;;http://cpansearch.perl.org/src/SEANO/Sepia-0.97/Sepia.html
 ;;http://repo.or.cz/w/sepia.git
 ;;sepia needs w3m
-(zz:load-path "site-lisp/sepia")
+(zz/load-path "site-lisp/sepia")
 (setq sepia-perl5lib (list (concat zzemacs-path "/site-lisp/sepia/lib")))
 (defalias 'sepia     'sepia-repl)
 (defalias 'run-perl  'sepia-repl)
 (require 'sepia)
 
-(defun zz:sepia-mode-hook ()
+(defun zz/sepia-mode-hook ()
   (defkeys-map sepia-mode-map
     ([(tab)] 'sepia-indent-or-complete)))
 
-(add-hook 'sepia-mode-hook 'zz:sepia-mode-hook t)
+(add-hook 'sepia-mode-hook 'zz/sepia-mode-hook t)
 
 ;;perl code style
 (add-to-list
@@ -100,7 +100,7 @@
 
 ;;helm-perldoc
 ;;Ubuntu: sudo apt install perl-doc
-(zz:load-path "site-lisp/helm-perldoc")
+(zz/load-path "site-lisp/helm-perldoc")
 (require 'helm-perldoc)
 
 ;;helm-perldoc:setup takes long time on low power platform

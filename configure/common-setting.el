@@ -10,7 +10,7 @@
 ;;enable debug
 ;;M-x toggle-debug-on-error
 
-(zz:load-path "site-lisp")
+(zz/load-path "site-lisp")
 
 (keyboard-translate ?\C-h ?\C-?)  ; translate 'C-h' to Backspace
 
@@ -20,7 +20,7 @@
 (add-to-list 'default-frame-alist '(alpha 90))
 
 ;;Chinese
-(defun zz:set-language-chinese ()
+(defun zz/set-language-chinese ()
   "This is for chinese setting"
   (interactive)
   (set-language-environment 'Chinese-GB18030)
@@ -28,7 +28,7 @@
   (message "This is for chinese"))
 
 ;;Japanese
-(defun zz:set-language-japanese ()
+(defun zz/set-language-japanese ()
   "This is for japanese setting"
   (interactive)
   (set-language-environment 'Japanese)
@@ -36,7 +36,7 @@
   (message "This is for japanese"))
 
 ;;utf-8
-(defun zz:set-language-utf-8 ()
+(defun zz/set-language-utf-8 ()
   "This is for utf-8 setting"
   (interactive)
   (set-language-environment 'utf-8)
@@ -45,9 +45,9 @@
 
 ;;Language switch
 (cond
-  ;;((string-match "j[ap].*" (getenv "LANG")) (zz:set-language-japanese))
-  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz:set-language-chinese))
-  (t (zz:set-language-utf-8)))
+  ;;((string-match "j[ap].*" (getenv "LANG")) (zz/set-language-japanese))
+  ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG")) (zz/set-language-chinese))
+  (t (zz/set-language-utf-8)))
 
 ;;font setting
 ;;tools: xlsfonts or xfontsel
@@ -56,22 +56,22 @@
 ;;M-x menu-set-font
 ;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
-(defconst zz:en-font-list '(
+(defconst zz/en-font-list '(
                             "SF Mono 13"
                             "Consolas 13"
                             "JetBrains Mono NL 11"
                             "WenQuanYi Zen Hei Mono 13"
                             "Droid Sans Mono Slashed 11"
                             ))
-(defconst zz:cn-font-list '(
+(defconst zz/cn-font-list '(
                             "Droid Sans Fallback"
                             "Microsoft YaHei Mono"
                             ))
-(defconst zz:console-font-list '(
+(defconst zz/console-font-list '(
                                  "WenQuanYi Zen Hei Mono 13"
                                  ))
 
-(defun zz:frame-font (font-en-name &optional font-cn-name)
+(defun zz/frame-font (font-en-name &optional font-cn-name)
   "frame font setting"
   ;; Setting English Font
   (set-face-attribute 'default nil :font font-en-name)
@@ -86,10 +86,10 @@
 ;;console font setting
 ;;emacs daemon goes console font
 (if (daemonp)
-    (zz:frame-font (nth 0 zz:en-font-list))
+    (zz/frame-font (nth 0 zz/en-font-list))
     (if (display-graphic-p)
-        (zz:frame-font (nth 0 zz:en-font-list) (nth 0 zz:cn-font-list))
-        (zz:frame-font (nth 0 zz:console-font-list))))
+        (zz/frame-font (nth 0 zz/en-font-list) (nth 0 zz/cn-font-list))
+        (zz/frame-font (nth 0 zz/console-font-list))))
 
 ;;improve theme loading
 (defadvice load-theme (before clear-previous-themes activate)
@@ -97,7 +97,7 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;;color theme
-(zz:load-path "site-lisp/emacs-color-themes")
+(zz/load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
 (if (display-graphic-p)
     (load-theme 'zz t)
@@ -236,7 +236,7 @@
 (winner-mode t)
 
 ;;buffer name in title
-(defun zz:fname-title-string ()
+(defun zz/fname-title-string ()
   "Return the file name of current buffer, using ~ if under home directory"
   (let ((fname (or (buffer-file-name (current-buffer))
                    (buffer-name))))
@@ -248,7 +248,7 @@
                 (user-login-name)
                 (system-name)
                 (nth 2 (split-string (version)))
-                (zz:fname-title-string))))
+                (zz/fname-title-string))))
 
 ;;suppress GUI features
 (setq use-file-dialog nil)
@@ -314,7 +314,7 @@ mouse-3: Toggle minor modes"
                 mode-line-end-spaces))
 
 ;;git status in mode-line
-(defun zz:replace-git-status (tstr)
+(defun zz/replace-git-status (tstr)
   (let* ((tstr (replace-regexp-in-string "Git" "" tstr))
          (first-char (substring tstr 0 1))
          (rest-chars (substring tstr 1)))
@@ -325,7 +325,7 @@ mouse-3: Toggle minor modes"
       (replace-regexp-in-string "^-" "✔️" tstr))
      (t tstr))))
 (advice-add #'vc-git-mode-line-string :filter-return
-            #'zz:replace-git-status)
+            #'zz/replace-git-status)
 
 ;;M-x display-time-world
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
@@ -397,7 +397,7 @@ mouse-3: Toggle minor modes"
 (define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
 
 ;;manpath
-(defun zz:woman-at-point ()
+(defun zz/woman-at-point ()
   (interactive)
   (let ((woman-topic-at-point t))
     (woman)))
@@ -416,9 +416,9 @@ mouse-3: Toggle minor modes"
 
 ;;when deleted a file goes to the OS's trash folder:
 ;;Ubuntu system: .local/share/Trash/files
-(defvar zz:system-trash-flag t
+(defvar zz/system-trash-flag t
   "Use system trash flag")
-(unless zz:system-trash-flag
+(unless zz/system-trash-flag
   (setq trash-directory "~/.trash"))
 (setq delete-by-moving-to-trash t)
 
@@ -437,7 +437,7 @@ mouse-3: Toggle minor modes"
 
 ;;remove cl warning on emacs27
 (unless (< emacs-major-version 27)
-  (defun zz:check-cl-warning()
+  (defun zz/check-cl-warning()
     "debug `Package cl is"
     (interactive)
     (require 'loadhist)

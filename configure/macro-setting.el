@@ -60,35 +60,35 @@
     `(progn ,@ks)))
 
 ;;lisp indent
-(defmacro zz:indent (operator indentation)
+(defmacro zz/indent (operator indentation)
   `(put ',operator 'lisp-indent-function ,indentation))
 
 ;;marcro for start-process
-(defmacro zz:exec-key (fn-name args)
+(defmacro zz/exec-key (fn-name args)
   `(defun ,fn-name ()
      (interactive)
      (apply 'start-process "execute-key" nil ,args)))
 
 ;;run command macro
-(defmacro zz:run-command (cmd)
+(defmacro zz/run-command (cmd)
   `(cond ((fboundp 'async-shell-command) (async-shell-command ,cmd))
          ((fboundp 'shell-command) (shell-command ,cmd))
          (t (message "no shell command function can be run"))))
 
 ;;start shell
-(defmacro zz:quick-shell (fn-name buf-name)
+(defmacro zz/quick-shell (fn-name buf-name)
   `(defun ,fn-name ()
      (interactive)
-     (zz:start-shell ,buf-name)))
+     (zz/start-shell ,buf-name)))
 
 ;;start terminator
-(defmacro zz:quick-termintor (fn-name type)
+(defmacro zz/quick-termintor (fn-name type)
   `(defun ,fn-name ()
      (interactive)
      (terminator-open-template ,type)))
 
 ;;switch term
-(defmacro zz:quick-buffer (fn-name buf-name)
+(defmacro zz/quick-buffer (fn-name buf-name)
   `(defun ,fn-name ()
      (interactive)
      (if (get-buffer ,buf-name)
@@ -96,19 +96,19 @@
          (message "%s is not exist" ,buf-name))))
 
 ;;start slime
-(defmacro zz:slime-start (fn-name lisp)
+(defmacro zz/slime-start (fn-name lisp)
  `(defun ,fn-name ()
      (interactive)
      (slime ,lisp)))
 
 ;;dired sort
-(defmacro zz:dired-sort (fn-name switch)
+(defmacro zz/dired-sort (fn-name switch)
   `(defun ,fn-name ()
      (interactive)
      (dired-sort-other (concat dired-listing-switches ,switch))))
 
 ;;gud command
-(defmacro zz:gud-cmd (fn-name cmd)
+(defmacro zz/gud-cmd (fn-name cmd)
   `(defun ,fn-name ()
      (interactive)
      (if (or

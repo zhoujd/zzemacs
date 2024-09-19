@@ -238,14 +238,14 @@
   (interactive)
   (let* ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: ")))
-         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
-    (apply 'start-process "urxvt" nil cmd)))
+         (cmd (list "st" "-n" "nnn" "-e" "nnn" "-e" default-directory)))
+    (apply 'start-process "nnn" nil cmd)))
 
 (defun zz/helm-nnn (dir)
   (interactive "DDirectory: ")
   (let* ((default-directory dir)
-         (cmd (list "urxvt" "-name" "nnn" "-e" "nnn" "-e" default-directory)))
-    (apply 'start-process "urxvt" nil cmd)))
+         (cmd (list "st" "-n" "nnn" "-e" "nnn" "-e" default-directory)))
+    (apply 'start-process "nnn" nil cmd)))
 
 (defun zz/helm-compile (dir)
   (interactive "DDirectory: ")

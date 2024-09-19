@@ -161,8 +161,8 @@
   (kbd "m")       (zz/exec-key zz/evolution   '("evolution"))
 
   (kbd "h")       (zz/exec-key zz/thunar      '("thunar"))
-  (kbd "v")       (zz/exec-key zz/vim         '("urxvt" "-e" "vim"))
-  (kbd "t")       (zz/exec-key zz/tmux        '("urxvt" "-e" "tmux"))
+  (kbd "v")       (zz/exec-key zz/vim         '("st" "-e" "vim"))
+  (kbd "t")       (zz/exec-key zz/tmux        '("st" "-e" "tmux"))
 
   (kbd "d")       (zz/exec-key zz/rofi-drun   '("rofi" "-show" "drun"))
   (kbd "r")       (zz/exec-key zz/rofi-run    '("rofi" "-show" "run"))
@@ -171,7 +171,7 @@
 
   (kbd "M-g")     (zz/exec-key zz/gitg        '("gitg"))
   (kbd "M-m")     (zz/exec-key zz/meld        '("meld"))
-  (kbd "M-t")     (zz/exec-key zz/trans       '("urxvt" "-e" "trans" "-I"))
+  (kbd "M-t")     (zz/exec-key zz/trans       '("st" "-e" "trans" "-I"))
   ))
 
 (apply-keys-to-map

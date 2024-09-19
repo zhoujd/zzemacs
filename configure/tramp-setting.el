@@ -1,4 +1,5 @@
 ;;;; tramp-setting.el --- tramp configure
+;;;M-x info => tramp
 
 ;;;tramp setting
 ;;Press C-l ido-reread-directory while in the process of finding a file.

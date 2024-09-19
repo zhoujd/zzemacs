@@ -3,6 +3,7 @@
 
 ;;tell me if there's something wrong
 ;;(setq debug-on-error t)       ; goes into debug mode on errors
+;;(setq debug-on-signal t)      ; goes into debug mode on signal
 ;;(setq debug-on-quit t)        ; goes into debug mode when C-g is entered
 ;;(setq inhibit-default-init t) ; disable loading of "default.el" at startup
 

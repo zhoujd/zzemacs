@@ -499,6 +499,10 @@
 ;;https://github.com/hlissner/emacs-hide-mode-line
 (require 'hide-mode-line)
 
+;;https://github.com/tarsius/minions
+;;A minor-mode menu for the mode line
+(require 'minions)
+
 
 (provide 'other-setting)
 

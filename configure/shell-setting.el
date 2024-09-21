@@ -52,6 +52,14 @@
   "Set `ansi-color-for-comint-mode' to t." t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 
+;;xterm color
+(require 'xterm-color)
+(setq comint-output-filter-functions
+      (remove 'ansi-color-process-output comint-output-filter-functions))
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)))
+
 ;;automatically_close_completions_in_emacs_shell_comint_mode.txt
 (defun zz/comint-close-completions ()
   "Close the comint completions buffer.

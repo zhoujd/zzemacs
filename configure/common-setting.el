@@ -288,7 +288,7 @@
 (display-time-mode t)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))
-(setq mode-line-time-info
+(setq mode-line-end-spaces
       (list (propertize " " 'display
                         `((space :align-to (- (- right right-fringe)
                                               ,(string-width display-time-string)))))
@@ -311,7 +311,7 @@ mouse-3: Toggle minor modes"
                              mouse-face mode-line-highlight
                              local-map ,mode-line-major-mode-keymap)
                 mode-line-misc-info
-                mode-line-time-info))
+                mode-line-end-spaces))
 
 ;;git status in mode-line
 (defun zz/replace-git-status (tstr)

@@ -91,7 +91,6 @@ mouse-3: Toggle minor modes"
 ;;awesome-tray
 (zz/load-path "site-lisp/awesome-tray")
 (require 'awesome-tray)
-(awesome-tray-mode t)
 (setq awesome-tray-position 'right)
 (setq awesome-tray-active-modules
       '(

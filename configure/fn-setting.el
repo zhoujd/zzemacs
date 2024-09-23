@@ -100,7 +100,7 @@
   [C-f11]           'blank-mode
   [M-f11]           'fci-mode
   (kbd "C-x <f11>") 'menu-bar-mode
-  (kbd "C-c <f11>") 'tool-bar-mode
+  (kbd "C-c <f11>") 'awesome-tray-mode
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)

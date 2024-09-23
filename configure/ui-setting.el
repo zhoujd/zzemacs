@@ -88,6 +88,25 @@ mouse-3: Toggle minor modes"
 (require 'modern-fringes)
 (modern-fringes-invert-arrows)
 
+;;awesome-tab
+;(require 'awesome-tab)
+;(awesome-tab-mode t)
+
+;;awesome-tray
+(zz/load-path "site-lisp/awesome-tray")
+(require 'awesome-tray)
+(awesome-tray-mode t)
+(setq awesome-tray-position 'right)
+(setq awesome-tray-active-modules
+      '(
+        "buffer-read-only"
+        "anzu"
+        "location"
+        "belong"
+        "buffer-name"
+        "mode-name"
+        ))
+
 
 (provide 'ui-setting)
 

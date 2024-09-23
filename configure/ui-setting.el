@@ -88,10 +88,6 @@ mouse-3: Toggle minor modes"
 (require 'modern-fringes)
 (modern-fringes-invert-arrows)
 
-;;awesome-tab
-;(require 'awesome-tab)
-;(awesome-tab-mode t)
-
 ;;awesome-tray
 (zz/load-path "site-lisp/awesome-tray")
 (require 'awesome-tray)
@@ -102,7 +98,6 @@ mouse-3: Toggle minor modes"
         "buffer-read-only"
         "anzu"
         "location"
-        "belong"
         "buffer-name"
         "mode-name"
         ))

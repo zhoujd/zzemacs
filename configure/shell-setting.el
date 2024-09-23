@@ -447,11 +447,16 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (company-abort)
   (comint-send-input))
+(defun zz/comint-send-select()
+  (interactive)
+  (company-complete-selection)
+  (comint-send-input))
 (defun zz/shell-company-hook ()
   (company-mode t)
   (defkeys-map shell-mode-map
     ((kbd "TAB")        'company-manual-begin)
     ((kbd "RET")        'zz/comint-send-input)
+    ((kbd "<C-return>") 'zz/comint-send-select)
     ((kbd "C-c M-/")    'zz/company-shell)))
 (add-hook 'shell-mode-hook 'zz/shell-company-hook)
 

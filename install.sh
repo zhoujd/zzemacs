@@ -64,6 +64,11 @@ install_all() {
     echo "Install all done"
 }
 
+usage() {
+    local app=$(basename $0)
+    echo "$app {dotemacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
+}
+
 case $1 in
     dotemacs | -d )
         confirm_execute "Do you want to overwrite .emacs? [y/N]" \
@@ -87,6 +92,6 @@ case $1 in
                         run_cmd install_all
         ;;
     * )
-        echo "$(basename $0) {dotemacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
+        usage
         ;;
 esac

@@ -60,9 +60,9 @@
 (defconst zz/en-font-list '(
                             "SF Mono 13"
                             "Consolas 13"
-                            "JetBrains Mono NL 11"
+                            "JetBrains Mono NL 13"
+                            "Droid Sans Mono SW 13"
                             "WenQuanYi Zen Hei Mono 13"
-                            "Droid Sans Mono Slashed 11"
                             ))
 (defconst zz/cn-font-list '(
                             "Droid Sans Fallback"

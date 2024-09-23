@@ -318,7 +318,7 @@ mouse-3: Toggle minor modes"
 (defun zz/vc-git-mode-line-string (orig-fn &rest args)
   "Replace Git in modeline with font-awesome git icon via ORIG-FN and ARGS."
   (let ((str (apply orig-fn args)))
-    (concat [#xF1D3] ":" (substring-no-properties str 4))))
+    (concat "" [#xF1D3] "")))
 (advice-add #'vc-git-mode-line-string :around #'zz/vc-git-mode-line-string)
 
 ;;M-x display-time-world

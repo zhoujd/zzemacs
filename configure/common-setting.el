@@ -315,18 +315,11 @@ mouse-3: Toggle minor modes"
                 mode-line-end-spaces))
 
 ;;git status in mode-line
-(defun zz/replace-git-status (tstr)
-  (let* ((tstr (replace-regexp-in-string "Git" "" tstr))
-         (first-char (substring tstr 0 1))
-         (rest-chars (substring tstr 1)))
-    (cond
-     ((string= ":" first-char) ;;; Modified
-      (replace-regexp-in-string "^:" "⚡️" tstr))
-     ((string= "-" first-char) ;; No change
-      (replace-regexp-in-string "^-" "✔️" tstr))
-     (t tstr))))
-(advice-add #'vc-git-mode-line-string :filter-return
-            #'zz/replace-git-status)
+(defun zz/vc-git-mode-line-string (orig-fn &rest args)
+  "Replace Git in modeline with font-awesome git icon via ORIG-FN and ARGS."
+  (let ((str (apply orig-fn args)))
+    (concat [#xF1D3] ":" (substring-no-properties str 4))))
+(advice-add #'vc-git-mode-line-string :around #'zz/vc-git-mode-line-string)
 
 ;;M-x display-time-world
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html

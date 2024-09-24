@@ -77,7 +77,7 @@
 
 ;;force an Emacs tramp time out
 (defun tramp-find-file-timeout ()
-  (when tramp
+  (when (file-remote-p default-directory)
     (with-timeout (4)
       (keyboard-quit))))
 (add-hook 'find-file-hook 'tramp-find-file-timeout)

@@ -31,6 +31,11 @@
 
 (setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+(defkeys-map  magit-section-mode-map
+  ((kbd "M-1") nil)
+  ((kbd "M-2") nil)
+  ((kbd "M-3") nil)
+  ((kbd "M-4") nil))
 
 ;;make `magit-blame' always with sidebar style.
 (setq magit-blame--style

@@ -97,6 +97,7 @@ mouse-3: Toggle minor modes"
         "buffer-read-only"
         "anzu"
         "location"
+        "hostname"
         "buffer-name"
         "mode-name"
         ))

@@ -452,4 +452,7 @@ mouse-3: Toggle minor modes"
 
 (provide 'common-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; common-setting.el ends here

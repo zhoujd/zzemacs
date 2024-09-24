@@ -153,4 +153,7 @@
 
 (provide 'http-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; http-setting.el ends here

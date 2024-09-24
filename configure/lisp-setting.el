@@ -140,4 +140,7 @@
 
 (provide 'lisp-setting)
 
-;; lisp-setting.el end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; lisp-setting.el end here

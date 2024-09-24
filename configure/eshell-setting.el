@@ -29,4 +29,7 @@
 
 (provide 'eshell-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; eshell-setting.el ends here

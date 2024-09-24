@@ -383,4 +383,7 @@
 
 (provide 'key-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; key-setting.el ends here

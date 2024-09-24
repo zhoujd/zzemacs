@@ -272,4 +272,7 @@
 
 (provide 'prog-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; prog-setting.el ends here

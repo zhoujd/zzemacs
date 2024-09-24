@@ -20,4 +20,7 @@
 
 (provide 'haskell-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; haskell-setting.el end here

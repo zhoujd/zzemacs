@@ -17,4 +17,7 @@
 
 (provide 'groovy-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; groovy-setting.el end here

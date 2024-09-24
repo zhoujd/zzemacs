@@ -116,4 +116,7 @@
 
 (provide 'gkey-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; gkey-setting.el ends here

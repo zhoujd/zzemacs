@@ -14,4 +14,7 @@
 
 (provide 'game-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; game-setting.el ends here

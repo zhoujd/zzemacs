@@ -41,4 +41,7 @@
 
 (provide 'evil-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; evil-setting.el ends here

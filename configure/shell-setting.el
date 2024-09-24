@@ -468,4 +468,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (provide 'shell-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; shell-setting.el ends here

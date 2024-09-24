@@ -120,4 +120,7 @@
 
 (provide 'complete-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; complete-setting.el ends here

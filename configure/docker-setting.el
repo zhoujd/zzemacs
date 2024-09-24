@@ -42,4 +42,7 @@
 
 (provide 'docker-setting)
 
-;;;; docker-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; docker-setting.el --- end here

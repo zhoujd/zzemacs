@@ -164,4 +164,7 @@
 
 (provide 'doc-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; doc-setting.el

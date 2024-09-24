@@ -34,4 +34,7 @@
 
 (provide 'vm-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; vm-setting.el end here

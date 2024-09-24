@@ -103,3 +103,8 @@ Emacs buffer are those starting with *."
 
 
 (provide 'tabbar-setting)
+
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; tabbar-setting.el ends here

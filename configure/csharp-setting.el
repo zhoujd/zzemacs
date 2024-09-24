@@ -7,4 +7,7 @@
 
 (provide 'csharp-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; csharp-setting.el ends here

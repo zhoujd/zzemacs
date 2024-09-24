@@ -86,4 +86,7 @@
 
 (provide 'env-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; env-setting.el ends here

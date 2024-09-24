@@ -78,4 +78,7 @@
 
 (provide 'gdb-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; gdb-setting.el ends here

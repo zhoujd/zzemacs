@@ -105,4 +105,7 @@ mouse-3: Toggle minor modes"
 
 (provide 'ui-setting)
 
-;;;; ui-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; ui-setting.el --- end here

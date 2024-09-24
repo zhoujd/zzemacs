@@ -27,4 +27,7 @@
 
 (provide 'media-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; media-setting.el ends here

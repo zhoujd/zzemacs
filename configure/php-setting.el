@@ -23,4 +23,7 @@
 
 (provide 'php-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; php-setting.el end here

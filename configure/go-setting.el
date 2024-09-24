@@ -66,4 +66,7 @@
 
 (provide 'go-setting)
 
-;;;; go-setting.el end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; go-setting.el end here

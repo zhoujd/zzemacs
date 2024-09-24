@@ -137,4 +137,7 @@
 
 (provide 'dired-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; dired-setting.el ends here

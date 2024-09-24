@@ -118,4 +118,7 @@
 
 (provide 'perl-setting)
 
-;;;; perl-setting.el end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; perl-setting.el end here

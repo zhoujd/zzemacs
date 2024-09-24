@@ -362,4 +362,7 @@
 
 (provide 'helm-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; helm-setting.el ends here

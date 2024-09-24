@@ -120,4 +120,7 @@
 
 (provide 'macro-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; macro-setting.el ends here

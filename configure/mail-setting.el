@@ -9,4 +9,7 @@
 
 (provide 'mail-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; mail-setting.el ends here

@@ -30,4 +30,7 @@
 
 (provide 'im-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; im-setting.el ends here

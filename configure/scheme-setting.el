@@ -71,4 +71,7 @@
 
 (provide 'scheme-setting)
 
-;; scheme-setting.el end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; scheme-setting.el end here

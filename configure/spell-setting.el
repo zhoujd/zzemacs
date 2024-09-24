@@ -31,4 +31,7 @@
 
 (provide 'spell-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; spell-setting.el ends here

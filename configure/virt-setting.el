@@ -11,4 +11,7 @@
 
 (provide 'virt-setting)
 
-;;;; virt-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; virt-setting.el --- end here

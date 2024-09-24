@@ -11,9 +11,12 @@
   "open a buffer in gnuplot mode" t)
 (setq auto-mode-alist
       (append '(("\\.gp$" . gnuplot-mode))
-	      auto-mode-alist))
+              auto-mode-alist))
 
 
 (provide 'gnuplot-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; gnuplot-setting.el ends here

@@ -78,4 +78,7 @@
 
 (provide 'tramp-setting)
 
-;;;; tramp-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; tramp-setting.el --- end here

@@ -239,4 +239,7 @@
 
 (provide 'fkey-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; fkey-setting.el ends here

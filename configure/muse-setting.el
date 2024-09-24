@@ -40,4 +40,7 @@
 
 (provide 'muse-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; muse-setting.el

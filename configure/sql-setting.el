@@ -8,4 +8,7 @@
 
 (provide 'sql-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; sql-setting.el ends here

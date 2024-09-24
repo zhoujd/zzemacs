@@ -13,4 +13,7 @@
 
 (provide 'typing-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; typing-setting.el ends here

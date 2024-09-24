@@ -278,4 +278,7 @@
 
 (provide 'term-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; term-setting.el ends here

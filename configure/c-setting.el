@@ -184,4 +184,7 @@
 
 (provide 'c-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; c-setting.el ends here

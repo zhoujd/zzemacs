@@ -6,4 +6,7 @@
 
 (provide 'ivy-setting)
 
-;;;; ivy-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; ivy-setting.el --- end here

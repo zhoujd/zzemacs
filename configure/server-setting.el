@@ -47,4 +47,7 @@
 
 (provide 'server-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; server-setting.el ends here

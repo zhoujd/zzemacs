@@ -85,4 +85,7 @@
 
 (provide 'ediff-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; ediff-setting.el ends here

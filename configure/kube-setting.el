@@ -20,4 +20,7 @@
 
 (provide 'kube-setting)
 
-;;;; kube-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; kube-setting.el --- end here

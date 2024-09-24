@@ -11,4 +11,7 @@
 
 (provide 'vterm-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; vterm-setting.el ends here

@@ -16,4 +16,7 @@
 
 (provide 'ac-setting)
 
-;;;; ac-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; ac-setting.el --- end here

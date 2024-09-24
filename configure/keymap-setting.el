@@ -78,4 +78,7 @@
 
 (provide 'keymap-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; keymap-setting.el ends here

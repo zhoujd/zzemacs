@@ -506,4 +506,7 @@
 
 (provide 'other-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; other-setting.el ends here

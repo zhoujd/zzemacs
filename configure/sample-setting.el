@@ -502,4 +502,7 @@
 
 (provide 'sample-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; sample-setting.el ends here

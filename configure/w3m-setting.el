@@ -63,4 +63,7 @@
 
 (provide 'w3m-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;;; w3m-setting.el ends here

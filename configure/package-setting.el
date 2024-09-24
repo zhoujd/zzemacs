@@ -19,4 +19,7 @@
 
 (provide 'package-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; package-setting.el ends here

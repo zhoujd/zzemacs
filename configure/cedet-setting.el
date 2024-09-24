@@ -48,4 +48,7 @@
 
 (provide 'cedet-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; cedet-setting.el ends here

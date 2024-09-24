@@ -7,4 +7,7 @@
 
 (provide 'matlab-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; matlab-setting.el end here

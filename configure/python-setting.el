@@ -83,4 +83,7 @@
 
 (provide 'python-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; python-setting.el end here

@@ -24,4 +24,7 @@
 
 (provide 'java-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; java-setting.el end here

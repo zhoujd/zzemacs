@@ -96,4 +96,7 @@
 
 (provide 'company-setting)
 
-;;;; company-setting.el --- end here
+;; Local Variables:
+;; coding: utf-8
+;; End:
+;;; company-setting.el --- end here

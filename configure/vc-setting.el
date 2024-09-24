@@ -73,4 +73,7 @@
 
 (provide 'vc-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; vc-setting.el ends here

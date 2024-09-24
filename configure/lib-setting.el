@@ -26,4 +26,7 @@
 
 (provide 'lib-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; lib-setting.el ends here

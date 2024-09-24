@@ -1,7 +1,8 @@
+## .gitignore
+
 .hg/
 *.elc
 *.*~
 *.pyc
 *.uuid
-99_proxy.sh
 .vscode

@@ -10,7 +10,13 @@
   (require 'multi-vterm))
 
 (defvar helm-switchb-separator " "
-  "helm switchb separator, default with one spaces")
+  "helm switchb separator, default with one space")
+
+(defvar helm-switchb-remote-flag "@"
+  "helm switchb remote flag")
+
+(defvar helm-switchb-local-flag " "
+  "helm switchb local flag")
 
 (defvar helm-switchb-ignores '("*Async Shell Command*")
   "helm switchb ignores buffers")
@@ -30,12 +36,16 @@
       (lambda (buf)
         (let* ((buf-name (buffer-name buf))
                (buf-path (with-current-buffer buf default-directory))
-               (flag (if (file-remote-p buf-path) "@" helm-switchb-separator)))
-          (format #("%-30s%-2s%s"
+               (flag (if (file-remote-p buf-path)
+                         helm-switchb-remote-flag
+                         helm-switchb-local-flag)))
+          (format #("%-30s%s%-2s%s%s"
                     0 4 (face helm-switchb-face-head)
-                    9 10 (face helm-switchb-face-tail))
+                    13 14 (face helm-switchb-face-tail))
                   buf-name
+                  helm-switchb-separator
                   flag
+                  helm-switchb-separator
                   buf-path
                   )))
       (progn

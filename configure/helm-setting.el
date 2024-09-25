@@ -26,7 +26,7 @@
       '(shell-mode))
 
 ;;auto resize
-(setq helm-autoresize-min-height 20)
+(setq helm-autoresize-min-height 25)
 (helm-autoresize-mode t)
 
 ;;helm-tramp

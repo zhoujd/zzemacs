@@ -66,9 +66,15 @@ mouse-3: Toggle minor modes"
   (when (bound-and-true-p anzu--state)
     anzu--mode-line-format))
 
+(defun zz/segment-remote ()
+  "Return remote status information."
+  (when (file-remote-p default-directory)
+    (concat " " "@")))
+
 (setq simple-modeline-segments
       '((zz/segment-anzu
          simple-modeline-segment-modified
+         zz/segment-remote
          simple-modeline-segment-buffer-name
          zz/segment-percent-prefix
          zz/segment-percent-position

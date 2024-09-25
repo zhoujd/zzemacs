@@ -78,7 +78,6 @@ mouse-3: Toggle minor modes"
         (simple-modeline-segment-input-method
          simple-modeline-segment-eol
          simple-modeline-segment-encoding
-         simple-modeline-segment-vc
          simple-modeline-segment-misc-info
          zz/segment-process
          zz/segment-major-mode

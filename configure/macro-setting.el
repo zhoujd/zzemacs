@@ -41,7 +41,7 @@
      (set-language-environment curr-lang)))
 
 (defmacro with-ido-read (&rest body)
-  `(let ((completing-read-function 'ido-completing-read))
+  `(progn
      (ido-mode t)
      ,@body))
 

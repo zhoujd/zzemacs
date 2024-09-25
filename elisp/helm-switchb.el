@@ -33,14 +33,12 @@
                   7 8 (face helm-switchb-face-tail))
                 (buffer-name buf)
                 helm-switchb-separator
-                (with-current-buffer (buffer-name buf)
-                  default-directory)))
+                (with-current-buffer buf default-directory)))
       (progn
         (cl-remove-if
          (lambda (buf)
            (or (member (buffer-name buf) helm-switchb-ignores)
-               (with-current-buffer buf
-                 (neq major-mode ,mode))))
+               (with-current-buffer buf (neq major-mode ,mode))))
          (buffer-list))))))
 
 (defmacro helm-switchb-run (&rest body)

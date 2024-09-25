@@ -9,8 +9,8 @@
   (zz/load-path "site-lisp/emacs-vterm")
   (require 'multi-vterm))
 
-(defvar helm-switchb-separator "  "
-  "helm switchb separator, default with two spaces")
+(defvar helm-switchb-separator " "
+  "helm switchb separator, default with one spaces")
 
 (defvar helm-switchb-ignores '("*Async Shell Command*")
   "helm switchb ignores buffers")
@@ -28,12 +28,16 @@
   `(lambda ()
      (mapcar
       (lambda (buf)
-        (format #("%-30s%s%s"
-                  0 4 (face helm-switchb-face-head)
-                  7 8 (face helm-switchb-face-tail))
-                (buffer-name buf)
-                helm-switchb-separator
-                (with-current-buffer buf default-directory)))
+        (let* ((buf-name (buffer-name buf))
+               (buf-path (with-current-buffer buf default-directory))
+               (flag (if (file-remote-p buf-path) "@" helm-switchb-separator)))
+          (format #("%-30s%-2s%s"
+                    0 4 (face helm-switchb-face-head)
+                    9 10 (face helm-switchb-face-tail))
+                  buf-name
+                  flag
+                  buf-path
+                  )))
       (progn
         (cl-remove-if
          (lambda (buf)

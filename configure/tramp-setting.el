@@ -35,11 +35,10 @@
 ;;Run `M-x tramp-cleanup-all-connections' instead.
 (setq tramp-persistency-file-name "~/.emacs.d/tramp")
 
-;;Disable VC for remote files
-(defun zz/vc-off-if-remote ()
-  (if (file-remote-p (buffer-file-name))
-      (setq-local vc-handled-backends nil)))
-(add-hook 'find-file-hook 'zz/vc-off-if-remote)
+;;Disable vc for remote files (speed increase)
+(setq vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
+                                   vc-ignore-dir-regexp
+                                   tramp-file-name-regexp))
 
 ;;Prevent forbidden reentrant call of tramp
 (add-to-list 'debug-ignored-errors 'remote-file-error)

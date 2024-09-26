@@ -19,5 +19,5 @@ set confirm off
 set non-stop on
 
 ## multi-process
-set detach-on-fork on
-set follow-fork-mode child
+#set detach-on-fork on
+#set follow-fork-mode child

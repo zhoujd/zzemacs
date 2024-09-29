@@ -4,9 +4,19 @@ Kernel Debug
 ## URLs
 
     ## https://sergioprado.blog/debugging-the-linux-kernel-with-gdb/
+    ## https://cs4118.github.io/dev-guides/kernel-debugging.html
+    ## https://pwning.systems/posts/setting-up-a-kernel-debugging-environment/
+
+## Preparing Linux for Kernel Debugging
+
+    $ make defconfig
+    $ ./scripts/config --set-val CONFIG_DEBUG_INFO  y
+    $ ./scripts/config --set-val CONFIG_GDB_SCRIPTS y
+    $ make oldconfig
 
 ## Build Options for Debug
 
+    $ cat .config | grep CONFIG_
     CONFIG_DEBUG_INFO=y                     # 编译debug info
     CONFIG_MAGIC_SYSRQ=y                    # 功能编译开关
     CONFIG_MAGIC_SYSRQ_DEFAULT_ENABLE=0x1   # 默认开启项 默认存在 /proc/sysrq-trigger
@@ -22,3 +32,19 @@ Kernel Debug
     CONFIG_KGDB_TESTS=y                     # 这是一个 kgdb I/O 模块，专门用于测试kgdb 的内部功能。回归测试使用
     # CONFIG_KGDB_TESTS_ON_BOOT is not set  # 启动时进行模块内部测试
     CONFIG_KGDB_LOW_LEVEL_TRAP=y            # 这将为断点异常处理程序添加对 kgdb 的额外回调，这将允许 kgdb 单步执行。
+
+
+## Debug crash
+
+    ## https://walac.github.io/kernel-crashes/
+    ## https://ubuntu.com/server/docs/kernel-crash-dump
+    $ sudo apt install linux-crashdump
+    $ cat /proc/cmdline
+    BOOT_IMAGE=/vmlinuz-3.2.0-17-server root=/dev/mapper/PreciseS-root ro
+     crashkernel=384M-2G:64M,2G-:128M
+    $ dmesg | grep -i crash
+    $ kdump-config show
+
+    ## Testing the crash dump mechanism
+    $ cat /proc/sys/kernel/sysrq
+    $ sudo sysctl -w kernel.sysrq=1

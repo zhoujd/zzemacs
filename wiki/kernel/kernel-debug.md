@@ -48,3 +48,14 @@ Kernel Debug
     ## Testing the crash dump mechanism
     $ cat /proc/sys/kernel/sysrq
     $ sudo sysctl -w kernel.sysrq=1
+
+## Disable ASLR
+
+    ## On Kernl Build
+    ## CONFIG_RANDOMIZE_BASE to n, then build kernel
+
+    ## On Kernel Boot
+    ## Add 'nokaslr' to GRUB_CMDLINE_LINUX_DEFAULT
+    $sudo vi /etc/default/grub
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nokaslr"
+    $ sudo update-grub

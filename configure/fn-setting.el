@@ -115,4 +115,7 @@
 
 (provide 'fn-setting)
 
+;; Local Variables:
+;; coding: utf-8
+;; End:
 ;;; fn-setting.el ends here

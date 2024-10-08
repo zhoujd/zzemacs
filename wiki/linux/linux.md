@@ -631,3 +631,31 @@ Linux something
     $ cd ~/.ssh
     $ chmod 600 id_rsa id_rsa.pub
     $ chmod 644 authorized_keys
+
+## How to disable fsck on reboot in linux
+
+    ## https://unixadminguide.blogspot.com/2013/12/how-to-disable-fsck-on-reboot-in-linux.html
+    ## Filesystem tunable
+    $ sudo tune2fs -c 0 /dev/sda2
+    $ tune2fs /dev/sda2 | egrep -i 'mount count|check'
+
+    ## To disable fsck check on /dev/sda2
+    $ tune2fs -c 0 -i 0 /dev/sda2
+    $ tune2fs /dev/sda2 | egrep -i 'mount count|check'
+
+    ## Grub boot parameter
+    ## Add the following at the end of your grub boot linux line.
+    ## fastboot
+
+    ## Placing command files on your root device
+    To disable the filesystem check on boot.
+    $ sudo touch /fastboot
+    ## To enable a filesystem check on boot.
+    $ sudo touch /forcefsck
+
+    ## update /etc/fstab
+    $ grep nofsck /etc/fstab
+    /dev/sda2        /mnt/nofsck        ext4        defaults        0  0
+
+    ## Active reboot without FSCK
+    $ sudo shutdown -rf

@@ -57,10 +57,11 @@ build() {
 }
 
 usage() {
+    APP=$(basename $0)
     cat <<EOF
 Usage:
-$ $(basename $0) {build|-b|clean|-c|dep}
-$ $(basename $0) -b <dir1> <dir2> .. <dirN> ## Use relative path
+$ $APP {build|-b|clean|-c|dep}
+$ $APP -b <dir1> <dir2> .. <dirN> ## Use relative path
 EOF
 }
 

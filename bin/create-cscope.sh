@@ -11,11 +11,11 @@ EXCLUDE_LIST=(
 )
 
 FILTER_LIST=(
-    -iname "*.[chly]"   
+    -iname "*.[chly]"
     -o -iname "*.[ch]xx"
     -o -iname "*.[ch]pp"
-    -o -iname "*.cc"    
-    -o -iname "*.hh"    
+    -o -iname "*.cc"
+    -o -iname "*.hh"
 )
 
 TYPE_LIST=(
@@ -35,9 +35,16 @@ clean() {
 build() {
     SCAN_LIST=(
         ${SCAN_DEF_LIST[@]}
-        $@
     )
+
+    for dir in $@; do
+        if [ -d $dir ]; then
+            SCAN_LIST+=($dir)
+        fi
+    done
+
     echo "Generate scan files"
+    printf '%s\n' "${SCAN_LIST[@]}"
     find ${SCAN_LIST[@]} \
          \( ${EXCLUDE_LIST[@]} \) \
          \( ${TYPE_LIST[@]} \) \
@@ -50,7 +57,7 @@ build() {
 }
 
 usage() {
-    cat <<EOF 
+    cat <<EOF
 Usage:
 $ $(basename $0) {build|-b|clean|-c|dep}
 $ $(basename $0) -b <dir1> <dir2> .. <dirN> ## Use relative path

@@ -34,15 +34,22 @@ clean() {
 build() {
     SCAN_LIST=(
         ${SCAN_DEF_LIST[@]}
-        $@
     )
-    echo "Build TAGS"
+
+    for dir in $@; do
+        if [ -d $dir ]; then
+            SCAN_LIST+=($dir)
+        fi
+    done
+    
+    echo "Build TAGS:"
+    printf '%s\n' "${SCAN_LIST[@]}"
     find ${SCAN_LIST[@]} \
          \( ${EXCLUDE_LIST[@]} \) \
          \( ${TYPE_LIST[@]} \) \
          \( ${FILTER_LIST[@]} \) \
          -print | etags -
-
+    
     ls -lh TAGS
 }
 

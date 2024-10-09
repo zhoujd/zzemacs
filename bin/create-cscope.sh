@@ -35,17 +35,18 @@ clean() {
 build() {
     SCAN_LIST=(
         ${SCAN_DEF_LIST[@]}
+        $@
     )
 
-    for dir in $@; do
+    for dir in "${SCAN_LIST[@]}"; do
         if [ -d $dir ]; then
-            SCAN_LIST+=($dir)
+            DIR_LIST+=($dir)
         fi
     done
 
     echo "Generate scan files"
-    printf '%s\n' "${SCAN_LIST[@]}"
-    find ${SCAN_LIST[@]} \
+    printf '%s\n' "${DIR_LIST[@]}"
+    find ${DIR_LIST[@]} \
          \( ${EXCLUDE_LIST[@]} \) \
          \( ${TYPE_LIST[@]} \) \
          \( ${FILTER_LIST[@]} \) \

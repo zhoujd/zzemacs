@@ -34,17 +34,18 @@ clean() {
 build() {
     SCAN_LIST=(
         ${SCAN_DEF_LIST[@]}
+        $@
     )
 
-    for dir in $@; do
+    for dir in "${SCAN_LIST[@]}"; do
         if [ -d $dir ]; then
-            SCAN_LIST+=($dir)
+            DIR_LIST+=($dir)
         fi
     done
 
     echo "Build TAGS:"
-    printf '%s\n' "${SCAN_LIST[@]}"
-    find ${SCAN_LIST[@]} \
+    printf '%s\n' "${DIR_LIST[@]}"
+    find ${DIR_LIST[@]} \
          \( ${EXCLUDE_LIST[@]} \) \
          \( ${TYPE_LIST[@]} \) \
          \( ${FILTER_LIST[@]} \) \
@@ -54,7 +55,7 @@ build() {
 }
 
 usage() {
-    APP=$(basename $0)    
+    APP=$(basename $0)
     cat <<EOF
 Usage:
 $ $APP {build|-b|clean|-c|dep}

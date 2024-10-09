@@ -363,6 +363,7 @@
  (list
   (kbd "o")       'helm-occur
   (kbd "i")       'helm-swoop
+  (kbd "r")       'rg-menu
   ))
 
 (apply-keys-to-map

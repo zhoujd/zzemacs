@@ -23,6 +23,10 @@
 (zz/load-path "site-lisp/emacs-legcy/hydra")
 (require 'hydra)
 
+;;async
+(zz/load-path "site-lisp/async")
+(require 'async)
+
 
 (provide 'lib-setting)
 

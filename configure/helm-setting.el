@@ -2,7 +2,6 @@
 ;;https://github.com/emacs-helm/helm
 ;;https://github.com/emacs-helm/helm/wiki
 
-(zz/load-path "site-lisp/async")
 (zz/load-path "site-lisp/helm")
 (require 'helm)
 (require 'helm-config)

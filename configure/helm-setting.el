@@ -129,7 +129,7 @@
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (find-file-in-project)))
+    (find-file-in-current-directory-by-selected)))
 
 ;;https://github.com/cosmicexplorer/helm-rg
 ;;https://github.com/BurntSushi/ripgrep/releases

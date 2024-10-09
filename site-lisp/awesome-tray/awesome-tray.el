@@ -1008,7 +1008,7 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
                                           (when (and (> (point) (treesit-node-start node))
                                                      (< (point) (treesit-node-end node)))
                                             (throw 'found (treesit-node-text node))))
-                                         (t
+                                         (-
                                           (when (and (> (point) (treesit-node-start (treesit-node-parent node)))
                                                      (< (point) (treesit-node-end (treesit-node-parent node))))
                                             (throw 'found (treesit-node-text node)))))))
@@ -1026,7 +1026,7 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
                                          (when (and (> (point) (treesit-node-start (treesit-node-parent node)))
                                                     (< (point) (treesit-node-end (treesit-node-parent node))))
                                            (throw 'found (treesit-node-text node))))
-                                        (t
+                                        (-
                                          (when (and (> (point) (treesit-node-start (treesit-node-parent node)))
                                                     (< (point) (treesit-node-end (treesit-node-parent node))))
                                            (throw 'found (treesit-node-text node)))))))

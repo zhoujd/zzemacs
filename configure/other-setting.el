@@ -503,6 +503,10 @@
 ;;A minor-mode menu for the mode line
 (require 'minions)
 
+;;find-file-rg
+;;M-x: find-file-rg-at-point
+(require 'find-file-rg)
+
 
 (provide 'other-setting)
 

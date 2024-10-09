@@ -52,6 +52,8 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;JetBrains Mono: https://www.jetbrains.com/lp/mono/
+;;https://github.com/supercomputra/SF-Mono-Font
+;;https://github.com/soytony/SF-Mono-SC
 ;;https://github.com/ryanoasis/nerd-fonts/
 ;;https://www.programmingfonts.org/
 ;;M-x menu-set-font
@@ -65,6 +67,7 @@
                             "WenQuanYi Zen Hei Mono 13"
                             ))
 (defconst zz/cn-font-list '(
+                            "SF Mono SC"
                             "Droid Sans Fallback"
                             "Microsoft YaHei Mono"
                             ))

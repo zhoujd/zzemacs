@@ -124,12 +124,12 @@
 (zz/load-path "elisp")
 (require 'helm-switchb)
 
-(require 'helm-find)
+(require 'find-file-in-project)
 (defun zz/helm-find ()
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (helm-find-1 default-directory)))
+    (ffip)))
 
 ;;https://github.com/cosmicexplorer/helm-rg
 ;;https://github.com/BurntSushi/ripgrep/releases

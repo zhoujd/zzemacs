@@ -380,6 +380,13 @@
   (kbd "z")       'avy-resume
   ))
 
+(apply-keys-to-map
+ facemenu-keymap
+ (list
+  (kbd "h")       'symbol-overlay-put
+  (kbd "c")       'symbol-overlay-remove-all
+  ))
+
 
 (provide 'key-setting)
 

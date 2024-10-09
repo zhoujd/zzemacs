@@ -129,7 +129,7 @@
   (interactive)
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
-    (ffip)))
+    (find-file-in-project)))
 
 ;;https://github.com/cosmicexplorer/helm-rg
 ;;https://github.com/BurntSushi/ripgrep/releases

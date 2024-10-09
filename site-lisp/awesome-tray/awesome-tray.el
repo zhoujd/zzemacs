@@ -575,8 +575,8 @@ Example:
     ("word-count" . (awesome-tray-module-word-count-info awesome-tray-module-word-count-face))
     ("anzu" . (awesome-tray-module-anzu-info awesome-tray-module-anzu-face))
     ("github" . (awesome-tray-module-github-info awesome-tray-module-github-face))
-    ("hostname" . (awesome-tray-module-hostname-info awesome-tray-module-hostname-face))
-    ))
+    ("hostname" . (awesome-tray-module-hostname-info awesome-tray-module-hostname-face))))
+
 
 (with-eval-after-load 'mu4e-alert
   (add-hook 'mu4e-index-updated-hook #'mu4e-alert-update-mail-count-modeline)
@@ -750,7 +750,8 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
         (setq awesome-tray-git-command-cache (if awesome-tray-git-show-status
                                                  (format awesome-tray-git-format (string-trim (concat branch " " status)))
                                                (format awesome-tray-git-format branch))))
-    (setq awesome-tray-git-command-cache "")))
+    (setq awesome-tray-git-buffer-filename nil
+          awesome-tray-git-command-cache "")))
 
 (defun awesome-tray-module-circe-info ()
   "Display circe tracking buffers"
@@ -763,8 +764,8 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
   (if (executable-find "rvm-prompt")
       (format "rvm:%s" (replace-regexp-in-string
                         "\n" ""
-                        (nth 1 (awesome-tray-process-exit-code-and-output "rvm-prompt")))
-              )
+                        (nth 1 (awesome-tray-process-exit-code-and-output "rvm-prompt"))))
+
     ""))
 
 (defun awesome-tray-module-battery-info ()
@@ -784,7 +785,7 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
                  (setq battery-status (battery-format
                                        (if (eq system-type 'darwin)
                                            "[%p%%]"
-                                         "[%p%% %t]" )
+                                         "[%p%% %t]")
                                        battery-info))))
 
           ;; Update battery cache.
@@ -987,14 +988,14 @@ Requires `anzu', also `evil-anzu' if using `evil-mode' for compatibility with
         (let* ((class-nodes (append (awesome-tray-get-match-nodes '((class_definition name: (symbol) @x)))
                                     (awesome-tray-get-match-nodes '((class_definition name: (identifier) @x)))
                                     (awesome-tray-get-match-nodes '((class_declaration name: (identifier) @x)))
-                                    (awesome-tray-get-match-nodes '((class_specifier name: (type_identifier) @x)))
-                                    ))
+                                    (awesome-tray-get-match-nodes '((class_specifier name: (type_identifier) @x)))))
+
                (function-nodes (append (awesome-tray-get-match-nodes '((function_definition name: (symbol) @x)))
                                        (awesome-tray-get-match-nodes '((function_definition name: (identifier) @x)))
                                        (awesome-tray-get-match-nodes '((function_declarator declarator: (identifier) @x)))
                                        (awesome-tray-get-match-nodes '((method_declaration name: (identifier) @x)))
-                                       (awesome-tray-get-match-nodes '((function_declarator declarator: (field_identifier) @x)))
-                                       ))
+                                       (awesome-tray-get-match-nodes '((function_declarator declarator: (field_identifier) @x)))))
+
                which-belong-info
                which-class-info
                which-func-info)
@@ -1178,8 +1179,8 @@ If right is non nil, replace to the right"
                   (face-attribute 'mode-line-inactive :foreground)
                   (face-attribute 'mode-line-inactive :background)
                   (face-attribute 'mode-line-inactive :family)
-                  (face-attribute 'mode-line-inactive :box)
-                  )))
+                  (face-attribute 'mode-line-inactive :box))))
+
     (setq awesome-tray-mode-line-default-height (face-attribute 'mode-line :height))
 
     ;; Disable mode line.
@@ -1276,7 +1277,23 @@ If right is non nil, replace to the right"
                   ('left (propertize "  " 'cursor 1 'display
                                      `(space :align-to (- left-fringe ,wid))))
                   ('right (propertize "  " 'cursor 1 'display
-                                      `(space :align-to (- right-fringe ,wid)))))))
+                                      `(space :align-to (- right-fringe
+                                                           ,(if (display-graphic-p)
+                                                                (if (= (nth 1 (window-fringes)) 0)
+                                                                    ;; no right fringe, need 1 char padding to avoid
+                                                                    ;; line wrap
+                                                                    1
+                                                                  (if (and (not overflow-newline-into-fringe)
+                                                                           (= awesome-tray-info-padding-right 0))
+                                                                      ;; need 1 pixel padding to avoid line wrap when
+                                                                      ;; overflow-newline-into-fringe is nil
+                                                                      '(1)
+                                                                    '(0)))
+                                                              (if (= awesome-tray-info-padding-right 0)
+                                                                  ;; need 1 char in TUI to avoid line wrap
+                                                                  1
+                                                                0))
+                                                           ,wid)))))))
 
       (setq awesome-tray-text (concat (if awesome-tray-second-line "\n") spc text))
 
@@ -1336,9 +1353,9 @@ If right is non nil, replace to the right"
          ;; Get minibuffer content.
          (echo-message (current-message))
          ;; Remove text property from content.
-         (echo-text (set-text-properties 0 (length echo-message) nil echo-message))
-         ;; Set empty string if `echo-text' not string.
-         (minibuffer-info (if (stringp echo-text) echo-text ""))
+         (_ (set-text-properties 0 (length echo-message) nil echo-message))
+         ;; Set empty string if `echo-message' not string.
+         (minibuffer-info (if (stringp echo-message) echo-message ""))
          ;; Only fetch last line from content to calculate the width of left side minibuffer.
          (minibuffer-last-line (car (last (split-string minibuffer-info "\n"))))
          ;; Calculate blank length between message and active tray info.

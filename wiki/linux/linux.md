@@ -644,8 +644,8 @@ Linux something
     $ tune2fs /dev/sda2 | egrep -i 'mount count|check'
 
     ## Grub boot parameter
-    ## Add the following at the end of your grub boot linux line.
-    ## fastboot
+    ## Add `fastboot` at the end of your grub boot linux line.
+    ## GRUB_CMDLINE_LINUX_DEFAULT="quiet splash fastboot"
 
     ## Placing command files on your root device
     To disable the filesystem check on boot.

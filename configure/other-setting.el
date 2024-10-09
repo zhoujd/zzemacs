@@ -507,6 +507,9 @@
 ;;M-x: find-file-rg-at-point
 (require 'find-file-rg)
 
+;;elgrep
+(require 'elgrep)
+
 
 (provide 'other-setting)
 

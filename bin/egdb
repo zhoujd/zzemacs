@@ -3,8 +3,9 @@
 BIN="emacs"
 PARAMS="--quick"
 ZZEMACS_ROOT="$HOME/zzemacs"
+GDB_CMD="gdb -q --fullname"
 
 $BIN $PARAMS \
-     --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
-     --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
-     --eval "(gud-gdb \"gdb -q --fullname --args $*\")"
+     --eval "(defvar zzemacs-path \"${ZZEMACS_ROOT}\")"  \
+     --eval "(load-file \"${ZZEMACS_ROOT}/.emacs-gdb\")" \
+     --eval "(gud-gdb \"${GDB_CMD} $*\")"

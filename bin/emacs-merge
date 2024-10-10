@@ -7,7 +7,7 @@
 ## $4 => $MERGED
 
 if [ $# != 4 ]; then
-    echo Usage: $(basenam $0) {base} {local} {remote} {merged}
+    echo Usage: $(basename $0) {base} {local} {remote} {merged}
     exit 0
 fi
 

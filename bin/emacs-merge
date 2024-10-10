@@ -8,19 +8,13 @@
 
 if [ $# != 4 ]; then
     echo Usage: $(basenam $0) {base} {local} {remote} {merged}
-    exit 1
+    exit 0
 fi
 
-# Check run OS
-if [ "$OS" = "Windows_NT" ] ; then
-    ZZEMACS_ROOT=$(cd $ZZNIX_HOME && pwd -W)
-else
-    ZZEMACS_ROOT=$(cd $(dirname $0)/.. && pwd)
-fi
+ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
+BIN="emacs"
 
-EMACS="emacs"
-
-$EMACS --quick \
-       --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
-       --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
-       --eval "(message \"emacs merge finished.\")"
+$BIN --quick \
+     --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
+     --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
+     --eval "(message \"emacs merge finished.\")"

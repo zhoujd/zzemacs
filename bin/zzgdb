@@ -1,36 +1,22 @@
 #!/bin/bash
 
-## get script path
-script_path() {
-    SOURCE=${BASH_SOURCE[0]}
-    DIR=$(dirname "$SOURCE")
-    while [ -h "$SOURCE" ]; do
-        SOURCE=$(readlink "$SOURCE")
-        [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-        DIR=$(cd -P "$(dirname "$SOURCE")" && pwd)
-    done
-    DIR=$(cd -P "$(dirname "$SOURCE")" && pwd)
-    echo $DIR
-}
-
-SCRIPT_HOME=$(script_path)
-ZZEMACS_ROOT=$(cd $SCRIPT_HOME/.. && pwd)
-EMACS_BIN="emacs"
+ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
+BIN="emacs"
 
 ## reorganize parameters
 for arg in "$@" ; do
     case "$arg" in
         "-nw" | "--no-window-system" )
-            pre_params="$pre_params $arg"
+            PRE_PARAMS+=($arg)
             ;;
         * )
-            post_params="$post_params $arg"
+            POST_PARAMS+=($arg)
             ;;
     esac
 done
 
-$EMACS_BIN --quick $pre_params \
-           --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
-           --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
-           --eval "(message \"emacs gdb ready.\")"           \
-           $post_params
+$BIN --quick ${PRE_PARAMS[@]} \
+     --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
+     --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
+     --eval "(message \"emacs gdb ready.\")"           \
+     ${POST_PARAMS[@]}

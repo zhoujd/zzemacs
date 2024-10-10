@@ -17,9 +17,9 @@ This is merge tools for emacs"
 fi
 
 main() {
-    ELISP_PATH=${ELISP_PATH:-"~/zzemacs/elisp"}
+    ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}    
     emacs --quick \
-          --eval "(load-file \"$ELISP_PATH/ediff-sample.el\")" \
+          --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
           --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \
           --eval "(message \"emacs merge finished.\")"
 }

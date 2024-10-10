@@ -1,10 +1,10 @@
 #!/bin/bash
 
-EMACS_BIN="emacs"
+BIN="emacs"
 PARAMS="--quick"
 ZZEMACS_ROOT="$HOME/zzemacs"
 
-$EMACS_BIN $PARAMS \
-           --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
-           --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
-           --eval "(gud-gdb \"gdb -q --fullname --args $*\")"
+$BIN $PARAMS \
+     --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
+     --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
+     --eval "(gud-gdb \"gdb -q --fullname --args $*\")"

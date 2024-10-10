@@ -17,7 +17,7 @@ This is merge tools for emacs"
 fi
 
 main() {
-    ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}    
+    ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
     emacs --quick \
           --eval "(load-file \"$ZZEMACS_ROOT/elisp/ediff-sample.el\")" \
           --eval "(ediff-merge-files \"$2\" \"$3\" \"$1\" \"$4\")" \

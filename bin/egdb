@@ -2,7 +2,7 @@
 
 EMACS_BIN="emacs"
 PARAMS="--quick"
-ZZEMACS_ROOT="~/zzemacs"
+ZZEMACS_ROOT="$HOME/zzemacs"
 
 $EMACS_BIN $PARAMS \
            --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \

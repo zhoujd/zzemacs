@@ -52,6 +52,7 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;JetBrains Mono: https://www.jetbrains.com/lp/mono/
+;;SF Mono: https://developer.apple.com/fonts/
 ;;https://github.com/supercomputra/SF-Mono-Font
 ;;https://github.com/soytony/SF-Mono-SC
 ;;https://github.com/ryanoasis/nerd-fonts/

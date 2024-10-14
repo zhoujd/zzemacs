@@ -90,8 +90,8 @@
 (defkeys-map c-mode-base-map
   ((kbd "TAB")     'company-indent-or-complete-common)
   ((kbd "C-c M-/") 'zz/company-ctags)
-  ((kbd "M-o")     'cff-find-other-file)
-  ((kbd "M-m")     'eassist-list-methods))
+  ((kbd "C-c M-o") 'cff-find-other-file)
+  ((kbd "C-c M-m") 'eassist-list-methods))
 (defun zz/c-mode-common-hook()
   (setq tab-width 2)
   (setq indent-tabs-mode nil)

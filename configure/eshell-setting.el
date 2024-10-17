@@ -40,6 +40,13 @@
   (local-set-key (kbd "C-c M-o") 'zz/eshell-clear))
 (add-hook 'eshell-mode-hook 'zz/eshell-hook)
 
+(defun zz/eshell-add-aliases ()
+  "Add eshell aliases"
+  (dolist (var '(("ff" "find-file $1")
+                 ("ll" "ls -hal $*")))
+    (add-to-list 'eshell-command-aliases-list var)))
+(add-hook 'eshell-post-command-hook 'zz/eshell-add-aliases)
+
 
 (provide 'eshell-setting)
 

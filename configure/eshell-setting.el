@@ -40,11 +40,15 @@
   (local-set-key (kbd "C-c M-o") 'zz/eshell-clear))
 (add-hook 'eshell-mode-hook 'zz/eshell-hook)
 
+(defun zz/eshell-alias (name definition)
+  "Define eshell alias NAME with DEFINITION unless it's defined."
+  (unless (eshell-lookup-alias name)
+    (eshell/alias name definition)))
+
 (defun zz/eshell-add-aliases ()
-  "Add eshell aliases"
-  (dolist (var '(("ff" "find-file $1")
-                 ("ll" "ls -hal $*")))
-    (add-to-list 'eshell-command-aliases-list var)))
+  "Initialize custom eshell aliases."
+  (zz/eshell-alias "ff" "find-file $1")
+  (zz/eshell-alias "ll" "ls -hal $*"))
 (add-hook 'eshell-post-command-hook 'zz/eshell-add-aliases)
 
 

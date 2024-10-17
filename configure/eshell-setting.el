@@ -47,7 +47,7 @@
 
 (defun zz/eshell-add-aliases ()
   "Initialize custom eshell aliases."
-  (zz/eshell-alias "ff" "find-file $1")
+  (zz/eshell-alias "lt" "ls -tal $*")
   (zz/eshell-alias "ll" "ls -hal $*"))
 (add-hook 'eshell-post-command-hook 'zz/eshell-add-aliases)
 

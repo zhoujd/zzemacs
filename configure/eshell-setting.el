@@ -4,6 +4,7 @@
 (require 'eshell)
 (require 'em-smart)
 
+(setq eshell-banner-message "")
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
@@ -17,7 +18,20 @@
          "]"
          (if (= (user-uid) 0) "# " "$ "))))
 
-;clear the eshell buffer
+(defun zz/get-eshell ()
+  (interactive)
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (when (file-exists-p default-directory)
+      (eshell))))
+
+(defun zz/switch-to-eshell ()
+  (interactive)
+  (let ((buf-name "*eshell*"))
+    (if (get-buffer buf-name)
+        (switch-to-buffer buf-name)
+        (zz/get-eshell))))
+
 (defun zz/eshell-clear ()
   (interactive)
   (let ((eshell-buffer-maximum-lines 0)) (eshell-truncate-buffer)))

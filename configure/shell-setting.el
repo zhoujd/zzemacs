@@ -124,17 +124,6 @@ Dmitriy Igrishin's patched version of comint.el."
         (multi-shell-new)))
     )))
 
-(defun zz/switch-to-eshell ()
-  (interactive)
-  (let ((buf-name "*eshell*"))
-    (if (get-buffer buf-name)
-        (switch-to-buffer buf-name)
-        (let ((default-directory (file-name-as-directory
-                                  (ido-read-directory-name "Directory: "))))
-          (when (file-exists-p default-directory)
-            (eshell)))
-        )))
-
 (defun zz/home-shell ()
   (interactive)
   (cond

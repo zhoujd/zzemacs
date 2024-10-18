@@ -367,9 +367,27 @@ Dmitriy Igrishin's patched version of comint.el."
           (concat "/" tramp-default-method ":" host ":")))
     ))
 
+(defun zz/helm-get-remote ()
+  (with-temp-buffer
+    (let* ((path "~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
+           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
+           (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+           (command (format "cat %s | %s | %s" path grep awk))
+           (host (helm-comp-read "Host: "
+                                 (split-string
+                                  (shell-command-to-string command)))))
+      (if (eq tramp-syntax 'simplified)
+          (concat "/" host ":")
+          (concat "/" tramp-default-method ":" host ":")))
+    ))
+
 (defun zz/get-host ()
   (let ((default-directory "~/.ssh"))
     (zz/get-remote)))
+
+(defun zz/helm-get-host ()
+  (let ((default-directory "~/.ssh"))
+    (zz/helm-get-remote)))
 
 (defun zz/remote-shell ()
   "Open a remote shell to a host"
@@ -406,7 +424,7 @@ Dmitriy Igrishin's patched version of comint.el."
   "remote shell with helm"
   (interactive)
   (with-temp-buffer
-    (let* ((default-directory (zz/get-host)))
+    (let* ((default-directory (zz/helm-get-host)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz/helm-cd-shell))
       )))

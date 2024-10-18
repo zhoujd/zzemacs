@@ -225,7 +225,7 @@
       )))
 
 (defun zz/remote-term ()
-  "Connect to a remote host by multi-term."
+  "Connect to a remote term by multi-term."
   (interactive)
   (with-temp-buffer
     (let* ((path (mapconcat
@@ -251,20 +251,34 @@
       (zz/open-term-dir default-directory))))
 
 (defun zz/helm-local-term ()
-  "remote term with helm"
+  "Open local term with helm"
   (interactive)
   (with-temp-buffer
     (let* ((prefix "~"))
       (when (tramp-tramp-file-p default-directory)
         (setq default-directory prefix))
       (call-interactively 'zz/helm-cd-term)
-    )))
+      )))
 
 (defun zz/helm-remote-term ()
-  "remote term with helm"
+  "Open remote term with helm"
   (interactive)
-  (let ((host (car (tramp-term--select-host))))
-    (zz/get-remote-term host)))
+  (with-temp-buffer
+    (let* ((path (mapconcat
+                  (lambda (x)
+                    (when (file-exists-p x)
+                      (concatenate 'string x)))
+                  '("~/.ssh/config"
+                    "~/.ssh/config.d/*")
+                  " "))
+           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
+           (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+           (command (format "cat %s | %s | %s" path grep awk))
+           (host (helm-comp-read "Host: "
+                                 (split-string
+                                  (shell-command-to-string command)))))
+
+      (zz/get-remote-term host))))
 
 ;;auto kill term buffer
 (add-hook 'term-exec-hook (lambda ()

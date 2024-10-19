@@ -1,22 +1,15 @@
 #!/bin/bash
 
+## Run Examples
+# zzgdb
+# OPT='-Q -nw' zzgdb
+# OPT='--quick -nw' zzgdb
+
 ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
-BIN="emacs"
+BIN=${BIN:-"emacs"}
+OPT=${OPT:-"--quick --name zzgdb"}
 
-## reorganize parameters
-for arg in "$@" ; do
-    case "$arg" in
-        "-nw" | "--no-window-system" )
-            PRE_PARAMS+=($arg)
-            ;;
-        * )
-            POST_PARAMS+=($arg)
-            ;;
-    esac
-done
-
-$BIN --quick ${PRE_PARAMS[@]} \
-     --eval "(defvar zzemacs-path \"$ZZEMACS_ROOT\")"  \
-     --eval "(load-file \"$ZZEMACS_ROOT/.emacs-gdb\")" \
-     --eval "(message \"emacs gdb ready.\")"           \
-     ${POST_PARAMS[@]}
+$BIN $OPT \
+     --eval "(defvar zzemacs-path \"${ZZEMACS_ROOT}\")"  \
+     --eval "(load-file \"${ZZEMACS_ROOT}/.emacs-gdb\")" \
+     --eval "(message \"emacs gdb ready.\")"

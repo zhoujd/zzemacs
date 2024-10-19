@@ -107,7 +107,7 @@
   [f12]             'neotree-toggle
   [S-f12]           'neotree-dir
   [C-f12]           'deadgrep
-  [M-f12]           'helm-ag
+  [M-f12]           'rg
   (kbd "C-x <f12>") 'zz/flyspell-toggle
   (kbd "C-c <f12>") 'zz/transparency-toggle
   "f12 key binding")

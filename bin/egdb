@@ -7,7 +7,7 @@
 
 ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
 BIN=${BIN:-"emacs"}
-OPT=${OPT:-"--quick"}
+OPT=${OPT:-"--quick --name egdb"}
 GDB=${GDB:-"gdb -q --fullname"}
 
 $BIN $OPT \

@@ -1,7 +1,12 @@
 #!/bin/bash
 
+## Run Examples
+# $ egdb
+# $ PARAMS='-Q -nw' egdb
+# $ PARAMS='--quick -nw' egdb
+
 BIN="emacs"
-PARAMS="--quick"
+PARAMS=${PARAMS:-"--quick"}
 ZZEMACS_ROOT=${ZZEMACS_ROOT:-"~/zzemacs"}
 GDB_CMD="gdb -q --fullname"
 

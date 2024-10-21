@@ -14,7 +14,13 @@ def path2unix(path):
     return path
 
 def getworkdir():
-    return path2unix(os.getcwd())
+    try:
+        cwd = os.getcwd()
+    except OSError:
+        print("It looks like `current directory` is not exist!")
+        os.chdir("..")
+        cwd = os.getcwd()
+    return path2unix(cwd)
     
 def getfiledir(filepath):
     strfilepath = os.path.realpath(filepath)

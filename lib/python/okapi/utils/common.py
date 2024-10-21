@@ -17,7 +17,7 @@ def getworkdir():
     try:
         cwd = os.getcwd()
     except OSError:
-        print("It looks like `current directory` is not exist!")
+        print("It looks like `current directory` not exist!")
         os.chdir("..")
         cwd = os.getcwd()
     return path2unix(cwd)

@@ -88,7 +88,6 @@
 
 ;;c common setting hook
 (defkeys-map c-mode-base-map
-  ((kbd "TAB")     'company-indent-or-complete-common)
   ((kbd "C-c M-/") 'zz/company-ctags)
   ((kbd "C-c M-o") 'cff-find-other-file)
   ((kbd "C-c M-m") 'eassist-list-methods))

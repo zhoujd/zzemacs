@@ -70,24 +70,24 @@ usage() {
 }
 
 case $1 in
-    dotemacs | -d )
+    dotemacs|-d )
         confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                         run_cmd install_dotemacs
         ;;
-    fonts | -f )
+    fonts|-f )
         shift
         confirm_execute "Do you want to install fonts? [y/N]" \
                         run_cmd install_fonts user
         ;;
-    others | -o )
+    others|-o )
         confirm_execute "Do you want to install others? [y/N]" \
                         run_cmd install_others
         ;;
-    thirdparty | -t )
+    thirdparty|-t )
         confirm_execute "Do you want to install third-party packages? [y/N] " \
                         run_cmd install_thirdparty
         ;;
-    all | -a )
+    all|-a )
         confirm_execute "Do you want to install all configure? [y/N] " \
                         run_cmd install_all
         ;;

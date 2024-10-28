@@ -75,7 +75,6 @@ case $1 in
                         run_cmd install_dotemacs
         ;;
     fonts|-f )
-        shift
         confirm_execute "Do you want to install fonts? [y/N]" \
                         run_cmd install_fonts user
         ;;

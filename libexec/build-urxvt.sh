@@ -1,10 +1,11 @@
 #!/bin/bash
 
 ## https://www.linuxfromscratch.org/blfs/view/svn/xsoft/rxvt-unicode.html
+## http://dist.schmorp.de/rxvt-unicode/Attic/
 ## https://github.com/exg/rxvt-unicode
 
 PKG_NAME="rxvt-unicode"
-PKG_VER="9.31"
+PKG_VER="9.30"
 PKG_REV="1"
 PKG_DESC="Terminal emulator"
 PKG_CAT="Utility"
@@ -18,7 +19,7 @@ depend() {
 
 download() {
     # download the sources
-    wget http://dist.schmorp.de/rxvt-unicode/$PKG_NAME-$PKG_VER.tar.bz2
+    wget http://dist.schmorp.de/rxvt-unicode/Attic/$PKG_NAME-$PKG_VER.tar.bz2
     [ $? -ne 0 ] && return 1
     return 0
 }

@@ -45,11 +45,11 @@ prompt() {
             PS1="${title}${PS1}"
             ;;
         screen* )
-            PS1="${lgreen}[\u@\h \W] \$ ${norm}"
+            PS1="${lgreen}[\u@\h \W]\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
         tmux* )
-            PS1="${green}[\u@\h \W] \$ ${norm}"
+            PS1="${green}[\u@\h \W]\$ ${norm}"
             PS1="${title}${PS1}"
             ;;
         eterm* | putty* )

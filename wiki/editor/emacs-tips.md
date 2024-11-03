@@ -44,3 +44,14 @@ Emacs Tips
 
     C-x C-f /ftp:foo@android.local#2221:/storage/0123-4567
     C-x d /ftp:foo@android.local#2221:/storage/0123-4567
+
+## Regarding .dir-locals.el
+
+    ;; Syntax: ((MODE (VAR . VAL) ...) ...)
+    ;; MODE is a symbol like `c-mode', or `nil' for all modes.
+    ((c-mode
+      (indent-tabs-mode . nil)
+      (c-basic-offset . 4))
+     (c++-mode
+      (indent-tabs-mode . nil)
+      (c-basic-offset . 4)))

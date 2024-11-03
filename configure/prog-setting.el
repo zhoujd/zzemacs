@@ -20,6 +20,23 @@
   (local-set-key "\C-m" 'newline-and-indent)
   (local-set-key [ret] 'newline-and-indent))
 
+
+;;switch indent tab/space
+(defun zz/switch-indent ()
+  (interactive)
+  (eval-expression
+   '(progn
+      (setq indent-tabs-mode (not indent-tabs-mode))))
+  (message "Switch to indent: %s" indent-tabs-mode))
+
+;;custom indent
+(defun zz/tab-width (num)
+  (interactive "nIndent: ")
+  (eval-expression
+   '(progn
+      (setq tab-width num)))
+  (message "Select and press TAB to indent: %d" num))
+
 ;;tell Emacs to use the function above in certain editing modes.
 (dolist (hook
          (list

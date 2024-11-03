@@ -446,7 +446,7 @@ Dmitriy Igrishin's patched version of comint.el."
         (message "Cannot find trans!"))
     ))
 
-;;custom indent
+;;custom shell indent
 (defun zz/shell-indent (num)
   (interactive "nIndent: ")
   (eval-expression

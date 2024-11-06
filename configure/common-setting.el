@@ -288,14 +288,14 @@
 
 ;;mode-line time
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %b %d %l:%M %p"))))
+      '((propertize (format-time-string "%a %d %b %H:%M WW%W"))))
 (display-time-mode t)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))
 (setq mode-line-end-spaces
       (list (propertize " " 'display
-                        `((space :align-to (- (- right right-fringe)
-                                              ,(string-width display-time-string)))))
+                        `((space :align-to (- right
+                                              ,(length display-time-string)))))
             'display-time-string))
 
 ;;mode-line format

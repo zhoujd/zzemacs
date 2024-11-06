@@ -53,7 +53,7 @@ mouse-3: Toggle minor modes"
 
 (defun zz/segment-end ()
   "Return the end of mode line."
-  (concat " "))
+  (concat ""))
 
 (defun zz/segment-process ()
   "Return the current value of `mode-line-process'."

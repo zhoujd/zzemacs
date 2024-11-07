@@ -62,6 +62,7 @@ prompt() {
             ;;
         tmux* )
             PS1="${green}[\u@\h \W]\$ ${norm}"
+            title='\[\033]0;$$:\w\007\]'
             PS1="${title}${PS1}"
             ;;
         eterm* | putty* )

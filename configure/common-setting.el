@@ -248,9 +248,8 @@
 
 (setq frame-title-format
       '(:eval
-        (format "emacs%s@%s: %s"
-                (nth 2 (split-string (version)))
-                (system-name)
+        (format "emacs-%s:%s"
+                (emacs-pid)
                 (zz/fname-title-string))))
 
 ;;suppress GUI features

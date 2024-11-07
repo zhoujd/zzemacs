@@ -659,3 +659,14 @@ Linux something
 
     ## Active reboot without FSCK
     $ sudo shutdown -rf
+
+## Build with autotools
+
+    ## If the "CXXFLAGS" env var is not set at ./configure time, autotools
+    ## will gladly insert "-g -O2" in them. "-g" will inflate the size of
+    ## the nitrogen binary to nearly 2mb, so consider using:
+    ## CXXFLAGS="-O2" ./configure
+
+    ## Make sure you set CXXFLAGS to an appropriate value for
+    ## the target system. For instance, CXXFLAGS=" -std=c++11" if using
+    ## gcc 5.x

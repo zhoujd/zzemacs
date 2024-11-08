@@ -248,9 +248,11 @@
 
 (setq frame-title-format
       '(:eval
-        (format "emacs: %s (%s)"
+        (format "emacs: %s %s@%s"
                 (zz/fname-title-string)
-                (emacs-pid))))
+                (emacs-pid)
+                (system-name)
+                )))
 
 ;;suppress GUI features
 (setq use-file-dialog nil)

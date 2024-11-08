@@ -248,7 +248,7 @@
 
 (setq frame-title-format
       '(:eval
-        (format "emacs: %s %s@%s"
+        (format "emacs:%s %s@%s"
                 (zz/fname-title-string)
                 (emacs-pid)
                 (system-name)

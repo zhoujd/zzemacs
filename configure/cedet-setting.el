@@ -32,7 +32,8 @@
 (defkeys-map eassist-mode-map
   ((kbd "TAB") 'eassist-jump-to-method)
   ((kbd "C-b") 'eassist-backspace-pressed)
-  ((kbd "C-q") 'eassist-escape))
+  ((kbd "C-q") 'eassist-escape)
+  ((kbd "C-g") 'eassist-escape))
 
 ;;Nothing to complete
 (defun zz/semantic-remove-hooks ()

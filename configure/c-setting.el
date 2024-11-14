@@ -89,8 +89,8 @@
 ;;c common setting hook
 (defkeys-map c-mode-base-map
   ((kbd "C-c M-/") 'zz/company-ctags)
-  ((kbd "C-c M-o") 'cff-find-other-file)
-  ((kbd "C-c M-m") 'eassist-list-methods))
+  ((kbd "C-c o") 'cff-find-other-file)
+  ((kbd "C-c m") 'eassist-list-methods))
 (defun zz/c-mode-common-hook()
   (setq tab-width 2)
   (setq indent-tabs-mode nil)

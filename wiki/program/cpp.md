@@ -39,3 +39,14 @@ CPP
                   << std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count()
                   << " microseconds\n";
     }
+
+## std::chrono::high_resolution_clock
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> t[3];
+    t[0] = std::chrono::high_resolution_clock::now();
+    t[1] = std::chrono::high_resolution_clock::now();
+    t[2] = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < 2; i++) {
+        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t[i+1] - t[i]);
+        std::cout << " t" << i << "=" << elapsed.count() << "us" << std::endl;
+    }

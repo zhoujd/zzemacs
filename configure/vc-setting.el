@@ -28,8 +28,6 @@
   ((kbd "M-g M-s") 'magit-status)
   ((kbd "M-g M-d") 'magit-dispatch)
   ((kbd "M-g M-f") 'magit-file-dispatch))
-
-(setq magit-completing-read-function 'helm--completing-read-default)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
 (defkeys-map  magit-section-mode-map
   ((kbd "M-1") nil)

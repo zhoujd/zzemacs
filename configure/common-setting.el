@@ -288,7 +288,7 @@
 
 ;;mode-line time
 (setq display-time-string-forms
-      '((propertize (format-time-string "%a %d %b %H:%M WW%W"))))
+      '((propertize (format-time-string "WW%W %a %d %b %I:%M %p"))))
 (display-time-mode t)
 
 (setq global-mode-string (remove 'display-time-string global-mode-string))

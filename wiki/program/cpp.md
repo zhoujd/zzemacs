@@ -50,3 +50,39 @@ CPP
         auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(t[i+1] - t[i]);
         std::cout << " t" << i << "=" << elapsed.count() << "us" << std::endl;
     }
+
+## Sleep for milliseconds
+
+    ## https://stackoverflow.com/questions/4184468/sleep-for-milliseconds
+    ## C++ 11
+    #include <chrono>
+    #include <thread>
+    std::this_thread::sleep_for(std::chrono::milliseconds(x));
+
+    ## Unix
+    #include <unistd.h>
+    unsigned int microseconds;
+    usleep(microseconds);
+
+    ## Boost::Thread
+    ## https://www.boost.org/doc/libs/1_44_0/doc/html/thread.html
+    #include <boost/thread/thread.hpp>
+    //waits 2 seconds
+    boost::this_thread::sleep(boost::posix_time::seconds(1));
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+
+    ## C++ 14
+    #include <chrono>
+    #include <thread>
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(123ms);
+
+    ## `select` function (POSIX, Linux, and Windows)
+    #include <sys/time.h>
+    void sleep(unsigned long msec) {
+        timeval delay = {msec / 1000, msec % 1000 * 1000};
+        int rc = ::select(0, NULL, NULL, NULL, &delay);
+        if(-1 == rc) {
+            // Handle signals by continuing to sleep or return immediately.
+        }
+    }

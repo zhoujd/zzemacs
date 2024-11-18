@@ -18,7 +18,7 @@ echo "For python develop start ..."
 
 py3_deps() {
     pip3 install pip -U
-    pip3 install $PIP_PAR -r $SCRIPT_ROOT/py3.txt
+    pip3 install $PIP_PAR -r $SCRIPT_ROOT/requirements.txt
 }
 
 setup_flake8() {

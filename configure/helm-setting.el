@@ -272,6 +272,7 @@
             (local-set-key (kbd "M-s M-p") 'helm-cscope-pop-mark)))
 
 (require 'helm-bm)
+(setq bm-cycle-all-buffers t)
 
 (require 'helm-shell)
 (add-hook 'comint-mode-hook

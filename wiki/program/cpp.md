@@ -4,8 +4,9 @@ CPP
 ## URLs
 
 ```
-## https://en.cppreference.com/
-## https://coliru.stacked-crooked.com/
+https://en.cppreference.com/
+https://coliru.stacked-crooked.com/
+https://gcc.gnu.org/onlinedocs/gcc-4.6.3/libstdc++/api/a01137.html
 ```
 
 ## std::this_thread::yield

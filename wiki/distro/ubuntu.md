@@ -462,3 +462,22 @@ Ubuntu setting
 
     ## Always boot to graphical mode
     $ sudo systemctl set-default graphical.target
+
+
+## Fix has_option: command not found
+
+    ## Workaround: re-add missing has_option function
+    cat <<\EOF | sudo tee /etc/X11/Xsession.d/20x11-add-hasoption
+    # temporary fix for LP# 1922414, 1955135 and 1955136 bugs
+    # read OPTIONFILE
+    OPTIONS=$(cat "$OPTIONFILE") || true
+
+    has_option() {
+     if [ "${OPTIONS#*
+    $1}" != "$OPTIONS" ]; then
+       return 0
+     else
+       return 1
+     fi
+    }
+    EOF

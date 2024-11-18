@@ -43,7 +43,7 @@
   (kbd "a")       'zz/display-current-time
   (kbd "C-a")     'helm-world-time
   (kbd "M-a")     'world-time-list
-  (kbd "b")       'helm-bm
+  (kbd "b")       'browse-url
   (kbd "d")       'zz/nnn
   (kbd "C-d")     'zz/helm-nnn
   (kbd "M-d")     'docker
@@ -124,6 +124,7 @@
   (kbd "/")       'bongo
 
   (kbd "b")       'helm-switchb-shell-list
+  (kbd "C-b")     'helm-bm
   (kbd "M-b")     'helm-bookmarks
   (kbd "d")       'helm-switchb-dired-list
   (kbd "M-d")     'helm-switchb-recent-dired
@@ -135,7 +136,6 @@
   (kbd "r")       'vr/replace
   (kbd "q")       'vr/query-replace
 
-  (kbd "C-b")     'browse-url
   (kbd "C-e")     'eshell
   (kbd "C-l")     'command-history
   (kbd "C-k")     'vkill
@@ -275,6 +275,7 @@
   (kbd "C-x b")   'helm-buffers-list
   (kbd "C-x M-b") 'helm-mini
   (kbd "C-c b")   'helm-switchb-shell-list
+  (kbd "C-c C-b") 'helm-bm
   (kbd "C-c M-b") 'helm-bookmarks
   (kbd "C-c d")   'helm-switchb-dired-list
   (kbd "C-c M-d") 'helm-switchb-recent-dired

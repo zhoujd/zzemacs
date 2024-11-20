@@ -239,19 +239,14 @@
 
 (winner-mode t)
 
-;;buffer name in title
-(defun zz/fname-title-string ()
-  "Return the file name of current buffer, using ~ if under home directory"
-  (let ((fname (or (buffer-file-name (current-buffer))
-                   (buffer-name))))
-      (replace-regexp-in-string (getenv "HOME") "~" fname)))
-
+;;frame title
 (setq frame-title-format
       '(:eval
         (format "emacs:%s %s@%s"
-                (zz/fname-title-string)
+                (buffer-name)
                 (emacs-pid)
-                (system-name)
+                (or (file-remote-p default-directory 'host)
+                    (system-name))
                 )))
 
 ;;suppress GUI features

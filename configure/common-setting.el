@@ -242,11 +242,11 @@
 ;;frame title
 (setq frame-title-format
       '(:eval
-        (format "emacs:%s %s@%s"
+        (format "emacs:%s - %s %s@%s"
                 (buffer-name)
+                (replace-regexp-in-string "^.*/\\(.*\\)/" "\\1/" default-directory)
                 (emacs-pid)
-                (or (file-remote-p default-directory 'host)
-                    (system-name))
+                (or (file-remote-p default-directory 'host) (system-name))
                 )))
 
 ;;suppress GUI features

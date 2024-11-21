@@ -1,6 +1,10 @@
 VSCode
 ======
 
+## URLs
+
+    ## https://code.visualstudio.com/docs/supporting/FAQ
+
 ## How to prevent Visual Studio Code from always reopening the previous files or folders?
 
     ## https://stackoverflow.com/questions/31270774/how-to-prevent-visual-studio-code-from-always-reopening-the-previous-files-or-fo
@@ -8,3 +12,27 @@ VSCode
     ## In the "Search Settings" bar type Restore Windows.
     ## You will see Window:Restore Windows. Set it to none.
     ## "window.restoreWindows": "none"
+
+## How to prevent Visual Studio Code from opening files in the current tab?
+
+    ## https://superuser.com/questions/1483395/how-to-prevent-visual-studio-code-from-opening-files-in-the-current-tab
+    ## It's controlled by configuration option Workbench > Editor: Enable Preview.
+    ## Open settings by either main menu option File > Preferences > Settings or pressing Ctrl+,
+    ## then search for "Enable Preview" and you will see the option. Uncheck the option to disable opening as a preview.
+
+    ## Disable it in thr settings.json file
+    ## "workbench.editor.enablePreview": false,
+
+## How do I opt out of VS Code auto-updates?
+
+    ## To modify the update mode, go to File > Preferences > Settings, search for update mode and change the setting to none.
+    ## "update.mode": "none"
+
+    ## Opt out of extension updates
+    ## clear the `Extensions: Auto Update` check box in the Settings editor (Ctrl+,).
+    ## "extensions.autoUpdate": false
+
+
+## How to disable crash reporting
+
+    ## From File > Preferences > Settings, search for telemetry, and set the Telemetry: Telemetry Level setting to off

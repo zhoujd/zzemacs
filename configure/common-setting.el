@@ -348,14 +348,13 @@ mouse-3: Toggle minor modes"
 ;;do not bug me about saving my abbreviations
 (setq save-abbrevs nil)
 
-;;ido mode
+;;ido mode (default is not enabled)
 ;;https://www.emacswiki.org/emacs/InteractivelyDoThings
 (require 'ido-complete-space-or-hyphen)
 (setq ido-save-directory-list-file nil)
 (setq ido-use-virtual-buffers nil)
 (setq ido-enable-flex-matching nil)
 (require 'ido)
-(ido-mode t)
 
 (custom-set-faces
  '(ido-subdir            ((t (:foreground "#66ff00"))))

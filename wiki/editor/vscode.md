@@ -36,3 +36,8 @@ VSCode
 ## How to disable crash reporting
 
     ## From File > Preferences > Settings, search for telemetry, and set the Telemetry: Telemetry Level setting to off
+
+## How to disable context menu animation
+
+    ## From File > Preferences > Settings, search for titleBarStyle, and switched back to 'custom mode'
+    ## "window.titleBarStyle": custom

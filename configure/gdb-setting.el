@@ -14,9 +14,9 @@
   "Set/clear breakpoin."
   (interactive)
   (save-excursion
-   (if (eq (car (fringe-bitmaps-at-pos (point))) 'breakpoint)
-       (gud-remove nil)
-       (gud-break nil))))
+    (if (eq (car (fringe-bitmaps-at-pos (point))) 'breakpoint)
+        (gud-remove nil)
+        (gud-break nil))))
 
 (defun zz/gud-restore ()
   "Retore and refresh"
@@ -29,13 +29,13 @@
   (interactive)
   (gud-basic-call "quit"))
 
-(add-hook 'gud-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-q") 'zz/gud-quit)))
+(defun zz/gud-hook ()
+  (local-set-key (kbd "C-q") 'zz/gud-quit))
+(add-hook 'gud-mode-hook 'zz/gud-hook)
 
-(add-hook 'gdb-mode-hook
-          (lambda ()
-            (define-key gud-mode-map [tab] 'company-complete-selection)))
+(defun zz/gdb-hook ()
+  (define-key gud-mode-map [tab] 'company-complete-selection))
+(add-hook 'gdb-mode-hook 'zz/gdb-hook)
 
 ;;RealGUD: https://github.com/realgud/realgud
 (defun zz/load-realgud ()
@@ -51,7 +51,7 @@
   (print (buffer-substring-no-properties (point-min) (point-max)))
   (if (re-search-forward "No symbol" nil t)
       (progn
-        (message "This version of GDB doesn't support non-stop mode.  Turning it off.")
+        (message "This version of GDB doesn't support non-stop mode. Turning it off.")
         (setq gdb-non-stop nil)
         (setq gdb-supports-non-stop nil))
       (progn
@@ -62,8 +62,8 @@
 
 ;;Ensure that all source files are opened in the same window when gdb is running
 (add-to-list 'display-buffer-alist
-         (cons 'gdb-source-code-buffer-p
-           (cons 'display-buffer-use-some-window nil)))
+             (cons 'gdb-source-code-buffer-p
+                   (cons 'display-buffer-use-some-window nil)))
 
 (defun gdb-source-code-buffer-p (bufName action)
   "Return whether BUFNAME is a source code buffer and gdb is running."

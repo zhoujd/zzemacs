@@ -155,7 +155,7 @@
   (kbd "\\")      'zz/baidu
   (kbd "`")       'zz/google
 
-  (kbd "c")       (zz/exec-key zz/urxvt       '("urxvt"))
+  (kbd "c")       (zz/exec-key zz/st          '("st"))
   (kbd "f")       (zz/exec-key zz/firefox     '("firefox"))
   (kbd "g")       (zz/exec-key zz/chrome      '("google-chrome"))
   (kbd "m")       (zz/exec-key zz/evolution   '("evolution"))
@@ -305,7 +305,7 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-M-1")   'zz/urxvt
+  (kbd "C-M-1")   'zz/st
   (kbd "C-M-2")   'zz/chrome
   (kbd "C-M-3")   'zz/firefox
   (kbd "C-M-4")   'zz/meld

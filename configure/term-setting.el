@@ -16,7 +16,7 @@
 ;;popup term
 (if-ms-windows
  (setq popup-terminal-command '("cmd" "/c" "start"))
- (setq popup-terminal-command '("urxvt")))
+ (setq popup-terminal-command '("st")))
 
 (defun zz/popup-term ()
   (interactive)

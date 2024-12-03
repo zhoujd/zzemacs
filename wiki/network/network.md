@@ -458,6 +458,7 @@ Network
 ## How to configure network bridges
 
     ## https://netplan.readthedocs.io/en/stable/examples/#how-to-configure-network-bridges
+    ## https://github.com/canonical/netplan/tree/main/examples
     ## Use the following configuration to create a simple bridge consisting of a single device that uses DHCP:
     network:
       version: 2

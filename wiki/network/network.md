@@ -454,3 +454,19 @@ Network
 
     $ resolvectl status
     $ resolvectl status | grep 'DNS Servers' -A2
+
+## How to configure network bridges
+
+    ## https://netplan.readthedocs.io/en/stable/examples/#how-to-configure-network-bridges
+    ## Use the following configuration to create a simple bridge consisting of a single device that uses DHCP:
+    network:
+      version: 2
+      renderer: networkd
+      ethernets:
+        enp3s0:
+          dhcp4: no
+      bridges:
+        br0:
+          dhcp4: yes
+          interfaces:
+            - enp3s0

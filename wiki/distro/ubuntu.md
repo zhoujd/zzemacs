@@ -481,3 +481,12 @@ Ubuntu setting
      fi
     }
     EOF
+
+## Draw tools to replace visio on Linux
+
+    ## draw.io
+    ## https://www.drawio.com/
+    ## https://get.diagrams.net/
+
+    ## Dia
+    $ sudo apt install dia

@@ -45,6 +45,7 @@ install_package_ubuntu() {
     sudo apt install -y nnn
     sudo apt install -y pinta
     sudo apt install -y ripgrep
+    sudo apt install -y dia
 }
 
 ##package for centos

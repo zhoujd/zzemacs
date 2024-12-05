@@ -495,3 +495,7 @@ Docker
 
     ## Then you can do multi-platform Docker builds like this:
     $ docker buildx build --platform linux/amd64,linux/arm64
+
+## Docker BuildKit
+
+    $ sudo apt install docker-buildx

@@ -45,6 +45,6 @@
 | sanction     |                                                              |                               |   |
 | austerity    |                                                              |                               |   |
 | naive        |                                                              |                               |   |
-| abomination  |                                                              |                               |   |  
+| abomination  |                                                              |                               |   |
 | particularly |                                                              |                               |   |                        
-
+| sesilience   |                                                              |                               |   |

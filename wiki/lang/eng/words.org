@@ -46,5 +46,5 @@
 | austerity    |                                                              |                               |   |
 | naive        |                                                              |                               |   |
 | abomination  |                                                              |                               |   |
-| particularly |                                                              |                               |   |                        
+| particularly |                                                              |                               |   |
 | sesilience   |                                                              |                               |   |

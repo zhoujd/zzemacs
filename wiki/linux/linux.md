@@ -670,3 +670,17 @@ Linux something
     ## Make sure you set CXXFLAGS to an appropriate value for
     ## the target system. For instance, CXXFLAGS=" -std=c++11" if using
     ## gcc 5.x
+
+## Cross-compilation on Linux for Windows
+
+    ## Mingw32 GCC compiler and the Zip library are needed.
+    ## Here an install on Fedora
+    $ sudo dnf install mingw32-gcc mingw32-zlib
+
+    ## On Debian systems like Ubuntu
+    $ sudo apt install build-essential mingw-w64 gcc-mingw-w64-i686
+    $ sudo apt install libz-mingw-w64 libz-mingw-w64-dev
+    $ sudo apt install desktop-file-utils
+
+    ## Build all binaries for Windows
+    $ make -f win32mingw.gmk mecb mewb

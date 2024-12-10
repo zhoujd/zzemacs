@@ -684,3 +684,23 @@ Linux something
 
     ## Build all binaries for Windows
     $ make -f win32mingw.gmk mecb mewb
+
+## Disable beeps
+
+    ## https://wiki.archlinux.org/index.php/PC_speaker#Disable_PC_Speaker
+    $ sudo rmmod pcspkr
+    or
+    $ echo "blacklist pcspkr" | sudo tee /etc/modprobe.d/nobeep.conf
+
+## GNOME Keyring auto unlock
+
+    ## Add to the end of "auth" section
+    $ vim /etc/pam.d/login
+    auth optional pam_gnome_keyring.so
+
+    ## Add to the end of "session" section
+    $ session optional pam_gnome_keyring.so auto_start
+
+    ## Add following to ~/.xinitrc
+    eval "$(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
+    export SSH_AUTH_SOCK

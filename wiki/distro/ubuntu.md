@@ -490,3 +490,27 @@ Ubuntu setting
 
     ## Dia
     $ sudo apt install dia
+
+## Disable SELinux
+
+    ## Check Status
+    $ getenforce
+    Disabled
+    $ sestatus
+
+    ## To turn off SELinux in Ubuntu system temporarily
+    $ setenforce 0
+    ## Turn on SELInux again with the following command
+    $ setenforce 1
+
+    ## Permanently Disable SELinux
+    $ cat /etc/selinux/config
+    SELINUX=disabled
+
+    $ reboot
+
+## Remove AppArmor on Ubuntu
+
+    $ sudo systemctl stop apparmor
+    $ sudo systemctl disable apparmor
+    $ sudo apt remove apparmor -y

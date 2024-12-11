@@ -24,7 +24,7 @@ $ module
 $ echo $MODULEPATH
 
 ## Bash auto complete
-$ source /usr/local/Modules/init/bash_completion
+$ source /usr/share/modules/init/bash_completion
 ```
 
 ## Use Example

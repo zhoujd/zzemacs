@@ -5,6 +5,7 @@ Module
 
 https://www.intel.com/content/www/us/en/docs/oneapi/programming-guide/2024-0/use-environment-modulefiles-with-linux.html
 https://modules.readthedocs.io/en/latest/
+http://modules.sourceforge.net/
 
 ## Use Environment Modulefiles with Linux*
 
@@ -21,7 +22,6 @@ $ echo 'puts [info patchlevel] ; exit 0' | tclsh
 $ source /usr/share/modules/init/sh
 $ module
 $ echo $MODULEPATH
-/etc/environment-modules/modules:/usr/share/modules/versions:/usr/share/modules/$MODULE_VERSION/modulefiles:/usr/share/modules/modulefiles
 
 ## Bash auto complete
 $ source /usr/local/Modules/init/bash_completion

@@ -514,3 +514,15 @@ Ubuntu setting
     $ sudo systemctl stop apparmor
     $ sudo systemctl disable apparmor
     $ sudo apt remove apparmor -y
+
+## Change the maximum number of open files
+
+    $ grep NOFILE /etc/systemd/system.conf
+    DefaultLimitNOFILE=65535
+
+    $ ulimit -n
+    65535
+    $ ulimit -Sn
+    65535
+    $ ulimit -Hn
+    65535

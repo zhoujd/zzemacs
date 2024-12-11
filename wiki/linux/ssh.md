@@ -125,3 +125,15 @@ ssh
 
     $ sudo apt install sshuttle
     $ sshuttle -r your_user@192.168.1.20 10.10.10.0/24
+
+## Restricting Access to an SSH Server by Account
+
+    ## To permit SSH connections from anywhere to access the smith and jones accounts
+    ## but no other accounts
+    $ vim /etc/ssh/sshd_config
+    AllowUsers smith jones
+
+    ## To allow SSH connections from remote.example.com to the smith account
+    ## but no other incoming SSH connections
+    $ vim /etc/ssh/sshd_config
+    AllowUsers smith@remote.example.com

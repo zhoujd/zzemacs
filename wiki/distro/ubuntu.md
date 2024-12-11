@@ -449,8 +449,8 @@ Ubuntu setting
     ## root -> login name
     ## ssh relogin, no need reboot
     $ sudo vim /etc/security/limits.conf
-    root soft nofile 65535
-    root hard nofile 65535
+    * soft nofile 65535
+    * hard nofile 65535
 
 ## Permanently booting to text mode (console mode)
 

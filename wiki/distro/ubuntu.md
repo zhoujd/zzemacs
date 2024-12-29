@@ -526,3 +526,8 @@ Ubuntu setting
     65535
     $ ulimit -Hn
     65535
+
+##  The different terminal emulators
+
+    ## Different terminal emulators
+    $ infocmp xterm-256color putty-256color

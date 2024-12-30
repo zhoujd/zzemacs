@@ -242,7 +242,7 @@
 ;;frame title
 (setq frame-title-format
       '(:eval
-        (format "emacs:%s - %s %s@%s"
+        (format "emacs:%s %s %s@%s"
                 (buffer-name)
                 (file-name-nondirectory (abbreviate-file-name
                                          (directory-file-name default-directory)))

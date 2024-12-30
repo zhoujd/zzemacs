@@ -244,7 +244,8 @@
       '(:eval
         (format "emacs:%s - %s %s@%s"
                 (buffer-name)
-                (replace-regexp-in-string "^.*/\\(.*\\)/" "\\1/" default-directory)
+                (file-name-nondirectory (abbreviate-file-name
+                                         (directory-file-name default-directory)))
                 (emacs-pid)
                 (or (file-remote-p default-directory 'host) (system-name))
                 )))

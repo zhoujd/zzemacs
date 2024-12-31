@@ -41,3 +41,9 @@ VSCode
 
     ## From File > Preferences > Settings, search for titleBarStyle, and switched back to 'custom mode'
     ## "window.titleBarStyle": custom
+
+## How to make Ctrl+k kill till the end of line in the terminal
+
+    ## Open File -> Preferences -> Settings -> User (tab), search for allowChords and uncheck it
+    ## or edit your %APPDATA%\Code\User\settings.json
+    ## "terminal.integrated.allowChords": false

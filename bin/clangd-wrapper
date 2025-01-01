@@ -3,4 +3,4 @@
 ## https://github.com/MaskRay/ccls/wiki/Customization#cachedirectory
 ## https://docs.doomemacs.org/v21.12/modules/lang/cc/
 
-clangd -j=3 --clang-tidy $@
+exec clangd -j=3 --clang-tidy $@

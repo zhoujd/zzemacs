@@ -117,3 +117,63 @@ std::for_each(vec.begin(), vec.end(), [](int val) {
         cout << val << " ";
 });
 ```
+
+## Reading json files in C++
+
+```
+## https://github.com/open-source-parsers/jsoncpp
+$ sudo apt install libjsoncpp-dev
+$ cat > cfg.json <<EOF
+{
+   "Note" : "This is a cofiguration file",
+   "Config" : {
+       "server-ip"     : "10.10.10.20",
+       "server-port"   : "5555",
+       "buffer-length" : 5000
+   }
+}
+EOF
+
+$ cat > ReadJsonCfg.cpp <<EOF
+#include <iostream>
+#include <json/value.h>
+#include <jsoncpp/json/json.h>
+#include <fstream>
+
+void
+displayCfg(const Json::Value &cfg_root);
+
+int
+main()
+{
+    Json::Reader reader;
+    Json::Value cfg_root;
+    std::ifstream cfgfile("cfg.json");
+    cfgfile >> cfg_root;
+
+    std::cout << "______ cfg_root : start ______" << std::endl;
+    std::cout << cfg_root << std::endl;
+    std::cout << "______ cfg_root : end ________" << std::endl;
+
+    displayCfg(cfg_root);
+}
+
+void
+displayCfg(const Json::Value &cfg_root)
+{
+    std::string serverIP = cfg_root["Config"]["server-ip"].asString();
+    std::string serverPort = cfg_root["Config"]["server-port"].asString();
+    unsigned int bufferLen = cfg_root["Config"]["buffer-length"].asUInt();
+
+    std::cout << "______ Configuration ______" << std::endl;
+    std::cout << "server-ip     :" << serverIP << std::endl;
+    std::cout << "server-port   :" << serverPort << std::endl;
+    std::cout << "buffer-length :" << bufferLen<< std::endl;
+}
+EOF
+
+$ cat /usr/lib/x86_64-linux-gnu/pkgconfig/jsoncpp.pc
+$ g++ -g -O0 -std=c++11 -I. -I/usr/include/jsoncpp -c -o ReadJsonCfg.o ReadJsonCfg.cpp
+$ g++ ReadJsonCfg.o -L/usr/lib/x86_64-linux-gnu -ljsoncpp -o readjsoncfg
+$ ./readjsoncfg
+```

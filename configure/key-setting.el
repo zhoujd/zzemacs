@@ -169,7 +169,7 @@
   (kbd "s")       (zz/exec-key zz/rofi-ssh    '("rofi" "-show" "ssh"))
   (kbd "w")       (zz/exec-key zz/rofi-win    '("rofi" "-show" "window"))
 
-  (kbd "M-g")     (zz/exec-key zz/gitg        '("gitg"))
+  (kbd "M-g")     (zz/exec-key zz/tig         '("st" "-e" "tig"))
   (kbd "M-m")     (zz/exec-key zz/meld        '("meld"))
   (kbd "M-t")     (zz/exec-key zz/trans       '("st" "-e" "trans" "-I"))
   ))

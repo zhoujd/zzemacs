@@ -85,5 +85,4 @@ prompt
 ## X11-forwarding display settings
 if [ -n "$DISPLAY" ]; then
     export LIBGL_ALWAYS_INDIRECT=1
-    export LC_ALL=C
 fi

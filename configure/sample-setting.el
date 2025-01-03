@@ -111,9 +111,11 @@
 (defun zz/compile ()
   "Run ido directory compile"
   (interactive)
-  (let ((default-directory (file-name-as-directory
-                            (ido-read-directory-name "Directory: "))))
-    (call-interactively 'compile)))
+  (if (string= (buffer-name) "*compilation*")
+      (call-interactively 'compile)
+      (let ((default-directory (file-name-as-directory
+                                (ido-read-directory-name "Directory: "))))
+        (call-interactively 'compile))))
 
 (defun zz/switch-to-compile ()
   "switch to *compilation* buffer"

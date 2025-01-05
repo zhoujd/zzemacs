@@ -37,6 +37,7 @@ prompt() {
     local lgreen='\[\033[1;32m\]'
     local blue='\[\033[0;34m\]'
     local lblue='\[\033[1;34m\]'
+    local yellow='\[\033[1;33m\]'
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
     case $TERM in
@@ -46,7 +47,8 @@ prompt() {
             PS1="${title}${PS1}"
             ;;
         xterm* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
+            LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
+            PS1="${lgreen}\u@\h ${yellow}\W${green}\$ ${norm}"
             title='\[\033]0;xterm:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;

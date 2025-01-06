@@ -4,7 +4,8 @@
 (defun zz/add-os-env (path name)
   "add path to env name"
   (when (file-exists-p path)
-    (let ((env (getenv name)))
+    (let ((env (getenv name))
+          (path (expand-file-name path)))
       (when (or (not env)
                 (not (string-match path env)))
         (setenv name (concat path path-separator env))))))

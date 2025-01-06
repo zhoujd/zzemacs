@@ -4,9 +4,9 @@
 (zz/load-path "site-lisp")
 (zz/load-path "elisp")
 
-;; ensure environment variables inside Emacs
-(require 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
+;;Ensure environment variables inside Emacs
+;(require 'exec-path-from-shell)
+;(exec-path-from-shell-initialize)
 
 ;;emacs session
 (require 'emacs-session)
@@ -15,7 +15,7 @@
 ;;distct with mpg123
 (require 'unicad)
 
-;;; ASCII table
+;;ASCII table
 (autoload 'ascii-table "ascii-table" "ASCII TABLE" t)
 
 ;;display of line numbers with M-x linum-mode.

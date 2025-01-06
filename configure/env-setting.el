@@ -45,6 +45,7 @@
      (list
       (format "%s/bin" zzemacs-path)
       (format "%s/libexec" zzemacs-path)
+      (format "%s/.zach/bin" (getenv "HOME"))
       (format "%s/.local/bin" (getenv "HOME"))
       )))
   "add to path and exec-path")

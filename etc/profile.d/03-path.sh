@@ -19,7 +19,9 @@ pathmunge() {
 addpath() {
     for ARG in "$@"
     do
-        pathmunge $ARG
+        if [ -d "$ARG" ]; then
+            pathmunge $ARG
+        fi
     done
     export PATH
 }

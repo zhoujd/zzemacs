@@ -1,3 +1,4 @@
 #!/bin/sh
 
-st -T "tig:${PWD##*/}" -e tig "$@"
+repo=$(git rev-parse --show-toplevel)
+st -T "tig:$repo" -e tig "$@"

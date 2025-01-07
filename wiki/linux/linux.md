@@ -704,3 +704,16 @@ Linux something
     ## Add following to ~/.xinitrc
     eval "$(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)"
     export SSH_AUTH_SOCK
+
+## How do I detach a process from Terminal, entirely
+
+```
+## https://superuser.com/questions/178587/how-do-i-detach-a-process-from-terminal-entirely
+1. nohup $COMMAND &
+2. $COMMAND & disown
+3. setsid command
+
+## Note: disown has a nohup flag of -h, can disown all processes with -a,
+## and can disown all running processes with -ar.
+## Silencing is accomplished by $COMMAND &>/dev/null
+```

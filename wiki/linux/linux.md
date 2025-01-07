@@ -709,11 +709,16 @@ Linux something
 
 ```
 ## https://superuser.com/questions/178587/how-do-i-detach-a-process-from-terminal-entirely
-1. nohup $COMMAND &
-2. $COMMAND & disown
-3. setsid command
-
 ## Note: disown has a nohup flag of -h, can disown all processes with -a,
 ## and can disown all running processes with -ar.
-## Silencing is accomplished by $COMMAND &>/dev/null
+$ nohup $COMMAND &
+$ COMMAND & disown
+$ setsid command
+
+## Silencing is accomplished by
+$ nohup COMMAND &>/dev/null
+
+## To see the output in the terminal
+$ TEMP_LOG_FILE=tmp.log
+$ nohup ./command &> "$TEMP_LOG_FILE" & tail -f "$TEMP_LOG_FILE" &
 ```

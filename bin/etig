@@ -1,4 +1,11 @@
 #!/bin/sh
 
 repo=$(git rev-parse --show-toplevel)
-st -T "tig:$repo" -e tig "$@"
+case $1 in
+    -v|--version|-h|--help )
+        tig "$@"
+        ;;
+    * )
+        st -T "tig:$repo" -e tig "$@"
+        ;;
+esac

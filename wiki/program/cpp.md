@@ -177,3 +177,37 @@ $ g++ -g -O0 -std=c++11 -I. -I/usr/include/jsoncpp -c -o ReadJsonCfg.o ReadJsonC
 $ g++ ReadJsonCfg.o -L/usr/lib/x86_64-linux-gnu -ljsoncpp -o readjsoncfg
 $ ./readjsoncfg
 ```
+
+## Create a linux pipeline example in c
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+
+int main(int argc, char** argv)
+{
+ int pipefd[2];
+ int childpid,childpid2;
+ char* cmd[3]={"ls",NULL,NULL};
+ char* cmd2[3]={"grep",".c",NULL};
+ pipe(pipefd);
+ if (childpid=fork()){
+   //parent
+   close(pipefd[1]);
+   dup2(pipefd[0],STDIN_FILENO);
+   execvp("grep",cmd2);
+ } else {
+   //child
+   //write
+   close(pipefd[0]);
+   dup2(pipefd[1],STDOUT_FILENO);
+   execvp("ls", cmd);
+ }
+ wait(NULL);
+ wait(NULL);
+ return 0;
+}
+```

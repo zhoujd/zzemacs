@@ -3,7 +3,8 @@
 pplist=$(ps -A -ostat,ppid | awk '/[zZ]/{ print $2 }')
 if [ -n "$pplist" ]; then
     kill -9 $pplist
-    echo "Killed zombie process: $pplist"
+    echo "Kill zombie's ppids."
+    echo "$pplist"
 else
     echo "No zombie process found"
 fi    

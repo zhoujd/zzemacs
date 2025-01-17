@@ -92,3 +92,8 @@ Linux Kernel
     (gdb) target remote :1234
     (gdb) hbreak start_kernel
     (gdb) c
+
+## Elixir Cross Referencer
+
+    ## https://elixir.bootlin.com/qemu
+    ## https://elixir.bootlin.com/linux/v6.12.6/source

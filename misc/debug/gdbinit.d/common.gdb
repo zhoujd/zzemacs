@@ -20,4 +20,5 @@ set non-stop on
 
 ## multi-process
 #set detach-on-fork on
-#set follow-fork-mode child
+#set follow-fork-mode [parent|child]
+#set follow-exec-mode [new|same]

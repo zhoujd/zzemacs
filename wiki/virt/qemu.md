@@ -215,3 +215,14 @@ QEMU
     QEMU debug output to enable
     Redirects the QEMU monitor to the Unix socket qemu-monitor.sock enabling console interaction and inspection of the VM
     Immediately suspends the VM upon start
+
+## Learning about PCI-e
+
+    ## 1. Learning about PCI-e: Emulating a custom device
+    ## https://blog.davidv.dev/posts/learning-pcie
+
+    ## 2. https://blog.davidv.dev/posts/pcie-driver-dma/
+    ## https://blog.davidv.dev/posts/pcie-driver-dma/
+
+    ## 3. Learning about PCI-e: Implementing an option ROM
+    ## https://blog.davidv.dev/posts/pcie-option-rom

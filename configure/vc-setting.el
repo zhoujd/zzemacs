@@ -35,13 +35,8 @@
   ((kbd "M-3") nil)
   ((kbd "M-4") nil))
 
-;;make `magit-blame' always with sidebar style.
+;;make `magit-blame' echo with sidebar style.
 (custom-set-variables
- '(magit-blame-style '(margin
-                       (margin-format " %s%f" " %C %a" " %H")
-                       (margin-width . 42)
-                       (margin-face . magit-blame-margin)
-                       (margin-body-face magit-blame-dimmed)))
  '(magit-blame-echo-style 'margin))
 
 ;;magit-lfs

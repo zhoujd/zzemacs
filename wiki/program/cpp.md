@@ -211,3 +211,13 @@ int main(int argc, char** argv)
  return 0;
 }
 ```
+
+## The align macro kernel
+
+```c
+//https://stackoverflow.com/questions/13122846/align-macro-kernel
+//The alignment mask for alignment value 4 is (4 - 1) = 0x03
+//Now 0x1006 + 0x03 = 0x1009 and 0x1009 & ~0x03 = 0x1008
+#define ALIGN(x,a)              __ALIGN_MASK(x,(typeof(x))(a)-1)
+#define __ALIGN_MASK(x,mask)    (((x)+(mask))&~(mask))
+```

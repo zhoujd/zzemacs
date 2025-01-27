@@ -235,3 +235,15 @@ Git
     ## https://accio.github.io/programming/2021/06/16/fix-loose-objects-in-git.html
     $ find .git/objects/ -size 0 -exec rm -f {} \;
     $ git fetch origin
+
+## Git diff to tig/riff
+
+```
+$ git diff | riff
+$ git log -1 -p | riff
+$ git show HEAD | riff
+
+$ git diff | tig
+$ git log -1 -p | tig
+$ git show HEAD | tig
+```

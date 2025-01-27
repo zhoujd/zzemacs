@@ -236,9 +236,13 @@ Git
     $ find .git/objects/ -size 0 -exec rm -f {} \;
     $ git fetch origin
 
-## Git diff to tig/riff
+## Git diff to pipeline
 
 ```
+$ git diff | delta --paging always --side-by-side
+$ git log -1 -p | delta --paging always --side-by-side
+$ git show HEAD | delta --paging always --side-by-side
+
 $ git diff | riff
 $ git log -1 -p | riff
 $ git show HEAD | riff

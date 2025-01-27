@@ -238,16 +238,17 @@ Git
 
 ## Git diff to pipeline
 
-```
-$ git diff | delta --paging always --side-by-side
-$ git log -1 -p | delta --paging always --side-by-side
-$ git show HEAD | delta --paging always --side-by-side
+    ## https://github.com/dandavison/delta
+    $ git diff | delta --paging always --side-by-side
+    $ git log -1 -p | delta --paging always --side-by-side
+    $ git show HEAD | delta --paging always --side-by-side
 
-$ git diff | riff
-$ git log -1 -p | riff
-$ git show HEAD | riff
+    ## https://github.com/walles/riff
+    $ git diff | riff
+    $ git log -1 -p | riff
+    $ git show HEAD | riff
 
-$ git diff | tig
-$ git log -1 -p | tig
-$ git show HEAD | tig
-```
+    ## https://github.com/jonas/tig
+    $ git diff | tig
+    $ git log -1 -p | tig
+    $ git show HEAD | tig

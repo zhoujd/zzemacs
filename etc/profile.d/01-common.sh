@@ -46,11 +46,15 @@ prompt() {
             title='\[\033]0;rxvt:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
-        xterm*|dvtm* )
+        xterm* )
             LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
             PS1="${lgreen}\u@\h ${yellow}\W${green}\$ ${norm}"
             title='\[\033]0;xterm:\W $$@\h\007\]'
             PS1="${title}${PS1}"
+            ;;
+        dvtm* )
+            LS_COLORS=$LS_COLORS:'di=01;33:ln=01;36'
+            PS1="${lgreen}\u@\h ${yellow}\W${green}\$ ${norm}"
             ;;
         st* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"

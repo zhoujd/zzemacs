@@ -20,4 +20,7 @@ $ lspci -v
 $ lspci -v -s 00:1f.2
 $ lspci -vmm
 $ lspci -xnn
+
+$ man lspci
+$ sudo dmidecode -s
 ```

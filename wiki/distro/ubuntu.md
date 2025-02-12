@@ -531,3 +531,16 @@ Ubuntu setting
 
     ## Different terminal emulators
     $ infocmp xterm-256color putty-256color
+
+##  Run dmesg without needing to explicitly elevate privileges
+
+    ## See the current value by running
+    $ sysctl kernel.dmesg_restrict
+
+    ## Enable the restriction
+    $ sudo sysctl kernel.dmesg_restrict=0
+
+    ## To make this change permanent
+    $ echo kernel.dmesg_restrict=0 | sudo tee -a /etc/sysctl.d/99-dmesg.conf
+
+    ## For Ubuntu 22.04, please look inside /etc/sysctl.d/10-kernel-hardening.conf for kernel.dmesg_restrict=0

@@ -96,3 +96,15 @@ linux Tool
 
     https://www.obsapp.com/obsdownload/
     https://github.com/obsproject/obs-studio/wiki/build-instructions-for-linux
+
+
+## lsof (LiSt Open Files)
+
+    ## lsof is a command for LiSting Open Files. You can use lsof for example to:
+    Find uses of a specific open file: lsof /path/to/file
+    Find an unlinked open file: lsof +L1
+    Find processes blocking umount: lsof /mnt
+    Find tcp/udp sockets: lsof -i
+    Find files open to a process with known PID: lsof -p 1234
+    Find files open to a named command: lsof -c bash
+    Find files open by a specific user: lsof -u somebody

@@ -318,8 +318,8 @@ Linux something
 
 ## Identify Disk Partition/FileSystem UUID
 
-    # blkid
-    # lsblk -o name,mountpoint,size,uuid
+    # sudo blkid
+    # sudo lsblk -o name,mountpoint,size,uuid
     # ls -lh /dev/disk/by-uuid/
     # hwinfo --block | grep by-uuid | awk '{print $3,$7}'
     # udevadm info -q all -n /dev/sdc1 | grep -i by-uuid | head -1

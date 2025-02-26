@@ -722,3 +722,10 @@ $ nohup COMMAND &>/dev/null
 $ TEMP_LOG_FILE=tmp.log
 $ nohup ./command &> "$TEMP_LOG_FILE" & tail -f "$TEMP_LOG_FILE" &
 ```
+
+## How do I remove a user from a group
+
+```
+## https://unix.stackexchange.com/questions/29570/how-do-i-remove-a-user-from-a-group
+$ gpasswd --delete $user $group
+```

@@ -576,3 +576,4 @@ Ubuntu setting
     EOF
     $ sudo systemctl restart systemd-resolved
     $ cat /etc/resov.conf
+    $ resolvectl status

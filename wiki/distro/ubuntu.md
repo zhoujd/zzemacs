@@ -111,6 +111,12 @@ Ubuntu setting
     $ sudo snap get core proxy
     $ sudo snap install foobar2000
 
+## Remove snap in Ubuntu
+
+    $ snap list
+    $ snap remove
+    $ sudo apt purge snapd
+
 ## Install Microsoft fonts
 
     $ sudo apt install ttf-mscorefonts-installer
@@ -544,3 +550,29 @@ Ubuntu setting
     $ echo kernel.dmesg_restrict=0 | sudo tee -a /etc/sysctl.d/99-dmesg.conf
 
     ## For Ubuntu 22.04, please look inside /etc/sysctl.d/10-kernel-hardening.conf for kernel.dmesg_restrict=0
+
+## Default behavior for the release upgrader
+
+    ## https://serverfault.com/questions/391410/ubuntu-remotely-disable-upgrade
+    $ sudo vi /etc/update-manager/release-upgrades
+    > # default behavior for the release upgrader
+    > #
+    >
+    > [DEFAULT]
+    > # default prompting behavior, valid options:
+    > #  never  - never prompt for a new distribution version
+    > #  normal - prompt if a new version of the distribution is available
+    > #  lts    - prompt only if a LTS version of the distribution is available Prompt=normal
+    > Prompt=never
+
+## DNS Sever
+
+    $ nslookup mirrors.aliyun.com
+    $ resolvectl status
+    $ cat >> /etc/systemd/resolved.conf <<EOF
+    [Resolve]
+    DNS=10.11.60.10
+    DNSStubListener=no
+    EOF
+    $ sudo systemctl restart systemd-resolved
+    $ cat /etc/resov.conf

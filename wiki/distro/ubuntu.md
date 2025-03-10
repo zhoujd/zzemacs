@@ -577,3 +577,16 @@ Ubuntu setting
     $ sudo systemctl restart systemd-resolved
     $ cat /etc/resov.conf
     $ resolvectl status
+
+## Disable user complex passwd (use simple passwd)
+
+    ## Option 1: Update PAM configure
+    ## Disable pam_pwquality.so
+    $ sudo vim /etc/pam.d/common-password
+    #password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3
+    $ sudo systemctl restart sshd
+
+    ## Option 2: Update /etc/login.defs (Global)
+    $ sudo vim /etc/login.defs
+    PASS_MIN_LEN 0
+    ENCRYPT_METHOD SHA512

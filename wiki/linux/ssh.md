@@ -137,3 +137,28 @@ ssh
     ## but no other incoming SSH connections
     $ vim /etc/ssh/sshd_config
     AllowUsers smith@remote.example.com
+
+## SSH Timeout
+
+    ## 1. ssh server configure
+    $ sudo vim /etc/ssh/sshd_config
+    ClientAliveInterval 30
+    ClientAliveCountMax 6
+
+    ## 2. ssh client
+    $ sudo vim /etc/ssh/ssh_config
+    ServerAliveInterval 30
+    ServerAliveCountMax 6
+
+    ## 3. TMOUT
+    sudo vim /etc/profile
+    export TMOUT=0
+
+    ## 4. Network Connnection
+    $ sudo apt install iftop
+    $ sudo iftop
+    $ sudo iftop -i eth0
+    $ sudo apt install nload
+    $ nload
+    $ sudo tcpdump -i eth0 port 22
+    $ sudo apt install wireshark

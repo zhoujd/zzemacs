@@ -239,6 +239,7 @@
   (kbd "%")       'zz/match-paren
   (kbd "M-<tab>") 'buffer-flip
   (kbd "C-M-/")   'zz/expand-file-name
+  (kbd "C-x M-c") 'kill-emacs
 
   ;;delete char
   (kbd "C-h")     'delete-backward-char

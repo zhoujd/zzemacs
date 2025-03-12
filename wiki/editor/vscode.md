@@ -47,3 +47,10 @@ VSCode
     ## Open File -> Preferences -> Settings -> User (tab), search for allowChords and uncheck it
     ## or edit your %APPDATA%\Code\User\settings.json
     ## "terminal.integrated.allowChords": false
+
+## Using GDB in VSCode
+
+    ## https://docs.lagerdata.com/tutorials/vscode.html
+    ## https://www.cs.swarthmore.edu/courses/cs35/f24/using_gdb_in_vscode/
+    ## Install cpptools extension
+    $ code --install-extension ms-vscode.cpptools

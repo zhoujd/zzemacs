@@ -86,7 +86,6 @@ linux_issue_check() {
     else
         false
     fi
-    echo "OS_DISTRO: $OS_DISTRO"
 }
 
 linux_lsb_check() {
@@ -120,7 +119,6 @@ linux_lsb_check() {
             false
             ;;
     esac
-    echo "OS_DISTRO: $OS_DISTRO"
 }
 
 linux_sample () {

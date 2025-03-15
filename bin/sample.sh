@@ -81,9 +81,12 @@ linux_issue_check() {
         OS_DISTRO="Manjaro"
     elif [ ! -z "$(cat /etc/issue | grep 'Mint')" ]; then
         OS_DISTRO="LinuxMint"
+    elif [ ! -z "$(cat /etc/issue | grep 'Debian')" ]; then
+        OS_DISTRO="Debian"
     else
         false
     fi
+    echo "OS_DISTRO: $OS_DISTRO"
 }
 
 linux_lsb_check() {
@@ -110,10 +113,14 @@ linux_lsb_check() {
         "ManjaroLinux" )
             OS_DISTRO="Manjaro"
             ;;
+        "Debian" )
+            OS_DISTRO="Debian"
+            ;;
         * )
             false
             ;;
     esac
+    echo "OS_DISTRO: $OS_DISTRO"
 }
 
 linux_sample () {

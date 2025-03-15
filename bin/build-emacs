@@ -16,7 +16,7 @@ fi
 ## Get script path
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-EMACS_VER=${1:-26.3}
+EMACS_VER=${1:-27.2}
 EMACS_SRC=emacs-${EMACS_VER}
 EMACS_FILE=${EMACS_SRC}.tar.xz
 EMACS_PREFIX=/usr/local/${EMACS_SRC}
@@ -62,13 +62,13 @@ install_package() {
         "SUSE" )
             sudo zypper install libjpeg-devel libpng-devel giflib-devel libtiff-devel
             ;;
-        "Ubuntu" | "LinuxMint" )
-            sudo apt-get install -y automake
-            sudo apt-get install -y build-essential
-            sudo apt-get install -y libxft-dev libotf-dev libgpm-dev imagemagick
-            sudo apt-get install -y libxpm-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev
-            sudo apt-get install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libgconf2-dev
-            sudo apt-get install -y libm17n-dev libgnutls28-dev libselinux1-dev libdbus-1-dev
+        "Ubuntu" | "LinuxMint" | "Debian")
+            sudo apt install -y automake
+            sudo apt install -y build-essential
+            sudo apt install -y libxft-dev libotf-dev libgpm-dev imagemagick
+            sudo apt install -y libxpm-dev libpng-dev libjpeg-dev libtiff-dev libgif-dev
+            sudo apt install -y libxaw7-dev libncurses5-dev libgtk2.0-dev librsvg2-dev libgconf2-dev
+            sudo apt install -y libm17n-dev libgnutls28-dev libselinux1-dev libdbus-1-dev
             ;;
         "CentOS" )
             sudo yum -y groupinstall "Development Tools"

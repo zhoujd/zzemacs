@@ -12,7 +12,7 @@ install_package() {
             sudo zypper install -y cscope
             sudo zypper install -y texinfo
             ;;
-        "Ubuntu" | "LinuxMint" )
+        "Ubuntu" | "LinuxMint" | "Debian" )
             sudo apt install -y cscope
             sudo apt install -y emacs-bin-common  # etags
             sudo apt install -y texinfo

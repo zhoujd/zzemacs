@@ -222,3 +222,9 @@ Xfce
 
     $ sudo apt install evolution
     $ sudo apt install evolution-ews
+
+## Set a default user in lightdm
+
+    ## In /etc/lightdm/lightdm.conf Go down the file
+    $ sudo vim /etc/lightdm/lightdm.conf
+    greeter-hide-users=false

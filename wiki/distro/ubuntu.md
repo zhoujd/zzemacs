@@ -590,3 +590,8 @@ Ubuntu setting
     $ sudo vim /etc/login.defs
     PASS_MIN_LEN 0
     ENCRYPT_METHOD SHA512
+
+## Xubuntu (XFCE Ubuntu)
+
+    ## https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/xubuntu/releases/22.04.5/release/
+    ## https://cdimage.ubuntu.com/xubuntu/releases/jammy/release/

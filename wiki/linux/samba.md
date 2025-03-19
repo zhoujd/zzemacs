@@ -15,15 +15,17 @@ Samba Server
     $ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.origin
     $ sudo vim /etc/samba/smb.conf
     ## At the bottom of the file, add the following lines:
+    ## Zach Root
     [zach]
-    comment = Data on Ubuntu
-    path = /zach
-    read only = no
-    browsable = yes
-    valid users = zach
+       comment = Data on Ubuntu
+       path = /zach
+       read only = no
+       browsable = yes
+       valid users = zach
 
-   [home]
-       comment = Home on Ubuntu
+    ## Zach Home
+    [home]
+       comment = Zach Home
        path = /home/zach
        read only = no
        browsable = yes

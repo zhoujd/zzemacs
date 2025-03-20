@@ -30,3 +30,10 @@ $ sudo networkctl renew enp1s0
 $ timedatectl list-timezones
 $ sudo timedatectl set-timezone Asia/Shanghai
 ```
+
+## Xorg
+
+```
+$ sudo apt install xorg
+$ starx
+```

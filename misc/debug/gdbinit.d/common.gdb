@@ -1,15 +1,15 @@
 ## commond.gdb
 
-## save history
+## history
 set history filename ~/.gdb_history
 set history save on
 
-## better print
+## print
 set print object on
 set print array-indexes on
 set print pretty on
 
-## common debug
+## common
 set breakpoint pending on
 set pagination off
 set step-mode on
@@ -17,6 +17,7 @@ set confirm off
 
 ## multi-thread
 set non-stop on
+set print thread-events off
 
 ## multi-process
 #set detach-on-fork on

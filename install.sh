@@ -13,12 +13,12 @@ install_dotemacs() {
     (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
-    echo "Install .emacs done"
+    echo "[dotemacs] Install .emacs done"
 }
 
-install_fonts() {
+install_font() {
     TYPE="${1:-user}"
-    echo "Install font to $TYPE"
+    echo "[font] Install to $TYPE"
     case "$TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
@@ -33,32 +33,36 @@ install_fonts() {
             fc-cache -f
             ;;
         * )
-            echo "Unknown $TYPE"
+            echo "[font] Unknown $TYPE"
             ;;
     esac
-    echo "Install fonts done"
+    echo "[font] Install done"
 }
 
-install_others() {
+install_other() {
+    echo "[other] Install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
-    ${ZZEMACS_ROOT}/misc/debug/install.sh
+    echo "[other] Install debug rc files"
+    ${ZZEMACS_ROOT}/misc/debug/install.sh gdb
+    ${ZZEMACS_ROOT}/misc/debug/install.sh cgdb
+    echo "[other] Install git rc files"
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
-    echo "Install others done"
+    echo "[other] Install done"
 }
 
 install_thirdparty() {
+    echo "[thirdparty] Install python files"
     ${ZZEMACS_ROOT}/third-party/python/install.sh py3
-    ${ZZEMACS_ROOT}/third-party/perl/install.sh
-    echo "Install thirdparty done"
+    echo "[thirdparty] Install done"
 }
 
 install_all() {
     confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                     run_cmd install_dotemacs
     confirm_execute "Do you want to install fonts? [y/N]" \
-                    run_cmd install_fonts user
+                    run_cmd install_font user
     confirm_execute "Do you want to install others? [y/N]" \
-                    run_cmd install_others
+                    run_cmd install_other
     confirm_execute "Do you want to install third-party packages? [y/N] " \
                     run_cmd install_thirdparty
     echo "Install all done"
@@ -66,7 +70,7 @@ install_all() {
 
 usage() {
     local app=$(basename $0)
-    echo "$app {dotemacs|-d|fonts|-f|others|-o|thirdparty|-t|all|-a}"
+    echo "$app {dotemacs|-d|font|-f|other|-o|thirdparty|-t|all|-a}"
 }
 
 case $1 in
@@ -74,16 +78,16 @@ case $1 in
         confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                         run_cmd install_dotemacs
         ;;
-    fonts|-f )
-        confirm_execute "Do you want to install fonts? [y/N]" \
-                        run_cmd install_fonts user
+    font|-f )
+        confirm_execute "Do you want to install font? [y/N]" \
+                        run_cmd install_font user
         ;;
-    others|-o )
-        confirm_execute "Do you want to install others? [y/N]" \
-                        run_cmd install_others
+    other|-o )
+        confirm_execute "Do you want to install other? [y/N]" \
+                        run_cmd install_other
         ;;
     thirdparty|-t )
-        confirm_execute "Do you want to install third-party packages? [y/N] " \
+        confirm_execute "Do you want to install third-party? [y/N] " \
                         run_cmd install_thirdparty
         ;;
     all|-a )

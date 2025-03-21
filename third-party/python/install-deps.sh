@@ -8,13 +8,13 @@ case $1 in
     centos )
         sudo yum install -y python3-pip
         ;;
-    ubuntu )
+    ubuntu | debian )
         sudo apt install -y python3-pip
         sudo apt install -y python3-venv
         sudo apt install -y python3-virtualenv
         ;;
     * )
-        echo "Usage: $0 {centos|ubuntu}"
+        echo "Usage: $0 {centos|ubuntu|debian}"
         ;;
 esac
 

@@ -12,13 +12,15 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 #pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
-PIP_PAR="--user --timeout 60"
+VENV_ROOT=$HOME/.venv
+VENV_PATH=$VENV_ROOT/emacs
+PIP_BIN=$VENV_PATH/bin/pip3
+PIP_PAR="--timeout 60"
 
 echo "For python develop start ..."
 
 py3_deps() {
-    pip3 install pip -U
-    pip3 install $PIP_PAR -r $SCRIPT_ROOT/requirements.txt
+    $PIP_BIN install $PIP_PAR -r $SCRIPT_ROOT/requirements.txt
 }
 
 setup_flake8() {
@@ -29,7 +31,6 @@ setup_flake8() {
 case $1 in
     py3 )
         py3_deps
-        setup_flake8
         ;;
     flake8 )
         setup_flake8

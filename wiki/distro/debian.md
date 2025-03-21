@@ -37,3 +37,10 @@ $ sudo timedatectl set-timezone Asia/Shanghai
 $ sudo apt install xorg
 $ starx
 ```
+
+## LXDM
+
+```
+$ sudo apt install lxdm
+$ sudo lxdm-config
+```

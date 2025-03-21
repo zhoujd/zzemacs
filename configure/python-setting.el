@@ -9,6 +9,11 @@
 ;;M-x elpy-config
 (zz/load-path "site-lisp/python-mode")
 
+;;python3 interpreter
+(setq python-interpreter "~/.venv/emacs/bin/python")
+(setq python-shell-interpreter "~/.venv/emacs/bin/python")
+(setq python-shell-interpreter-args "-i")
+
 ;;pdb setup, note the python version
 ;;run pdb.py (like this): python3 -i -m pdb <file-name.py>
 ;;M-x pdb
@@ -16,10 +21,6 @@
 
 ;;python3
 (setq py-python-command "python3")
-
-;;ipython or python3
-(setq python-shell-interpreter "python3"
-      python-shell-interpreter-args "-i")
 
 ;;Warning: Your ‘python-shell-interpreter’ doesn’t seem to support readline
 (setq python-shell-completion-native-enable nil)

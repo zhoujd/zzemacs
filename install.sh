@@ -57,8 +57,7 @@ install_other() {
 }
 
 install_thirdparty() {
-    echo "[thirdparty] Install python files"
-    ${ZZEMACS_ROOT}/third-party/python/install.sh py3
+    echo "[thirdparty] Refer ${ZZEMACS_ROOT}/third-party/python/READM.md on python libs install"
     echo "[thirdparty] Install done"
 }
 

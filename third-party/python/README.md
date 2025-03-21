@@ -4,8 +4,13 @@ Python
 ## Setup Python libs
 
 ```
+## Step 1
 $ ./install-deps.sh
+
+## Step 2
 $ ./install-venv.sh
+
+## Step 3
 $ ./install.sh
 ```
 

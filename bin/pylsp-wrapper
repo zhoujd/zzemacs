@@ -1,0 +1,8 @@
+#!/bin/bash
+
+## Refer: thirdparty/python/README.md
+## Refer: thirdparty/python/install-venv.sh
+
+VENV_ROOT=$HOME/.venv
+VENV_PATH=$VENV_ROOT/emacs
+exec $VENV_PATH/bin/pylsp $@

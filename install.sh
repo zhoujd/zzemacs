@@ -4,7 +4,13 @@ ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
 . $ZZEMACS_ROOT/bin/sample.sh
 
-install_dotemacs() {
+install_dep() {
+    sudo apt install -y python3-pip
+    sudo apt install -y curl
+    echo "[dep] Install done"
+}
+
+install_emacs() {
     mkdir -p ~/.emacs.d
     cat <<EOF > ~/.emacs
 ;;; The .emacs for zzemacs
@@ -13,7 +19,7 @@ install_dotemacs() {
     (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
-    echo "[dotemacs] Install .emacs done"
+    echo "[emacs] Install .emacs done"
 }
 
 install_font() {
@@ -70,13 +76,17 @@ install_all() {
 
 usage() {
     local app=$(basename $0)
-    echo "$app {dotemacs|-d|font|-f|other|-o|thirdparty|-t|all|-a}"
+    echo "$app {dep|-d|emacs|-e|font|-f|other|-o|thirdparty|-t|all|-a}"
 }
 
 case $1 in
-    dotemacs|-d )
+    dep|-d )
+        confirm_execute "Do you want to dependence? [y/N]" \
+                        run_cmd install_dep
+        ;;
+    emacs|-e )
         confirm_execute "Do you want to overwrite .emacs? [y/N]" \
-                        run_cmd install_dotemacs
+                        run_cmd install_emacs
         ;;
     font|-f )
         confirm_execute "Do you want to install font? [y/N]" \

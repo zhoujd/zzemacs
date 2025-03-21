@@ -3,10 +3,11 @@
 SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 echo "For python os develop start ..."
 
-
 case $1 in
     centos )
         sudo yum install -y python3-pip
+        sudo yum install -y python3-venv
+        sudo yum install -y python3-virtualenv
         ;;
     ubuntu | debian )
         sudo apt install -y python3-pip

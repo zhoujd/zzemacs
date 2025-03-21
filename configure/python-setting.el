@@ -10,8 +10,8 @@
 (zz/load-path "site-lisp/python-mode")
 
 ;;python3 interpreter
-(setq python-interpreter "~/.venv/emacs/bin/python")
-(setq python-shell-interpreter "~/.venv/emacs/bin/python")
+(setq python-interpreter "python3")
+(setq python-shell-interpreter "python3")
 (setq python-shell-interpreter-args "-i")
 
 ;;pdb setup, note the python version
@@ -64,7 +64,7 @@
 ;;lsp-deferred or eglot-ensure
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
-;;~/.local/bin/pylsp
+;;~/.venv/emacs/bin/pylsp
 (defvar zz/default-pyls "pylsp"  "default pyls to be used")
 (defun zz/python-eglot-enable ()
   "set variables and hook for eglot python IDE"

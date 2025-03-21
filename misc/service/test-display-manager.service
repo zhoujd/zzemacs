@@ -1,0 +1,9 @@
+[Unit]
+Description=Test Display Manager
+After=systemd-user-sessions.service
+
+[Service]
+ExecStart=/path/to/test/display-manager
+
+[Install]
+Alias=display-manager.service

@@ -1,0 +1,12 @@
+[Unit]
+Description=Quick Install Service
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/bash -c '/usr/bin/test.sh'
+ExecStop=/bin/true
+
+[Install]
+WantedBy=multi-user.target

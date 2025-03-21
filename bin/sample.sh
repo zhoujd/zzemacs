@@ -121,9 +121,25 @@ linux_lsb_check() {
     esac
 }
 
+linux_os_check() {
+    source /etc/os-release
+    case $ID in
+        "ubuntu" )
+            OS_DISTRO="Ubuntu"
+            ;;
+        "debian" )
+            OS_DISTRO="Debian"
+            ;;
+        * )
+            false
+            ;;
+    esac
+}
+
+
 linux_sample () {
     ## Dectect OS version
-    linux_issue_check || linux_lsb_check
+    linux_os_check || linux_issue_check || linux_lsb_check
     echo "Run on $OS_DISTRO ..."
 
     ## Detect system arch.

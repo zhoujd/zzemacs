@@ -4,13 +4,20 @@ ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
 . $ZZEMACS_ROOT/bin/sample.sh
 
-install_dep() {
-    sudo apt install -y python3-pip
-    sudo apt install -y curl
-    echo "[dep] Install done"
+dep() {
+    case "$OS_DISTRO" in
+        "Ubuntu" | "LinuxMint" | "Debian" )
+            sudo apt install -y python3-pip
+            sudo apt install -y curl
+            ;;
+        * )
+            echo "[dep] $OS_DISTRO is not supported."
+            ;;
+    esac
+    echo "[dep] install done"
 }
 
-install_emacs() {
+emacs() {
     mkdir -p ~/.emacs.d
     cat <<EOF > ~/.emacs
 ;;; The .emacs for zzemacs
@@ -19,12 +26,12 @@ install_emacs() {
     (load-file (concat zzemacs-path "/.emacs"))
     (message "zzemacs has not install"))
 EOF
-    echo "[emacs] Install .emacs done"
+    echo "[emacs] install .emacs done"
 }
 
-install_font() {
+font() {
     TYPE="${1:-user}"
-    echo "[font] Install to $TYPE"
+    echo "[font] install to $TYPE"
     case "$TYPE" in
         "system" )
             FONT_TARGET=/usr/share/fonts
@@ -39,29 +46,29 @@ install_font() {
             fc-cache -f
             ;;
         * )
-            echo "[font] Unknown $TYPE"
+            echo "[font] unknown $TYPE"
             ;;
     esac
-    echo "[font] Install done"
+    echo "[font] install done"
 }
 
-install_other() {
-    echo "[other] Install term rc files"
+other() {
+    echo "[other] install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
-    echo "[other] Install debug rc files"
+    echo "[other] install debug rc files"
     ${ZZEMACS_ROOT}/misc/debug/install.sh gdb
     ${ZZEMACS_ROOT}/misc/debug/install.sh cgdb
-    echo "[other] Install git rc files"
+    echo "[other] install git rc files"
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
-    echo "[other] Install done"
+    echo "[other] install done"
 }
 
-install_thirdparty() {
-    echo "[thirdparty] Refer ${ZZEMACS_ROOT}/third-party/python/READM.md on python libs install"
-    echo "[thirdparty] Install done"
+thirdparty() {
+    echo "[thirdparty] refer ${ZZEMACS_ROOT}/third-party/python/READM.md on python libs install"
+    echo "[thirdparty] install done"
 }
 
-install_all() {
+all() {
     confirm_execute "Do you want to overwrite .emacs? [y/N]" \
                     run_cmd install_dotemacs
     confirm_execute "Do you want to install fonts? [y/N]" \
@@ -81,27 +88,27 @@ usage() {
 case $1 in
     dep|-d )
         confirm_execute "Do you want to dependence? [y/N]" \
-                        run_cmd install_dep
+                        run_cmd dep
         ;;
     emacs|-e )
         confirm_execute "Do you want to overwrite .emacs? [y/N]" \
-                        run_cmd install_emacs
+                        run_cmd emacs
         ;;
     font|-f )
         confirm_execute "Do you want to install font? [y/N]" \
-                        run_cmd install_font user
+                        run_cmd font user
         ;;
     other|-o )
         confirm_execute "Do you want to install other? [y/N]" \
-                        run_cmd install_other
+                        run_cmd other
         ;;
     thirdparty|-t )
         confirm_execute "Do you want to install third-party? [y/N] " \
-                        run_cmd install_thirdparty
+                        run_cmd thirdparty
         ;;
     all|-a )
         confirm_execute "Do you want to install all configure? [y/N] " \
-                        run_cmd install_all
+                        run_cmd all
         ;;
     * )
         usage

@@ -271,7 +271,7 @@
 ;;highlight-indent-guides
 ;;'fill, 'column, 'character, or 'bitmap
 (require 'highlight-indent-guides)
-(setq highlight-indent-guides-method 'bitmap)
+(setq highlight-indent-guides-method 'character)
 (setq highlight-indent-guides-suppress-auto-error t)
 (dolist (hook
          (list

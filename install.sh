@@ -70,13 +70,13 @@ thirdparty() {
 
 all() {
     confirm_execute "Do you want to overwrite .emacs? [y/N]" \
-                    run_cmd install_dotemacs
+                    run_cmd emacs
     confirm_execute "Do you want to install fonts? [y/N]" \
-                    run_cmd install_font user
+                    run_cmd font user
     confirm_execute "Do you want to install others? [y/N]" \
-                    run_cmd install_other
+                    run_cmd other
     confirm_execute "Do you want to install third-party packages? [y/N] " \
-                    run_cmd install_thirdparty
+                    run_cmd thirdparty
     echo "Install all done"
 }
 

@@ -69,13 +69,15 @@ thirdparty() {
 }
 
 all() {
-    confirm_execute "Do you want to overwrite .emacs? [y/N]" \
+    confirm_execute "Do you want to install dependence? [y/N]" \
+                    run_cmd dep
+    confirm_execute "Do you want to install emacs? [y/N]" \
                     run_cmd emacs
-    confirm_execute "Do you want to install fonts? [y/N]" \
-                    run_cmd font user
-    confirm_execute "Do you want to install others? [y/N]" \
+    confirm_execute "Do you want to install font? [y/N]" \
+                    run_cmd font
+    confirm_execute "Do you want to install other? [y/N]" \
                     run_cmd other
-    confirm_execute "Do you want to install third-party packages? [y/N] " \
+    confirm_execute "Do you want to install third-party? [y/N] " \
                     run_cmd thirdparty
     echo "Install all done"
 }
@@ -87,16 +89,16 @@ usage() {
 
 case $1 in
     dep|-d )
-        confirm_execute "Do you want to dependence? [y/N]" \
+        confirm_execute "Do you want to install dependence? [y/N]" \
                         run_cmd dep
         ;;
     emacs|-e )
-        confirm_execute "Do you want to overwrite .emacs? [y/N]" \
+        confirm_execute "Do you want to install emacs? [y/N]" \
                         run_cmd emacs
         ;;
     font|-f )
         confirm_execute "Do you want to install font? [y/N]" \
-                        run_cmd font user
+                        run_cmd font
         ;;
     other|-o )
         confirm_execute "Do you want to install other? [y/N]" \

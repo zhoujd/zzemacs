@@ -9,16 +9,19 @@ PKG_BASE=google-chrome-stable
 PKG_NAME=${PKG_BASE}_${VERSION_STRING}_amd64.deb
 PKG_URL=${URL_BASE}/${PKG_NAME}
 
+DL_ROOT=~/Downloads
+mkdir -p $DL_ROOT
+
 download() {
     echo "Download chrome"
-    pushd ~/Downloads/
+    pushd $DL_ROOT
     wget $PKG_URL
     popd
 }
 
 install() {
     echo "Install chrome"
-    pushd ~/Downloads/
+    pushd $DL_ROOT
     if [ -f $PKG_NAME ]; then
         sudo apt install ./$PKG_NAME
         sudo apt-mark hold $PKG_BASE
@@ -27,7 +30,7 @@ install() {
 
 clean() {
     echo "Clean $PKG_NAME"
-    pushd ~/Downloads/
+    pushd $DL_ROOT
     if [ -f $PKG_NAME ]; then
         rm -f $PKG_NAME
     fi

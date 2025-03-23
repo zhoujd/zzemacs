@@ -252,3 +252,8 @@ Git
     $ git diff | tig
     $ git log -1 -p | tig
     $ git show HEAD | tig
+
+##  Git ignore my changes
+
+    ## https://stackoverflow.com/questions/11628074/how-to-make-git-ignore-my-changes
+    $ git update-index --assume-unchanged <filepath>

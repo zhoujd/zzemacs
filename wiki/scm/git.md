@@ -256,4 +256,5 @@ Git
 ##  Git ignore my changes
 
     ## https://stackoverflow.com/questions/11628074/how-to-make-git-ignore-my-changes
-    $ git update-index --assume-unchanged <filepath>
+    $ git update-index --no-assume-unchanged ${file}
+    $ git update-index --assume-unchanged ${file}  # ignore further changes to a file

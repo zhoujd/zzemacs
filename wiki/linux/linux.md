@@ -740,3 +740,29 @@ EOF
 $ sudo /etc/init.d/cron reload
 $ sudo systemctl status cron
 ```
+
+## How to add Swap File
+
+```
+## Create a file that will be used for swap
+$ sudo fallocate -l 1G /swapfile
+## If faillocate is not installed or if you get an error message saying fallocate failed
+$ sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+
+## Correct permissions type
+$ sudo chmod 600 /swapfile
+
+## Set up the file as Linux swap area
+$ sudo mkswap /swapfile
+
+## Enable the swap
+$ sudo swapon /swapfile
+
+## Make the change permanent
+$ sudo tee -a /etc/fstab <<EOF
+/swapfile swap swap defaults 0 0
+EOF
+
+## Verify that the swap is active
+$ sudo swapon --show
+```

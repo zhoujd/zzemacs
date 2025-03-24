@@ -8,16 +8,16 @@
 (require 'tramp)
 
 ;;;Update ~/.ssh/config
-;Host *
-;  ForwardX11 yes
-;  ForwardX11Trusted yes
-;  ForwardAgent yes
-;  ServerAliveInterval 60
-;  ServerAliveCountMax 10
-;  GlobalKnownHostsFile /dev/null
-;  UserKnownHostsFile /dev/null
-;  StrictHostKeyChecking no
-;  PasswordAuthentication no
+;;Host *
+;;  ForwardX11 yes
+;;  ForwardX11Trusted yes
+;;  ForwardAgent yes
+;;  ServerAliveInterval 60
+;;  ServerAliveCountMax 10
+;;  GlobalKnownHostsFile /dev/null
+;;  UserKnownHostsFile /dev/null
+;;  StrictHostKeyChecking no
+;;  PasswordAuthentication no
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 (add-to-list 'tramp-methods

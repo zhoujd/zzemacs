@@ -737,4 +737,6 @@ $ sudo tee /etc/cron.d/test-root <<EOF
 #<timing>   <user> <command>
 11 * * * *  root   /usr/lib/command
 EOF
+$ sudo /etc/init.d/cron reload
+$ sudo systemctl status cron
 ```

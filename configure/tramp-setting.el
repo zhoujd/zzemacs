@@ -7,8 +7,13 @@
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)
 
-;;add in ~/.ssh/config
+;;;Update ~/.ssh/config
 ;Host *
+;  ForwardX11 yes
+;  ForwardX11Trusted yes
+;  ForwardAgent yes
+;  ServerAliveInterval 60
+;  ServerAliveCountMax 10
 ;  GlobalKnownHostsFile /dev/null
 ;  UserKnownHostsFile /dev/null
 ;  StrictHostKeyChecking no

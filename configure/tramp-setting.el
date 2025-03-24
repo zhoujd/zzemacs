@@ -7,11 +7,12 @@
 ;;C-x C-f /multi:ssh:foo@remote:ssh:bar@secret:~/.emacs
 (require 'tramp)
 
-;;;Add in ~/.ssh/config
-;;GlobalKnownHostsFile /dev/null
-;;UserKnownHostsFile /dev/null
-;;StrictHostKeyChecking no
-;;PasswordAuthentication no
+;;add in ~/.ssh/config
+;Host *
+;  GlobalKnownHostsFile /dev/null
+;  UserKnownHostsFile /dev/null
+;  StrictHostKeyChecking no
+;  PasswordAuthentication no
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 (add-to-list 'tramp-methods

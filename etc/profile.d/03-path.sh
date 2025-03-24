@@ -29,6 +29,4 @@ addpath() {
 addpath \
     $HOME/.zach/bin \
     $HOME/.local/bin \
-    $HOME/.venv/emacs/bin \
-    $ZZEMACS_HOME/bin \
-    $ZZEMACS_HOME/libexec
+    $HOME/.venv/emacs/bin

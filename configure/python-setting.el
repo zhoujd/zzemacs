@@ -65,7 +65,8 @@
 ;;https://emacs-lsp.github.io/lsp-mode/page/lsp-pylsp/
 ;;pip3 install python-lsp-server
 ;;~/.venv/emacs/bin/pylsp
-(defvar zz/default-pyls "pylsp"  "default pyls to be used")
+(defvar zz/default-pyls "pylsp-wrapper"
+  "default pyls to be used")
 (defun zz/python-eglot-enable ()
   "set variables and hook for eglot python IDE"
   (interactive)

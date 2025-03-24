@@ -729,3 +729,12 @@ $ nohup ./command &> "$TEMP_LOG_FILE" & tail -f "$TEMP_LOG_FILE" &
 ## https://unix.stackexchange.com/questions/29570/how-do-i-remove-a-user-from-a-group
 $ gpasswd --delete $user $group
 ```
+
+## Run a cron job as a specific user
+
+```
+$ sudo tee /etc/cron.d/test-root <<EOF
+#<timing>   <user> <command>
+11 * * * *  root   /usr/lib/command
+EOF
+```

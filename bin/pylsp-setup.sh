@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 
-sudo cp -fv pylsp-wrapper /usr/local/bin/
+TARGET=$HOME/.local/bin
+mkdir -p .local/bin
+cp -fv pylsp-wrapper $TARGET
 
 echo "pylsp setup done"

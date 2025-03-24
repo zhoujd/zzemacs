@@ -17,7 +17,6 @@
 ;;  GlobalKnownHostsFile /dev/null
 ;;  UserKnownHostsFile /dev/null
 ;;  StrictHostKeyChecking no
-;;  PasswordAuthentication no
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 (add-to-list 'tramp-methods
@@ -37,8 +36,8 @@
                (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
                                             ("-o" "UserKnownHostsFile=/dev/null")
                                             ("-o" "StrictHostKeyChecking=no")
-                                            ("-o" "PasswordAuthentication=no")
-                                            ("-o" "ForwardX11=yes")))
+                                            ("-o" "ForwardX11=yes")
+                                            ("-o" "ForwardX11Trusted=yes")))
                (tramp-default-port         22)))
 (tramp-set-completion-function
  zz/tramp-sshz-method tramp-completion-function-alist-ssh)

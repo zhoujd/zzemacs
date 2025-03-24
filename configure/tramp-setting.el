@@ -8,6 +8,7 @@
 (require 'tramp)
 
 ;;;Add in ~/.ssh/config
+;;GlobalKnownHostsFile /dev/null
 ;;UserKnownHostsFile /dev/null
 ;;StrictHostKeyChecking no
 ;;PasswordAuthentication no

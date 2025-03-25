@@ -23,5 +23,6 @@ $ ./install.sh
 ## pylsp
 
 ```
-./pylsp-setup.sh
+$ ./pylsp-setup.sh
+$ pylsp --help
 ```

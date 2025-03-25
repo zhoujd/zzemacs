@@ -12,10 +12,12 @@ clang
 
 ```
 $ ./ccls-setup.sh
+$ ccls --help
 ```
 
 ## clangd
 
 ```
 $ ./clangd-setup.sh
+$ clangd --help
 ```

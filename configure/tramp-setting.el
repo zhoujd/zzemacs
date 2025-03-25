@@ -13,7 +13,7 @@
 ;;  ForwardX11Trusted yes
 ;;  ForwardAgent yes
 ;;  ServerAliveInterval 60
-;;  ServerAliveCountMax 10
+;;  ServerAliveCountMax 30
 ;;  GlobalKnownHostsFile /dev/null
 ;;  UserKnownHostsFile /dev/null
 ;;  StrictHostKeyChecking no

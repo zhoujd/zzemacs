@@ -154,7 +154,7 @@ QAT
 ## DSA (Digital Signature Algorithm) & RSA (Rivest–Shamir–Adleman)
 
     ## ssh1 use RSA, ssh2 (latest) use DSA
-    $ ssh-keygen -t rsa
+    $ ssh-keygen -t rsa -b 4096 -C "abc@abc.com"
     $ ssh-keygen -t dsa
 
     ## RSA: Public key is open, encode with PUBLIC key, private key only use decoce

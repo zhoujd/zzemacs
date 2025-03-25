@@ -61,10 +61,11 @@
 (dolist (path
          (list
           "~/.local/bin"
+          "~/.zach/bin"
           ))
   (add-to-list 'tramp-remote-path path))
 
-;;tramp syntax: default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
+;;tramp syntax: `default' (default), `simplified' (ange-ftp like) or `separate' (XEmacs like)
 ;;default: /ssh:news@news.my.domain:/opt/news/etc
 ;;simplified: /news@news.my.domain:/opt/news/etc
 ;;separate: /[method/user@remotehost]/filename

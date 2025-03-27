@@ -213,3 +213,13 @@ sleep 30 && kill $!
 firefox &
 sleep 30 && pkill firefox
 #+end_src
+
+** Background rsync and pid from a shell script
+#+begin_src sh
+# check to make sure script isn't still running
+# if it's still running then exit this script
+sScriptName="$(basename $0)"
+if [ $(pidof -x ${sScriptName}| wc -w) -gt 2 ]; then
+    exit
+fi
+#+end_src

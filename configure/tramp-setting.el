@@ -41,9 +41,8 @@
                                             ("-o" "ForwardX11=yes")
                                             ("-o" "ForwardX11Trusted=yes")))
                (tramp-default-port         22)))
-(tramp-set-completion-function
- zz/tramp-sshz-method tramp-completion-function-alist-ssh)
-(setq tramp-default-method "sshz")
+(tramp-set-completion-function zz/tramp-sshz-method tramp-completion-function-alist-ssh)
+(setq tramp-default-method zz/tramp-sshz-method)
 
 ;;Persistency for fast init, don't change ~/.emacs.d/tramp
 ;;Run `M-x tramp-cleanup-all-connections' instead.

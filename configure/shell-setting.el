@@ -113,14 +113,13 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz/get-shell ()
   "Get shell"
   (interactive)
-  (cond
-   (let ((default-directory (file-name-as-directory
-                             (ido-read-directory-name "Directory: "))))
-     (when (file-exists-p default-directory)
-       (if (tramp-tramp-file-p default-directory)
-           (let ((multi-shell-command tramp-default-remote-shell))
-             (multi-shell-new))
-           (multi-shell-new))))))
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (when (file-exists-p default-directory)
+      (if (tramp-tramp-file-p default-directory)
+          (let ((multi-shell-command tramp-default-remote-shell))
+            (multi-shell-new))
+          (multi-shell-new)))))
 
 (defun zz/get-sh ()
   "Get /bin/sh shell"

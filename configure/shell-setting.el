@@ -122,7 +122,7 @@ Dmitriy Igrishin's patched version of comint.el."
                               (ido-read-directory-name "Directory: "))))
       (when (file-exists-p default-directory)
         (if (tramp-tramp-file-p default-directory)
-            (let ((multi-shell-command "/bin/sh"))
+            (let ((multi-shell-command tramp-default-remote-shell))
               (multi-shell-new))
             (multi-shell-new))))
     )))

@@ -111,21 +111,25 @@ Dmitriy Igrishin's patched version of comint.el."
  (setq multi-shell-command "cmdproxy"))
 
 (defun zz/get-shell ()
+  "Get shell"
   (interactive)
   (cond
-   ;;((string-match "j[ap].*" (getenv "LANG"))
-   ;; (with-chinese-env (multi-shell-new)))
-   ;;((string-match "\\(zh_CN\\)\\|\\(CHS\\)" (getenv "LANG"))
-   ;; (with-chinese-env (multi-shell-new)))
-   (t
-    (let ((default-directory (file-name-as-directory
-                              (ido-read-directory-name "Directory: "))))
-      (when (file-exists-p default-directory)
-        (if (tramp-tramp-file-p default-directory)
-            (let ((multi-shell-command tramp-default-remote-shell))
-              (multi-shell-new))
-            (multi-shell-new))))
-    )))
+   (let ((default-directory (file-name-as-directory
+                             (ido-read-directory-name "Directory: "))))
+     (when (file-exists-p default-directory)
+       (if (tramp-tramp-file-p default-directory)
+           (let ((multi-shell-command tramp-default-remote-shell))
+             (multi-shell-new))
+           (multi-shell-new))))))
+
+(defun zz/get-sh ()
+  "Get /bin/sh shell"
+  (interactive)
+  (let ((default-directory (file-name-as-directory
+                            (ido-read-directory-name "Directory: "))))
+    (when (file-exists-p default-directory)
+      (let ((multi-shell-command "/bin/sh"))
+        (multi-shell-new)))))
 
 (defun zz/home-shell ()
   (interactive)
@@ -356,6 +360,16 @@ Dmitriy Igrishin's patched version of comint.el."
       (call-interactively 'zz/get-shell)
       )))
 
+(defun zz/local-sh ()
+  "Open a local /bin/sh"
+  (interactive)
+  (with-temp-buffer
+    (let* ((prefix "~"))
+      (when (tramp-tramp-file-p default-directory)
+        (setq default-directory prefix))
+      (call-interactively 'zz/get-sh)
+      )))
+
 (defun zz/get-remote ()
   (with-temp-buffer
     (let* ((path "~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
@@ -381,6 +395,15 @@ Dmitriy Igrishin's patched version of comint.el."
     (let* ((default-directory (zz/get-host)))
       (when (file-exists-p default-directory)
         (call-interactively 'zz/get-shell))
+      )))
+
+(defun zz/remote-sh ()
+  "Open a remote /bin/sh to a host"
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory (zz/get-host)))
+      (when (file-exists-p default-directory)
+        (call-interactively 'zz/get-sh))
       )))
 
 (defun zz/helm-cd (dir)

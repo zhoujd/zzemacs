@@ -39,6 +39,9 @@
 (custom-set-variables
  '(magit-blame-echo-style 'margin))
 
+;;magit-no-confirm
+(add-to-list 'magit-no-confirm 'stage-all-changes)
+
 ;;magit-lfs
 (require 'magit-lfs)
 

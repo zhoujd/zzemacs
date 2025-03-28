@@ -425,8 +425,8 @@ mouse-3: Toggle minor modes"
 (defalias 'c 'toggle-case-fold-search)
 
 ;;configure saved from menu "Save Options"
-;;normal location: ~/.emacs.d/custom.el
-(setq custom-file (concat user-emacs-directory "custom.el"))
+;;disable custom-file by mapping it to a temporary file
+(setq custom-file (make-temp-name "/tmp/"))
 
 ;;remove cl warning on emacs27
 (unless (< emacs-major-version 27)

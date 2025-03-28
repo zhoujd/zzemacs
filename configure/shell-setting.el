@@ -121,7 +121,10 @@ Dmitriy Igrishin's patched version of comint.el."
     (let ((default-directory (file-name-as-directory
                               (ido-read-directory-name "Directory: "))))
       (when (file-exists-p default-directory)
-        (multi-shell-new)))
+        (if (tramp-tramp-file-p default-directory)
+            (let ((multi-shell-command "/bin/sh"))
+              (multi-shell-new))
+            (multi-shell-new))))
     )))
 
 (defun zz/home-shell ()

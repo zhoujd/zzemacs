@@ -43,8 +43,6 @@
                (tramp-default-port         22)))
 (tramp-set-completion-function zz/tramp-sshz-method tramp-completion-function-alist-ssh)
 (setq tramp-default-method zz/tramp-sshz-method)
-(setq tramp-default-remote-shell "/bin/bash")
-(setq tramp-encoding-shell "/bin/sh")
 
 ;;Persistency for fast init, don't change ~/.emacs.d/tramp
 ;;Run `M-x tramp-cleanup-all-connections' instead.

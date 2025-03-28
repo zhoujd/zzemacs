@@ -116,10 +116,7 @@ Dmitriy Igrishin's patched version of comint.el."
   (let ((default-directory (file-name-as-directory
                             (ido-read-directory-name "Directory: "))))
     (when (file-exists-p default-directory)
-      (if (tramp-tramp-file-p default-directory)
-          (let ((multi-shell-command tramp-default-remote-shell))
-            (multi-shell-new))
-          (multi-shell-new)))))
+      (multi-shell-new))))
 
 (defun zz/get-sh ()
   "Get /bin/sh shell"
@@ -132,12 +129,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz/home-shell ()
   (interactive)
-  (cond
-   (t
-    (let ((default-directory "~"))
-      (when (file-exists-p default-directory)
-        (multi-shell-new)))
-    )))
+  (let ((default-directory "~"))
+    (when (file-exists-p default-directory)
+      (multi-shell-new))))
 
 (defun zz/get-current-shell ()
   (interactive)

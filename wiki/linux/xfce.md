@@ -4,7 +4,6 @@ Xfce
 ## Install Xfce
 
     $ sudo apt install -y xubuntu-desktop
-
     $ sudo apt install -y expect
     $ cat <<EOF | expect
     set timeout -1
@@ -235,5 +234,5 @@ Xfce
     [greeter]
     theme-name = Adwaita-dark
     icon-theme-name = Adwaita
-    clock-format = WW%V %a %d %b %I:%M %p
+    clock-format = %a %d %b %I:%M %p
     indicators = ~host;~spacer;~session;~clock;~power

@@ -228,3 +228,12 @@ Xfce
     ## In /etc/lightdm/lightdm.conf Go down the file
     $ sudo vim /etc/lightdm/lightdm.conf
     greeter-hide-users=false
+
+## Set lightdm gtk greeter
+
+    $ cat /etc/lightdm/lightdm-gtk-greeter.conf
+    [greeter]
+    theme-name = Adwaita-dark
+    icon-theme-name = Adwaita
+    clock-format = WW%V %a %d %b %I:%M %p
+    indicators = ~host;~spacer;~session;~clock;~power

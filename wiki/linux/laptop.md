@@ -2,8 +2,8 @@ Laptop setting
 ==============
 
 ## Lock when handle lid switch.
-   Change HandleLidSwitch=suspend to lock or ignore, and uncomment it
 
+    ## Change HandleLidSwitch=suspend to lock or ignore, and uncomment it
     $ sudo vim /etc/systemd/logind.conf
       HandleLidSwitch=lock
     or
@@ -28,6 +28,7 @@ Laptop setting
 
     ## Fri 16 Jul 10 04:22 PM
     ## %a %d %b %y  %I:%M %p
+    ## WW%V %a %d %b %I:%M %p
 
 ## Disable laptop internal key board
 

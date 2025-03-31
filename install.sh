@@ -19,7 +19,7 @@ dep() {
 
 emacs() {
     mkdir -p ~/.emacs.d
-    cat <<EOF > ~/.emacs
+    tee ~/.emacs <<EOF
 ;;; The .emacs for zzemacs
 (defvar zzemacs-path "${ZZEMACS_ROOT}")
 (if (file-exists-p (concat zzemacs-path "/.emacs"))

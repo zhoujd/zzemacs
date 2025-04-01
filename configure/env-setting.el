@@ -1,6 +1,12 @@
 ;;;; env-setting.el --- env config file
 ;;
 
+;;Ensure environment variables inside Emacs
+(require 'exec-path-from-shell)
+(dolist (var '("SBCL_HOME"))
+  (add-to-list 'exec-path-from-shell-variables var))
+(exec-path-from-shell-initialize)
+
 (defun zz/add-os-env (path name)
   "add path to env name"
   (when (file-exists-p path)
@@ -50,7 +56,6 @@
       (format "%s/.venv/emacs/bin" (getenv "HOME"))
       )))
   "add to path and exec-path")
-
 (mapc #'zz/add-os-path zz/env-path)
 
 (defun zz/add-os-proxy (proxy)

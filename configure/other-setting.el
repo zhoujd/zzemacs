@@ -5,8 +5,10 @@
 (zz/load-path "elisp")
 
 ;;Ensure environment variables inside Emacs
-;(require 'exec-path-from-shell)
-;(exec-path-from-shell-initialize)
+(require 'exec-path-from-shell)
+(dolist (var '("SBCL_HOME"))
+  (add-to-list 'exec-path-from-shell-variables var))
+(exec-path-from-shell-initialize)
 
 ;;emacs session
 (require 'emacs-session)

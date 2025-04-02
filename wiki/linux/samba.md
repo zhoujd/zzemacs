@@ -10,22 +10,22 @@ Samba Server
 
 ## Setting up Samba
 
-    $ sudo mkdir -p /zach
-    $ sudo chown zach:zach /zach
+    $ sudo mkdir -p /data
+    $ sudo chown zach:zach /data
     $ sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.origin
     $ sudo vim /etc/samba/smb.conf
     ## At the bottom of the file, add the following lines:
-    ## Zach Root
-    [zach]
-       comment = Data on Ubuntu
-       path = /zach
+    ## Data Root
+    [data]
+       comment = Data Directory
+       path = /data
        read only = no
        browsable = yes
        valid users = zach
 
     ## Zach Home
-    [home]
-       comment = Zach Home
+    [zach]
+       comment = Zach Home Directory
        path = /home/zach
        read only = no
        browsable = yes

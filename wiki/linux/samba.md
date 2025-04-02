@@ -50,7 +50,6 @@ Samba Server
     $ smbclient //samba_hostname_or_server_ip/share_name -U username
     $ smbclient //192.168.121.118/josh -U josh
 
-
 ## Mounting the Samba share
 
     $ sudo apt install cifs-utils

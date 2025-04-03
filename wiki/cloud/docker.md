@@ -502,10 +502,36 @@ Docker
 
 ## Docker locally
 
-    $ tee /etc/docker/daemon.json
+    $ sudo vim /etc/docker/daemon.json
     {
         "registry-mirrors":[
             "https://docker.m.daocloud.io"
         ],
+        "insecure-registries": [
+            "$SERVER_IP:5000"
+        ],
         "data-root": "/data/docker/default"
     }
+
+## Docker registry
+
+    ## Run a local registry
+    $ docker run -d -p 5000:5000 --restart always --name registry registry:2
+
+    ## Edit daemon.json
+    $ sudo vim /etc/docker/daemon.json
+    {
+        "insecure-registries": [
+            "$SERVER_IP:5000"
+        ],
+    }
+
+    ## Restart docker service
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl restart docker
+    $ docker info
+
+    ## Test
+    $ docker pull ubuntu
+    $ docker tag ubuntu localhost:5000/ubuntu
+    $ docker push localhost:5000/ubuntu

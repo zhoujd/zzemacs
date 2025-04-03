@@ -499,3 +499,13 @@ Docker
 ## Docker BuildKit
 
     $ sudo apt install docker-buildx
+
+## Docker locally
+
+    $ tee /etc/docker/daemon.json
+    {
+        "registry-mirrors":[
+            "https://docker.m.daocloud.io"
+        ],
+        "data-root": "/data/docker/default"
+    }

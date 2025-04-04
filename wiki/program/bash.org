@@ -223,3 +223,27 @@ if [ $(pidof -x ${sScriptName}| wc -w) -gt 2 ]; then
     exit
 fi
 #+end_src
+
+** Log echo statement with timestamp in shell script
+#+begin_src sh
+## https://stackoverflow.com/questions/49851882/how-to-log-echo-statement-with-timestamp-in-shell-script
+LOG_FILE="./logfile"
+logouts() {
+    while read
+    do
+        printf "%(%T)T %s\n" -1 "stdout: $REPLY"  | tee -a ${LOG_FILE}
+    done
+}
+logerrs() {
+    while read
+    do
+        printf "%(%T)T %s\n" -1 "stderr: $REPLY"  >> ${LOG_FILE}
+    done
+}
+main()
+{
+    echo "Hello world" 1>> >(logouts) 2>> >(logerrs)
+    ls -l does_not_exist 1>> >(logouts) 2>> >(logerrs)
+}
+main "$@"
+#+end_src

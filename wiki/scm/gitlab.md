@@ -1,6 +1,12 @@
 GitLab
 ======
 
+## URLs
+
+```
+## https://docs.gitlab.com/ci/variables/
+```
+
 ## Creating Gitlab Runner Tags on the Registration Process
 
 ```
@@ -23,11 +29,29 @@ $ sudo gitlab-runner register \
 ```
 ## https://www.bitslovers.com/gitlab-runner-tags/
 ## Manipulate the $TAG_RUNNER value using scripts and then dynamically select
-TAG_RUNNER: aws-fargate
-  job:
-    tags:
-      - linux-large
-      - $TAG_RUNNER
-    script:
-      - echo "Let's build our project!"
+variables:
+  TAG_RUNNER: aws-fargate
+job:
+  tags:
+    - linux-large
+    - $TAG_RUNNER
+  script:
+    - echo "Let's build our project!"
+```
+
+## Pass an environment variable to another job
+
+```
+build-job:
+  stage: build
+  script:
+    - echo "BUILD_VARIABLE=value_from_build_job" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+
+test-job:
+  stage: test
+  script:
+    - echo "$BUILD_VARIABLE"  # Output is: 'value_from_build_job'
 ```

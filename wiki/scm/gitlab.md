@@ -4,6 +4,8 @@ GitLab
 ## URLs
 
 ```
+## https://docs.gitlab.com/ci/
+## https://docs.gitlab.com/ci/runners/
 ## https://docs.gitlab.com/ci/variables/
 ```
 

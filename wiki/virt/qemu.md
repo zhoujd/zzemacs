@@ -226,3 +226,10 @@ QEMU
 
     ## 3. Learning about PCI-e: Implementing an option ROM
     ## https://blog.davidv.dev/posts/pcie-option-rom
+
+## QEMU MAC (52:54:00)
+
+    ## Configure your VM with -net nic,model=virtio,macaddr=52:54:00:00:00:01 -net bridge,br=virtbr0
+    ## The MAC here is arbitrary, 52:54:00 is the qemu prefix and the rest can be whatever as long as
+    ## it doesn’t conflict with an existing virtual NIC on your network.
+    ## The br should obviously match whatever you’ve called your network bridge.

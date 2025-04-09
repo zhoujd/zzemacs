@@ -57,3 +57,21 @@ test-job:
   script:
     - echo "$BUILD_VARIABLE"  # Output is: 'value_from_build_job'
 ```
+
+## Artifacts always
+
+```
+## https://docs.gitlab.com/ce/ci/yaml/index.html#artifactswhen
+artifacts:
+  when: always
+  paths:
+  - SmokeTestResults/
+  - package.json
+```
+
+## Gitlab Runner - Same folder (path) for each build
+
+```
+Gitlab injects environment variable CI_PROJECT_DIR with your project root directory
+e.g. $CI_PROJECT_DIR/script/foo.sh
+```

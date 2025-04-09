@@ -75,3 +75,47 @@ artifacts:
 Gitlab injects environment variable CI_PROJECT_DIR with your project root directory
 e.g. $CI_PROJECT_DIR/script/foo.sh
 ```
+
+## Gitlab CI pipeline to run jobs parallel in same stage and invoke/trigger other jobs of same stage
+
+```
+## The key is using `needs' keyword to convert the pipieline to a directed acyclic graph:
+## job1 and job2 start in parallel
+## job1 will trigger the job3 (immediately, without waiting for the job2 to finish)
+## job2 will trigger the job4 (immediately, without waiting for the job1 to finish)
+stages:
+    - stage-1
+    - stage-2
+
+job-1:
+    stage: stage-1
+    needs: []
+    script:
+      - echo "job-1 started"
+      - sleep 5
+      - echo "job-1 done"
+
+job-2:
+    stage: stage-1
+    needs: []
+    script:
+      - echo "job-2 started"
+      - sleep 60
+      - echo "job-2 done"
+
+job-3:
+    stage: stage-2
+    needs: [job-1]
+    script:
+      - echo "job-3 started"
+      - sleep 5
+      - echo "job-3 done"
+
+job-4:
+    stage: stage-2
+    needs: [job-2]
+    script:
+      - echo "job-4 started"
+      - sleep 5
+      - echo "job-4 done"
+```

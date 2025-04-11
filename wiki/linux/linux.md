@@ -232,6 +232,9 @@ Linux something
     # ls /var/crash/
     # sudo rm -fr /var/crash/*
     # sudo systemctl stop apport
+    # sudo systemctl disable apport
+    # sudo apt remove apport
+    # sudo apt autoremove
 
     # cat /etc/default/apport
     # set this to 0 to disable apport, or to 1 to enable it

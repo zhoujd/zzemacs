@@ -52,6 +52,7 @@
 ;;font setting
 ;;tools: xlsfonts or xfontsel
 ;;JetBrains Mono: https://www.jetbrains.com/lp/mono/
+;;Spleen: https://github.com/fcambus/spleen
 ;;https://github.com/supercomputra/SF-Mono-Font
 ;;https://github.com/soytony/SF-Mono-SC
 ;;https://github.com/ryanoasis/nerd-fonts/
@@ -72,7 +73,8 @@
                             "Microsoft YaHei Mono"
                             ))
 (defconst zz/console-font-list '(
-                                 "WenQuanYi Zen Hei Mono 13"
+                                 "-misc-spleen-medium-r-normal--64-640-72-72-c-320-iso10646-1"
+                                 "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*"
                                  ))
 
 (defun zz/frame-font (font-en-name &optional font-cn-name)
@@ -93,7 +95,7 @@
     (zz/frame-font (nth 0 zz/en-font-list))
     (if (display-graphic-p)
         (zz/frame-font (nth 0 zz/en-font-list) (nth 0 zz/cn-font-list))
-        (zz/frame-font (nth 0 zz/console-font-list))))
+        (set-face-font 'default (nth 0 zz/console-font-list))))
 
 ;;improve theme loading
 (defadvice load-theme (before clear-previous-themes activate)

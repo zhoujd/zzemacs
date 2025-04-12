@@ -276,9 +276,10 @@
 (column-number-mode t)
 
 ;;mode-line face attribute
-(custom-set-faces
- '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
- '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063")))))
+(when (display-graphic-p)
+  (custom-set-faces
+   '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
+   '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063"))))))
 
 ;;mode-line time
 (setq display-time-string-forms

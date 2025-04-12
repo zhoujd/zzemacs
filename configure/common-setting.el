@@ -110,11 +110,7 @@
       (set-face-foreground 'default "gray")))
 
 ;;default-frame-alist or initial-frame-alist
-;(setq default-frame-alist (append '((mouse-color . "white")
-;                                    (scroll-bar-width . 16)
-;                                    (width .  110)
-;                                    (height . 32))
-;                                  default-frame-alist))
+(add-to-list 'default-frame-alist '(mouse-color . "white"))
 
 ;;quick display key help
 (setq echo-keystrokes 0.1)

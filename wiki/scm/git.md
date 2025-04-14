@@ -258,3 +258,11 @@ Git
     ## https://stackoverflow.com/questions/11628074/how-to-make-git-ignore-my-changes
     $ git update-index --no-assume-unchanged ${file}
     $ git update-index --assume-unchanged ${file}  # ignore further changes to a file
+
+## Git clone special files/dirs from large repo
+
+    $ CLONE_ARGS="--depth=1 --filter=blob:none --sparse"
+    $ git clone $CLONE_ARGS -b <branch> <url> $SR_ROOT
+    $ pushd $SR_ROOT
+    $ echo "Checkout files: file1, dir1 and dir2..."
+    $ git sparse-checkout set file1 dir1 dir2 --cone

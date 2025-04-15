@@ -4,13 +4,13 @@
 ## AllowTcpForwarding yes
 ## X11Forwarding yes
 ## X11DisplayOffset 10
-## X11UseLocalhost yes
+## X11UseLocalhost no
 
 sshd_x11() {
     sudo sed -i 's/#AllowTcpForwarding yes/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
     sudo sed -i 's/#X11Forwarding yes/X11Forwarding yes/g' /etc/ssh/sshd_config
     sudo sed -i 's/#X11DisplayOffset 10/X11DisplayOffset 10/g' /etc/ssh/sshd_config
-    sudo sed -i 's/#X11UseLocalhost yes/X11UseLocalhost yes/g' /etc/ssh/sshd_config
+    sudo sed -i 's/#X11UseLocalhost yes/X11UseLocalhost no/g' /etc/ssh/sshd_config
 }
 
 sshd_root() {

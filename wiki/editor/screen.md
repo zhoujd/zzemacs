@@ -33,3 +33,16 @@ ixon or -ixon: Enables (or disables) software flow-control (CTRL-S/CTRL-Q) for s
 ixoff or -ixoff: Enables (or disables) software flow-control for receiving data.
 istrip or -istrip: Clear (or keep) the eight bit in each received byte.
 ```
+
+## Kill a screen session
+
+```
+local PIDs=( $(screen -list | grep screen- | cut -f1 -d'.' | sed 's/\W//g') )
+if [ -n "${PIDs[@]}" ]; then
+    for pid in "${PIDs[@]}"; do
+        sudo screen -XS $pid quit
+        sudo kill -9 $pid
+    done
+    sudo screen -wipe
+fi
+```

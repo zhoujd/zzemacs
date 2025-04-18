@@ -26,7 +26,9 @@ GDB Source Path
 ## How to tell GDB where are the sources
 
     ## 1. Reconstruct the sources path
-    ## You can reconstruct the sources path on the target host, so GDB will find the source file where it expects. Stupid but it will work.
+    ## You can reconstruct the sources path on the target host,
+    ## so GDB will find the source file where it expects.
+    ## Stupid but it will work.
 
     ## 2. Change GDB source path
     (gdb) list
@@ -55,3 +57,5 @@ GDB Source Path
 
     ## Conclusion
     ## The easiest ones are directory and set substitute-path commands, though -fdebug-prefix-map is really useful
+    ## The '$cdir' (to refer to the compilation directory)
+    ## The '$cwd' (to refer to the current working directory)

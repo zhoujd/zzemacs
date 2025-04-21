@@ -20,5 +20,5 @@ services:
       - /etc/security/limits.conf:/etc/security/limits.conf
       - /etc/sysctl.conf:/etc/sysctl.conf
       - /data/work:/home/${USER}/work
-      - $HOME/.ssh:/home/${USER}/.ssh
+      - ${HOME}/.ssh:/home/${USER}/.ssh
       - ${ZZEMACS_ROOT}:/home/${USER}/zzemacs

@@ -1,4 +1,4 @@
-ARG VARIANT=20.04
+ARG VARIANT=22.04
 FROM zhoujd/ubuntu-${VARIANT}-zzemacs:base
 
 ## Setup apt-get

@@ -5,7 +5,7 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/../.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
-VER=22.04
+VER=${VER:-22.04}
 IMG=${IMG:-zhoujd/ubuntu-${VER}-zzemacs}
 TAG=${TAG:-base}
 CTN_PREFIX=${CTN_PREFIX:-zzemacs}

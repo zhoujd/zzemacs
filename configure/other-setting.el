@@ -84,6 +84,7 @@
     (recentf-save-list)))
 (setq recentf-auto-save-timer
       (run-with-idle-timer 30 t 'zz/recenf-auto-save))
+(add-to-list 'recentf-keep `remote-file-p)
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)

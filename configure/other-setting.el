@@ -81,11 +81,16 @@
                         ".cache/"))
 (add-to-list 'recentf-keep `remote-file-p)
 (defun zz/recenf-auto-save ()
-  (let ((save-silently t)
-        (inhibit-message t))
+  (let ((save-silently t))
     (recentf-save-list)))
 (setq recentf-auto-save-timer
       (run-with-idle-timer 30 t 'zz/recenf-auto-save))
+(defun no-msg (function)
+  "Prevent FUNCTION from showing `Wrote <FILE>' messages.
+\(The messages are still logged to `*Messages*'.)"
+  (let ((inhibit-message  t))
+    (funcall function)))
+(advice-add 'recentf-save-list :around 'no-msg)
 (recentf-mode t)
 
 (defadvice recentf-track-closed-file (after push-beginning activate)

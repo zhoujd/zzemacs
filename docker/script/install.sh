@@ -8,7 +8,7 @@ setup_emacs() {
     ln -sfvT $ZZEMACS_ROOT/.emacs $HOME/.emacs
     mkdir -p $HOME/.fonts
     ln -sfvT $ZZEMACS_ROOT/font $HOME/.fonts/zach
-    ln -sfvT $ZZEMACS_ROOT/etc/terminfo $HOME/.terminfo
+    ln -sfvT $ZZEMACS_ROOT/misc/term/terminfo $HOME/.terminfo
 }
 
 setup_bash() {

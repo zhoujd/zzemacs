@@ -19,5 +19,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/security/limits.conf:/etc/security/limits.conf
       - /etc/sysctl.conf:/etc/sysctl.conf
+      - /data/work:/home/${USER}/work
+      - $HOME/.ssh:/home/${USER}/.ssh
       - ${ZZEMACS_ROOT}:/home/${USER}/zzemacs
-      - ${ZZEMACS_TOP}/lab:/home/${USER}/lab

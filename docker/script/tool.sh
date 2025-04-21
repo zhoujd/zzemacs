@@ -43,8 +43,9 @@ RUN_PARAM=(
     -v /var/run/docker.sock:/var/run/docker.sock
     -v /etc/security/limits.conf:/etc/security/limits.conf
     -v /etc/sysctl.conf:/etc/sysctl.conf
+    -v /data/work:$CTN_HOME/work
+    -v $HOME/.ssh:$CTN_HOME/.ssh
     -v $ZZEMACS_ROOT:$CTN_HOME/zzemacs
-    -v $ZZEMACS_TOP/lab:$CTN_HOME/lab
 )
 
 EXEC_PARAM=(

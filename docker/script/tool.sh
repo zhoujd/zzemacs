@@ -5,11 +5,12 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 ZZEMACS_ROOT=$(cd $SCRIPT_ROOT/../.. && pwd)
 ZZEMACS_TOP=$(cd $ZZEMACS_ROOT/.. && pwd)
 
-IMG=${IMG:-zhoujd/ubuntu-20.04-zzemacs}
+VER=22.04
+IMG=${IMG:-zhoujd/ubuntu-${VER}-zzemacs}
 TAG=${TAG:-base}
 CTN_PREFIX=${CTN_PREFIX:-zzemacs}
 CTN_NAME=${CTN_NAME:-$CTN_PREFIX-$TAG}
-CTN_HOST=${CTN_HOST:-ubuntu-2004-zzemacs}
+CTN_HOST=${CTN_HOST:-ubuntu-2204-zzemacs}
 CTN_USER=${CTN_USER:-$USER}
 CTN_HOME=${CTN_HOME:-/home/$CTN_USER}
 SSH_HOST=${SSH_HOST:-localhost}

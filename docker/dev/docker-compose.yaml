@@ -2,8 +2,8 @@ version: "3"
 
 services:
   zzemacs:
-    hostname: ubuntu-2004-zzemacs
-    image: zhoujd/ubuntu-20.04-zzemacs:dev
+    hostname: ubuntu-2204-zzemacs
+    image: zhoujd/ubuntu-22.04-zzemacs:dev
     container_name: zzemacs-dev
     network_mode: bridge
     extra_hosts:

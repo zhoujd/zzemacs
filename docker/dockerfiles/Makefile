@@ -35,7 +35,7 @@ clean:
 help:
 	@echo "Usage:"
 	@echo "$$ make"
-	@echo "$$ make CTN_USER=zach VARIANT=20.04"
+	@echo "$$ make CTN_USER=zach VARIANT=22.04"
 	@echo "$$ make clean"
 	@echo "$$ make help"
 	@echo "$$ make ubuntu-base"

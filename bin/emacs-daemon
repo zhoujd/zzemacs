@@ -11,14 +11,12 @@
 ## systemctl --user restart emacs.service
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
-MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
 SERV_ROOT=$HOME/.config/systemd/user
-SERV_FILE=$SERV_ROOT/emacs.service
 
 install() {
-    echo "Install emacs service: $SERV_FILE"
+    echo "Install emacs service to $SERV_ROOT"
     mkdir -p $SERV_ROOT
-    tee $SERV_FILE <<EOF
+    tee $SERV_ROOT/emacs.service <<EOF
 [Unit]
 Description=Emacs text editor
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/

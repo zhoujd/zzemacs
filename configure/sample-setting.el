@@ -458,11 +458,20 @@
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
 
-(defun zz/close-all-buffers ()
+(defun zz/kill-all-buffers ()
+  "Kill all buffers."
   (interactive)
-  (mapc 'kill-buffer (buffer-list)))
+  (when (yes-or-no-p (format "Really kill all buffers"))
+    (mapc 'kill-buffer (buffer-list))))
+
+(defun zz/kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (when (yes-or-no-p (format "Really kill other buffers"))
+    (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))))
 
 (defun zz/revert-all-buffers ()
+  "Revert all buffers."
   (interactive)
   (dolist (buf (buffer-list))
     (with-current-buffer buf

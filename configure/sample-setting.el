@@ -463,19 +463,21 @@
   "Kill all buffers."
   (interactive)
   (when (yes-or-no-p (format "Really kill all buffers"))
-    (mapc 'kill-buffer (buffer-list))))
+    (mapc (lambda (x)
+            (unless (member (buffer-name x) '("*Messages*" "*scratch*"))
+              (kill-buffer x)))
+          (buffer-list))))
 
 (defun zz/kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
   (when (yes-or-no-p (format "Really kill other buffers"))
-    (mapc 'kill-buffer
-          (remove-if
-           '(lambda (x)
-              (or
-               (eq x (current-buffer))
-               (member (buffer-name x) '("*Messages*" "*scratch*"))))
-           (buffer-list)))))
+    (mapc (lambda (x)
+            (unless (or
+                     (eq x (current-buffer))
+                     (member (buffer-name x) '("*Messages*" "*scratch*")))
+              (kill-buffer x)))
+          (buffer-list))))
 
 (defun zz/revert-all-buffers ()
   "Revert all buffers."

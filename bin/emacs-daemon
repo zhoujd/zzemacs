@@ -52,7 +52,8 @@ start() {
 
 restart() {
     echo "Restart emacs daemon"
-    systemctl --user restart --now emacs
+    systemctl --user stop --now emacs
+    systemctl --user start --now emacs
 }
 
 status() {

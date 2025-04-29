@@ -12,12 +12,27 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 MISC_ROOT=$(cd $SCRIPT_ROOT/../misc && pwd)
-SERV_ROOT=~/.config/systemd/user
+SERV_ROOT=$HOME/.config/systemd/user
+SERV_FILE=$SERV_ROOT/emacs.service
 
 install() {
-    echo "Install emacs daemon"
+    echo "Install emacs service: $SERV_FILE"
     mkdir -p $SERV_ROOT
-    ln -sf $MISC_ROOT/emacs/emacs.service $SERV_ROOT/emacs.service
+    tee $SERV_FILE <<EOF
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+EOF
     systemctl daemon-reload --user
     systemctl --user enable --now emacs
 }
@@ -46,7 +61,6 @@ status() {
     echo "Status of emacs daemon"
     systemctl status --user emacs
     ps -ef | grep emacs | grep daemon | grep -v emacs-daemon
-
 }
 
 config() {
@@ -61,7 +75,6 @@ Environment="GTK_IM_MODULE=ibus"
 Environment="QT_IM_MODULE=ibus"
 Environment="XMODIFIERS=@im=ibus"
 EOF
-
     echo "Config proxy"
     tee $SERV_ROOT/emacs.service.d/50-proxy.conf <<EOF
 [Service]
@@ -69,9 +82,15 @@ Environment="HTTP_PROXY=$HTTP_PROXY"
 Environment="HTTPS_PROXY=$HTTPS_PROXY"
 Environment="NO_PROXY=$NO_PROXY"
 EOF
-    
     echo echo "Reload emacs daemon"
     systemctl --user daemon-reload
+}
+
+usage() {
+    app=$(basename $0)
+cat <<EOF
+Usage: $app {install|uninstall|start|stop|restart|status|config}"
+EOF
 }
 
 case $1 in
@@ -96,7 +115,7 @@ case $1 in
     config )
         config
         ;;
-     * )
-        echo "Usage: $(basename $0) {install|uninstall|start|stop|restart|status|config}"
+    * )
+        usage
         ;;
 esac

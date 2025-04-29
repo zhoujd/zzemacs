@@ -441,10 +441,6 @@ mouse-3: Toggle minor modes"
       (message "%s" file)))
   (setq byte-compile-warnings '(cl-functions)))
 
-;;xterm use mouse
-(unless (display-graphic-p)
-  (xterm-mouse-mode 1))
-
 (when (version< emacs-version "28")
   (defvar completions-detailed nil))
 

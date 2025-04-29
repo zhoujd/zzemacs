@@ -402,7 +402,8 @@
        (pop-to-buffer buf)
        )))
 
-(defun zz/reload-emacs-configuration ()
+(defun zz/reload-emacs ()
+  "Reload emacs configure."
   (interactive)
   (load-file "~/.emacs"))
 
@@ -465,7 +466,7 @@
     (mapc 'kill-buffer (buffer-list))))
 
 (defun zz/kill-other-buffers ()
-  "Kill all other buffers."
+  "Kill other buffers."
   (interactive)
   (when (yes-or-no-p (format "Really kill other buffers"))
     (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))))
@@ -497,18 +498,6 @@
          (insert filename))
         (t
          (insert (file-relative-name filename)))))
-
-(defun zz/kill-all-buffer ()
-  "Kill all buffer."
-  (interactive)
-  (dolist (buffer (buffer-list))
-    (kill-buffer buffer)))
-
-(defun zz/kill-other-buffer ()
-  "Close all of other buffer."
-  (interactive)
-  (dolist (buffer (delq (current-buffer) (buffer-list)))
-    (kill-buffer buffer)))
 
 
 (provide 'sample-setting)

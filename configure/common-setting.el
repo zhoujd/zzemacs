@@ -105,11 +105,7 @@
 ;;color theme
 (zz/load-path "site-lisp/emacs-color-themes")
 (require 'emacs-color-themes)
-(if (display-graphic-p)
-    (load-theme 'zz t)
-    (when (daemonp)
-      (set-face-background 'default "black")
-      (set-face-foreground 'default "gray")))
+(load-theme 'zz t)
 
 ;;default-frame-alist or initial-frame-alist
 (add-to-list 'default-frame-alist '(mouse-color . "white"))

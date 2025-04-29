@@ -275,11 +275,19 @@
 (auto-compression-mode t)
 (column-number-mode t)
 
-;;mode-line face attribute
-(when (display-graphic-p)
-  (custom-set-faces
-   '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
-   '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063"))))))
+;;frame attribute
+(defun new-frame-setup (frame)
+  (if (display-graphic-p frame)
+      (progn
+        (custom-set-faces
+         '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
+         '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063")))))
+        (message "Start window system"))
+      (message "Start not a window system")))
+;;run for already-existing frames
+(mapc 'new-frame-setup (frame-list))
+;;run when a new frame is created
+(add-hook 'after-make-frame-functions 'new-frame-setup)
 
 ;;mode-line time
 (setq display-time-string-forms

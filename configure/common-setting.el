@@ -276,8 +276,7 @@
 (column-number-mode t)
 
 ;;mode-line face attribute
-(when (or (display-graphic-p)
-          (daemonp))
+(when (display-graphic-p)
   (custom-set-faces
    '(mode-line-inactive ((t :background "#353644" :foreground "black" :box (:line-width 2 :color "#353644"))))
    '(mode-line ((t :background "#565063" :foreground "black" :box (:line-width 2 :color "#565063"))))))

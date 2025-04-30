@@ -462,7 +462,7 @@
 (defun zz/kill-all-buffers ()
   "Kill all buffers."
   (interactive)
-  (when (yes-or-no-p (format "Really kill all buffers"))
+  (when (yes-or-no-p "Really kill all buffers")
     (mapc (lambda (x)
             (unless (member (buffer-name x) '("*Messages*" "*scratch*"))
               (kill-buffer x)))
@@ -471,11 +471,11 @@
 (defun zz/kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
-  (when (yes-or-no-p (format "Really kill other buffers"))
+  (when (yes-or-no-p "Really kill other buffers")
     (mapc (lambda (x)
-            (unless (or
-                     (eq x (current-buffer))
-                     (member (buffer-name x) '("*Messages*" "*scratch*")))
+            (unless
+                (or (eq x (current-buffer))
+                    (member (buffer-name x) '("*Messages*" "*scratch*")))
               (kill-buffer x)))
           (buffer-list))))
 

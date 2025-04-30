@@ -242,6 +242,7 @@
   (kbd "C-x M-c") 'kill-emacs
 
   ;;kill buffers
+  (kbd "C-x K")   'zz/kill-all-buffers
   (kbd "C-x M-k") 'zz/kill-other-buffers
 
   ;;delete char

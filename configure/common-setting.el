@@ -447,6 +447,10 @@ mouse-3: Toggle minor modes"
 ;;disable lock files
 (setq create-lockfiles nil)
 
+;;kill process buffer without confirmation
+(setq kill-buffer-query-functions
+      (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
 
 (provide 'common-setting)
 

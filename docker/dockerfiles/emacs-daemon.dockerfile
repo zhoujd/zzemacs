@@ -37,12 +37,12 @@ ENV HOME=$USER_HOME \
         PATH=$USER_HOME/.local/bin:$PATH
 
 ARG REPO=https://github.com/zhoujd/emacs.git
-RUN git clone $REPO $HOME/emacs
-RUN $HOME/emacs/build.sh all
-RUN rm -rf $HOME/emacs
+RUN git clone $REPO $HOME/emacs \
+        && $HOME/emacs/build.sh all \
+        && rm -rf $HOME/emacs
 
 # Clean up APT when done
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD ["/bin/bash"]
+CMD ["bash"]

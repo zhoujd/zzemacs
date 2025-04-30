@@ -1,0 +1,21 @@
+## zzemacs daemon
+
+services:
+  emacs-daemon:
+    hostname: ubuntu-2204-daemon
+    image: zhoujd/ubuntu-22.04-daemon:dev
+    container_name: emacs-daemon
+    network_mode: bridge
+    extra_hosts:
+      - "myhost:host-gateway"
+    env_file: .env
+    restart: always
+    command: emacs --daemon
+    privileged: true
+    cap_add:
+      - ALL
+    volumes:
+      - /run/user/1000/emacs:/run/user/1000/emacs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.ssh:/home/${USER}/.ssh
+      - ${HOME}/zzemacs:/home/${USER}/zzemacs

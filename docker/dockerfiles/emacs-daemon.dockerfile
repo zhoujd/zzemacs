@@ -6,7 +6,7 @@ USER root
 RUN apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         apt-utils ca-certificates lsb-release software-properties-common gnupg xz-utils \
-        sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget \
+        sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget lsof \
         gdb gdbserver openssh-server git patch tig bash-completion texinfo \
         silversearcher-ag cscope markdown pandoc w3m perl-doc ack-grep \
         python3-pip python3-venv python3-virtualenv

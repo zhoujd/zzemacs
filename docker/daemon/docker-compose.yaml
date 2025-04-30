@@ -15,7 +15,9 @@ services:
     cap_add:
       - ALL
     volumes:
-      - /run/user/1000/emacs:/run/user/1000/emacs
+      - /tmp/emacs1000/server:/tmp/emacs1000/server
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.ssh:/home/${USER}/.ssh
+      - ${HOME}/.emacs:/home/${USER}/.emacs
+      - ${HOME}/.fonts:/home/${USER}/.fonts
       - ${HOME}/zzemacs:/home/${USER}/zzemacs

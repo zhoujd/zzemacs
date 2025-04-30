@@ -4,8 +4,17 @@
   https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd/
 
 #+BEGIN_SRC
-systemctl --user enable --now emacs
-systemctl --user disable --now emacs
-systemctl --user start --now emacs
-systemctl --user stop --now emacs
+systemctl --user enable emacs
+systemctl --user disable emacs
+systemctl --user start emacs
+systemctl --user stop emacs
+systemctl --user restart emacs
+#+END_SRC
+
+* Server Socket
+
+#+BEGIN_SRC
+$ lsof -c emacs | grep server | tr -s " " | cut -d' ' -f9
+/run/user/1000/emacs/server
+$ emacsclient -n -c  -s /run/user/1000/emacs/server
 #+END_SRC

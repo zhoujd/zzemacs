@@ -31,29 +31,28 @@ Restart=on-failure
 [Install]
 WantedBy=default.target
 EOF
-    systemctl daemon-reload --user
-    systemctl --user enable --now emacs
+    systemctl --user daemon-reload
+    systemctl --user enable emacs
 }
 
 uninstall() {
     echo "Uninstall emacs daemon"
-    systemctl --user disable --now emacs
+    systemctl --user disable emacs
 }
 
 stop() {
     echo "Stop emacs daemon"
-    systemctl --user stop --now emacs
+    systemctl --user stop emacs
 }
 
 start() {
     echo "Start emacs daemon"
-    systemctl --user start --now emacs
+    systemctl --user start emacs
 }
 
 restart() {
     echo "Restart emacs daemon"
-    systemctl --user stop --now emacs
-    systemctl --user start --now emacs
+    systemctl --user restart emacs
 }
 
 status() {

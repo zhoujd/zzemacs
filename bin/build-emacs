@@ -20,7 +20,10 @@ EMACS_VER=${1:-27.2}
 EMACS_SRC=emacs-${EMACS_VER}
 EMACS_FILE=${EMACS_SRC}.tar.xz
 EMACS_PREFIX=/usr/local/${EMACS_SRC}
-EMACS_OPT="--with-modules"
+EMACS_OPT=(
+    --with-modules
+    --with-x-toolkit=lucid
+)
 
 ## Import vars and functions
 source $SCRIPT_ROOT/sample.sh
@@ -44,7 +47,7 @@ build_source() {
     pushd $EMACS_SRC
     build_started=`date`
     echo "Starting build: $build_started"
-    ./configure --prefix=${EMACS_PREFIX} ${EMACS_OPT}
+    ./configure --prefix=${EMACS_PREFIX} ${EMACS_OPT[@]}
     make -j4
     sudo make install
     echo "Install emacs binary to /usr/bin/"

@@ -6,6 +6,9 @@ ZZEMACS_ROOT=$HOME/zzemacs
 setup_common() {
     echo "Setup common ..."
     touch $HOME/.Xauthority
+    echo "Setup Users..."
+    sudo echo $USER:123456 | chpasswd
+    sudo echo root:123456 | chpasswd
 }
 
 setup_zzemacs() {

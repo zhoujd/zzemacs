@@ -24,16 +24,11 @@ ARG USER_NAME=zach
 ARG USER_HOME=/home/$USER_NAME
 ARG USER_UID=1000
 ARG USER_GID=1000
-ARG USER_PASSWD=123456
 ARG USER_SHELL=/bin/bash
 RUN groupadd -g $USER_GID $USER_NAME \ 
         && useradd -d $USER_HOME -s $USER_SHELL -m $USER_NAME -u $USER_UID -g $USER_GID \
-        && echo $USER_NAME:$USER_PASSWD | chpasswd \
         && adduser $USER_NAME sudo \
         && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
-
-ARG ROOT_PASSWD=$USER_PASSWD
-RUN echo root:$ROOT_PASSWD | chpasswd
 
 RUN mkdir -p /app \
         && mkdir -p /var/run/sshd

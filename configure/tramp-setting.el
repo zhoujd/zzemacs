@@ -57,6 +57,7 @@
 (add-to-list 'debug-ignored-errors 'remote-file-error)
 
 ;;add tramp remote path
+(require 'tramp-sh)
 (dolist (path
          (list
           "~/.local/bin"

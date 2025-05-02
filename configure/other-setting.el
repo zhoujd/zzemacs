@@ -513,6 +513,10 @@
 ;;elgrep
 (require 'elgrep)
 
+;;Yet Another Scroll Bar Mode
+;(require 'yascroll)
+;(global-yascroll-bar-mode 1)
+
 
 (provide 'other-setting)
 

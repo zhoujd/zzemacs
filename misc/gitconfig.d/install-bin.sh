@@ -2,7 +2,7 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
-Install_bin() {
+install_bin() {
     local target=~/.local/bin
     echo "Install git tools on Linux"
     mkdir -p $target
@@ -12,4 +12,4 @@ Install_bin() {
     ln -sfvT $SCRIPT_ROOT/bin/git-pr  $target/git-pr
 }
 
-Install_bin
+install_bin $@

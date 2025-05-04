@@ -58,7 +58,7 @@ other() {
     echo "[other] install debug rc files"
     ${ZZEMACS_ROOT}/misc/debug/install.sh all
     echo "[other] install git rc files"
-    ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
+    ${ZZEMACS_ROOT}/misc/gitconfig.d/install.sh
     echo "[other] install done"
 }
 

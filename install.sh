@@ -64,7 +64,11 @@ other() {
 }
 
 thirdparty() {
-    echo "[thirdparty] refer ${ZZEMACS_ROOT}/third-party/python/READM.md on python libs install"
+    echo "[thirdparty] install python support libraries"
+    ${ZZEMACS_ROOT}/third-party/python/install-deps.sh
+    ${ZZEMACS_ROOT}/third-party/python/install-venv.sh
+    ${ZZEMACS_ROOT}/third-party/python/install.sh
+    ${ZZEMACS_ROOT}/third-party/python/pylsp-setup.sh
     echo "[thirdparty] install done"
 }
 

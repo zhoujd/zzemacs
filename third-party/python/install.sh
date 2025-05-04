@@ -15,12 +15,15 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 VENV_ROOT=$HOME/.venv
 VENV_PATH=$VENV_ROOT/emacs
 PIP_BIN=$VENV_PATH/bin/pip3
-PIP_PAR="--timeout 60"
+PIP_ARGS=(
+    --timeout 60
+    -i https://pypi.tuna.tsinghua.edu.cn/simple pip
+)
 
 echo "For python develop start ..."
 
 py3_deps() {
-    $PIP_BIN install $PIP_PAR -r $SCRIPT_ROOT/requirements.txt
+    $PIP_BIN install ${PIP_ARGS[@]} -r $SCRIPT_ROOT/requirements.txt
 }
 
 setup_flake8() {

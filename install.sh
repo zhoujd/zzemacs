@@ -56,8 +56,7 @@ other() {
     echo "[other] install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
     echo "[other] install debug rc files"
-    ${ZZEMACS_ROOT}/misc/debug/install.sh gdb
-    ${ZZEMACS_ROOT}/misc/debug/install.sh cgdb
+    ${ZZEMACS_ROOT}/misc/debug/install.sh all
     echo "[other] install git rc files"
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install-cfg.sh
     echo "[other] install done"
@@ -67,8 +66,7 @@ thirdparty() {
     echo "[thirdparty] install python support libraries"
     ${ZZEMACS_ROOT}/third-party/python/install-deps.sh
     ${ZZEMACS_ROOT}/third-party/python/install-venv.sh
-    ${ZZEMACS_ROOT}/third-party/python/install.sh
-    ${ZZEMACS_ROOT}/third-party/python/pylsp-setup.sh
+    ${ZZEMACS_ROOT}/third-party/python/install.sh all
     echo "[thirdparty] install done"
 }
 

@@ -27,7 +27,11 @@ case $1 in
     cgdb )
         cgdb
         ;;
+    all )
+        gdb
+        cgdb
+        ;;
     * )
-        echo "Usage: $(basename $0) {gdb|cgdb}"
+        echo "Usage: $(basename $0) {gdb|cgdb|all}"
         ;;
 esac

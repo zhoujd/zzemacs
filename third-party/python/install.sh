@@ -28,7 +28,23 @@ py3_deps() {
 
 setup_flake8() {
     echo "Setup flake8 configure"
-    ln -sfvT $SCRIPT_ROOT/flake8 ~/.config/flake8
+    local target=$HOME/.config
+    mkdir -p $target
+    ln -sfvT $SCRIPT_ROOT/flake8 $target/flake8
+}
+
+setup_pylsp() {
+    echo "Setup pylsp configure"
+    local target=$HOME/.local/bin
+    mkdir -p $target
+    cp -fv $SCRIPT_ROOT/pylsp-wrapper $target
+}
+
+usage() {
+    local app=$(basename $0)
+    cat <<EOF
+Usage: $app {py3|flake8|pylsp|all}
+EOF
 }
 
 case $1 in
@@ -38,8 +54,15 @@ case $1 in
     flake8 )
         setup_flake8
         ;;
+    pylsp )
+        setup_pylsp
+        ;;
+    all )
+        py3_deps
+        setup_pylsp
+        ;;
     * )
-        echo "Usage: $0 {py3|flake8}"
+        usage
         ;;
 esac
 

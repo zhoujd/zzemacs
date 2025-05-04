@@ -17,12 +17,5 @@ $ ./install-deps.sh
 $ ./install-venv.sh
 
 ## Step 3
-$ ./install.sh
-```
-
-## pylsp
-
-```
-$ ./pylsp-setup.sh
-$ pylsp --help
+$ ./install.sh all
 ```

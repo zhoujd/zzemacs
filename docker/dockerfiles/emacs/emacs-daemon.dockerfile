@@ -71,7 +71,7 @@ RUN python3 -m venv $HOME/.venv/emacs \
 
 # Setup lsp
 RUN mkdir -p $HOME/.local/bin
-COPY me ccls-wrapper pylsp-wrapper $HOME/.local/bin
+COPY bin/* $HOME/.local/bin
 
 # Setup entrypoint
 COPY entrypoint.sh /app

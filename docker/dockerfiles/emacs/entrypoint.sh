@@ -15,6 +15,8 @@ setup_zzemacs() {
     ${ZZEMACS_ROOT}/misc/debug/install.sh all
     echo "Install git rc files"
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install.sh
+    echo "Install bash rc files"
+    ${ZZEMACS_ROOT}/bin/bashrc-setup.sh
     echo "Start daemon ..."
     emacs --fg-daemon=${DAEMON_NAME}
 }

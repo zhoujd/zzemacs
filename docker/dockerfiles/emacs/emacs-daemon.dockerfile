@@ -59,6 +59,7 @@ RUN $HOME/.venv/emacs/bin/pip3 install -r /app/requirements.txt
 
 # Setup lsp
 RUN mkdir -p $HOME/.local/bin
+COPY me $HOME/.local/bin
 COPY ccls-wrapper $HOME/.local/bin
 COPY pylsp-wrapper $HOME/.local/bin
 

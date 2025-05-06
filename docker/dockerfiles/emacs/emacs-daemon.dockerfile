@@ -68,7 +68,7 @@ RUN sudo apt-get clean \
 ARG PYENV=$HOME/.venv/emacs
 COPY requirements.txt /app
 RUN python3 -m venv $PYENV \
-        && $PYENV/bin/pip3 install -U pip3 \
+        && $PYENV/bin/pip3 install --no-cache-dir --upgrade pip3 \
         && $PYENV/bin/pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Setup lsp

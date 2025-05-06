@@ -7,7 +7,7 @@ services:
     container_name: emacs-daemon
     network_mode: bridge
     extra_hosts:
-      - "myhost:host-gateway"
+      - "host.docker.internal:host-gateway"
     ports:
       - "2222:22"
     env_file: .env

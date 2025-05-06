@@ -18,8 +18,8 @@ services:
     volumes:
       - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/.ssh:/home/${USER}/.ssh
-      - ${HOME}/.emacs:/home/${USER}/.emacs
-      - ${HOME}/.fonts:/home/${USER}/.fonts
       - ${HOME}/zzemacs:/home/${USER}/zzemacs
+      - ${HOME}/zzemacs/font:/home/${USER}/.fonts
+      - ${HOME}/zzemacs/.emacs:/home/${USER}/.emacs
+      - ${HOME}/.ssh:/home/${USER}/.ssh
       - ${HOME}/work:/home/${USER}/work

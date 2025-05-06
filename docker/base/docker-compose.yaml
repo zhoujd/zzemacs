@@ -7,7 +7,7 @@ services:
     container_name: zzemacs-base
     network_mode: bridge
     extra_hosts:
-      - "myhost:host-gateway"
+      - "host.docker.internal:host-gateway"
     restart: always
     ports:
       - 10022:22

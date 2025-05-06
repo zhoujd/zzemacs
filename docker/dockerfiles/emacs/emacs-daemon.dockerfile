@@ -66,14 +66,12 @@ RUN sudo apt-get clean \
 
 # Python ENV
 COPY requirements.txt /app
-RUN python3 -m venv $HOME/.venv/emacs
-RUN $HOME/.venv/emacs/bin/pip3 install --no-cache-dir -r /app/requirements.txt
+RUN python3 -m venv $HOME/.venv/emacs \
+        && $HOME/.venv/emacs/bin/pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Setup lsp
 RUN mkdir -p $HOME/.local/bin
-COPY me $HOME/.local/bin
-COPY ccls-wrapper $HOME/.local/bin
-COPY pylsp-wrapper $HOME/.local/bin
+COPY me ccls-wrapper pylsp-wrapper $HOME/.local/bin
 
 # Setup entrypoint
 COPY entrypoint.sh /app

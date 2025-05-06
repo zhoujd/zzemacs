@@ -45,4 +45,8 @@ RUN git clone $REPO $HOME/emacs \
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD ["bash"]
+# Setup entrypoint
+RUN sudo mkdir -p /app
+COPY entrypoint.sh /app
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["init"]

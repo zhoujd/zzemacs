@@ -10,12 +10,13 @@ services:
       - "myhost:host-gateway"
     env_file: .env
     restart: always
-    command: emacs --daemon
+    command:
+      - "run"
     privileged: true
     cap_add:
       - ALL
     volumes:
-      - /tmp/emacs1000/server:/tmp/emacs1000/server
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.ssh:/home/${USER}/.ssh
       - ${HOME}/.emacs:/home/${USER}/.emacs

@@ -5,11 +5,17 @@ USER root
 
 RUN apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        apt-utils ca-certificates lsb-release software-properties-common gnupg xz-utils \
-        sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget lsof \
+        apt-utils ca-certificates lsb-release software-properties-common gnupg locales sudo \
+        sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget lsof xz-utils \
         gdb gdbserver openssh-server git patch tig bash-completion texinfo \
-        silversearcher-ag cscope markdown pandoc w3m perl-doc ack-grep \
-        python3-pip python3-venv python3-virtualenv ccls
+        silversearcher-ag cscope markdown pandoc w3m perl-doc ccls \
+        python3-pip python3-venv python3-virtualenv
+
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+        && locale-gen
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 RUN mkdir -p /etc/apt/keyrings \
         && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \

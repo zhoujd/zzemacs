@@ -10,6 +10,7 @@ setup_common() {
 }
 
 setup_emacs() {
+    echo "Setup emacs ..."
     echo "Install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
     echo "Install debug rc files"
@@ -18,14 +19,14 @@ setup_emacs() {
     ${ZZEMACS_ROOT}/misc/gitconfig.d/install.sh
     echo "Install bash rc files"
     ${ZZEMACS_ROOT}/bin/bashrc-setup.sh
-    echo "Start daemon ..."
-    emacs --fg-daemon=${DAEMON_NAME}
+    echo "Start daemon"
+    emacs --daemon=${DAEMON_NAME}
 }
 
 setup_ssh() {
+    echo "Setup ssh ..."
     local ssh_cmd=/etc/init.d/ssh
     if [ -x $ssh_cmd ]; then
-        echo "Setup ssh ..."
         sudo $ssh_cmd start
     fi
 }
@@ -48,6 +49,7 @@ case "$CMD" in
         setup_common
         setup_ssh
         setup_emacs
+        setup_sleep
         ;;
     "help" )
         setup_help

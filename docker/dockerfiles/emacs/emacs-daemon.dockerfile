@@ -13,9 +13,9 @@ RUN apt-get update \
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
         && locale-gen
-ENV LC_ALL=en_US.UTF-8
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8 \
+        LANG=en_US.UTF-8 \
+        LANGUAGE=en_US.UTF-8
 
 RUN mkdir -p /etc/apt/keyrings \
         && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
@@ -30,13 +30,12 @@ ARG USER_HOME=/home/$USER_NAME
 ARG USER_UID=1000
 ARG USER_GID=1000
 ARG USER_SHELL=/bin/bash
+ARG DOCKER_GID=133
 RUN groupadd -g $USER_GID $USER_NAME \
         && useradd -d $USER_HOME -s $USER_SHELL -m $USER_NAME -u $USER_UID -g $USER_GID \
         && adduser $USER_NAME sudo \
-        && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
-
-ARG DOCKER_GID=133
-RUN groupmod -g $DOCKER_GID docker \
+        && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME \
+        && groupmod -g $DOCKER_GID docker \
         && usermod -aG docker $USER_NAME
 
 RUN mkdir -p /app

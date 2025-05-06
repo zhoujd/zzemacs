@@ -29,6 +29,10 @@ RUN groupadd -g $USER_GID $USER_NAME \
         && adduser $USER_NAME sudo \
         && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 
+ARG DOCKER_GID=133
+RUN groupmod -g $DOCKER_GID docker \
+        && usermod -aG docker $USER_NAME
+
 RUN mkdir -p /app
 
 WORKDIR $USER_HOME

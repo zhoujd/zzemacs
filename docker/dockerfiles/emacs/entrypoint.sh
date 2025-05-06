@@ -9,8 +9,14 @@ setup_common() {
 }
 
 setup_zzemacs() {
+    echo "Install term rc files"
+    ${ZZEMACS_ROOT}/misc/term/install.sh
+    echo "Install debug rc files"
+    ${ZZEMACS_ROOT}/misc/debug/install.sh all
+    echo "Install git rc files"
+    ${ZZEMACS_ROOT}/misc/gitconfig.d/install.sh
     echo "Start daemon ..."
-    emacs --fg-daemon=$DAEMON_NAME
+    emacs --fg-daemon=${DAEMON_NAME}
 }
 
 setup_sleep() {

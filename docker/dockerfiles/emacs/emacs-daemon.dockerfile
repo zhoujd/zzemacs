@@ -9,7 +9,7 @@ RUN apt-get update \
         sudo xauth iproute2 inetutils-ping net-tools socat dnsutils curl wget lsof \
         gdb gdbserver openssh-server git patch tig bash-completion texinfo \
         silversearcher-ag cscope markdown pandoc w3m perl-doc ack-grep \
-        python3-pip python3-venv python3-virtualenv
+        python3-pip python3-venv python3-virtualenv ccls
 
 RUN mkdir -p /etc/apt/keyrings \
         && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
@@ -29,6 +29,8 @@ RUN groupadd -g $USER_GID $USER_NAME \
         && adduser $USER_NAME sudo \
         && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
 
+RUN mkdir -p /app
+
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME=$USER_HOME \
@@ -45,8 +47,17 @@ RUN git clone $REPO $HOME/emacs \
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Python ENV
+COPY requirements.txt /app
+RUN python3 -m venv $HOME/.venv/emacs
+RUN $HOME/.venv/emacs/bin/pip3 install -r /app/requirements.txt
+
+# Setup lsp
+RUN mkdir -p $HOME/.local/bin
+COPY ccls-wrapper $HOME/.local/bin
+COPY pylsp-wrapper $HOME/.local/bin
+
 # Setup entrypoint
-RUN sudo mkdir -p /app
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["init"]

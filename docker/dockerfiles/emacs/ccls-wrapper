@@ -1,0 +1,6 @@
+#!/bin/bash
+
+## https://github.com/MaskRay/ccls/wiki/Customization#cachedirectory
+## https://docs.doomemacs.org/v21.12/modules/lang/cc/
+
+exec ccls --init='{"cache": {"directory": "/tmp/ccls-cache"}}' $@

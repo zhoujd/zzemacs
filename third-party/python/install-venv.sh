@@ -22,6 +22,13 @@ config() {
     sed -i "s/$VENV_CONF.*/$VENV_CONF = true/g" $VENV_PATH/pyvenv.cfg
 }
 
+usage() {
+    local app=$(basename $0)
+    cat <<EOF
+Usage: $app {install|config|all}
+EOF
+}
+
 case $1 in
     install )
         install
@@ -29,8 +36,11 @@ case $1 in
     config )
         config
         ;;
+    all )
+        install
+        ;;
     * )
-        echo "Usage: $(basename $0) {install|config}"
+        usage
         ;;
 esac
 

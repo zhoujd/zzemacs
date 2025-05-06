@@ -65,7 +65,7 @@ other() {
 thirdparty() {
     echo "[thirdparty] install python support libraries"
     ${ZZEMACS_ROOT}/third-party/python/install-deps.sh
-    ${ZZEMACS_ROOT}/third-party/python/install-venv.sh
+    ${ZZEMACS_ROOT}/third-party/python/install-venv.sh all
     ${ZZEMACS_ROOT}/third-party/python/install.sh all
     echo "[thirdparty] install done"
 }

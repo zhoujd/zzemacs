@@ -49,14 +49,14 @@ ENV HOME=$USER_HOME \
         PATH=$USER_HOME/.local/bin:$PATH
 
 # Build emacs
-ARG REPO=https://github.com/zhoujd/emacs.git
-RUN git clone $REPO $HOME/emacs \
+ARG EMACS_REPO=https://github.com/zhoujd/emacs.git
+RUN git clone $EMACS_REPO $HOME/emacs \
         && $HOME/emacs/build.sh all \
         && rm -rf $HOME/emacs
 
 # Build st
-ARG REPO=https://github.com/zhoujd/zzst.git
-RUN git clone $REPO $HOME/zzst \
+ARG ST_REPO=https://github.com/zhoujd/zzst.git
+RUN git clone $ST_REPO $HOME/zzst \
         && $HOME/zzst/init.sh all \
         && rm -rf $HOME/zzst
 
@@ -65,9 +65,11 @@ RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Python ENV
+ARG PYENV=$HOME/.venv/emacs
 COPY requirements.txt /app
-RUN python3 -m venv $HOME/.venv/emacs \
-        && $HOME/.venv/emacs/bin/pip3 install --no-cache-dir -r /app/requirements.txt
+RUN python3 -m venv $PYENV \
+        && $PYENV/bin/pip3 install -U pip3 \
+        && $PYENV/bin/pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Setup lsp
 RUN mkdir -p $HOME/.local/bin

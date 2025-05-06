@@ -6,9 +6,10 @@ DAEMON_NAME=${DAEMON_NAME:-ee}
 
 setup_common() {
     echo "Setup common ..."
+    touch $HOME/.Xauthority
 }
 
-setup_zzemacs() {
+setup_emacs() {
     echo "Install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
     echo "Install debug rc files"
@@ -19,6 +20,14 @@ setup_zzemacs() {
     ${ZZEMACS_ROOT}/bin/bashrc-setup.sh
     echo "Start daemon ..."
     emacs --fg-daemon=${DAEMON_NAME}
+}
+
+setup_ssh() {
+    local ssh_cmd=/etc/init.d/ssh
+    if [ -x $ssh_cmd ]; then
+        echo "Setup ssh ..."
+        sudo $ssh_cmd start
+    fi
 }
 
 setup_sleep() {
@@ -37,7 +46,8 @@ case "$CMD" in
         ;;
     "run" )
         setup_common
-        setup_zzemacs
+        setup_ssh
+        setup_emacs
         ;;
     "help" )
         setup_help

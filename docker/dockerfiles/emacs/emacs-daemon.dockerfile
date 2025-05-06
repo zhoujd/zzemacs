@@ -54,6 +54,12 @@ RUN git clone $REPO $HOME/emacs \
         && $HOME/emacs/build.sh all \
         && rm -rf $HOME/emacs
 
+# Build st
+ARG REPO=https://github.com/zhoujd/zzst.git
+RUN git clone $REPO $HOME/zzst \
+        && $HOME/zzst/init.sh all \
+        && rm -rf $HOME/zzst
+
 # Clean APT
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -61,7 +67,7 @@ RUN sudo apt-get clean \
 # Python ENV
 COPY requirements.txt /app
 RUN python3 -m venv $HOME/.venv/emacs
-RUN $HOME/.venv/emacs/bin/pip3 install -r /app/requirements.txt
+RUN $HOME/.venv/emacs/bin/pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Setup lsp
 RUN mkdir -p $HOME/.local/bin

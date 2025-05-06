@@ -22,3 +22,4 @@ services:
       - ${HOME}/.emacs:/home/${USER}/.emacs
       - ${HOME}/.fonts:/home/${USER}/.fonts
       - ${HOME}/zzemacs:/home/${USER}/zzemacs
+      - ${HOME}/work:/home/${USER}/work

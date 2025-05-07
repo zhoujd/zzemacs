@@ -1,0 +1,4 @@
+#!/bin/bash
+
+SOCK_PATH=/tmp/emacs1000/ee
+emacsclient -n -c -s $SOCK_PATH

@@ -34,8 +34,10 @@ ARG DOCKER_GID=133
 RUN groupadd -g $USER_GID $USER_NAME \
         && useradd -d $USER_HOME -s $USER_SHELL -m $USER_NAME -u $USER_UID -g $USER_GID \
         && adduser $USER_NAME sudo \
-        && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME \
-        && groupmod -g $DOCKER_GID docker \
+        && echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER_NAME
+
+ARG DOCKER_GID=133
+RUN groupmod -g $DOCKER_GID docker \
         && usermod -aG docker $USER_NAME
 
 RUN mkdir -p /app
@@ -67,7 +69,6 @@ RUN sudo apt-get clean \
 ARG PYENV=$HOME/.venv/emacs
 COPY requirements.txt /app
 RUN python3 -m venv $PYENV \
-        && $PYENV/bin/pip3 install --no-cache-dir --upgrade pip3 \
         && $PYENV/bin/pip3 install --no-cache-dir -r /app/requirements.txt
 
 # Setup lsp

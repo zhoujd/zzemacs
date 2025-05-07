@@ -40,14 +40,11 @@ ARG DOCKER_GID=133
 RUN groupmod -g $DOCKER_GID docker \
         && usermod -aG docker $USER_NAME
 
-RUN mkdir -p /app
-
 WORKDIR $USER_HOME
 USER $USER_NAME
 ENV HOME=$USER_HOME \
         USER=$USER_NAME \
-        SHELL=$USER_SHELL \
-        PATH=$USER_HOME/.local/bin:$PATH
+        SHELL=$USER_SHELL
 
 # Build emacs
 ARG EMACS_REPO=https://github.com/zhoujd/emacs.git
@@ -61,21 +58,21 @@ RUN git clone $ST_REPO $HOME/zzst \
         && $HOME/zzst/init.sh all \
         && rm -rf $HOME/zzst
 
+# Install Bin
+COPY bin/* /usr/local/bin
+
+# Python ENV
+ARG PYENV=$HOME/.venv/emacs
+COPY requirements.txt /tmp
+RUN python3 -m venv $PYENV \
+        && $PYENV/bin/pip3 install --no-cache-dir -r /tmp/requirements.txt
+
 # Clean APT
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Python ENV
-ARG PYENV=$HOME/.venv/emacs
-COPY requirements.txt /app
-RUN python3 -m venv $PYENV \
-        && $PYENV/bin/pip3 install --no-cache-dir -r /app/requirements.txt
-
-# Setup lsp
-RUN mkdir -p $HOME/.local/bin
-COPY bin/* $HOME/.local/bin
-
 # Setup entrypoint
+RUN sudo mkdir -p /app
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["init"]

@@ -28,3 +28,8 @@ RUN mkdir -p /etc/apt/keyrings \
 # Clean up APT when done.
 RUN sudo apt-get clean \
         && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Setup entrypoint
+COPY entrypoint.sh /app
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["init"]

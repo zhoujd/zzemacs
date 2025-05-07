@@ -8,16 +8,12 @@ case $1 in
     base )
         shift
         export TAG=base
-        export SSH_PORT=10022
-        export CTN_HOST=ubuntu-2204-zzemacs
         export PROMPT="$(basename $0) base"
         $TOOL_ROOT/tool.sh $@
         ;;
     dev )
         shift
         export TAG=dev
-        export SSH_PORT=11022
-        export CTN_HOST=ubuntu-2204-zzemacs
         export PROMPT="$(basename $0) dev"
         $TOOL_ROOT/tool.sh $@
         ;;

@@ -14,7 +14,7 @@ CTN_HOST=${CTN_HOST:-ubuntu-2204-zzemacs}
 CTN_USER=${CTN_USER:-$USER}
 CTN_HOME=${CTN_HOME:-/home/$CTN_USER}
 SSH_HOST=${SSH_HOST:-localhost}
-SSH_PORT=${SSH_PORT:-10022}
+SSH_PORT=${SSH_PORT:-2222}
 SSH_USER=${CTN_USER}
 HOST_NAME=${HOST_NAME:-dockerhost}
 HOST_IP=${HOST_IP:-host-gateway}
@@ -39,11 +39,9 @@ RUN_PARAM=(
     -h $CTN_HOST
     -u $CTN_USER
     -p $SSH_PORT:22
-    -v /dev:/dev
+    -v /tmp:/tmp
     -v /var/run/docker.sock:/var/run/docker.sock
-    -v /etc/security/limits.conf:/etc/security/limits.conf
-    -v /etc/sysctl.conf:/etc/sysctl.conf
-    -v /data/work:$CTN_HOME/work
+    -v $HOME/work:$CTN_HOME/work
     -v $HOME/.ssh:$CTN_HOME/.ssh
     -v $ZZEMACS_ROOT:$CTN_HOME/zzemacs
 )
@@ -66,7 +64,7 @@ SHELL_PARAM=(
 
 case $1 in
     start )
-        docker run ${RUN_PARAM[@]} ${IMG}:${TAG}
+        docker run ${RUN_PARAM[@]} ${IMG}:${TAG} run
         ;;
     stop )
         docker stop ${CTN_NAME} 2>/dev/null
@@ -85,7 +83,7 @@ case $1 in
         docker exec -it ${EXEC_PARAM[@]} ${CTN_NAME} ${SHELL_PARAM[@]}
         ;;
     ssh )
-        TERM=xterm ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
+        TERM=st ssh -X -l ${SSH_USER} ${SSH_HOST} -p ${SSH_PORT}
         ;;
     build )
         shift

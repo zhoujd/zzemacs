@@ -8,17 +8,18 @@ services:
     network_mode: bridge
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    restart: always
     ports:
-      - 10022:22
+      - "2222:22"
+    env_file: .env
+    restart: always
+    command:
+      - "run"
     privileged: true
     cap_add:
       - ALL
     volumes:
-      - /dev:/dev
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/security/limits.conf:/etc/security/limits.conf
-      - /etc/sysctl.conf:/etc/sysctl.conf
-      - /data/work:/home/${USER}/work
+      - ${HOME}/zzemacs:/home/${USER}/zzemacs
       - ${HOME}/.ssh:/home/${USER}/.ssh
-      - ${ZZEMACS_ROOT}:/home/${USER}/zzemacs
+      - ${HOME}/work:/home/${USER}/work

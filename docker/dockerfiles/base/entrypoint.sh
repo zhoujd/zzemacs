@@ -11,6 +11,10 @@ setup_common() {
 
 setup_emacs() {
     echo "Setup emacs ..."
+    echo "Install emacs files"
+    ln -sfvT ${ZZEMACS_ROOT}/.emacs $HOME/.emacs
+    echo "Install font files"
+    ln -sfvT ${ZZEMACS_ROOT}/font $HOME/.fonts
     echo "Install term rc files"
     ${ZZEMACS_ROOT}/misc/term/install.sh
     echo "Install debug rc files"

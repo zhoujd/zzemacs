@@ -109,6 +109,7 @@
 (require 'eglot)
 (setq eglot-events-buffer-size 0
       eglot-sync-connect 0
+      eglot-autoshutdown t
       eglot-ignored-server-capabilities '(:documentFormattingProvider
                                           :documentOnTypeFormattingProvider))
 (add-to-list 'eglot-stay-out-of 'flymake)

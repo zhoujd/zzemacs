@@ -23,6 +23,14 @@ setup_emacs() {
     emacs --daemon=${DAEMON_NAME}
 }
 
+setup_dbus() {
+    local dbus_cmd=/etc/init.d/dbus
+    if [ -x $dbus_cmd ]; then
+        echo "Setup dbus ..."
+        sudo $dbus_cmd start
+    fi
+}
+
 setup_ssh() {
     echo "Setup ssh ..."
     local ssh_cmd=/etc/init.d/ssh
@@ -47,6 +55,7 @@ case "$CMD" in
         ;;
     "run" )
         setup_common
+        setup_dbus
         setup_ssh
         setup_emacs
         setup_sleep

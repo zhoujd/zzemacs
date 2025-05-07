@@ -54,7 +54,6 @@ EXEC_PARAM=(
 
 EMACS_PARAM=(
     emacs
-    -nw
 )
 
 SHELL_PARAM=(

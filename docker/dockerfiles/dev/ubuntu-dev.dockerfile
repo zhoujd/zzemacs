@@ -6,7 +6,10 @@ RUN sudo apt-get update
 
 ## Setup develop package
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        meld
+        meld vim
+
+RUN pip3 install --no-cache-dir \
+        meson ninja
 
 ## Setup google-chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
@@ -14,7 +17,6 @@ RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd6
         ./google-chrome-stable_current_amd64.deb \
         && rm -f google-chrome-stable_current_amd64.deb \
         && echo -n "Chrome: " && google-chrome --version
-
 
 ## Setup vscode
 RUN mkdir -p /etc/apt/keyrings \
@@ -32,4 +34,4 @@ RUN sudo apt-get clean \
 # Setup entrypoint
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["init"]
+CMD ["run"]

@@ -1,4 +1,0 @@
-python-lsp-server[all]
-git-imerge
-meson
-ninja

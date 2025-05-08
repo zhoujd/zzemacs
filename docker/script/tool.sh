@@ -63,7 +63,7 @@ SHELL_PARAM=(
 
 case $1 in
     start )
-        docker run ${RUN_PARAM[@]} ${IMG}:${TAG} run
+        docker run ${RUN_PARAM[@]} ${IMG}:${TAG}
         ;;
     stop )
         docker stop ${CTN_NAME} 2>/dev/null

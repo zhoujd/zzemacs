@@ -63,9 +63,9 @@ COPY bin/* /usr/local/bin
 
 # Python ENV
 ARG PYENV=$HOME/.venv/emacs
-COPY requirements.txt /tmp
 RUN python3 -m venv $PYENV \
-        && $PYENV/bin/pip3 install --no-cache-dir -r /tmp/requirements.txt
+        && $PYENV/bin/pip3 install --no-cache-dir \
+        python-lsp-server[all] git-imerge
 
 # Clean APT
 RUN sudo apt-get clean \
@@ -75,4 +75,4 @@ RUN sudo apt-get clean \
 RUN sudo mkdir -p /app
 COPY entrypoint.sh /app
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["init"]
+CMD ["run"]

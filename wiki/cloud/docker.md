@@ -502,7 +502,9 @@ Docker
 
 ## Docker locally
 
-    $ sudo vim /etc/docker/daemon.json
+    ## Update docker daemon.json
+    $ SERVER_IP=localhost
+    $ sudo tee /etc/docker/daemon.json <<EOF
     {
         "registry-mirrors":[
             "https://docker.m.daocloud.io"
@@ -512,6 +514,7 @@ Docker
         ],
         "data-root": "/data/docker/default"
     }
+    EOF
 
 ## Docker registry
 

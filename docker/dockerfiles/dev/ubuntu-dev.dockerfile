@@ -8,6 +8,7 @@ RUN sudo apt-get update
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         meld vim
 
+## Setup python package
 RUN pip3 install --no-cache-dir \
         meson ninja
 

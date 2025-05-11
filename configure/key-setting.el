@@ -61,6 +61,7 @@
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo
   (kbd ".")       'winner-redo
+  (kbd "\\")      'zz/ssh
   ))
 
 (apply-keys-to-map

@@ -463,6 +463,7 @@
   "Kill all buffers."
   (interactive)
   (when (yes-or-no-p "Really kill all buffers")
+    (tramp-cleanup-all-buffers)
     (mapc (lambda (x)
             (unless (member (buffer-name x) '("*Messages*" "*scratch*"))
               (kill-buffer x)))
@@ -476,6 +477,9 @@
             (unless
                 (or (eq x (current-buffer))
                     (member (buffer-name x) '("*Messages*" "*scratch*")))
+              (with-current-buffer x
+                (when (tramp-tramp-file-p default-directory)
+                  (tramp-cleanup-this-connection)))
               (kill-buffer x)))
           (buffer-list))))
 

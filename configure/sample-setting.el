@@ -346,7 +346,11 @@
 
 (defun zz/kill-this-buffer ()
   (interactive)
-  (kill-buffer (current-buffer)))
+  (let ((x (current-buffer)))
+    (with-current-buffer x
+      (when (tramp-tramp-file-p default-directory)
+        (tramp-cleanup-this-connection)))
+    (kill-buffer x)))
 
 (defun zz/delete-process ()
   (interactive)

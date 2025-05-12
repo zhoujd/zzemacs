@@ -778,3 +778,21 @@ EOF
 ## Verify that the swap is active
 $ sudo swapon --show
 ```
+
+## How to enable __fp16 type on gcc for x86_64
+
+```
+## https://en.cppreference.com/w/cpp/types/floating-point
+$ cat test.cpp <<EOF
+#include <stdfloat> // C++23
+
+#if __STDCPP_FLOAT16_T__ != 1
+    #error "16-bit float type required"
+#endif
+
+int main()
+{
+    std::float16_t f = 0.1F16;
+}
+#EOF
+```

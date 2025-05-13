@@ -41,12 +41,12 @@
   "f4 key binding")
 
 (define-fn-key (gethash "f5" fn-key-table)
-  [f5]              'symbol-overlay-put
-  [S-f5]            'symbol-overlay-remove-all
-  [C-f5]            'symbol-overlay-jump-next
-  [M-f5]            'symbol-overlay-jump-prev
-  (kbd "C-x <f5>")  'symbol-overlay-query-replace
-  (kbd "C-c <f5>")  'symbol-overlay-mode
+  [f5]              'highlight-symbol
+  [S-f5]            'highlight-symbol-remove-all
+  [C-f5]            'highlight-symbol-next
+  [M-f5]            'highlight-symbol-prev
+  (kbd "C-x <f5>")  'highlight-symbol-query-replace
+  (kbd "C-c <f5>")  'highlight-symbol-list-all
   "f5 key binding")
 
 (define-fn-key (gethash "f6" fn-key-table)

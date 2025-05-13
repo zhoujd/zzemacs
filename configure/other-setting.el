@@ -230,11 +230,11 @@
 (global-unset-key "\C-x\C-z")
 (global-unset-key (kbd "C-x C-z"))
 
-;;http://nschum.de/src/emacs/highlight-symbol/
-;(require 'highlight-symbol)
+;;https://github.com/nschum/highlight-symbol.el
+(require 'highlight-symbol)
 
 ;;https://github.com/wolray/symbol-overlay
-(require 'symbol-overlay)
+;(require 'symbol-overlay)
 
 ;;bookmark plus
 ;;https://www.emacswiki.org/emacs/BookmarkPlus

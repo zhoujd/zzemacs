@@ -363,12 +363,12 @@ Dmitriy Igrishin's patched version of comint.el."
       (call-interactively 'zz/get-sh)
       )))
 
-(defun zz/get-remote ()
+(defun zz/get-host ()
   (with-temp-buffer
-    (let* ((path "~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
+    (let* ((path "~/.ssh/config ~/.ssh/config.d/*")
            (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
            (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
-           (command (format "cat %s | %s | %s" path grep awk))
+           (command (format "cat %s 2>/dev/null | %s | %s" path grep awk))
            (host (ido-completing-read "Host: "
                                       (split-string
                                        (shell-command-to-string command)))))
@@ -376,10 +376,6 @@ Dmitriy Igrishin's patched version of comint.el."
           (concat "/" host ":")
           (concat "/" tramp-default-method ":" host ":")))
     ))
-
-(defun zz/get-host ()
-  (let ((default-directory "~/.ssh"))
-    (zz/get-remote)))
 
 (defun zz/remote-shell ()
   "Open a remote shell to a host"

@@ -473,9 +473,13 @@
 ;;which-key
 (require 'which-key)
 
-;;https://github.com/DarwinAwardWinner/ido-completing-read-plus
+;;ido-completing-read+
 (require 'ido-completing-read+)
 (ido-ubiquitous-mode t)
+
+;;icomplete
+(require 'icomplete)
+(icomplete-mode t)
 
 ;;https://github.com/DarwinAwardWinner/amx
 (require 'amx)

@@ -36,6 +36,16 @@
   ((kbd "M-3") nil)
   ((kbd "M-4") nil))
 
+(defun zz/magit-kill-buffers ()
+  "Restore window configuration and kill all (of these) Magit buffers."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
+
+(eval-after-load "magit"
+  '(define-key magit-status-mode-map (kbd "Q") 'zz/magit-kill-buffers))
+
 ;;make `magit-blame' echo with sidebar style.
 (custom-set-variables
  '(magit-blame-echo-style 'margin))

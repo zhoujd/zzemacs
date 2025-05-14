@@ -2,7 +2,7 @@
 
 services:
   zzemacs:
-    hostname: ubuntu-2204-zzemacs
+    hostname: ubuntu-zzemacs
     image: zhoujd/ubuntu-22.04-zzemacs:dev
     container_name: zzemacs-dev
     network_mode: bridge

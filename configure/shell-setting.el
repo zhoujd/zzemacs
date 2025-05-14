@@ -365,17 +365,17 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz/get-host ()
   (with-temp-buffer
-    (let* ((path "~/.ssh/config ~/.ssh/config.d/*")
+    (let* ((cat "cat ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
            (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
            (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
-           (command (format "cat %s 2>/dev/null | %s | %s" path grep awk))
+           (cmd (format "%s | %s | %s" cat grep awk))
            (host (ido-completing-read "Host: "
                                       (split-string
-                                       (shell-command-to-string command)))))
+                                       (shell-command-to-string cmd)))))
       (if (eq tramp-syntax 'simplified)
           (concat "/" host ":")
-          (concat "/" tramp-default-method ":" host ":")))
-    ))
+          (concat "/" tramp-default-method ":" host ":"))
+      )))
 
 (defun zz/remote-shell ()
   "Open a remote shell to a host"

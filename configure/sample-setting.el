@@ -516,7 +516,7 @@
          (insert (file-relative-name filename)))))
 
 (defun zz/kill-emacs ()
-  "Kill emacs without hooks."
+  "Like `kill-emacs', but ignores `kill-emacs-hook'."
   (interactive)
   (let ((kill-emacs-hook nil))
     (kill-emacs)))

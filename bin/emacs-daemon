@@ -3,9 +3,6 @@
 ## https://www.emacswiki.org/emacs/EmacsAsDaemon
 ## https://emacsredux.com/blog/2020/07/16/running-emacs-with-systemd
 ## systemctl --user list-units --type service
-## Add Chinese input method support
-## Environment=SSH_AUTH_SOCK=%t/keyring/ssh LANG=en_US.UTF-8 GTK_IM_MODULE=ibus QT_IM_MODULE=ibus XMODIFIERS="@im=ibus"
-## sed -i '/Environment/ s/$/ LANG=en_US.UTF-8 GTK_IM_MODULE=ibus QT_IM_MODULE=ibus XMODIFIERS="@im=ibus"/' ~/.config/systemd/user/emacs.service
 ## systemctl --user edit emacs.service
 ## systemctl --user daemon-reload
 ## systemctl --user restart emacs.service
@@ -24,7 +21,7 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 [Service]
 Type=forking
 ExecStart=/usr/bin/emacs --daemon
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+ExecStop=/usr/bin/emacsclient --eval "(let ((kill-emacs-hook nil)) (kill-emacs))"
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
 
@@ -65,7 +62,7 @@ config() {
     echo "Config emacs daemon"
     mkdir -p $SERV_ROOT/emacs.service.d
     
-    echo "Config lang"    
+    echo "Config input method support"
     tee $SERV_ROOT/emacs.service.d/10-lang.conf <<EOF
 [Service]
 Environment="LANG=en_US.UTF-8"
@@ -73,7 +70,7 @@ Environment="GTK_IM_MODULE=ibus"
 Environment="QT_IM_MODULE=ibus"
 Environment="XMODIFIERS=@im=ibus"
 EOF
-    echo "Config proxy"
+    echo "Config proxy support"
     tee $SERV_ROOT/emacs.service.d/50-proxy.conf <<EOF
 [Service]
 Environment="HTTP_PROXY=$HTTP_PROXY"

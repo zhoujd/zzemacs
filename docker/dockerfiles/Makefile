@@ -1,10 +1,16 @@
 ## Makefile
 
-.PHONY: all base dev
-all: base dev
+.PHONY: all ubuntu-base ubuntu-dev debian-base debian-dev
+all: ubuntu-base ubuntu-dev debian-base debian-dev
 
-base:
-	make -C base
+ubuntu-base:
+	make -C ubuntu-base
 
-dev:
-	make -C dev
+ubuntu-dev:
+	make -C ubuntu-dev
+
+debian-base:
+	make -C debian-base
+
+debian-dev:
+	make -C debian-dev

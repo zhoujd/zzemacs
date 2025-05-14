@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Refer: thirdparty/python/README.md
+## Refer: thirdparty/python/install-venv.sh
+
+export PATH=$HOME/.venv/emacs/bin:$PATH
+exec pylsp $@

@@ -515,6 +515,12 @@
         (t
          (insert (file-relative-name filename)))))
 
+(defun zz/kill-emacs ()
+  "Kill emacs without hooks."
+  (interactive)
+  (let ((kill-emacs-hook nil))
+    (kill-emacs)))
+
 
 (provide 'sample-setting)
 

@@ -2,11 +2,6 @@
 
 services:
   zzemacs:
-    build:
-      context: ../dockerfiles/base/
-      dockerfile: ubuntu-base.dockerfile
-      args:
-        VARIANT: 22.04
     hostname: ubuntu-2204-zzemacs
     image: zhoujd/ubuntu-22.04-zzemacs:base
     container_name: zzemacs-base

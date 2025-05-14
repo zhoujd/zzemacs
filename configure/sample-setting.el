@@ -345,12 +345,21 @@
         (message "Buffer not visiting a file"))))
 
 (defun zz/kill-this-buffer ()
+  "Kill current buffer."
   (interactive)
   (let ((x (current-buffer)))
     (with-current-buffer x
       (when (tramp-tramp-file-p default-directory)
         (tramp-cleanup-this-connection)))
     (kill-buffer x)))
+
+(defun zz/force-kill-this-buffer ()
+  "Force kill current buffer."
+  (interactive)
+  (let ((x (current-buffer)))
+    (with-current-buffer x
+      (let (kill-buffer-hook kill-buffer-query-functions)
+        (kill-buffer)))))
 
 (defun zz/delete-process ()
   (interactive)
@@ -518,7 +527,7 @@
 (defun zz/kill-emacs ()
   "Like `kill-emacs', but ignores `kill-emacs-hook'."
   (interactive)
-  (let ((kill-emacs-hook nil))
+  (let (kill-emacs-hook)
     (kill-emacs)))
 
 

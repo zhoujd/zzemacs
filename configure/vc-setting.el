@@ -43,8 +43,8 @@
     (magit-restore-window-configuration)
     (mapc #'kill-buffer buffers)))
 
-(eval-after-load "magit"
-  '(define-key magit-status-mode-map (kbd "Q") 'zz/magit-kill-buffers))
+(defkeys-map magit-status-mode-map
+  ((kbd "Q") 'zz/magit-kill-buffers))
 
 ;;make `magit-blame' echo with sidebar style.
 (custom-set-variables

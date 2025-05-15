@@ -796,3 +796,19 @@ int main()
 }
 #EOF
 ```
+
+## Why crontab scripts are not working
+
+```
+## Cron passes a minimal set of environment variables to your jobs
+$ crontab -e
+$ crontab -e -u <user>
+* * * * * env > /tmp/env.output
+
+$ crontab -l
+$ crontab -l -u <user>
+
+## Cron service
+sudo systemctl start cron
+sudo systemctl status cron
+```

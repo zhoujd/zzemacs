@@ -28,9 +28,9 @@ X11_PARAM=(
 )
 
 RUN_PARAM=(
+    --rm
     --detach
     --name=${CTN_NAME}
-    --restart=always
     --privileged=true
     --cap-add=ALL
     --add-host=$HOST_NAME:$HOST_IP

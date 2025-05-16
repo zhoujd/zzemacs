@@ -8,16 +8,16 @@ case $1 in
     base )
         shift
         export TAG=${TAG:-base}
-        export VER=${VER:-22.04}
-        export DISTRO=${DISTRO:-ubuntu}
+        export VER=${VER:-12}
+        export DISTRO=${DISTRO:-debian}
         export PROMPT="$(basename $0) base"
         $TOOL_ROOT/tool.sh $@
         ;;
     dev )
         shift
         export TAG=${TAG:-dev}
-        export VER=${VER:-22.04}
-        export DISTRO=${DISTRO:-ubuntu}
+        export VER=${VER:-12}
+        export DISTRO=${DISTRO:-debian}
         export PROMPT="$(basename $0) dev"
         $TOOL_ROOT/tool.sh $@
         ;;

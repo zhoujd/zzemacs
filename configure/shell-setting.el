@@ -366,7 +366,7 @@ Dmitriy Igrishin's patched version of comint.el."
 (defun zz/get-host ()
   (with-temp-buffer
     (let* ((cat "cat ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null")
-           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git.*com'")
+           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git'")
            (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
            (cmd (format "%s | %s | %s" cat grep awk))
            (host (ido-completing-read "Host: "

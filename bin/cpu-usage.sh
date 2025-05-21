@@ -5,7 +5,14 @@ LOG_FILE="$LOG_DIR/cpu_usage.log"
 MAX_SIZE=10485760  # 10MB
 ARCHIVE_FILE="$LOG_DIR/cpu_usage_$(date +%Y%m%d%H%M%S).tar.gz"
 
-## Run as root
+# Check script running
+APP=$(basename $0)
+if [ $(pidof -x ${APP} | wc -w) -gt 2 ]; then
+    echo "${APP} is already running."
+    exit 0
+fi
+
+# Run as root
 if [ $EUID -ne 0 ]; then
     echo "Please run as root" 2>&1
     exit 1

@@ -19,9 +19,10 @@ if [ $(pidof -x ${APP} | wc -w) -gt 2 ]; then
 fi
 
 # Log information
-echo "$(date) APP: ${APP}"
-echo "$(date) LOG_DIR: ${LOG_DIR}"
-echo "$(date) LOG_FILE: ${LOG_FILE}"
+echo "Timestamp: $(date)"
+echo "APP: ${APP}"
+echo "LOG_DIR: ${LOG_DIR}"
+echo "LOG_FILE: ${LOG_FILE}"
 
 # Make sure log directory exists
 mkdir -p "$LOG_DIR"
@@ -39,6 +40,6 @@ while true; do
     # Clean logs before 24 hours
     find "$LOG_DIR" -type f -name "*.tar.gz" -mtime +1 -exec rm -f {} \;
 
-    # Loop in 60 seconds
-    sleep 60
+    # Loop in 10 seconds
+    sleep 10
 done

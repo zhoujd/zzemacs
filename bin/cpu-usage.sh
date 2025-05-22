@@ -10,6 +10,7 @@ echo "Timestamp: $(date)"
 echo "LOG_DIR: ${LOG_DIR}"
 echo "LOG_FILE: ${LOG_FILE}"
 echo "MAX_SIZE: ${MAX_SIZE}"
+echo "Last Record: tail -n 34 ${LOG_FILE}"
 
 # Run as root
 if [ $EUID -ne 0 ]; then

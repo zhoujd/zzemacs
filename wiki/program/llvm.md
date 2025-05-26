@@ -75,3 +75,8 @@ llvm
 
     ## 8. Execute the native code program:
      ./hello.native
+
+## Extending LLVM
+
+    ## https://llvm.org/docs/UserGuides.html
+    ## https://llvm.org/docs/ExtendingLLVM.html#intrinsic-function

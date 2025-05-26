@@ -221,3 +221,20 @@ int main(int argc, char** argv)
 #define ALIGN(x,a)              __ALIGN_MASK(x,(typeof(x))(a)-1)
 #define __ALIGN_MASK(x,mask)    (((x)+(mask))&~(mask))
 ```
+
+## Installing C++17 and C++20 on Ubuntu and Amazon Linux
+
+```
+## https://en.cppreference.com/w/cpp/compiler_support/
+apt list --installed gcc-10*
+apt list --installed g++-10
+apt list --installed libstdc++-10*
+
+sudo apt-get update
+apt list libstdc++-10*
+apt list gcc-10*
+apt list g++-10*
+
+sudo apt install gcc-10 gcc-10-base gcc-10-doc g++-10
+sudo apt install libstdc++-10-dev libstdc++-10-doc
+```

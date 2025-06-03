@@ -812,3 +812,13 @@ $ crontab -l -u <user>
 sudo systemctl start cron
 sudo systemctl status cron
 ```
+
+## Enable the timer service
+
+```
+systemctl --user daemon-reload
+systemctl --user enable --now change-wallpaper.timer
+
+# Optionally check that the timer is active
+systemctl --user list-timers
+```

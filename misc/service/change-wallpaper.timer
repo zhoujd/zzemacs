@@ -1,0 +1,11 @@
+[Unit]
+Description=Change the wallpaper on X display :0 every few minutes
+Requires=change-wallpaper.service
+
+[Timer]
+# Changes wallpaper every 5 minutes; adjusts as needed
+OnActiveSec=5m
+OnUnitActiveSec=5m
+
+[Install]
+WantedBy=timers.target

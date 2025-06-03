@@ -35,3 +35,14 @@ $ ./configure --prefix=/usr/local/claws-mail
 $ make j 4
 $ sudo make install
 ```
+
+## Send mail with msmtp
+
+```
+## https://marlam.de/msmtp/msmtp.html
+$ sudo apt install msmtp sharutils
+cat <<EOF | (cat - && uuencode /path/to/attachment1 attachment1.name) | (cat - && uuencode /path/to/attachment2 attachment2.name) | msmtp ${MAIL[@]}
+subject:
+
+EOF
+```

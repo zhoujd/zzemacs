@@ -1,16 +1,22 @@
-E-mail
-======
+Mail
+====
 
 ## Using Claws Mail with Gmail
 
+```
 [https://www.claws-mail.org/faq/index.php/Using_Claws_Mail_with_Gmail]
 [claws-gmail](../../doc/linux/claws-gmail.pdf)
+```
 
 ## Claws Mail Interface
+
+```
 [https://www.claws-mail.org/faq/index.php/Interface]
+```
 
 ## Hotmail/Outlook
 
+```
 [https://support.microsoft.com/en-us/office/pop-imap-and-smtp-settings-8361e398-8af4-4e97-b147-6c6c4ac95353]
 [https://www.howto-outlook.com/howto/accountsettings.htm]
 Login -> Setting -> Sync email
@@ -23,6 +29,7 @@ SMTP Setting
 Server name: smtp.office365.com
 Port: 587
 Encryption method: STARTTLS
+```
 
 ## Build claws mail
 
@@ -36,14 +43,29 @@ $ make j 4
 $ sudo make install
 ```
 
-## Send mail with msmtp
+## Send mail via msmtp
 
 ```
 ## https://marlam.de/msmtp/msmtp.html
 $ sudo apt install msmtp sharutils
-cat <<EOF | (cat - && uuencode /path/to/attachment1 attachment1.name) | (cat - && uuencode /path/to/attachment2 attachment2.name) | msmtp ${MAIL[@]}
+cat <<EOF | \
+    (cat - && uuencode /path/to/attachment1 attachment1.name) | \
+    (cat - && uuencode /path/to/attachment2 attachment2.name) | \
+    msmtp ${MAIL[@]}
 subject:
 to:
 
 EOF
+```
+
+## Send mail via curl
+
+```
+$ sudo apt install curl
+$ curl "smtp://<smtp-server>:25" \
+    --mail-from "from@mail.com" \
+    --mail-rcpt "mail1@mail.com" \
+    --mail-rcpt "mail2@mail.com" \
+    --upload-file email_coverage.txt \
+    --user "user@mail.com:PW"
 ```

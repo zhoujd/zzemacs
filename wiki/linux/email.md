@@ -43,6 +43,7 @@ $ sudo make install
 $ sudo apt install msmtp sharutils
 cat <<EOF | (cat - && uuencode /path/to/attachment1 attachment1.name) | (cat - && uuencode /path/to/attachment2 attachment2.name) | msmtp ${MAIL[@]}
 subject:
+to:
 
 EOF
 ```

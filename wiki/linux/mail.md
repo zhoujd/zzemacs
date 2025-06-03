@@ -47,8 +47,19 @@ $ sudo make install
 
 ```
 ## https://marlam.de/msmtp/msmtp.html
+## Install dependence
 $ sudo apt install msmtp sharutils
-cat <<EOF | \
+
+## Basic
+# Send Mail
+$ cat <<EOF | msmtp ${MAIL[@]}
+subject:
+to:
+
+EOF
+
+## With attachements
+$ cat <<EOF | \
     (cat - && uuencode /path/to/attachment1 attachment1.name) | \
     (cat - && uuencode /path/to/attachment2 attachment2.name) | \
     msmtp ${MAIL[@]}
@@ -58,14 +69,58 @@ to:
 EOF
 ```
 
-## Send mail via curl
+## Basic send mail via curl
 
 ```
+## Install dependence
 $ sudo apt install curl
-$ curl "smtp://<smtp-server>:25" \
+
+## Basic
+$ curl --ssl-reqd --url "smtps://$SERVER:$PORT" \
+    --mail-from "$SENDER_ADDRESS" \
+    --mail-rcpt "$RECIPIENT_ADDRESS1" \
+    --mail-rcpt "$RECIPIENT_ADDRESS2" \
+    --upload-file "$MAIL_CONTENT_FILE" \
+    --user "$USER:$PASS"
+
+## Example
+$
+curl "smtp://<smtp-server>:25" \
     --mail-from "from@mail.com" \
     --mail-rcpt "mail1@mail.com" \
     --mail-rcpt "mail2@mail.com" \
     --upload-file email_coverage.txt \
     --user "user@mail.com:PW"
+```
+
+## Send mail with attachment via curl
+
+```
+## https://www.baeldung.com/linux/curl-send-mail
+$ cat xsendmail.sh <<EOF
+#!/usr/bin/env bash
+
+SERVER='smtp.example.com'
+PORT='465'
+USER='x@gerganov.com'
+PASS='PASSWORD'
+SENDER_ADDRESS="$1"
+SENDER_NAME='SENDER'
+RECIPIENT_NAME='y'
+RECIPIENT_ADDRESS='y@gerganov.com'
+SUBJECT='Scripted Mail'
+MESSAGE=$'Line 1\nLine 2'
+ATTACHMENT_FILE='/home/user/att1'
+ATTACHMENT_TYPE="$(file --mime-type '$ATTACHMENT_FILE' | sed 's/.*: //')"
+
+curl --ssl-reqd --url "smtps://$SERVER:$PORT" \
+    --user "$USER:$PASS" \
+    --mail-from "$SENDER_ADDRESS" \
+    --mail-rcpt "$RECIPIENT_ADDRESS" \
+    --header "Subject: $SUBJECT" \
+    --header "From: $SENDER_NAME <$SENDER_ADDRESS>" \
+    --header "To: $RECIPIENT_NAME <$RECIPIENT_ADDRESS>" \
+    --form '=(;type=multipart/mixed' --form "=$MESSAGE;type=text/plain"
+    --form "file=@$ATTACHMENT_FILE;type=$ATTACHMENT_TYPE;encoder=base64" --form '=)'
+EOF
 ```

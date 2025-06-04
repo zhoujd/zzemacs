@@ -119,3 +119,12 @@ job-4:
       - sleep 5
       - echo "job-4 done"
 ```
+
+## Missing gitlab-runner. Uploading artifacts is disabled
+
+```
+## https://docs.gitlab.com/runner/executors/ssh/
+## If you want to upload job artifacts, install gitlab-runner on the host you are connecting to via SSH.
+## Download the script and rename to gitlab-runner and put it into /usr/bin
+## https://github.com/libstatgrab/libstatgrab-ci/blob/master/gitlab-runner-shim.sh
+```

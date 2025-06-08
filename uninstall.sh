@@ -21,7 +21,7 @@ echo "remove others ..."
 $sudo_rm_app /usr/bin/zz{emacs,run}
 $rm_app ~/.terminfo
 $rm_app ~/{.gdbinit,.gdbinit.d}
-$rm_app ~/{.gitconfig,.gitconfig-url}
+$rm_app ~/{.gitconfig,.gitconfig-url,.gitconfig-work}
 
 
 echo "uninstall zzemacs end ..."

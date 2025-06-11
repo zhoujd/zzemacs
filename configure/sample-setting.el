@@ -478,8 +478,10 @@
   (when (yes-or-no-p "Really kill all buffers")
     (tramp-cleanup-all-buffers)
     (mapc (lambda (x)
-            (unless (member (buffer-name x) '("*Messages*" "*scratch*"))
-              (kill-buffer x)))
+            (cond ((member (buffer-name x) '("*Messages*" "*scratch*")) t)
+                  ((string-match "^magit" (buffer-name x))
+                   (magit-mode-bury-buffer t))
+                  (t (kill-buffer x))))
           (buffer-list))))
 
 (defun zz/kill-other-buffers ()
@@ -493,7 +495,9 @@
               (with-current-buffer x
                 (when (tramp-tramp-file-p default-directory)
                   (tramp-cleanup-this-connection)))
-              (kill-buffer x)))
+              (if (string-match "^magit" (buffer-name x))
+                  (magit-mode-bury-buffer t)
+                  (kill-buffer x))))
           (buffer-list))))
 
 (defun zz/revert-all-buffers ()

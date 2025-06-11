@@ -44,7 +44,12 @@
 (mapc
  (lambda (map)
    (defkeys-map map ((kbd "q") 'zz/magit-quit)))
- (list magit-mode-map magit-log-mode-map))
+ (list
+  magit-mode-map
+  magit-log-mode-map
+  magit-diff-mode-map
+  magit-process-mode-map
+  ))
 
 (defkeys-map ido-common-completion-map
   ((kbd "C-x g") 'ido-enter-magit-status))

@@ -18,7 +18,8 @@
 (require 'monky)
 (setq monky-process-type 'cmdserver)
 
-;;magit
+;;magit support
+;;https://magit.vc/manual/magit.html
 ;;M-x magit-log-buffer-file
 ;;M-x magit-find-file
 ;;File log: C-x v l

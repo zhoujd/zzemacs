@@ -41,6 +41,7 @@
   "Quit magit buffers"
   (interactive)
   (magit-mode-bury-buffer t))
+
 (mapc
  (lambda (map)
    (defkeys-map map ((kbd "q") 'zz/magit-quit)))
@@ -51,8 +52,11 @@
   magit-process-mode-map
   ))
 
-(defkeys-map ido-common-completion-map
-  ((kbd "C-x g") 'ido-enter-magit-status))
+(mapc
+ (lambda (map)
+   (defkeys-map map ((kbd "C-x g") 'ido-enter-magit-status)))
+ (list
+  ido-common-completion-map))
 
 ;;make `magit-blame' echo with sidebar style.
 (custom-set-variables

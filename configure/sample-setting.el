@@ -476,29 +476,28 @@
   "Kill all buffers."
   (interactive)
   (when (yes-or-no-p "Really kill all buffers")
-    (tramp-cleanup-all-buffers)
-    (mapc (lambda (x)
-            (cond ((member (buffer-name x) '("*Messages*" "*scratch*")) t)
-                  ((string-match "^magit" (buffer-name x))
-                   (magit-mode-bury-buffer t))
-                  (t (kill-buffer x))))
-          (buffer-list))))
+    (let ((ex-buf '("*Messages*" "*scratch*")))
+      (tramp-cleanup-all-buffers)
+      (mapc (lambda (x)
+              (cond
+               ((member (buffer-name x) ex-buf) t)
+               ((string-match "^magit" (buffer-name x))
+                (magit-mode-bury-buffer t))
+               (t (kill-buffer x))))
+            (buffer-list)))))
 
 (defun zz/kill-other-buffers ()
   "Kill all other buffers."
   (interactive)
   (when (yes-or-no-p "Really kill other buffers")
-    (mapc (lambda (x)
-            (unless
-                (or (eq x (current-buffer))
-                    (member (buffer-name x) '("*Messages*" "*scratch*")))
-              (with-current-buffer x
-                (when (tramp-tramp-file-p default-directory)
-                  (tramp-cleanup-this-connection)))
-              (if (string-match "^magit" (buffer-name x))
-                  (magit-mode-bury-buffer t)
-                  (kill-buffer x))))
-          (buffer-list))))
+    (let ((old-buf (current-buffer))
+          (ex-buf '("*Messages*" "*scratch*")))
+      (mapc (lambda (x)
+              (cond
+               ((eq x old-buf) t)
+               ((member (buffer-name x) ex-buf) t)
+               (t (kill-buffer x))))
+            (buffer-list)))))
 
 (defun zz/revert-all-buffers ()
   "Revert all buffers."

@@ -44,7 +44,7 @@
 
 (mapc
  (lambda (map)
-   (defkeys-map map ((kbd "q") 'zz/magit-quit)))
+   (defkeys-map map ((kbd "Q") 'zz/magit-quit)))
  (list
   magit-mode-map
   magit-log-mode-map

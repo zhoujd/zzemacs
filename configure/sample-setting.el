@@ -438,7 +438,7 @@
 ;;https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
 (defun zz/display-current-time ()
   (interactive)
-  (message (format-time-string "%a %b %e %Y WW%U %l:%M %p")))
+  (message (format-time-string "%a %b %e %Y WW%-V %l:%M %p")))
 
 ;;https://emacsredux.com/blog/2013/04/21/edit-files-as-root/
 (defun zz/sudo-find-file (file-name)

@@ -472,17 +472,27 @@
         (newline))
     (insert file-name ":" (number-to-string file-line) ": ")))
 
+(defun zz/magit-kill-buffers ()
+  "Restore window configuration and kill all Magit buffers."
+  (interactive)
+  (let ((buffers (magit-mode-get-buffers)))
+    (magit-restore-window-configuration)
+    (mapc #'kill-buffer buffers)))
+
 (defun zz/kill-all-buffers ()
   "Kill all buffers."
   (interactive)
   (when (yes-or-no-p "Really kill all buffers")
     (let ((ex-buf '("*Messages*" "*scratch*")))
       (tramp-cleanup-all-buffers)
+      (zz/magit-kill-buffers)
       (mapc (lambda (x)
               (cond
                ((member (buffer-name x) ex-buf) t)
                ((string-match "^magit" (buffer-name x))
-                (magit-mode-bury-buffer t))
+                (progn
+                  (magit-restore-window-configuration)
+                  (magit-mode-bury-buffer t)))
                (t (kill-buffer x))))
             (buffer-list)))))
 

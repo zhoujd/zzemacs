@@ -488,6 +488,7 @@
       (zz/magit-kill-buffers)
       (mapc (lambda (x)
               (cond
+               ((not x) t)
                ((member (buffer-name x) ex-buf) t)
                (t (kill-buffer x))))
             (buffer-list)))))
@@ -498,9 +499,9 @@
   (when (yes-or-no-p "Really kill other buffers")
     (let ((old-buf (current-buffer))
           (ex-buf '("*Messages*" "*scratch*")))
-      (zz/magit-kill-buffers)
       (mapc (lambda (x)
               (cond
+               ((not x) t)
                ((eq x old-buf) t)
                ((member (buffer-name x) ex-buf) t)
                (t (kill-buffer x))))

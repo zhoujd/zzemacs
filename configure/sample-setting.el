@@ -489,10 +489,6 @@
       (mapc (lambda (x)
               (cond
                ((member (buffer-name x) ex-buf) t)
-               ((string-match "^magit" (buffer-name x))
-                (progn
-                  (magit-restore-window-configuration)
-                  (magit-mode-bury-buffer t)))
                (t (kill-buffer x))))
             (buffer-list)))))
 
@@ -502,6 +498,7 @@
   (when (yes-or-no-p "Really kill other buffers")
     (let ((old-buf (current-buffer))
           (ex-buf '("*Messages*" "*scratch*")))
+      (zz/magit-kill-buffers)
       (mapc (lambda (x)
               (cond
                ((eq x old-buf) t)

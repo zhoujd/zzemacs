@@ -49,6 +49,8 @@ font() {
             echo "[font] unknown $TYPE"
             ;;
     esac
+    echo "[font] install configure"
+    ${ZZEMACS_ROOT}/misc/font/install.sh
     echo "[font] install done"
 }
 

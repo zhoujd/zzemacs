@@ -64,6 +64,7 @@
   (gruvbox-dark2           "#504945" "#4e4e4e")
   (gruvbox-dark3           "#665c54" "#626262")
   (gruvbox-dark4           "#7c6f64" "#767676")
+  (gruvbox-dark5           "#000000" "#3a3a3a")
 
   (gruvbox-gray            "#928374" "#8a8a8a")
 
@@ -140,12 +141,12 @@
   (gruvbox-accent-14 "#fb4934" "#d75f5f")
   (gruvbox-accent-15 "#b8bb26" "#afaf00")
 
-  (gruvbox-bg gruvbox-dark0)
+  (gruvbox-bg gruvbox-dark5)
   (gruvbox-bg_inactive gruvbox-dark0_soft))
 
  (custom-theme-set-variables 'gruvbox
                              `(ansi-color-names-vector
-                               [,gruvbox-dark1
+                               [,gruvbox-dark5
                                 ,gruvbox-neutral_red
                                 ,gruvbox-neutral_green
                                 ,gruvbox-neutral_yellow

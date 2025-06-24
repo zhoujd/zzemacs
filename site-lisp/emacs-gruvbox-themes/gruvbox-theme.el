@@ -57,7 +57,6 @@
  ((((class color) (min-colors #xFFFFFF))        ; col 1 GUI/24bit
    ((class color) (min-colors #xFF)))           ; col 2 Xterm/256
 
-  (gruvbox-dark0_black     "#000000" "#000000")
   (gruvbox-dark0_hard      "#1d2021" "#1c1c1c")
   (gruvbox-dark0           "#282828" "#262626")
   (gruvbox-dark0_soft      "#32302f" "#303030")
@@ -99,9 +98,9 @@
   (gruvbox-faded_aqua      "#427b58" "#5f8787")
   (gruvbox-faded_orange    "#af3a03" "#af5f00")
 
-  (gruvbox-dark_red             "#421E1E" "#5f0000")
-  (gruvbox-dark_blue            "#2B3C44" "#000087")
-  (gruvbox-dark_aqua            "#36473A" "#005f5f")
+  (gruvbox-dark_red        "#421E1E" "#5f0000")
+  (gruvbox-dark_blue       "#2B3C44" "#000087")
+  (gruvbox-dark_aqua       "#36473A" "#005f5f")
 
   (gruvbox-delimiter-one   "#458588" "#008787")
   (gruvbox-delimiter-two   "#b16286" "#d75f87")
@@ -141,12 +140,12 @@
   (gruvbox-accent-14 "#fb4934" "#d75f5f")
   (gruvbox-accent-15 "#b8bb26" "#afaf00")
 
-  (gruvbox-bg gruvbox-dark0_black)
+  (gruvbox-bg gruvbox-black)
   (gruvbox-bg_inactive gruvbox-dark0))
 
  (custom-theme-set-variables 'gruvbox
                              `(ansi-color-names-vector
-                               [,gruvbox-dark0_black
+                               [,gruvbox-black
                                 ,gruvbox-neutral_red
                                 ,gruvbox-neutral_green
                                 ,gruvbox-neutral_yellow

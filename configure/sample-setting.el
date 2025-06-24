@@ -11,14 +11,14 @@
     (progn (setq unicad-global-enable t)
            (message "unicad is enabled"))))
 
-;;using spaces repalce tabs
+;;tabs -> spaces
 (defun zz/untabify-buffer ()
   "untabify whole buffer"
   (interactive)
   (untabify (point-min) (point-max))
   (save-buffer))
 
-;;using tabs repalce spaces
+;;spaces -> tabs
 (defun zz/tabify-buffer ()
   "tabify whole buffer"
   (interactive)

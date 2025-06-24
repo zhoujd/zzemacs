@@ -57,6 +57,7 @@
  ((((class color) (min-colors #xFFFFFF))        ; col 1 GUI/24bit
    ((class color) (min-colors #xFF)))           ; col 2 Xterm/256
 
+  (gruvbox-dark0_black     "#000000" "#000000")
   (gruvbox-dark0_hard      "#1d2021" "#1c1c1c")
   (gruvbox-dark0           "#282828" "#262626")
   (gruvbox-dark0_soft      "#32302f" "#303030")
@@ -64,7 +65,6 @@
   (gruvbox-dark2           "#504945" "#4e4e4e")
   (gruvbox-dark3           "#665c54" "#626262")
   (gruvbox-dark4           "#7c6f64" "#767676")
-  (gruvbox-dark5           "#000000" "#3a3a3a")
 
   (gruvbox-gray            "#928374" "#8a8a8a")
 
@@ -141,12 +141,12 @@
   (gruvbox-accent-14 "#fb4934" "#d75f5f")
   (gruvbox-accent-15 "#b8bb26" "#afaf00")
 
-  (gruvbox-bg gruvbox-dark5)
-  (gruvbox-bg_inactive gruvbox-dark0_soft))
+  (gruvbox-bg gruvbox-dark0_black)
+  (gruvbox-bg_inactive gruvbox-dark0))
 
  (custom-theme-set-variables 'gruvbox
                              `(ansi-color-names-vector
-                               [,gruvbox-dark5
+                               [,gruvbox-dark0_black
                                 ,gruvbox-neutral_red
                                 ,gruvbox-neutral_green
                                 ,gruvbox-neutral_yellow

@@ -1,0 +1,6 @@
+.sass-cache
+/.DS_Store
+/palette/node_modules
+*~
+\#*\#
+*.elc

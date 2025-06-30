@@ -28,9 +28,9 @@
  '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command and gud-print
  )
 
-(set-face-foreground 'minibuffer-prompt       "green")
-(set-face-foreground 'comint-highlight-prompt "#8ae234")
-(set-face-foreground 'comint-highlight-input  "cyan")
+(set-face-foreground 'minibuffer-prompt       "#878700")
+(set-face-foreground 'comint-highlight-prompt "#afaf00")
+(set-face-foreground 'comint-highlight-input  "#8a8a8a")
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
 ;;add shell-scripte-mode support

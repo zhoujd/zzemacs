@@ -28,6 +28,7 @@
  '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command and gud-print
  )
 
+;;use gruvbox theme
 (set-face-foreground 'minibuffer-prompt       "#878700")
 (set-face-foreground 'comint-highlight-prompt "#afaf00")
 (set-face-foreground 'comint-highlight-input  "#bcbcbc")

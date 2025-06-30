@@ -30,7 +30,7 @@
 
 (set-face-foreground 'minibuffer-prompt       "#878700")
 (set-face-foreground 'comint-highlight-prompt "#afaf00")
-(set-face-foreground 'comint-highlight-input  "#8a8a8a")
+(set-face-foreground 'comint-highlight-input  "#bcbcbc")
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
 ;;add shell-scripte-mode support

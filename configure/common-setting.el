@@ -361,12 +361,13 @@ mouse-3: Toggle minor modes"
 (require 'ido)
 (ido-mode t)
 
-(custom-set-faces
- '(ido-subdir            ((t (:foreground "#66ff00"))))
- '(ido-first-match       ((t (:foreground "#ccff66"))))
- '(ido-only-match        ((t (:foreground "#ffcc33"))))
- '(ido-indicator         ((t (:foreground "#ffffff"))))
- '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
+;;ido faces
+;(custom-set-faces
+; '(ido-subdir            ((t (:foreground "#66ff00"))))
+; '(ido-first-match       ((t (:foreground "#ccff66"))))
+; '(ido-only-match        ((t (:foreground "#ffcc33"))))
+; '(ido-indicator         ((t (:foreground "#ffffff"))))
+; '(ido-incomplete-regexp ((t (:foreground "#ffffff")))))
 
 (add-hook 'ido-minibuffer-setup-hook
           (lambda ()

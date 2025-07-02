@@ -386,12 +386,13 @@ mouse-3: Toggle minor modes"
             (equal (buffer-name (ad-get-arg 0)) "\\*Async Shell Command\\*.*"))
        ad-do-it))
 
-;;esc quits
-(define-key minibuffer-local-map            [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map         [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map    [escape] 'minibuffer-keyboard-quit)
+;;minibuffer esc quits
+(dolist (map (list minibuffer-local-map
+                   minibuffer-local-ns-map
+                   minibuffer-local-completion-map
+                   minibuffer-local-must-match-map
+                   minibuffer-local-isearch-map))
+  (define-key map [escape] 'minibuffer-keyboard-quit))
 
 ;;manpath
 (defun zz/woman-at-point ()

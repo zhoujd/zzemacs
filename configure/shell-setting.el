@@ -28,11 +28,13 @@
  '(comint-prompt-read-only nil)         ; if this is t, it breaks shell-command and gud-print
  )
 
-;;;Use gruvbox theme
+;;;face color on gruvbox theme
 ;;(set-face-foreground 'minibuffer-prompt       "#79740e")
 ;;(set-face-foreground 'comint-highlight-prompt "#afaf00")
 ;;(set-face-foreground 'comint-highlight-input  "#949494")
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
+
+;;shell prompt color
 (defun zz/shell-prompt ()
   "Color prompt on shell-mode to use PS1"
   (face-remap-set-base 'comint-highlight-prompt :inherit nil))
@@ -54,7 +56,7 @@
 (when (fboundp 'ansi-color-for-comint-mode-on)
   ;;escape sequence
   (autoload 'ansi-color-for-comint-mode-on "ansi-color"
-  "Set `ansi-color-for-comint-mode' to t." t)
+    "Set `ansi-color-for-comint-mode' to t." t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 
 ;;xterm color

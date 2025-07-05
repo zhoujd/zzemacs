@@ -33,6 +33,10 @@
 ;;(set-face-foreground 'comint-highlight-prompt "#afaf00")
 ;;(set-face-foreground 'comint-highlight-input  "#949494")
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
+(defun zz/shell-prompt ()
+  "Color prompt on shell-mode to use PS1"
+  (face-remap-set-base 'comint-highlight-prompt :inherit nil))
+(add-hook 'shell-mode-hook 'zz/shell-prompt)
 
 ;;add shell-scripte-mode support
 (setq auto-mode-alist
@@ -57,9 +61,10 @@
 (require 'xterm-color)
 (setq comint-output-filter-functions
       (remove 'ansi-color-process-output comint-output-filter-functions))
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t)))
+(defun zz/xterm-color ()
+  "Color on shell-mode output support"
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter nil t))
+(add-hook 'shell-mode-hook 'zz/xterm-color)
 
 ;;automatically_close_completions_in_emacs_shell_comint_mode.txt
 (defun zz/comint-close-completions ()

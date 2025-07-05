@@ -54,7 +54,6 @@
 
 ;;interpret and use ansi color codes in shell output windows
 (when (fboundp 'ansi-color-for-comint-mode-on)
-  ;;escape sequence
   (autoload 'ansi-color-for-comint-mode-on "ansi-color"
     "Set `ansi-color-for-comint-mode' to t." t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))

@@ -35,10 +35,13 @@
 (setq shell-font-lock-keywords (list (cons "" 'font-lock-keyword-face)))
 
 ;;shell prompt color
-(defun zz/shell-prompt ()
-  "Color prompt on shell-mode to use PS1"
-  (face-remap-set-base 'comint-highlight-prompt :inherit nil))
-(add-hook 'shell-mode-hook 'zz/shell-prompt)
+(defvar zz/use-ps1-color-p nil
+  "Use PS1 color in prompt")
+(when zz/use-ps1-color-p
+  (defun zz/shell-prompt ()
+    "Color prompt on shell-mode to use PS1"
+    (face-remap-set-base 'comint-highlight-prompt :inherit nil))
+  (add-hook 'shell-mode-hook 'zz/shell-prompt))
 
 ;;add shell-scripte-mode support
 (setq auto-mode-alist

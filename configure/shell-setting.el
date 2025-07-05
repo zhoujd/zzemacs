@@ -52,10 +52,10 @@
 (require 'warnings)
 (add-to-list 'warning-suppress-types '(undo discard-info))
 
-;;interpret and use ansi color codes in shell output windows
+;;use ansi color codes in shell output windows
 (when (fboundp 'ansi-color-for-comint-mode-on)
-  (autoload 'ansi-color-for-comint-mode-on "ansi-color"
-    "Set `ansi-color-for-comint-mode' to t." t)
+  ;;If you can't stop ANSI escape sequences, use them
+  (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on))
 
 ;;xterm color

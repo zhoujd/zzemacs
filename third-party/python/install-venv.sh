@@ -17,6 +17,11 @@ install() {
     fi
 }
 
+clean() {
+    echo "venv clean"
+    rm -rfv $VENV_ROOT
+}
+
 config() {
     echo "venv config"
     sed -i "s/$VENV_CONF.*/$VENV_CONF = true/g" $VENV_PATH/pyvenv.cfg
@@ -25,7 +30,7 @@ config() {
 usage() {
     local app=$(basename $0)
     cat <<EOF
-Usage: $app {install|config|all}
+Usage: $app {install|config|clean|all}
 EOF
 }
 
@@ -35,6 +40,9 @@ case $1 in
         ;;
     config )
         config
+        ;;
+    clean )
+        clean
         ;;
     all )
         install

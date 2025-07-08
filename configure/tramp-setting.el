@@ -53,8 +53,8 @@
                                    vc-ignore-dir-regexp
                                    tramp-file-name-regexp))
 
-;;Shell Prompt
-(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
+;;Shell prompt on shell-prompt-pattern and tramp-shell-prompt-pattern
+;(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 
 ;;Prevent forbidden reentrant call of tramp
 (add-to-list 'debug-ignored-errors 'remote-file-error)

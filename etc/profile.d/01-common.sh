@@ -75,7 +75,7 @@ prompt() {
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
+            PS1="\u@\h \W\$ "
             ;;
         linux* )
             export TERM=xterm-256color

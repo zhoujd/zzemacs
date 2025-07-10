@@ -62,6 +62,7 @@
   (kbd ",")       'winner-undo
   (kbd ".")       'winner-redo
   (kbd "\\")      'zz/ssh
+  (kbd "M-m")     'man
   ))
 
 (apply-keys-to-map

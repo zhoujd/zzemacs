@@ -2,10 +2,10 @@
 
 case $1 in
     -v|--version|-h|--help )
-        tig "$@"
+        exec tig "$@"
         ;;
     * )
-        repo=$(git rev-parse --show-toplevel)
-        st -T "tig:$repo $$@$(hostname)" -e tig "$@" >/dev/null 2>&1
+        repo=$(basename `git rev-parse --show-toplevel`)
+        exec st -t "tig:$repo $$@$(hostname)" -e tig "$@" >/dev/null 2>&1
         ;;
 esac

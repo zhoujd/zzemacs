@@ -6,6 +6,6 @@ case $1 in
         ;;
     * )
         repo=$(git rev-parse --show-toplevel)
-        st -T "tig:$repo" -e tig "$@" >/dev/null 2>&1
+        st -T "tig:$repo $$@$(hostname)" -e tig "$@" >/dev/null 2>&1
         ;;
 esac

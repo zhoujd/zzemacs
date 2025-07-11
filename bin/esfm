@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec st -t "sfm $$@$(hostname)" -e sfm "$@"

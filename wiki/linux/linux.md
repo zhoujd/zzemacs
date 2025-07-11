@@ -822,3 +822,9 @@ systemctl --user enable --now change-wallpaper.timer
 # Optionally check that the timer is active
 systemctl --user list-timers
 ```
+
+## fff (Fucking Fast File-Manager)
+
+```
+https://github.com/dylanaraps/fff
+```

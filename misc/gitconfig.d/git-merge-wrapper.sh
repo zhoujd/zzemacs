@@ -8,9 +8,9 @@
 
 ## mergetool selects
 ## http://www.scootersoftware.com/support.php?c=kb_vcs.php
-## https://lukas.zapletalovi.com/2012/09/three-way-git-merging-with-meld.html
 ## http://www.perforce.com/perforce/products/merge.html
 ## http://meldmerge.org/
+## https://lukas.zapletalovi.com/2012/09/three-way-git-merging-with-meld.html
 
 main() {
     if [ "$OS" = "Windows_NT" ] ; then

@@ -276,8 +276,8 @@
   (if (display-graphic-p frame)
       (progn
         (custom-set-faces
-         '(mode-line-inactive ((t :background "#504945" :foreground "#1e2122" :box (:line-width 1 :color "#504945"))))
-         '(mode-line ((t :background "#665c54" :foreground "#1e2122" :box (:line-width 1 :color "#665c54")))))
+         '(mode-line-inactive ((t :background "#504945" :foreground "#000000" :box (:line-width 1 :color "#504945"))))
+         '(mode-line ((t :background "#665c54" :foreground "#000000" :box (:line-width 1 :color "#665c54")))))
         (message "Start window system"))
       (message "Start non-window system")))
 ;;run for already-existing frames

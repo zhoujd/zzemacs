@@ -828,3 +828,19 @@ systemctl --user list-timers
 ```
 https://github.com/dylanaraps/fff
 ```
+
+## Watchdog: BUG: soft lockup
+
+```
+## Time 79s
+$ sudo dmesg | grep BUG
+[ 3570.391163] watchdog: BUG: soft lockup - CPU#97 stuck for 79s! [gem5.opt:6002]
+[ 3570.409250] watchdog: BUG: soft lockup - CPU#0 stuck for 79s! [gem5.opt:8883]
+
+## Solution
+$ echo 30 > /proc/sys/kernel/watchdog_thresh
+$ cat /proc/sys/kernel/watchdog_thresh
+
+$ systctl -w kernel.watchdog_thresh=30
+kernel.watchdog_thresh=30
+```

@@ -838,9 +838,10 @@ $ sudo dmesg | grep BUG
 [ 3570.409250] watchdog: BUG: soft lockup - CPU#0 stuck for 79s! [gem5.opt:8883]
 
 ## Solution
-$ echo 30 > /proc/sys/kernel/watchdog_thresh
+## Increased the kernel.watchdog_thresh from 10s (default) to 60s (max).
+$ echo 60 > /proc/sys/kernel/watchdog_thresh
 $ cat /proc/sys/kernel/watchdog_thresh
 
-$ systctl -w kernel.watchdog_thresh=30
-kernel.watchdog_thresh=30
+$ sysctl -w kernel.watchdog_thresh=60
+kernel.watchdog_thresh=60
 ```

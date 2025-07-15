@@ -845,3 +845,17 @@ $ cat /proc/sys/kernel/watchdog_thresh
 $ sysctl -w kernel.watchdog_thresh=60
 kernel.watchdog_thresh=60
 ```
+
+## Isolating pinned CPUs
+
+```
+## With isolcpus kernel parameter
+## Assume using CPUs 4-7
+isolcpus=4-7 nohz_full=4-7
+
+## The chrt command will ensure that the task scheduler will round-robin distribute work
+## (otherwise it will all stay on the first cpu).
+## For taskset, the CPU numbers can be comma- and/or dash-separated,
+## like "0,1,2,3" or "0-4" or "1,7-8,10" etc.
+$ chrt -r 1 taskset -c 4-7 qemu-system-x86_64 ...
+```

@@ -69,33 +69,31 @@
 ;;https://www.emacswiki.org/emacs/RecentFiles
 ;;recentf ext for add dired
 (require 'recentf-ext)
-(setq recentf-auto-cleanup 'never) ;;disable for Tramp Mode
+(recentf-mode t)
+
 (setq recentf-menu-open-all-flag  t
       recentf-max-saved-items     30
       recentf-max-menu-items      30)
+;;disable for Tramp Mode
+(setq recentf-auto-cleanup 'never)
 ;;ignore some files
 (setq recentf-exclude '("COMMIT_MSG"
                         "COMMIT_EDITMSG"
                         ".emacs.d/"
                         ".git/"
                         ".cache/"))
-(add-to-list 'recentf-keep `remote-file-p)
+
 (defun zz/recenf-auto-save ()
   (let ((save-silently t))
     (recentf-save-list)))
-(setq recentf-auto-save-timer
-      (run-with-idle-timer 30 t 'zz/recenf-auto-save))
-(defun no-msg (function)
+(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'zz/recenf-auto-save))
+
+(defun zz/no-msg (function)
   "Prevent FUNCTION from showing `Wrote <FILE>' messages.
 \(The messages are still logged to `*Messages*'.)"
   (let ((inhibit-message  t))
     (funcall function)))
-(advice-add 'recentf-save-list :around 'no-msg)
-(recentf-mode t)
-
-(defadvice recentf-track-closed-file (after push-beginning activate)
-  "Move current buffer to the beginning of the recent list after killed."
-  (recentf-track-opened-file))
+(advice-add 'recentf-save-list :around 'zz/no-msg)
 
 (defun zz/recentf-files ()
   (interactive)

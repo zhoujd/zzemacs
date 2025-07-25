@@ -120,11 +120,15 @@ git config --global mergetool.keepBackup false
 ## git push setting
 git config --global push.default simple
 
-## setup URLs
-## requires git v1.7.10+
+## setup URL
 GITCONFIG_URL=~/.gitconfig-url
 touch $GITCONFIG_URL
 git config --global --add include.path $GITCONFIG_URL
+
+## setup WS
+GITCONFIG_WS=~/.gitconfig-work
+touch $GITCONFIG_WS
+git config --global --add includeif.gitdir:~/work/.path $GITCONFIG_WS
 
 
 echo "git global setup end"

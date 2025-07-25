@@ -77,14 +77,11 @@ git config --global alias.fname "show --pretty=format: --name-only"
 git config --global alias.dname "diff --pretty=format: --name-only"
 
 ## log
-git config --global alias.glog  "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit"
-git config --global alias.lg    "log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset' --abbrev-commit -10"  
+PRETTY="format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'"
+git config --global alias.glog  "log --graph --pretty=$PRETTY --abbrev-commit"
+git config --global alias.lg    "log --graph --pretty=$PRETTY --abbrev-commit -10"  
 git config --global alias.hlog  'log --oneline'
 git config --global alias.hg    'log --oneline -10'
-
-## daemon
-git config --global alias.srv   '!git daemon --base-path=. --export-all --reuseaddr --informative-errors --verbose'
-git config --global alias.hub   '!git daemon --base-path=. --export-all --enable=receive-pack --reuseaddr --informative-errors --verbose'
 
 ## list aliases
 git config --global alias.la    "!git config -l | grep alias | cut -c 7-"
@@ -114,15 +111,13 @@ git config --global difftool.prompt false
 
 ## setup merge setting
 git config --global merge.tool extmerge
-
 git config --global mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode false
-
 git config --global mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.emacs.trustExitCode false
-
 git config --global mergetool.keepBackup false
 
+## git push setting
 git config --global push.default simple
 
 ## setup URLs

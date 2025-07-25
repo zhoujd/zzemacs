@@ -73,8 +73,8 @@ git config --global alias.stp   "stash pop"
 git config --global alias.sts   "stash show --text"
 git config --global alias.ls    "ls-files"
 git config --global alias.ign   "ls-files -o -i --exclude-standard"
-git config --global alias.fname "show --pretty=format: --name-only"
-git config --global alias.dname "diff --pretty=format: --name-only"
+git config --global alias.dn    "diff --pretty=format: --name-only"
+git config --global alias.sn    "show --pretty=format: --name-only"
 
 ## log
 PRETTY="format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'"

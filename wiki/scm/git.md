@@ -266,3 +266,9 @@ Git
     $ pushd $SR_ROOT
     $ echo "Checkout files: file1, dir1 and dir2..."
     $ git sparse-checkout set file1 dir1 dir2 --cone
+
+## Delete remote branches in local .git repo
+
+    $ git fetch --prune
+    or
+    $ git config fetch.prune true

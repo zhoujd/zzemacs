@@ -486,6 +486,7 @@
     (let ((ex-buf '("*Messages*" "*scratch*")))
       (tramp-cleanup-all-buffers)
       (zz/magit-kill-buffers)
+      (eglot-shutdown-all)
       (mapc (lambda (x)
               (cond
                ((not x) t)

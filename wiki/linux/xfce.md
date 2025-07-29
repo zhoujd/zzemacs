@@ -83,6 +83,10 @@ Xfce
     $ sudo add-apt-repository --remove ppa:noobslab/macbuntu
     $ sudo apt update
 
+    ## Github
+    $ git clone https://github.com/libredeb/slingscold
+    $ sudo cp build/slingscold_amd64 /usr/local/bin/
+
 ## Xubuntu ISO
 
     https://xubuntu.org/download

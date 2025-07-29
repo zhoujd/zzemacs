@@ -128,7 +128,7 @@ git config --global --add include.path $GITCONFIG_URL
 ## setup WS
 GITCONFIG_WS=~/.gitconfig-work
 touch $GITCONFIG_WS
-git config --global --add includeif.gitdir:~/work/.path $GITCONFIG_WS
+git config --global includeif.gitdir:~/work/.path $GITCONFIG_WS
 
 
 echo "git global setup end"

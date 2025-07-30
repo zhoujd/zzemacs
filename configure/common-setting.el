@@ -104,8 +104,9 @@
 
 ;;color theme
 (defun zz/load-gruvbox-theme ()
+  "Load gruvbox theme"
   (interactive)
-  (zz/load-path "site-lisp/emacs-gruvbox-themes")
+  (zz/load-path "site-lisp/gruvbox-themes")
   (require 'gruvbox-theme)
   (load-theme 'gruvbox t))
 (zz/load-gruvbox-theme)

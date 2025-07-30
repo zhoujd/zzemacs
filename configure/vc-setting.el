@@ -31,6 +31,7 @@
   ((kbd "M-g M-f") 'magit-file-dispatch))
 (setq magit-completing-read-function 'magit-ido-completing-read)
 (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+(setq magit-section-visibility-indicator '(magit-fringe-bitmap> . magit-fringe-bitmapv))
 (defkeys-map  magit-section-mode-map
   ((kbd "M-1") nil)
   ((kbd "M-2") nil)

@@ -111,7 +111,11 @@
   (zz/load-path "site-lisp/emacs-color-themes")
   (require 'emacs-color-themes)
   (load-theme 'zz t))
-(load-gruvbox-theme)
+(defun load-standard-theme ()
+  (zz/load-path "site-lisp/standard-themes")
+  (require 'standard-themes)
+  (load-theme 'standard-dark t))
+(load-standard-theme)
 
 ;;default-frame-alist or initial-frame-alist
 (add-to-list 'default-frame-alist '(mouse-color . "white"))

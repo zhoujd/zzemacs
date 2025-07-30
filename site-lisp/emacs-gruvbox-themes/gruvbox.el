@@ -97,7 +97,7 @@ Should contain 2 %s constructs to allow for theme name and directory/prefix")
      (cursor                                    (:background gruvbox-light1))
      (mode-line                                 (:background gruvbox-dark3 :foreground gruvbox-light2 :box nil))
      (mode-line-inactive                        (:background gruvbox-dark1 :foreground gruvbox-light4 :box nil))
-     (fringe                                    (:background gruvbox-bg))
+     (fringe                                    (:background gruvbox-dark0_hard))
      (hl-line                                   (:background gruvbox-dark1))
      (region                                    (:background gruvbox-dark2)) ;;selection
      (secondary-selection                       (:background gruvbox-dark1))

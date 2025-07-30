@@ -103,9 +103,15 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;;color theme
-(zz/load-path "site-lisp/emacs-gruvbox-themes")
-(require 'gruvbox-theme)
-(load-theme 'gruvbox t)
+(defun load-gruvbox-theme ()
+  (zz/load-path "site-lisp/emacs-gruvbox-themes")
+  (require 'gruvbox-theme)
+  (load-theme 'gruvbox t))
+(defun load-zz-theme ()
+  (zz/load-path "site-lisp/emacs-color-themes")
+  (require 'emacs-color-themes)
+  (load-theme 'zz t))
+(load-gruvbox-theme)
 
 ;;default-frame-alist or initial-frame-alist
 (add-to-list 'default-frame-alist '(mouse-color . "white"))

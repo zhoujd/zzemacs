@@ -25,13 +25,23 @@
 ;;File log: C-x v l
 (zz/load-path "site-lisp/magit/lisp")
 (require 'magit)
+(setq magit-define-global-key-bindings nil)
+(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+(setq magit-section-visibility-indicator '(magit-fringe-bitmap> . magit-fringe-bitmapv))
+(setq magit-diff-refine-hunk t)
+(setq git-commit-summary-max-length 50)
+(setq git-commit-style-convention-checks '(non-empty-second-line))
+
 (defkeys-map global-map
   ((kbd "M-g M-s") 'magit-status)
   ((kbd "M-g M-d") 'magit-dispatch)
   ((kbd "M-g M-f") 'magit-file-dispatch))
-(setq magit-completing-read-function 'magit-ido-completing-read)
-(setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-(setq magit-section-visibility-indicator '(magit-fringe-bitmap> . magit-fringe-bitmapv))
+
+(defkeys-map  magit-mode-map
+  ((kbd "C-w") nil)
+  ((kbd "M-w") nil))
+
 (defkeys-map  magit-section-mode-map
   ((kbd "M-1") nil)
   ((kbd "M-2") nil)

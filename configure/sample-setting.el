@@ -525,7 +525,7 @@
   (interactive)
   (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
 
-;;; https://www.emacswiki.org/emacs/InsertFileName
+;;https://www.emacswiki.org/emacs/InsertFileName
 (defun zz/insert-file-name (filename &optional args)
   "Insert name of file FILENAME into buffer after point."
   (interactive "*fInsert file name: \nP")
@@ -541,6 +541,21 @@
   (interactive)
   (let (kill-emacs-hook)
     (kill-emacs)))
+
+;;load color themes
+(defun zz/load-zz-theme ()
+  "Load zz theme"
+  (interactive)
+  (zz/load-path "site-lisp/emacs-color-themes")
+  (require 'emacs-color-themes)
+  (load-theme 'zz t))
+
+(defun zz/load-standard-theme ()
+  "Load standard dark theme"
+  (interactive)
+  (zz/load-path "site-lisp/standard-themes")
+  (require 'standard-themes)
+  (load-theme 'standard-dark t))
 
 
 (provide 'sample-setting)

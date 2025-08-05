@@ -505,7 +505,9 @@
                ((not x) t)
                ((eq x old-buf) t)
                ((member (buffer-name x) ex-buf) t)
-               (t (kill-buffer x))))
+               (t (progn
+                    (tramp-cleanup-this-connection)
+                    (kill-buffer x)))))
             (buffer-list)))))
 
 (defun zz/revert-all-buffers ()

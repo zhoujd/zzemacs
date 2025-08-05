@@ -56,9 +56,9 @@
 ;;Shell prompt on shell-prompt-pattern and tramp-shell-prompt-pattern
 ;(setq tramp-shell-prompt-pattern "^[^$>\n]*[#$%>] *\\(\[[0-9;]*[a-zA-Z] *\\)*")
 
-;;Use recentf track remote files
-;(after! recentf
-;  (add-to-list 'recentf-keep `remote-file-p))
+;;Excluding Remote Files from recentf
+;;This ensures that only local and readable files are kept in the recentf list
+(setq recentf-keep '(file-remote-p file-readable-p))
 
 ;;Prevent forbidden reentrant call of tramp
 (add-to-list 'debug-ignored-errors 'remote-file-error)

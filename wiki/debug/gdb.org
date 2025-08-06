@@ -324,3 +324,12 @@ gdb -ex 'set substitute-path . glibc-2.35'  main.out
 #+begin_src sh
 ## Hold shift and use the mouse to select text
 #+end_src sh
+
+** Change UI size in TUI mode
+
+#+begin_src sh
+(gdb) winheight name +count
+(gdb) winheight name -count
+(gdb) winheight src + 10
+(gdb) winheight src - 5
+#+end_src sh

@@ -318,3 +318,9 @@ gdb -ex 'set substitute-path . glibc-2.35'  main.out
 (gdb) macro define offsetof(t, f) &((t *) 0)->f
 (gdb) p offsetof(struct foo, member)
 #+end_src
+
+** Copy content from GDB output window when in TUI mode
+
+#+begin_src sh
+## Hold shift and use the mouse to select text
+#+end_src sh

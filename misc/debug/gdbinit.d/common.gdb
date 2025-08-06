@@ -1,6 +1,6 @@
 ## commond.gdb
 
-## allows to use the commands in ./~gdbinit
+## allow loading the .gdbinit from anywhere on the system
 set auto-load safe-path /
 
 ## history

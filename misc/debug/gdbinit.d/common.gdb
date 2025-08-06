@@ -1,5 +1,8 @@
 ## commond.gdb
 
+## allows to use a current directory initialization file
+set auto-load safe-path /
+
 ## history
 set history filename ~/.gdb_history
 set history save on

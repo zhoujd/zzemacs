@@ -44,55 +44,55 @@
 #
 
 define pvector
-	if $argc == 0
-		help pvector
-	else
-		set $size = $arg0._M_impl._M_finish - $arg0._M_impl._M_start
-		set $capacity = $arg0._M_impl._M_end_of_storage - $arg0._M_impl._M_start
-		set $size_max = $size - 1
-	end
-	if $argc == 1
-		set $i = 0
-		while $i < $size
-			printf "elem[%u]: ", $i
-			p *($arg0._M_impl._M_start + $i)
-			set $i++
-		end
-	end
-	if $argc == 2
-		set $idx = $arg1
-		if $idx < 0 || $idx > $size_max
-			printf "idx1, idx2 are not in acceptable range: [0..%u].\n", $size_max
-		else
-			printf "elem[%u]: ", $idx
-			p *($arg0._M_impl._M_start + $idx)
-		end
-	end
-	if $argc == 3
-	  set $start_idx = $arg1
-	  set $stop_idx = $arg2
-	  if $start_idx > $stop_idx
-	    set $tmp_idx = $start_idx
-	    set $start_idx = $stop_idx
-	    set $stop_idx = $tmp_idx
-	  end
-	  if $start_idx < 0 || $stop_idx < 0 || $start_idx > $size_max || $stop_idx > $size_max
-	    printf "idx1, idx2 are not in acceptable range: [0..%u].\n", $size_max
-	  else
-	    set $i = $start_idx
-		while $i <= $stop_idx
-			printf "elem[%u]: ", $i
-			p *($arg0._M_impl._M_start + $i)
-			set $i++
-		end
-	  end
-	end
-	if $argc > 0
-		printf "Vector size = %u\n", $size
-		printf "Vector capacity = %u\n", $capacity
-		printf "Element "
-		whatis $arg0._M_impl._M_start
-	end
+  if $argc == 0
+    help pvector
+  else
+    set $size = $arg0._M_impl._M_finish - $arg0._M_impl._M_start
+    set $capacity = $arg0._M_impl._M_end_of_storage - $arg0._M_impl._M_start
+    set $size_max = $size - 1
+  end
+  if $argc == 1
+    set $i = 0
+    while $i < $size
+      printf "elem[%u]: ", $i
+      p *($arg0._M_impl._M_start + $i)
+      set $i++
+    end
+  end
+  if $argc == 2
+    set $idx = $arg1
+    if $idx < 0 || $idx > $size_max
+      printf "idx1, idx2 are not in acceptable range: [0..%u].\n", $size_max
+    else
+      printf "elem[%u]: ", $idx
+      p *($arg0._M_impl._M_start + $idx)
+    end
+  end
+  if $argc == 3
+    set $start_idx = $arg1
+    set $stop_idx = $arg2
+    if $start_idx > $stop_idx
+      set $tmp_idx = $start_idx
+      set $start_idx = $stop_idx
+      set $stop_idx = $tmp_idx
+    end
+    if $start_idx < 0 || $stop_idx < 0 || $start_idx > $size_max || $stop_idx > $size_max
+      printf "idx1, idx2 are not in acceptable range: [0..%u].\n", $size_max
+    else
+      set $i = $start_idx
+      while $i <= $stop_idx
+	printf "elem[%u]: ", $i
+	p *($arg0._M_impl._M_start + $i)
+	set $i++
+      end
+    end
+  end
+  if $argc > 0
+    printf "Vector size = %u\n", $size
+    printf "Vector capacity = %u\n", $capacity
+    printf "Element "
+    whatis $arg0._M_impl._M_start
+  end
 end
 
 document pvector
@@ -110,33 +110,33 @@ end
 #
 
 define plist
-	if $argc == 0
-		help plist
-	else
-		set $head = &$arg0._M_impl._M_node
-		set $current = $arg0._M_impl._M_node._M_next
-		set $size = 0
-		while $current != $head
-			if $argc == 2
-				printf "elem[%u]: ", $size
-				p *($arg1*)($current + 1)
-			end
-			if $argc == 3
-				if $size == $arg2
-					printf "elem[%u]: ", $size
-					p *($arg1*)($current + 1)
-				end
-			end
-			set $current = $current._M_next
-			set $size++
-		end
-		printf "List size = %u \n", $size
-		if $argc == 1
-			printf "List "
-			whatis $arg0
-			printf "Use plist <variable_name> <element_type> to see the elements in the list.\n"
-		end
+  if $argc == 0
+    help plist
+  else
+    set $head = &$arg0._M_impl._M_node
+    set $current = $arg0._M_impl._M_node._M_next
+    set $size = 0
+    while $current != $head
+      if $argc == 2
+	printf "elem[%u]: ", $size
+	p *($arg1*)($current + 1)
+      end
+      if $argc == 3
+	if $size == $arg2
+	  printf "elem[%u]: ", $size
+	  p *($arg1*)($current + 1)
 	end
+      end
+      set $current = $current._M_next
+      set $size++
+    end
+    printf "List size = %u \n", $size
+    if $argc == 1
+      printf "List "
+      whatis $arg0
+      printf "Use plist <variable_name> <element_type> to see the elements in the list.\n"
+    end
+  end
 end
 
 document plist
@@ -149,33 +149,33 @@ document plist
 end
 
 define plist_member
-	if $argc == 0
-		help plist_member
-	else
-		set $head = &$arg0._M_impl._M_node
-		set $current = $arg0._M_impl._M_node._M_next
-		set $size = 0
-		while $current != $head
-			if $argc == 3
-				printf "elem[%u]: ", $size
-				p (*($arg1*)($current + 1)).$arg2
-			end
-			if $argc == 4
-				if $size == $arg3
-					printf "elem[%u]: ", $size
-					p (*($arg1*)($current + 1)).$arg2
-				end
-			end
-			set $current = $current._M_next
-			set $size++
-		end
-		printf "List size = %u \n", $size
-		if $argc == 1
-			printf "List "
-			whatis $arg0
-			printf "Use plist_member <variable_name> <element_type> <member> to see the elements in the list.\n"
-		end
+  if $argc == 0
+    help plist_member
+  else
+    set $head = &$arg0._M_impl._M_node
+    set $current = $arg0._M_impl._M_node._M_next
+    set $size = 0
+    while $current != $head
+      if $argc == 3
+	printf "elem[%u]: ", $size
+	p (*($arg1*)($current + 1)).$arg2
+      end
+      if $argc == 4
+	if $size == $arg3
+	  printf "elem[%u]: ", $size
+	  p (*($arg1*)($current + 1)).$arg2
 	end
+      end
+      set $current = $current._M_next
+      set $size++
+    end
+    printf "List size = %u \n", $size
+    if $argc == 1
+      printf "List "
+      whatis $arg0
+      printf "Use plist_member <variable_name> <element_type> <member> to see the elements in the list.\n"
+    end
+  end
 end
 
 document plist_member
@@ -192,113 +192,113 @@ end
 #
 
 define pmap
-	if $argc == 0
-		help pmap
+  if $argc == 0
+    help pmap
+  else
+    set $tree = $arg0
+    set $i = 0
+    set $node = $tree._M_t._M_impl._M_header._M_left
+    set $end = $tree._M_t._M_impl._M_header
+    set $tree_size = $tree._M_t._M_impl._M_node_count
+    if $argc == 1
+      printf "Map "
+      whatis $tree
+      printf "Use pmap <variable_name> <left_element_type> <right_element_type> to see the elements in the map.\n"
+    end
+    if $argc == 3
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	printf "elem[%u].left: ", $i
+	p *($arg1*)$value
+	set $value = $value + sizeof($arg1)
+	printf "elem[%u].right: ", $i
+	p *($arg2*)$value
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
 	else
-		set $tree = $arg0
-		set $i = 0
-		set $node = $tree._M_t._M_impl._M_header._M_left
-		set $end = $tree._M_t._M_impl._M_header
-		set $tree_size = $tree._M_t._M_impl._M_node_count
-		if $argc == 1
-			printf "Map "
-			whatis $tree
-			printf "Use pmap <variable_name> <left_element_type> <right_element_type> to see the elements in the map.\n"
-		end
-		if $argc == 3
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				printf "elem[%u].left: ", $i
-				p *($arg1*)$value
-				set $value = $value + sizeof($arg1)
-				printf "elem[%u].right: ", $i
-				p *($arg2*)$value
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-		end
-		if $argc == 4
-			set $idx = $arg3
-			set $ElementsFound = 0
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				if *($arg1*)$value == $idx
-					printf "elem[%u].left: ", $i
-					p *($arg1*)$value
-					set $value = $value + sizeof($arg1)
-					printf "elem[%u].right: ", $i
-					p *($arg2*)$value
-					set $ElementsFound++
-				end
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-			printf "Number of elements found = %u\n", $ElementsFound
-		end
-		if $argc == 5
-			set $idx1 = $arg3
-			set $idx2 = $arg4
-			set $ElementsFound = 0
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				set $valueLeft = *($arg1*)$value
-				set $valueRight = *($arg2*)($value + sizeof($arg1))
-				if $valueLeft == $idx1 && $valueRight == $idx2
-					printf "elem[%u].left: ", $i
-					p $valueLeft
-					printf "elem[%u].right: ", $i
-					p $valueRight
-					set $ElementsFound++
-				end
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-			printf "Number of elements found = %u\n", $ElementsFound
-		end
-		printf "Map size = %u\n", $tree_size
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
 	end
+	set $i++
+      end
+    end
+    if $argc == 4
+      set $idx = $arg3
+      set $ElementsFound = 0
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	if *($arg1*)$value == $idx
+	  printf "elem[%u].left: ", $i
+	  p *($arg1*)$value
+	  set $value = $value + sizeof($arg1)
+	  printf "elem[%u].right: ", $i
+	  p *($arg2*)$value
+	  set $ElementsFound++
+	end
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
+	else
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
+	end
+	set $i++
+      end
+      printf "Number of elements found = %u\n", $ElementsFound
+    end
+    if $argc == 5
+      set $idx1 = $arg3
+      set $idx2 = $arg4
+      set $ElementsFound = 0
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	set $valueLeft = *($arg1*)$value
+	set $valueRight = *($arg2*)($value + sizeof($arg1))
+	if $valueLeft == $idx1 && $valueRight == $idx2
+	  printf "elem[%u].left: ", $i
+	  p $valueLeft
+	  printf "elem[%u].right: ", $i
+	  p $valueRight
+	  set $ElementsFound++
+	end
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
+	else
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
+	end
+	set $i++
+      end
+      printf "Number of elements found = %u\n", $ElementsFound
+    end
+    printf "Map size = %u\n", $tree_size
+  end
 end
 
 document pmap
@@ -313,79 +313,79 @@ end
 
 
 define pmap_member
-	if $argc == 0
-		help pmap_member
+  if $argc == 0
+    help pmap_member
+  else
+    set $tree = $arg0
+    set $i = 0
+    set $node = $tree._M_t._M_impl._M_header._M_left
+    set $end = $tree._M_t._M_impl._M_header
+    set $tree_size = $tree._M_t._M_impl._M_node_count
+    if $argc == 1
+      printf "Map "
+      whatis $tree
+      printf "Use pmap <variable_name> <left_element_type> <right_element_type> to see the elements in the map.\n"
+    end
+    if $argc == 5
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	printf "elem[%u].left: ", $i
+	p (*($arg1*)$value).$arg2
+	set $value = $value + sizeof($arg1)
+	printf "elem[%u].right: ", $i
+	p (*($arg3*)$value).$arg4
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
 	else
-		set $tree = $arg0
-		set $i = 0
-		set $node = $tree._M_t._M_impl._M_header._M_left
-		set $end = $tree._M_t._M_impl._M_header
-		set $tree_size = $tree._M_t._M_impl._M_node_count
-		if $argc == 1
-			printf "Map "
-			whatis $tree
-			printf "Use pmap <variable_name> <left_element_type> <right_element_type> to see the elements in the map.\n"
-		end
-		if $argc == 5
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				printf "elem[%u].left: ", $i
-				p (*($arg1*)$value).$arg2
-				set $value = $value + sizeof($arg1)
-				printf "elem[%u].right: ", $i
-				p (*($arg3*)$value).$arg4
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-		end
-		if $argc == 6
-			set $idx = $arg5
-			set $ElementsFound = 0
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				if *($arg1*)$value == $idx
-					printf "elem[%u].left: ", $i
-					p (*($arg1*)$value).$arg2
-					set $value = $value + sizeof($arg1)
-					printf "elem[%u].right: ", $i
-					p (*($arg3*)$value).$arg4
-					set $ElementsFound++
-				end
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-			printf "Number of elements found = %u\n", $ElementsFound
-		end
-		printf "Map size = %u\n", $tree_size
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
 	end
+	set $i++
+      end
+    end
+    if $argc == 6
+      set $idx = $arg5
+      set $ElementsFound = 0
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	if *($arg1*)$value == $idx
+	  printf "elem[%u].left: ", $i
+	  p (*($arg1*)$value).$arg2
+	  set $value = $value + sizeof($arg1)
+	  printf "elem[%u].right: ", $i
+	  p (*($arg3*)$value).$arg4
+	  set $ElementsFound++
+	end
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
+	else
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
+	end
+	set $i++
+      end
+      printf "Number of elements found = %u\n", $ElementsFound
+    end
+    printf "Map size = %u\n", $tree_size
+  end
 end
 
 document pmap_member
@@ -402,73 +402,73 @@ end
 #
 
 define pset
-	if $argc == 0
-		help pset
+  if $argc == 0
+    help pset
+  else
+    set $tree = $arg0
+    set $i = 0
+    set $node = $tree._M_t._M_impl._M_header._M_left
+    set $end = $tree._M_t._M_impl._M_header
+    set $tree_size = $tree._M_t._M_impl._M_node_count
+    if $argc == 1
+      printf "Set "
+      whatis $tree
+      printf "Use pset <variable_name> <element_type> to see the elements in the set.\n"
+    end
+    if $argc == 2
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	printf "elem[%u]: ", $i
+	p *($arg1*)$value
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
 	else
-		set $tree = $arg0
-		set $i = 0
-		set $node = $tree._M_t._M_impl._M_header._M_left
-		set $end = $tree._M_t._M_impl._M_header
-		set $tree_size = $tree._M_t._M_impl._M_node_count
-		if $argc == 1
-			printf "Set "
-			whatis $tree
-			printf "Use pset <variable_name> <element_type> to see the elements in the set.\n"
-		end
-		if $argc == 2
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				printf "elem[%u]: ", $i
-				p *($arg1*)$value
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-		end
-		if $argc == 3
-			set $idx = $arg2
-			set $ElementsFound = 0
-			while $i < $tree_size
-				set $value = (void *)($node + 1)
-				if *($arg1*)$value == $idx
-					printf "elem[%u]: ", $i
-					p *($arg1*)$value
-					set $ElementsFound++
-				end
-				if $node._M_right != 0
-					set $node = $node._M_right
-					while $node._M_left != 0
-						set $node = $node._M_left
-					end
-				else
-					set $tmp_node = $node._M_parent
-					while $node == $tmp_node._M_right
-						set $node = $tmp_node
-						set $tmp_node = $tmp_node._M_parent
-					end
-					if $node._M_right != $tmp_node
-						set $node = $tmp_node
-					end
-				end
-				set $i++
-			end
-			printf "Number of elements found = %u\n", $ElementsFound
-		end
-		printf "Set size = %u\n", $tree_size
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
 	end
+	set $i++
+      end
+    end
+    if $argc == 3
+      set $idx = $arg2
+      set $ElementsFound = 0
+      while $i < $tree_size
+	set $value = (void *)($node + 1)
+	if *($arg1*)$value == $idx
+	  printf "elem[%u]: ", $i
+	  p *($arg1*)$value
+	  set $ElementsFound++
+	end
+	if $node._M_right != 0
+	  set $node = $node._M_right
+	  while $node._M_left != 0
+	    set $node = $node._M_left
+	  end
+	else
+	  set $tmp_node = $node._M_parent
+	  while $node == $tmp_node._M_right
+	    set $node = $tmp_node
+	    set $tmp_node = $tmp_node._M_parent
+	  end
+	  if $node._M_right != $tmp_node
+	    set $node = $tmp_node
+	  end
+	end
+	set $i++
+      end
+      printf "Number of elements found = %u\n", $ElementsFound
+    end
+    printf "Set size = %u\n", $tree_size
+  end
 end
 
 document pset
@@ -487,33 +487,33 @@ end
 #
 
 define pdequeue
-	if $argc == 0
-		help pdequeue
-	else
-		set $size = 0
-		set $start_cur = $arg0._M_impl._M_start._M_cur
-		set $start_last = $arg0._M_impl._M_start._M_last
-		set $start_stop = $start_last
-		while $start_cur != $start_stop
-			p *$start_cur
-			set $start_cur++
-			set $size++
-		end
-		set $finish_first = $arg0._M_impl._M_finish._M_first
-		set $finish_cur = $arg0._M_impl._M_finish._M_cur
-		set $finish_last = $arg0._M_impl._M_finish._M_last
-		if $finish_cur < $finish_last
-			set $finish_stop = $finish_cur
-		else
-			set $finish_stop = $finish_last
-		end
-		while $finish_first != $finish_stop
-			p *$finish_first
-			set $finish_first++
-			set $size++
-		end
-		printf "Dequeue size = %u\n", $size
-	end
+  if $argc == 0
+    help pdequeue
+  else
+    set $size = 0
+    set $start_cur = $arg0._M_impl._M_start._M_cur
+    set $start_last = $arg0._M_impl._M_start._M_last
+    set $start_stop = $start_last
+    while $start_cur != $start_stop
+      p *$start_cur
+      set $start_cur++
+      set $size++
+    end
+    set $finish_first = $arg0._M_impl._M_finish._M_first
+    set $finish_cur = $arg0._M_impl._M_finish._M_cur
+    set $finish_last = $arg0._M_impl._M_finish._M_last
+    if $finish_cur < $finish_last
+      set $finish_stop = $finish_cur
+    else
+      set $finish_stop = $finish_last
+    end
+    while $finish_first != $finish_stop
+      p *$finish_first
+      set $finish_first++
+      set $size++
+    end
+    printf "Dequeue size = %u\n", $size
+  end
 end
 
 document pdequeue
@@ -531,19 +531,19 @@ end
 #
 
 define pstack
-	if $argc == 0
-		help pstack
-	else
-		set $start_cur = $arg0.c._M_impl._M_start._M_cur
-		set $finish_cur = $arg0.c._M_impl._M_finish._M_cur
-		set $size = $finish_cur - $start_cur
-        set $i = $size - 1
-        while $i >= 0
-            p *($start_cur + $i)
-            set $i--
-        end
-		printf "Stack size = %u\n", $size
-	end
+  if $argc == 0
+    help pstack
+  else
+    set $start_cur = $arg0.c._M_impl._M_start._M_cur
+    set $finish_cur = $arg0.c._M_impl._M_finish._M_cur
+    set $size = $finish_cur - $start_cur
+    set $i = $size - 1
+    while $i >= 0
+      p *($start_cur + $i)
+      set $i--
+    end
+    printf "Stack size = %u\n", $size
+  end
 end
 
 document pstack
@@ -561,19 +561,19 @@ end
 #
 
 define pqueue
-	if $argc == 0
-		help pqueue
-	else
-		set $start_cur = $arg0.c._M_impl._M_start._M_cur
-		set $finish_cur = $arg0.c._M_impl._M_finish._M_cur
-		set $size = $finish_cur - $start_cur
-        set $i = 0
-        while $i < $size
-            p *($start_cur + $i)
-            set $i++
-        end
-		printf "Queue size = %u\n", $size
-	end
+  if $argc == 0
+    help pqueue
+  else
+    set $start_cur = $arg0.c._M_impl._M_start._M_cur
+    set $finish_cur = $arg0.c._M_impl._M_finish._M_cur
+    set $size = $finish_cur - $start_cur
+    set $i = 0
+    while $i < $size
+      p *($start_cur + $i)
+      set $i++
+    end
+    printf "Queue size = %u\n", $size
+  end
 end
 
 document pqueue
@@ -591,19 +591,19 @@ end
 #
 
 define ppqueue
-	if $argc == 0
-		help ppqueue
-	else
-		set $size = $arg0.c._M_impl._M_finish - $arg0.c._M_impl._M_start
-		set $capacity = $arg0.c._M_impl._M_end_of_storage - $arg0.c._M_impl._M_start
-		set $i = $size - 1
-		while $i >= 0
-			p *($arg0.c._M_impl._M_start + $i)
-			set $i--
-		end
-		printf "Priority queue size = %u\n", $size
-		printf "Priority queue capacity = %u\n", $capacity
-	end
+  if $argc == 0
+    help ppqueue
+  else
+    set $size = $arg0.c._M_impl._M_finish - $arg0.c._M_impl._M_start
+    set $capacity = $arg0.c._M_impl._M_end_of_storage - $arg0.c._M_impl._M_start
+    set $i = $size - 1
+    while $i >= 0
+      p *($arg0.c._M_impl._M_start + $i)
+      set $i--
+    end
+    printf "Priority queue size = %u\n", $size
+    printf "Priority queue capacity = %u\n", $capacity
+  end
 end
 
 document ppqueue
@@ -621,11 +621,11 @@ end
 #
 
 define pbitset
-	if $argc == 0
-		help pbitset
-	else
-        p /t $arg0._M_w
-	end
+  if $argc == 0
+    help pbitset
+  else
+    p /t $arg0._M_w
+  end
 end
 
 document pbitset
@@ -642,14 +642,14 @@ end
 #
 
 define pstring
-	if $argc == 0
-		help pstring
-	else
-		printf "String \t\t\t= \"%s\"\n", $arg0._M_data()
-		printf "String size/length \t= %u\n", $arg0._M_rep()._M_length
-		printf "String capacity \t= %u\n", $arg0._M_rep()._M_capacity
-		printf "String ref-count \t= %d\n", $arg0._M_rep()._M_refcount
-	end
+  if $argc == 0
+    help pstring
+  else
+    printf "String \t\t\t= \"%s\"\n", $arg0._M_data()
+    printf "String size/length \t= %u\n", $arg0._M_rep()._M_length
+    printf "String capacity \t= %u\n", $arg0._M_rep()._M_capacity
+    printf "String ref-count \t= %d\n", $arg0._M_rep()._M_refcount
+  end
 end
 
 document pstring
@@ -664,14 +664,14 @@ end
 #
 
 define pwstring
-	if $argc == 0
-		help pwstring
-	else
-		call printf("WString \t\t= \"%ls\"\n", $arg0._M_data())
-		printf "WString size/length \t= %u\n", $arg0._M_rep()._M_length
-		printf "WString capacity \t= %u\n", $arg0._M_rep()._M_capacity
-		printf "WString ref-count \t= %d\n", $arg0._M_rep()._M_refcount
-	end
+  if $argc == 0
+    help pwstring
+  else
+    call printf("WString \t\t= \"%ls\"\n", $arg0._M_data())
+    printf "WString size/length \t= %u\n", $arg0._M_rep()._M_length
+    printf "WString capacity \t= %u\n", $arg0._M_rep()._M_capacity
+    printf "WString ref-count \t= %d\n", $arg0._M_rep()._M_refcount
+  end
 end
 
 document pwstring

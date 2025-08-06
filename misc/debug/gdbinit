@@ -1,4 +1,5 @@
 ### gdbinit
 
 source ~/.gdbinit.d/common.gdb
+source ~/.gdbinit.d/function.gdb
 source ~/.gdbinit.d/stl-views.gdb

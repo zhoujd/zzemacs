@@ -150,7 +150,7 @@ End with a line saying just "end".
 (gdb)
 
 ## 3.gdb --args This one is simple, but a huge timesaver if you didn't know it
-[~]$ gdb --args pizzamaker --deep-dish --toppings=pepperoni
+$ gdb --args pizzamaker --deep-dish --toppings=pepperoni
 ...
 (gdb) show args
 Argument list to give program being debugged when it is started is
@@ -299,4 +299,22 @@ gdb -ex 'set substitute-path . glibc-2.35'  main.out
 (gdb) set substitute-path from to
 (gdb) unset substitute-path [path]
 (gdb) show substitute-path [path]
+#+end_src
+
+** gdb static build
+
+#+begin_src sh
+## https://github.com/guyush1/gdb-static/releases
+#+end_src
+
+** Print struct
+
+#+begin_src sh
+## print out the definition of a struct or class
+(gdb) ptype test
+(gdb) ptype /o test
+
+## print offsets
+(gdb) macro define offsetof(t, f) &((t *) 0)->f
+(gdb) p offsetof(struct foo, member)
 #+end_src

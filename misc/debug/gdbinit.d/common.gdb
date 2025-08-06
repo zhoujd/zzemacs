@@ -1,6 +1,6 @@
 ## commond.gdb
 
-## allows to use a current directory initialization file
+## allows to use the commands in ./~gdbinit
 set auto-load safe-path /
 
 ## history

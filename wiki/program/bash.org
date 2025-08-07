@@ -247,3 +247,12 @@ main()
 }
 main "$@"
 #+end_src
+
+** Regex match
+
+#+begin_src sh
+if [[ $MERGE_REQUEST_TITLE =~ \[hip:([0-9]+)\] ]]; then
+    FULL=${BASH_REMATCH[0]}
+    VER=${BASH_REMATCH[1]}
+fi
+#+end_src

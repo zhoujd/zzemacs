@@ -9,6 +9,7 @@
 
 SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 SERV_ROOT=$HOME/.config/systemd/user
+BIN_ROOT=/usr/local/bin
 
 install() {
     echo "Install emacs service to $SERV_ROOT"
@@ -20,8 +21,8 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 
 [Service]
 Type=forking
-ExecStart=emacs --daemon
-ExecStop=emacsclient --eval "(let (kill-emacs-hook) (kill-emacs))"
+ExecStart=$BIN_ROOT/emacs --daemon
+ExecStop=$BIN_ROOT/emacsclient --eval "(let (kill-emacs-hook) (kill-emacs))"
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
 

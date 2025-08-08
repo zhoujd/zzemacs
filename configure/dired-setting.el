@@ -35,17 +35,6 @@
 ;  ((kbd "<return>") 'dired-find-alternate-file)
 ;  ((kbd "^")        (lambda () (interactive) (find-alternate-file ".."))))
 
-;;http://www.emacswiki.org/emacs/w32-browser.el
-(when-ms-windows
-  (require 'w32-browser)
-  (eval-after-load "dired"
-    '(defkeys-map dired-mode-map
-       ((kbd "C-c C-e") (lambda ()
-                          (interactive)
-                          (w32-browser (dired-replace-in-string
-                                       "/" "\\"
-                                       (dired-get-filename))))))))
-
 ;;https://github.com/muennich/sxiv
 ;;https://wiki.archlinux.org/title/Sxiv
 (setq dired-guess-shell-alist-user

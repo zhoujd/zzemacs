@@ -81,7 +81,7 @@ all() {
                     run_cmd other
     confirm_execute "Do you want to install third-party? [y/N] " \
                     run_cmd thirdparty
-    echo "Install all done"
+    echo "[all] install done"
 }
 
 usage() {

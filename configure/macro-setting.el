@@ -101,12 +101,6 @@
      (interactive)
      (slime ,lisp)))
 
-;;dired sort
-(defmacro zz/dired-sort (fn-name switch)
-  `(defun ,fn-name ()
-     (interactive)
-     (dired-sort-other (concat dired-listing-switches ,switch))))
-
 ;;gud command
 (defmacro zz/gud-cmd (fn-name cmd)
   `(defun ,fn-name ()

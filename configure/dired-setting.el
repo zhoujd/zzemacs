@@ -46,22 +46,6 @@
                                        "/" "\\"
                                        (dired-get-filename))))))))
 
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (interactive)
-            (make-local-variable  'dired-sort-map)
-            (setq dired-sort-map (make-sparse-keymap))
-            (defkeys-map dired-mode-map
-              ("s"   dired-sort-map))
-            (defkeys-map dired-sort-map
-              ("s"   (zz/dired-sort zz/dired-sort-size     "S"))
-              ("x"   (zz/dired-sort zz/dired-sort-extend   "X"))
-              ("t"   (zz/dired-sort zz/dired-sort-time     "t"))
-              ("n"   (zz/dired-sort zz/dired-sort-name     ""))
-              ("g"   (zz/dired-sort zz/dired-sort-no-group "G"))
-              ("h"   (zz/dired-sort zz/dired-sort-human    "h"))
-              )))
-
 ;;https://github.com/muennich/sxiv
 ;;https://wiki.archlinux.org/title/Sxiv
 (setq dired-guess-shell-alist-user
@@ -133,6 +117,11 @@
 (defkeys-map dired-mode-map
   ((kbd "C-c C-r") 'dired-rsync)
   ((kbd "C-c C-x") 'dired-rsync-transient))
+
+;;push "S" to display a sorting menu
+(require 'dired-quick-sort)
+(dired-quick-sort-setup)
+(setq dired-quick-sort-suppress-setup-warning t)
 
 
 (provide 'dired-setting)

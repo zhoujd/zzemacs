@@ -30,7 +30,7 @@ EOF
 }
 
 font() {
-    TYPE="${1:-user}"
+    TYPE="${1:-system}"
     echo "[font] install to $TYPE"
     case "$TYPE" in
         "system" )
@@ -86,7 +86,10 @@ all() {
 
 usage() {
     local app=$(basename $0)
-    echo "$app {dep|-d|emacs|-e|font|-f|other|-o|thirdparty|-t|all|-a}"
+    cat <<EOF
+$app {dep|-d|emacs|-e|font|-f|other|-o|thirdparty|-t|all|-a}
+$app -f {system|user}     ## system as default
+EOF
 }
 
 case $1 in
@@ -99,8 +102,9 @@ case $1 in
                         run_cmd emacs
         ;;
     font|-f )
+        shift
         confirm_execute "Do you want to install font? [y/N]" \
-                        run_cmd font
+                        run_cmd font $*
         ;;
     other|-o )
         confirm_execute "Do you want to install other? [y/N]" \

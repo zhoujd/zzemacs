@@ -88,7 +88,7 @@ usage() {
     local app=$(basename $0)
     cat <<EOF
 $app {dep|-d|emacs|-e|font|-f|other|-o|thirdparty|-t|all|-a}
-$app -f {system|user}     ## system as default
+$app -f {system|user}     ## default: system
 EOF
 }
 

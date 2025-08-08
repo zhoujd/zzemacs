@@ -118,7 +118,8 @@
   ((kbd "C-c C-r") 'dired-rsync)
   ((kbd "C-c C-x") 'dired-rsync-transient))
 
-;;push "S" to display a sorting menu
+;;Control+u s and pass the -lS switches
+;;S to display a sorting menu
 (require 'dired-quick-sort)
 (dired-quick-sort-setup)
 (setq dired-quick-sort-suppress-setup-warning t)

@@ -29,11 +29,13 @@
 ;;Disabled commands
 (put 'dired-find-alternate-file 'disabled nil)
 
-;;If you want Enter ↵ and ^ (parent dir) to use the same buffer
-;;put the following in your emacs init file:
+;;Enter ↵ and ^ (parent dir) to use the same buffer
 ;(defkeys-map dired-mode-map
 ;  ((kbd "<return>") 'dired-find-alternate-file)
 ;  ((kbd "^")        (lambda () (interactive) (find-alternate-file ".."))))
+
+;;Reuse buffer for directories
+;(require 'dired-single)
 
 ;;https://github.com/muennich/sxiv
 ;;https://wiki.archlinux.org/title/Sxiv

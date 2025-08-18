@@ -510,7 +510,7 @@
 (require 'find-file-rg)
 
 ;;elgrep
-(require 'elgrep)
+;(require 'elgrep)
 
 ;;Yet Another Scroll Bar Mode
 ;(require 'yascroll)

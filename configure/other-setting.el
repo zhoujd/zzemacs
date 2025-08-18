@@ -4,9 +4,6 @@
 (zz/load-path "site-lisp")
 (zz/load-path "elisp")
 
-;;emacs session
-(require 'emacs-session)
-
 ;;Filecode Autoprocess
 ;;distct with mpg123
 (require 'unicad)

@@ -2,7 +2,7 @@
 
 GIT=$(command -v git)
 SED=$(command -v sed)
-DIR=$(${GIT} rev-parse --show-toplevel)
+DIR=$(${GIT} rev-parse --show-toplevel 2>/dev/null)
 
 if [ -d "${DIR}/.git/" ] && [ -n "${GIT}" ]
 then

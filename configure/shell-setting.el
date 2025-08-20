@@ -315,7 +315,7 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz/comint-hook ()
   (defkeys-map comint-mode-map
-    ((kbd "C-c M-o") 'zz/clear-input)))
+    ((kbd "C-c M-l") 'zz/clear-input)))
 (add-hook 'comint-mode-hook 'zz/comint-hook)
 
 (add-hook 'comint-output-filter-functions

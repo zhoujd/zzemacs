@@ -104,6 +104,7 @@
   (kbd "M-0")       'gdb-restore-windows
 
   (kbd "M-#")       'query-replace-regexp
+  (kbd "M-o")       'other-window
   ))
 
 (apply-keys-to-map

@@ -492,7 +492,6 @@ Dmitriy Igrishin's patched version of comint.el."
   (interactive)
   (company-complete-selection)
   (comint-send-input))
-
 (defun zz/shell-company-hook ()
   (company-mode t)
   (defkeys-map shell-mode-map

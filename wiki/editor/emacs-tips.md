@@ -55,3 +55,14 @@ Emacs Tips
      (c++-mode
       (indent-tabs-mode . nil)
       (c-basic-offset . 4)))
+
+
+## The 'M-o' in Emacs 28.1
+
+    The 'M-o' ('facemenu-keymap') global binding has been removed.
+    To restore the old binding, say something like:
+
+    (require 'facemenu)
+    (define-key global-map "\M-o" 'facemenu-keymap)
+    (define-key facemenu-keymap "\es" 'center-line)
+    (define-key facemenu-keymap "\eS" 'center-paragraph)

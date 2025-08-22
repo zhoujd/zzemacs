@@ -9,6 +9,7 @@ GitLab
 ## https://docs.gitlab.com/ci/variables/
 ## https://docs.gitlab.com/api/
 ## https://docs.gitlab.com/api/api_resources/
+## https://docs.gitlab.com/api/rest/authentication/
 ```
 
 ## Creating Gitlab Runner Tags on the Registration Process
@@ -134,5 +135,6 @@ job-4:
 ## Retrieve the status of a GitLab CI/CD pipeline using the REST API
 
 ```
-$ curl --header "PRIVATE-TOKEN: <your_access_token>" "https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>"
+$ curl --header "PRIVATE-TOKEN: <your_access_token>" \
+     "https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>"
 ```

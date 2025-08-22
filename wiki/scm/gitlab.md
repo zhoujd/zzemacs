@@ -128,3 +128,9 @@ job-4:
 ## Download the script and rename to gitlab-runner and put it into /usr/bin
 ## https://github.com/libstatgrab/libstatgrab-ci/blob/master/gitlab-runner-shim.sh
 ```
+
+## Retrieve the status of a GitLab CI/CD pipeline using the REST API
+
+```
+$ curl --header "PRIVATE-TOKEN: <your_access_token>" "https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>"
+```

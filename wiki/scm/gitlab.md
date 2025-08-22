@@ -135,6 +135,7 @@ job-4:
 ## Retrieve the status of a GitLab CI/CD pipeline using the REST API
 
 ```
-$ curl --header "PRIVATE-TOKEN: <your_access_token>" \
-     "https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>"
+$ curl --header "PRIVATE-TOKEN: <token>" \
+       https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>
+$ curl https://gitlab.com/api/v4/projects/<project_id>/pipelines/<pipeline_id>?private_token=<token>
 ```

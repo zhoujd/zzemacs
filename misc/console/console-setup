@@ -1,0 +1,18 @@
+# CONFIGURATION FILE FOR SETUPCON
+
+# Consult the console-setup(5) manual page.
+# sudo cp -fv console-setup /etc/default/
+# sudo setupcon
+
+ACTIVE_CONSOLES="/dev/tty[1-6]"
+
+CHARMAP="UTF-8"
+
+CODESET="Lat15"
+
+#FONTFACE="Fixed"
+#FONTSIZE="8x16"
+
+# The following is an example how to use a braille font
+# FONT='lat9w-08.psf.gz brl-8x8.psf'
+FONT='spleen-8x16.psfu.gz'

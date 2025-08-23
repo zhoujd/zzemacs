@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install() {
+font() {
     echo "Install console font"
     sudo cp -fv font/* /usr/share/consolefonts
     echo "Set Font"
@@ -8,21 +8,25 @@ install() {
     echo "Install font done"
 }
 
-config() {
+conf() {
     sudo cp -fv console-setup /etc/default/
     sudo setupcon
     showconsolefont
-    echo "Config font done"
+    echo "Install config done"
 }
 
 case $1 in
-    install|-i )
-        install
+    font|-f )
+        font
         ;;
-    config|-c )
-        config
+    conf|-c )
+        conf
+        ;;
+    all|-a )
+        font
+        conf
         ;;
     * )
-        echo "Usage: $(basename $0) {install|-i|config|-c}"
+        echo "Usage: $(basename $0) {font|-f|conf|-c|all|-a}"
         ;;
 esac

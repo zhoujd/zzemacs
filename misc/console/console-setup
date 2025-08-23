@@ -3,6 +3,7 @@
 # Consult the console-setup(5) manual page.
 # sudo cp -fv console-setup /etc/default/
 # sudo setupcon
+# showconsolefont
 
 ACTIVE_CONSOLES="/dev/tty[1-6]"
 

@@ -10,8 +10,12 @@ font() {
 
 conf() {
     sudo cp -fv console-setup /etc/default/
-    sudo setupcon
-    showconsolefont
+    if [ -z "$DISPLAY" ]; then
+        sudo setupcon
+        showconsolefont
+    else
+        echo "Please run conf on console"
+    fi
     echo "Install config done"
 }
 

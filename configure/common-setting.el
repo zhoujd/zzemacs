@@ -68,7 +68,7 @@
                             "WenQuanYi Zen Hei Mono 13"
                             ))
 (defconst zz/cn-font-list '(
-                            "SF Mono SC"
+                            "PingFang SC"
                             "Droid Sans Fallback"
                             "Microsoft YaHei Mono"
                             ))

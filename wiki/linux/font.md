@@ -23,3 +23,10 @@ $ sudo apt install fontforge
 $ git clone --depth=1 https://github.com/ryanoasis/nerd-fonts.git
 $ fontforge -script nerd-fonts/font-patcher -s -c tmpfont/SFMono-Medium.otf -out ./tmpfont/patched
 ```
+
+## SF Pro SC Font
+
+```
+## https://github.com/Pudge1996/SF-Pro-Zh
+## https://github.com/ShmilyHTT/PingFang
+```

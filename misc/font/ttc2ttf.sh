@@ -1,9 +1,14 @@
 #!/bin/bash
 
-if [ $# < 1 ]; then
+SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
+if [ $# -ne 1 ]; then
     echo "Usage $(basename $0) /path/to/file.ttc"
     exit 1
 fi
 
-SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-fontforge -script $SCRIPT_ROOT/scripts/ttc2ttf.pe $1
+file=$1
+script=$SCRIPT_ROOT/scripts/ttc2ttf.pe
+fontforge -script $script  $file
+
+echo "Extact $file finished."

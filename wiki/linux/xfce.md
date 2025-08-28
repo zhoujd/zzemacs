@@ -218,7 +218,9 @@ Xfce
 
     ## https://unix.stackexchange.com/questions/159205/a-quit-command-weaker-than-windowkill
     $ xdotool getwindowfocus windowkill
-    $ perl -MX11::Protocol -MX11::Protocol::WM -e '$X = X11::Protocol::new(); X11::Protocol::WM::set_wm_protocol($X, ($X->GetInputFocus())[0], "WM_DELETE_WINDOW")'
+    $ perl -MX11::Protocol -MX11::Protocol::WM \
+           -e '$X = X11::Protocol::new(); \
+               X11::Protocol::WM::set_wm_protocol($X, ($X->GetInputFocus())[0], "WM_DELETE_WINDOW")'
     $ wmctrl -c :ACTIVE:
 
 ## Setup Evolution Email Client on Ubuntu

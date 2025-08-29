@@ -62,6 +62,7 @@
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz/en-font-list '(
                             "SF Mono 13"
+                            "SF Mono Nerd 13"
                             "JetBrains Mono NL 13"
                             "Droid Sans Mono SW 13"
                             "WenQuanYi Zen Hei Mono 13"

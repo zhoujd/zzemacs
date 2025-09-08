@@ -3,4 +3,4 @@
 NNN_INS=nnn
 NNN_CMD="nnn -e"
 
-exec st -n $NNN_INS -e $NNN_CMD "$@"
+exec st -n $NNN_INS -e $NNN_CMD "$@" 2>/dev/null

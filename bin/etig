@@ -8,7 +8,7 @@ case $1 in
         toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
         if [ -n "$toplevel" ]; then
             repo=$(basename $toplevel)
-            exec st -t "tig:$repo $$@$(hostname)" -e tig "$@" >/dev/null 2>&1
+            exec st -t "tig:$repo $$@$(hostname)" -e tig "$@" 2>/dev/null
         else
             echo "etig: Not a git repository"
         fi

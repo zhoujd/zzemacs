@@ -123,3 +123,8 @@ cls() {
 gdbtool() {
     emacs -nw --eval "(gdb \"gdb -i=mi $*\")"
 }
+
+dirtree() {
+    ls -R | grep :*/ | grep ':$' | \
+        sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+}

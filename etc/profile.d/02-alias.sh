@@ -73,8 +73,6 @@ alias iptlistfw='sudo /sbin/iptables -L FORWORD -n -v --line-numbers'
 alias firewall='iptlist'
 
 ## edit alias
-alias et='emacsclient -t'
-alias ec='emacsclient -c'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 

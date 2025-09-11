@@ -6,4 +6,4 @@ else
     OPT=-c
 fi
 
-emacsclient $OPT -e '(progn (magit-status) (delete-other-windows))' >/dev/null
+emacsclient $OPT -n -e '(progn (magit-status) (delete-other-windows))' >/dev/null

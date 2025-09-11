@@ -1,4 +1,4 @@
 ### editor
 
-export EDITOR=em
-export VISUAL=em
+export EDITOR=ec
+export VISUAL=ec

@@ -101,7 +101,7 @@ alias cgdb='cgdb -q'
 case $TERM in
     dumb* | emacs* )
         alias tig='etig'
-        alias em='ems'
+        alias ee='eee'
         alias me='eme'
         alias mg='emg'
         alias nnn='ennn'

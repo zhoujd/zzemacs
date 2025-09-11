@@ -272,3 +272,8 @@ Git
     $ git fetch --prune
     or
     $ git config fetch.prune true
+
+## Get latest tag
+
+    $ git fetch --tags
+    $ git tag --sort=version:refname | grep -v pre | tail -1

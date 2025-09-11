@@ -104,6 +104,6 @@ case $TERM in
         alias em='ems'
         alias me='eme'
         alias mg='emg'
-        alias nnn='enn'
+        alias nnn='ennn'
         ;;
 esac

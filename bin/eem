@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec st -e em "$@" 2>/dev/null

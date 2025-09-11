@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -z $DISPLAY ]; then
+    OPT=-t
+else
+    OPT=-c
+fi
+
+emacsclient $OPT -e "(find-file (concat \"/sudo:localhost:\" (expand-file-name \"$1\" \"$PWD\")))" >/dev/null 2>&1

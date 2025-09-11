@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/bin/sh
+
+if [ -z $DISPLAY ]; then
+    OPT=-t
+else
+    OPT=-c
+fi
 
 SOCK_PATH=/tmp/emacs1000/ee
-emacsclient -n -c -s $SOCK_PATH
+emacsclient -n $OPT -s $SOCK_PATH

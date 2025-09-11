@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec st -e mg "$@" 2>/dev/null
+exec st -t "mg $$@$(hostname)" -e mg "$@" 2>/dev/null

@@ -277,3 +277,9 @@ Git
 
     $ git fetch --tags
     $ git tag --sort=version:refname | grep -v pre | tail -1
+
+## Show special file/dir of any commit
+
+    $ git show 2fd4e9d8:bin/git-ver.sh
+    $ git show 1.0:README.md
+    $ git show HEAD~1:bin/

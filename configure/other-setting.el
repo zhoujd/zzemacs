@@ -95,6 +95,18 @@
     (funcall function)))
 (advice-add 'recentf-save-list :around 'zz/no-msg)
 
+(defun zz/suppress-messages (func &rest args)
+  "Suppress message output from FUNC."
+  ;; Some packages are too noisy.
+  ;; https://superuser.com/questions/669701/emacs-disable-some-minibuffer-messages
+  (cl-flet ((silence (&rest args1) (ignore)))
+    (advice-add 'message :around #'silence)
+    (unwind-protect
+        (apply func args)
+      (advice-remove 'message #'silence))))
+;; Suppress "Cleaning up the recentf...done (0 removed)"
+(advice-add 'recentf-cleanup :around #'zz/suppress-messages)
+
 (defun zz/recentf-files ()
   (interactive)
    (let* ((all-files recentf-list)

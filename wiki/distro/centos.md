@@ -132,3 +132,33 @@ $ hello.sh
 ## Use rpmlint to validate your SPEC file for errors
 $ rpmlint ~/rpmbuild/SPECS/hello.spec
 ```
+
+## How to create a Linux RPM package
+
+```
+## https://www.redhat.com/en/blog/create-rpm-package
+$ tree ~/rpmbuild/
+/home/tux/rpmbuild/
+├── BUILD
+│   └── hello-0.0.1
+│       ├── hello.sh
+├── BUILDROOT
+├── RPMS
+│   └── noarch
+│       └── hello-0.0.1-1.el8.noarch.rpm
+├── SOURCES
+│   └── hello-0.0.1.tar.gz
+├── SPECS
+│   └── hello.spec
+└── SRPMS
+
+## Verify the package has been installed
+$ rpm -qi hello
+$ rpm -q hello --changelog
+$ rpm -ql hello
+/usr/bin/hello.sh
+
+## Removing the RPM package
+$ sudo dnf remove hello
+$ sudo rpm --verbose --erase hello
+```

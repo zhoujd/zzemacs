@@ -543,3 +543,7 @@ Docker
 
     $ https://download.docker.com/linux/static/stable/
     $ https://download.docker.com/linux/static/stable/x86_64/
+
+## Docker import from xz
+
+    $ docker load < /path/to/your_image.tar.xz

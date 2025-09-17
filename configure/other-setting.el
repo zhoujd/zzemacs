@@ -85,6 +85,9 @@
     (recentf-save-list)))
 (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'zz/recenf-auto-save))
 
+;;This ensures that only local and readable files are kept in the recentf list
+(setq recentf-keep '(file-remote-p file-readable-p))
+
 (defun zz/no-msg (function)
   "Prevent FUNCTION from showing `Wrote <FILE>' messages.
 \(The messages are still logged to `*Messages*'.)"

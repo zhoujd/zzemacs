@@ -538,3 +538,8 @@ Docker
     $ docker pull ubuntu
     $ docker tag ubuntu localhost:5000/ubuntu
     $ docker push localhost:5000/ubuntu
+
+## Docker static build
+
+    $ https://download.docker.com/linux/static/stable/
+    $ https://download.docker.com/linux/static/stable/x86_64/

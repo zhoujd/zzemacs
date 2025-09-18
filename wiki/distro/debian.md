@@ -57,10 +57,67 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 
 # Add the repository to Apt sources:
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
+  https://download.docker.com/linux/debian \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io \
+    docker-buildx-plugin docker-compose-plugin
 sudo docker run hello-world
+```
+
+## How to Create a Simple Debian Package
+
+```
+Step 1: Prepare the Files
+
+First, create a working directory and prepare your application files.
+For example, let's create a script and a configuration file:
+
+$ mkdir -p ~/myapp/{bin,etc}
+$ echo -e '#!/bin/bash\necho "Hello, World!"' > ~/myapp/bin/myapp.sh
+$ echo 'NAME=MyApp' > ~/myapp/etc/myapp.conf
+
+Step 2: Create the Control File
+
+Next, create a DEBIAN directory and a control file with package metadata:
+
+$ mkdir ~/myapp/DEBIAN
+$ cat <<EOF > ~/myapp/DEBIAN/control
+Package: myapp
+Version: 1.0-1
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Your Name <you@example.com>
+Description: My simple app
+EOF
+
+Step 3: Build the Package
+
+Use the dpkg-deb command to build the package:
+
+$ dpkg-deb --build ~/myapp
+
+This will create a myapp.deb file in your working directory.
+
+Step 4: Verify the Package
+
+You can verify the contents of the package using the dpkg command:
+
+$ dpkg -c myapp.deb
+
+Step 5: Install and Test
+
+Finally, install and test your package:
+
+$ sudo dpkg -i myapp.deb
+$ myapp.sh
+
+This should output "Hello, World!" if everything is set up correctly
+By following these steps, you can create a simple .deb package for your application
+
+For more complex packages, additional steps like dependency
+management and post-install scripts may be required.
 ```

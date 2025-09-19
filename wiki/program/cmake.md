@@ -26,7 +26,6 @@ set(CPACK_RPM_PACKAGE_ARCHITECTURE "x86_64") # Adjust as needed
 set(CPACK_PACKAGING_INSTALL_PREFIX "/usr")
 include(CPack)
 
-
 # Include additional files or dependencies if necessary
 install(TARGETS your_target DESTINATION bin)
 

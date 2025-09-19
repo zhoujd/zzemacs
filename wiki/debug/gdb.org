@@ -333,3 +333,9 @@ gdb -ex 'set substitute-path . glibc-2.35'  main.out
 (gdb) winheight src + 10
 (gdb) winheight src - 5
 #+end_src sh
+
+** GDB static build
+
+#+begin_src sh
+## https://github.com/guyush1/gdb-static
+#+end_src sh

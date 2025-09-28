@@ -484,14 +484,15 @@
   (interactive)
   (when (yes-or-no-p "Really kill all buffers")
     (let ((ex-buf '("*Messages*" "*scratch*")))
-      (tramp-cleanup-all-buffers)
       (zz/magit-kill-buffers)
       (eglot-shutdown-all)
       (mapc (lambda (x)
               (cond
                ((not x) t)
                ((member (buffer-name x) ex-buf) t)
-               (t (kill-buffer x))))
+               (t (progn
+                    (tramp-cleanup-this-connection)
+                    (kill-buffer x)))))
             (buffer-list)))))
 
 (defun zz/kill-other-buffers ()

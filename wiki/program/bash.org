@@ -256,3 +256,30 @@ if [[ $MERGE_REQUEST_TITLE =~ \[hip:([0-9]+)\] ]]; then
     VER=${BASH_REMATCH[1]}
 fi
 #+end_src
+
+** Parse Input Parameters
+
+#+BEGIN_SRC sh
+# Default
+CMD=${1:-help}; shift || true
+BUILD_TYPE=${BUILD_TYPE:-Release}
+PACKAGE_TYPE=${PACKAGE_TYPE:-tar}
+PREFIX=${PREFIX:-/usr/local}
+JOBS=${JOBS:-$(nproc)}
+VARIANT=${VARIANT:-app}
+RELEASE=${RELEASE:-1}
+
+# Parse
+while [[ $# -gt 0 ]]; do
+case "$1" in
+    --build-type) BUILD_TYPE="$2"; shift 2;;
+    --type) PACKAGE_TYPE="$2"; shift 2;;
+    --prefix) PREFIX="$2"; shift 2;;
+    --jobs) JOBS="$2"; shift 2;;
+    --variant) VARIANT="$2"; shift 2;;
+    --release) RELEASE="$2"; shift 2;;
+    --help|-h) usage; exit 0;;
+    *) echo "Unknown: $1"; usage; exit 1;;
+esac
+done
+#+END_SRC

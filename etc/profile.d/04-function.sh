@@ -112,7 +112,7 @@ testmicrophone() {
 
 cls() {
     case $TERM in
-        rxvt-256color | xterm )
+        rxvt* | xterm* | st* )
             echo -ne '\033c'
             ;;
         * )

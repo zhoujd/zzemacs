@@ -105,5 +105,7 @@ case $TERM in
         alias me='eme'
         alias mg='emg'
         alias nnn='enn'
+        alias vim='st -e vim'
+        alias vi='st -e vi'
         ;;
 esac

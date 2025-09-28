@@ -283,3 +283,11 @@ Git
     $ git show 2fd4e9d8:bin/git-ver.sh
     $ git show 1.0:README.md
     $ git show HEAD~1:bin/
+
+## Tools for multiple git repositories (short for Multiple Repositories)
+
+    ## https://github.com/fabioz/mu-repo
+    ## https://github.com/nosarthur/gita
+    ## https://github.com/rubensworks/git-multi-repo.sh
+    ## https://github.com/esrlabs/git-repo
+    ## https://code.google.com/archive/p/git-repo/

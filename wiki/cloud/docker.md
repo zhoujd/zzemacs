@@ -547,3 +547,10 @@ Docker
 ## Docker import from xz
 
     $ docker load < /path/to/your_image.tar.xz
+
+## Make a symlinked folder appear as a normal folder
+
+    ## mount the directory instead of linking to it
+    ## mount --bind olddir newdir
+    $ mkdir shared
+    $ sudo mount -o bind ../shared shared

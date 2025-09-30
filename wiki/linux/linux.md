@@ -859,3 +859,11 @@ isolcpus=4-7 nohz_full=4-7
 ## like "0,1,2,3" or "0-4" or "1,7-8,10" etc.
 $ chrt -r 1 taskset -c 4-7 qemu-system-x86_64 ...
 ```
+
+## Packing with fpm
+
+```
+## https://fpm.readthedocs.io/en/latest/getting-started.html
+## https://github.com/jordansissel/fpm
+$ fpm -s dir -t deb -n vim74 ~/vim/
+```

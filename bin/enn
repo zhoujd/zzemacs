@@ -4,4 +4,11 @@ INS=nnn
 CMD="nnn"
 TITLE="nnn $$@$(hostname)"
 
-exec st -t "$TITLE" -n "$INS" -e "$CMD" "-e" 2>/dev/null
+case $1 in
+    -h|--help|-V )
+        exec nnn "$@"
+        ;;
+    * )
+        exec st -t "$TITLE" -n "$INS" -e "$CMD" "-e" 2>/dev/null
+        ;;
+esac

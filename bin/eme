@@ -1,3 +1,10 @@
 #!/bin/sh
 
-exec st -t "me $$@$(hostname)" -e me "$@" 2>/dev/null
+case $1 in
+    -V|-h )
+        exec me "$@"
+        ;;
+    * )
+        exec st -t "me $$@$(hostname)" -e me "$@" 2>/dev/null
+        ;;
+esac

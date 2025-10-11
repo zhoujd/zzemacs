@@ -242,6 +242,7 @@ QEMU
     -numa node,cpus=8-11,nodeid=2 \
     -numa node,cpus=12-15,nodeid=3 \
     $ lscpu
+
     ## Use the -numa dist option to add on the specific NUMA distances
     -smp cpus=16 -numa node,cpus=0-3,nodeid=0 \
     -numa node,cpus=4-7,nodeid=1 \
@@ -254,3 +255,10 @@ QEMU
     -numa dist,src=1,dst=2,val=20 \
     -numa dist,src=1,dst=3,val=20
     $ numactl --hardware
+
+    ## Configuring NUMA Memory in QEMU
+    -m 8G -smp cpus=4 \
+    -object memory-backend-ram,size=4G,id=m0 \
+    -object memory-backend-ram,size=4G,id=m1 \
+    -numa node,cpus=0-1,nodeid=0,memdev=m0 \
+    -numa node,cpus=2-3,nodeid=1,memdev=m1

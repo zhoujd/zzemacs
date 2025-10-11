@@ -233,3 +233,24 @@ QEMU
     ## The MAC here is arbitrary, 52:54:00 is the qemu prefix and the rest can be whatever as long as
     ## it doesn’t conflict with an existing virtual NIC on your network.
     ## The br should obviously match whatever you’ve called your network bridge.
+
+## How to configure NUMA nodes with QEMU
+
+    ## https://futurewei-cloud.github.io/ARM-Datacenter/qemu/how-to-configure-qemu-numa-nodes/
+    -smp cpus=16 -numa node,cpus=0-3,nodeid=0 \
+    -numa node,cpus=4-7,nodeid=1 \
+    -numa node,cpus=8-11,nodeid=2 \
+    -numa node,cpus=12-15,nodeid=3 \
+    $ lscpu
+    ## Use the -numa dist option to add on the specific NUMA distances
+    -smp cpus=16 -numa node,cpus=0-3,nodeid=0 \
+    -numa node,cpus=4-7,nodeid=1 \
+    -numa node,cpus=8-11,nodeid=2 \
+    -numa node,cpus=12-15,nodeid=3 \
+    -numa dist,src=0,dst=1,val=15 \
+    -numa dist,src=2,dst=3,val=15 \
+    -numa dist,src=0,dst=2,val=20 \
+    -numa dist,src=0,dst=3,val=20 \
+    -numa dist,src=1,dst=2,val=20 \
+    -numa dist,src=1,dst=3,val=20
+    $ numactl --hardware

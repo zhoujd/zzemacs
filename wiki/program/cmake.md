@@ -61,3 +61,10 @@ Ensure all installed files are included in the package using install() commands 
 Test the RPM installation on a clean system or container.
 This approach ensures a clean and portable way to create RPM packages directly from your CMake project.
 ```
+
+## Use shared libraries VERSION and SOVERSION
+
+```
+## https://cmake.org/cmake/help/latest/prop_tgt/SOVERSION.html
+## set_target_properties(mylib PROPERTIES VERSION 1.2.3 SOVERSION 1)
+```

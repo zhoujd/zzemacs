@@ -283,3 +283,13 @@ case "$1" in
 esac
 done
 #+END_SRC
+
+** Calculate time difference between two dates
+
+#+BEGIN_SRC sh
+a=$(date +%s%N)
+sleep 1.234
+b=$(date +%s%N)
+diff=$((b-a))
+printf "%s.%s seconds passed\n" "${diff:0: -9}" "${diff: -9:3}"
+#+END_SRC

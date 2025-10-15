@@ -5,8 +5,8 @@ repo
 
 ```
 $ curl https://storage.googleapis.com/git-repo-downloads/repo > repo
+$ chmod +x repo
 $ sudo mv repo /usr/local/bin/
-$ sudo chmod a+x /usr/local/bin/repo
 ```
 
 ## Downloading repo source

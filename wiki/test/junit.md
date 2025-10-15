@@ -84,3 +84,11 @@ echo "Elapsed time is: $elapsed seconds"
 ```
 testcase|time|Test execution time in seconds
 ```
+
+## Floating-Point Division (Including Milliseconds as Decimals)
+
+```
+milliseconds=2500
+seconds=$(echo "scale=3; $milliseconds / 1000" | bc)
+echo "Seconds: $seconds" # Output: Seconds: 2.500
+```

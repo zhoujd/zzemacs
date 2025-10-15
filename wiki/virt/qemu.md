@@ -262,3 +262,8 @@ QEMU
     -object memory-backend-ram,size=4G,id=m1 \
     -numa node,cpus=0-1,nodeid=0,memdev=m0 \
     -numa node,cpus=2-3,nodeid=1,memdev=m1
+
+## Read-only file system issue
+
+    ## Copy to a new image, then start QEMU with the new image
+    $ cp <readonly-img> <new-image>

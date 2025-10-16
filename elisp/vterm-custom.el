@@ -9,8 +9,6 @@
 (require 'vterm-toggle)
 
 (defun zz/vterm-hook ()
-  (defkeys-map global-map
-    ((kbd "C-c v") vterm-mode-map))
   (defkeys-map vterm-mode-map
     ((kbd "C-c M-o") 'vterm-clear))
   (defkeys-map vterm-copy-mode-map

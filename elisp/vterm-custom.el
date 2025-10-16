@@ -16,6 +16,19 @@
 
 (add-hook 'vterm-mode-hook 'zz/vterm-hook)
 
+(defun zz/get-vterm ()
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory (file-name-as-directory
+                               (ido-read-directory-name "Directory: "))))
+      (multi-vterm))))
+
+(defun zz/home-vterm ()
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory "~"))
+      (multi-vterm))))
+
 
 (provide 'vterm-custom)
 

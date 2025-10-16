@@ -102,16 +102,21 @@
   (term-char-mode)
   (message "Term-Copy mode disabled in current buffer"))
 
-;;key set for term
+;;disable mode-line update
+(defun term-update-mode-line () t)
+
+;;keybindings in term mode
+;;`term-raw-map' in char mode
+;;`term-mode-map' in line mode
 (add-hook 'term-mode-hook
           (lambda ()
-            (defkeys-map term-raw-map  ;; char mode
+            (defkeys-map term-raw-map
               ((kbd "C-c C-t") 'zz/term-enable-copy)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
               ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode))
-            (defkeys-map term-mode-map ;; line mode
+            (defkeys-map term-mode-map
               ((kbd "C-c C-t") 'zz/term-disable-copy)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)

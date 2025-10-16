@@ -37,8 +37,6 @@
   (kbd "SPC")     'er/expand-region
   (kbd "RET")     'zz/sudo-edit-current-file
   (kbd "TAB")     'zz/insert-file-name
-  (kbd "`")       'ztree-diff-1
-  (kbd "M-`")     'ztree-dir-1
   (kbd "/")       'zz/ctrl-z-help
   (kbd "a")       'zz/display-current-time
   (kbd "C-a")     'helm-world-time
@@ -47,6 +45,7 @@
   (kbd "d")       'zz/nnn
   (kbd "C-d")     'zz/helm-nnn
   (kbd "M-d")     'docker
+  (kbd "m")       'man
   (kbd "n")       'neotree-toggle
   (kbd "o")       'zz/last-buffer-go
   (kbd "C-p")     'proced
@@ -56,13 +55,15 @@
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
-  (kbd "M-v")     'zz/evil-toggle
+  (kbd "v")       'zz/evil-toggle
   (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo
   (kbd ".")       'winner-redo
-  (kbd "\\")      'zz/ssh
-  (kbd "M-m")     'man
+  (kbd "|")       'ztree-diff-1
+  (kbd "~")       'ztree-dir-1
+  (kbd "\\")      'zz/get-vterm
+  (kbd "`")       'zz/home-vterm
   ))
 
 (apply-keys-to-map

@@ -8,8 +8,12 @@
   (require 'multi-vterm)
   (require 'vterm-toggle)
   (defun zz/vterm-hook ()
-    (local-set-key (kbd "C-c v") vterm-mode-map)
-    (local-set-key (kbd "C-c M-o") 'vterm-clear))
+    (defkeys-map global-map
+      ((kbd "C-c v") vterm-mode-map))
+    (defkeys-map vterm-mode-map
+      ((kbd "C-c M-o") 'vterm-clear))
+    (defkeys-map vterm-copy-mode-map
+      ((kbd "M-w") 'vterm-copy-mode-done)))
   (add-hook 'vterm-mode-hook 'zz/vterm-hook)
   (message "Enable vterm...done"))
 

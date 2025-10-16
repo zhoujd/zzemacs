@@ -6,7 +6,9 @@
   (zz/load-path "site-lisp/emacs-vterm")
   (require 'vterm)
   (require 'multi-vterm)
-  (require 'vterm-toggle))
+  (require 'vterm-toggle)
+  (defkeys-map ctrl-z-map
+    ((kbd "v") vterm-mode-map)))
 
 
 (provide 'vterm-setting)

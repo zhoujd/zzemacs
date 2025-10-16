@@ -81,7 +81,7 @@
   (interactive)
   (term-send-raw-string "\C-l"))
 
-(defun zz/kill-ring-save-switch-to-char-mode (b e)
+(defun zz/term-copy-done (b e)
   "In line-mode, M-w also switches back to char-mode and goes back to prompt."
   (interactive "r")
   (kill-ring-save b e t)
@@ -113,14 +113,15 @@
               ((kbd "C-c C-t") 'zz/term-copy-toggle)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)
-              ((kbd "C-h")     'term-send-backspace)
-              ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode))
+              ((kbd "C-h")     'term-send-backspace))
             (defkeys-map term-mode-map
               ((kbd "C-c C-t") 'zz/term-copy-toggle)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
-              ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode)
+              ([return]        'zz/term-copy-done)
+              ((kbd "RET")     'zz/term-copy-done)
+              ((kbd "M-w")     'zz/term-copy-done)
               )))
 
 (defun zz/last-term-buffer (l)

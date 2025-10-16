@@ -56,7 +56,7 @@
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
-  (kbd "v")       'zz/evil-toggle
+  (kbd "M-v")     'zz/evil-toggle
   (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo

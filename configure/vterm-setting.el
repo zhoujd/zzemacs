@@ -7,8 +7,11 @@
   (require 'vterm)
   (require 'multi-vterm)
   (require 'vterm-toggle)
-  (defkeys-map ctrl-z-map
-    ((kbd "v") vterm-mode-map)))
+  (defun zz/vterm-hook ()
+    (defkeys-map vterm-mode-map
+      ((kbd "C-c M-o") 'vterm-clear)))
+  (add-hook 'vterm-mode-hook 'zz/vterm-hook)
+  (message "Enable vterm...done"))
 
 
 (provide 'vterm-setting)

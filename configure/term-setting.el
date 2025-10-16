@@ -90,17 +90,16 @@
     (term-send-raw-string "")
     (message "Term-Copy mode disabled in current buffer")))
 
-(defun zz/term-enable-copy ()
-  "enable copy mode"
+(defun zz/term-copy-toggle ()
+  "toggle copy mode"
   (interactive)
-  (term-line-mode)
-  (message "Term-Copy mode enabled in current buffer"))
-
-(defun zz/term-disable-copy ()
-  "disable copy mode"
-  (interactive)
-  (term-char-mode)
-  (message "Term-Copy mode disabled in current buffer"))
+  (if (term-in-line-mode)
+      (progn
+        (term-char-mode)
+        (message "Term-Copy mode disabled in current buffer"))
+      (progn
+        (term-line-mode)
+        (message "Term-Copy mode enabled in current buffer"))))
 
 ;;disable mode-line update
 (defun term-update-mode-line () t)
@@ -111,13 +110,13 @@
 (add-hook 'term-mode-hook
           (lambda ()
             (defkeys-map term-raw-map
-              ((kbd "C-c C-t") 'zz/term-enable-copy)
+              ((kbd "C-c C-t") 'zz/term-copy-toggle)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)
               ((kbd "M-w")     'zz/kill-ring-save-switch-to-char-mode))
             (defkeys-map term-mode-map
-              ((kbd "C-c C-t") 'zz/term-disable-copy)
+              ((kbd "C-c C-t") 'zz/term-copy-toggle)
               ((kbd "C-c C-q") 'term-pager-toggle)
               ((kbd "C-c M-o") 'zz/term-send-clear)
               ((kbd "C-h")     'term-send-backspace)

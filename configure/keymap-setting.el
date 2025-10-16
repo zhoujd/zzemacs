@@ -65,9 +65,6 @@
   (kbd "e")     f4-e-map
   (kbd "g")     f4-g-map
   (kbd "p")     f4-p-map
-
-  ;;vterm
-  (kbd "v")     vterm-mode-map
   ))
 
 (apply-keys-to-map

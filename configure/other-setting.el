@@ -531,6 +531,9 @@
 ;(require 'yascroll)
 ;(global-yascroll-bar-mode 1)
 
+;;fuzzy-find
+;(require 'fuzzy-find)
+
 
 (provide 'other-setting)
 

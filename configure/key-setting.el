@@ -159,22 +159,20 @@
   (kbd "`")       'zz/google
 
   (kbd "c")       (zz/exec-key zz/st          '("st"))
-  (kbd "f")       (zz/exec-key zz/firefox     '("firefox"))
+  (kbd "t")       (zz/exec-key zz/urxvt       '("urxvt"))
+  (kbd "u")       (zz/exec-key zz/vscode      '("code"))
   (kbd "g")       (zz/exec-key zz/chrome      '("google-chrome"))
-  (kbd "m")       (zz/exec-key zz/evolution   '("evolution"))
 
-  (kbd "h")       (zz/exec-key zz/thunar      '("thunar"))
-  (kbd "v")       (zz/exec-key zz/vim         '("st" "-e" "vim"))
-  (kbd "t")       (zz/exec-key zz/tmux        '("st" "-e" "tmux"))
 
-  (kbd "d")       (zz/exec-key zz/rofi-drun   '("rofi" "-show" "drun"))
-  (kbd "r")       (zz/exec-key zz/rofi-run    '("rofi" "-show" "run"))
-  (kbd "s")       (zz/exec-key zz/rofi-ssh    '("rofi" "-show" "ssh"))
-  (kbd "w")       (zz/exec-key zz/rofi-win    '("rofi" "-show" "window"))
+  (kbd "p")       (zz/exec-key zz/dm-drun     '("dmenu_drun"))
+  (kbd "r")       (zz/exec-key zz/dm-run      '("dmenu_run"))
+  (kbd "s")       (zz/exec-key zz/dm-ssh      '("dmenu_ssh"))
+  (kbd "w")       (zz/exec-key zz/dm-win      '("dmenu_win"))
+  (kbd "q")       (zz/exec-key zz/dm-win      '("dmenu_exit"))
 
   (kbd "M-g")     (zz/exec-key zz/tig         '("st" "-e" "tig"))
-  (kbd "M-m")     (zz/exec-key zz/meld        '("meld"))
-  (kbd "M-t")     (zz/exec-key zz/trans       '("st" "-e" "trans" "-I"))
+  (kbd "M-n")     (zz/exec-key zz/nnn         '("st" "-e" "nnn"))
+  (kbd "M-v")     (zz/exec-key zz/vim         '("st" "-e" "vim"))
   ))
 
 (apply-keys-to-map

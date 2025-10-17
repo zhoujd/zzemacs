@@ -84,7 +84,7 @@
 (require 'helm-descbinds)
 (defun zz/ctrl-z-help ()
   (interactive)
-  (helm-descbinds (kbd "C-z h")))
+  (helm-descbinds (kbd "C-z /")))
 
 (require 'multi-web-mode)
 (helm-descbinds-mode)

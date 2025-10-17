@@ -37,7 +37,7 @@
   (kbd "SPC")     'er/expand-region
   (kbd "RET")     'zz/sudo-edit-current-file
   (kbd "TAB")     'zz/insert-file-name
-  (kbd "/")       'zz/ctrl-z-help
+  (kbd "C-/")     'zz/ctrl-z-help
   (kbd "a")       'zz/display-current-time
   (kbd "C-a")     'helm-world-time
   (kbd "M-a")     'world-time-list

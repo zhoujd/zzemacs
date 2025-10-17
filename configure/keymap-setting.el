@@ -59,7 +59,7 @@
   (kbd "s")     shift-fn-map
   (kbd "c")     ctrl-fn-map
   (kbd "m")     meta-fn-map
-  (kbd "h")     help-fn-map
+  (kbd "/")     help-fn-map
 
   ;;self f4-map
   (kbd "e")     f4-e-map

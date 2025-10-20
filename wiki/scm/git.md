@@ -291,3 +291,7 @@ Git
     ## https://github.com/rubensworks/git-multi-repo.sh
     ## https://github.com/esrlabs/git-repo
     ## https://code.google.com/archive/p/git-repo/
+
+## Can't locate git-cvsimport
+
+    $ sudo apt install git-cvs

@@ -86,7 +86,7 @@
                 (statement-cont . (c-lineup-assignments +)))
                ))
 
-;;set default c style
+;;M-x: c-set-style, `C-c .'
 (setq c-default-style
       '((c-mode . "zach")
         (c++-mode . "zach")

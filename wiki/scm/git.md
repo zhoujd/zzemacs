@@ -295,3 +295,14 @@ Git
 ## Can't locate git-cvsimport
 
     $ sudo apt install git-cvs
+
+## Git format patch specific directory
+
+    ## Generating patches for commits affecting a specific directory
+    $ git format-patch <commit-range> -- <path/to/directory>
+    $ mkdir patches
+    $ git format-patch master..HEAD -o patches -- src/utils
+
+    ## exclude specific directory
+    $ git format-patch <revision range> -- . ':!path/to/excluded/directory'
+    $ git format-patch HEAD~2..HEAD -- . ':!docs/'

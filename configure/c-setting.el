@@ -86,6 +86,12 @@
                 (statement-cont . (c-lineup-assignments +)))
                ))
 
+;;set default c style
+(setq c-default-style
+      '((c-mode . "zach")
+        (c++-mode . "zach")
+        (other . "linux")))
+
 ;;c common setting hook
 (defkeys-map c-mode-base-map
   ((kbd "C-c M-/") 'zz/company-ctags)
@@ -102,16 +108,6 @@
   (abbrev-mode t)
   (hide-ifdef-mode t))
 (add-hook 'c-mode-common-hook 'zz/c-mode-common-hook)
-
-;;c setting hook
-(defun zz/c-mode-hook()
-  (c-set-style "zach"))
-(add-hook 'c-mode-hook 'zz/c-mode-hook)
-
-;;c++ setting hook
-(defun zz/c++-mode-hook()
-  (c-set-style "zach"))
-(add-hook 'c++-mode-hook 'zz/c++-mode-hook)
 
 ;;switch c and c++ mode
 (defun zz/c-c++-toggle ()

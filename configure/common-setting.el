@@ -457,6 +457,9 @@ mouse-3: Toggle minor modes"
 (setq kill-buffer-query-functions
       (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
+;;automatically set safe values and ignore the others
+(setq enable-local-variables :safe)
+
 
 (provide 'common-setting)
 

@@ -17,3 +17,9 @@ $ export REPO_URL=https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/
 $ repo init -u <repo.git> -b dev
 $ repo sync
 ```
+
+## Avoid 'Enable color display in this user account (y/N)?'
+
+```
+$ git config --global color.ui "true"
+```

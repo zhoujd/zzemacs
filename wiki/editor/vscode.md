@@ -54,3 +54,8 @@ VSCode
     ## https://www.cs.swarthmore.edu/courses/cs35/f24/using_gdb_in_vscode/
     ## Install cpptools extension
     $ code --install-extension ms-vscode.cpptools
+
+## VSCodium Free/Libre Open Source Software Binaries of Visual Studio Code
+
+    ## https://github.com/VSCodium/vscodium
+    ## https://github.com/VSCodium/vscodium/releases

@@ -25,6 +25,7 @@ alias duc='du -sh'
 alias df='df -kTh'
 alias h='history'
 alias j='jobs -l'
+alias f='fg'
 alias c='clear'
 alias r='fc -e -'                  # typing'r' repeats the last command
 alias tf='tail -f'

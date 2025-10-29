@@ -5,6 +5,8 @@ repo
 
 ```
 ## https://github.com/GerritCodeReview/git-repo
+## https://gerrit.googlesource.com/git-repo
+## https://mirrors.tuna.tsinghua.edu.cn/git/git-repo
 ```
 
 ## Install repo

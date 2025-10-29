@@ -1,6 +1,12 @@
 repo
 ====
 
+## URLs
+
+```
+## https://github.com/GerritCodeReview/git-repo
+```
+
 ## Install repo
 
 ```

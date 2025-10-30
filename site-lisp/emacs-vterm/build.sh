@@ -4,14 +4,14 @@ SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
 deps() {
     echo "Install deps"
-    sudo apt install -y cmake libtool libtool-bin libvterm-dev
+    sudo apt install -y cmake libtool libtool-bin
 }
 
 build() {
     echo "build emacs-libvterm"
     git clone https://github.com/akermu/emacs-libvterm
     pushd emacs-libvterm
-    cmake . -DUSE_SYSTEM_LIBVTERM=no
+    cmake . -DUSE_SYSTEM_LIBVTERM=NO
     make
     cp -vf vterm-module.so $SCRIPT_ROOT
     cp -vf vterm.el $SCRIPT_ROOT

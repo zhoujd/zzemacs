@@ -10,7 +10,7 @@
 
 (defun zz/vterm-hook ()
   (defkeys-map vterm-mode-map
-    ((kbd "C-q") 'vterm-send-next-key)
+    ((kbd "C-c M-q") 'vterm-send-next-key)
     ((kbd "C-c M-o") 'vterm-clear))
   (defkeys-map vterm-copy-mode-map
     ((kbd "M-w") 'vterm-copy-mode-done)))

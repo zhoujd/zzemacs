@@ -25,13 +25,13 @@ build() {
 }
 
 case $1 in
-    deps )
+    deps|-d )
         deps
         ;;
-    build )
+    build|-b )
         build
         ;;
     * )
-        echo "Usage: $(basename $0) {deps|build}"
+        echo "usage: $(basename $0) {deps|-d|build|-b}"
         ;;
 esac

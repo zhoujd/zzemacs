@@ -506,6 +506,10 @@ Dmitriy Igrishin's patched version of comint.el."
   (setq-local comint-prompt-read-only t))   ;;readonly prompt
 (add-hook 'shell-mode-hook 'zz/shell-common-hook)
 
+;;https://repo.or.cz/emacs-coterm.git
+(require 'coterm)
+(coterm-mode t)
+
 
 (provide 'shell-setting)
 

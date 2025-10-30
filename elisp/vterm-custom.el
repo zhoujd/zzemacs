@@ -8,6 +8,16 @@
 (require 'multi-vterm)
 (require 'vterm-toggle)
 
+(setq vterm-tramp-shells
+      '(
+        ;; Use the default login shell for all TRAMP methods
+        (t login-shell)
+        ;; Example: Use a specific shell for the "docker" method
+        ;; ("docker" "/bin/sh")
+        ;; Example: Use login shell for ssh and scp, falling back to /bin/bash
+        ;; (("ssh" login-shell "/bin/bash") ("scp" login-shell "/bin/bash"))
+        ))
+
 (defun zz/vterm-hook ()
   (defkeys-map vterm-mode-map
     ((kbd "C-c M-q") 'vterm-send-next-key)

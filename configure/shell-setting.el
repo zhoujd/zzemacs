@@ -507,8 +507,8 @@ Dmitriy Igrishin's patched version of comint.el."
 (add-hook 'shell-mode-hook 'zz/shell-common-hook)
 
 ;;https://repo.or.cz/emacs-coterm.git
-(require 'coterm)
-(coterm-mode t)
+;(require 'coterm)
+;(coterm-mode t)
 
 
 (provide 'shell-setting)

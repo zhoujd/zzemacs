@@ -99,24 +99,22 @@ alias urxvtw='urxvt -bg white -fg black -cr black'
 alias gdb='gdb -q'
 alias cgdb='cgdb -q'
 
-## emacs shell/eshell
-case $TERM in
-    dumb* | emacs* )
-        alias tig='etig'
-        alias em='eem'
-        alias me='eme'
-        alias mg='emg'
-        alias nnn='enn'
-        alias vim='st -e vim'
-        alias vi='st -e vi'
-        ;;
-esac
-
-## emacs term/vterm
-case $INSIDE_EMACS in
-    *term* )  ## term and vterm
-        alias em='eem'
-        alias me='eme'
-        alias mg='emg'
-        ;;
-esac
+## emacs shell/term
+if [ -n "$INSIDE_EMACS" ]; then
+    case $TERM in
+        dumb* | emacs* ) ## emacs shell/eshell
+            alias tig='etig'
+            alias em='eem'
+            alias me='eme'
+            alias mg='emg'
+            alias nnn='enn'
+            alias vim='st -e vim'
+            alias vi='st -e vi'
+            ;;
+        eterm* | xterm* )  ## term and vterm
+            alias em='eem'
+            alias me='eme'
+            alias mg='emg'
+            ;;
+    esac
+fi

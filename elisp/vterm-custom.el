@@ -40,6 +40,15 @@
     (let* ((default-directory "~"))
       (multi-vterm))))
 
+(defun zz/remote-vterm ()
+  "Open a remote vterm to a host"
+  (interactive)
+  (with-temp-buffer
+    (let* ((default-directory (zz/get-host)))
+      (when (file-exists-p default-directory)
+        (call-interactively 'zz/get-vterm))
+      )))
+
 
 (provide 'vterm-custom)
 

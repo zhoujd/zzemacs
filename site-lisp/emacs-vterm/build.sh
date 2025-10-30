@@ -4,7 +4,7 @@ SCRIPT_ROOT=$(cd $(dirname $0) && pwd)
 
 deps() {
     echo "Install deps"
-    sudo apt install -y cmake libtool libtool-bin
+    sudo apt install -y cmake libtool libtool-bin libvterm-dev
 }
 
 build() {

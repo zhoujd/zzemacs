@@ -15,8 +15,8 @@
         (message "Load %s...end" setting))
       '(
         macro-setting
-        lib-setting
         common-setting
+        lib-setting
         tramp-setting
         company-setting
         sample-setting

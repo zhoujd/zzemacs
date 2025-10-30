@@ -14,6 +14,8 @@ build() {
     cmake .
     make
     cp -vf vterm-module.so $SCRIPT_ROOT
+    cp -vf vterm.el $SCRIPT_ROOT
+    cp -vfr etc/* $SCRIPT_ROOT/etc/
     popd
 
     echo "clean libvterm"

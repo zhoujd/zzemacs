@@ -11,14 +11,14 @@ build() {
     echo "build emacs-libvterm"
     git clone https://github.com/akermu/emacs-libvterm
     pushd emacs-libvterm
-    cmake .
+    cmake . -DUSE_SYSTEM_LIBVTERM=no
     make
     cp -vf vterm-module.so $SCRIPT_ROOT
     cp -vf vterm.el $SCRIPT_ROOT
     cp -vfr etc/* $SCRIPT_ROOT/etc/
     popd
 
-    echo "clean libvterm"
+    echo "clean emacs-libvterm"
     rm -rf emacs-libvterm
 
     echo "Build done"

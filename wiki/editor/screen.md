@@ -46,3 +46,19 @@ if [ -n "${PIDs[@]}" ]; then
     sudo screen -wipe
 fi
 ```
+
+## /var/run/utmp: No such file or directory
+
+```
+## Disable utmp logging in Screen
+## Edit your ~/.screenrc file.
+## Add the line deflogin off to the file.
+## Restart any active Screen sessions or start new ones.
+$ cat ~/.screenrc <<EOF
+deflogin off
+EOF
+
+## Verify and potentially create/correct /var/run/utmp
+$ sudo touch /var/run/utmp
+$ sudo chmod 0644 /var/run/utmp
+```

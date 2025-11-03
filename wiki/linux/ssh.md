@@ -162,3 +162,8 @@ ssh
     $ nload
     $ sudo tcpdump -i eth0 port 22
     $ sudo apt install wireshark
+
+## SSH into a remote server and immediately change to a specific directory
+
+    $ ssh -t user@remote_host "cd /path/to/special/directory && bash --login"
+    $ ssh -t myuser@example.com "cd /var/www/html && bash --login"

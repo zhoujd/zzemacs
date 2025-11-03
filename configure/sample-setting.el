@@ -156,7 +156,7 @@
   (if (tramp-tramp-file-p default-directory)
       (progn
         (let* ((l (tramp-dissect-file-name default-directory))
-               (c (format "ssh -t %s 'cd %s;bash -l'"
+               (c (format "ssh -t %s 'cd %s;exec bash -l'"
                           (nth 4 l) (nth 6 l))))
           (start-process "st" nil "st" "-e" "bash" "-c" c)))
       (progn
@@ -168,7 +168,7 @@
   (if (tramp-tramp-file-p default-directory)
       (progn
         (let* ((l (tramp-dissect-file-name default-directory))
-               (c (format "ssh -t %s 'cd %s;bash -l'"
+               (c (format "ssh -t %s 'cd %s;exec bash -l'"
                           (nth 4 l) (nth 6 l))))
           (start-process "urxvt" nil "urxvt" "-e" "bash" "-c" c)))
       (progn

@@ -157,7 +157,9 @@
                  nil
                  "st"
                  "-d"
-                 default-directory))
+                 (if (tramp-tramp-file-p default-directory)
+                     (getenv "HOME")
+                     default-directory)))
 
 (defun zz/open-with-urxvt()
   "Open urxvt to current dired"
@@ -166,7 +168,9 @@
                  nil
                  "urxvt"
                  "-cd"
-                 default-directory))
+                 (if (tramp-tramp-file-p default-directory)
+                     (getenv "HOME")
+                     default-directory)))
 
 ;;go to last buffer
 (defun zz/last-buffer-go ()

@@ -51,6 +51,17 @@
   (zz/eshell-alias "ll" "ls -hal $*"))
 (add-hook 'eshell-post-command-hook 'zz/eshell-add-aliases)
 
+;;Eat: Emulate A Terminal
+;;https://codeberg.org/akib/emacs-eat
+;;[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/bash"
+;(zz/load-path "site-lisp/emacs-eat")
+;(require 'term/eat)
+;(require 'eat)
+;(setq eat-kill-buffer-on-exit t
+;      eat-enable-shell-prompt-annotation nil)
+;(add-hook 'eshell-load-hook #'eat-eshell-mode)
+;(add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
+
 
 (provide 'eshell-setting)
 

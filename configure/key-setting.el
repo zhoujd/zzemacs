@@ -55,7 +55,7 @@
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
-  (kbd "v")       'zz/evil-toggle
+  (kbd "M-v")     'zz/evil-toggle
   (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
   (kbd ",")       'winner-undo
@@ -157,19 +157,15 @@
  (list
   (kbd "\\")      'zz/baidu
   (kbd "`")       'zz/google
-
   (kbd "c")       (zz/exec-key zz/st          '("st"))
   (kbd "t")       (zz/exec-key zz/urxvt       '("urxvt"))
   (kbd "u")       (zz/exec-key zz/vscode      '("code"))
   (kbd "g")       (zz/exec-key zz/chrome      '("google-chrome"))
-
-
   (kbd "p")       (zz/exec-key zz/dm-drun     '("dmenu_drun"))
   (kbd "r")       (zz/exec-key zz/dm-run      '("dmenu_run"))
   (kbd "s")       (zz/exec-key zz/dm-ssh      '("dmenu_ssh"))
   (kbd "w")       (zz/exec-key zz/dm-win      '("dmenu_win"))
   (kbd "q")       (zz/exec-key zz/dm-win      '("dmenu_exit"))
-
   (kbd "M-g")     (zz/exec-key zz/tig         '("st" "-e" "tig"))
   (kbd "M-n")     (zz/exec-key zz/nnn         '("st" "-e" "nnn"))
   (kbd "M-v")     (zz/exec-key zz/vim         '("st" "-e" "vim"))

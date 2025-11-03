@@ -161,16 +161,28 @@
                      (getenv "HOME")
                      default-directory)))
 
+;;st -e bash -c 'ssh -t s160 "cd ~/zzdwm;bash -l"'
 (defun zz/open-with-urxvt()
   "Open urxvt to current dired"
   (interactive)
-  (start-process "urxvt"
-                 nil
-                 "urxvt"
-                 "-cd"
-                 (if (tramp-tramp-file-p default-directory)
-                     (getenv "HOME")
-                     default-directory)))
+  (if (tramp-tramp-file-p default-directory)
+      (progn
+        (let* ((l (tramp-dissect-file-name default-directory))
+               (cmd (format "ssh -t %s 'cd %s;bash -l'"
+                            (nth 4 l) (nth 6 l))))
+          (start-process "urxvt"
+                         nil
+                         "urxvt"
+                         "-e"
+                         "bash"
+                         "-c"
+                         cmd)))
+      (progn
+        (start-process "urxvt"
+                       nil
+                       "urxvt"
+                       "-cd"
+                       default-directory))))
 
 ;;go to last buffer
 (defun zz/last-buffer-go ()

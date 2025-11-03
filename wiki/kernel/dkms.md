@@ -1,6 +1,13 @@
 DKMS
 ====
 
+## DKMS on Ubuntu OS
+
+    $ sudo apt install dkms
+    or
+    $ apt-get download dkms
+    $ sudo dpkg -i dkms-blah-blah.deb
+
 ## DKMS commands
 
     ## DKMS Setup

@@ -167,3 +167,17 @@ ssh
 
     $ ssh -t user@remote_host "cd /path/to/special/directory && bash --login"
     $ ssh -t myuser@example.com "cd /var/www/html && bash --login"
+    $ ssh -t server "cd /my/remote/directory; bash --login"
+    $ ssh -t server "mkdir -p newfolder; cd ~/newfolder; pwd; bash --login"
+
+    $ cat .ssh/config <<EOF
+    Host example.net
+    RemoteCommand cd / && exec bash --login
+    RequestTTY yes
+    EOF
+
+    $ cat connect <<EOF
+    #!/bin/bash
+    ssh -t <username@hostname> "cd ~/$1; exec \$SHELL --login"
+    EOF
+    $ connect <foldername>

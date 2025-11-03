@@ -24,7 +24,7 @@
 
 ;;http://www.emacswiki.org/emacs/MultiTerm
 ;;http://code.google.com/p/dea/source/browse/trunk/my-lisps/multi-term-settings.el
-;;switch line/char mode
+;;default switch line/char mode
 ;;C-c C-j => 'term-line-mode'
 ;;C-c C-k => 'term-char-mode'
 (require 'multi-term)
@@ -306,7 +306,6 @@
 
 ;;Eat: Emulate A Terminal
 ;;https://codeberg.org/akib/emacs-eat
-;;https://github.com/kephale/emacs-eat
 ;(require 'eat)
 ;(setq eat-kill-buffer-on-exit t
 ;      eat-enable-shell-prompt-annotation nil)

@@ -153,15 +153,25 @@
 (defun zz/open-with-st()
   "Open st to current dired"
   (interactive)
-  (start-process "st"
-                 nil
-                 "st"
-                 "-d"
-                 (if (tramp-tramp-file-p default-directory)
-                     (getenv "HOME")
-                     default-directory)))
+  (if (tramp-tramp-file-p default-directory)
+      (progn
+        (let* ((l (tramp-dissect-file-name default-directory))
+               (cmd (format "ssh -t %s 'cd %s;bash -l'"
+                            (nth 4 l) (nth 6 l))))
+          (start-process "st"
+                         nil
+                         "st"
+                         "-e"
+                         "bash"
+                         "-c"
+                         cmd)))
+      (progn
+        (start-process "st"
+                       nil
+                       "st"
+                       "-d"
+                       default-directory))))
 
-;;st -e bash -c 'ssh -t s160 "cd ~/zzdwm;bash -l"'
 (defun zz/open-with-urxvt()
   "Open urxvt to current dired"
   (interactive)

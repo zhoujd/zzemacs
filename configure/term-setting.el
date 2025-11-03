@@ -304,6 +304,13 @@
                             (if (string= event "finished\n")
                                        (kill-buffer buff))))))))
 
+;;Eat: Emulate A Terminal
+;;https://codeberg.org/akib/emacs-eat
+;;https://github.com/kephale/emacs-eat
+(require 'eat)
+(setq eat-kill-buffer-on-exit t
+      eat-enable-shell-prompt-annotation nil)
+
 
 (provide 'term-setting)
 

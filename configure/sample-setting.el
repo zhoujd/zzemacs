@@ -150,6 +150,24 @@
                   ""
                   ))
 
+(defun zz/open-with-st()
+  "Open st to current dired"
+  (interactive)
+  (start-process "st"
+                 nil
+                 "st"
+                 "-d"
+                 default-directory))
+
+(defun zz/open-with-urxvt()
+  "Open urxvt to current dired"
+  (interactive)
+  (start-process "urxvt"
+                 nil
+                 "urxvt"
+                 "-cd"
+                 default-directory))
+
 ;;go to last buffer
 (defun zz/last-buffer-go ()
   (interactive)

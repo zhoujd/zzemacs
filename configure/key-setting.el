@@ -305,6 +305,9 @@
 
   (kbd "C-c M-i") 'helm-multi-swoop
   (kbd "C-x M-i") 'helm-multi-swoop-all
+
+  (kbd "C-M-`")   'zz/open-with-st
+  (kbd "C-M-~")   'zz/open-with-urxvt
   ))
 
 (apply-keys-to-map

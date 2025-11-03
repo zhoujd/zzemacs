@@ -151,48 +151,28 @@
                   ))
 
 (defun zz/open-with-st()
-  "Open st to current dired"
+  "Open st to current directory"
   (interactive)
   (if (tramp-tramp-file-p default-directory)
       (progn
         (let* ((l (tramp-dissect-file-name default-directory))
-               (cmd (format "ssh -t %s 'cd %s;bash -l'"
-                            (nth 4 l) (nth 6 l))))
-          (start-process "st"
-                         nil
-                         "st"
-                         "-e"
-                         "bash"
-                         "-c"
-                         cmd)))
+               (c (format "ssh -t %s 'cd %s;bash -l'"
+                          (nth 4 l) (nth 6 l))))
+          (start-process "st" nil "st" "-e" "bash" "-c" c)))
       (progn
-        (start-process "st"
-                       nil
-                       "st"
-                       "-d"
-                       default-directory))))
+        (start-process "st" nil "st" "-d" default-directory))))
 
 (defun zz/open-with-urxvt()
-  "Open urxvt to current dired"
+  "Open urxvt to current directory"
   (interactive)
   (if (tramp-tramp-file-p default-directory)
       (progn
         (let* ((l (tramp-dissect-file-name default-directory))
-               (cmd (format "ssh -t %s 'cd %s;bash -l'"
-                            (nth 4 l) (nth 6 l))))
-          (start-process "urxvt"
-                         nil
-                         "urxvt"
-                         "-e"
-                         "bash"
-                         "-c"
-                         cmd)))
+               (c (format "ssh -t %s 'cd %s;bash -l'"
+                          (nth 4 l) (nth 6 l))))
+          (start-process "urxvt" nil "urxvt" "-e" "bash" "-c" c)))
       (progn
-        (start-process "urxvt"
-                       nil
-                       "urxvt"
-                       "-cd"
-                       default-directory))))
+        (start-process "urxvt" nil "urxvt" "-cd" default-directory))))
 
 ;;go to last buffer
 (defun zz/last-buffer-go ()

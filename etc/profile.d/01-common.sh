@@ -69,7 +69,7 @@ prompt() {
             title='\[\033]0;tmux:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
-        eterm* | putty* )
+        eterm* | putty* | eat* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             ;;
         dumb* | emacs* )

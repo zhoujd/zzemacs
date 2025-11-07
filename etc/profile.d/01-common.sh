@@ -87,9 +87,7 @@ prompt() {
 prompt
 
 ## X11-forwarding display settings
-if [ -n "$DISPLAY" ]; then
-    export LIBGL_ALWAYS_INDIRECT=1
-fi
+export LIBGL_ALWAYS_INDIRECT=1
 
 ## LANG to English
 export LANG=en_US.UTF-8

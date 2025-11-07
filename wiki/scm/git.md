@@ -306,3 +306,15 @@ Git
     ## exclude specific directory
     $ git format-patch <revision range> -- . ':!path/to/excluded/directory'
     $ git format-patch HEAD~2..HEAD -- . ':!docs/'
+
+## Git describe multiple tags on same commit
+
+    ## Git describe tags
+    $ git describe -h
+    $ git describe --tags --dirty --long
+
+    ## Git describe selection logic:
+    - Annotated tags preferred
+    - Date-stamps for annotated tags
+    - Lightweight tags preferred over non-tags
+    - Earliest-encountered name

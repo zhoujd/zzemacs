@@ -238,3 +238,41 @@ apt list g++-10*
 sudo apt install gcc-10 gcc-10-base gcc-10-doc g++-10
 sudo apt install libstdc++-10-dev libstdc++-10-doc
 ```
+
+## Example of catching Ctrl+C in a C program
+
+```c
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h> // For exit()
+
+// Signal handler function for SIGINT
+void INThandler(int sig) {
+    char c;
+
+    // Temporarily ignore SIGINT to prevent re-entering the handler
+    signal(SIGINT, SIG_IGN);
+    printf("\nOUCH, did you hit Ctrl-C?\nDo you really want to quit? [y/n] ");
+    c = getchar();
+    if (c == 'y' || c == 'Y') {
+        exit(0); // Exit the program
+    } else {
+        // Re-register the signal handler
+        signal(SIGINT, INThandler);
+        // Consume the newline character left by getchar()
+        getchar();
+    }
+}
+
+int main(void) {
+    // Register the INThandler function to handle SIGINT
+    signal(SIGINT, INThandler);
+
+    printf("Running... Press Ctrl-C to interrupt.\n");
+    while (1) {
+        // Program continues to run until explicitly exited or terminated
+        pause(); // Pauses execution until a signal is received
+    }
+    return 0;
+}
+```

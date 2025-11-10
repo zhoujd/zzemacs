@@ -339,3 +339,20 @@ gdb -ex 'set substitute-path . glibc-2.35'  main.out
 #+begin_src sh
 ## https://github.com/guyush1/gdb-static
 #+end_src sh
+
+** GDB auto quit
+
+#+begin_src sh
+1. Using -ex quit on the command line:
+   $ gdb -ex run -ex quit --args ./your_program arg1 arg2
+2. Quitting only on successful termination (without crash):
+   GDB script or using -ex options:
+   set $_exitcode = -1
+   run
+   if $_exitcode != -1
+       quit
+   end
+3. Quitting from within a GDB script:
+   (gdb) quit -f
+   (gdb) q -f
+#+end_src sh

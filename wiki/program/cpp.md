@@ -276,3 +276,23 @@ int main(void) {
     return 0;
 }
 ```
+
+## Catch Ctrl-C in C
+
+```
+#include <signal.h>
+
+static volatile int keepRunning = 1;
+
+void intHandler(int dummy) {
+    keepRunning = 0;
+}
+
+// ...
+
+int main(void) {
+
+   signal(SIGINT, intHandler);
+
+   while (keepRunning) {
+```

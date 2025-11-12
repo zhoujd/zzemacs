@@ -8,3 +8,9 @@ pytorch
 ## Linux+Pip+Python+CPU
 ## pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 ```
+
+## Building from source
+
+```
+## https://github.com/pytorch/pytorch#from-source
+```

@@ -92,3 +92,11 @@ milliseconds=2500
 seconds=$(echo "scale=3; $milliseconds / 1000" | bc)
 echo "Seconds: $seconds" # Output: Seconds: 2.500
 ```
+
+## Pytest junit
+
+```
+$ pip install --upgrade pip setuptools wheel
+$ pip install pytest
+$ pytest -sv . --junit-xml=<path>
+```

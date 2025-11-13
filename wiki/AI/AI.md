@@ -14,3 +14,9 @@ AI
 ```
 ## https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html
 ```
+
+## ARCH
+
+```
+vllm -> pytorch -> tocrch-backend -> Triton/LLVM/RCOM/CUDA -> dGPU
+```

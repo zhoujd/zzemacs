@@ -220,3 +220,52 @@ Python
 
     # get the longest line of this file
     longest_line = wc(__file__, "-L")
+
+## Create wheel
+
+    $ pip3 install setuptools wheel
+    $ cat setup.py <<EOF
+    from setuptools import setup, find_packages
+
+    setup(
+        name='your_package_name',
+        version='0.1.0',
+        packages=find_packages(),
+        # Add other metadata like author, description, dependencies, etc.
+        author='Your Name',
+        description='A short description of your package',
+        install_requires=[
+            'dependency1',
+            'dependency2>=1.0',
+        ],
+    )
+    EOF
+
+    $ python3 setup.py bdist_wheel --dist-dir ${DIST_DIR}
+    or
+    $ rm -rf dist
+    $ python3 setup.py bdist_wheel
+    $ pip3 install dist/triton*.whl
+
+    $ pip3 wheel . --no-deps --wheel-dir dist
+    $ pip3 wheel SomePackage
+    $ pip3 wheel -r requirements.txt
+
+    ## use twine to upload your package to PyPI
+    $ twine upload dist/*
+
+    ## https://python-poetry.org/
+    $ cat pyproject.toml <<EOF
+    [tool.poetry]
+    name = "my-project"
+    version = "0.1.0"
+    description = "some longer description"
+    authors = ["Some Author <some@author.io>"]
+
+    [tool.poetry.dependencies]
+    python = "*"
+
+    [tool.poetry.dev-dependencies]
+    pytest = "^3.4"
+    EOF
+    $ poetry build

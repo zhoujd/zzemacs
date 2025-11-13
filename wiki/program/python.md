@@ -269,3 +269,6 @@ Python
     pytest = "^3.4"
     EOF
     $ poetry build
+
+    $ python3 -m build --wheel python --no-isolation
+    $ ls python/dist/*.whl

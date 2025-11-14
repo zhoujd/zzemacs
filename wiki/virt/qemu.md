@@ -3,10 +3,11 @@ QEMU
 
 ## URLs
 
-    https://wiki.qemu.org/Documentation/Networking
-    https://wiki.qemu.org/Documentation/Networking/NAT
-    https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
-    https://wiki.archlinux.org/title/QEMU#QEMU_monitor
+    ## https://wiki.qemu.org/Documentation/Networking
+    ## https://wiki.qemu.org/Documentation/Networking/NAT
+    ## https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
+    ## https://wiki.archlinux.org/title/QEMU#QEMU_monitor
+    ## https://github.com/DavidVentura/pci-device
 
 ## Install QEMU on Ubuntu
 

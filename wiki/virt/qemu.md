@@ -8,6 +8,7 @@ QEMU
     ## https://wiki.gentoo.org/wiki/QEMU/Bridge_with_Wifi_Routing
     ## https://wiki.archlinux.org/title/QEMU#QEMU_monitor
     ## https://github.com/DavidVentura/pci-device
+    ## https://yairgadelov.me/pcie-bar0-and-dma-explained-with-qemu/
 
 ## Install QEMU on Ubuntu
 

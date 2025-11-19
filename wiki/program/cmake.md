@@ -68,3 +68,14 @@ This approach ensures a clean and portable way to create RPM packages directly f
 ## https://cmake.org/cmake/help/latest/prop_tgt/SOVERSION.html
 ## set_target_properties(mylib PROPERTIES VERSION 1.2.3 SOVERSION 1)
 ```
+
+## CPack Package Generators
+
+```
+## https://gitlab.kitware.com/cmake/community/-/wikis/doc/cpack/PackageGenerators
+$ cpack --help-variable-list
+$ cpack --help-variable <VARNAME>
+$ cpack --help-command-list
+$ cpack --help-command <CMDNAME>
+$ cpack --help
+```

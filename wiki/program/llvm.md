@@ -80,3 +80,7 @@ llvm
 
     ## https://llvm.org/docs/UserGuides.html
     ## https://llvm.org/docs/ExtendingLLVM.html#intrinsic-function
+
+## LLVM Tutorial
+
+    ## https://llvm.org/docs/tutorial/index.html

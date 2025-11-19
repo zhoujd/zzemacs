@@ -97,3 +97,7 @@ Linux Kernel
 
     ## https://elixir.bootlin.com/qemu
     ## https://elixir.bootlin.com/linux/v6.12.6/source
+
+## PCIe
+
+    ## https://bootlin.com/doc/legacy/pci-drivers/pci-drivers.pdf

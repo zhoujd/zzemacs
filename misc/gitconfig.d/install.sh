@@ -117,6 +117,9 @@ git config --global mergetool.emacs.cmd "$SCRIPT_ROOT/git-emergex-wrapper.sh \"\
 git config --global mergetool.emacs.trustExitCode false
 git config --global mergetool.keepBackup false
 
+## git will display merge conflicts with the contents of the merge base as well
+git config --global merge.conflictStyle zdiff3
+
 ## git push setting
 git config --global push.default simple
 

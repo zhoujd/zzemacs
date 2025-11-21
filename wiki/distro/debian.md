@@ -24,6 +24,25 @@ $ sudo networkctl reload
 $ sudo networkctl renew enp1s0
 ```
 
+## Networkctl unmanaged
+
+```
+## Create a new .network file
+$ sudo tee /etc/systemd/network/enp3s0.network <<EOF
+[Match]
+Name=enp3s0
+
+[Network]
+DHCP=ipv4
+LinkLocalAddressing=no
+EOF
+
+## Restart the systemd-networkd service
+$ sudo systemctl restart systemd-networkd
+$ sudo networkctl renew enp3s0
+$ ip address show dev enp3s0
+```
+
 ## Change the Timezone
 
 ```

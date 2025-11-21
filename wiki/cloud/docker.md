@@ -554,3 +554,19 @@ Docker
     ## mount --bind olddir newdir
     $ mkdir shared
     $ sudo mount -o bind ../shared shared
+
+## Docker group name not found
+
+    ## Use GID directly. Instead of --group-add docker,
+    # find the GID of the docker group on your host
+    # (getent group docker | cut -d: -f3) and
+    # use --group-add <GID> in your docker run command.using --group-add
+
+    ## Mount /etc/group and /etc/passwd
+    # caution as it can impact container isolation
+
+    ## Create user/group within the Dockerfile
+    # using RUN groupadd and RUN useradd
+
+    ## Restart Docker daemon or reboot
+    # reboot might be necessary for the changes to take full effect

@@ -570,3 +570,14 @@ Docker
 
     ## Restart Docker daemon or reboot
     # reboot might be necessary for the changes to take full effect
+
+## Docker run delete on exit
+
+    ## For a Docker container started with the docker run command to be removed on exit,
+    ## you need to use the --rm flag.
+    $ docker run -it --rm ubuntu /bin/bash
+
+    ## If you forgot to run your container with --rm,
+    ## you can list running containers and close them.
+    ## The -a flag shows exited containers as well.
+    $ docker container ls -a

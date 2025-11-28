@@ -94,6 +94,7 @@
 
 ;;;; Color Constants
 (let ((class '((class color) (min-colors 89)))
+  (nord-black (if (display-graphic-p) "#000000" nil))
   (nord0 (if (display-graphic-p) "#2E3440" nil))
   (nord1 (if (display-graphic-p) "#3B4252" "black"))
   (nord2 (if (display-graphic-p) "#434C5E" "#434C5E"))
@@ -141,7 +142,7 @@
     ;; +--- Base ---+
     `(bold ((,class (:weight bold))))
     `(bold-italic ((,class (:weight bold :slant italic))))
-    `(default ((,class (:foreground ,nord4 :background ,nord0))))
+    `(default ((,class (:foreground ,nord4 :background ,nord-black))))
     `(error ((,class (:foreground ,nord11 :weight bold))))
     `(escape-glyph ((,class (:foreground ,nord12))))
     `(font-lock-builtin-face ((,class (:foreground ,nord9))))

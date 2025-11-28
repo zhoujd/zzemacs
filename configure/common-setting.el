@@ -109,14 +109,7 @@
   (zz/load-path "site-lisp/gruvbox-themes")
   (require 'gruvbox-theme)
   (load-theme 'gruvbox t))
-
-(defun zz/load-nord-theme ()
-  "Load nord theme"
-  (interactive)
-  (require 'nord-theme)
-  (load-theme 'nord t))
-
-(zz/load-nord-theme)
+(zz/load-gruvbox-theme)
 
 ;;default-frame-alist or initial-frame-alist
 (add-to-list 'default-frame-alist '(mouse-color . "white"))

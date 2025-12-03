@@ -581,3 +581,18 @@ Docker
     ## you can list running containers and close them.
     ## The -a flag shows exited containers as well.
     $ docker container ls -a
+
+## Mount a directory from a image into another container
+
+    $ docker volume create some-volume
+
+    ## Since the volume is empty, mounting it into the container will
+    ## copy the contents from the image into the volume.  This only happens
+    ## with native Docker volumes and only if the volume is totally empty.
+    ## Docker will never modify the contents of this volume after this.
+
+    ## Create an empty temporary container to set up the volume
+    $ docker run -v some-volume:/somedir --rm some-image /bin/true
+
+    ## Now you can mount the volume into the actual container
+    $ docker run -v some-volume:/mnt-here ...

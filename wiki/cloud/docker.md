@@ -596,3 +596,12 @@ Docker
 
     ## Now you can mount the volume into the actual container
     $ docker run -v some-volume:/mnt-here ...
+
+## Copy .ssh files in dockfile
+
+    ## Update chmod
+    $ chmod 600 .ssh/*
+
+    ## Dockerfile
+    RUN mkdir -p $USER_HOME/.ssh
+    COPY --chown=<USER> .ssh $USER_HOME/.ssh

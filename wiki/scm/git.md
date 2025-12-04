@@ -318,3 +318,8 @@ Git
     - Date-stamps for annotated tags
     - Lightweight tags preferred over non-tags
     - Earliest-encountered name
+
+## Git update-index --chmod
+
+    ## Add --chmod=+x / --chmod=-x options
+    $ git update-index --chmod=(+|-)x <file>

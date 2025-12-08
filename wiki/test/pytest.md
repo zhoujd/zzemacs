@@ -58,3 +58,9 @@ $ pytest -k TestClass -q
 ## https://docs.pytest.org/en/7.1.x/reference/fixtures.html#fixtures
 $ pytest --fixtures   # shows builtin and custom fixtures
 ```
+
+## displaying timestamps alongside each test
+
+```
+$ pip install pytest-timestamps
+```

@@ -73,6 +73,7 @@ git config --global alias.stp   "stash pop"
 git config --global alias.sts   "stash show --text"
 git config --global alias.ls    "ls-files"
 git config --global alias.ign   "ls-files -o -i --exclude-standard"
+git config --global alias.upd   "update-index --chmod=+x"
 git config --global alias.dn    "diff --pretty=format: --name-only"
 git config --global alias.sn    "show --pretty=format: --name-only"
 

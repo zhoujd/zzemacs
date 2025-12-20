@@ -321,14 +321,18 @@ Docker
     $ docker save $(docker images --format '{{.Repository}}:{{.Tag}}') -o allimages.tar
     $ docker load -i allimages.tar
 
-    ## save all images to tar.gz
     $ OUT=$(docker images --format '{{.Repository}}:{{.Tag}}')
     $ OUTPUT=($OUT)
     $ docker save $(echo "${OUTPUT[*]}") -o /dir/images.tar
+
+    ## save all images to tar.gz
+    $ OUT=$(docker images --format '{{.Repository}}:{{.Tag}}')
+    $ OUTPUT=($OUT)
     $ docker save $(echo "${OUTPUT[*]}") | gzip > images.tar.gz
 
     ## load from tar.gz
     $ tar xvf images.tar.gz -O | docker load
+    $ gunzip -c images.tar.gz | docker load
 
 ## Install Docker Engine on Ubuntu
 

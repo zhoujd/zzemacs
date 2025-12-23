@@ -10,7 +10,8 @@ SCRIPT_ROOT=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 #pip install pip -U
 #pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
 #pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-#pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+#pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
+#pip config set global.index-url "https://pypi.tuna.tsinghua.edu.cn/simple https://mirrors.aliyun.com/pypi/simple"
 
 VENV_ROOT=$HOME/.venv
 VENV_PATH=$VENV_ROOT/emacs

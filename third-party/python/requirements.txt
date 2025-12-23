@@ -1,4 +1,4 @@
---extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple
+--extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple https://mirrors.aliyun.com/pypi/simple
 
 python-lsp-server[all]
 git-imerge

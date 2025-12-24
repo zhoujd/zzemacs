@@ -330,9 +330,7 @@ print(stdout)
 import subprocess
 
 # Example: Run 'ls -l | grep ".py"' using shell=True
-
 command_string = "ls -l | grep \".py\""
-
 try:
     result = subprocess.run(
         command_string,
@@ -344,14 +342,37 @@ try:
     print(result.stdout)
 except subprocess.CalledProcessError as e:
     print(f"Command failed with error: {e.stderr}")
+```
 
-## Alternative: Using the pipe Library
-from pipe import map, where, take
+## Run linux command with multi pipes
 
-data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+import shlex
+from subprocess import PIPE, Popen
 
-result = list(data | where(lambda x: x % 2 == 0) | map(lambda x: x * 2) | take(3))
+def run_pipes(cmds):
+    """
+    Run commands in PIPE, return the last process in chain
+    """
+    cmds = map(shlex.split, cmds)
+    first_cmd, *rest_cmds = cmds
+    procs = [Popen(first_cmd, stdout=PIPE)]
+    for cmd in rest_cmds:
+        last_stdout = procs[-1].stdout
+        proc = Popen(cmd, stdin=last_stdout, stdout=PIPE)
+        procs.append(proc)
+    return procs[-1]
 
-print(result)
-# Output: [4, 8, 12]
+cmds = [
+    "ping -c1 5.9.16.40",
+    "grep ttl",
+    "awk '{print $4}'",
+    "sed 's/.$//'",
+]
+
+last_proc = run_pipes(cmds)
+stdout = last_proc.stdout
+for line in stdout:
+    line = line.decode()
+    print(line, end="")
 ```

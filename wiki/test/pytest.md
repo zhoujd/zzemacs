@@ -64,3 +64,22 @@ $ pytest --fixtures   # shows builtin and custom fixtures
 ```
 $ pip install pytest-timestamps
 ```
+
+## disable a test using pytest
+
+```
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_the_unknown():
+    ...
+
+import sys
+@pytest.mark.skipif(sys.version_info < (3,3), reason="requires python3.3")
+def test_function():
+    ...
+
+def test_valid_counting_number():
+    number = random.randint(1,5)
+    if number == 5:
+        pytest.skip('Five is right out')
+    assert number <= 3
+```

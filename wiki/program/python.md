@@ -294,3 +294,64 @@ Python
     @only_user_agent('curl')
     def index():
         return 'Hello Curl!'
+
+## Run piped commands in Python
+
+```
+## Method 1: Chaining subprocess.Popen (Recommended for advanced piping)
+import subprocess
+
+# Example: Run 'ps -ef | head -n 5'
+
+# 1. Run the first command 'ps -ef'
+# The standard output (stdout) is directed to a pipe
+ps_cmd = subprocess.Popen(["ps", "-ef"], stdout=subprocess.PIPE)
+
+# 2. Run the second command 'head -n 5'
+# The standard input (stdin) takes the stdout of the first command
+# The standard output is again directed to a pipe to capture the final result
+head_cmd = subprocess.Popen(
+    ["head", "-n", "5"],
+    stdin=ps_cmd.stdout,
+    stdout=subprocess.PIPE,
+    encoding="utf-8", # Decodes the output as text
+)
+
+# 3. Close the output stream from ps_cmd to allow head_cmd to complete
+ps_cmd.stdout.close()
+
+# 4. Get the output and error messages from the final command
+stdout, stderr = head_cmd.communicate()
+
+# Print the result
+print(stdout)
+
+## Method 2: Using subprocess.run with shell=True (Simpler, but less secure)
+import subprocess
+
+# Example: Run 'ls -l | grep ".py"' using shell=True
+
+command_string = "ls -l | grep \".py\""
+
+try:
+    result = subprocess.run(
+        command_string,
+        shell=True,
+        capture_output=True,
+        text=True, # Decodes output as text
+        check=True # Raises an exception if the command fails
+    )
+    print(result.stdout)
+except subprocess.CalledProcessError as e:
+    print(f"Command failed with error: {e.stderr}")
+
+## Alternative: Using the pipe Library
+from pipe import map, where, take
+
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+result = list(data | where(lambda x: x % 2 == 0) | map(lambda x: x * 2) | take(3))
+
+print(result)
+# Output: [4, 8, 12]
+```

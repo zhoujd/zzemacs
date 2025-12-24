@@ -83,3 +83,19 @@ def test_valid_counting_number():
         pytest.skip('Five is right out')
     assert number <= 3
 ```
+
+## custom pytest markers
+
+```
+## https://docs.pytest.org/en/6.2.x/example/markers.html
+@pytest.mark.my_unit_test
+def test_that_unit():
+...
+
+@pytest.mark.my_functional_test
+def test_that_function():
+...
+
+And then, to run only one set of unit tests, as example: pytest -m my_unit_test
+Inverse, if you want to run all tests, except one set: pytest -m "not my_unit_test"
+```

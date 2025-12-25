@@ -77,6 +77,7 @@ git config --global alias.ign   "ls-files -o -i --exclude-standard"
 git config --global alias.upd   "update-index --chmod=+x"
 git config --global alias.dn    "diff --pretty=format: --name-only"
 git config --global alias.sn    "show --pretty=format: --name-only"
+git config --global alias.su    "submodule update --init --recursive"
 
 ## log
 PRETTY="format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'"

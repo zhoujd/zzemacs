@@ -31,7 +31,7 @@ git config --global color.ui    "true"
 
 ## alias
 git config --global alias.st    "status"
-git config --global alias.ci    "commit"
+git config --global alias.ci    "commit -s"
 git config --global alias.cae   "commit --amend"
 git config --global alias.ca    "commit --amend --reset-author --no-edit"
 git config --global alias.br    "branch"

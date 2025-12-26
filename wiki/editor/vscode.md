@@ -59,3 +59,11 @@ VSCode
 
     ## https://github.com/VSCodium/vscodium
     ## https://github.com/VSCodium/vscodium/releases
+
+## Visual Studio Code not highlighting #if.. in C++
+
+    ## Adjusting Extension Settings
+    1. Open Settings in VS Code (File > Preferences > Settings, or use the shortcut Ctrl+,).
+    2. Search for dim inactive regions in the settings search bar.
+    3. Look for language-specific settings, such as C_Cpp.dimInactiveRegions.
+    4. Uncheck the box to disable the dimming effect, making inactive code appear with normal colors.

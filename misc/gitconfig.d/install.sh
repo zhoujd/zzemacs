@@ -121,7 +121,8 @@ git config --global mergetool.emacs.trustExitCode false
 git config --global mergetool.keepBackup false
 
 ## git will display merge conflicts with the contents of the merge base as well
-git config --global merge.conflictStyle zdiff3
+## zdiff3 is a "zealous" variant of diff3, introduced in Git version 2.35
+git config --global merge.conflictStyle diff3
 
 ## git push setting
 git config --global push.default simple

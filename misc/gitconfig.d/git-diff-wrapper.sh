@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### parameter desc
 ## $1 => $LOCAL
@@ -11,22 +11,20 @@
 ## http://ftp.gnome.org/pub/GNOME/sources/meld/3.12/
 ## https://git.gnome.org/browse/meld/
 
-
 main() {
-    if [ "$OS" = "Windows_NT" ] ; then
-        DIFF_TOOL_0="bcompare $*"
-        DIFF_TOOL_1="meld $*"
-        DIFF_TOOL_2="p4merge $*"
-
-        DIFF_SELECT=$DIFF_TOOL_1
-    else
-        DIFF_TOOL_0="bcompare $*"
-        DIFF_TOOL_1="meld $*"
-        DIFF_TOOL_2="p4merge $*"
-
-        DIFF_SELECT=$DIFF_TOOL_1
-    fi
-
+    DIFF_TOOLS=(
+        "bcompare $*"
+        "p4merge $*"
+        "meld $*"
+    )
+    DIFF_SELECT=${DIFF_SELECT:-meld}
+    for t in "${DIFF_TOOLS[@]}"; do
+        c=(${t})
+        if command -v ${c[0]} >/dev/null 2>&1; then
+            DIFF_SELECT="${t}"
+            break
+        fi
+    done
     $DIFF_SELECT
 }
 

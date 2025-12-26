@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### parameter desc
 ## $1 => $BASE
@@ -13,20 +13,19 @@
 ## https://lukas.zapletalovi.com/2012/09/three-way-git-merging-with-meld.html
 
 main() {
-    if [ "$OS" = "Windows_NT" ] ; then
-        MERGE_TOOL_0="bcompare $*"
-        MERGE_TOOL_1="meld $2 $1 $3 -o $4 --diff $1 $2 --diff $1 $3 --auto-merge"
-        MERGE_TOOL_2="p4merge $*"
-
-        MERGE_SELECT=$MERGE_TOOL_1
-    else
-        MERGE_TOOL_0="bcompare $*"
-        MERGE_TOOL_1="meld $2 $1 $3 -o $4 --diff $1 $2 --diff $1 $3 --auto-merge"
-        MERGE_TOOL_2="p4merge $*"
-
-        MERGE_SELECT=$MERGE_TOOL_2
-    fi
-
+    MERGE_TOOLS=(
+        "bcompare $*"
+        "p4merge $*"
+        "meld $2 $1 $3 -o $4 --diff $1 $2 --diff $1 $3 --auto-merge"
+    )
+    MERGE_SELECT=${MERGE_SELECT:-meld}
+    for t in "${MERGE_TOOLS[@]}"; do
+        c=(${t})
+        if command -v ${c[0]} >/dev/null 2>&1; then
+            MERGE_SELECT="${t}"
+            break
+        fi
+    done
     $MERGE_SELECT
 }
 

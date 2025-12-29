@@ -614,3 +614,17 @@ Ubuntu setting
     sudo chmod +x /usr/libexec/tracker-extract-3
     sudo chmod +x /usr/libexec/tracker-miner-fs-3
     tracker3 daemon --start
+
+## Optimize VM
+
+    ## First command we issue is fix for slow ssh login.
+    $ chmod -x /etc/update-motd.d/*
+
+    ## Wait for cloud init to finish
+    $ ls /var/lib/cloud/instance/boot-finished
+    $ touch /etc/cloud/cloud-init.disabled
+
+    ## Disable auto upgrades.
+    ## We want to keep the VM system state stable.
+    $ sed -ie s/"1"/"0"/g /etc/apt/apt.conf.d/20auto-upgrades
+    $ sed -ie s/^#\ deb-src/deb-src/g /etc/apt/sources.list

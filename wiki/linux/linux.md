@@ -867,3 +867,12 @@ $ chrt -r 1 taskset -c 4-7 qemu-system-x86_64 ...
 ## https://github.com/jordansissel/fpm
 $ fpm -s dir -t deb -n vim74 ~/vim/
 ```
+
+## Ag / Grep Exact Match Only Search
+
+```
+$ grep '\bactions\b'
+$ ag -w -Q actions
+$ ag -w -Q -s actions
+$ ag '\bactions\b'
+```

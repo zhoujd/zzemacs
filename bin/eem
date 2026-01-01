@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec st -t "em $$@$(hostname)" -e em "$@" 2>/dev/null

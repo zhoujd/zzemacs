@@ -104,7 +104,6 @@ if [ -n "$INSIDE_EMACS" ]; then
     case $TERM in
         dumb* | emacs* ) ## emacs shell/eshell
             alias tig='etig'
-            alias em='eem'
             alias me='eme'
             alias mg='emg'
             alias nnn='enn'
@@ -112,7 +111,6 @@ if [ -n "$INSIDE_EMACS" ]; then
             alias vi='st -e vi'
             ;;
         eterm* | xterm* )  ## term and vterm
-            alias em='eem'
             alias me='eme'
             alias mg='emg'
             ;;

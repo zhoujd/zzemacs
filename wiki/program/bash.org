@@ -300,3 +300,8 @@ printf "%s.%s seconds passed\n" "${diff:0: -9}" "${diff: -9:3}"
 sudo apt install bash-completion
 sudo yum install bash-completion
 #+END_SRC
+
+** Distinguishing Between "Unset" and "Null String"
+
+${var:-word}: Use word if var is unset or null.
+${var-word}: Use word only if var is unset (expands to "" if var="").

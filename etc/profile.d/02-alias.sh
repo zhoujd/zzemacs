@@ -108,7 +108,6 @@ if [ -n "$INSIDE_EMACS" ]; then
             alias tig='etig'
             alias vi='st -e vi'
             alias vim='st -e vim'
-            alias less='st -e less'
             ;;
         eterm* | xterm* )  ## term and vterm
             alias me='eme'

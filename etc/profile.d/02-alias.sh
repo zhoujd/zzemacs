@@ -31,7 +31,7 @@ alias r='fc -e -'                  # typing'r' repeats the last command
 alias tf='tail -f'
 alias top10='sort | uniq -c | sort -n -r | head -n 10'
 alias last='last -a'
-alias les='less'
+alias less="LESS='-RS#3~g' less"
 alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias usage='du -h --max-depth=1'
@@ -103,16 +103,15 @@ alias cgdb='cgdb -q'
 if [ -n "$INSIDE_EMACS" ]; then
     case $TERM in
         dumb* | emacs* ) ## emacs shell/eshell
-            alias tig='etig'
             alias me='eme'
-            alias mg='emg'
             alias nnn='enn'
-            alias vim='st -e vim'
+            alias tig='etig'
             alias vi='st -e vi'
+            alias vim='st -e vim'
+            alias less='st -e less'
             ;;
         eterm* | xterm* )  ## term and vterm
             alias me='eme'
-            alias mg='emg'
             ;;
     esac
 fi

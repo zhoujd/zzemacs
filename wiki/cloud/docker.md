@@ -601,7 +601,7 @@ Docker
     ## Now you can mount the volume into the actual container
     $ docker run -v some-volume:/mnt-here ...
 
-## Copy .ssh files in dockfile
+## Copy .ssh files in dockerfile
 
     ## Update chmod
     $ chmod 600 .ssh/*
@@ -609,3 +609,23 @@ Docker
     ## Dockerfile
     RUN mkdir -p $USER_HOME/.ssh
     COPY --chown=<USER> .ssh $USER_HOME/.ssh
+
+## Setup render group in dockerfile
+
+    # Use render group as an argument from user
+    ARG GID=109
+
+    # Add the render group or change id if already exists
+    RUN if [ $(getent group render) ]; then \
+            groupmod --gid ${GID} render; \
+        else \
+            groupadd --system --gid ${GID} render; \
+        fi
+
+## Install CMake in dockerfile
+
+    ARG VER=3.21.7
+    RUN wget https://github.com/Kitware/CMake/releases/download/v${VER}/cmake-${VER}-linux-x86_64.sh \
+        && mkdir /cmake \
+        && sh cmake-${VER}-linux-x86_64.sh --skip-license --prefix=/cmake \
+        && rm cmake-${VER}-linux-x86_64.sh

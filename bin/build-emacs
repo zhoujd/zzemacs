@@ -3,7 +3,7 @@
 ### Build guide
 ## https://github.com/emacs-mirror/emacs/releases/tag/emacs-27.2
 ## git clone https://git.savannah.gnu.org/git/emacs.git
-## wget https://ftp.gnu.org/gnu/emacs/emacs-26.3.tar.xz
+## wget https://ftp.gnu.org/gnu/emacs/emacs-27.2.tar.xz
 ## patch -p1 < ~/zzemacs/misc/patch/<build-emacs-patch>.patch
 ## build-emacs <version> <prefix>
 

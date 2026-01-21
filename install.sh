@@ -2,18 +2,20 @@
 
 ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
-source /etc/os-release
+. $ZZEMACS_ROOT/bin/sample.sh
 
 dep() {
-    case $ID in
-        ubuntu|debian )
-            sudo apt install -y curl python3-pip
+    case "$OS_DISTRO" in
+        "Ubuntu" | "LinuxMint" | "Debian" )
+            sudo apt install -y python3-pip
+            sudo apt install -y curl
             ;;
-        void )
-            sudo xbps-install -Sy curl python3-pip
+        "VoidLinux" )
+            sudo xbps-install -Sy python3-pip
+            sudo xbps-install -Sy curl
             ;;
         * )
-            echo "[dep] $ID is not supported."
+            echo "[dep] $OS_DISTRO is not supported."
             ;;
     esac
     echo "[dep] install done"

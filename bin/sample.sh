@@ -130,6 +130,9 @@ linux_os_check() {
         "debian" )
             OS_DISTRO="Debian"
             ;;
+        "void" )
+            OS_DISTRO="Voidlinux"
+            ;;
         * )
             false
             ;;

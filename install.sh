@@ -2,16 +2,18 @@
 
 ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
-. $ZZEMACS_ROOT/bin/sample.sh
+source /etc/os-release
 
 dep() {
-    case "$OS_DISTRO" in
-        "Ubuntu" | "LinuxMint" | "Debian" )
-            sudo apt install -y python3-pip
-            sudo apt install -y curl
+    case $ID in
+        ubuntu|debian )
+            sudo apt install -y curl python3-pip
+            ;;
+        void )
+            sudo xbps-install -Sy curl python3-pip
             ;;
         * )
-            echo "[dep] $OS_DISTRO is not supported."
+            echo "[dep] $ID is not supported."
             ;;
     esac
     echo "[dep] install done"

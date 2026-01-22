@@ -58,3 +58,9 @@ $ sudo xbps-install libXfixes-devel libXi-devel
 ## Build xcompmgr
 $ sudo xbps-install libXcomposite-devel libXdamage-devel
 ```
+
+## VirtualBox Addtions
+
+```
+$ sudo xbps-install linux-headers
+```

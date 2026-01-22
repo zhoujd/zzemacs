@@ -120,7 +120,7 @@ install_package() {
                  gnutls-devel \
                  tiff-devel \
                  giflib-devel tiff-devel \
-                 ncurses ncurses-devel
+                 ncurses-libs ncurses-devel
             ;;
         * )
             echo "You are about to install on a non supported linux distribution."

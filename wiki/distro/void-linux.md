@@ -8,6 +8,7 @@ Void Linux
 ## https://docs.voidlinux.org/installation/live-images/guide.html
 ## https://docs.voidlinux.org/installation/live-images/partitions.html#bios-system-notes
 ## https://ulyssesgoods.ru/posts/install-void-on-desktop/
+## https://franza.dev/notes/void/
 ```
 
 ## Install Xorg

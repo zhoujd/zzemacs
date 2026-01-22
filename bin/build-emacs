@@ -112,15 +112,15 @@ install_package() {
             ;;
         "VoidLinux" )
             sudo xbps-install -S \
-                 gcc make \
+                 gcc make wget xz \
                  autoconf texinfo \
                  libX11-devel libXaw-devel \
-                 libjpeg-devel libpng-devel \
+                 libjpeg-turbo-devel libpng-devel \
                  pkg-config \
                  gnutls-devel \
                  tiff-devel \
                  giflib-devel tiff-devel \
-                 ncurses-devel
+                 ncurses ncurses-devel
             ;;
         * )
             echo "You are about to install on a non supported linux distribution."

@@ -4,10 +4,9 @@ cuda
 ## URLs
 
 ```
-## https://stackoverflow.com/questions/78645953/how-to-use-cuda-graphs-with-interdependent-streams-and-dynamic-parameters
+## https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-graphs.html
 ## https://people.maths.ox.ac.uk/gilesm/cuda/lecs/lec6.pdf
 ## https://eunomia.dev/others/cupti-tutorial/cuda_graphs_trace/
-## https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-graphs.html
 ## https://eunomia.dev/others/cupti-tutorial/cuda_graphs_trace/
 ## https://www.google.com/search?q=cuda+graph+event
 ```
@@ -18,6 +17,7 @@ cuda
 ## Synchronization:
 In general CUDA programming, events are synchronization markers inserted into a
 stream to track progress and create dependencies between operations across different streams.
+
 In the context of graphs, these dependencies are built into the static graph structure,
 allowing the GPU to manage execution order with hardware acceleration rather than
 relying on stream synchronization.

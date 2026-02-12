@@ -108,7 +108,7 @@ case $1 in
     font|-f )
         shift
         confirm_execute "Do you want to install font? [y/N]" \
-                        run_cmd font $*
+                        run_cmd font "$@"
         ;;
     other|-o )
         confirm_execute "Do you want to install other? [y/N]" \

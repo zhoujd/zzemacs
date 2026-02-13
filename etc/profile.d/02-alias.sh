@@ -57,11 +57,7 @@ alias lsmount='mount | sort | column -t'
 alias syslog='tail -F /var/log/syslog'
 alias screenoff='xset dpms force off'
 
-## color show alias
-alias colorless='ccze -A | less'   # https://github.com/cornet/ccze.git
-alias cl='colorless'
-
-## net alias
+## network alias
 alias ports='netstat -tulanp'
 alias netcheck='nmap -sP $(ip -o addr show | grep inet\ | grep en | cut -d\  -f 7)'
 alias scpr='scp -r'

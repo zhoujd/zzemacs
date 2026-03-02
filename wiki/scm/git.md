@@ -323,3 +323,8 @@ Git
 
     ## Add --chmod=+x / --chmod=-x options
     $ git update-index --chmod=(+|-)x <file>
+
+## Git sync to backup and sync git repositories
+
+    ## https://github.com/AkashRajpurohit/git-sync
+    ## https://github.com/AkashRajpurohit/git-sync/wiki

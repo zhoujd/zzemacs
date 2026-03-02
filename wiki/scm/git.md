@@ -326,5 +326,6 @@ Git
 
 ## Git sync to backup and sync git repositories
 
+    ## https://github.com/nschlimm/git-bulk
     ## https://github.com/AkashRajpurohit/git-sync
     ## https://github.com/AkashRajpurohit/git-sync/wiki

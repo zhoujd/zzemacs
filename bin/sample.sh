@@ -83,6 +83,8 @@ linux_issue_check() {
         OS_DISTRO="LinuxMint"
     elif [ ! -z "$(cat /etc/issue | grep 'Debian')" ]; then
         OS_DISTRO="Debian"
+    elif [ ! -z "$(cat /etc/issue | grep 'Void')" ]; then
+        OS_DISTRO="VoidLinux"
     else
         false
     fi

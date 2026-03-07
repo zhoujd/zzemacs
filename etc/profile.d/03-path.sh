@@ -13,6 +13,7 @@ pathmunge() {
             else
                 PATH=$1:$PATH
             fi
+            ;;
     esac
 }
 

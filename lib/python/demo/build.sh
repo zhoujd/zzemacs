@@ -24,7 +24,12 @@ case $1 in
   clean|-c )
     clean
     ;;
+  all|-a )
+    build
+    run
+    clean
+    ;;
   * )
-    echo "usage: $(basename $0) {build|-b|run|-r|clean|-c}"
+    echo "usage: $(basename $0) {build|-b|run|-r|clean|-c|all|-a}"
     ;;
 esac

@@ -1,0 +1,10 @@
+## .gitignore
+
+*.o
+*.ko
+*.cmd
+*.mod
+*.mod.c
+Module.symvers
+modules.order
+test

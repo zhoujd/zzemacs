@@ -13,40 +13,40 @@
 
 /* GPU设备私有数据结构 */
 struct gpu_example_device {
-    struct drm_device ddev;              // DRM设备
+    struct drm_device ddev;               // DRM设备
     struct ttm_device bdev;               // TTM设备
-    struct pci_dev *pdev;                  // PCI设备
+    struct pci_dev *pdev;                 // PCI设备
     
     /* GPU硬件资源 */
-    phys_addr_t vram_base;                  // VRAM物理基址（PCI BAR0）
-    resource_size_t vram_size;               // VRAM大小
-    void __iomem *vram_mem;                  // VRAM映射（WC属性）
+    phys_addr_t vram_base;                // VRAM物理基址（PCI BAR0）
+    resource_size_t vram_size;            // VRAM大小
+    void __iomem *vram_mem;               // VRAM映射（WC属性）
     
     /* TTM相关 */
-    struct ttm_pool pool;                    // 内存池
-    u64 gpu_max_bo_order;                    // GPU最佳连续内存阶数
+    struct ttm_pool pool;                 // 内存池
+    u64 gpu_max_bo_order;                 // GPU最佳连续内存阶数
 };
 
 /* GPU缓冲区对象 */
 struct gpu_example_bo {
-    struct ttm_buffer_object tbo;          // TTM缓冲区对象
-    struct gpu_example_device *gdev;        // 所属GPU设备
+    struct ttm_buffer_object tbo;         // TTM缓冲区对象
+    struct gpu_example_device *gdev;      // 所属GPU设备
     
     /* GPU特定字段 */
-    uint64_t gpu_addr;                       // GPU虚拟地址
-    uint32_t gpu_flags;                       // GPU访问标志
+    uint64_t gpu_addr;                    // GPU虚拟地址
+    uint32_t gpu_flags;                   // GPU访问标志
 };
 
 /* 放置域定义 */
 static const struct ttm_place vram_placement = {
-    .mem_type = TTM_PL_VRAM,            // VRAM内存类型
-    .flags = TTM_PL_FLAG_WC |           // 写组合（显存最佳实践）
-             TTM_PL_FLAG_CONTIGUOUS,    // 连续物理内存（GPU常需）
+    .mem_type = TTM_PL_VRAM,              // VRAM内存类型
+    .flags = TTM_PL_FLAG_WC |             // 写组合（显存最佳实践）
+             TTM_PL_FLAG_CONTIGUOUS,      // 连续物理内存（GPU常需）
 };
 
 static const struct ttm_place sys_placement = {
-    .mem_type = TTM_PL_SYSTEM,          // 系统内存（后备存储）
-    .flags = TTM_PL_FLAG_CACHED,        // 完全缓存
+    .mem_type = TTM_PL_SYSTEM,            // 系统内存（后备存储）
+    .flags = TTM_PL_FLAG_CACHED,          // 完全缓存
 };
 
 /* 组合放置（首选VRAM，繁忙时退到系统内存） */

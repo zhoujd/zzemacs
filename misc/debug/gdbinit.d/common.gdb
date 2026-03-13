@@ -26,6 +26,3 @@ set print thread-events off
 #set detach-on-fork on
 #set follow-fork-mode [parent|child]
 #set follow-exec-mode [new|same]
-
-## Function(s) std::.* will be skipped when stepping
-#skip -rfu std::.*

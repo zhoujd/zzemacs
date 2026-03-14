@@ -5,10 +5,14 @@ case "$TERM" in
         echo "Please usage: git commit -am \"message for commit\""
         ;;
     * )
-        if [ -x "$(command -v emacs)" ]; then
+        if command -v me >/dev/null; then
+            me $*
+        elif command -v emacs >/dev/null; then
             emacs -nw -Q $*
-        else
+        elif command -v vim >/dev/null; then
             vim $*
+        else
+            vi $*
         fi
         ;;
 esac

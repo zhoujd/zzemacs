@@ -12,7 +12,8 @@
 ;;  ForwardX11 yes
 ;;  ForwardX11Trusted yes
 ;;  ForwardAgent yes
-;;  ServerAliveInterval 60
+;;  TCPKeepAlive yes
+;;  ServerAliveInterval 15
 ;;  ServerAliveCountMax 30
 ;;  GlobalKnownHostsFile /dev/null
 ;;  UserKnownHostsFile /dev/null

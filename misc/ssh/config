@@ -5,7 +5,7 @@ Host *
   ForwardX11Trusted no
   ForwardAgent no
   TCPKeepAlive yes
-  ServerAliveInterval 60
+  ServerAliveInterval 15
   ServerAliveCountMax 30
   GlobalKnownHostsFile /dev/null
   UserKnownHostsFile /dev/null

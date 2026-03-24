@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)
 
@@ -96,7 +97,8 @@ $app -f {system|user}     ## default: system
 EOF
 }
 
-case $1 in
+CMD=${1:-""}
+case $CMD in
     dep|-d )
         confirm_execute "Do you want to install dependence? [y/N]" \
                         run_cmd dep

@@ -1,8 +1,17 @@
 #!/bin/bash
+set -euo pipefail
 
 ## rm parameter add -f for force remove
-rm_app="rm -ri $1"
+rm_app="rm -ri ${1:-}"
 sudo_rm_app="sudo $rm_app"
+
+echo "Do you want to uninstall? (y/N)"
+read answer
+case "$answer" in
+    "N" | "n" | '')
+        exit 0;
+        ;;
+esac
 
 echo "uninstall zzemacs start ..."
 

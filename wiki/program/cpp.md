@@ -296,3 +296,27 @@ int main(void) {
 
    while (keepRunning) {
 ```
+
+## C and C++ __attribute__((constructor)) and __attribute__((destructor))
+
+```c
+// __attribute__((constructor)) before the main()
+// __attribute__((destructor)) after main()
+#include <stdio.h>
+
+void my_constructor(void) __attribute__((constructor));
+void my_destructor(void) __attribute__((destructor));
+
+void my_constructor(void) {
+    printf("This runs before main()\n");
+}
+
+void my_destructor(void) {
+    printf("This runs after main() returns or exit() is called\n");
+}
+
+int main() {
+    printf("This is main()\n");
+    return 0;
+}
+```

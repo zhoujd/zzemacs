@@ -84,3 +84,7 @@ llvm
 ## LLVM Tutorial
 
     ## https://llvm.org/docs/tutorial/index.html
+
+## Clang Format
+
+	## https://clang.llvm.org/docs/ClangFormatStyleOptions.html

@@ -320,3 +320,20 @@ int main() {
     return 0;
 }
 ```
+
+## Multiple unused parameters macro
+
+```
+// e.g., -Wunused-parameter
+
+// 1. The Standard (void) Cast
+// Single usage:
+(void)param;
+// Multiple parameters
+#define UNUSED(...) (void)(__VA_ARGS__)
+// Usage: UNUSED(argc, argv);
+
+// 2. GCC __attribute__((unused))
+// Syntax: int func(int a, int b __attribute__((unused))).
+// Linux: #define debug(a) do {} while(0))
+```

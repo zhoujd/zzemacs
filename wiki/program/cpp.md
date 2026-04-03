@@ -325,13 +325,14 @@ int main() {
 
 ```
 // e.g., -Wunused-parameter
+// C++
+template <typename... Args>
+inline void yica_unused(Args&&...) {}
+#define YICA_MULTI_UNUSED(...) yica_unused(__VA_ARGS__)
 
 // 1. The Standard (void) Cast
 // Single usage:
 (void)param;
-// Multiple parameters
-#define UNUSED(...) (void)(__VA_ARGS__)
-// Usage: UNUSED(argc, argv);
 
 // 2. GCC __attribute__((unused))
 // Syntax: int func(int a, int b __attribute__((unused))).

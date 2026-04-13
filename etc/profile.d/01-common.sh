@@ -59,14 +59,9 @@ prompt() {
             title='\[\033]0;st:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
-        screen* )
+        screen* | tmux* )
             PS1="${lgreen}[\u@\h \W]\$ ${norm}"
-            title='\[\033]0;screen:\W $$@\h\007\]'
-            PS1="${title}${PS1}"
-            ;;
-        tmux* )
-            PS1="${green}[\u@\h \W]\$ ${norm}"
-            title='\[\033]0;tmux:\W $$@\h\007\]'
+            title='\[\033]0;\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
         eterm* | putty* | eat* )

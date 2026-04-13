@@ -22,9 +22,12 @@ EOF
 git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
 git config --global core.editor    $SCRIPT_ROOT/git-editor.sh
 
-## setup git configure
+## set git configure
 git config --global user.name   "Zachary Zhou"
 git config --global user.email  "zchrzhou@gmail.com"
+
+## set default branch
+git config --global init.defaultBranch main
 
 ## output color
 git config --global color.ui    "true"

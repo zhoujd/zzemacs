@@ -20,3 +20,9 @@ AI
 ```
 vllm -> pytorch -> tocrch-backend -> Triton/LLVM/RCOM/CUDA -> dGPU
 ```
+
+## AI agent
+
+```
+https://github.com/copilot
+```

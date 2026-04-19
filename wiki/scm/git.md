@@ -329,3 +329,12 @@ Git
     ## https://github.com/nschlimm/git-bulk
     ## https://github.com/AkashRajpurohit/git-sync
     ## https://github.com/AkashRajpurohit/git-sync/wiki
+
+## Download Tags from Remote to Local
+
+    ## Fetch All Tags
+    $ git fetch --tags
+	## Update and Force Overwrite
+    $ git fetch --tags -f
+    ## Prune Deleted Tags
+    $ git fetch --prune --prune-tags

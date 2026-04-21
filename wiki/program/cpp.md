@@ -338,3 +338,14 @@ inline void yica_unused(Args&&...) {}
 // Syntax: int func(int a, int b __attribute__((unused))).
 // Linux: #define debug(a) do {} while(0))
 ```
+
+## Use unordered_set in C++ STL
+
+```
+// call reserve() function
+unordered_set<string> us;
+us.reserve(0);
+
+// Initializes an empty associative container
+std::unordered_set<int> set{};
+```

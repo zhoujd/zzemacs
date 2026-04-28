@@ -29,8 +29,9 @@ git config --global user.email  "zchrzhou@gmail.com"
 ## set default branch
 git config --global init.defaultBranch main
 
-## turn out paged output for branch
+## turn off pager
 git config --global pager.branch false
+git config --global pager.diff false
 
 ## output color
 git config --global color.ui    "true"

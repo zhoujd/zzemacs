@@ -67,3 +67,13 @@ VSCode
     2. Search for dim inactive regions in the settings search bar.
     3. Look for language-specific settings, such as C_Cpp.dimInactiveRegions.
     4. Uncheck the box to disable the dimming effect, making inactive code appear with normal colors.
+
+## Hide *.o files
+
+    ## Update settings.json
+    {
+        "files.exclude" : {
+            "**/*.o": true,
+            "**/*.d": true
+        }
+    }

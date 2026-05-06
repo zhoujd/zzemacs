@@ -334,7 +334,17 @@ Git
 
     ## Fetch All Tags
     $ git fetch --tags
-	## Update and Force Overwrite
+    ## Update and Force Overwrite
     $ git fetch --tags -f
     ## Prune Deleted Tags
     $ git fetch --prune --prune-tags
+
+## Ignore every file and directory except for the .gitignore file itself
+
+    ## .gitignore
+
+    # Ignore everything
+    *
+
+    # Do not ignore .gitignore
+    !.gitignore

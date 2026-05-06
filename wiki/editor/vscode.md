@@ -77,3 +77,15 @@ VSCode
             "**/*.d": true
         }
     }
+
+## Hide files in VS Code based on your .gitignore rules
+
+    ## To hide files from the Sidebar (Explorer):
+    Search for Explorer: Exclude Git Ignore and check the box.
+    In your settings.json, this is:
+    "explorer.excludeGitIgnore": true
+
+    ## To hide files from Search and "Quick Open" (Ctrl + P):
+    Search for Search: Use Ignore Files and ensure it is checked.
+    This is the default behavior in modern versions.
+    "search.useIgnoreFiles": true

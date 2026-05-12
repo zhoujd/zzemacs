@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -euo pipefail
 
 ## rm parameter add -f for force remove

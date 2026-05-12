@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -euo pipefail
 
 ZZEMACS_ROOT=$(cd $(dirname $0) && pwd)

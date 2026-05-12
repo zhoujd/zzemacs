@@ -51,15 +51,12 @@ prompt() {
             title='\[\033]0;xterm:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
-        dvtm* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
-            ;;
         st* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
             title='\[\033]0;st:\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
-        screen* | tmux* )
+        screen* | tmux* | dvtm*)
             PS1="${lgreen}[\u@\h \W]\$ ${norm}"
             title='\[\033]0;\W $$@\h\007\]'
             PS1="${title}${PS1}"

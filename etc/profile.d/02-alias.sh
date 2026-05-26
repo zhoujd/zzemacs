@@ -31,7 +31,7 @@ alias r='fc -e -'                  # typing'r' repeats the last command
 alias tf='tail -f'
 alias top10='sort | uniq -c | sort -n -r | head -n 10'
 alias last='last -a'
-alias less="LESS='-RS#3~g' less"
+alias less="less -RS#3~g"
 alias rmr='rm -r -I'
 alias cpr='cp -r'
 alias usage='du -h --max-depth=1'

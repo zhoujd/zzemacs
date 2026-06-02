@@ -11,9 +11,6 @@ def get_time_stamp():
     ct = time.time()
     local_time = time.localtime(ct)
     data_head = time.strftime("%Y-%m-%d-%H-%M-%S", local_time)
-    #data_secs = (ct - long(ct)) * 1000
-    #time_stamp = "%s-%03d" % (data_head, data_secs)
-    #return time_stamp
     return data_head
 
 tmp_file = "/tmp/" + get_time_stamp() + ".log"
@@ -23,8 +20,6 @@ user_name = fp.read()
 fp.close()
 os.remove(tmp_file)
 tmp_file =  "/tmp/" + user_name[:-1] +"-"+ tmp_file[5:]
-
-#print tmp_file
 
 if (os.system("git log > " + tmp_file) != 0):
     print("\033[31m")
@@ -42,32 +37,20 @@ result = []
 fp = open(tmp_file,"w")
 for line in lines[::-1]:
     if re.match(r'^commit', line):
-        line = " \033[33m " + line[:-1] + "\033[31m  -gr"+str(line_num) + "\n"
+        line = "\033[33m" + line[:-1] + "\033[31m  -gr"+str(line_num) + "\n"
         line_num += 1
     elif re.match(r'^Author', line):
-        line = " \033[32m " + line
+        line = "\033[32m" + line
     elif re.match(r'^Date', line):
-        line = " \033[34m " + line
+        line = "\033[34m" + line
     else:
-        line = " \033[37m " + line
-    # if "commit" in line:
-        # line = " \033[33m " + line[:-1] + "\033[31m  -gr"+str(line_num) + "\n"
-        # line_num += 1
-    # elif "Author" in line:
-        # line = " \033[32m " + line
-    # elif "Date" in line:
-        # line = " \033[34m " + line
-    # else:
-        # line = " \033[37m " + line
+        line = "\033[37m" + line
     result.append(line)
 result.reverse()
 for i in result:
-    # print i
     fp.write(i)
-#fp.write("\033[37m")
 fp.close()
 os.system("more " + tmp_file) 
-
 
 os.remove(tmp_file)
 

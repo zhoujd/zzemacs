@@ -89,3 +89,7 @@ VSCode
     Search for Search: Use Ignore Files and ensure it is checked.
     This is the default behavior in modern versions.
     "search.useIgnoreFiles": true
+
+## Dark color theme
+
+    ## Capppuccin Dark Pro

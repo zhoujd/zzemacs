@@ -41,7 +41,6 @@
 (apply-keys-to-map
  global-map
  (list
-  (kbd "C-z")   ctrl-z-map
   (kbd "M-[")   ctrl-z-map
   (kbd "M-]")   f4-map
   [f4]          f4-map

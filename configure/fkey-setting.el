@@ -236,6 +236,12 @@
   (kbd "M-`")     (lookup-key global-map (kbd "C-`"))
   ))
 
+(apply-keys-to-map
+ global-map
+ (list
+  (kbd "C-z")     (lookup-key global-map (kbd "M-v"))
+  ))
+
 
 (provide 'fkey-setting)
 

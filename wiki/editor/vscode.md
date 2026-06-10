@@ -93,3 +93,14 @@ VSCode
 ## Dark color theme
 
     ## Capppuccin Dark Pro
+
+## Automatically Add an Empty Newline at the End of a File (POSIX Compliance)
+
+    ## VS Code to automatically inject a single blank line at the very bottom 
+    ## of your files every time you save
+    1. Open settings using Ctrl + , (or Cmd + , on macOS).
+    2. In the top search bar, type: Insert Final Newline.
+    3. Check the box for Files: Insert Final Newline.
+    ## settings.json
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true

@@ -29,11 +29,10 @@ git config --global user.email  "zchrzhou@gmail.com"
 ## set default branch
 git config --global init.defaultBranch main
 
-## turn off pager
-git config --global pager.branch false
-git config --global pager.diff false
+## pager
+git config --global core.pager "less -F -X"
 
-## output color
+## color
 git config --global color.ui    "true"
 
 ## alias

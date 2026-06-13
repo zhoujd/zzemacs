@@ -41,19 +41,9 @@ prompt() {
     local norm='\[\033[m\]'
     local title='\[\033]0;\w\007\]'
     case $TERM in
-        rxvt* )
+        rxvt* | xterm* | st* )
             PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
-            title='\[\033]0;rxvt:\W $$@\h\007\]'
-            PS1="${title}${PS1}"
-            ;;
-        xterm* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
-            title='\[\033]0;xterm:\W $$@\h\007\]'
-            PS1="${title}${PS1}"
-            ;;
-        st* )
-            PS1="${lgreen}\u@\h ${lblue}\W${green}\$ ${norm}"
-            title='\[\033]0;st:\W $$@\h\007\]'
+            title='\[\033]0;\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;
         screen* | tmux* | dvtm*)

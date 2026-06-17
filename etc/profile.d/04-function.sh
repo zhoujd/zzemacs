@@ -111,13 +111,7 @@ testmicrophone() {
 }
 
 cls() {
-    case $TERM in
-        rxvt* | xterm* | st* )
-            echo -ne '\033c'
-            ;;
-        * )
-            ;;
-    esac
+    printf "\033[2J\033[3J\033[H"
 }
 
 gdbtool() {

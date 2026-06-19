@@ -104,3 +104,17 @@ VSCode
     ## settings.json
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true
+
+## Always Open Files in a New Tab
+
+    ## Method 1: Using the Settings UI
+    1. Open the settings menu by pressing Ctrl + , (Windows/Linux) or Cmd + , (Mac).
+    2. In the top search bar, type enable preview.
+    3. Uncheck Workbench > Editor: Enable Preview
+
+    ## Method 2: Editing settings.json
+    1. Open the Command Palette using Ctrl + Shift + P (Windows/Linux) or Cmd + Shift + P (Mac).
+    2. Search for and select Preferences: Open User Settings (JSON).
+    3. Add the following line to your settings object:
+    ## settings.json
+    "workbench.editor.enablePreview": false

@@ -876,3 +876,14 @@ $ ag -w -Q actions
 $ ag -w -Q -s actions
 $ ag '\bactions\b'
 ```
+
+## Remove user from sudo group
+
+```
+## List sudo group members
+$ sudo getent group sudo
+## Common distro
+$ sudo gpasswd -d user sudo
+## Debian-specific
+$ sudo deluser username sudo
+```

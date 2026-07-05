@@ -9,9 +9,6 @@
 
 ;;;Update ~/.ssh/config
 ;;Host *
-;;  ForwardX11 yes
-;;  ForwardX11Trusted yes
-;;  ForwardAgent yes
 ;;  TCPKeepAlive yes
 ;;  ServerAliveInterval 15
 ;;  ServerAliveCountMax 30
@@ -19,6 +16,10 @@
 ;;  UserKnownHostsFile /dev/null
 ;;  StrictHostKeyChecking no
 ;;  LogLevel ERROR
+;;Host zz
+;;  ForwardX11 yes
+;;  ForwardX11Trusted yes
+;;  ForwardAgent yes
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 (add-to-list 'tramp-methods

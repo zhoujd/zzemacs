@@ -104,7 +104,7 @@
   "f11 key binding")
 
 (define-fn-key (gethash "f12" fn-key-table)
-  [f12]             'neotree-toggle
+  [f12]             'zz/neotree-toggle
   [S-f12]           'neotree-dir
   [C-f12]           'deadgrep
   [M-f12]           'rg

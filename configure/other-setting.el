@@ -418,6 +418,13 @@
       neo-window-fixed-size nil
       neo-theme 'ascii)
 
+(defun zz/neotree-toggle ()
+  "Toggle NeoTree and automatically find the current file."
+  (interactive)
+  (if (neo-global--window-exists-p)
+      (neotree-hide)
+      (neotree-find (buffer-file-name))))
+
 ;;trash
 (require 'trashed)
 (setq trashed-buffer-name "*Trash Can*")

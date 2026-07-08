@@ -413,7 +413,8 @@
 ;;neotree
 (zz/load-path "site-lisp/neotree")
 (require 'neotree)
-(setq neo-window-width 30
+(setq neo-smart-open t
+      neo-window-width 25
       neo-window-fixed-size nil
       neo-theme 'ascii)
 

@@ -228,7 +228,8 @@
 (setq-default scroll-step              1
               scroll-conservatively    most-positive-fixnum
               scroll-up-aggressively   0.0
-              scroll-down-aggressively 0.0)
+              scroll-down-aggressively 0.0
+              scroll-error-top-bottom  t)
 
 (setq kill-ring-max 200)
 

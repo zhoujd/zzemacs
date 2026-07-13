@@ -349,3 +349,19 @@ us.reserve(0);
 // Initializes an empty associative container
 std::unordered_set<int> set{};
 ```
+
+## CPU write back to GPU
+
+```
+#include <immintrin.h>  // x86-64
+void cpu_force_flush(int* signal_ptr) {
+    if (signal_ptr != nullptr) {
+        while (*(volatile int*)signal_ptr != 0) {
+            *signal_ptr = 0;
+            _mm_clflush(signal_ptr);
+            _mm_sfence();
+            std::this_thread::sleep_for(std::chrona::milliseconds(100));
+        }
+    }
+}
+```

@@ -47,7 +47,7 @@ prompt() {
             PS1="${title}${PS1}"
             ;;
         screen* | tmux* | dvtm*)
-            PS1="${lgreen}[\u@\h \W]\$ ${norm}"
+            PS1="${lgreen}[\u@\h ${lblue}\W${lgreen}]${green}\$ ${norm}"
             title='\[\033]0;\W $$@\h\007\]'
             PS1="${title}${PS1}"
             ;;

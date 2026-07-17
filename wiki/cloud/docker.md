@@ -629,3 +629,17 @@ Docker
         && mkdir /cmake \
         && sh cmake-${VER}-linux-x86_64.sh --skip-license --prefix=/cmake \
         && rm cmake-${VER}-linux-x86_64.sh
+
+## Docker in Docker (exact same path)
+
+    # Spin up the outer container mapping the host path to the exact same path inside
+    # On your Host Machine
+    docker run -it \
+      -v /var/run/docker.sock:/var/run/docker.sock \
+      -v /home/user/project:/home/user/project \
+      ubuntu-with-docker-installed bash
+
+    # Spin up the inner container using that exact same path
+    # Inside the Outer Container
+    # This works because /home/user/project exists identically on the host!
+    docker run -v /home/user/project:/data alpine ls /data

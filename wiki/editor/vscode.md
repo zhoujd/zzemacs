@@ -118,3 +118,18 @@ VSCode
     3. Add the following line to your settings object:
     ## settings.json
     "workbench.editor.enablePreview": false
+
+## Connect remote ssh then jump into is docker container
+
+    ## Required Extensions
+    Install these extensions in your local VS Code instance:
+    1. Remote - SSH (by Microsoft)
+    2. Dev Containers (by Microsoft)
+
+    ## Step-by-Step Guide
+    Step 1: Connect to the Remote Host
+    Click the green Remote Indicator button in the bottom-left corner of VS Code
+    Step 2: Open the Dev Containers View
+    Remote Explorer ->  SSH Targets to Dev Containers
+    Step 3: Select and Jump Into Your Container
+    Click on the name of the Docker container you want to enter from the list

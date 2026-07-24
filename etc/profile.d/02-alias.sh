@@ -69,10 +69,6 @@ alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
 alias iptlistfw='sudo /sbin/iptables -L FORWORD -n -v --line-numbers'
 alias firewall='iptlist'
 
-## edit alias
-alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
-alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
-
 ## others
 alias nano='nano -w'
 alias thunarpwd='thunar $PWD'
@@ -83,19 +79,3 @@ alias N='sudo -E nnn -dH'
 alias urxvtw='urxvt -bg white -fg black -cr black'
 alias gdb='gdb -q'
 alias cgdb='cgdb -q'
-
-## emacs shell/term
-if [ -n "$INSIDE_EMACS" ]; then
-    case $TERM in
-        dumb* | emacs* ) ## emacs shell/eshell
-            alias me='eme'
-            alias nnn='enn'
-            alias tig='etig'
-            alias vi='st -e vi'
-            alias vim='st -e vim'
-            ;;
-        eterm* | xterm* )  ## term and vterm
-            alias me='eme'
-            ;;
-    esac
-fi

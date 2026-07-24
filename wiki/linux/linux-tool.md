@@ -109,3 +109,15 @@ linux Tool
     Find files open to a process with known PID: lsof -p 1234
     Find files open to a named command: lsof -c bash
     Find files open by a specific user: lsof -u somebody
+
+## tmux alias
+
+    alias tnews='tmux new-session -s'
+    alias tls='tmux list-session'
+    alias tlw='tmux list-window'
+    alias tsw='tmux switch -t'
+    alias tlc='tmux list-command'
+    alias tas='tmux attach'
+    alias tat='tmux attach -t'
+    alias trs='tmux rename-session -t'
+    alias tks='tmux kill-session -t'

@@ -73,17 +73,6 @@ alias firewall='iptlist'
 alias ET="SUDO_EDITOR=\"emacsclient -t\" sudo -e"
 alias EC="SUDO_EDITOR=\"emacsclient -c\" sudo -e"
 
-## tmux
-alias tnews='tmux new-session -s'
-alias tls='tmux list-session'
-alias tlw='tmux list-window'
-alias tsw='tmux switch -t'
-alias tlc='tmux list-command'
-alias tas='tmux attach'
-alias tat='tmux attach -t'
-alias trs='tmux rename-session -t'
-alias tks='tmux kill-session -t'
-
 ## others
 alias nano='nano -w'
 alias thunarpwd='thunar $PWD'

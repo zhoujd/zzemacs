@@ -18,19 +18,24 @@ cat <<EOF > ~/.gitconfig
 
 EOF
 
-## set git proxy
-git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
-git config --global core.editor    $SCRIPT_ROOT/git-editor.sh
-
-## set git configure
+## user info
 git config --global user.name   "Zachary Zhou"
 git config --global user.email  "zchrzhou@gmail.com"
 
-## set default branch
+## default branch
 git config --global init.defaultBranch main
 
+## proxy
+git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
+
+## editor
+git config --global core.editor    $SCRIPT_ROOT/git-editor.sh
+
+## abbreviated hash width
+git config --global core.abbrev 7
+
 ## pager
-git config --global core.pager "less -F -X"
+git config --global core.pager  "less -F -X"
 
 ## color
 git config --global color.ui    "true"
@@ -95,8 +100,10 @@ git config --global alias.hg    'log --oneline -10'
 ## list aliases
 git config --global alias.la    "!git config -l | grep alias | cut -c 7-"
 
-## set http/https proxy
-git config --global http.proxy $http_proxy
+## http/https proxy
+if [ -n "$http_proxy" ]; then
+  git config --global http.proxy $http_proxy
+fi
 
 ## cp /c/Git/mingw64/ssl/certs/ca-bundle.crt $SCRIPT_ROOT/cert/ca-bundle.crt
 ## git config --global http.sslcainfo $SCRIPT_ROOT/cert/ca-bundle.crt
@@ -113,12 +120,12 @@ git config --global credential.helper "cache --timeout=3600"
 ## git default diff using external
 #git config --global diff.external $SCRIPT_ROOT/git-diff-default.sh
 
-## git difftool setting
+## git difftool
 git config --global diff.tool extdiff
 git config --global difftool.extdiff.cmd "$SCRIPT_ROOT/git-diff-wrapper.sh \"\$LOCAL\" \"\$REMOTE\""
 git config --global difftool.prompt false
 
-## setup merge setting
+## git mergetool
 git config --global merge.tool extmerge
 git config --global mergetool.extmerge.cmd "$SCRIPT_ROOT/git-merge-wrapper.sh \"\$BASE\" \"\$LOCAL\" \"\$REMOTE\" \"\$MERGED\""
 git config --global mergetool.extmerge.trustExitCode false
@@ -130,7 +137,7 @@ git config --global mergetool.keepBackup false
 ## zdiff3 is a "zealous" variant of diff3, introduced in Git version 2.35
 git config --global merge.conflictStyle diff3
 
-## git push setting
+## git push
 git config --global push.default simple
 
 ## setup URL
@@ -142,6 +149,5 @@ git config --global --add include.path $GITCONFIG_URL
 GITCONFIG_WS=~/.gitconfig-work
 touch $GITCONFIG_WS
 git config --global includeif.gitdir:~/work/.path $GITCONFIG_WS
-
 
 echo "git global setup end"

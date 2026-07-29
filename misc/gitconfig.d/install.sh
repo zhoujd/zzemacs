@@ -22,9 +22,6 @@ EOF
 git config --global user.name   "Zachary Zhou"
 git config --global user.email  "zchrzhou@gmail.com"
 
-## default branch
-git config --global init.defaultBranch main
-
 ## proxy
 git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
 
@@ -137,7 +134,10 @@ git config --global mergetool.keepBackup false
 ## zdiff3 is a "zealous" variant of diff3, introduced in Git version 2.35
 git config --global merge.conflictStyle diff3
 
-## git push
+## git init default
+git config --global init.defaultBranch main
+
+## git push default
 git config --global push.default simple
 
 ## setup URL

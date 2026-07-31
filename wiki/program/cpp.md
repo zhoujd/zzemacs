@@ -365,3 +365,19 @@ void cpu_force_flush(int* signal_ptr) {
     }
 }
 ```
+
+## Understanding AddressSanitizer
+
+```
+## https://blog.trailofbits.com/2024/05/16/understanding-addresssanitizer-better-memory-safety-for-your-code/
+$ cat example.cpp <<EOF
+int main() {
+    volatile short buf[6], a=0;
+    volatile char b=1;
+    // trigger out-of-bounds so ASan shows
+    // shadow bytes around the buggy access
+    buf[10] = a+b;
+}
+EOF
+$ gcc -fsanitize=address -O0 -g3 ./example.cpp && ./a.out
+```

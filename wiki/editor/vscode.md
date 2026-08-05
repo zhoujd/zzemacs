@@ -133,3 +133,15 @@ VSCode
     Remote Explorer ->  SSH Targets to Dev Containers
     Step 3: Select and Jump Into Your Container
     Click on the name of the Docker container you want to enter from the list
+
+## Markdown Native Preview
+
+    ## Side-by-Side Preview:
+    Press Ctrl + K then V (Windows/Linux) or Cmd + K then V (Mac) to view your code
+    and the live-updating render side by side.
+    ## Editor Button:
+    Click the Open Preview to the Side icon (looks like a split window with a small magnifying glass)
+    in the top-right corner of the editor window.
+    ## Command Palette:
+    Open the Command Palette via Ctrl + Shift + P (or Cmd + Shift + P),
+    type "Markdown: Open Preview", and press Enter

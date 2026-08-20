@@ -655,3 +655,9 @@ Docker
     # Run your program under Tini
     CMD ["/your/program", "-and", "-its", "arguments"]
     # or docker run your-image /your/program ...
+
+## Setup LD_LIBRARY_PATH
+
+    # Prefer to use ldconfig
+    RUN echo "/usr/local/lib" >> /etc/ld.so.conf.d/custom.conf
+    RUN ldconfig

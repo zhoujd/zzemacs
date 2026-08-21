@@ -11,8 +11,11 @@ https://wiki.archlinux.org/title/Font_configuration
 ## otf2ttf
 
 ```
-##https://pypi.org/project/afdko/
+## https://pypi.org/project/afdko/
 $ pip install afdko
+$ otf2ttf
+or
+$ pip install otf2ttf
 $ otf2ttf
 ```
 

@@ -61,19 +61,19 @@
 ;;(set-face-font 'default "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*")
 ;;(custom-set-faces '(default ((t (:family "WenQuanYi Zen Hei Mono" :size 15)))))
 (defconst zz/en-font-list '(
-                            "SF Mono 13"
-                            "SF Mono Nerd 13"
-                            "JetBrains Mono NL 13"
-                            "Droid Sans Mono SW 13"
+                            "SF Mono:style=Regular 13"
+                            "SF Mono Nerd:style=Regular 13"
+                            "JetBrains Mono NL:style=Regular 13"
                             "WenQuanYi Zen Hei Mono 13"
                             ))
+
 (defconst zz/cn-font-list '(
                             "PingFang SC"
-                            "Droid Sans Fallback"
-                            "Microsoft YaHei Mono"
+                            "WenQuanYi Zen Hei"
                             ))
+
 (defconst zz/console-font-list '(
-                                 "-misc-spleen-medium-r-normal--64-640-72-72-c-320-iso10646-1"
+                                 "-misc-spleen-medium-r-normal--32-320-72-72-c-160-iso10646-1"
                                  "-*-WenQuanYi Zen Hei Mono-*-*-*-*-15-*-*-*-*-*-*-*"
                                  ))
 

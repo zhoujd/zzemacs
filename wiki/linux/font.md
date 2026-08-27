@@ -33,3 +33,10 @@ $ fontforge -script nerd-fonts/font-patcher -s -c tmpfont/SFMono-Medium.otf -out
 ## https://github.com/Pudge1996/SF-Pro-Zh
 ## https://github.com/ShmilyHTT/PingFang
 ```
+
+## Maple Mono
+
+```
+## https://github.com/subframe7536/maple-font
+## https://github.com/subframe7536/maple-font/releases/tag/v7.9
+```

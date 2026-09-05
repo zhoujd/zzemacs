@@ -9,6 +9,9 @@
 
 ;;;Update ~/.ssh/config
 ;;Host *
+;;  ControlMaster auto
+;;  ControlPath ~/.ssh/sockets/%r@%h:%p
+;;  ControlPersist 1h
 ;;  TCPKeepAlive yes
 ;;  ServerAliveInterval 15
 ;;  ServerAliveCountMax 30
@@ -45,6 +48,9 @@
                (tramp-default-port         22)))
 (tramp-set-completion-function zz/tramp-sshz-method tramp-completion-function-alist-ssh)
 (setq tramp-default-method zz/tramp-sshz-method)
+
+;;Forcing SSH to keep a single, permanent connection tunnel open
+;(setq tramp-use-ssh-controlmaster-options nil)
 
 ;;Persistency for fast init, don't change ~/.emacs.d/tramp
 ;;Run `M-x tramp-cleanup-all-connections' instead.

@@ -1,6 +1,10 @@
 ;;;; common-setting.el --- common config file
 ;;
 
+;;Temporarily raise GC to 100MB during boot
+(defvar default-gc-cons-threshold gc-cons-threshold)
+(setq gc-cons-threshold (* 100 1024 1024))
+
 ;;tell me if there's something wrong
 ;;(setq debug-on-error t)       ; goes into debug mode on errors
 ;;(setq debug-on-signal t)      ; goes into debug mode on signal

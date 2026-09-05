@@ -412,3 +412,33 @@ for line in stdout:
     line = line.decode()
     print(line, end="")
 ```
+
+## FastAPI application in Python
+
+```
+## 1. Install Dependencies
+$ pip install fastapi uvicorn
+
+## 2. The Code (main.py)
+from fastapi import FastAPI
+
+# Initialize the application
+app = FastAPI()
+
+# A simple GET endpoint for the root URL
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to API workspace!"}
+
+# A dynamic GET endpoint accepting path and query parameters
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: str = None):
+    return {
+        "item_id": item_id,
+        "query_param": q,
+        "status": "success"
+    }
+
+## 3. Run the Server
+$ uvicorn main:app --reload
+```

@@ -88,12 +88,11 @@
 ;;This ensures that only local and readable files are kept in the recentf list
 (setq recentf-keep '(file-remote-p file-readable-p))
 
-(defun zz/no-msg (function)
-  "Prevent FUNCTION from showing `Wrote <FILE>' messages.
-\(The messages are still logged to `*Messages*'.)"
-  (let ((inhibit-message  t))
-    (funcall function)))
-(advice-add 'recentf-save-list :around 'zz/no-msg)
+(defun zz/recentf-save-list-silence (fn &rest args)
+  "Suppress `Wrote <file>` messages when saving recentf."
+  (let ((inhibit-message t))
+    (apply fn args)))
+(advice-add 'recentf-save-list :around #'zz/recentf-save-list-silence)
 
 (defun zz/suppress-messages (func &rest args)
   "Suppress message output from FUNC."

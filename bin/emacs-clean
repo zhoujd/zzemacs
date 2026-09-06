@@ -1,0 +1,29 @@
+#!/bin/sh
+
+SOCKET_DIR="$HOME/.emacs.d/sockets"
+
+echo "[clean] checking for hung Emacs socket loops..."
+
+# 1. Clear the physical socket descriptors
+if [ -d "$SOCKET_DIR" ]; then
+    # Use find to cleanly locate and delete socket pipes without triggering "Argument list too long" errors
+    COUNT=$(find "$SOCKET_DIR" -type s -o -type f | wc -l)
+    if [ "$COUNT" -gt 0 ]; then
+        find "$SOCKET_DIR" -type s -delete 2>/dev/null
+        find "$SOCKET_DIR" -type f -delete 2>/dev/null
+        echo "[clean] successfully deleted $COUNT hung TRAMP control sockets."
+    else
+        echo "[clean] socket cache folder is already empty."
+    fi
+else
+    echo "[clean] warning: sockets directory does not exist."
+fi
+
+# 2. Forcefully kill any orphaned SSH control processes owned by your user that are tied to TRAMP
+# This ensures that hung connections drop immediately at the system level
+if pgrep -f "ssh:.*tramp-" > /dev/null; then
+    pkill -f "ssh:.*tramp-"
+    echo "[clean] terminated dangling background TRAMP-SSH processes."
+fi
+
+echo "[clean] reset completed."

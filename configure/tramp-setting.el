@@ -25,6 +25,12 @@
 ;;  ForwardAgent yes
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
+
+;; Ensure the sockets path exists
+(let ((socket-dir (expand-file-name "~/.emacs.d/sockets")))
+  (unless (file-exists-p socket-dir)
+    (make-directory socket-dir t)))
+
 (add-to-list 'tramp-methods
              `(,zz/tramp-sshz-method
                (tramp-login-program        "ssh")
@@ -33,6 +39,9 @@
                                             ("%c")
                                             ("-e" "none")
                                             ("-X")
+                                            ("-o" "ControlMaster=auto")
+                                            ("-o" "ControlPath=~/.emacs.d/sockets/tramp-%%r@%%h:%%p")
+                                            ("-o" "ControlPersist=1h")
                                             ("%h")
                                             ))
                (tramp-async-args           (("-q")))

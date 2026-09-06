@@ -58,6 +58,20 @@
 (tramp-set-completion-function zz/tramp-sshz-method tramp-completion-function-alist-ssh)
 (setq tramp-default-method zz/tramp-sshz-method)
 
+;;Clear tramp sockets
+(defun zz/clear-tramp-sockets ()
+  "Safely remove all cached TRAMP SSH ControlMaster sockets in ~/.emacs.d/sockets."
+  (interactive)
+  (let ((socket-dir (expand-file-name "~/.emacs.d/sockets/")))
+    (if (file-directory-p socket-dir)
+        (let ((files (directory-files socket-dir t "^[^.]"))) ; Ignore "." and ".." hidden links
+          (if files
+              (progn
+                (mapc #'delete-file files)
+                (message "Cleared %d cached socket connections cleanly." (length files)))
+            (message "Socket cache directory is already empty.")))
+      (message "Warning: Sockets directory does not exist."))))
+
 ;;Forcing SSH to keep a single, permanent connection tunnel open
 ;(setq tramp-use-ssh-controlmaster-options nil)
 

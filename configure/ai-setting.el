@@ -18,7 +18,6 @@ You are a pragmatic, expert software engineer. \
 Provide concise code reviews and direct code improvements with minimal conversational fluff. \
 Prefer modern, safe syntax.")))
 
-(setq gptel-track-response t)
 (setq gptel-default-mode 'markdown-mode)
 (setq gptel-track-response t)
 (setq gptel-backend

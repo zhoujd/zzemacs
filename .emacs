@@ -23,6 +23,7 @@
         sample-setting
         shell-setting
         gdb-setting
+        ai-setting
         other-setting
         cedet-setting
         complete-setting

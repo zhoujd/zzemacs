@@ -19,17 +19,13 @@
         :endpoint "/v1/chat/completions"       ; Standard LiteLLM / OpenAI routing endpoint
         :stream t                              ; Enables smooth typewriter-style streaming responses
         :models '("GLM-5.2-W4AFP8")            ; Registers your specific model ID
-        :key (lambda () "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b")))
+        :key "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b"))
 
 (setq gptel-model 'GLM-5.2-W4AFP8)
 (setq-default gptel-directives
               '((default . "You are a pragmatic, expert software engineer. \
 Provide concise code reviews and direct code improvements with minimal conversational fluff. \
 Prefer modern, safe syntax.")))
-
-(defun zz/gptel-send ()
-  (interactive)
-  (gptel-send t))
 
 (defun zz/gptel-menu ()
   "A pragmatic fallback menu for gptel when the built-in transient menu is unavailable."
@@ -60,7 +56,7 @@ Prefer modern, safe syntax.")))
 
 (defkeys-map global-map
   ((kbd "C-c i a") 'gptel)            ; Create or switch to a dedicated AI chat buffer
-  ((kbd "C-c i s") 'zz/gptel-send)    ; Send selected code and prompt (fully supports TRAMP)
+  ((kbd "C-c i s") 'gptel-send)       ; Send selected code and prompt (fully supports TRAMP)
   ((kbd "C-c i m") 'zz/gptel-menu))   ; Summon the interactive parameters popup menu
 
 

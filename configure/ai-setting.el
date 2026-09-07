@@ -7,11 +7,20 @@
 (require 'gptel-openai)
 (require 'gptel-openai-extras)
 
+;; Log level
+;(setq gptel-log-level 'debug)
+
+;; Performance parameters
+(setq-default gptel-max-tokens 8192)
+(setq-default gptel-directives
+              '((default . "\
+You are a pragmatic, expert software engineer. \
+Provide concise code reviews and direct code improvements with minimal conversational fluff. \
+Prefer modern, safe syntax.")))
+
 (setq gptel-track-response t)
 (setq gptel-default-mode 'markdown-mode)
 (setq gptel-track-response t)
-(setq gptel-model "glm-5.2")
-
 (setq gptel-backend
       (gptel-make-openai "LiteLLM-GLM"
         :host "10.11.70.11:8090"               ; Matches the local IP and port in your config.toml
@@ -19,13 +28,10 @@
         :endpoint "/v1/chat/completions"       ; Standard LiteLLM / OpenAI routing endpoint
         :stream t                              ; Enables smooth typewriter-style streaming responses
         :models '("GLM-5.2-W4AFP8")            ; Registers your specific model ID
-        :key "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b"))
-
+        :key (lambda ()
+               (or (getenv "OPENAI_API_KEY")
+                   "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b"))))
 (setq gptel-model 'GLM-5.2-W4AFP8)
-(setq-default gptel-directives
-              '((default . "You are a pragmatic, expert software engineer. \
-Provide concise code reviews and direct code improvements with minimal conversational fluff. \
-Prefer modern, safe syntax.")))
 
 (defun zz/gptel-menu ()
   "A pragmatic fallback menu for gptel when the built-in transient menu is unavailable."

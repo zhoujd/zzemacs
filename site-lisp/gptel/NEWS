@@ -1,0 +1,1109 @@
+# -*- mode: org; -*-
+
+* 0.9.9.7-pre
+
+** Breaking changes
+** New models and backends
+
+- Anthropic backend: Add support for =claude-fable-5-1=.
+
+- OpenAI backend: Add support for =gpt-6-astra=.
+
+** New features and UI changes
+** Notable bug fixes
+
+
+* 0.9.9.6 2026-09-05
+
+** Breaking changes
+
+- The Github Models setup instructions have been removed from the
+  README, and the Github Models mentions in gptel.el's commentary
+  header removed.  GitHub Models was fully retired on 2026-07-30 and
+  its API is no longer available.
+
+- The models =deepseek-chat= and =deepseek-reasoner= have been
+  removed from the default list of Deepseek models.  These models are
+  either deprecated or no longer available.
+
+- The models =gptel-5-1=, =gpt-5.1-codex=, =gpt-5.1-codex-max=,
+  =gpt-5.1-codex-mini=, =gpt-5.2=, =gpt-5.2-codex=, =claude-sonnet-4=,
+  =gemini-2.5-pro=, =gemini-3-pro-preview=, =gemini-3-flash-preview= and
+  =grok-code-fast-1= have been removed from the default list of Copilot
+  models. These models are either deprecated or no longer available.
+
+- The models =claude-3-7-sonnet-20250219=, =claude-3-5-sonnet-20241022=,
+  =claude-3-5-sonnet-20240620=, =claude-3-5-haiku-20241022=,
+  =claude-3-opus-20240229= and =claude-3-haiku-20240307= have been
+  removed from the default list of Anthropic models.  These models are
+  either deprecated or no longer available.
+
+- The models =gemini-3.1-flash-lite-preview=, =gemini-3-pro-preview=,
+  =gemini-2.5-pro-preview-06-05=, =gemini-2.5-flash-preview-09-2025=,
+  =gemini-2.5-flash-lite-preview-09-2025=, =gemini-2.0-flash=,
+  =gemini-2.0-flash-exp= and =gemini-2.0-flash-thinking-exp= have been
+  removed from the default list of Gemini models.  These models are no
+  longer available.
+
+- The minimum required version of the =transient= package is now 0.7.8.
+
+- ~gptel-temperaure~ now defaults to nil, meaning the API's default
+  value will be used.  This is because some backends don't support
+  providing the temperature, those that do don't agree on the scale and
+  what a temperature of 1 means.
+
+- Due to the introduction of ~gptel-system-prompt~ (see below), opening
+  a text/markdown gptel chat file before loading gptel can cause an
+  error.  To fix this, please ensure that gptel is loaded before opening
+  any saved text/markdown chat files.  This only needs to be done once.
+
+- ~gptel-menu~'s option to redirect a response to a gptel buffer (the
+  "g" option) now works differently.  The prompt is inserted into the
+  gptel buffer as before, but the request is sent /from the gptel
+  buffer/, with the full context of the conversation.  Before now, the
+  gptel buffer only served as the destination for the response, and the
+  query was sent without any context.
+
+  This means that you can continue a conversation in any gptel
+  buffer from anywhere in Emacs without having to switch to it first.
+- The models =grok-4-1-fast-reasoning=, =grok-4-1-fast-non-reasoning=,
+  =grok-code-fast-1=, =grok-4-fast-reasoning=,
+  =grok-4-fast-non-reasoning=, =grok-4=, =grok-3-mini=, =grok-3= and
+  =grok-2-vision-1212= have been removed from the default list of Grok
+  (xAI) models.  These models are either no longer available or aliased
+  to one of two available Grok models, =grok-4.3= and =grok-build-0.1=.
+
+- gptel now sends both request data and headers to Curl via stdin, so no
+  temporary files will be created regardless of request
+  size. ~gptel-curl-file-size-threshold~ is now obsolete.
+
+** New models and backends
+
+- Bedrock backend: Add support for =claude-opus-4-7=, =claude-opus-4-8=,
+  =claude-opus-4-9=, =claude-opus-5=, =claude-haiku-4-5= and
+  =claude-fable-5=.
+
+- Anthropic backend: Add support for =claude-sonnet-5=,
+  =claude-opus-4-8=, =claude-opus-4-9=, =claude-opus-5= and
+  =claude-fable-5=.
+
+- GitHub Copilot backend: Add support for =gemini-3.8-flash=,
+  =gemini-3.7-flash=, =gemini-3.6-flash=, =gemini-3.5-flash=,
+  =gpt-5.6-sol=, =gpt-5.6-terra=, =gpt-5.6-luna=, =claude-opus-4.8=,
+  =claude-sonnet-5=, =claude-opus-5= and =claude-fable-5=.
+
+- Gemini backend: Add support for =gemini-3.8-flash=,
+  =gemini-3.7-flash=, =gemini-3.6-flash=, =gemini-3.5-flash=,
+  =gemini-3.5-flash-lite= and =gemini-3.1-flash-lite=.  Add deprecation
+  notices for =gemini-3.1-flash-lite= and =gemini-3-flash-preview=.
+
+- OpenAI backend: Add support for =gpt-5.6-sol=, =gpt-5.6-terra= and
+  =gpt-5.6-luna=.
+
+- Deepseek backend: Add support for =deepseek-v4-flash-vision-exp=.
+
+- xAI backend: Add support for =grok-4.3=, =grok-build-0.1= and
+  =grok-4.5=.
+
+** New features and UI changes
+
+- =gptel-send= now supports sending additional messages to the LLM while
+  it is generating a response.  This process, called "steering", can be
+  used to guide its behavior during long-running responses.  However, it
+  only works when the LLM is provided with tools and makes tool calls;
+  the steering message is queued and sent to the LLM along with the next
+  tool call result.
+
+  To steer an LLM query, you can
+  - use gptel-menu when during an ongoing response, or
+  - select any text region/type below the response, and call
+    =gptel-send= with a prefix argument of 0.
+
+  If there are multiple active LLM requests in a buffer, only the latest
+  issued request can be steered.
+
+- When tool calls require confirmation, you can now choose to reject
+  them and continue the conversation instead of suspending them
+  entirely.  Choosing "steer" reports a failure to the LLM for each tool
+  call along with your steering instructions, allowing the model to
+  adapt and proceed without running the tools.
+
+  This option is available in the tool call dispatch overlay (~C-c C-r~),
+  the minibuffer confirmation prompt (=r=), and the tool call inspection
+  buffer (~C-c C-r~ or the "Steer" button in the header line).
+
+- gptel-rewrite is now available as an (inline) preset in addition to a
+  command.  Using the =@gptel-rewrite= cookie in a prompt will cause the
+  prompt text before the cookie to be replaced with the response, with
+  the rewrite instructions read from the text following the cookie.
+
+- The gptel tool's =:include= slot and the global option
+  ~gptel-include-tool-results~ now also accept the symbol =call=: when
+  set, only the call parameters are inserted into the buffer; the result
+  is omitted.  This is useful when the tool results are large or not
+  very human-readable, yet it is important for you or the LLM to track
+  what calls have been made.
+
+- You can now set gptel's system prompt directly via
+  ~gptel-system-prompt~.  Previously this required setting an internal
+  gptel variable (~gptel--system-message~, now obsolete), or defining a
+  mapping in ~gptel-directives~ and picking from the list interactively.
+
+- ~gptel-send~ now respects the value of the =GPTEL_PRESET= Org property
+  in Org mode.  This property can specify a list of presets
+  (space-separated) that will be applied in sequence when calling
+  ~gptel-send~ from inside the entry to which it applies.  For example,
+  a value of
+  #+begin_src org
+  :GPTEL_PRESET: webtools short-answers
+  #+end_src
+  will cause the presets "webtools" and "short-answers" to be applied,
+  assuming they exist.
+
+- OpenAI subscription support: gptel now supports authentication with
+  OpenAI ChatGPT Plus/Pro accounts.  This allows using the ChatGPT Codex
+  endpoint without an API key.  See ~gptel-make-openai-oauth~ and the
+  README for details.
+
+- When running ~gptel-rewrite~, reasoning text was previously always
+  completely omitted from the response.  This was required to avoid
+  mixing with the final, rewritten text, but it meant there was no way
+  to examine the reasoning stream.
+
+  Now reasoning text is retained and redirected to another buffer if --
+  and only if -- ~gptel-include-reasoning~ is a string denoting a buffer
+  name.
+
+- The OpenAI OAuth backend now supports authorization code-based OAuth,
+  and defaults to this flow except when connecting to Emacs over SSH.
+
+- The DeepSeek and z.ai backends now support structured (JSON) outputs.
+  No changes are required in how the schema should be specified on the
+  gptel side, however it is recommended to use (the pre-existing)
+  ~gptel-make-deepseek~ to create both DeepSeek and z.ai/GLM backends.
+
+- The Anthropic backend now supports tool calls and structured (JSON)
+  outputs simultaenously in a request.  Previously the two were
+  incompatible.
+
+- You can now specify (programmatically) which MCP tools to add when
+  starting MCP servers.  Previously all tools provided by an MCP server
+  would be added automatically.  See ~gptel-mcp-connect~ for details.
+
+** Notable bug fixes
+
+- Improved error messages: Curl request failures now include more
+  diagnostic information.
+
+- Fix bounds issues when using the gptel transient menu with =evil-mode=
+  visual selections.
+
+- Fix org-mode parsing issues involving =tab-width= when sending
+  queries.
+
+* 0.9.9.5 2026-05-03
+
+** Breaking changes
+
+- gptel's default ChatGPT backend has been removed. ~gptel-backend~ and
+  ~gptel-model~ now default to =nil=, and there are no registered
+  backends out of the box.  However gptel remains usable without
+  configuration: if ~gptel-send~ is called without a backend set, the
+  ChatGPT backend is created on the fly and used.
+
+- ~gptel-track-media~ affects gptel's link handling in all Org and
+  Markdown buffers, not just chat buffers that have ~gptel-mode~ turned
+  on.  When calling ~gptel-send~ with ~gptel-track-media~ turned on, and
+  the buffer is in Org or Markdown mode, links to supported file types
+  will be followed by gptel and included with the request.  Previously
+  this behavior applied only in dedicated chat buffers.
+
+  (This is actually how gptel has worked since v0.9.9.3, but this change
+  in behavior was undocumented.)
+
+- ~gptel-include-reasoning~ now defaults to =ignore=, meaning that
+  reasoning text in LLM responses will be included in buffers but
+  ignored by ~gptel-send~ on subsequent conversation turns.  The reason
+  for this change is that including the reasoning text as the LLM's
+  response on new conversation turns is not recommeded by LLM APIs.
+  Reasoning text can also fill up the context window.
+
+- ~gptel-make-tool~ now sets the tool's =:include= slot by default.
+  This means that unless =:include nil= is explicitly specified,
+  gptel-tools will default to including their results in the buffer when
+  using ~gptel-send~.  This is recommended for coherent multi-turn
+  conversations involving tool use, as the LLM uses tool results from
+  past turns for context.
+
+  (Tool result inclusion can be controlled globally (or buffer-locally)
+  for all tools via ~gptel-include-tool-results~, whose default value
+  has not been altered.)
+
+- The models =gpt-41-copilot=, =gpt-5= and =claude-opus-41= have been
+  removed from the default list of GitHub Copilot models.  These models
+  are no longer available in the GitHub Copilot API.
+
+- The models =gpt-3.5-turbo= and =gpt-3.5-turbo-16k= have been removed
+  from the default list of OpenAI models.  These models are either
+  deprecated or no longer available.
+
+- Breaking change to the ~gptel-backend~ API: When the =header= or =url=
+  fields of a backend are specified as functions, they now accept one
+  argument: the request context plist (=info=).  This is only relevant
+  if you have defined custom header or url functions for your gptel
+  backends.
+
+  (This change is required for backends whose request header or URL
+  should be modified depending on the state of the request.)
+
+** New models and backends
+
+- Deepseek backend: Add support for =deepseek-v4-flash=,
+  =deepseek-v4-pro=.
+
+- Anthropic backend: Add support for =claude-opus-4.7=.
+
+- xAI backend: Add support for =grok-4-1-fast-reasoning=,
+  =grok-4-1-fast-non-reasoning=, =grok-4-fast-reasoning=, and
+  =grok-4-fast-non-reasoning=.
+
+- GitHub Copilot backend: Add support for =claude-opus-4.7=,
+  =gpt-5.1-codex-, =gpt-5.1-codex-mini, =claude-sonnet-4.6=,
+  =gemini-3.1-pro-preview=, =gpt-5.3-codex=, =gpt-5.4=,
+  =gpt-5.4-mini=, and =gpt-5.5=.
+
+- Gemini backend: Add support for =gemini-3.1-flash-lite-preview=;
+  add deprecation notice for =gemini-3-pro-preview=.
+
+- OpenAI backend: Add support for =gpt-5.5=, =gpt-5.5-pro=,
+  =gpt-5.3-chat-latest=, =gpt-5.4=, =gpt-5.4-pro=, =gpt-5.4-mini=,
+  =gpt-5.4-nano=. =gpt-5.2=, =gpt-5-mini=, =gpt-5-nano= and =o3-pro=.
+
+** New features and UI changes
+
+- gptel now displays token usage in the header-line when using
+  gptel-mode.  This includes the tokens sent, cached tokens sent (if
+  any) and tokens received.  The displayed totals are per-request or per
+  session/buffer, and you can switch between the two by clicking the
+  display.  Hovering the mouse over the display will show both in a
+  tooltip.
+
+  Displaying costs in currency instead of tokens is not yet supported
+  because many backends do not provide all the required information
+  (tiered pricing schemes, cache creation details, etc).
+
+- New command ~gptel-preset~ to choose a gptel preset to apply, or save
+  gptel's current settings as a preset.
+
+  ~gptel-menu~ now uses this command instead of a transient menu for
+  applying presets.
+
+- gptel now ships with a pre-defined preset named =gptel-default=.  This
+  preset "resets" most gptel settings to the default values that gptel
+  ships with.  This means no system prompt or tools, no additional
+  context sources, no request temperature or max token limits and more.
+  It does not change the active ~gptel-model~ or ~gptel-backend~.  This
+  has at least two uses:
+
+  1. By applying the preset interactively, you can use it to quickly
+     reset most of gptel's configuration back to the default (excepting
+     the model and backend, which are =nil= by default).
+
+  2. When using ~gptel-request~ for scripting purposes, you can fully
+     isolate the call from the effects of gptel's environment with
+     #+begin_src emacs-lisp
+     (gptel-with-preset 'gptel-default
+       (gptel-request prompt ...))
+     #+end_src
+     Presets can also inherit from =gptel-default= to build a bespoke
+     gptel configuration.  (See ~gptel-make-preset~ for details.)
+
+- The UI indicators in chat buffers that report status changes (such as
+  =Waiting=, =Ready= etc) now show the names of tools being called.  The
+  mode-line indicator display (see ~gptel-use-header-line~) has been
+  improved.
+
+- ~gptel-rewrite~ now displays status updates above the region being
+  rewritten, indicating the request state (=Waiting=, =Typing= etc) and
+  any tool calls in progress.  This provides visual feedback for
+  rewrites in progress, which was previously completely absent until the
+  response was complete.
+
+- When using ~setopt~ or the customize interface, ~gptel-backend~ can
+  now be specified as a list instead of an opaque object.  See its
+  documentation for details.
+
+- When using ~gptel-send~, tool calls that require confirmation can now
+  be examined in full in a dedicated inspection buffer, where they are
+  displayed as Elisp forms.
+
+  The tool name and tool call arguments can also be modified in-place
+  now.  These modifications /must/ be in-place; deleting tool calls or
+  adding new ones to the inspection buffer is not supported.
+
+- New hooks ~gptel-pre-tool-call-functions~ and
+  ~gptel-post-tool-call-functions~ run before and after each tool call,
+  respectively.  These hooks receive details of the (planned or
+  finished) tool call and provide fine-grained control over them.  These
+  hooks work with ~gptel-send~, including when invoked from gptel's
+  Transient menu or from Elisp.
+
+  ~gptel-pre-tool-call-functions~ can be used to modify tool call
+  arguments, short-circuit the call and provide the results, block the
+  tool call but continue the request with a message for the LLM, or stop
+  the request entirely.
+
+  ~gptel-post-tool-call-functions~ can be used to modify tool call
+  results, block the tool call but continue the request, or stop the
+  request entirely.
+
+- New variable ~gptel-bedrock-aws-cli-command~ to set the path to the
+  AWS CLI command for the Bedrock backend.  Defaults to "ews".
+
+- gptel now supports the OpenAI Responses API.  Practically speaking,
+  you should notice no change in behavior, except that the newest OpenAI
+  models should now be supported and available in OpenAI backends.
+
+  Thinking/Reasoning in responses is also supported for OpenAI models
+  now, but this is *not yet configurable* via ~gptel-include-reasoning~.
+
+** Notable bug fixes
+
+- Authentication keys are now supplied to Curl (when ~gptel-use-curl~ is
+  set) via STDIN instead of the command line.  This is more secure as
+  the command line is usually readable system-wide.
+
+- ~gptel-backend~ can now be set from customize buffers.  These are
+  produced by, for example, =M-x customize-group ⮐ gptel=.  Previously
+  ~gptel-backend~ was displayed in a read-only way, and could even break
+  the display of the customize buffer depending on its value.
+
+- Breaking change to the ~gptel-request~ API: Tool call arguments are
+  passed to ~gptel-request~ callbacks as a plist, not a list.  The plist
+  keys are the function argument names as specified in the tool
+  definition.  /This does not affect ~gptel-send~ or (to my best
+  knowledge) any of the packages using gptel./
+
+  Example: The previous behavior was
+
+  : (funcall callback `(tool-call ,web-search ("emacs" 10) ,tool-cb))
+
+  where =web-search= is a ~gptel-tool~, and =callback= and =tool-cb= are
+  the ~gptel-request~ and tool callback respectively.  The new behavior
+  is:
+
+  : (funcall callback
+  :          `(tool-call ,web-search (:query "emacs" :count 10) ,tool,cb))
+
+  where =:query= and =:count= correspond to arguments =query= and
+  =count= in the definition of =web-search=.
+
+  Note that this is a bug fix. It's how the API has been documented and
+  was supposed to work in the first place.
+
+* 0.9.9.4 2026-02-21
+
+** Breaking changes
+- gptel now requires Transient 0.7.8 or higher. Transient is a built-in package
+  and Emacs does not update it by default.  Ensure that
+  =package-install-upgrade-built-in= is non-nil, or update Transient manually.
+
+- The models =gpt-5-codex=, =o3=, =o3-mini=, =o4-mini=,
+  =claude-3.5-sonnet=, =claude-3.7-sonnet=, =claude-3.7-sonnet-thought=,
+  =claude-opus-4= and =gemini-2.0-flash-001= have been removed from the
+  default list of GitHub Copilot models.  These models are no longer
+  available in the GitHub Copilot API.
+
+- =gptel-track-media= now controls whether links to media files are
+  tracked /only/ in chat buffers.  Previously it also controlled whether
+  media files added to the context explicitly via =gptel-add-file= were
+  sent.  This is considered a bug and has now been fixed.
+
+** New models and backends
+
+- GitHub Copilot backend: Add support for =gpt-5.2=, =gpt-5.2-codex=,
+  =gpt-41-copilot=, =claude-opus-4.5=, =claude-opus-4.6=,
+  =gemini-3-pro-preview= and =gemini-3-flash-preview=.
+
+- Anthropic backend: Add support for =claude-opus-4-6= and
+  =claude-sonnet-4-6=.
+
+- Bedrock backend: Add support for =claude-opus-4-5=,
+  =claude-opus-4-6=, =claude-sonnet-4-6= and =nova-2-lite=.
+
+- Add support for =gemini-3.1-pro-preview=, =gemini-3-pro-preview= and
+  =gemini-3-flash-preview=.
+
+- Add support for =gpt-5.1=.
+
+** New features and UI changes
+
+- Running ~gptel-add~ in IBuffer now adds marked buffers or the buffer
+  at point to gptel's context, and running ~gptel-add~ with a negative
+  prefix-arg removes them.  This is similar to its behavior in Dired.
+  To add the literal contents of the IBuffer to the context, you can
+  select a text region first.
+
+- When redirecting LLM responses to the kill ring or echo area, gptel
+  now omits tool call results, as these tend to be very noisy.  Kill
+  ring redirection now correctly captures the full response from the
+  LLM, including pre- and post-tool-call text.
+
+- =gptel-rewrite= now supports tool calling.  If =gptel-tools= is
+  non-nil the LLM can, for instance, read files to fetch more context
+  for the rewrite action.
+
+- If a preset has been applied in a gptel chat buffer, saving the
+  buffer to a file causes the preset to be recorded along with the
+  other metadata (model, backend, tools etc).  This makes it possible
+  to associate any collection of gptel settings/preferences with the
+  chat file, and not just the few properties that gptel writes to the
+  file otherwise.  But resuming this chat with the preset settings
+  applied requires that the preset be defined, so the chat file will
+  be less self-contained.
+
+- =gptel-send= now works in Vterm buffers in a limited way.  Responses
+  will be inserted into Vterm buffers, but without streaming.  The
+  respond-in-place option to overwrite queries with responses in Vterm
+  buffers is supported as well, but might be buggy if your shell
+  prompt is "rich" and has many dynamic elements.
+
+  Support for =gptel-send= in Term/Ansi-Term and Eat buffers is not
+  yet available but planned.
+
+- =gptel-mcp-connect= now supports selective activation of tools for
+  each MCP server.
+
+** Notable bug fixes
+
+- Function-valued system messages/directives are now evaluated in the
+  buffer from which the gptel request is sent, so they can use the
+  context of the current buffer correctly.  (Previously they were
+  evaluated in a temporary buffer used to construct the query, leading
+  to unexpected behavior.)
+
+- When using OpenAI-compatible APIs (such as Deepseek), models that
+  call tools within their "reasoning" phase are now correctly handled
+  by gptel.
+
+* 0.9.9.3 2025-11-09
+
+** Breaking changes
+
+- The models =gpt-4-copilot= and =o1= have been removed from the default
+  list of GitHub Copilot models.  These models are no longer available
+  in the GitHub Copilot API.
+
+- Link handling in gptel chat buffers has changed, hopefully for the
+  better.  When ~gptel-track-media~ is non-nil, gptel follows links in
+  the prompt and includes their contents with queries.  Previously,
+  links to files had to be placed "standalone", surrounded by blank
+  lines, for the files to be included in the prompt.  This limitation
+  has been removed -- all supported links in the prompt will be followed
+  now.
+
+  The "standalone" limitation was imposed to make included links stand
+  out visually and avoid accidental inclusions, but in practice users
+  were often confused about whether a link would be sent.  gptel now
+  prominently annotates links that will be followed and sent (see
+  below), so it should be visually obvious when links will be followed.
+  You can revert to the old behavior by customizing gptel, see below.
+
+- The model =claude-3-sonnet-20240229= has been removed from the default
+  list of Anthropic models.  This model is no longer available in the
+  Anthropic API.
+
+- The models =gemini-1.5-flash-8b=, =gemini-1.5-flash=,
+  =gemini-1.5-pro-latest=, =gemini-2.0-flash-thinking-exp-01-21=,
+  =gemini-2.0-flash-lite-preview-02-05=,
+  =gemini-2.5-flash-lite-preview-06-17=,
+  =gemini-2.5-pro-preview-06-05=, =gemini-2.5-pro-preview-05-06=,
+  =gemini-2.5-flash-preview-05-20=, =gemini-2.5-pro-preview-03-25= and
+  =gemini-2.5-pro-exp-03-25= have been removed from the default list
+  of Gemini models.  These models are either no longer available, or
+  they have been superseded by their stable, non-preview versions.  If
+  required, you can add these models back to the Gemini backend in
+  your personal configuration:
+  #+begin_src emacs-lisp
+  (push 'gemini-2.5-pro-preview-05-06
+        (gptel-backend-models (gptel-get-backend "Gemini")))
+  #+end_src
+
+
+** New models and backends
+
+- GitHub Copilot backend: Add support for =gpt-5-codex=,
+  =claude-sonnet-4.5= and =claude-haiku-4.5=
+
+- Add support for =claude-sonnet-4-5-20250929= and
+  =claude-haiku-4-5-20251001=.
+
+- Add support for =gemini-pro-latest=, =gemini-flash-latest= and
+  =gemini-flash-lite-latest=.  These models point to the latest Gemini
+  models of the corresponding type.
+
+- Add support for =gemini-2.5-flash-preview-09-2025= and
+  =gemini-2.5-flash-lite-preview-09-2025=.
+
+** New features and UI changes
+
+- New minor-mode ~gptel-highlight-mode~ to highlight LLM responses and
+  more.  An oft-requested feature, gptel can now highlight responses by
+  decorating the (left) margin or fringe, and apply a face to the
+  response region.  To use it, just turn on ~gptel-highlight-mode~ in
+  any buffer (and not just dedicated chat buffers).  You can customize
+  the type of decoration performed via ~gptel-highlight-methods~, which
+  see.
+
+- Link annotations: When ~gptel-track-media~ is enabled in gptel chat
+  buffers, gptel follows (Markdown/Org) links to files in the prompt and
+  includes these files with queries.  However, it was not clear if a
+  link type was supported and would be included, making this feature
+  unreliable and difficult to use.
+
+  Now all links in the prompt are explicitly annotated in real-time in
+  gptel buffers.  Links that will not be sent are marked as such, and
+  the link tooltip explains why.  Links that will be sent are explicitly
+  indicated as well.
+
+- New user options ~gptel-markdown-validate-link~ and
+  ~gptel-org-validate-link~: These control whether links in Markdown/Org
+  buffers are followed and their sources included in gptel's prompt.
+  Their value should be a function that determines if a link is to be
+  considered valid for inclusion with the gptel query.  By default they
+  allow all links, but they can be customized to require "standalone"
+  link placement, which is gptel's past behavior.
+
+- gptel preset specifications can now modify the current values of gptel
+  options instead of replacing them, allowing better composition of
+  presets with your Emacs environment and with each other.
+
+  For example, it is common to want to add more LLM tools via a preset
+  to an existing set in gptel-tools.  To this end, add a small,
+  declarative DSL for use in gptel preset definitions.  For example, you
+  can now do the following:
+  #+begin_src emacs-lisp
+  (gptel-make-preset 'websearch
+    :tools '(:append ("search_web" "read_url")))
+  #+end_src
+  to add to the current list in ~gptel-tools~ instead of replacing it.
+  See the documentation of ~gptel-make-preset~ for more details.
+
+- You can now apply a preset from gptel's menu using ~completing-read~
+  instead of the menu.  This is bound to =@= in the presets menu, so
+  that =@ @= in gptel's menu will bring up the ~completing-read~
+  prompter.
+
+  This is an interim solution to the problem of the gptel presets menu
+  not scaling well to more than about 25 presets.  This menu is intended
+  to be redesigned eventually.
+
+- Tool result and reasoning blocks are now folded by default in Markdown
+  and text buffers.  You can cycle their folded state by pressing =Tab=
+  with the cursor on the opening or closing line containing the code
+  fences.
+
+- =gptel-request= is now a standalone library, independent of gptel
+  and its UI.  This is intended
+  + to provide a clean separation between ~gptel-request~ (the LLM
+    querying library) and ~gptel~ (the LLM interaction UI).
+  + To make it simpler to create alternative UIs for gptel, wherein the
+    package author may simply =(require 'gptel-request)= to access the
+    gptel-request API.
+  + To make it so gptel does not need to be loaded to use
+    ~gptel-request~.
+
+  The =gptel-request= feature does not provide any response handling,
+  and expects the user to provide a response callback.  If you want to
+  reuse ~gptel-send~'s response handler you can =(require 'gptel)=.
+
+  For logistical reasons, the =gptel-request= library will continue to
+  be shipped with =gptel=.
+
+- New user option ~gptel-context~: This variable can be used to specify
+  additional context sources for gptel queries, usually files or
+  buffers.  It serves the longstanding requests of enabling buffer-local
+  context specification, as well as context specification in gptel
+  presets and programmatic gptel use.  As always, in a preset definition
+  this corresponds to the key with name of the variable with the
+  "gptel-" prefix stripped:
+  #+begin_src emacs-lisp
+  (gptel-make-preset 'with-docs
+    :context '("./README.md" "./README" "./README.org"))
+  #+end_src
+  Each entry in ~gptel-context~ is a file path or a buffer object, but
+  other kinds of specification are possible.  See its documentation for
+  details.
+
+- ~gptel-mcp-connect~ can now start MCP servers synchronously.  This
+  is useful for scripting purposes, when MCP tools need to be
+  available before performing other actions.  One common use is
+  starting MCP servers when applying a gptel preset.
+
+- "gitignored" files are omitted by default when adding directories to gptel's
+  context.  This setting can be controlled via the user option
+  ~gptel-context-restrict-to-project-files~.  (This only applies to directories,
+  individual files specified via ~gptel-add-file~ will always be added to the
+  context.)
+
+- ~gptel-make-bedrock~ now checks for the ~AWS_BEARER_TOKEN_BEDROCK~ environment
+  variable parameter and uses it for Bedrock API key based authentication if
+  present. See
+  https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html.
+
+* 0.9.9 2025-08-02
+
+** Breaking changes
+
+- The suffix =-latest= has been dropped from Grok models, as they are
+  no longer required.  So the models =grok-3-latest=,
+  =grok-3-mini-latest= have been renamed to just =grok-3=,
+  =grok-3-mini= and so on.
+
+- The models =gemini-exp-1206=, =gemini-2.5-pro-preview-03-25=,
+  =gemini-2.5-pro-preview-05-06=, =gemini-2.5-flash-preview-04-17=
+  have been removed from the default list of Gemini models.  The first
+  one is no longer available, and the others are superseded by their
+  stable, non-preview versions.  If required, you can add these models
+  back to the Gemini backend in your personal configuration:
+  #+begin_src emacs-lisp
+  (push 'gemini-2.5-pro-preview-03-25
+        (gptel-backend-models (gptel-get-backend "Gemini")))
+  #+end_src
+
+** New models and backends
+
+- Add support for ~grok-code-fast-1~.
+
+- Add support for ~gpt-5~, ~gpt-5-mini~ and ~gpt-5-nano~.
+
+- Add support for ~claude-opus-4-1-20250805~.
+
+- Add support for ~gemini-2.5-pro~, ~gemini-2.5-flash~,
+  ~gemini-2.5-flash-lite-preview-06-17~.
+
+- Add support for Open WebUI.  Open WebUI provides an
+  OpenAI-compatible API, so the "support" is just a new section of the
+  README with instructions.
+
+- Add support for Moonshot (Kimi), in a similar sense.
+
+- Add support for the AI/ML API, in a similar sense.
+
+- Add support for ~grok-4~.
+
+** New features and UI changes
+
+- ~gptel-rewrite~ now no longer pops up a Transient menu.  Instead, it
+  reads a rewrite instruction and starts the rewrite immediately.  This
+  is intended to reduce the friction of using ~gptel-rewrite~.  You can
+  still bring up the Transient menu by pressing =M-RET= instead of =RET=
+  when supplying the rewrite instruction.  If no region is selected and
+  there are pending rewrites, the rewrite menu is displayed.
+
+- ~gptel-rewrite~ will now produce more refined merge conflicts when
+  using the merge action.  It works by feeding the original and
+  rewritten text to git (when it is available).
+
+- New command ~gptel-gh-login~ to authenticate with GitHub Copilot.  The
+  authentication step happens automatically when you use gptel, so
+  invoking it manually is not required.  But you can use this command to
+  change accounts or refresh your login if required.
+
+- gptel now supports handling reasoning/thinking blocks in responses
+  from xAI's Grok models.  This is controlled by
+  ~gptel-include-reasoning~, in the same way that it handles other
+  APIs.
+
+- When including a file in the context, the abbreviated full path of
+  the file is included is now included instead of the basename.
+  Specifically, =/home/user/path/to/file= is included as
+  =~/path/to/file=.  This is to provide additional context for LLM
+  actions, including tool-use in subsequent conversation turns.  This
+  applies to context included via ~gptel-add~ or as a link in a
+  buffer.
+
+- Structured output support: ~gptel-request~ can now take an optional
+  schema argument to constrain LLM output to the specified JSON schema.
+  The JSON schema can be provided as
+  - an elisp object, a nested plist structure.
+  - A JSON schema serialized to a string.
+  - A shorthand object/array description, described in the manual (and
+    the documentation of ~gptel--dispatch-schema-type~.)
+
+  This feature works with all major backends: OpenAI, Anthropic, Gemini,
+  llama-cpp and Ollama.  It is presently supported by some but not all
+  "OpenAI-compatible API" providers.
+
+  Note that this is only available via the ~gptel-request~ API, and
+  currently unsupported by ~gptel-send~.
+
+- gptel's log buffer and logging settings are now accessible from
+  gptel's Transient menu.  To see these turn on the full interface by
+  setting ~gptel-expert-commands~.
+
+- Presets: You can now specify ~:request-params~ (API-specific request
+  parameters) in a preset.
+
+- From the dry-run inspector buffer, you can now copy the Curl command
+  for the request.  Like when continuing the query, the request is
+  constructed from the contents of the buffer, which is editable.
+
+- gptel now handles Ollama models that return both reasoning content
+  and tool calls in a single request.
+
+- The "Prompt from minibuffer" option in gptel's Transient menu
+  behaves slightly differently now.  If a region is active in the
+  buffer, it can optionally be included in the prompt.  The keybinding
+  to toggle this is displayed during the minibuffer-read.
+
+  Additionally, when reading a prompt or instructions from the
+  minibuffer you can switch to a dedicated composition buffer via
+  =C-c C-e=.
+
+* 0.9.8.5 2025-06-11
+
+** Breaking changes
+
+- ~gptel-org-branching-context~ is now a global variable.  It was
+  buffer-local by default in past releases.
+
+- The following models have been removed from the default ChatGPT backend:
+  - ~o1-preview~: use ~o1~ instead.
+  - ~gpt-4-turbo-preview~: use ~gpt-4o~ or ~gpt-4-turbo~ instead.
+  - ~gpt-4-32k~, ~gpt-4-0125-preview~ and ~gpt-4-1106-preview~: use
+    ~gpt-4o~ or ~gpt-4~ instead.
+  Alternatively, you can add these models back to the backend in your
+  personal configuration:
+  #+begin_src emacs-lisp
+  (push 'gpt-4-turbo-preview
+        (gptel-backend-models (gptel-get-backend "ChatGPT")))
+  #+end_src
+
+- Only relevant if you use ~gptel-request~ in your elisp code,
+  /interactive gptel usage is unaffected/: ~gptel-request~ now takes a
+  new, optional =:transforms= argument.  Any prompt modifications
+  (like adding context to requests) must now be specified via this
+  argument.  See the definition of ~gptel-send~ for an example.
+
+** New models and backends
+
+- Add support for ~gpt-4.1~, ~gpt-4.1-mini~, ~gpt-4.1-nano~, ~o3~ and
+  ~o4-mini~.
+
+- Add support for ~gemini-2.5-pro-exp-03-25~,
+  ~gemini-2.5-flash-preview-04-17~, ~gemini-2.5-pro-preview-05-06~ and
+  ~gemini-2.5-pro-preview-06-05~.
+
+- Add support for ~claude-sonnet-4-20250514~ and
+  ~claude-opus-4-20250514~.
+
+- Add support for AWS Bedrock models.  You can create an AWS Bedrock
+  gptel backend with ~gptel-make-bedrock~.  Please note: AWS Bedrock
+  support requires Curl 8.9.0 or higher.
+
+- You can now create an xAI backend with ~gptel-make-xai~.  (xAI was
+  supported before but the model configuration is now handled for you
+  by this function.)
+
+- Add support for GitHub Copilot Chat.  See the README and
+  ~gptel-make-gh-copilot~.  Please note: this is only the chat
+  component of GitHub Copilot.  Copilot's ~completion-at-point~
+  (tab-completion) functionality is not supported by gptel.
+
+- Add support for Sambanova.  This is an OpenAI-compatible API so you
+  can create a backend with ~gptel-make-openai~, see the README for
+  details.
+
+- Add support for Mistral Le Chat.  This is an an OpenAI-compatible
+  API so you can create a backend with ~gptel-make-openai~, see the
+  README for details.
+
+** New features and UI changes
+
+- gptel now supports handling reasoning/thinking blocks in responses
+  from Gemini models.  This is controlled by
+  ~gptel-include-reasoning~, in the same way that it handles other
+  APIs.
+
+- The new option ~gptel-curl-extra-args~ can be used to specify extra
+  arguments to the Curl command used for the request.  This is the
+  global version of the gptel-backend-specific ~:curl-args~ slot,
+  which can be used to specify Curl arguments when using a specific
+  backend.
+
+- Tools now run in the buffer from which the request originates.  This
+  can be significant when tools read or manipulate Emacs' state.
+
+- gptel can access MCP server tools by integrating with the mcp.el
+  package, which is at https://github.com/lizqwerscott/mcp.el.
+  (mcp.el is available on MELPA.)  To help with the integration, two
+  new commands are provided: ~gptel-mcp-connect~ and
+  ~gptel-mcp-disconnect~.  You can use these to start MCP servers
+  selectively and add tools to gptel.  These commands are also
+  available from gptel's tools menu.
+
+  These commands are currently not autoloaded by gptel.  To access
+  them, require the ~gptel-integrations~ feature.
+
+- You can now define "presets", which are a bundle of gptel options,
+  such as the backend, model, system message, included tools,
+  temperature and so on.  This set of options can be applied together,
+  making it easy to switch between different tasks using gptel.  From
+  gptel's transient menu, you can save the current configuration as a
+  preset or apply another one.  Presets can be applied globally,
+  buffer-locally or for the next request only.  To persist presets
+  across Emacs sessions, define presets in your configuration using
+  ~gptel-make-preset~.
+
+- When using ~gptel-send~ from anywhere in Emacs, you can now include
+  a "cookie" of the form =@preset-name= in the prompt text to apply
+  that preset before sending.  The preset is applied for that request
+  only.  This is an easy way to specify models, tools, system
+  messages (etc) on the fly.  In chat buffers the preset cookie is
+  fontified and available for completion via ~completion-at-point~.
+
+- For scripting purposes, provide a ~gptel-with-preset~ macro to
+  create an environment with a preset applied.
+
+- Links to plain-text files in chat buffers can be followed, and their
+  contents included with the request.  Using Org or Markdown links is
+  an easy, intuitive, persistent and buffer-local way to specify
+  context.  To enable this behavior, turn on ~gptel-track-media~. This
+  is a pre-existing option that also controls whether image/document
+  links are followed and sent (when the model supports it).
+
+- A new hook ~gptel-prompt-transform-functions~ is provided for
+  arbitrary transformations of the prompt prior to sending a request.
+  This hook runs in a temporary buffer containing the text to be sent.
+  Any aspect of the request (the text, destination, request
+  parameters, response handling preferences) can be modified
+  buffer-locally here.  These hook functions can be asynchronous.
+
+- The user option ~gptel-use-curl~ can now be used to specify a Curl
+  path.
+
+- The current kill can be added to gptel's context.  To enable this,
+  turn on ~gptel-expert-commands~ and use gptel's transient menu.
+
+- The tools menu (~gptel-tools~) has been redesigned.  It now displays
+  tool categories and associated tools in two columns, and it should
+  scale better to any number of tools.  As a bonus, the new menu
+  requires half as many keystrokes as before to enable individual
+  tools or toggle categories.
+
+** Notable Bug fixes
+
+- Fix more Org markup conversion edge cases involving nested Markdown
+  delimiters.
+
+* 0.9.8 2025-03-13
+
+Version 0.9.8 adds support for new Gemini, Anthropic, OpenAI,
+Perplexity, and DeepSeek models, introduces LLM tool use/function
+calling, a redesign of ~gptel-menu~, includes new customization hooks,
+dry-run options and refined settings, improvements to the rewrite
+feature and control of LLM "reasoning" content.
+
+** Breaking changes
+
+- ~gemini-pro~ has been removed from the list of Gemini models, as
+  this model is no longer supported by the Gemini API.
+
+- Sending an active region in Org mode will now apply Org
+  mode-specific rules to the text, such as branching context.
+
+- The following obsolete variables and functions have been removed:
+  - ~gptel-send-menu~: Use ~gptel-menu~ instead.
+  - ~gptel-host~: Use ~gptel-make-openai~ instead.
+  - ~gptel-playback~: Use ~gptel-stream~ instead.
+  - ~gptel--debug~: Use ~gptel-log-level~ instead.
+
+** New models and backends
+
+- Add support for several new Gemini models including
+  ~gemini-2.0-flash~, ~gemini-2.0-pro-exp~ and
+  ~gemini-2.0-flash-thinking-exp~, among others.
+
+- Add support for the Anthropic model ~claude-3-7-sonnet-20250219~,
+  including its "reasoning" output.
+
+- Add support for OpenAI's ~o1~, ~o3-mini~ and ~gpt-4.5-preview~
+  models.
+
+- Add support for Perplexity.  While gptel supported Perplexity in
+  earlier releases by reusing its OpenAI support, there is now first
+  class support for the Perplexity API, including citations.
+
+- Add support for DeepSeek.  While gptel supported DeepSeek in earlier
+  releases by reusing its OpenAI support, there is now first class
+  support for the DeepSeek API, including support for handling
+  "reasoning" output.
+
+** New features and UI changes
+
+- ~gptel-rewrite~ now supports iterating on responses.
+
+- gptel supports the ability to simulate/dry-run requests so you can
+  see exactly what will be sent.  This payload preview can now be
+  edited in place and the request continued.
+
+- Directories can now be added to gptel's global context.  Doing so
+  will add all files in the directory recursively.
+
+- "Oneshot" settings: when using gptel's Transient menus, request
+  parameters, directives and tools can now be set for the next request
+  only in addition to globally across the Emacs session and
+  buffer-locally.  This is useful for making one-off requests with
+  different settings.
+
+- ~gptel-mode~ can now be used in all modes derived from ~text-mode~.
+
+- gptel now tries to handle LLM responses that are in mixed
+  Org/Markdown markup correctly.
+
+- Add ~gptel-org-convert-response~ to toggle the automatic conversion
+  of (possibly) Markdown-formatted LLM responses to Org markup where
+  appropriate.
+
+- You can now look up registered gptel backends using the
+  ~gptel-get-backend~ function.  This is intended to make scripting
+  and configuring gptel easier.  ~gptel-get-backend~ is a generalized
+  variable so you can (un)set backends with ~setf~.
+
+- Tool use: gptel now supports LLM tool use, or function calling.
+  Essentially you can equip the LLM with capabilities (such as
+  filesystem access, web search, control of Emacs or introspection of
+  Emacs' state and more) that it can use to perform tasks for you.
+  gptel runs these tools using argument values provided by the LLMs.
+  This requires specifying tools, which are elisp functions with plain
+  text descriptions of their arguments and results.  gptel does not
+  include any tools out of the box yet.
+
+- You can look up registered gptel tools using the ~gptel-get-tool~
+  function.  This is intended to make scripting and configuring gptel
+  easier.  ~gptel-get-tool~ is a generalized variable so you can
+  (un)set tools with ~setf~.
+
+- New hooks for customization:
+  + ~gptel-prompt-filter-hook~ runs in a temporary buffer containing
+    the text to be sent, before the full query is created.  It can be
+    used for arbitrary text transformations to the source text.
+  + ~gptel-post-request-hook~ runs after the request is sent, and
+    (possibly) before any response is received.  This is intended for
+    preparatory/reset code.
+  + ~gptel-post-rewrite-hook~ runs after a ~gptel-rewrite~ request is
+    successfully and fully received.
+
+- ~gptel-menu~ has been redesigned.  It now shows a verbose
+  description of what will be sent and where the output will go.  This
+  is intended to provide clarity on gptel's default prompting
+  behavior, as well as the effect of the various prompt/response
+  redirection it provides.  Incompatible combinations of options are
+  now disallowed.
+
+- The spacing between the end of the prompt and the beginning of the
+  response in buffers is now customizable via
+  ~gptel-response-separator~, and can be any string.
+
+- ~gptel-context-remove-all~ is now an interactive command.
+
+- gptel now handles "reasoning" content produced by LLMs.  Some LLMs
+  include in their response a "thinking" or "reasoning" section.  This
+  text improves the quality of the LLM’s final output, but may not be
+  interesting to you by itself.  The new user option
+  ~gptel-include-reasoning~ controls whether and how gptel displays
+  this content.
+
+- (Anthropic API only) Some LLM backends can cache content sent to it
+  by gptel, so that only the newly included part of the text needs to
+  be processed on subsequent conversation turns.  This results in
+  faster and significantly cheaper processing. The new user option
+  ~gptel-cache~ can be used to specify caching preferences for
+  prompts, the system message and/or tool definitions.  This is
+  supported only by the Anthropic API right now.
+
+- (Org mode) Org property drawers are now stripped from the prompt
+  text before sending queries.  You can control this behavior or
+  specify additional Org elements to ignore via
+  ~gptel-org-ignore-elements~.  (For more complex pre-processing you
+  can use ~gptel-prompt-filter-hook~.)
+
+** Notable Bug fixes
+
+- Fix response mix-up when running concurrent requests in Org mode
+  buffers.
+- gptel now works around an Org fontification bug where streaming
+  responses in Org mode buffers sometimes caused source code blocks to
+  remain unfontified.
+
+* 0.9.7 2024-12-04
+
+Version 0.9.7 adds dynamic directives, a better rewrite interface,
+streaming support to the gptel request API, and more flexible
+model/backend configuration.
+
+** Breaking changes
+~gptel-rewrite-menu~ has been obsoleted.  Use ~gptel-rewrite~ instead.
+
+** Backends
+- Add support for OpenAI's ~o1-preview~ and ~o1-mini~.
+
+- Add support for Anthropic's Claude 3.5 Haiku.
+
+- Add support for xAI.
+
+- Add support for Novita AI.
+
+** New features and UI changes
+
+- gptel's directives (see ~gptel-directives~) can now be dynamic, and
+  include more than the system message.  You can "pre-fill" a
+  conversation with canned user/LLM messages.  Directives can now be
+  functions that dynamically generate the system message and
+  conversation history based on the current context.  This paves the
+  way for fully flexible task-specific templates, which the UI does
+  not yet support in full.
+
+- gptel's rewrite interface has been reworked.  If using a streaming
+  endpoint, the rewritten text is streamed in as a preview placed over
+  the original.  In all cases, clicking on the preview brings up a
+  dispatch you can use to easily diff, ediff, merge, accept or reject
+  the changes (4ae9c1b2), and you can configure gptel to run one of
+  these actions automatically.  See the README for examples.
+
+- ~gptel-abort~, used to cancel requests in progress, now works across
+  the board, including when not using Curl or with ~gptel-rewrite~.
+
+- The ~gptel-request~ API now explicitly supports streaming responses
+  , making it easy to write your own helpers or features with
+  streaming support.  The API also supports ~gptel-abort~ to stop and
+  clean up responses.
+
+- You can now unset the system message -- different from setting it to
+  an empty string.  gptel will also automatically disable the system
+  message when using models that don't support it.
+
+- Support for including PDFs with requests to Anthropic models has
+  been added.  (These queries are cached, so you pay only 10% of the
+  token cost of the PDF in follow-up queries.)  Note that document
+  support (PDFs etc) for Gemini models has been available since
+  v0.9.5.
+
+- When defining a gptel model or backend, you can specify arbitrary
+  parameters to be sent with each request.  This includes the (many)
+  API options across all APIs that gptel does not yet provide explicit
+  support for.
+
+- New transient command option to easily remove all included context
+  chunks.
+
+** Notable Bug fixes
+- Pressing ~RET~ on included files in the context inspector buffer now
+  pops up the file correctly.
+- API keys are stripped of whitespace before sending.
+- Multiple UI, backend and prompt construction bugs have been fixed.
+
+# Local Variables:
+# fill-column: 72
+# End:

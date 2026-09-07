@@ -22,7 +22,11 @@ install_cc() {
 
 
 install_py() {
-    pip3 install python-lsp-server[all]
+    PIP_ARGS=(
+        --timeout 60
+        -i https://pypi.tuna.tsinghua.edu.cn/simple
+    )
+    pip3 install ${PIP_ARGS[@]} python-lsp-server[all]
     echo "Install python tool done"
 }
 

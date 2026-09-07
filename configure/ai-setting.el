@@ -19,16 +19,7 @@
         :endpoint "/v1/chat/completions"       ; Standard LiteLLM / OpenAI routing endpoint
         :stream t                              ; Enables smooth typewriter-style streaming responses
         :models '("GLM-5.2-W4AFP8")            ; Registers your specific model ID
-        :key (lambda ()
-               (if (file-remote-p default-directory)
-                   ;; If inside a TRAMP buffer, dynamically fetch the key from the remote host
-                   (let ((remote-key (with-parsed-tramp-file-name default-directory nil
-                                       (shell-command-to-string "echo -n $OPENAI_API_KEY"))))
-                     (if (and remote-key (not (string-empty-p remote-key)))
-                         remote-key
-                         "local-no-key-required"))
-                   ;; Otherwise, fall back to local environment variable
-                   (or (getenv "OPENAI_API_KEY") "local-no-key-required")))))
+        :key (lambda () "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b")))
 
 (setq gptel-model 'GLM-5.2-W4AFP8)
 (setq-default gptel-directives
@@ -69,7 +60,7 @@ Prefer modern, safe syntax.")))
 
 (defkeys-map global-map
   ((kbd "C-c i a") 'gptel)            ; Create or switch to a dedicated AI chat buffer
-  ((kbd "C-c i s") 'zz/gptel-send)       ; Send selected code and prompt (fully supports TRAMP)
+  ((kbd "C-c i s") 'zz/gptel-send)    ; Send selected code and prompt (fully supports TRAMP)
   ((kbd "C-c i m") 'zz/gptel-menu))   ; Summon the interactive parameters popup menu
 
 

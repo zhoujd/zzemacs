@@ -23,8 +23,9 @@
 (set-frame-parameter (selected-frame) 'alpha 90)
 (add-to-list 'default-frame-alist '(alpha 90))
 
-;;Ignore character grids and resize itself pixel-by-pixel
+;;Force resize frame by pixels rather than row/column increments
 (setq frame-resize-pixelwise t)
+(setq frame-inhibit-implied-resize t)
 
 ;;Chinese
 (defun zz/set-language-chinese ()

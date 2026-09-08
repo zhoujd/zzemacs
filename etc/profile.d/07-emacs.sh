@@ -7,6 +7,12 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]] \
 	source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
 fi
 
+## git in dumb
+if [ "$TERM" = "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+    export GIT_PAGER=cat
+    export PAGER=cat
+fi
+
 ## alias
 if [ -n "$INSIDE_EMACS" ]; then
     case $TERM in

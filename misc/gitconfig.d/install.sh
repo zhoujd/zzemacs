@@ -37,6 +37,12 @@ git config --global core.pager  "less -F -X"
 ## color
 git config --global color.ui    "true"
 
+## pretty
+PCUSTOM="tformat:%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset"
+PSTASH="tformat:%C(blue)%gd%C(red): %C(yellow)%s"
+git config --global pretty.customtree "$PCUSTOM"
+git config --global pretty.stashtree "$PSTASH"
+
 ## alias
 git config --global alias.st    "status"
 git config --global alias.ci    "commit"
@@ -77,7 +83,7 @@ git config --global alias.who   "blame -wMC"
 git config --global alias.sta   "stash apply"
 git config --global alias.stc   "stash clear"
 git config --global alias.std   "stash drop"
-git config --global alias.stl   "stash list --pretty=format:'%Cblue%gd%Cred: %C(yellow)%s'"
+git config --global alias.stl   "stash list --pretty=stashtree"
 git config --global alias.stp   "stash pop"
 git config --global alias.sts   "stash show --text"
 git config --global alias.ls    "ls-files"
@@ -88,9 +94,8 @@ git config --global alias.sn    "show --pretty=format: --name-only"
 git config --global alias.su    "submodule update --init --recursive"
 
 ## log
-PRETTY="format:'%Cred%h%Creset%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset %Cgreen(%cr)%Creset'"
-git config --global alias.glog  "log --graph --pretty=$PRETTY --abbrev-commit"
-git config --global alias.lg    "log --graph --pretty=$PRETTY --abbrev-commit -10"  
+git config --global alias.glog  'log --graph --pretty=customtree --abbrev-commit'
+git config --global alias.gg    'log --graph --pretty=customtree --abbrev-commit -10'
 git config --global alias.hlog  'log --oneline'
 git config --global alias.hg    'log --oneline -10'
 

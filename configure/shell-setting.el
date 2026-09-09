@@ -372,7 +372,9 @@ Dmitriy Igrishin's patched version of comint.el."
 
 (defun zz/get-host ()
   (let* ((default-directory "~")
-         (cat "cat ~/.ssh/config ~/.ssh/config.d/* 2>&-")
+         (extra-files (when (file-directory-p "~/.ssh/config.d")
+                        "$(find ~/.ssh/config.d -type f)"))
+         (cat (format "cat ~/.ssh/config %s 2>&-" (or extra-files "")))
          (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git'")
          (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
          (cmd (format "%s | %s | %s" cat grep awk))

@@ -519,21 +519,49 @@
                     (kill-buffer x)))))
             (buffer-list)))))
 
-(defun zz/kill-other-buffers ()
-  "Kill all other buffers."
+(defun zz/kill-all-buffers ()
+  "Kill all buffers safely, shutting down Eglot, Magit, subprocesses, and Tramp."
   (interactive)
-  (when (yes-or-no-p "Really kill other buffers")
-    (let ((old-buf (current-buffer))
-          (ex-buf '("*Messages*" "*scratch*")))
-      (mapc (lambda (x)
-              (cond
-               ((not x) t)
-               ((eq x old-buf) t)
-               ((member (buffer-name x) ex-buf) t)
-               (t (progn
-                    (tramp-cleanup-this-connection)
-                    (kill-buffer x)))))
-            (buffer-list)))))
+  (when (yes-or-no-p "Really kill ALL buffers? ")
+    (let ((ex-buf '("*Messages*" "*scratch*")))
+      (when (fboundp 'eglot-shutdown-all) (eglot-shutdown-all))
+      (when (fboundp 'zz/magit-kill-buffers) (zz/magit-kill-buffers))
+      (dolist (buf (buffer-list))
+        (let ((buf-name (buffer-name buf)))
+          (when (and (not (member buf-name ex-buf))
+                     (not (string-prefix-p " " buf-name)))
+            (with-current-buffer buf
+              (when (and (fboundp 'tramp-tramp-file-p)
+                         (tramp-tramp-file-p (or (buffer-file-name) default-directory)))
+                (tramp-cleanup-this-connection)))
+            (let ((proc (get-buffer-process buf)))
+              (when (and proc (process-live-p proc))
+                (set-process-query-on-exit-flag proc nil)
+                (delete-process proc)))
+            (kill-buffer buf))))
+      (when (get-buffer "*scratch*")
+        (switch-to-buffer "*scratch*")))))
+
+(defun zz/kill-other-buffers ()
+  "Kill all other buffers, their active subprocesses, and remote connections."
+  (interactive)
+  (when (yes-or-no-p "Really kill other buffers? ")
+    (let ((current (current-buffer))
+          (white-list '("*Messages*" "*scratch*")))
+      (dolist (buf (buffer-list))
+        (let ((buf-name (buffer-name buf)))
+          (when (and (not (eq buf current))
+                     (not (member buf-name white-list))
+                     (not (string-prefix-p " " buf-name)))
+            (with-current-buffer buf
+              (when (and (fboundp 'tramp-tramp-file-p)
+                         (tramp-tramp-file-p (or (buffer-file-name) default-directory)))
+                (tramp-cleanup-this-connection)))
+            (let ((proc (get-buffer-process buf)))
+              (when (and proc (process-live-p proc))
+                (set-process-query-on-exit-flag proc nil)
+                (delete-process proc)))
+            (kill-buffer buf)))))))
 
 (defun zz/revert-all-buffers ()
   "Revert all buffers."

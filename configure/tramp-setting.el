@@ -11,10 +11,10 @@
 ;;Host *
 ;;  ControlMaster auto
 ;;  ControlPath ~/.ssh/sockets/%r@%h:%p
-;;  ControlPersist 1h
+;;  ControlPersist 30m
 ;;  TCPKeepAlive yes
 ;;  ServerAliveInterval 15
-;;  ServerAliveCountMax 30
+;;  ServerAliveCountMax 3
 ;;  GlobalKnownHostsFile /dev/null
 ;;  UserKnownHostsFile /dev/null
 ;;  StrictHostKeyChecking no
@@ -26,11 +26,13 @@
 (defvar zz/tramp-sshz-method "sshz"
   "Tramp method for sshz")
 
-;; Ensure the sockets path exists
+;;Ensure the sockets path exists
 (let ((socket-dir (expand-file-name "~/.emacs.d/sockets")))
   (unless (file-exists-p socket-dir)
     (make-directory socket-dir t)))
 
+;;Explicitly close sockets
+;;ssh -O exit -S ~/.emacs.d/sockets/tramp-%r@%h:%p target-host
 (add-to-list 'tramp-methods
              `(,zz/tramp-sshz-method
                (tramp-login-program        "ssh")
@@ -41,7 +43,9 @@
                                             ("-X")
                                             ("-o" "ControlMaster=auto")
                                             ("-o" "ControlPath=~/.emacs.d/sockets/tramp-%%r@%%h:%%p")
-                                            ("-o" "ControlPersist=1h")
+                                            ("-o" "ControlPersist=30m")
+                                            ("-o" "ServerAliveInterval=15")
+                                            ("-o" "ServerAliveCountMax=3")
                                             ("%h")
                                             ))
                (tramp-async-args           (("-q")))

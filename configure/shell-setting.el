@@ -371,19 +371,17 @@ Dmitriy Igrishin's patched version of comint.el."
       )))
 
 (defun zz/get-host ()
-  (with-temp-buffer
-    (let* ((default-directory "~")
-           (cat "cat ~/.ssh/config ~/.ssh/config.d/* 2>&-")
-           (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git'")
-           (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
-           (cmd (format "%s | %s | %s" cat grep awk))
-           (host (ido-completing-read "Host: "
-                                      (split-string
-                                       (shell-command-to-string cmd)))))
-      (if (eq tramp-syntax 'simplified)
-          (concat "/" host ":")
-          (concat "/" tramp-default-method ":" host ":"))
-      )))
+  (let* ((default-directory "~")
+         (cat "cat ~/.ssh/config ~/.ssh/config.d/* 2>&-")
+         (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git'")
+         (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+         (cmd (format "%s | %s | %s" cat grep awk))
+         (host (ido-completing-read "Host: "
+                                    (split-string
+                                     (shell-command-to-string cmd)))))
+    (if (eq tramp-syntax 'simplified)
+        (concat "/" host ":")
+        (concat "/" tramp-default-method ":" host ":"))))
 
 (defun zz/remote-shell ()
   "Open a remote shell to a host"

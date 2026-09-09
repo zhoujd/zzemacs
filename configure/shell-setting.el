@@ -376,7 +376,7 @@ Dmitriy Igrishin's patched version of comint.el."
                         "$(find ~/.ssh/config.d -type f)"))
          (cat (format "cat ~/.ssh/config %s 2>&-" (or extra-files "")))
          (grep "grep -i -e '^host ' | grep -v '[*?]' | grep -v 'git'")
-         (awk "awk '/^Host/{if (NR!=1)print \"\"; printf $2}'")
+         (awk "awk '/^[Hh][Oo][Ss][Tt]/{print $2}'")
          (cmd (format "%s | %s | %s" cat grep awk))
          (host (ido-completing-read "Host: "
                                     (split-string

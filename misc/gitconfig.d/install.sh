@@ -22,6 +22,11 @@ EOF
 git config --global user.name   "Zachary Zhou"
 git config --global user.email  "zchrzhou@gmail.com"
 
+## utf-8
+git config --global core.quotepath false
+git config --global i18n.logoutputencoding utf-8
+git config --global i18n.commitencoding utf-8
+
 ## proxy
 git config --global core.gitproxy  $SCRIPT_ROOT/git-proxy-wrapper.sh
 

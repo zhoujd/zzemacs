@@ -53,9 +53,9 @@
 (defun zz/vterm-list ()
   (let (zz/vterms)
     (dolist (b (buffer-list))
-      (let ((name (buffer-name b)))
-        (when (or (string-match "^\\*vterminal<[0-9]+>\\*$" name)
-                  (string-match "^\\*vterm ssh: .+<[0-9]+>\\*$" name))
+      (let ((name (buffer-name b))
+            (base multi-vterm-buffer-name))
+        (when (string-match (format "^\\*%s<[0-9]+>\\*$" base) name)
           (push name zz/vterms))))
     (nreverse zz/vterms)))
 
@@ -72,23 +72,11 @@
       (message "Created and switched to new: %s" (buffer-name (current-buffer)))))
 
 (defun zz/get-remote-vterm (host)
-  "Connect to a remote host using multi-vterm's auto-incrementing naming style."
-  (let* ((base-name (format "vterm ssh: %s" host))
-         (buffer-name (let ((multi-vterm-buffer-name base-name)
-                            (index 1)
-                            test-name)
-                        (while (progn
-                                 (setq test-name (multi-vterm-format-buffer-index index))
-                                 (get-buffer test-name))
-                          (setq index (1+ index)))
-                        test-name)))
-    (let ((multi-vterm-buffer-name base-name)
-          (multi-vterm-program "ssh")
-          (multi-vterm-program-switches host))
-      (multi-vterm))
-    (with-current-buffer (get-buffer buffer-name)
-      (setq-local vterm-kill-buffer-on-exit t))
-    (message "Remote %s ready via %s" host buffer-name)))
+  "Connect to a remote host."
+  (let ((multi-vterm-program "ssh")
+        (multi-vterm-program-switches host))
+    (multi-vterm))
+  (message "Remote %s ready" host))
 
 (defun zz/remote-vterm ()
   "Connect to a remote term by parsing ssh config and using vterm."

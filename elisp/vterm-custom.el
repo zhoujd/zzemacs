@@ -89,7 +89,7 @@
           (setq-local vterm-shell (executable-find "ssh"))
           (setq-local vterm-kill-buffer-on-exit t)
           (setq-local vterm-buffer-name buffer-name)
-          (vterm-send-string (format "ssh %s\n" host))
+          (vterm-send-string (format "ssh %s\nclear\n" host))
           (pop-to-buffer (current-buffer))))
     (delete-other-windows)
     (message "Remote %s ready via vterm" host)))

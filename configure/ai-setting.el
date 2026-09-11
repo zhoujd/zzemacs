@@ -26,11 +26,11 @@ Prefer modern, safe syntax.")))
         :protocol "http"                       ; Explicitly specifies the intranet HTTP protocol
         :endpoint "/v1/chat/completions"       ; Standard LiteLLM / OpenAI routing endpoint
         :stream t                              ; Enables smooth typewriter-style streaming responses
-        :models '("GLM-5.2-W4AFP8")            ; Registers your specific model ID
+        :models '("GLM-5.3-W4AFP8" "GLM-5.3")  ; Registers your specific model ID
         :key (lambda ()
                (or (getenv "OPENAI_API_KEY")
                    "gpustack_0098b68022a24157_3ffe92dc07e813389f93affada9b365b"))))
-(setq gptel-model 'GLM-5.2-W4AFP8)
+(setq gptel-model 'GLM-5.3-W4AFP8)
 
 (defun zz/gptel-menu ()
   "A pragmatic fallback menu for gptel when the built-in transient menu is unavailable."

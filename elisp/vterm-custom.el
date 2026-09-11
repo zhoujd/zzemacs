@@ -17,6 +17,17 @@
         ;; (("ssh" login-shell "/bin/bash") ("scp" login-shell "/bin/bash"))
         ))
 
+(defvar zz/vterm-map (make-sparse-keymap) "Custom vterm-map")
+(defkeys-map ctrl-z-map
+  ((kbd "v") zz/vterm-map))
+(defkeys-map zz/vterm-map
+  ((kbd "c") 'multi-vterm)
+  ((kbd "n") 'multi-vterm-next)
+  ((kbd "p") 'multi-vterm-prev)
+  ((kbd "s") 'zz/switch-to-vterm)
+  ((kbd "r") 'zz/remote-vterm)
+  ((kbd "h") 'zz/home-vterm))
+
 (defun zz/vterm-hook ()
   (defkeys-map vterm-mode-map
     ((kbd "C-c M-q") 'vterm-send-next-key)

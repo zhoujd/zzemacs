@@ -55,6 +55,7 @@
   (kbd "t")       'trashed
   (kbd "C-t")     'translate-shell
   (kbd "M-t")     'translate-shell-brief
+  (kbd "v")       zz/vterm-map
   (kbd "M-v")     'zz/evil-toggle
   (kbd "w")       'easy-kill
   (kbd "C-z")     'repeat
@@ -134,6 +135,7 @@
   (kbd "t")       'helm-tramp
   (kbd "z")       'helm-stumpwm-commands
   (kbd "v")       'multi-vterm
+  (kbd "M-v")     'zz/remote-vterm
   (kbd "k")       'keep-lines
   (kbd "f")       'flush-lines
   (kbd "r")       'vr/replace

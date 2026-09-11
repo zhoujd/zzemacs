@@ -72,11 +72,20 @@
       (message "Created and switched to new: %s" (buffer-name (current-buffer)))))
 
 (defun zz/get-remote-vterm (host)
-  "Connect to a remote host."
-  (let ((multi-vterm-program "ssh")
-        (multi-vterm-program-switches host))
-    (multi-vterm))
-  (message "Remote %s ready" host))
+  "Connect to a remote host using standard vterm."
+  (let* ((buffer-name (format "*vterm ssh: %s*" host))
+         (vterm-buffer (get-buffer buffer-name)))
+    (if vterm-buffer
+        (pop-to-buffer vterm-buffer)
+        (with-current-buffer (generate-new-buffer buffer-name)
+          (vterm-mode)
+          (setq-local vterm-shell (executable-find "ssh"))
+          (setq-local vterm-kill-buffer-on-exit t)
+          (setq-local vterm-buffer-name buffer-name)
+          (vterm-send-string (format "ssh %s\n" host))
+          (pop-to-buffer (current-buffer))))
+    (delete-other-windows)
+    (message "Remote %s ready via vterm" host)))
 
 (defun zz/remote-vterm ()
   "Connect to a remote term by parsing ssh config and using vterm."

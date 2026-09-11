@@ -73,7 +73,15 @@
 
 (defun zz/get-remote-vterm (host)
   "Connect to a remote host using standard vterm."
-  (let* ((buffer-name (format "*vterm ssh: %s*" host))
+  (let* ((base-name (format "vterm ssh: %s" host))
+         (buffer-name (let ((multi-vterm-buffer-name base-name)
+                            (index 1)
+                            test-name)
+                        (while (progn
+                                 (setq test-name (multi-vterm-format-buffer-index index))
+                                 (get-buffer test-name))
+                          (setq index (1+ index)))
+                        test-name))
          (vterm-buffer (get-buffer buffer-name)))
     (if vterm-buffer
         (pop-to-buffer vterm-buffer)

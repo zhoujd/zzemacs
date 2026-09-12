@@ -99,3 +99,18 @@ def test_that_function():
 And then, to run only one set of unit tests, as example: pytest -m my_unit_test
 Inverse, if you want to run all tests, except one set: pytest -m "not my_unit_test"
 ```
+
+##  Hide skipped test cases
+
+```
+## Hiding Skip Summary in Terminal Output
+## (This displays only failures (f) and errors (E),
+## omitting skipped (s) and passed tests from the final summary block).
+$ pytest -r fE
+
+## Hiding Skipped Tests in HTML Reports (pytest-html)
+# conftest.py
+def pytest_html_results_table_row(report, cells):
+    if report.skipped:
+        del cells[:]
+```

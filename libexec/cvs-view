@@ -1,0 +1,9 @@
+#!/bin/sh
+
+## -t: Creates a table.
+## -s,: Tells it that a comma is the separator.
+
+## For large
+## column -t -s, filename.csv | less -S
+
+column -t -s, "$@"

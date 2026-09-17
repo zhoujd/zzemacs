@@ -17,8 +17,8 @@
         ;; (("ssh" login-shell "/bin/bash") ("scp" login-shell "/bin/bash"))
         ))
 
-(defvar zz/vterm-map (make-sparse-keymap) "Custom vterm-map")
-(defkeys-map zz/vterm-map
+(defvar vterm-c-map (make-sparse-keymap) "Custom vterm-map")
+(defkeys-map vterm-c-map
   ((kbd "c") 'multi-vterm)
   ((kbd "n") 'multi-vterm-next)
   ((kbd "p") 'multi-vterm-prev)

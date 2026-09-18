@@ -1,9 +1,24 @@
 #!/bin/bash
 
+# Function to clean up cscope files in the current directory
+clean_cscope() {
+    echo "Cleaning up cscope index files in the current directory..."
+    rm -f ./cscope.out ./cscope.in.out ./cscope.po.out
+    echo "Done."
+    exit 0
+}
+
+# Check for cleanup flags
+if [ "$1" == "-c" ] || [ "$1" == "--clean" ]; then
+    clean_cscope
+fi
+
+# Check if the correct number of arguments is provided for searching
 if [ $# != 2 ]; then
-    cat <<EOF 
+    cat <<EOF
 Usage: 
-$ $(basename $0) {n} {text}
+  $ $(basename $0) {n} {text}      - Search code
+  $ $(basename $0) -c | --clean    - Clean up cscope files in current dir
 
 The list of possible values for {n}
 0: Find this C symbol
@@ -19,24 +34,32 @@ EOF
     exit 1
 fi
 
+# Function to search upward from the current directory for a specific file
 search_up() {
     local look=${PWD%/}
     while [[ -n $look ]]; do
-        [[ -e $look/$1 ]] && {
-            printf '%s\n' "$look"
-            return
-        }
+        [[ -e $look/$1 ]] && { printf '%s\n' "$look"; return; }
         look=${look%/*}
     done
     [[ -e /$1 ]] && echo /
 }
 
+# Try to find an existing cscope.out in the current directory or its parent directories
 SEARCH=$(search_up "cscope.out")
+
 if [ -n "$SEARCH" ]; then
     TAG_FILE="$SEARCH/cscope.out"
+elif [ -f "$HOME/.emacs.d/tags/cscope.out" ]; then
+    TAG_FILE="$HOME/.emacs.d/tags/cscope.out"
 else
-    TAG_FILE="~/.emacs.d/tags/cscope.out"
+    echo "cscope.out not found anywhere. Generating a new index in the current directory..."
+    # -b: build the database only, do not enter GUI
+    # -R: recurse subdirectories for source files
+    # -q: build an inverted index for much faster subsequent searches
+    cscope -bRq
+    TAG_FILE="./cscope.out"
 fi
-    
+
 echo "Use: $TAG_FILE"
-cscope -d -f $TAG_FILE -R -L${1} ${2}
+# Execute the query in line-oriented non-interactive mode (-d)
+cscope -d -f "$TAG_FILE" -R -L${1} ${2}

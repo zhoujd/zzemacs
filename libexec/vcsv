@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Function to print usage instructions
+usage() {
+    cat << EOF
+Usage: $(basename "$0") [options] <file.csv>
+
+Format CSV files into clear tabular columns.
+
+Options:
+  -h, --help    Show this help message and exit
+
+Examples:
+  $(basename "$0") data.csv
+  $(basename "$0") data1.csv data2.csv
+  $(basename "$0") data.csv | less -S
+EOF
+    exit 1
+}
+
+# Check for help flags or missing arguments
+if [ "$#" -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    usage
+fi
+
+# -t: Creates a table.
+# -s,: Tells it that a comma is the separator.
+column -t -s, "$@"

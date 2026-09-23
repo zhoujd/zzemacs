@@ -26,3 +26,10 @@ vllm -> pytorch -> tocrch-backend -> Triton/LLVM/RCOM/CUDA -> dGPU
 ```
 https://github.com/copilot
 ```
+
+## unsloth
+
+```
+https://github.com/unslothai/unsloth
+https://unsloth.ai/docs/models/glm-5.2
+```

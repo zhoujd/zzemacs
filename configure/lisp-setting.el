@@ -29,6 +29,7 @@
     (list (cons "\\.eclrc$"     'lisp-mode))  ; ecl configure file
     (list (cons "\\.stumpwmrc$" 'lisp-mode))  ; stumpwm configure file
     (list (cons "\\.clfswmrc$"  'lisp-mode))  ; clfswm configure file
+    (list (cons "\\.mel$"       'lisp-mode))  ; MicroEMACS configure file
     auto-mode-alist))
 
 ;;(setq inferior-lisp-program "sbcl --noinform")
